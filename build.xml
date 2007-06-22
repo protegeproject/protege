@@ -1,0 +1,56 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<project name = "core" default = "compile" basedir = "..">
+
+        <property name = "distribution.zipfile" value = "${dist.dir}/plugins/org.protege.editor.core.application.zip"/>
+        <property name = "distribution.jarfile" value = "${dist.dir}/plugins/org.protege.editor.core.application.jar"/>
+        <property name = "lib.dir" value = "${core.dir}/lib"/>
+        <property name = "resources.dir" value = "${core.dir}/icons"/>
+        <property name = "src.dir" value = "${core.dir}/src"/>
+
+        <!-- =================================================================== -->
+        <!-- Classpath declaration - used in the "compile" target -->
+        <!-- =================================================================== -->
+        <path id = "core.classpath">    
+                <filelist refid = "common.libs"/>
+                <path refid = "core.libs"/>
+        </path>
+
+        <!-- =================================================================== -->
+        <!-- INIT -->
+        <!-- =================================================================== -->
+        <target name = "init">
+                <tstamp/>
+                <mkdir dir = "${classes.core}"/>
+        </target>  
+
+        <!-- =================================================================== -->
+        <!-- COMPILE -->
+        <!-- =================================================================== -->
+        <target name = "compile" depends = "init">    
+                <javac srcdir = "${src.dir}" destdir = "${classes.core}" debug = "${debug}" source = "${source}" includeAntRuntime = "${includeAntRuntime}">
+                        <classpath refid = "core.classpath"/>
+                </javac>
+        </target>
+        
+        <!-- ===================================================================================== -->
+        <!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
+        <!-- ===================================================================================== -->
+        <target name = "jar" 
+                depends = "compile">
+          <jar destfile = "${distribution.jarfile}">
+            <fileset dir = "${core.dir}">
+              <patternset excludes = "src/**">
+                <exclude name = "build.xml"/>
+              </patternset>
+            </fileset>
+          </jar>
+        </target>
+
+        <!-- =================================================================== -->
+        <!-- CLEAN -->
+        <!-- =================================================================== -->
+        <target name = "clean">
+                <delete dir = "${classes.core}"/>
+                <delete file = "${distribution.zipfile}"/>
+        </target>
+</project>
