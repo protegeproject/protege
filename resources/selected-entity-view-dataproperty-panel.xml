@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <HSNode splits="0.375 0.625">
+        <CNode>
+            <Component label="Annotations">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyAnnotations"/>
+            </Component>
+            <Component label="Data Property Usage">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyUsageView"/>
+            </Component>
+        </CNode>
+
+        <VSNode splits="0.2 0.4 0.4">
+            <CNode>
+                <Component label="Characteristics">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyCharacteristics"/>
+                </Component>
+            </CNode>
+
+            <CNode>
+                <Component label="Description">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyDescription"/>
+                </Component>
+            </CNode>
+
+            <CNode>
+                <Component label="Domains and ranges">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyDomainsAndRanges"/>
+                </Component>
+            </CNode>
+
+        </VSNode>
+    </HSNode>
+</layout>

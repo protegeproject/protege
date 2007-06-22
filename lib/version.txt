@@ -1,0 +1,9 @@
+The OWL API jars were checked out from the OWLAPI subversion repository
+
+https://owlapi.svn.sourceforge.net/svnroot/owlapi/owl1_1/trunk
+
+Revision 307
+
+They were built using Maven using the following command
+
+mvn package assembly:assembly

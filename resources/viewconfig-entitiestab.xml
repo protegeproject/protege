@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.375 0.625">
+        <HSNode splits="0.625 0.375">
+            <CNode>
+                <Component label="Asserted class hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+                </Component>
+                <Component label="Inferred class hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.InferredOWLClassHierarchy"/>
+                </Component>
+            </CNode>
+            <CNode>
+                <Component label="Object property hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyTree"/>
+                </Component>
+                <Component label="Data property hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyTree"/>
+                </Component>
+                <Component label="Individuals">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
+                </Component>
+            </CNode>
+        </HSNode>
+        <CNode>
+            <Component label="Selected entity">
+                <Property id="pluginId" value="org.protege.editor.owl.SelectedEntityView"/>
+            </Component>
+        </CNode>
+    </VSNode>
+</layout>

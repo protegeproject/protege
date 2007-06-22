@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.3 0.7">
+        <CNode>
+            <Component label="Asserted class hierarchy">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+            </Component>
+            <Component label="Inferred class hierarchy">
+                <Property id="pluginId" value="org.protege.editor.owl.InferredOWLClassHierarchy"/>
+            </Component>
+        </CNode>
+        <HSNode splits="0.375 0.625">
+            <CNode>
+                <Component label="Class Annotations">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLClassAnnotations"/>
+                </Component>
+                <Component label="Class Usage">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLClassUsageView"/>
+                </Component>
+            </CNode>
+            <CNode>
+                <Component label="Class description">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLClassDescription"/>
+                </Component>
+            </CNode>
+        </HSNode>
+    </VSNode>
+</layout>

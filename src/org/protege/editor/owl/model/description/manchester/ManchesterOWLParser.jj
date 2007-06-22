@@ -1,0 +1,1168 @@
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ * Modifications to the initial code base are copyright of their
+ * respective authors, or their employers as appropriate.  Authorship
+ * of the modifications may be determined from the ChangeLog placed at
+ * the end of this file.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+
+
+options {
+    STATIC=false;
+    //LOOKAHEAD=2;
+}
+
+PARSER_BEGIN(ManchesterOWLParser)
+
+package org.protege.owl.model.description.manchester;
+
+import java.io.Reader;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.net.URI;
+import org.protege.owl.model.description.*;
+import org.semanticweb.owl.vocab.XSDVocabulary;
+
+import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
+import static org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary.*;
+
+import org.semanticweb.owl.model.*;
+
+public class ManchesterOWLParser {
+
+    private Set<OWLOntology> ontologies;
+
+    private OWLDataFactory dataFactory;
+
+    private DataTypeMapper dataTypeMapper;
+
+    private EntityMapper entityMapper;
+
+    private boolean create;
+
+    public ManchesterOWLParser(Set<OWLOntology> ontologies, OWLDataFactory dataFactory, EntityMapper entityMapper, DataTypeMapper dataTypeMapper, Reader reader) {
+        this(getTokenManager(entityMapper, dataTypeMapper, reader));
+        this.entityMapper = entityMapper;
+        this.ontologies = ontologies;
+        this.dataFactory = dataFactory;
+        this.dataTypeMapper = dataTypeMapper;
+        if(dataFactory != null) {
+            create=true;
+        }
+    }
+
+    private static ManchesterOWLParserTokenManager getTokenManager(EntityMapper entityMapper, DataTypeMapper dataTypeMapper, Reader reader) {
+        ManchesterOWLParserTokenManager tokenManager = new ManchesterOWLParserTokenManager(new SimpleCharStream(reader));
+        tokenManager.setEntityMapper(entityMapper);
+        tokenManager.setDataTypeMapper(dataTypeMapper);
+        return tokenManager;
+    }
+
+}
+
+PARSER_END(ManchesterOWLParser)
+
+TOKEN_MGR_DECLS : {
+
+    private EntityMapper entityMapper;
+
+    private DataTypeMapper dataTypeMapper;
+
+    private IdentifierKindExtractor extractor = new IdentifierKindExtractor();
+
+    public void setEntityMapper(EntityMapper entityMapper) {
+        this.entityMapper = entityMapper;
+    }
+
+    public void setDataTypeMapper(DataTypeMapper dataTypeMapper) {
+        this.dataTypeMapper = dataTypeMapper;
+    }
+
+
+    private class IdentifierKindExtractor implements OWLEntityVisitor {
+
+        private int kind;
+
+        public int getKind() {
+            return kind;
+        }
+
+        public void visit(OWLDataProperty owlDataProperty) {
+            kind = ManchesterOWLParserConstants.DATAPROPID;
+        }
+
+        public void visit(OWLObjectProperty owlObjectProperty) {
+            kind = ManchesterOWLParserConstants.OBJECTPROPID;
+        }
+
+        public void visit(OWLIndividual owlIndividual) {
+           kind = ManchesterOWLParserConstants.INDIVIDUALID;
+        }
+
+        public void visit(OWLAnonymousIndividual individual) {
+            kind = ManchesterOWLParserConstants.IDENTIFIER;
+        }
+
+        public void visit(OWLClass owlClass) {
+            kind = ManchesterOWLParserConstants.CLASSID;
+        }
+
+        public void visit(OWLDataType dataType) {
+            kind = ManchesterOWLParserConstants.DATATYPEID;
+        }
+    }
+}
+
+
+SKIP: {" "}
+
+SKIP: {"\n" | "\r" | "\r\n"}
+
+
+TOKEN:
+{
+    <OPENPAR: "(">
+}
+
+TOKEN:
+{
+    <CLOSEPAR: ")">
+}
+
+TOKEN:
+{
+    <OPENSQPAR: "[">
+}
+
+TOKEN:
+{
+    <CLOSESQPAR: "]">
+}
+
+TOKEN:
+{
+    <OPENBRACE: "{">
+}
+
+TOKEN:
+{
+    <CLOSEBRACE: "}">
+}
+
+TOKEN:
+{
+    <QUOTE: "\"">
+}
+
+TOKEN:
+{
+    <AND: "and">
+}
+
+TOKEN:
+{
+    <OR: "or">
+}
+
+TOKEN:
+{
+    <NOT: "not">
+}
+
+TOKEN:
+{
+    <SOME: "some">
+}
+
+TOKEN:
+{
+    <ALL: "only">
+}
+
+TOKEN:
+{
+    <HAS: "value">
+}
+
+TOKEN:
+{
+    <MIN: "min">
+}
+
+TOKEN:
+{
+    <MAX: "max">
+}
+
+TOKEN:
+{
+    <EXACT: "exactly">
+}
+
+TOKEN:
+{
+    <THAT: "that">
+}
+
+TOKEN:
+{
+    <COMMA: ",">
+}
+
+TOKEN:
+{
+    <COMPOSITION: "o">
+}
+
+TOKEN:
+{
+    <SUBCLASSOF: "subClassOf">
+}
+
+TOKEN:
+{
+    <EQUIVALENTTO: "equivalentTo">
+}
+
+TOKEN:
+{
+    <DISJPOINTWITH: "disjointWith">
+}
+
+TOKEN:
+{
+    <PLUS: "plus">
+}
+
+TOKEN:
+{
+    <UNION: "union">
+}
+
+TOKEN:
+{
+    <MINUS: "minus">
+}
+
+TOKEN:
+{
+    <POSSIBLY: "possibly">
+}
+
+TOKEN:
+{
+    <INV: "inv">
+}
+
+TOKEN:
+{
+    <MIN_EXC: ">">
+}
+
+
+TOKEN:
+{
+    <MIN_INC: ">=">
+}
+
+
+TOKEN:
+{
+    <MAX_EXC: "<">
+}
+
+
+TOKEN:
+{
+    <MAX_INC: "<=">
+}
+
+
+TOKEN:
+{
+    <PAT: "pattern">
+}
+
+
+TOKEN:
+{
+    <LEN: "length">
+}
+
+TOKEN:
+{
+    <INT: (["0"-"9"])+>
+}
+
+TOKEN:
+{
+    <FLOAT : ((["0"-"9"])+ "." (["0"-"9"])* | (["0"-"9"])* "." (["0"-"9"])+)
+              ("e" (["-","+"])? (["0"-"9"])+)? (["f","l"])? >
+}
+
+TOKEN:
+{
+    <DOUBLE_CARET: "^^">
+}
+
+TOKEN:
+{
+    <BOOLEAN: "true" | "false">
+}
+
+//TOKEN:
+//{
+//    <STRING_TYPE: ("^^string")>
+//}
+
+//TOKEN:
+//{
+//    <INT_TYPE: ("^^int")>
+//}
+
+//TOKEN:
+//{
+//    <FLOAT_TYPE: ("^^float")>
+//}
+
+TOKEN:
+{
+    <STRING : ("\""(~["\""])+"\"")>
+}
+
+TOKEN:
+{
+    <IDENTIFIER: ((["a"-"z"] | ["A"-"Z"]) (["a"-"z"] | ["A"-"Z"] | ["0"-"9"] | "_" | ":" | "-" | "+")*) | ("'"((~["'"])+)"'") |  (((~[" ", "(", ")", ",", "{", "}", "[", "]", "\n", "\t"])+))> {
+
+        OWLEntity owlEntity = entityMapper.getOWLEntity(image.toString());
+        if(owlEntity == null) {
+            // Could be a data type
+            URI dataTypeURI = dataTypeMapper.getOWLDataTypeURI(image.toString());
+            if(dataTypeURI != null) {
+                matchedToken.kind =  ManchesterOWLParserConstants.DATATYPEID;
+            }
+        }
+        else {
+                owlEntity.accept(extractor);
+                matchedToken.kind = extractor.getKind();
+        }
+
+    }
+}
+
+TOKEN:
+{
+    <CLASSID: (<IDENTIFIER>)>
+}
+
+TOKEN:
+{
+    <OBJECTPROPID: (<IDENTIFIER>)>
+}
+
+
+TOKEN:
+{
+    <DATAPROPID: (<IDENTIFIER>)>
+}
+
+
+TOKEN:
+{
+    <INDIVIDUALID: (<IDENTIFIER>)>
+}
+
+TOKEN:
+{
+    <DATATYPEID: (<IDENTIFIER>)>
+}
+
+TOKEN:
+{
+    <DATAVALUE: ("\""<INT>"\"")>
+}
+
+TOKEN:
+{
+    <ERROR: ~[]>
+}
+
+
+OWLDescription Parse() :
+{
+    OWLDescription desc;
+}
+{
+    desc = And() <EOF> {
+        return desc;
+    }
+}
+
+List<OWLObjectPropertyExpression> ParsePropertyChain() :
+{
+    List<OWLObjectPropertyExpression> properties = new ArrayList<OWLObjectPropertyExpression>();
+    OWLObjectPropertyExpression prop;
+}
+{
+    (prop=ObjectProperty(){properties.add(prop);} (<COMPOSITION> prop=ObjectProperty(){properties.add(prop);})<EOF>) {
+        return properties;
+    }
+}
+
+OWLClassAxiom ParseClassAxiom() :
+{
+    OWLClassAxiom axiom = null;
+    OWLDescription clsA = null;
+    OWLDescription clsB = null;
+    int type = 0;
+}
+{
+    (clsA = And() (<SUBCLASSOF>{type=0;} | <EQUIVALENTTO>{type=1;} | <DISJPOINTWITH>{type=2;}) clsB = And()) {
+        if(create) {
+            if(type == 0) {
+                axiom = dataFactory.getOWLSubClassAxiom(clsA, clsB);
+            }
+            else if(type ==1) {
+                Set<OWLDescription> descs = new HashSet<OWLDescription>();
+                descs.add(clsA);
+                descs.add(clsB);
+                axiom = dataFactory.getOWLEquivalentClassesAxiom(descs);
+            }
+            else {
+                Set<OWLDescription> descs = new HashSet<OWLDescription>();
+                descs.add(clsA);
+                descs.add(clsB);
+                axiom = dataFactory.getOWLDisjointClassesAxiom(descs);
+            }
+        }
+        return axiom;
+    }
+
+}
+
+
+OWLDescriptionNode ParseQuery() :
+{
+    OWLDescriptionNode node;
+}
+{
+    node = ParseNodeUnion() <EOF> {
+        return node;
+    }
+}
+
+OWLDescriptionNode ParseNodeUnion() :
+{
+    OWLDescriptionNode leftNode = null, rightNode = null;
+}
+{
+    (leftNode = ParseNodeDifference()
+
+    (<PLUS>
+
+    rightNode = ParseNodeDifference())*) {
+        if(create) {
+            if(rightNode != null) {
+                return new OWLDescriptionNodeUnion(leftNode, rightNode);
+            }
+            else {
+                return leftNode;
+            }
+        }
+        return null;
+    }
+}
+
+
+OWLDescriptionNode ParseNodeDifference() :
+{
+    OWLDescriptionNode leftNode = null, rightNode = null;
+}
+{
+    (leftNode = ParseNodePossibly()
+
+    (<MINUS>
+
+    rightNode = ParseNodePossibly())*) {
+        if(create) {
+            if(rightNode != null) {
+                return new OWLDescriptionNodeDifference(leftNode, rightNode);
+            }
+            else {
+                return leftNode;
+            }
+        }
+        return null;
+    }
+}
+
+OWLDescriptionNode ParseNodePossibly() :
+{
+    OWLDescriptionNode leftNode = null, rightNode = null;
+}
+{
+    (leftNode = ParseNode()
+
+    (<POSSIBLY>
+
+    rightNode = ParseNode())*) {
+        if(create) {
+            if(rightNode != null) {
+                return new OWLDescriptionNodePossibly(leftNode, rightNode);
+            }
+            else {
+                return leftNode;
+            }
+        }
+        return null;
+    }
+}
+
+
+OWLDescriptionNode ParseNode() :
+{
+    OWLDescriptionNode node;
+    OWLDescription desc;
+}
+{
+    (desc = And() {
+        if(create) {
+            return new OWLDescriptionLeafNode(desc);
+        }
+        return null;
+    })
+    |
+    ((
+    <OPENSQPAR>
+    node = ParseNodeUnion()
+    <CLOSESQPAR>
+    ) {return node;})
+}
+
+
+
+
+OWLDescription And() :
+{
+    Set<OWLDescription> descriptions = new HashSet();
+    OWLDescription desc0;
+    OWLDescription descN;
+}
+{
+     desc0 = Or() {
+        descriptions.add(desc0);
+     }
+     // Possibly followed by OR Or, or, THAT Restriction
+     ((<AND> descN = Or() {descriptions.add(descN);})*)
+
+     {
+        if(create) {
+            if(descriptions.size() == 1) {
+                return desc0;
+            }
+            else {
+                return dataFactory.getOWLObjectIntersectionOf(descriptions);
+            }
+        }
+        return null;
+     }
+}
+
+
+
+
+OWLDescription Or() :
+{
+    Set<OWLDescription> descriptions;
+    descriptions = new HashSet<OWLDescription>();
+    OWLDescription desc0;
+    OWLDescription descN;
+}
+{
+    (desc0 = ClassDescription() {
+        if(create) {
+            descriptions.add(desc0);
+        }
+     }(<OR> descN = ClassDescription() {
+        if(create) {
+            descriptions.add(descN);
+        }
+     })*) {
+        if(create) {
+            if(descriptions.size() > 1) {
+                return dataFactory.getOWLObjectUnionOf(descriptions);
+            }
+            else {
+                return desc0;
+            }
+        }
+        return null;
+    }
+}
+
+
+OWLDescription Not() :
+{
+    OWLDescription desc;
+}
+{
+    <NOT> desc = NamedClassOrNestedDescription() {
+        if(create) {
+            return dataFactory.getOWLObjectComplementOf(desc);
+        }
+        return null;
+    }
+}
+
+OWLDescription ClassDescription() :
+{
+    OWLDescription desc = null;
+    OWLDescription thatDesc = null;
+    Token t;
+}
+{
+    ((desc=NamedClass() ((desc=ThatRestriction(desc))?)) | desc=Restriction() | desc=ObjectEnumeration() | desc=Not() | (<OPENPAR> desc=And() <CLOSEPAR>)) {
+        return desc;
+    }
+}
+
+OWLDescription ThatRestriction(OWLDescription namedClass) :
+{
+    OWLDescription desc = null;
+}
+{
+    <THAT> (desc = Restriction() | (<OPENPAR> desc = Restriction() <CLOSEPAR>)) {
+        if(create) {
+            Set<OWLDescription> ops = new HashSet<OWLDescription>();
+            ops.add(namedClass);
+            ops.add(desc);
+            return dataFactory.getOWLObjectIntersectionOf(ops);
+        }
+        return desc;
+    }
+}
+
+OWLDescription Restriction() :
+{
+    OWLDescription desc;
+}
+{
+    (desc=ObjectRestriction() | desc=DataRestriction()) {
+        return desc;
+    }
+}
+
+OWLDataProperty DataProperty() :
+{
+    Token t;
+    OWLDataProperty prop;
+}
+{
+    t=<DATAPROPID> {
+        if(create) {
+            return (OWLDataProperty) entityMapper.getOWLEntity(t.image);
+        }
+        return null;
+    }
+}
+
+
+OWLDescription DataRestriction() :
+{
+    OWLDataProperty prop;
+    OWLDataRange dataRangeFiller;
+    OWLConstant valueFiller;
+}
+{
+     (prop=DataProperty()
+     (
+     dataRangeFiller=DataSomeRestriction() {
+            if(create) {
+                return dataFactory.getOWLDataSomeRestriction(prop, dataRangeFiller);
+            }
+            return null;
+        }
+     |
+     dataRangeFiller=DataAllRestriction() {
+            if(create) {
+                return dataFactory.getOWLDataAllRestriction(prop, dataRangeFiller);
+            }
+            return null;
+        }
+     | valueFiller=DataValueRestriction() {
+            if(create) {
+                return dataFactory.getOWLDataValueRestriction(prop, valueFiller);
+            }
+            return null;
+     }))
+}
+
+
+OWLObjectPropertyExpression ObjectProperty() :
+{
+    Token t;
+}
+{
+    (t=<OBJECTPROPID> {
+        if(create) {
+            return (OWLObjectProperty) entityMapper.getOWLEntity(t.image);
+        }
+        return null;
+    })
+    |
+    (
+        (<INV><OPENPAR>t=<OBJECTPROPID><CLOSEPAR>) {
+            if(create) {
+                OWLObjectProperty prop = (OWLObjectProperty) entityMapper.getOWLEntity(t.image);
+                return dataFactory.getOWLObjectPropertyInverse(prop);
+            }
+            return null;
+        }
+    )
+}
+
+
+OWLDescription ObjectRestriction() :
+{
+    OWLObjectPropertyExpression prop;
+    OWLDescription descFiller;
+    OWLIndividual valueFiller;
+}
+{
+    prop=ObjectProperty() (
+       descFiller=ObjectSomeRestriction() {
+        if(create) {
+            return dataFactory.getOWLObjectSomeRestriction(prop, descFiller);
+        }
+        return null;
+     }
+     | descFiller=ObjectAllRestriction() {
+        if(create) {
+            return dataFactory.getOWLObjectAllRestriction(prop, descFiller);
+        }
+        return null;
+     }
+     | valueFiller=ObjectValueRestriction() {
+        if(create) {
+            return dataFactory.getOWLObjectValueRestriction(prop, valueFiller);
+        }
+        return null;
+     }
+     |
+      descFiller = ObjectCardinality(prop) {
+        return descFiller;
+      }
+     )
+}
+
+OWLIndividual Individual() :
+{
+    Token t;
+}
+{
+    t=<INDIVIDUALID> {
+        if(create) {
+            return (OWLIndividual) entityMapper.getOWLEntity(t.image);
+        }
+        return null;
+    }
+}
+
+
+OWLDescription ObjectEnumeration() :
+{
+    Set<OWLIndividual> individuals = new HashSet();
+    OWLIndividual ind;
+}
+{
+    (<OPENBRACE> (ind = Individual() {individuals.add(ind);})+ <CLOSEBRACE>) {
+        if(create) {
+            return dataFactory.getOWLObjectOneOf(individuals);
+        }
+        return null;
+    }
+}
+
+
+OWLDataRange DataRange() :
+{
+    Token t;
+    List<OWLDataRangeFacetRestriction> restrictions = new ArrayList<OWLDataRangeFacetRestriction>();
+}
+{
+    (
+     (t=<DATATYPEID>(<OPENSQPAR>restrictions=DataRestrictionFacetList()<CLOSESQPAR>)?{
+        if(create) {
+            URI uri = dataTypeMapper.getOWLDataTypeURI(t.image);
+            OWLDataRange dt = dataFactory.getOWLDataType(uri);
+            if(!restrictions.isEmpty()) {
+                dt = dataFactory.getOWLDataRangeRestriction(dt, new HashSet<OWLDataRangeFacetRestriction>(restrictions));
+            }
+            return dt;
+        }
+        return null;
+     }
+     )
+
+
+    | <OPENBRACE> (DataValue())+ <CLOSEBRACE>) {
+
+        return null;
+    }
+}
+
+List<OWLDataRangeFacetRestriction> DataRestrictionFacetList() :
+{
+    OWLDataRangeFacetRestriction restriction;
+    List<OWLDataRangeFacetRestriction> restrictions = new ArrayList<OWLDataRangeFacetRestriction>();
+}
+{
+    ((restriction=DataRestrictionFacetRestriction()
+    {restrictions.add(restriction);}
+    )(<COMMA>restriction=DataRestrictionFacetRestriction(){restrictions.add(restriction);})*){
+        return restrictions;
+    }
+}
+
+OWLDataRangeFacetRestriction DataRestrictionFacetRestriction() :
+{
+    OWLRestrictedDataRangeFacetVocabulary v;
+    OWLTypedConstant con;
+}
+{
+    ((<MIN_EXC>{v = MIN_EXCLUSIVE;}
+    | <MIN_INC>{v = MIN_INCLUSIVE;}
+    | <MAX_EXC>{v = MAX_EXCLUSIVE;}
+    | <MAX_INC>{v = MAX_INCLUSIVE;}
+    | <LEN>{v = LENGTH;}
+    | <PAT>{v = PATTERN;})con=DataValue()) {
+        if(create) {
+            return dataFactory.getOWLDataRangeFacetRestriction(v, con);
+        }
+        return null;
+    }
+}
+
+OWLTypedConstant DataValue() :
+{
+    int ival;
+    float fval;
+    String sval;
+    String lit;
+    boolean bval;
+    Token t;
+    URI dtURI = XSDVocabulary.STRING.getURI();
+}
+{
+    ((ival=Integer()){
+        if(create) {
+            return dataFactory.getOWLTypedConstant(
+                    Integer.toString(ival),
+                    dataFactory.getOWLDataType(XSDVocabulary.INT.getURI())
+            );
+        }
+        return null;
+    })
+    |
+    (
+        (fval = Float()) {
+            if(create) {
+                return dataFactory.getOWLTypedConstant(
+                    Float.toString(fval),
+                    dataFactory.getOWLDataType(XSDVocabulary.FLOAT.getURI())
+                );
+            }
+            return null;
+        }
+    )
+    |
+    (
+        (bval = Boolean()) {
+            if(create) {
+                return dataFactory.getOWLTypedConstant(
+                    Boolean.toString(bval),
+                    dataFactory.getOWLDataType(XSDVocabulary.BOOLEAN.getURI())
+                );
+            }
+            return null;
+        }
+    )
+    |
+    (
+        (sval = String()((<DOUBLE_CARET>t=<DATATYPEID>{dtURI=dataTypeMapper.getOWLDataTypeURI(t.image);}))) {
+            if(create) {
+                    return dataFactory.getOWLTypedConstant(
+                    sval,
+                    dataFactory.getOWLDataType(dtURI));
+
+            }
+            return null;
+        }
+    )
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Existential restrictions
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+OWLDataRange DataSomeRestriction() :
+{
+    OWLDataRange rng;
+}
+{
+    <SOME> rng=DataRange() {
+        return rng;
+    }
+}
+
+OWLDescription ObjectSomeRestriction() :
+{
+    OWLDescription desc;
+}
+{
+    <SOME> desc=NamedClassOrNestedDescription() {
+        return desc;
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Universal restrictions
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+OWLDataRange DataAllRestriction() :
+{
+    OWLDataRange rng;
+}
+{
+    <ALL> rng=DataRange() {
+        return rng;
+    }
+}
+
+OWLDescription ObjectAllRestriction() :
+{
+    OWLDescription desc;
+}
+{
+    <ALL> desc=NamedClassOrNestedDescription() {
+        return desc;
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Value restrictions
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+OWLIndividual ObjectValueRestriction() :
+{
+    OWLIndividual ind;
+}
+{
+    <HAS> ind=Individual() {
+        return ind;
+    }
+}
+
+
+OWLConstant DataValueRestriction() :
+{
+    OWLConstant value;
+}
+{
+    <HAS> value=DataValue() {
+        return value;
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Object Cardinality
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+OWLDescription ObjectCardinality(OWLObjectPropertyExpression prop):
+{
+    int i;
+    OWLDescription desc = null;
+    boolean min = false;
+    boolean exact = false;
+    boolean max = false;
+}
+{
+    // QCRs are optional
+    ((<MIN> {min=true;} | <EXACT>{exact=true;} | <MAX>{max=true;}) i=Integer() (desc=NamedClassOrNestedDescription())?) {
+        if(create) {
+            if(desc == null) {
+                desc = dataFactory.getOWLThing();
+            }
+            if(min) {
+                return dataFactory.getOWLObjectMinCardinalityRestriction(prop, i, desc);
+            }
+            else if(exact) {
+                return dataFactory.getOWLObjectExactCardinalityRestriction(prop, i, desc);
+            }
+            else {
+                return dataFactory.getOWLObjectMaxCardinalityRestriction(prop, i, desc);
+            }
+        }
+        return null;
+    }
+}
+
+int Integer() :
+{
+    Token t;
+    int i = -1;
+}
+{
+    t=<INT> {
+        if(create) {
+            i = Integer.parseInt(t.image);
+        }
+        return i;
+    }
+}
+
+float Float() :
+{
+    Token t;
+    float f = 1.0f;
+}
+{
+    t=<FLOAT> {
+        if(create) {
+            f = Float.parseFloat(t.image);
+        }
+        return f;
+    }
+}
+
+
+boolean Boolean() :
+{
+    Token t;
+    boolean b = false;
+}
+{
+    t=<BOOLEAN> {
+        if(create) {
+            b = Boolean.parseBoolean(t.image);
+        }
+        return b;
+    }
+}
+
+String String() :
+{
+    Token t;
+}
+{
+    t=<STRING> {
+        if(create) {
+            return t.image.substring(1, t.image.length() -1);
+        }
+        return null;
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Data Cardinality
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+OWLDescription DataCardinality(OWLDataProperty prop):
+{
+    int i;
+    boolean min = false;
+    boolean exact = false;
+    boolean max = false;
+}
+{
+    ((<MIN>{min=true;} | <EXACT>{exact=true;} | <MAX>{max=true;}) i=Integer() (DataRange())?) {
+        if(create) {
+            if(min) {
+                return dataFactory.getOWLDataMinCardinalityRestriction(prop, i);
+            }
+            if(exact) {
+                return dataFactory.getOWLDataExactCardinalityRestriction(prop, i);
+            }
+            if(max) {
+                return dataFactory.getOWLDataMaxCardinalityRestriction(prop, i);
+            }
+        }
+        return null;
+    }
+}
+
+OWLDescription NamedClassOrNestedDescription() :
+{
+    OWLDescription desc;
+    Token t;
+}
+{
+    ((<OPENPAR> desc = And() <CLOSEPAR>) | desc = NamedClass()) {
+        if(create) {
+            return desc;
+        }
+        return null;
+    }
+    |
+    (desc=ObjectEnumeration() {
+        if(create) {
+            return desc;
+        }
+        return null;
+    }
+    )
+}
+
+OWLDescription NamedClass() :
+{
+    Token t;
+    OWLDescription desc;
+}
+{
+    (t = <CLASSID>) {
+        desc = (OWLClass) entityMapper.getOWLEntity(t.image);
+        if(create) {
+            return desc;
+        }
+        return null;
+    }
+}

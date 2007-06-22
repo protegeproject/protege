@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+
+    <VSNode splits="0.375 0.625">
+
+        <CNode>
+            <Component label="Individuals">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
+            </Component>
+        </CNode>
+
+        <HSNode splits="0.375 0.625">
+
+            <CNode>
+                <Component label="Individual Annotations">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualAnnotations"/>
+                </Component>
+                <Component label="Individual Usage">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualUsageView"/>
+                </Component>
+            </CNode>
+
+            <VSNode splits="0.5 0.5">
+                <CNode>
+                    <Component label="Description">
+                        <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualTypes"/>
+                    </Component>
+                </CNode>
+
+
+                <CNode>
+                    <Component label="Individual Relationships">
+                        <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualRelationships"/>
+                    </Component>
+                </CNode>
+
+            </VSNode>
+
+
+        </HSNode>
+    </VSNode>
+
+</layout>
