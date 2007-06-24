@@ -1,6 +1,8 @@
 package org.protege.editor.core.plugin;
 
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
 
@@ -75,12 +77,11 @@ public class PluginProperties {
     }
 
 
-    public static String getParameterValue(Extension ext, String key, String defaultValue) {
-        Extension.Parameter param = ext.getParameter(key);
-        if (param == null) {
+    public static String getParameterValue(IExtension ext, String key, String defaultValue) {
+        String val  = PluginUtilities.getAttribute(ext, key);
+        if (val == null) {
             return defaultValue;
         }
-        String val = param.valueAsString();
         if (isProtegeProperty(val)) {
             return getProtegeProperty(val);
         }
@@ -90,34 +91,33 @@ public class PluginProperties {
     }
 
 
-    public static Set<String> getParameterValues(Extension ext, String key) {
+    public static Set<String> getParameterValues(IExtension ext, String key) {
         Set<String> values = new HashSet<String>();
-        for (Object o : ext.getParameters(key)) {
-            Extension.Parameter param = (Extension.Parameter) o;
-            if (param == null) {
-                continue;
-            }
-            String val = param.valueAsString();
-            if (isProtegeProperty(val)) {
-                String protegeVal = getProtegeProperty(val);
-                if (protegeVal != null) {
-                    values.add(protegeVal);
+        for (IConfigurationElement config : ext.getConfigurationElements()) {
+            if (key.equals(config.getAttribute(PLUGIN_XML_ID))) {
+                String val = config.getAttribute(PLUGIN_XML_VALUE);
+                if (val == null) continue;
+                if (isProtegeProperty(val)) {
+                    String protegeVal = getProtegeProperty(val);
+                    if (protegeVal != null) {
+                        values.add(protegeVal);
+                    }
                 }
-            }
-            else {
-                values.add(val);
-            }
+                else {
+                    values.add(val);
+                }
+            }  
         }
         return values;
     }
 
 
-    public static boolean getBooleanParameterValue(Extension ext, String key, boolean defaultValue) {
+    public static boolean getBooleanParameterValue(IExtension ext, String key, boolean defaultValue) {
         return PropertyUtil.getBoolean(getParameterValue(ext, key, Boolean.toString(defaultValue)), defaultValue);
     }
 
 
-    public static Color getColorParameterValue(Extension ext, String key, Color defaultColor) {
+    public static Color getColorParameterValue(IExtension ext, String key, Color defaultColor) {
         return PropertyUtil.getColor(getParameterValue(ext, key, null), defaultColor);
     }
 }

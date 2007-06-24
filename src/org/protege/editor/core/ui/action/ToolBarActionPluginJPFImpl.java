@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.action;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
@@ -53,7 +54,7 @@ public class ToolBarActionPluginJPFImpl extends ProtegeActionPluginJPFImpl imple
     private static final String DEFAULT_GROUP_INDEX = "Z";
 
 
-    public ToolBarActionPluginJPFImpl(EditorKit editorKit, Extension extension) {
+    public ToolBarActionPluginJPFImpl(EditorKit editorKit, IExtension extension) {
         super(editorKit, extension);
     }
 

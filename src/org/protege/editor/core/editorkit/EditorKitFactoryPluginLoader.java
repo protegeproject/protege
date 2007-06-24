@@ -1,6 +1,7 @@
 package org.protege.editor.core.editorkit;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionFilter;
@@ -48,7 +49,7 @@ public class EditorKitFactoryPluginLoader {
         PluginExtensionFilter filter = new PluginExtensionFilter(ProtegeApplication.ID,
                                                                  EditorKitFactory.ID,
                                                                  new DefaultPluginExtensionMatcher());
-        for (Extension ext : filter.getExtensions()) {
+        for (IExtension ext : filter.getExtensions()) {
             result.add(new EditorKitFactoryPlugin(ext));
         }
         return result;

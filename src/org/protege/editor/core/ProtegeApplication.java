@@ -80,7 +80,7 @@ public class ProtegeApplication implements BundleActivator {
 
 
     protected ProtegeApplication initApplication(String args[]) throws Exception {
-        PluginUtilities.getInstance().initialise(this);
+        PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
         loadRecentEditorKits();
         loadPreferences();

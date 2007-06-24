@@ -10,6 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.util.Icons;
@@ -36,9 +39,11 @@ public class AboutPanel extends JPanel {
         JPanel logoPanel = new JPanel(new BorderLayout(3, 3));
         JLabel logoLabel = new JLabel(Icons.getIcon("logo.banner.gif"));
         logoPanel.add(logoLabel, BorderLayout.NORTH);
-        PluginDescriptor desc = PluginUtilities.getInstance().getPluginManager().getRegistry().getPluginDescriptor(
-                ProtegeApplication.ID);
-        String versionString = "Version " + desc.getVersion().getMajor() + "." + desc.getVersion().getMinor() + " (Build " + desc.getVersion().getBuild() + ")";
+        BundleContext applicationContext = PluginUtilities.getInstance().getApplicationContext();
+        Bundle application = applicationContext.getBundle();
+        Version v = PluginUtilities.getBundleVersion(application);
+
+        String versionString = "Version " + v.getMajor() + "." + v.getMinor() + " (Build " + v.getMicro() + ")";
         JLabel label = new JLabel(versionString, JLabel.CENTER);
         logoPanel.add(label, BorderLayout.SOUTH);
         logoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 20, 5));

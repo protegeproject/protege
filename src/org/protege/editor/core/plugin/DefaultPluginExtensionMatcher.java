@@ -1,5 +1,7 @@
 package org.protege.editor.core.plugin;
 
+import org.eclipse.core.runtime.IExtension;
+
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -44,7 +46,7 @@ public class DefaultPluginExtensionMatcher implements PluginExtensionMatcher {
     /**
      * @return Always returns <code>true</code>
      */
-    public boolean matches(Extension extension) {
+    public boolean matches(IExtension extension) {
         return true;
     }
 }

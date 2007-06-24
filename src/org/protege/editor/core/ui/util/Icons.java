@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.osgi.framework.Bundle;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 
@@ -25,10 +26,8 @@ public class Icons {
 
     public static Icon getIcon(String name) {
         try {
-            PluginManager manager = PluginUtilities.getInstance().getPluginManager();
-            PluginDescriptor descriptor = manager.getRegistry().getPluginDescriptor(ProtegeApplication.ID);
-            ClassLoader loader = manager.getPluginClassLoader(descriptor);
-            URL url = loader.getResource(name);
+            Bundle b = PluginUtilities.getInstance().getApplicationBundle();
+            URL url = b.getResource(name);
             if (url != null) {
                 return new ImageIcon(url);
             }

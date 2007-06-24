@@ -3,9 +3,14 @@ package org.protege.editor.core.ui.workspace;
 
 
 
+import org.eclipse.core.runtime.IContributor;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginProperties;
+import org.protege.editor.core.plugin.PluginUtilities;
 
 import javax.swing.*;
 import java.net.URL;
@@ -73,10 +78,10 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
     private TabbedWorkspace workspace;
 
-    private Extension extension;
+    private IExtension extension;
 
 
-    public WorkspaceTabPluginJPFImpl(TabbedWorkspace workspace, Extension extension) {
+    public WorkspaceTabPluginJPFImpl(TabbedWorkspace workspace, IExtension extension) {
         this.extension = extension;
         this.workspace = workspace;
     }
@@ -94,7 +99,7 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
@@ -109,10 +114,6 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public Icon getIcon() {
-        Extension.Parameter param = extension.getParameter(ICON_PARAM);
-        if (param == null) {
-            return null;
-        }
         return null;
     }
 
@@ -131,10 +132,9 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public URL getDefaultViewConfigFile() {
-        PluginManager manager = PluginManager.lookup(this);
-        PluginDescriptor descriptor = extension.getDeclaringPluginDescriptor();
-        ClassLoader loader = manager.getPluginClassLoader(descriptor);
+        PluginUtilities util = PluginUtilities.getInstance();
+        Bundle contributor = util.getBundle(extension);
         String resource = PluginProperties.getParameterValue(extension, DEFAULT_VIEW_CONFIG_FILE_NAME_PARAM, null);
-        return loader.getResource(resource);
+        return contributor.getResource(resource);
     }
 }

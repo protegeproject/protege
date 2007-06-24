@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.List;
@@ -44,7 +45,7 @@ public class UpdateInstaller {
     public void run() {
         for (UpdateInfo info : updates) {
             try {
-                File tempPluginFile = File.createTempFile(info.getCurrentVersion().getName(), ".zip");
+                File tempPluginFile = File.createTempFile(info.getCurrentVersion().getQualifier(), ".zip");
                 URLConnection conn = info.getDownloadURL().toURL().openConnection();
                 int len = conn.getContentLength();
                 BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
@@ -78,7 +79,7 @@ public class UpdateInstaller {
 
 
     private static void copyPluginToInstallLocation(File pluginFile, UpdateInfo info) throws URISyntaxException {
-        File existingPluginXMLFile = new File(info.getPluginDescriptor().getLocation().toURI());
+        File existingPluginXMLFile = new File(new URI(info.getPluginDescriptor().getLocation()));
         File installLocation = existingPluginXMLFile.getParentFile();
 //          pluginFile.renameTo(new File(installLocation, pluginFile.getName()));
     }

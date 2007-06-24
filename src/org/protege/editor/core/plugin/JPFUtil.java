@@ -1,5 +1,9 @@
 package org.protege.editor.core.plugin;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
+
+
 
 
 /*
@@ -36,17 +40,10 @@ package org.protege.editor.core.plugin;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class JPFUtil implements ProtegePlugin {
+    private static final Logger log = Logger.getLogger(JPFUtil.class);
 
-    public static String getDocumentation(Extension extension) {
-        Documentation docs = extension.getDocumentation();
-        if (docs != null) {
-            String text = docs.getCaption();
-            text += '\n';
-            text += docs.getText().trim();
-            return text;
-        }
-        else {
-            return null;
-        }
+    public static String getDocumentation(IExtension extension) {
+        log.error("Don't know what to do about documentation yet");
+        return "";
     }
 }

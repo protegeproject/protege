@@ -4,6 +4,9 @@ package org.protege.editor.core.ui.util;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import org.eclipse.core.runtime.IExtension;
+
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -40,7 +43,7 @@ import java.awt.*;
  */
 public class ComponentFactory {
 
-    public static JComponent createExceptionComponent(String message, Exception exception, Extension extension) {
+    public static JComponent createExceptionComponent(String message, Exception exception, IExtension extension) {
         return new ComponentExceptionPanel(message, exception, extension);
     }
 

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -24,6 +27,7 @@ public class UpdateManager {
     private static final Logger logger = Logger.getLogger(UpdateManager.class);
 
     public static final String PREFERENCES_KEY = "CheckForUpdates";
+    public static final String UPDATE_URL = "update-url";
 
 
     private UpdateManager() {
@@ -60,16 +64,13 @@ public class UpdateManager {
         Runnable runnable = new Runnable() {
             public void run() {
                 List<UpdateInfo> updates = new ArrayList<UpdateInfo>();
-                PluginManager man = PluginManager.lookup(this);
-                PluginRegistry reg = man.getRegistry();
-                for (final PluginDescriptor pluginDescriptor : reg.getPluginDescriptors()) {
+                BundleContext context = PluginUtilities.getInstance().getApplicationContext();
+                for (final Bundle b : context.getBundles()) {
                     try {
-                        PluginAttribute att = pluginDescriptor.getAttribute("update-url");
-
-                        if (att != null) {
-                            final String updateFileLoc = att.getValue();
-                            final URI updateFileURI = new URI(updateFileLoc);
-                            UpdateChecker checker = new UpdateChecker(updateFileURI, pluginDescriptor);
+                        String url = (String) b.getHeaders().get(UPDATE_URL);
+                        if (url != null) {
+                            final URI updateFileURI = new URI(url);
+                            UpdateChecker checker = new UpdateChecker(updateFileURI, b);
                             UpdateInfo info = checker.run();
                             if (info != null) {
                                 updates.add(info);
