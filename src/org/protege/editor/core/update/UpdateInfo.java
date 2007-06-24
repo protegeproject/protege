@@ -1,7 +1,7 @@
 package org.protege.editor.core.update;
 
-import org.java.plugin.registry.PluginDescriptor;
-import org.java.plugin.registry.Version;
+
+
 
 import java.net.URI;
 /*

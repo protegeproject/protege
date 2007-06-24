@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.util;
 
-import org.java.plugin.registry.Extension;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;

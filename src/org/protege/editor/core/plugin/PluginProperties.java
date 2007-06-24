@@ -1,6 +1,6 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
 
@@ -41,6 +41,10 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginProperties {
+    
+    public static final String PLUGIN_XML_ID = "id";
+    
+    public static final String PLUGIN_XML_VALUE = "value";
 
     public static final String PROTEGE_PROPERTY_PREFIX = "@";
 

@@ -1,7 +1,7 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Documentation;
-import org.java.plugin.registry.Extension;
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *

@@ -1,9 +1,9 @@
 package org.protege.editor.core.plugin;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.PluginManager;
-import org.java.plugin.registry.Extension;
-import org.java.plugin.registry.ExtensionPoint;
+
+
+
 
 import java.util.HashSet;
 import java.util.Set;

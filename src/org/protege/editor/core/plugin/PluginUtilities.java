@@ -1,29 +1,16 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.PluginManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.internal.registry.osgi.OSGIUtils;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IContributor;
+import org.eclipse.core.runtime.IExtension;
+import org.osgi.framework.Bundle;
 import org.protege.editor.core.ProtegeApplication;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**
@@ -65,16 +52,32 @@ public class PluginUtilities {
     public void initialise(ProtegeApplication protegeApplication) {
         this.protegeApplication = protegeApplication;
     }
-
-
-    /**
-     * Gets the Java Plugin Framework <code>PluginManager</code>.
-     */
-    public PluginManager getPluginManager() {
-        return protegeApplication.getManager();
+    
+    public static Bundle getBundle(IExtension extension) {
+        IContributor contributor = extension.getContributor();
+        String name = contributor.getName();
+        return OSGIUtils.getDefault().getBundle(name);
     }
+    
+    public static Map<String, String> getAttributes(IExtension ext) {
+        Map<String, String> attributes = new HashMap<String, String>();
+        for (IConfigurationElement config : ext.getConfigurationElements()) {
+            String id = config.getAttribute(PluginProperties.PLUGIN_XML_ID);
+            String value = config.getAttribute(PluginProperties.PLUGIN_XML_VALUE);
+            attributes.put(id, value);
+        }
+        return attributes;
+    }
+    
+    public static String getAttribute(IExtension ext, String key) {
+        return getAttributes(ext).get(key);
+    }
+    
+    public static Object getExtensionObject(IExtension ext, String property) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        Bundle b = getBundle(ext);
+        return b.loadClass(getAttribute(ext, property)).newInstance();
+        // return config.createExecutableExtension(property);
+    }
+    
 }
-
-
-
 

@@ -1,16 +1,12 @@
 package org.protege.editor.core.update;
 
-import org.apache.log4j.Logger;
-import org.java.plugin.PluginManager;
-import org.java.plugin.registry.PluginAttribute;
-import org.java.plugin.registry.PluginDescriptor;
-import org.java.plugin.registry.PluginRegistry;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 /**
  * Author: Matthew Horridge<br>

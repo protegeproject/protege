@@ -1,6 +1,6 @@
 package org.protege.editor.core.editorkit;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionFilter;

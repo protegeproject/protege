@@ -1,8 +1,8 @@
 package org.protege.editor.core.update;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.registry.PluginDescriptor;
-import org.java.plugin.registry.Version;
+
+
 
 import java.net.URI;
 

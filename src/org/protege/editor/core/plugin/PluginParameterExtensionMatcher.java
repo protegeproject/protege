@@ -1,6 +1,6 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Extension;
+
 
 import java.util.HashMap;
 import java.util.Map;
