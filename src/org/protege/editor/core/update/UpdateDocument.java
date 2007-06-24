@@ -1,6 +1,6 @@
 package org.protege.editor.core.update;
 
-import org.java.plugin.registry.Version;
+
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

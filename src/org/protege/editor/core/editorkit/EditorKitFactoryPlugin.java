@@ -1,8 +1,14 @@
 package org.protege.editor.core.editorkit;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.PluginLifecycleException;
-import org.java.plugin.registry.Extension;
+import org.eclipse.core.internal.registry.osgi.OSGIUtils;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IContributor;
+import org.eclipse.core.runtime.IExtension;
+
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginUtilities;
 /*
@@ -47,18 +53,18 @@ public class EditorKitFactoryPlugin {
     private static final Logger logger = Logger.getLogger(EditorKitFactoryPlugin.class);
 
 
-    private Extension extension;
+    private IExtension extension;
 
     public static final String LABEL_PARAM = "label";
 
 
-    public EditorKitFactoryPlugin(Extension extension) {
+    public EditorKitFactoryPlugin(IExtension extension) {
         this.extension = extension;
     }
 
 
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
@@ -67,34 +73,24 @@ public class EditorKitFactoryPlugin {
      * typically used for UI menu items etc.
      */
     public String getLabel() {
-        Extension.Parameter param = extension.getParameter(LABEL_PARAM);
+        String param = PluginUtilities.getAttribute(extension, LABEL_PARAM);
         if (param == null) {
             return "<Error: Label not defined!> " + extension;
         }
-        return param.valueAsString();
+        return param;
     }
 
 
     public EditorKitFactory newInstance() {
         try {
-            try {
-                PluginUtilities.getInstance().getPluginManager().activatePlugin(extension.getDeclaringPluginDescriptor().getId());
-            }
-            catch (PluginLifecycleException e) {
-                e.printStackTrace();
-            }
+            Bundle b = PluginUtilities.getBundle(extension);
+            b.start();
             ExtensionInstantiator<EditorKitFactory> instantiator = new ExtensionInstantiator<EditorKitFactory>(extension);
             return instantiator.instantiate();
         }
-        catch (InstantiationException e) {
-            logger.error(e);
-        }
-        catch (ClassNotFoundException e) {
-            logger.error(e);
-        }
-        catch (IllegalAccessException e) {
-            logger.error(e);
-        }
+        catch (Exception e) {
+            logger.error("Exception caught", e);
+        } 
         return null;
     }
 }

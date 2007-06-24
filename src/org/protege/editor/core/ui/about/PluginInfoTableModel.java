@@ -1,35 +1,17 @@
 package org.protege.editor.core.ui.about;
 
-import org.java.plugin.PluginManager;
-import org.java.plugin.registry.PluginDescriptor;
-import org.java.plugin.registry.Version;
-import org.protege.editor.core.plugin.PluginUtilities;
+
+
+
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.Version;
+import org.protege.editor.core.ProtegeApplication;
 
 
 /**
@@ -43,48 +25,62 @@ import java.util.List;
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
-    private List<PluginDescriptor> descriptors;
-
-    public static final String [] COLUMN_NAMES = new String []{"Name/ID", "Version", "Build"};
+    private List<Bundle> bundles;
+    
+    public enum Columns  {
+        NAME("Name/ID"), VERSION("Version"), BUILD("Build");
+        
+        private String name;
+        
+        private Columns(String name) {
+            this.name = name;
+        }
+        
+        public String getName() {
+            return name;
+        }
+    }
 
 
     public PluginInfoTableModel() {
-        PluginManager man = PluginUtilities.getInstance().getPluginManager();
-        descriptors = new ArrayList<PluginDescriptor>();
-        descriptors.addAll(man.getRegistry().getPluginDescriptors());
+        BundleContext context = ProtegeApplication.getContext();
+        for (Bundle b : context.getBundles()) {
+            bundles.add(b);
+        }
     }
 
 
     public int getRowCount() {
-        return descriptors.size();
+        return bundles.size();
     }
 
 
     public int getColumnCount() {
-        return 3;
+        return Columns.values().length;
     }
 
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        PluginDescriptor descriptor = descriptors.get(rowIndex);
-        Version version = descriptor.getVersion();
-        if (columnIndex == 0) {
-            String name = version.getName();
-            if (name == null) {
-                name = descriptor.getId();
-            }
-            return name;
+        Bundle bundle = bundles.get(rowIndex);
+        String version_name = (String) bundle.getHeaders().get(Constants.BUNDLE_VERSION);
+        Version v = null;
+        if (version_name != null) {
+             v = new Version(version_name);
         }
-        else if (columnIndex == 1) {
-            return version.getMajor() + "." + version.getMinor();
-        }
-        else {
-            return version.getBuild();
+        switch (Columns.values()[columnIndex]) {
+        case NAME:
+            return bundle.getSymbolicName();
+        case VERSION:
+            return v == null ? "" : "" + v.getMajor() + "." + v.getMinor();
+        case BUILD:
+            return "" + v.getMicro();
+        default:
+            throw new RuntimeException("Programmer error - missed a case");
         }
     }
 
 
     public String getColumnName(int column) {
-        return COLUMN_NAMES[column];
+        return Columns.values()[column].getName();
     }
 }

@@ -1,7 +1,7 @@
 package org.protege.editor.core.ui.menu;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;

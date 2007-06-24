@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.view;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;

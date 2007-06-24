@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.preferences;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;

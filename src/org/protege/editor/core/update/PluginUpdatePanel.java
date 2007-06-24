@@ -1,6 +1,6 @@
 package org.protege.editor.core.update;
 
-import org.java.plugin.registry.Version;
+
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

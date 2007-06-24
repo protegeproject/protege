@@ -1,7 +1,11 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.PluginManager;
-import org.java.plugin.registry.Extension;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IExtension;
+
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -43,7 +47,7 @@ import org.java.plugin.registry.Extension;
  */
 public class ExtensionInstantiator<E> {
 
-    private Extension extension;
+    private IExtension extension;
 
 
     /**
@@ -54,7 +58,7 @@ public class ExtensionInstantiator<E> {
      *                  expected to have a parameter with a name matching the
      *                  <code>ExtensionInstantiator.CLASS_PARAM_NAME</code>.
      */
-    public ExtensionInstantiator(Extension extension) {
+    public ExtensionInstantiator(IExtension extension) {
         this.extension = extension;
     }
 
@@ -64,14 +68,9 @@ public class ExtensionInstantiator<E> {
      * @return An instance of type <code>E</code>.  Note that a <code>null</code>
      *         value will be returned if there was a problem creating the instance.
      */
-    public E instantiate() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        Extension.Parameter param = extension.getParameter(PluginProperties.CLASS_PARAM_NAME);
-        if (param != null) {
-            PluginManager pluginManager = PluginUtilities.getInstance().getPluginManager();
-            ClassLoader loader = pluginManager.getPluginClassLoader(extension.getDeclaringPluginDescriptor());
-            Class cls = loader.loadClass(param.valueAsString());
-            return (E) cls.newInstance();
-        }
-        return null;
+    @SuppressWarnings("unchecked")
+    public E instantiate() throws CoreException, ClassCastException {
+        Object o = PluginUtilities.getExtensionObject(extension, PluginProperties.CLASS_PARAM_NAME);
+        return (E) o;
     }
 }

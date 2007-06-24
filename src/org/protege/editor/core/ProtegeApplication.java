@@ -1,13 +1,19 @@
 package org.protege.editor.core;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.UIManager;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.java.plugin.boot.Application;
-import org.java.plugin.boot.ApplicationPlugin;
-import org.java.plugin.util.ExtendedProperties;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
@@ -17,34 +23,6 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.update.UpdateManager;
-
-import javax.swing.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**
@@ -60,7 +38,7 @@ import java.util.List;
  * The ProtegeApplication is the main entry point to Protge.  The application
  * is actually a plugin to the Java Plugin Framework
  */
-public class ProtegeApplication extends ApplicationPlugin implements Application {
+public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
@@ -69,10 +47,30 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
+    
+    private static BundleContext context;
 
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
+    
+    
+
+    public void start(BundleContext context) throws Exception {
+        ProtegeApplication.context = context;
+        ProtegeApplication application = new ProtegeApplication();
+        application.initApplication(new String[0]);
+        application.startApplication();
+    }
+
+
+    public void stop(BundleContext arg0) throws Exception {
+        throw new UnsupportedOperationException("need to stop threads, etc...");
+    }
+    
+    public static BundleContext getContext() {
+        return context;
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
     //
@@ -81,7 +79,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    protected Application initApplication(ExtendedProperties extendedProperties, String[] strings) throws Exception {
+    protected ProtegeApplication initApplication(String args[]) throws Exception {
         PluginUtilities.getInstance().initialise(this);
         loadDefaults();
         loadRecentEditorKits();
@@ -93,7 +91,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
                 RecentEditorKitManager.getInstance().save();
             }
         });
-        processCommandLineURIs(strings);
+        processCommandLineURIs(args);
         return this;
     }
 
@@ -232,10 +230,5 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    protected void doStart() throws Exception {
-    }
 
-
-    protected void doStop() throws Exception {
-    }
 }
