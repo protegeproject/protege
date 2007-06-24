@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.view;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
@@ -58,21 +59,21 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
 
     public static final String CATEGORY = "category";
 
-    private Extension extension;
+    private IExtension extension;
 
     private Workspace workspace;
 
     private static final Color DEFAULT_COLOR = Color.LIGHT_GRAY;
 
 
-    public ViewComponentPluginJPFImpl(Workspace workspace, Extension extension) {
+    public ViewComponentPluginJPFImpl(Workspace workspace, IExtension extension) {
         this.extension = extension;
         this.workspace = workspace;
     }
 
 
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 

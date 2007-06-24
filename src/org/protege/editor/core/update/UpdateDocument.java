@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 
+import org.osgi.framework.Version;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -39,7 +41,7 @@ public class UpdateDocument {
             Properties properties = new Properties();
             properties.load(new BufferedInputStream(updateFile.openStream()));
             String versionString = properties.getProperty(VERSION_PROPERTY_NAME);
-            version = Version.parse(versionString);
+            version = new Version(versionString);
             downloadURI = URI.create((String) properties.get(DOWNLOAD_PROPERTY_NAME));
             readmeURI = URI.create((String) properties.get(README_PROPERTY_NAME));
         }

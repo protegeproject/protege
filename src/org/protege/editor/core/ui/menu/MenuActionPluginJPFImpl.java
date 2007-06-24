@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.menu;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
 
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
@@ -66,7 +67,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     private String groupIndex;
 
 
-    public MenuActionPluginJPFImpl(EditorKit editorKit, Extension extension) {
+    public MenuActionPluginJPFImpl(EditorKit editorKit, IExtension extension) {
         super(editorKit, extension);
         parse();
     }

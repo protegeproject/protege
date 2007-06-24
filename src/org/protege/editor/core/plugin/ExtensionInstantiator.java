@@ -67,10 +67,13 @@ public class ExtensionInstantiator<E> {
      * Creates an instance of the plugin
      * @return An instance of type <code>E</code>.  Note that a <code>null</code>
      *         value will be returned if there was a problem creating the instance.
+     * @throws ClassNotFoundException 
+     * @throws IllegalAccessException 
+     * @throws InstantiationException 
      */
     @SuppressWarnings("unchecked")
-    public E instantiate() throws CoreException, ClassCastException {
-        Object o = PluginUtilities.getExtensionObject(extension, PluginProperties.CLASS_PARAM_NAME);
+    public E instantiate() throws ClassCastException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        Object o = PluginUtilities.getInstance().getExtensionObject(extension, PluginProperties.CLASS_PARAM_NAME);
         return (E) o;
     }
 }

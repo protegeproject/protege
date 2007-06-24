@@ -1,6 +1,9 @@
 package org.protege.editor.core.plugin;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 
 
 
@@ -74,23 +77,14 @@ public class PluginExtensionFilter {
      * the specified plugin and match the criteria specified by the
      * <code>PluginExtensionMatcher</code>.
      */
-    public Set<Extension> getExtensions() {
-        Set<Extension> result = new HashSet<Extension>();
-        PluginManager man = PluginUtilities.getInstance().getPluginManager();
-        try {
-            ExtensionPoint extPt = man.getRegistry().getExtensionPoint(pluginId, extensionPointId);
-            for (Object o : extPt.getConnectedExtensions()) {
-                Extension ext = (Extension) o;
-                if (extensionMatcher.matches(ext)) {
-                    result.add(ext);
-                }
+    public Set<IExtension> getExtensions() {
+        Set<IExtension> result = new HashSet<IExtension>();
+        IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
+        IExtensionPoint extpt = registry.getExtensionPoint(pluginId, extensionPointId);
+        for (IExtension ext : extpt.getExtensions()) {
+            if (extensionMatcher.matches(ext)) {
+                result.add(ext);
             }
-        }
-        catch (Exception e) {
-            // Catch any exceptions - these will probably be
-            // IllegalArgument exceptions that occur if the
-            // extension point id doesn't exist
-            Logger.getLogger(PluginExtensionFilter.class).error(e);
         }
         return result;
     }

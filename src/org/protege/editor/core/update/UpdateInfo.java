@@ -27,6 +27,10 @@ import java.net.URI;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+import org.protege.editor.core.plugin.PluginUtilities;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -38,7 +42,7 @@ import java.net.URI;
  */
 public class UpdateInfo {
 
-    private PluginDescriptor pluginDescriptor;
+    private Bundle b;
 
     private Version availableVersion;
 
@@ -47,8 +51,8 @@ public class UpdateInfo {
     private URI readmeURI;
 
 
-    public UpdateInfo(PluginDescriptor pluginDescriptor, Version availableVersion, URI downloadURL, URI readmeURI) {
-        this.pluginDescriptor = pluginDescriptor;
+    public UpdateInfo(Bundle b, Version availableVersion, URI downloadURL, URI readmeURI) {
+        this.b = b;
         this.availableVersion = availableVersion;
         this.downloadURL = downloadURL;
         this.readmeURI = readmeURI;
@@ -61,7 +65,7 @@ public class UpdateInfo {
 
 
     public Version getCurrentVersion() {
-        return pluginDescriptor.getVersion();
+        return PluginUtilities.getBundleVersion(b);
     }
 
 
@@ -70,8 +74,8 @@ public class UpdateInfo {
     }
 
 
-    public PluginDescriptor getPluginDescriptor() {
-        return pluginDescriptor;
+    public Bundle getPluginDescriptor() {
+        return b;
     }
 
 

@@ -27,6 +27,8 @@ import java.util.Set;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import org.eclipse.core.runtime.IExtension;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -71,7 +73,7 @@ public abstract class AbstractPluginLoader<E> {
     public Set<E> getPlugins() {
         PluginExtensionFilter filter = new PluginExtensionFilter(pluginId, extensionPointId, getExtensionMatcher());
         Set<E> result = new HashSet<E>();
-        for (Extension ext : filter.getExtensions()) {
+        for (IExtension ext : filter.getExtensions()) {
             result.add(createInstance(ext));
         }
         return result;
@@ -94,5 +96,5 @@ public abstract class AbstractPluginLoader<E> {
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected abstract E createInstance(Extension extension);
+    protected abstract E createInstance(IExtension extension);
 }

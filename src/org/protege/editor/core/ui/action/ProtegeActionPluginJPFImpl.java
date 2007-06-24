@@ -1,8 +1,10 @@
 package org.protege.editor.core.ui.action;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.PluginProperties;
+import org.protege.editor.core.plugin.PluginUtilities;
 
 import javax.swing.*;
 /*
@@ -42,20 +44,20 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
 
     private EditorKit editorKit;
 
-    private Extension extension;
+    private IExtension extension;
 
     private static final String NAME_PARAM = "name";
 
     private static final String TOOL_TIP_PARAM = "toolTip";
 
 
-    protected ProtegeActionPluginJPFImpl(EditorKit editorKit, Extension extension) {
+    protected ProtegeActionPluginJPFImpl(EditorKit editorKit, IExtension extension) {
         this.editorKit = editorKit;
         this.extension = extension;
     }
 
 
-    protected Extension getExtension() {
+    protected IExtension getExtension() {
         return extension;
     }
 
@@ -64,7 +66,7 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
      * Gets the plugin id.
      */
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
@@ -73,7 +75,7 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
      * that will be used for the menu item text etc.
      */
     public String getName() {
-        return PluginProperties.getParameterValue(extension, NAME_PARAM, null);
+        return PluginUtilities.getAttribute(extension, NAME_PARAM);
     }
 
 
@@ -84,7 +86,7 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
      *         plugin shouldn't have any tooltip text.
      */
     public String getToolTipText() {
-        return PluginProperties.getParameterValue(extension, TOOL_TIP_PARAM, null);
+        return PluginUtilities.getAttribute(extension, TOOL_TIP_PARAM);
     }
 
 

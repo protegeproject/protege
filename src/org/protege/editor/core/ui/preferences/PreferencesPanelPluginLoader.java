@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.preferences;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
@@ -54,7 +55,7 @@ public class PreferencesPanelPluginLoader extends AbstractApplicationPluginLoade
     }
 
 
-    protected PreferencesPanelPlugin createInstance(Extension extension) {
+    protected PreferencesPanelPlugin createInstance(IExtension extension) {
         return new PreferencesPanelPluginJPFImpl(extension, editorKit);
     }
 }
