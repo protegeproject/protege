@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: owleditor
+Bundle-SymbolicName: org.protege.editor.owl;singleton:=true
+Bundle-Category: protege
+Bundle-Description: A Bundle for Starting the OWL Editor
+Bundle-Vendor: Protege Development Team
+Bundle-ClassPath: lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar,.
+Import-Package: org.osgi.framework,
+ edu.unika.aifb.rdf.api.syntax,
+ edu.unika.aifb.rdf.api.util,
+ org.coode.obo.parser,
+ org.coode.owl.functionalparser,
+ org.coode.owl.functionalrenderer,
+ org.coode.owl.krssparser,
+ org.coode.owl.owlxmlparser,
+ org.coode.owl.rdf.model,
+ org.coode.owl.rdf.rdfxml,
+ org.coode.owl.rdfxml.parser,
+ org.coode.owlapi.examples,
+ org.coode.owlapi.owlxml.renderer,
+ org.coode.xml,
+ org.semanticweb.owl.apibinding,
+ org.semanticweb.owl.debugging,
+ org.semanticweb.owl.inference,
+ org.semanticweb.owl.io,
+ org.semanticweb.owl.model,
+ org.semanticweb.owl.util,
+ org.semanticweb.owl.vocab,
+ uk.ac.manchester.cs.owl,
+ uk.ac.manchester.cs.owl.inference.dig11
+Bundle-Version: 4.0.0
+ 
