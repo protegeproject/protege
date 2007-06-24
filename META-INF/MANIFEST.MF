@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: editor.core
+Bundle-SymbolicName: org.protege.editor.core.application;singleton:=true
+Bundle-Category: protege
+Bundle-Description: Generic Ontology Editor Bundle
+Bundle-Vendor: Protege Development Team
+Bundle-Activator: org.protege.editor.owl.ProtegeApplication
+Bundle-ClassPath: lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar,.
+Import-Package: org.osgi.framework,org.eclipse.equinox.registry
+Bundle-Version: 4.0.0
+Require-Bundle: org.eclipse.equinox.registry
+ 
