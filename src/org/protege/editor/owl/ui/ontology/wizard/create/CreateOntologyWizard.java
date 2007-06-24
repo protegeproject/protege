@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
+import java.awt.Frame;
+import java.net.URI;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
-
-import java.awt.*;
-import java.net.URI;
 
 /**
  * Author: Matthew Horridge<br>

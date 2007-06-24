@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.library;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;

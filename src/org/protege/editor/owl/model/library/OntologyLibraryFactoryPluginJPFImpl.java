@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.library;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 /*
  * Copyright (C) 2007, University of Manchester

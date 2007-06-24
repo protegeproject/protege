@@ -1,5 +1,20 @@
 package org.protege.editor.owl.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
@@ -29,43 +44,39 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.protege.editor.owl.model.util.ListenerManager;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLImportsDeclaration;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.OWLOntologyChangeException;
+import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.OWLOntologyStorageException;
+import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.RemoveAxiom;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**

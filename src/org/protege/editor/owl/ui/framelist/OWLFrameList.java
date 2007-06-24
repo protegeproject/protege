@@ -1,22 +1,62 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.frame.*;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
-import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.semanticweb.owl.model.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.Toolkit;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
+import javax.swing.JWindow;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.frame.OWLFrame;
+import org.protege.editor.owl.ui.frame.OWLFrameListener;
+import org.protege.editor.owl.ui.frame.OWLFrameObject;
+import org.protege.editor.owl.ui.frame.OWLFrameSection;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
+import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
+import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.RemoveAxiom;
 
 /*
  * Copyright (C) 2007, University of Manchester

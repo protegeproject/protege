@@ -1,5 +1,12 @@
 package org.protege.editor.owl.model.description.manchester;
 
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLDescriptionNode;
 import org.protege.editor.owl.model.description.OWLDescriptionNodeParser;
@@ -8,9 +15,6 @@ import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-
-import java.io.StringReader;
-import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>

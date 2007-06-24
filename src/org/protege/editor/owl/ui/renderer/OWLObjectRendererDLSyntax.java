@@ -1,34 +1,56 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLConstant;
+import org.semanticweb.owl.model.OWLDataAllRestriction;
+import org.semanticweb.owl.model.OWLDataCardinalityRestriction;
+import org.semanticweb.owl.model.OWLDataComplementOf;
+import org.semanticweb.owl.model.OWLDataExactCardinalityRestriction;
+import org.semanticweb.owl.model.OWLDataMaxCardinalityRestriction;
+import org.semanticweb.owl.model.OWLDataMinCardinalityRestriction;
+import org.semanticweb.owl.model.OWLDataOneOf;
+import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLDataRange;
+import org.semanticweb.owl.model.OWLDataRangeFacetRestriction;
+import org.semanticweb.owl.model.OWLDataRangeRestriction;
+import org.semanticweb.owl.model.OWLDataSomeRestriction;
+import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLDataValueRestriction;
+import org.semanticweb.owl.model.OWLDataVisitor;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectAllRestriction;
+import org.semanticweb.owl.model.OWLObjectCardinalityRestriction;
+import org.semanticweb.owl.model.OWLObjectComplementOf;
+import org.semanticweb.owl.model.OWLObjectExactCardinalityRestriction;
+import org.semanticweb.owl.model.OWLObjectIntersectionOf;
+import org.semanticweb.owl.model.OWLObjectMaxCardinalityRestriction;
+import org.semanticweb.owl.model.OWLObjectMinCardinalityRestriction;
+import org.semanticweb.owl.model.OWLObjectOneOf;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLObjectSelfRestriction;
+import org.semanticweb.owl.model.OWLObjectSomeRestriction;
+import org.semanticweb.owl.model.OWLObjectUnionOf;
+import org.semanticweb.owl.model.OWLObjectValueRestriction;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.OWLTypedConstant;
+import org.semanticweb.owl.model.OWLUntypedConstant;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
-
-import java.util.*;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**

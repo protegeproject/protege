@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.owl.model.OWLModelManager;
