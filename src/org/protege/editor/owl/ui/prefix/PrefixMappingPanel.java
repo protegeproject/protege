@@ -1,14 +1,18 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

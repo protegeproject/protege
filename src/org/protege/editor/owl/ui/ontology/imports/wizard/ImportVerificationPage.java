@@ -1,10 +1,15 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Author: Matthew Horridge<br>

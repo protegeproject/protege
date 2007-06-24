@@ -1,12 +1,17 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDataProperty;
-
-import javax.swing.*;
-import java.awt.*;
 
 /*
  * Copyright (C) 2007, University of Manchester

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.java.plugin.registry.Extension;
+
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
