@@ -1,6 +1,8 @@
 package org.protege.editor.owl.model.library;
 
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -24,6 +26,7 @@ import org.protege.editor.core.plugin.ExtensionInstantiator;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+import org.protege.editor.core.plugin.PluginUtilities;
 
 
 /**
@@ -36,11 +39,12 @@ import org.protege.editor.core.plugin.ExtensionInstantiator;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OntologyLibraryFactoryPluginJPFImpl implements OntologyLibraryFactoryPlugin {
+    Logger log = Logger.getLogger(OntologyLibraryFactoryPluginJPFImpl.class);
 
-    private Extension extension;
+    private IExtension extension;
 
 
-    public OntologyLibraryFactoryPluginJPFImpl(Extension extension) {
+    public OntologyLibraryFactoryPluginJPFImpl(IExtension extension) {
         this.extension = extension;
     }
 
@@ -51,12 +55,12 @@ public class OntologyLibraryFactoryPluginJPFImpl implements OntologyLibraryFacto
      *         the plugin
      */
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
     public String getDocumentation() {
-        return extension.getDocumentation().getText();
+        return PluginUtilities.getInstance().getDocumentation(extension);
     }
 
 

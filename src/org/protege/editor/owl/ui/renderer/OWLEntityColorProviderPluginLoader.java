@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
@@ -54,7 +55,7 @@ public class OWLEntityColorProviderPluginLoader extends AbstractPluginLoader<OWL
     }
 
 
-    protected OWLEntityColorProviderPlugin createInstance(Extension extension) {
+    protected OWLEntityColorProviderPlugin createInstance(IExtension extension) {
         return new OWLEntityColorProviderPluginJPFImpl(owlModelManager, extension);
     }
 }

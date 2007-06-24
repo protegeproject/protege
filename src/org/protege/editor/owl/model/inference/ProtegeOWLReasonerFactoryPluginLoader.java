@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.inference;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -56,7 +57,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected ProtegeOWLReasonerFactoryPlugin createInstance(Extension extension) {
+    protected ProtegeOWLReasonerFactoryPlugin createInstance(IExtension extension) {
         return new ProtegeOWLReasonerFactoryPluginJPFImpl(owlModelManager, extension);
     }
 
@@ -75,7 +76,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
              * @return <code>true</code> if the <code>Extension</code> matches
              *         or <code>false</code> if the <code>Extension</code> doesn't match.
              */
-            public boolean matches(Extension extension) {
+            public boolean matches(IExtension extension) {
                 return true;
             }
         };

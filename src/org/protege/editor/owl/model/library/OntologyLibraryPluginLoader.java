@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.library;
 
 
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
@@ -62,7 +63,7 @@ public class OntologyLibraryPluginLoader extends AbstractPluginLoader<OntologyLi
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected OntologyLibraryFactoryPlugin createInstance(Extension extension) {
+    protected OntologyLibraryFactoryPlugin createInstance(IExtension extension) {
         return new OntologyLibraryFactoryPluginJPFImpl(extension);
     }
 }
