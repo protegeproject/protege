@@ -55,7 +55,7 @@ public class OWLEntityCreationPanel extends JPanel {
     }
 
 
-    public String getName() {
+    public String getEntityName() {
         return textField.getText();
     }
 
@@ -129,8 +129,8 @@ public class OWLEntityCreationPanel extends JPanel {
 
 
     public URIShortNamePair getUriShortNamePair() {
-        if (getName().trim().length() > 0) {
-            return new URIShortNamePair(getBaseURI(), getName());
+        if (getEntityName().trim().length() > 0) {
+            return new URIShortNamePair(getBaseURI(), getEntityName());
         }
         else {
             return null;
