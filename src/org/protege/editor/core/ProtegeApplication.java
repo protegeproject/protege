@@ -16,9 +16,18 @@ import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
+import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.UpdateManager;
 
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+
 import javax.swing.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -69,7 +78,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
-
+    
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
@@ -124,17 +133,42 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
 
     private static void loadPreferences() {
         // Just the look and feel
-        String sysLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+        //String sysLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
-        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, sysLookAndFeelClassName);
+        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, ProtegeProperties.PLASTIC_LAF_NAME);
         try {
-            UIManager.setLookAndFeel(lafClsName);
+        	if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
+        		setProtegeDefaultLookAndFeel(lafClsName);
+        	} else {
+        		UIManager.setLookAndFeel(lafClsName);
+        	}
         }
         catch (Exception e) {
             logger.error(e);
         }
     }
 
+    
+    private static void setProtegeDefaultLookAndFeel(String lafName) {		
+		try {
+			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
+
+			PopupFactory.setSharedInstance(new PopupFactory());
+			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+
+			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+			UIManager.setLookAndFeel(lookAndFeel);		
+		} catch (ClassNotFoundException e) {
+			logger.warn("Look and feel not found: " + lafName);
+		} catch (Exception e) {
+			logger.warn(e.toString());
+		}
+	}
 
     private static void setupLogging() {
         BasicConfigurator.configure();
