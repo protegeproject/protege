@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
-<plugin class="org.protege.editor.core.ProtegeApplication" id="org.protege.editor.core.application" version="4.0.57.Core Protege">
+<plugin class="org.protege.editor.core.ProtegeApplication" id="org.protege.editor.core.application" version="4.0.58.Core Protege">
 
     <attributes>
         <attribute id="update-url" value="http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml"/>
@@ -108,16 +108,14 @@ docking system that is present in the core system. -->
 
     <!-- File menu -->
 
-    <extension id="org.protege.editor.core.menu.FileMenu" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.FileMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="File"/>
         <parameter id="toolTip" value="File menu tool tip!"/>
         <parameter id="path" value="/SlotA-A"/>
         <parameter id="editorKitId" value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.new" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.new" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="New..."/>
         <parameter id="toolTip" value="Create a new empty ontology"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.NewAction"/>
@@ -126,8 +124,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="shift N"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.open" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.open" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Open..."/>
         <parameter id="toolTip" value="Open an ontology"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.OpenAction"/>
@@ -136,8 +133,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="O"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.openrecent" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.openrecent" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Open recent"/>
         <parameter id="toolTip" value="Open a recent ontology"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.OpenRecentAction"/>
@@ -146,8 +142,7 @@ docking system that is present in the core system. -->
         <parameter id="dynamic" value="true"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.close" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.close" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Close"/>
         <parameter id="toolTip" value="Close the current set of ontologies"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.CloseAction"/>
@@ -156,8 +151,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="W"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.save" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.save" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Save"/>
         <parameter id="toolTip" value="Save"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.SaveAction"/>
@@ -166,8 +160,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.saveas" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.saveas" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Save as..."/>
         <parameter id="toolTip" value="Save as"/>
         <parameter id="class" value="org.protege.editor.core.ui.action.SaveAsAction"/>
@@ -176,8 +169,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="shift S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.preferences" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.preferences" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Preferences..."/>
         <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotE-A"/>
         <parameter id="toolTip" value="Preferences"/>
@@ -192,15 +184,13 @@ docking system that is present in the core system. -->
 
     <!-- Window menu -->
 
-    <extension id="org.protege.editor.core.menu.window" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.window" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Window"/>
         <parameter id="path" value="/SlotW-A"/>
         <parameter id="editorKitId" value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.increasefontsize" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.window.increasefontsize" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Increase font size"/>
         <parameter id="path" value="org.protege.editor.core.menu.window/SlotD-A"/>
         <parameter id="toolTip" value="Increase the font size"/>
@@ -209,8 +199,7 @@ docking system that is present in the core system. -->
         <parameter id="accelerator" value="EQUALS"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.decreasefontsize" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.window.decreasefontsize" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Decrease font size"/>
         <parameter id="path" value="org.protege.editor.core.menu.window/SlotD-B"/>
         <parameter id="toolTip" value="Decrease the font size"/>
@@ -237,8 +226,7 @@ docking system that is present in the core system. -->
 
     <!-- Help menu -->
 
-    <extension id="org.protege.editor.core.menu.HelpMenu" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.HelpMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Help"/>
         <parameter id="toolTip" value="Help menu"/>
         <parameter id="class" value="org.protege.editor.core.ui.menu.NullMenuAction"/>
@@ -246,8 +234,7 @@ docking system that is present in the core system. -->
         <parameter id="editorKitId" value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.AboutMenuItem" plugin-id="org.protege.editor.core.application"
-               point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.AboutMenuItem" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="About..."/>
         <parameter id="toolTip" value="About menu!"/>
         <parameter id="class" value="org.protege.editor.core.ui.about.AboutProtegeAction"/>
