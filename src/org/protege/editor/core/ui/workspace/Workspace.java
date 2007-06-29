@@ -2,14 +2,23 @@ package org.protege.editor.core.ui.workspace;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.view.*;
+
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
@@ -61,7 +70,7 @@ public abstract class Workspace extends JComponent {
     public static final String WINDOW_MENU_NAME = "Window";
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
-
+            	
     private EditorKit editorKit;
 
     private WorkspaceViewManager viewManager;
@@ -142,21 +151,74 @@ public abstract class Workspace extends JComponent {
     private void installLookAndFeelMenu(JMenu windowMenu) {
         windowMenu.addSeparator();
         JMenu menu = new JMenu("Look & Feel");
+        ButtonGroup lafMenuItemGroup = new ButtonGroup();
+        
         windowMenu.add(menu);
+        
+        Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
+        String lafName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
+        
+        JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
+			public void actionPerformed(ActionEvent arg0) {
+				setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
+			}        	
+        });
+        lafMenuItemGroup.add(protegeDefaultMenuItem);
+        protegeDefaultMenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_LAF_NAME));
+        menu.add(protegeDefaultMenuItem);    
+        
         for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            menu.add(new AbstractAction(info.getName()) {
-                public void actionPerformed(ActionEvent e) {
-                    setLookAndFeel(info.getClassName());
-                }
-            });
+        	final String className = info.getClassName();
+        	JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem( 
+        			new AbstractAction(info.getName()) {
+        				public void actionPerformed(ActionEvent e) {
+        					setLookAndFeel(className);
+        				}
+        	});
+        	lafMenuItemGroup.add(menuItem);
+        	menuItem.setSelected(lafName.equals(className));
+        	menu.add(menuItem);
         }
-        menu.add(new AbstractAction("Plastic 3D") {
+        
+        JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
             public void actionPerformed(ActionEvent e) {
-                setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+                setLookAndFeel(ProtegeProperties.PLASTIC_3D_LAF);
             }
         });
+        lafMenuItemGroup.add(plastic3DmenuItem);
+        plastic3DmenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_3D_LAF));        
+        menu.add(plastic3DmenuItem);
     }
 
+    
+    private void setProtegeDefaultLookAndFeel(String lafName) {		 
+		try {
+			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
+
+			PopupFactory.setSharedInstance(new PopupFactory());
+			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+
+			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+			UIManager.setLookAndFeel(lookAndFeel);
+			
+			//copied from below
+            SwingUtilities.updateComponentTreeUI(Workspace.this);
+            
+            Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
+            p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
+			
+		} catch (ClassNotFoundException e) {
+			logger.warn("Look and feel not found: " + lafName);
+		} catch (Exception e) {
+			logger.warn(e.toString());
+		}
+	}
+    
 
     private void setLookAndFeel(String clsName) {
         try {
