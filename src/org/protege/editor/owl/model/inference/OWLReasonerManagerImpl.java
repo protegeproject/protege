@@ -112,6 +112,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
             // all ontologies.
             currentReasoner.clearOntologies();
             reload = true;
+            if (currentReasoner.isClassified()) {
+                classifyAsynchronously();
+            }
         }
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);
