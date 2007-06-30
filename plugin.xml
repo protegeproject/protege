@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
-<plugin id="org.protege.editor.owl" version="2.0.2.Protege-OWL Editor">
+<plugin id="org.protege.editor.owl" version="2.0.3.Protege-OWL Editor">
 
     <!-- requires the core protege application plug-in -->
     <requires>
