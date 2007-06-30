@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
-<plugin class="org.protege.editor.core.ProtegeApplication" id="org.protege.editor.core.application" version="4.0.60.Core Protege">
+<plugin class="org.protege.editor.core.ProtegeApplication" id="org.protege.editor.core.application" version="4.0.21.Core Protege">
 
     <attributes>
         <attribute id="update-url" value="http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml"/>
