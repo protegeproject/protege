@@ -27,7 +27,7 @@ public class UpdateManager {
     private static final Logger logger = Logger.getLogger(UpdateManager.class);
 
     public static final String PREFERENCES_KEY = "CheckForUpdates";
-    public static final String UPDATE_URL = "update-url";
+    public static final String UPDATE_URL = "Update-Url";
 
 
     private UpdateManager() {
