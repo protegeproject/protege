@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.protege.editor.core.application">
+  <annotation>
+    <appInfo>
+      <meta.schema plugin="org.protege.editor.core.application" 
+                   id="WorkspaceTab" name="WorkspaceTab"/>
+    </appInfo>
+  </annotation>
+
+  <element name="extension">
+    <complexType>
+      <sequence>
+        <element ref="label"/>
+        <element ref="icon" minOccurs="0" maxOccurs="1"/>
+        <element ref="class"/>
+        <element ref="index"/>
+        <element ref="editorKitId"/>
+        <element ref="defaultViewConfigFileName" minOccurs="0" maxOccurs="1"/>
+      </sequence>
+      <attribute name="point" type="string" use="required"/>
+      <attribute name="id" type="string"/>
+      <attribute name="name" type="string"/>
+    </complexType>
+  </element>
+
+  <element name="label">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="icon">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="class">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="index">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="editorKitId">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="defaultViewConfigFileName">
+    <complexType>
+      <attribute name="value" type="string" use="required"/>
+    </complexType>
+  </element>
+
+</schema>

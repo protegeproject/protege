@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.protege.editor.core.application">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.protege.editor.core.application" id="ViewComponent" name="ViewComponent"/>
+      </appInfo>
+      <documentation>
+         View components provide views within editor kits.  The
+user is able to configure view tabs using these views and the
+docking system that is present in the core system
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="label"/>
+            <element ref="class"/>
+            <element ref="headerColor" minOccurs="0" maxOccurs="1"/>
+            <element ref="userCreatable" minOccurs="0" maxOccurs="1"/>
+            <element ref="category"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="label">
+      <annotation>
+         <documentation>
+            The label that will appear in the view menu etc.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="class">
+      <annotation>
+         <documentation>
+            The class that should be instantiated to create the view.
+        This should extend the ViewComponent class
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="headerColor">
+      <annotation>
+         <documentation>
+            The colour of the view header
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="userCreatable">
+      <annotation>
+         <documentation>
+            Whether or not the view is user creatable.  By default,
+        the view is user createable.  Setting this parameter value to
+        &quot;false&quot; prevents the user creating a new view
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="category">
+      <annotation>
+         <documentation>
+            Gets the view categorisations, for example &quot;class&quot;,
+&quot;property&quot;, &quot;visualisation&quot;.  Developers should attempt to
+fit in with existing categorisations before inventing their
+own.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+</schema>
