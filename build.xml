@@ -37,7 +37,8 @@
         <!-- ===================================================================================== -->
         <target name = "jar" 
                 depends = "compile">
-          <jar destfile = "${distribution.jarfile}">
+          <jar destfile = "${distribution.jarfile}"
+               manifest = "${core.dir}/META-INF/MANIFEST.MF">
             <fileset dir = "${core.dir}">
               <patternset excludes = "src/**">
                 <exclude name = "build.xml"/>
