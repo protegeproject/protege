@@ -43,7 +43,8 @@
         <accelerator value="shift N"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.open" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.open" 
+    		   point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open..."/>
         <toolTip value="Open an ontology"/>
         <class value="org.protege.editor.core.ui.action.OpenAction"/>
@@ -52,7 +53,8 @@
         <accelerator value="O"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.openrecent" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.openrecent" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open recent"/>
         <toolTip value="Open a recent ontology"/>
         <class value="org.protege.editor.core.ui.action.OpenRecentAction"/>
@@ -61,7 +63,8 @@
         <dynamic value="true"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.close" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.file.close" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Close"/>
         <toolTip value="Close the current set of ontologies"/>
         <class value="org.protege.editor.core.ui.action.CloseAction"/>
