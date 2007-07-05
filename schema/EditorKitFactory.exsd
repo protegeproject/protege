@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.protege.editor.core.application">
-<annotation>
+  <annotation>
       <appInfo>
          <meta.schema plugin="org.protege.editor.core.application" id="EditorKitFactory" name="EditorKitFactory"/>
       </appInfo>
