@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.view;
 
 import org.apache.log4j.Logger;
 import org.coode.mdock.*;
+import org.protege.editor.core.FileManager;
 import org.protege.editor.core.ui.workspace.Workspace;
 
 import javax.swing.*;
@@ -9,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -130,7 +130,7 @@ public class ViewsPane extends JPanel {
             result.add((View) c);
         }
         if (c instanceof Container) {
-            Component [] components = ((Container) c).getComponents();
+            Component[] components = ((Container) c).getComponents();
             for (Component comp : components) {
                 getViews(comp, result);
             }
@@ -143,16 +143,12 @@ public class ViewsPane extends JPanel {
      * for this tab.
      */
     private File getCustomConfigFile() {
-        try {
-            URL url = memento.getInitialCongigFileURL();
-            if (url != null) {
-                return new File(url.toURI());
-            }
-            else {
-                return null;
-            }
+        String id = memento.getViewPaneId();
+        File viewConfigFolder = FileManager.getViewConfigurationsFolder();
+        if (viewConfigFolder != null) {
+            return new File(viewConfigFolder, id + "-tab-viewconfig.xml");
         }
-        catch (URISyntaxException e) {
+        else {
             return null;
         }
     }
