@@ -4,8 +4,9 @@ Bundle-Name: owleditor
 Bundle-SymbolicName: org.protege.editor.owl;singleton:=true
 Bundle-Category: protege
 Bundle-Description: A Bundle for Starting the OWL Editor
-Bundle-Vendor: Protege Development Team
-Bundle-ClassPath: lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar,.
+Bundle-Vendor: Protege Development Team (First working version written
+ at the University of Manchester by Matthew Horridge)
+Bundle-ClassPath: .
 Import-Package: org.osgi.framework,
  edu.unika.aifb.rdf.api.syntax,
  edu.unika.aifb.rdf.api.util,
@@ -28,6 +29,7 @@ Import-Package: org.osgi.framework,
  org.semanticweb.owl.util,
  org.semanticweb.owl.vocab,
  uk.ac.manchester.cs.owl,
- uk.ac.manchester.cs.owl.inference.dig11
+ uk.ac.manchester.cs.owl.inference.dig11,
+ org.apache.log4j
 Bundle-Version: 4.0.0
  

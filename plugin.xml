@@ -3,27 +3,27 @@
 
 <plugin>
 
-    <extension-point id="inference_reasonerfactory" 
+    <extension-point id="inference.reasonerfactory" 
                      name="Reasoner Factory"
                      schema="schema/ReasonerFactory.exsd"/>
 
-    <extension-point id="ui_renderer_entitycolorprovider"
+    <extension-point id="ui.renderer.entitycolorprovider"
                      name="Entity Color Provider"
                      schema="schema/EntityColorProvider.exsd"/>
 
-    <extension-point id="model_libraryfactory"
+    <extension-point id="model.libraryfactory"
                      name="Library Factory"
                      schema="schema/LibraryFactory.exsd"/>
 
 
-    <extension id="org.protege.editor.owl.FolderLibrary" 
-               point="org.protege.editor.owl.model_libraryfactory">
+    <extension id="FolderLibrary" 
+               point="org.protege.editor.owl.model.libraryfactory">
         <class value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
     </extension>
 
     <!-- An clsdescriptioneditor kit factory that can produce clsdescriptioneditor kits that edit owl ontologies -->
 
-    <extension id="org.protege.editor.owl.OWLEditorKitFactory" 
+    <extension id="OWLEditorKitFactory" 
                point="org.protege.editor.core.application.core.EditorKitFactory">
         <label value="OWL ontology"/>
         <class value="org.protege.editor.owl.OWLEditorKitFactory"/>
@@ -32,7 +32,7 @@
 
     <!-- Renderer prefs -->
 
-    <extension id="org.protege.editor.owl.ui.preferences.renderer" 
+    <extension id="ui.preferences.renderer" 
                point="org.protege.editor.core.application.preferencespanel">
         <label value="Renderer"/>
         <class value="org.protege.editor.owl.ui.renderer.RendererPreferencesPanel"/>
@@ -40,7 +40,7 @@
 
     <!-- Ontology Tab -->
 
-    <extension id="org.protege.editor.owl.OWLOntologyTab"
+    <extension id="OWLOntologyTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Active Ontology"/>
         <class value="org.protege.editor.owl.ui.ontology.OWLOntologyTab"/>
@@ -50,7 +50,7 @@
     </extension>
 
     <!-- Entities Tab -->
-    <extension id="org.protege.editor.owl.OWLEntitesTab"
+    <extension id="OWLEntitesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Entities"/>
         <class value="org.protege.editor.owl.ui.OWLEntitiesTab"/>
@@ -60,7 +60,7 @@
     </extension>
     <!-- Classes Tab -->
 
-    <extension id="org.protege.editor.owl.OWLClassesTab"
+    <extension id="OWLClassesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Classes"/>
         <class value="org.protege.editor.owl.ui.OWLClassesTab"/>
@@ -71,7 +71,7 @@
 
     <!-- Object Properties Tab -->
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertiesTab"
+    <extension id="OWLObjectPropertiesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Object Properties"/>
         <class value="org.protege.editor.owl.ui.OWLObjectPropertiesTab"/>
@@ -82,7 +82,7 @@
 
     <!-- Data properties tab -->
 
-    <extension id="org.protege.editor.owl.OWLDataPropertiesTab"
+    <extension id="OWLDataPropertiesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Data Properties"/>
         <class value="org.protege.editor.owl.ui.OWLDataPropertiesTab"/>
@@ -93,7 +93,7 @@
 
     <!-- Individuals view -->
 
-    <extension id="org.protege.editor.owl.OWLIndividualsTab"
+    <extension id="OWLIndividualsTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Individuals"/>
         <class value="org.protege.editor.owl.ui.OWLIndividualsTab"/>
@@ -104,7 +104,7 @@
 
     <!-- Annotation properties tab
 
-    <extension id="org.protege.editor.owl.OWLAnnotationPropertiesTab"
+    <extension id="OWLAnnotationPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab" >  
         <label value="Annotation Properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
@@ -117,7 +117,7 @@
 
     <!-- Views -->
 
-    <extension id="org.protege.editor.owl.OWLOntologyAnnotationsView"
+    <extension id="OWLOntologyAnnotationsView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Ontology Annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLOntologyAnnotationViewComponent"/>
@@ -125,7 +125,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLOntologyMetricsView"
+    <extension id="OWLOntologyMetricsView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Ontology Metrics"/>
         <class value="org.protege.editor.owl.ui.metrics.MetricsViewComponent"/>
@@ -133,7 +133,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.DLMetricsView"
+    <extension id="DLMetricsView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="DL Metrics"/>
         <class value="org.protege.editor.owl.ui.metrics.DLMetricsViewComponent"/>
@@ -141,7 +141,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLOntologyImportsTable"
+    <extension id="OWLOntologyImportsTable"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Imported Ontologies"/>
         <class value="org.protege.editor.owl.ui.view.OWLImportsDeclarationsViewComponent"/>
@@ -149,7 +149,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.GeneralClassAxioms"
+    <extension id="GeneralClassAxioms"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="General Class Axioms"/>
         <class value="org.protege.editor.owl.ui.view.OWLGeneralAxiomsViewComponent"/>
@@ -158,7 +158,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLAssertedClassHierarchy"
+    <extension id="OWLAssertedClassHierarchy"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Asserted Class Hierarchy"/>
         <class value="org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent"/>
@@ -167,7 +167,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLAssertedSuperClassHierarchy"
+         id="OWLAssertedSuperClassHierarchy"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Asserted Superclass Hierarchy"/>
         <class value="org.protege.editor.owl.ui.clshierarchy.ToldSuperClassHierarchyViewComponent"/>
@@ -176,7 +176,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLInferredSuperClassHierarchy"
+ id="OWLInferredSuperClassHierarchy"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Inferred Superclass Hierarchy"/>
         <class value="org.protege.editor.owl.ui.clshierarchy.InferredSuperClassHierarchyViewComponent"/>
@@ -185,7 +185,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLIndividualsByClass"
+    <extension id="OWLIndividualsByClass"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Individuals By Class"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualsByClassViewComponent"/>
@@ -193,7 +193,7 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLClassAnnotations"
+    <extension id="OWLClassAnnotations"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Class Annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLClassAnnotationsViewComponent"/>
@@ -202,7 +202,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLClassDescription"
+    <extension id="OWLClassDescription"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Class Description"/>
         <class value="org.protege.editor.owl.ui.view.OWLClassDescriptionViewComponent"/>
@@ -210,7 +210,7 @@
         <category value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyTree"
+    <extension id="OWLObjectPropertyTree"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Object Properties"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent"/>
@@ -218,7 +218,7 @@
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyTree"
+    <extension id="OWLDataPropertyTree"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Data Properties"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent"/>
@@ -227,7 +227,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLObjectPropertyAnnotations"
+ id="OWLObjectPropertyAnnotations"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyAnnotationsViewComponent"/>
@@ -236,7 +236,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLObjectPropertyDescription"
+ id="OWLObjectPropertyDescription"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyDescriptionViewComponent"/>
@@ -246,7 +246,7 @@
 
 
     <extension
- id="org.protege.editor.owl.OWLObjectPropertyDomainsAndRanges"
+ id="OWLObjectPropertyDomainsAndRanges"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Domains and ranges"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyDomainsAndRangesViewComponent"/>
@@ -254,7 +254,7 @@
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyDescription"
+    <extension id="OWLDataPropertyDescription"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyDescriptionViewComponent"/>
@@ -263,7 +263,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLObjectPropertyCharacteristics"
+ id="OWLObjectPropertyCharacteristics"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Characteristics"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyCharacteristicsViewComponent"/>
@@ -271,7 +271,7 @@
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyAnnotations"
+    <extension id="OWLDataPropertyAnnotations"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Data Property Annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyAnnotationsViewComponent"/>
@@ -279,7 +279,7 @@
         <category value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyDomainsAndRanges"
+    <extension id="OWLDataPropertyDomainsAndRanges"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Domains and ranges"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyDomainsAndRangesViewComponent"/>
@@ -288,7 +288,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.OWLDataPropertyCharacteristics"
+ id="OWLDataPropertyCharacteristics"
          point="org.protege.editor.core.application.ViewComponent">
         <label value="Data Property characteristics"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyCharacteristicsViewComponent"/>
@@ -297,7 +297,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLIndividualsList"
+    <extension id="OWLIndividualsList"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Individuals"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualListViewComponent"/>
@@ -307,7 +307,7 @@
 
 
     <!--
-    <extension id="org.protege.editor.owl.OWLClassInstancesList"
+    <extension id="OWLClassInstancesList"
                point="org.protege.editor.core.application.ViewComponent" >
         <label value="Class Instances"/>
         <class value="org.protege.editor.owl.ui.individuals.clsinstance.OWLClassInstancesViewComponent"/>
@@ -316,7 +316,7 @@
     </extension>
     -->
 
-    <extension id="org.protege.editor.owl.OWLIndividualAnnotations"
+    <extension id="OWLIndividualAnnotations"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Individual Annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualAnnotationsViewComponent"/>
@@ -324,7 +324,7 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualTypes"
+    <extension id="OWLIndividualTypes"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualDescriptionViewComponent"/>
@@ -332,7 +332,7 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualRelationships"
+    <extension id="OWLIndividualRelationships"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Property assertions"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualPropertyAssertionsViewComponent"/>
@@ -343,7 +343,7 @@
 
     <!-- Renderer views -->
 
-    <extension id="org.protege.editor.owl.RDFXML"
+    <extension id="RDFXML"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="RDF/XML Rendering"/>
         <class value="org.protege.editor.owl.ui.view.RDFXMLRenderingViewComponent"/>
@@ -351,7 +351,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLXML"
+    <extension id="OWLXML"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="OWL/XML Rendering"/>
         <class value="org.protege.editor.owl.ui.view.OWLXMLRenderingViewComponent"/>
@@ -359,7 +359,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLFunctionalSyntax"
+    <extension id="OWLFunctionalSyntax"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="OWL Functional Syntax Rendering"/>
         <class value="org.protege.editor.owl.ui.view.OWLFunctionalSyntaxRenderingViewComponent"/>
@@ -379,7 +379,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.openfromURI"
+    <extension id="openfromURI"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open from URI..."/>
         <class value="org.protege.editor.owl.ui.action.OpenFromURIAction"/>
@@ -398,7 +398,7 @@
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.change.undo"
+    <extension id="change.undo"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Undo"/>
         <class value="org.protege.editor.owl.ui.action.UndoAction"/>
@@ -408,7 +408,7 @@
         <accelerator value="Z"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.gatherontologies"
+    <extension id="gatherontologies"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Gather ontologies..."/>
         <class value="org.protege.editor.owl.ui.action.GatherOntologiesAction"/>
@@ -419,7 +419,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.change.redo"
+    <extension id="change.redo"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Redo"/>
         <class value="org.protege.editor.owl.ui.action.RedoAction"/>
@@ -430,7 +430,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.find"
+    <extension id="find"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Find in view..."/>
         <class value="org.protege.editor.owl.ui.action.FindAction"/>
@@ -441,7 +441,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.cut"
+    <extension id="cut"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Cut"/>
         <class value="org.protege.editor.owl.ui.action.CutAction"/>
@@ -452,7 +452,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.copy"
+    <extension id="copy"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Copy"/>
         <class value="org.protege.editor.owl.ui.action.CopyAction"/>
@@ -463,7 +463,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.paste"
+    <extension id="paste"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Paste"/>
         <class value="org.protege.editor.owl.ui.action.PasteAction"/>
@@ -476,7 +476,7 @@
 
     <!-- Create actions -->
 
-    <extension id="org.protege.editor.owl.createnew"
+    <extension id="createnew"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create new"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewObjectAction"/>
@@ -487,7 +487,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.createnewchild"
+    <extension id="createnewchild"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create child"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewChildAction"/>
@@ -497,7 +497,7 @@
         <accelerator value="BACK_SLASH"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.createnewsibling"
+    <extension id="createnewsibling"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create sibling"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewSiblingAction"/>
@@ -508,7 +508,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.edit.duplicate"
+    <extension id="edit.duplicate"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Duplicate selected class"/>
         <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
@@ -518,7 +518,7 @@
         <accelerator value="shift C"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.ConvertToPrimitveClass"
+    <extension id="menu.ConvertToPrimitveClass"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Convert to primitive class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToPrimitiveClassAction"/>
@@ -529,7 +529,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.menu.ConvertToDefinedClass"
+    <extension id="menu.ConvertToDefinedClass"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Convert to defined class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToDefinedClassAction"/>
@@ -539,7 +539,7 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.AddCoveringAxiom"
+    <extension id="menu.AddCoveringAxiom"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Add covering axiom"/>
         <class value="org.protege.editor.owl.ui.action.AddCoveringAxiomAction"/>
@@ -549,7 +549,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.menu.MakeAllIndividualsDistinct"
+ id="menu.MakeAllIndividualsDistinct"
          point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make all individuals distinct..."/>
         <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
@@ -561,7 +561,7 @@
     <!--
     <extension
          point="org.protege.editor.core.application.EditorKitMenuAction"
-               id="org.protege.editor.owl.menu.RemoveAllDisjointAxioms">
+               id="menu.RemoveAllDisjointAxioms">
         <name value="Remove all disjoint axioms..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint axioms in the active ontology."/>
@@ -571,7 +571,7 @@
     -->
 
     <extension
- id="org.protege.editor.owl.menu.MakePrimitiveSiblingsDisjoint"
+ id="menu.MakePrimitiveSiblingsDisjoint"
          point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make primitive siblings disjoint"/>
         <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
@@ -582,7 +582,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.ui.prefix"
+    <extension id="ui.prefix"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Prefixes..."/>
         <class value="org.protege.editor.owl.ui.prefix.ShowPrefixMappingsAction"/>
@@ -595,7 +595,7 @@
 
     <!-- Ontology libraries/locations -->
 
-    <extension id="org.protege.editor.owl.file.showontologylibraries"
+    <extension id="file.showontologylibraries"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Ontology libraries..."/>
         <class value="org.protege.editor.owl.ui.library.ShowOntologyLibrariesAction"/>
@@ -605,7 +605,7 @@
         <accelerator value="L"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.file.ontologylocations"
+    <extension id="file.ontologylocations"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Loaded ontology sources..."/>
         <class value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
@@ -625,7 +625,7 @@
     </extension>
 
     <extension
- id="org.protege.editor.owl.inference.computeinconsistentclasses"
+ id="inference.computeinconsistentclasses"
          point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Classify..."/>
         <class value="org.protege.editor.owl.ui.inference.ClassifyAction"/>
@@ -636,7 +636,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.InferredOWLClassHierarchy"
+    <extension id="InferredOWLClassHierarchy"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Inferred class hierarchy"/>
         <class value="org.protege.editor.owl.ui.clshierarchy.InferredOWLClassHierarchyViewComponent"/>
@@ -646,7 +646,7 @@
 
     <!-- Refactor menu -->
 
-    <extension id="org.protege.editor.owl.menu.Refactor"
+    <extension id="menu.Refactor"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Refactor"/>
         <toolTip value="Refactor the ontology, or the selected class, property or individual"/>
@@ -655,7 +655,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.deleteentity"
+    <extension id="deleteentity"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Delete ..."/>
         <class value="org.protege.editor.owl.ui.action.DeleteAction"/>
@@ -665,7 +665,7 @@
         <accelerator value="DELETE"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.RenameEntity"
+    <extension id="menu.RenameEntity"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Rename..."/>
         <class value="org.protege.editor.owl.ui.action.RenameEntityAction"/>
@@ -675,7 +675,7 @@
         <accelerator value="U"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.ChangeOntologyURI"
+    <extension id="menu.ChangeOntologyURI"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Change ontology URI..."/>
         <class value="org.protege.editor.owl.ui.action.ChangeOntologyURI"/>
@@ -685,7 +685,7 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.menu.MergeOntologies"
+    <extension id="menu.MergeOntologies"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Merge ontologies..."/>
         <class value="org.protege.editor.owl.ui.action.MergeOntologiesAction"/>
@@ -696,7 +696,7 @@
 
     <!--<extension
          point="org.protege.editor.core.application.EditorKitMenuAction"-->
-    <!--id="org.protege.editor.owl.menu.RemoveRedundantImports">-->
+    <!--id="menu.RemoveRedundantImports">-->
     <!--<name value="Remove redundant imports"/>-->
     <!--<class value="org.protege.editor.owl.ui.action.RemoveRedundantImportsAction"/>-->
     <!--<toolTip value="Analyses the imports graph and removes imports that aren't necessary."/>-->
@@ -708,14 +708,14 @@
 
     <!-- Tools menu -->
 
-    <extension id="org.protege.editor.owl.menu.tools"
+    <extension id="menu.tools"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Tools"/>
         <path value="/SlotG-A"/>
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.file.usage"
+    <extension id="file.usage"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Usage..."/>
         <class value="org.protege.editor.owl.ui.action.ShowUsageAction"/>
@@ -727,7 +727,7 @@
     <!-- Species validation -->
 
     <!--
-    <extension id="org.protege.editor.owl.SpeciesValidationReport"
+    <extension id="SpeciesValidationReport"
                point="org.protege.editor.core.application.ViewComponent"> 
         <label value="Species validation results"/>
         <class value="org.protege.editor.owl.ui.ontology.validation.SpeciesValidationViewComponent"/>
@@ -737,7 +737,7 @@
 
 
     <!-- Hierarchy creation -->
-    <extension id="org.protege.editor.owl.menu.CreateClassHierarchy"
+    <extension id="menu.CreateClassHierarchy"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create class hierarchy..."/>
         <class value="org.protege.editor.owl.ui.action.CreateClassHierarchyAction"/>
@@ -749,7 +749,7 @@
 
     <!-- Usage Views -->
 
-    <extension id="org.protege.editor.owl.OWLClassUsageView"
+    <extension id="OWLClassUsageView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Class Usage"/>
         <class value="org.protege.editor.owl.ui.view.OWLClassUsageViewComponent"/>
@@ -757,7 +757,7 @@
         <category value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyUsageView"
+    <extension id="OWLObjectPropertyUsageView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Object Property Usage"/>
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyUsageViewComponent"/>
@@ -765,7 +765,7 @@
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyUsageView"
+    <extension id="OWLDataPropertyUsageView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Data Property Usage"/>
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyUsageViewComponent"/>
@@ -773,7 +773,7 @@
         <category value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualUsageView"
+    <extension id="OWLIndividualUsageView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Individual Usage"/>
         <class value="org.protege.editor.owl.ui.view.OWLIndividualUsageViewComponent"/>
@@ -784,7 +784,7 @@
 
     <!--
 
-    <extension id="org.protege.editor.owl.SPARQLQueryTab">
+    <extension id="SPARQLQueryTab">
                point="org.protege.editor.core.application.WorkspaceTab" 
             <label value="SPARQL"/>
             <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
@@ -811,7 +811,7 @@
     <!-- Ontology prefs -->
 
     <extension
-         id="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"
+         id="ui.ontology.OntologyPreferencesPanel"
          point="org.protege.editor.core.application.preferencespanel">
         <label value="New Ontologies"/>
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
@@ -819,7 +819,7 @@
 
     <!-- Finder prefs -->
 
-    <extension id="org.protege.editor.owl.ui.find.prefs"
+    <extension id="ui.find.prefs"
                 point="org.protege.editor.core.application.org.protege.editor.core.preferencespanel">
         <label value="Find/Search"/>
         <class value="org.protege.editor.owl.ui.find.FinderPreferencesPanel"/>
@@ -827,7 +827,7 @@
 
     <!-- Reasoner prefs -->
 
-    <extension id="org.protege.editor.owl.SelectedEntityView"
+    <extension id="SelectedEntityView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Selected entity"/>
         <class value="org.protege.editor.owl.ui.view.SelectedEntityCardView"/>
