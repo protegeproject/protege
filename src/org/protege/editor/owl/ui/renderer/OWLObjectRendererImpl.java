@@ -784,6 +784,113 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     }
 
 
+    public void visit(SWRLRule swrlRule) {
+        for (Iterator<SWRLAtom> it = swrlRule.getBody().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" \u2227 ");
+            }
+        }
+        write(" \u2192 ");
+        for (Iterator<SWRLAtom> it = swrlRule.getHead().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" \u2227 ");
+            }
+        }
+    }
+
+
+    public void visit(SWRLClassAtom swrlClassAtom) {
+        OWLDescription desc = swrlClassAtom.getPredicate();
+        if (desc.isAnonymous()) {
+            write("(");
+        }
+        desc.accept(this);
+        if (desc.isAnonymous()) {
+            write(")");
+        }
+        write("(");
+        swrlClassAtom.getArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLDataRangeAtom swrlDataRangeAtom) {
+        swrlDataRangeAtom.getPredicate().accept(this);
+        write("(");
+        swrlDataRangeAtom.getArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLObjectPropertyAtom swrlObjectPropertyAtom) {
+        swrlObjectPropertyAtom.getPredicate().accept(this);
+        write("(");
+        swrlObjectPropertyAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlObjectPropertyAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLDataValuedPropertyAtom swrlDataValuedPropertyAtom) {
+        swrlDataValuedPropertyAtom.getPredicate().accept(this);
+        write("(");
+        swrlDataValuedPropertyAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlDataValuedPropertyAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLBuiltInAtom swrlBuiltInAtom) {
+        super.visit(swrlBuiltInAtom);
+    }
+
+
+    public void visit(SWRLAtomDVariable swrlAtomDVariable) {
+        write("?");
+        write(swrlAtomDVariable.getURI().getFragment());
+    }
+
+
+    public void visit(SWRLAtomIVariable swrlAtomIVariable) {
+        write("?");
+        write(swrlAtomIVariable.getURI().getFragment());
+    }
+
+
+    public void visit(SWRLAtomIndividualObject swrlAtomIndividualObject) {
+        swrlAtomIndividualObject.getIndividual().accept(this);
+    }
+
+
+    public void visit(SWRLAtomConstantObject swrlAtomConstantObject) {
+        swrlAtomConstantObject.getConstant().accept(this);
+    }
+
+
+    public void visit(SWRLDifferentFromAtom swrlDifferentFromAtom) {
+        swrlDifferentFromAtom.getPredicate().accept(this);
+        write("(");
+        swrlDifferentFromAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlDifferentFromAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLSameAsAtom swrlSameAsAtom) {
+        swrlSameAsAtom.getPredicate().accept(this);
+        write("(");
+        swrlSameAsAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlSameAsAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
     private class BracketWriter extends OWLDescriptionVisitorAdapter implements OWLDataVisitor {
 
         boolean nested = false;
