@@ -1,8 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <project name = "owl" default = "compile" basedir = "..">
 
-	<property name = "distribution.zipfile" value = "${dist.dir}/plugins/org.protege.editor.owl.zip"/>
-	<property name = "distribution.jarfile" value = "${dist.dir}/plugins/org.protege.editor.owl.jar"/>
+	<property name = "distribution.jarfile" value = "${dist.dir}/bundles/org.protege.editor.owl.jar"/>
 	<property name = "lib.dir" value = "${owl.dir}/lib"/>
 	<property name = "icons.dir" value = "${owl.dir}/icons"/>
 	<property name = "resources.dir" value = "${owl.dir}/resources"/>
@@ -12,6 +11,7 @@
 	<!-- Classpath declaration - used in the "compile" target -->
 	<!-- =================================================================== -->
 	<path id = "owl.classpath">    
+                <path refid = "osgi.libs"/>
 		<filelist refid = "common.libs"/>
 		<path refid = "core.libs"/>
 		<fileset refid = "owl.libs"/>
@@ -29,8 +29,12 @@
 	<!-- =================================================================== -->
 	<!-- COMPILE -->
 	<!-- =================================================================== -->
-	<target name = "compile" depends = "init">    
-		<javac srcdir = "${src.dir}" destdir = "${classes.owl}" debug="${debug}" source = "${source}" includeAntRuntime = "${includeAntRuntime}">
+	<target name = "compile" depends = "init"> 
+		<javac srcdir = "${src.dir}" 
+                       destdir = "${classes.owl}" 
+                       debug="${debug}" 
+                       source = "${source}" 
+                       includeAntRuntime = "${includeAntRuntime}">
 			<classpath refid = "owl.classpath"/>
 		</javac>
 	</target>
@@ -39,28 +43,15 @@
 	<!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
 	<!-- ===================================================================================== -->
 	<target name = "jar" depends = "compile">
-		<jar destfile = "${distribution.jarfile}">
-			<fileset dir = "${owl.dir}">
-				<patternset excludes = "artwork/**, src/**, test/**">
-					<exclude name = "build.xml"/>
-				</patternset>
-			</fileset>
-		</jar>
+                <copy todir="${classes.owl}">
+                  <fileset dir="${resources.dir}"/>
+                  <fileset dir="${icons.dir}"/>
+                </copy>
+		<jar basedir = "${classes.owl}"
+                     destfile = "${distribution.jarfile}"
+                     manifest="${owl.dir}/META-INF/MANIFEST.MF"/>
 	</target>
 	
-	<!-- ================================================================================= -->
-	<!-- ZIP -  - create the distribution ZIP file that goes in the JPF "plugins" directory -->
-	<!-- ================================================================================= -->
-	<target name = "zip" depends = "compile">
-		<zip zipfile = "${distribution.zipfile}" update = "no">
-			<zipfileset dir = "${classes.owl}" prefix = "classes"/>
-			<zipfileset dir = "${owl.dir}" includes = "plugin.xml"/>
-			<zipfileset dir = "${icons.dir}" prefix = "icons"/>
-			<zipfileset dir = "${resources.dir}" prefix = "resources"/>
-			<zipfileset dir = "${lib.dir}" prefix = "lib" includes = "**/*.jar"/>
-		</zip>
-	</target>
-
 	<!-- =================================================================== -->
 	<!-- CLEAN -->
 	<!-- =================================================================== -->
