@@ -24,7 +24,7 @@
 
 
    <extension
-         id="org.protege.editor.core.menu.FileMenu"
+         id="menu.FileMenu"
          name="FileMenu"
          point="org.protege.editor.core.application.EditorKitMenuAction">
       <name value="File"/>
@@ -33,7 +33,7 @@
       <editorKitId value="any"/>
    </extension>
 
-    <extension id="org.protege.editor.core.menu.file.new" 
+    <extension id="menu.file.new" 
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="New..."/>
         <toolTip value="Create a new empty ontology"/>
@@ -43,7 +43,7 @@
         <accelerator value="shift N"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.open" 
+    <extension id="menu.file.open" 
     		   point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open..."/>
         <toolTip value="Open an ontology"/>
@@ -53,7 +53,7 @@
         <accelerator value="O"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.openrecent" 
+    <extension id="menu.file.openrecent" 
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open recent"/>
         <toolTip value="Open a recent ontology"/>
@@ -63,7 +63,7 @@
         <dynamic value="true"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.close" 
+    <extension id="menu.file.close" 
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Close"/>
         <toolTip value="Close the current set of ontologies"/>
@@ -73,7 +73,7 @@
         <accelerator value="W"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.save" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.file.save" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Save"/>
         <toolTip value="Save"/>
         <class value="org.protege.editor.core.ui.action.SaveAction"/>
@@ -82,7 +82,7 @@
         <accelerator value="S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.saveas" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.file.saveas" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Save as..."/>
         <toolTip value="Save as"/>
         <class value="org.protege.editor.core.ui.action.SaveAsAction"/>
@@ -91,7 +91,7 @@
         <accelerator value="shift S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.preferences" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.file.preferences" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Preferences..."/>
         <path value="org.protege.editor.core.menu.FileMenu/SlotE-A"/>
         <toolTip value="Preferences"/>
@@ -106,13 +106,13 @@
 
     <!-- Window menu -->
 
-    <extension id="org.protege.editor.core.menu.window" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.window" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Window"/>
         <path value="/SlotW-A"/>
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Increase font size"/>
         <path value="org.protege.editor.core.menu.window/SlotD-A"/>
         <toolTip value="Increase the font size"/>
@@ -121,7 +121,7 @@
         <accelerator value="EQUALS"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Decrease font size"/>
         <path value="org.protege.editor.core.menu.window/SlotD-B"/>
         <toolTip value="Decrease the font size"/>
@@ -132,7 +132,7 @@
 
     <!-- View menu -->
 
-    <extension id="org.protege.editor.core.menu.view" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.view" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="View"/>
         <path value="/SlotK-A"/>
         <editorKitId value="any"/>
@@ -140,7 +140,7 @@
 
     <!-- Tabs menu -->
 
-    <extension id="org.protege.editor.core.menu.tabs" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.tabs" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Tabs"/>
         <path value="/SlotJ-A"/>
         <editorKitId value="any"/>
@@ -148,7 +148,7 @@
 
     <!-- Help menu -->
 
-    <extension id="org.protege.editor.core.menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Help"/>
         <toolTip value="Help menu"/>
         <class value="org.protege.editor.core.ui.menu.NullMenuAction"/>
@@ -156,7 +156,7 @@
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.AboutMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.AboutMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="About..."/>
         <toolTip value="About menu!"/>
         <class value="org.protege.editor.core.ui.about.AboutProtegeAction"/>

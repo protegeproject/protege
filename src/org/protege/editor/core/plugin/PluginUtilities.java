@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.internal.registry.osgi.OSGIUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
@@ -30,7 +29,7 @@ import org.protege.editor.core.ProtegeApplication;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginUtilities {
-    private static final Logger log = Logger.getLogger(PluginUtilities.class);
+    private static final Logger log = Logger.getLogger(PluginUtilities.class.getName());
 
     private static PluginUtilities instance;
 

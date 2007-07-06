@@ -1,8 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <project name = "core" default = "compile" basedir = "..">
 
-        <property name = "distribution.zipfile" value = "${dist.dir}/plugins/org.protege.editor.core.application.zip"/>
-        <property name = "distribution.jarfile" value = "${dist.dir}/plugins/org.protege.editor.core.application.jar"/>
+        <property name = "distribution.jarfile" value = "${dist.dir}/bundles/org.protege.editor.core.application.jar"/>
         <property name = "lib.dir" value = "${core.dir}/lib"/>
         <property name = "resources.dir" value = "${core.dir}/icons"/>
         <property name = "src.dir" value = "${core.dir}/src"/>
@@ -12,6 +11,7 @@
         <!-- =================================================================== -->
         <path id = "core.classpath">    
                 <filelist refid = "common.libs"/>
+                <path refid = "osgi.libs"/>
                 <path refid = "core.libs"/>
         </path>
 
@@ -37,21 +37,24 @@
         <!-- ===================================================================================== -->
         <target name = "jar" 
                 depends = "compile">
-          <jar destfile = "${distribution.jarfile}"
-               manifest = "${core.dir}/META-INF/MANIFEST.MF">
-            <fileset dir = "${core.dir}">
-              <patternset excludes = "src/**">
-                <exclude name = "build.xml"/>
-              </patternset>
-            </fileset>
-          </jar>
+          <copy todir="${classes.core}">
+            <fileset dir="${resources.dir}"/>
+          </copy>
+          <copy file="${core.dir}/plugin.xml" todir="${classes.core}"/>
+          <unjar src="${lib.dir}/mdock.jar"               dest="${classes.core}"/>
+          <unjar src="${lib.dir}/swing-worker.jar"        dest="${classes.core}"/>
+          <unjar src="${common.dir}/log4j.jar"            dest="${classes.core}"/>
+          <unjar src="${common.dir}/commons-logging.jar"  dest="${classes.core}"/>
+          <unjar src="${common.dir}/looks.jar"            dest="${classes.core}"/>
+          <jar basedir = "${classes.core}"
+               destfile = "${distribution.jarfile}"
+               manifest = "${core.dir}/META-INF/MANIFEST.MF"/>
         </target>
 
         <!-- =================================================================== -->
         <!-- CLEAN -->
         <!-- =================================================================== -->
         <target name = "clean">
-                <delete dir = "${classes.core}"/>
-                <delete file = "${distribution.zipfile}"/>
+            <delete dir = "${classes.core}"/>
         </target>
 </project>
