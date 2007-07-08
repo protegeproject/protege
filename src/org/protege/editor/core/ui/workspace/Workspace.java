@@ -158,7 +158,7 @@ public abstract class Workspace extends JComponent {
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, clsName);
         }
         catch (Exception e1) {
-            logger.error(e1);
+            logger.error("Exception caught setting look and feel ", e1);
         }
     }
 

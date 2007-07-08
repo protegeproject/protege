@@ -29,6 +29,7 @@ import org.coode.mdock.NodeSerialiser;
 import org.coode.mdock.SplitterNode;
 import org.coode.mdock.Util;
 import org.coode.mdock.VerticalSplitterNode;
+import org.protege.editor.core.FileManager;
 import org.protege.editor.core.ui.workspace.Workspace;
 
 
@@ -92,7 +93,7 @@ public class ViewsPane extends JPanel {
             }
         }
         else {
-            // There isn't event a default xml config file.  We don't want the system
+            // There isn't even a default xml config file.  We don't want the system
             // to keel over, so just create a blank panel (the user can drag views on
             // to it as they wish).
             VerticalSplitterNode node = new VerticalSplitterNode(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
@@ -137,16 +138,11 @@ public class ViewsPane extends JPanel {
      * for this tab.
      */
     private File getCustomConfigFile() {
-        try {
-            URL url = memento.getInitialCongigFileURL();
-            if (url != null) {
-                return new File(url.toURI());
-            }
-            else {
-                return null;
-            }
+        URL url = memento.getInitialCongigFileURL();
+        if (url != null) {
+            return new File(FileManager.getViewConfigurationsFolder(), url.getFile());
         }
-        catch (URISyntaxException e) {
+        else {
             return null;
         }
     }

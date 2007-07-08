@@ -102,8 +102,8 @@ public class ProtegeWelcomeFrame extends JFrame {
                                 dispose();
                             }
                         }
-                        catch (Exception e1) {
-                            logger.error(e1);
+                        catch (Throwable e1) {
+                            logger.error("Exception caught initializing editor", e1);
                         }
                     }
                 }));
@@ -117,8 +117,8 @@ public class ProtegeWelcomeFrame extends JFrame {
                                 dispose();
                             }
                         }
-                        catch (Exception e1) {
-                            logger.error(e1);
+                        catch (Throwable e1) {
+                            logger.error("Exception caught initializing error", e1);
                         }
                     }
                 }));

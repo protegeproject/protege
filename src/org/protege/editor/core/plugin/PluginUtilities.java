@@ -58,8 +58,9 @@ public class PluginUtilities {
     }
 
     public void dispose() {
-        registryServiceTracker.close();
-        packageServiceTracker.close();
+        if (registryServiceTracker != null) registryServiceTracker.close();
+        if (packageServiceTracker != null)  packageServiceTracker.close();
+        instance = null;
     }
     
     public BundleContext getApplicationContext() {
@@ -119,7 +120,7 @@ public class PluginUtilities {
     public static Map<String, String> getAttributes(IExtension ext) {
         Map<String, String> attributes = new HashMap<String, String>();
         for (IConfigurationElement config : ext.getConfigurationElements()) {
-            String id = config.getAttribute(PluginProperties.PLUGIN_XML_ID);
+            String id = config.getName();
             String value = config.getAttribute(PluginProperties.PLUGIN_XML_VALUE);
             attributes.put(id, value);
         }

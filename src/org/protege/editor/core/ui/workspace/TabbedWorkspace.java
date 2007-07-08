@@ -86,7 +86,7 @@ public abstract class TabbedWorkspace extends Workspace {
                 tab = plugin.newInstance();
                 addTab(tab);
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 if (tab != null) {
                     String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
                     tab.setLayout(new BorderLayout());
@@ -106,7 +106,7 @@ public abstract class TabbedWorkspace extends Workspace {
             man.save();
         }
         catch (Exception e) {
-            Logger.getLogger(getClass()).error(e);
+            Logger.getLogger(getClass()).error("Exception caught doing save", e);
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class TabbedWorkspace extends Workspace {
                         }
                     }
                     catch (Exception ex) {
-                        logger.error(ex);
+                        logger.error("Exception caught (re) building tab menu", ex);
                     }
                 }
             });

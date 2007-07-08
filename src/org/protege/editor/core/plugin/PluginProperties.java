@@ -44,8 +44,6 @@ import java.util.Set;
  */
 public class PluginProperties {
     
-    public static final String PLUGIN_XML_ID = "id";
-    
     public static final String PLUGIN_XML_VALUE = "value";
 
     public static final String PROTEGE_PROPERTY_PREFIX = "@";
@@ -94,7 +92,7 @@ public class PluginProperties {
     public static Set<String> getParameterValues(IExtension ext, String key) {
         Set<String> values = new HashSet<String>();
         for (IConfigurationElement config : ext.getConfigurationElements()) {
-            if (key.equals(config.getAttribute(PLUGIN_XML_ID))) {
+            if (key.equals(config.getName())) {
                 String val = config.getAttribute(PLUGIN_XML_VALUE);
                 if (val == null) continue;
                 if (isProtegeProperty(val)) {

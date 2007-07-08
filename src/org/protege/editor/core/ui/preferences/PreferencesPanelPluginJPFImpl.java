@@ -20,7 +20,7 @@ import org.protege.editor.core.plugin.PluginUtilities;
  */
 public class PreferencesPanelPluginJPFImpl implements PreferencesPanelPlugin {
 
-    public static final String ID = "org.protege.editor.core.preferencespanel";
+    public static final String ID = "preferencespanel";
 
     public static final String LABEL_PARAM = "label";
 

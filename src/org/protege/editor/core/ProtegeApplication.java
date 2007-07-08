@@ -60,12 +60,16 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeApplication.context = context;
         ProtegeApplication application = new ProtegeApplication();
         application.initApplication(new String[0]);
-        application.startApplication();
+        ProtegeManager.getInstance().initialise(this);
     }
 
 
+    /* TODO - this needs work */
     public void stop(BundleContext arg0) throws Exception {
-        throw new UnsupportedOperationException("need to stop threads, etc...");
+        BookMarkedURIManager.getInstance().dispose();
+        RecentEditorKitManager.getInstance().dispose();
+        PluginUtilities.getInstance().dispose();
+        ProtegeManager.getInstance().dispose();
     }
     
     public static BundleContext getContext() {
@@ -202,7 +206,7 @@ public class ProtegeApplication implements BundleActivator {
 //        });
         frame.setVisible(true);
         try {
-            if (!commandLineURIs.isEmpty()) {
+            if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
                 // Open any command line URIs
                 EditorKitFactoryPluginLoader loader = new EditorKitFactoryPluginLoader();
                 List<EditorKitFactory> factories = new ArrayList<EditorKitFactory>();

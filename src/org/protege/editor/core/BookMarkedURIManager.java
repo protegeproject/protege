@@ -34,6 +34,10 @@ public class BookMarkedURIManager {
         }
         return instance;
     }
+    
+    protected void dispose() {
+        instance = null;
+    }
 
 
     public Set<URI> getBookMarkedURIs() {
