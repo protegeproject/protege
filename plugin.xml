@@ -24,7 +24,7 @@
     <!-- An clsdescriptioneditor kit factory that can produce clsdescriptioneditor kits that edit owl ontologies -->
 
     <extension id="OWLEditorKitFactory" 
-               point="org.protege.editor.core.application.core.EditorKitFactory">
+               point="org.protege.editor.core.application.EditorKitFactory">
         <label value="OWL ontology"/>
         <class value="org.protege.editor.owl.OWLEditorKitFactory"/>
     </extension>
@@ -370,40 +370,24 @@
     <!-- Menu items -->
     <!-- File menu -->
 
-    <extension id="org.protege.editor.core.menu.FileMenu"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="File"/>
-        <toolTip value="File menu"/>
-        <path value="/SlotA-A"/>
-        <editorKitId value="any"/>
-    </extension>
-
 
     <extension id="openfromURI"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open from URI..."/>
         <class value="org.protege.editor.owl.ui.action.OpenFromURIAction"/>
         <toolTip value="Open an ontology from a URI"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAA-G"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-G"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift O"/>
     </extension>
 
-
-    <extension id="org.protege.editor.core.menu.EditMenu"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Edit"/>
-        <toolTip value=""/>
-        <path value="/SlotB-A"/>
-        <editorKitId value="any"/>
-    </extension>
 
     <extension id="change.undo"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Undo"/>
         <class value="org.protege.editor.owl.ui.action.UndoAction"/>
         <toolTip value="Undo the last set of changes"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotA-A"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotA-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="Z"/>
     </extension>
@@ -413,7 +397,7 @@
         <name value="Gather ontologies..."/>
         <class value="org.protege.editor.owl.ui.action.GatherOntologiesAction"/>
         <toolTip value="Collects together all loaded ontologies in a particular folder without modifying the originals"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAB-C"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-C"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift G"/>
     </extension>
@@ -424,7 +408,7 @@
         <name value="Redo"/>
         <class value="org.protege.editor.owl.ui.action.RedoAction"/>
         <toolTip value="Redo the last set of changes"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotA-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotA-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift Z"/>
     </extension>
@@ -435,7 +419,7 @@
         <name value="Find in view..."/>
         <class value="org.protege.editor.owl.ui.action.FindAction"/>
         <toolTip value="Find an entity in the focused view"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotD-A"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="F"/>
     </extension>
@@ -446,7 +430,7 @@
         <name value="Cut"/>
         <class value="org.protege.editor.owl.ui.action.CutAction"/>
         <toolTip value="Cut"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotC-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="X"/>
     </extension>
@@ -457,7 +441,7 @@
         <name value="Copy"/>
         <class value="org.protege.editor.owl.ui.action.CopyAction"/>
         <toolTip value="Copy"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotC-C"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-C"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="C"/>
     </extension>
@@ -468,7 +452,7 @@
         <name value="Paste"/>
         <class value="org.protege.editor.owl.ui.action.PasteAction"/>
         <toolTip value="Paste"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotC-D"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-D"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="V"/>
     </extension>
@@ -481,7 +465,7 @@
         <name value="Create new"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewObjectAction"/>
         <toolTip value="Create a new object in the selected view"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotE-A"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="N"/>
     </extension>
@@ -492,7 +476,7 @@
         <name value="Create child"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewChildAction"/>
         <toolTip value="Create a child of the selected object in the selected view"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotE-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="BACK_SLASH"/>
     </extension>
@@ -502,7 +486,7 @@
         <name value="Create sibling"/>
         <class value="org.protege.editor.owl.ui.action.CreateNewSiblingAction"/>
         <toolTip value="Create a sibling of the selected object in the selected view"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotE-C"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-C"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="SLASH"/>
     </extension>
@@ -513,7 +497,7 @@
         <name value="Duplicate selected class"/>
         <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
         <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-A"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift C"/>
     </extension>
@@ -523,7 +507,7 @@
         <name value="Convert to primitive class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToPrimitiveClassAction"/>
         <toolTip value="Converts the equivalent classes of the selected class to superclasses."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-B"/>
         <accelerator value="P"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -534,7 +518,7 @@
         <name value="Convert to defined class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToDefinedClassAction"/>
         <toolTip value="Converts the superclasses of the selected class to an equivalent class."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-C"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-C"/>
         <accelerator value="D"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -544,17 +528,16 @@
         <name value="Add covering axiom"/>
         <class value="org.protege.editor.owl.ui.action.AddCoveringAxiomAction"/>
         <toolTip value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D              then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one              of its subclasses."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-D"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-D"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension
- id="menu.MakeAllIndividualsDistinct"
-         point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension  id="menu.MakeAllIndividualsDistinct"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make all individuals distinct..."/>
         <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
         <toolTip value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-E"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-E"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
@@ -576,7 +559,7 @@
         <name value="Make primitive siblings disjoint"/>
         <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
         <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added             to the current ontology."/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotM-F"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-F"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="J"/>
     </extension>
@@ -587,7 +570,7 @@
         <name value="Prefixes..."/>
         <class value="org.protege.editor.owl.ui.prefix.ShowPrefixMappingsAction"/>
         <toolTip value="View and edit the prefix value mappings"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotQ-A"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotQ-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift P"/>
     </extension>
@@ -600,7 +583,7 @@
         <name value="Ontology libraries..."/>
         <class value="org.protege.editor.owl.ui.library.ShowOntologyLibrariesAction"/>
         <toolTip value="View, add and edit the ontology libraries"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotD-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="L"/>
     </extension>
@@ -610,13 +593,13 @@
         <name value="Loaded ontology sources..."/>
         <class value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
         <toolTip value="Shows the physical URIs from where currently loaded ontologies were obtained from"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotD-B"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <!-- Reasoner menu -->
 
-    <extension id="org.protege.editor.core.menu.Reasoner"
+    <extension id="menu.Reasoner"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Reasoner"/>
         <toolTip value="Invoke and configure reasoners"/>
@@ -630,7 +613,7 @@
         <name value="Classify..."/>
         <class value="org.protege.editor.owl.ui.inference.ClassifyAction"/>
         <toolTip value="Classify ontology and show resutls"/>
-        <path value="org.protege.editor.core.menu.Reasoner/SlotA-A"/>
+        <path value="org.protege.editor.owl.menu.Reasoner/SlotA-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="R"/>
     </extension>
@@ -660,7 +643,7 @@
         <name value="Delete ..."/>
         <class value="org.protege.editor.owl.ui.action.DeleteAction"/>
         <toolTip value="Deletes the selection in the focused view"/>
-        <path value="org.protege.editor.core.menu.EditMenu/SlotC-E"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-E"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="DELETE"/>
     </extension>
@@ -799,7 +782,7 @@
 
 
     <extension id="NoOpReasoner"
-                point="org.protege.editor.owl.inference_reasonerfactory">
+                point="org.protege.editor.owl.inference.reasonerfactory">
         <name value="None"/>
         <class value="org.protege.editor.owl.model.inference.NoOpReasonerFactory"/>
         <defaultReasoner value="true"/>
