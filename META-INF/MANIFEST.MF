@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-Name: commonlibs
+Bundle-SymbolicName: org.protege.common
+Bundle-Version: 1.0.0
+Bundle-Description: Some common libraries
+Bundle-Vendor: Protege Development Team
+Bundle-Category: protege
+Bundle-ClassPath: .
+Import-Package: org.osgi.framework
+Export-Package: org.apache.log4j,
+ com.jgoodies.looks

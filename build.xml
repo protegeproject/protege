@@ -1,0 +1,24 @@
+<?xml version="1.0"?> 
+<project name="common library bundle" default="bundle" basedir="..">
+
+  <property name="src" location="${commonlibs.dir}/src"/>
+	
+  <target name="init"> 
+    <echo message="---------------Building the common libs Bundle-------------"/>
+    <mkdir dir="${commonlibs.classes}"/>
+  </target>
+	
+
+  <target name="bundle" depends="init">
+    <unjar src = "${commonlibs.dir}/lib/commons-logging.jar"
+           dest="${commonlibs.classes}"/>
+    <unjar src = "${commonlibs.dir}/lib/log4j.jar"
+           dest="${commonlibs.classes}"/>
+    <unjar src = "${commonlibs.dir}/lib/looks.jar"
+           dest="${commonlibs.classes}"/>
+    <jar basedir = "${commonlibs.classes}"
+         jarfile  = "${commonlibs.jar}"
+         manifest = "${commonlibs.dir}/META-INF/MANIFEST.MF"/>
+  </target> 
+
+</project>
