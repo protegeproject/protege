@@ -4,6 +4,7 @@ package org.protege.editor.owl.model.inference;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
+import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -44,7 +45,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
 
 
     public ProtegeOWLReasonerFactoryPluginLoader(OWLModelManager owlModelManager) {
-        super("org.protege.editor.owl", ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
+        super(ProtegeOWL.ID, ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
         this.owlModelManager = owlModelManager;
     }
 

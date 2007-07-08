@@ -13,7 +13,7 @@ import java.util.Properties;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeOWLProperties extends Properties {
-
+    
     public static final String CONDITIONS_SUPERCLASSES_HEADER = "ConditionsSuperClassesHeader";
 
     public static final String CONDITIONS_EQUIVALENT_CLASSES_HEADER = "ConditionsEquivalentClassesHeader";

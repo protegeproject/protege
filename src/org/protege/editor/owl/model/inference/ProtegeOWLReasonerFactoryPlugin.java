@@ -14,7 +14,7 @@ import org.protege.editor.core.plugin.ProtegePlugin;
  */
 public interface ProtegeOWLReasonerFactoryPlugin extends ProtegePlugin<ProtegeOWLReasonerFactory> {
 
-    public static final String REASONER_PLUGIN_TYPE_ID = "org.protege.editor.owl.inference.reasonerfactory";
+    public static final String REASONER_PLUGIN_TYPE_ID = "inference.reasonerfactory";
 
 
     /**

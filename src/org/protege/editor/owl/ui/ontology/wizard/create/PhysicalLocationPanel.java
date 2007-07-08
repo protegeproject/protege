@@ -31,6 +31,7 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.ui.wizard.WizardPanel;
+import org.protege.editor.owl.ProtegeOWL;
 
 
 /**
@@ -59,7 +60,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public PhysicalLocationPanel(EditorKit editorKit) {
         super(ID, "Physical Location", editorKit);
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         String path = prefs.getString(DEFAULT_LOCAL_BASE_KEY,
                                       new File(new File(System.getProperty("user.home")), "ontologies").toString());
         locationBase = new File(path);
@@ -169,7 +170,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public void loadRecentLocations() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         List<String> list = new ArrayList<String>();
         list = prefs.getStringList(RECENT_LOCATIONS_KEY, list);
         DefaultListModel model = new DefaultListModel();
@@ -185,7 +186,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public void storeRecentLocations() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         List<String> list = new ArrayList<String>();
         DefaultListModel model = ((DefaultListModel) recentLocations.getModel());
         // Add in current file
@@ -213,7 +214,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         File folder = UIUtil.chooseFolder(this, "Please select a folder");
         if (folder != null) {
             locationBase = folder;
-            Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+            Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
             prefs.putString(DEFAULT_LOCAL_BASE_KEY, locationBase.toString());
             updateLocationField();
         }
