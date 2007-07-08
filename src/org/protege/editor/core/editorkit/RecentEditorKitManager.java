@@ -51,6 +51,10 @@ public class RecentEditorKitManager {
         }
         return instance;
     }
+    
+    public void dispose() {
+        instance = null;
+    }
 
 
     public List<EditorKitDescriptor> getDescriptors() {

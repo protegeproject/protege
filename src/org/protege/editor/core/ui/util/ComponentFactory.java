@@ -43,7 +43,7 @@ import java.awt.*;
  */
 public class ComponentFactory {
 
-    public static JComponent createExceptionComponent(String message, Exception exception, IExtension extension) {
+    public static JComponent createExceptionComponent(String message, Throwable exception, IExtension extension) {
         return new ComponentExceptionPanel(message, exception, extension);
     }
 

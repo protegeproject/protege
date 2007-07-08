@@ -41,6 +41,8 @@ public class ProtegeManager {
     private EditorKitManager editorKitManager;
 
     private Map<EditorKitFactoryPlugin, EditorKitFactory> editorKitFactoriesMap;
+    
+    private ProtegeApplication application;
 
 
     private ProtegeManager() {
@@ -60,6 +62,18 @@ public class ProtegeManager {
             instance = new ProtegeManager();
         }
         return instance;
+    }
+    
+    public void dispose() {
+        instance = null;
+    }
+    
+    protected void initialise(ProtegeApplication application) {
+        this.application = application;
+    }
+    
+    public ProtegeApplication getApplication() {
+        return application;
     }
 
 

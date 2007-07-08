@@ -45,7 +45,7 @@ class ComponentExceptionPanel extends JPanel {
     public static final int BORDER_THICKNESS = 4;
 
 
-    public ComponentExceptionPanel(String message, Exception exception, IExtension extension) {
+    public ComponentExceptionPanel(String message, Throwable exception, IExtension extension) {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(BORDER_THICKNESS,
                                                                                      BORDER_THICKNESS,
