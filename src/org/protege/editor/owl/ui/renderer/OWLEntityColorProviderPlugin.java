@@ -14,6 +14,6 @@ import org.protege.editor.core.plugin.ProtegePlugin;
  */
 public interface OWLEntityColorProviderPlugin extends ProtegePlugin<OWLEntityColorProvider> {
 
-    public static final String ID = "org.protege.editor.owl.ui.renderer.entitycolorprovider";
+    public static final String ID = "ui.renderer.entitycolorprovider";
 }
 

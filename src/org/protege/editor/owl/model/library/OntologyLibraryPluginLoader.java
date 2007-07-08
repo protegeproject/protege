@@ -1,10 +1,7 @@
 package org.protege.editor.owl.model.library;
 
 
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.plugin.AbstractPluginLoader;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.core.plugin.PluginExtensionMatcher;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -29,6 +26,12 @@ import org.protege.editor.core.plugin.PluginExtensionMatcher;
  */
 
 
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionMatcher;
+import org.protege.editor.owl.ProtegeOWL;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -41,7 +44,7 @@ import org.protege.editor.core.plugin.PluginExtensionMatcher;
 public class OntologyLibraryPluginLoader extends AbstractPluginLoader<OntologyLibraryFactoryPlugin> {
 
     public OntologyLibraryPluginLoader() {
-        super("org.protege.editor.owl", OntologyLibraryFactoryPlugin.ID);
+        super(ProtegeOWL.ID, OntologyLibraryFactoryPlugin.ID);
     }
 
 
