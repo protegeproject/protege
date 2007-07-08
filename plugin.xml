@@ -38,7 +38,7 @@
         <name value="New..."/>
         <toolTip value="Create a new empty ontology"/>
         <class value="org.protege.editor.core.ui.action.NewAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAA-E"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-E"/>
         <editorKitId value="any"/>
         <accelerator value="shift N"/>
     </extension>
@@ -48,7 +48,7 @@
         <name value="Open..."/>
         <toolTip value="Open an ontology"/>
         <class value="org.protege.editor.core.ui.action.OpenAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAA-F"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-F"/>
         <editorKitId value="any"/>
         <accelerator value="O"/>
     </extension>
@@ -58,7 +58,7 @@
         <name value="Open recent"/>
         <toolTip value="Open a recent ontology"/>
         <class value="org.protege.editor.core.ui.action.OpenRecentAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAA-G"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-G"/>
         <editorKitId value="any"/>
         <dynamic value="true"/>
     </extension>
@@ -68,7 +68,7 @@
         <name value="Close"/>
         <toolTip value="Close the current set of ontologies"/>
         <class value="org.protege.editor.core.ui.action.CloseAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAB-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
         <editorKitId value="any"/>
         <accelerator value="W"/>
     </extension>
@@ -77,7 +77,7 @@
         <name value="Save"/>
         <toolTip value="Save"/>
         <class value="org.protege.editor.core.ui.action.SaveAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAB-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
         <editorKitId value="any"/>
         <accelerator value="S"/>
     </extension>
@@ -86,14 +86,14 @@
         <name value="Save as..."/>
         <toolTip value="Save as"/>
         <class value="org.protege.editor.core.ui.action.SaveAsAction"/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotAB-B"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-B"/>
         <editorKitId value="any"/>
         <accelerator value="shift S"/>
     </extension>
 
     <extension id="menu.file.preferences" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Preferences..."/>
-        <path value="org.protege.editor.core.menu.FileMenu/SlotE-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotE-A"/>
         <toolTip value="Preferences"/>
         <class value="org.protege.editor.core.ui.preferences.ShowPreferencesAction"/>
         <editorKitId value="any"/>
@@ -101,6 +101,14 @@
     </extension>
 
     <!-- Edit menu -->
+
+    <extension id="menu.EditMenu"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Edit"/>
+        <toolTip value=""/>
+        <path value="/SlotB-A"/>
+        <editorKitId value="any"/>
+    </extension>
 
     <!-- View menu -->
 
@@ -114,7 +122,7 @@
 
     <extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Increase font size"/>
-        <path value="org.protege.editor.core.menu.window/SlotD-A"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-A"/>
         <toolTip value="Increase the font size"/>
         <class value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>
         <editorKitId value="any"/>
@@ -123,7 +131,7 @@
 
     <extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Decrease font size"/>
-        <path value="org.protege.editor.core.menu.window/SlotD-B"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-B"/>
         <toolTip value="Decrease the font size"/>
         <class value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>
         <editorKitId value="any"/>
@@ -160,7 +168,7 @@
         <name value="About..."/>
         <toolTip value="About menu!"/>
         <class value="org.protege.editor.core.ui.about.AboutProtegeAction"/>
-        <path value="org.protege.editor.core.menu.HelpMenu/SlotA-A"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotA-A"/>
         <editorKitId value="any"/>
     </extension>
 
