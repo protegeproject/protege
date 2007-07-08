@@ -10,24 +10,29 @@
         <!-- Classpath declaration - used in the "compile" target -->
         <!-- =================================================================== -->
         <path id = "core.classpath">    
-                <filelist refid = "common.libs"/>
+                <pathelement path="${commonlibs.jar}"/>
                 <path refid = "osgi.libs"/>
-                <path refid = "core.libs"/>
+                <fileset dir="${lib.dir}"/>
         </path>
 
         <!-- =================================================================== -->
         <!-- INIT -->
         <!-- =================================================================== -->
         <target name = "init">
-                <tstamp/>
-                <mkdir dir = "${classes.core}"/>
+          <echo message="---------------Building the core editor Bundle-------------"/>
+          <tstamp/>
+          <mkdir dir = "${core.classes}"/>
         </target>  
 
         <!-- =================================================================== -->
         <!-- COMPILE -->
         <!-- =================================================================== -->
         <target name = "compile" depends = "init">    
-                <javac srcdir = "${src.dir}" destdir = "${classes.core}" debug = "${debug}" source = "${source}" includeAntRuntime = "${includeAntRuntime}">
+                <javac srcdir = "${src.dir}" 
+                       destdir = "${core.classes}" 
+                       debug = "${debug}" 
+                       source = "${source}" 
+                       includeAntRuntime = "${includeAntRuntime}">
                         <classpath refid = "core.classpath"/>
                 </javac>
         </target>
@@ -35,26 +40,17 @@
         <!-- ===================================================================================== -->
         <!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
         <!-- ===================================================================================== -->
-        <target name = "jar" 
+        <target name = "bundle" 
                 depends = "compile">
-          <copy todir="${classes.core}">
+          <copy todir="${core.classes}">
             <fileset dir="${resources.dir}"/>
           </copy>
-          <copy file="${core.dir}/plugin.xml" todir="${classes.core}"/>
-          <unjar src="${lib.dir}/mdock.jar"               dest="${classes.core}"/>
-          <unjar src="${lib.dir}/swing-worker.jar"        dest="${classes.core}"/>
-          <unjar src="${common.dir}/log4j.jar"            dest="${classes.core}"/>
-          <unjar src="${common.dir}/commons-logging.jar"  dest="${classes.core}"/>
-          <unjar src="${common.dir}/looks.jar"            dest="${classes.core}"/>
-          <jar basedir = "${classes.core}"
-               destfile = "${distribution.jarfile}"
+          <copy file="${core.dir}/plugin.xml" todir="${core.classes}"/>
+          <unjar src="${lib.dir}/mdock.jar"               dest="${core.classes}"/>
+          <unjar src="${lib.dir}/swing-worker.jar"        dest="${core.classes}"/>
+          <jar basedir = "${core.classes}"
+               destfile = "${core.jar}"
                manifest = "${core.dir}/META-INF/MANIFEST.MF"/>
         </target>
 
-        <!-- =================================================================== -->
-        <!-- CLEAN -->
-        <!-- =================================================================== -->
-        <target name = "clean">
-            <delete dir = "${classes.core}"/>
-        </target>
 </project>
