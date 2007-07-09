@@ -57,6 +57,11 @@ public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrame
     }
 
 
+    public boolean isFixedHeight() {
+        return true;
+    }
+
+
     /**
      * Gets a list of objects contained in this row.  These objects
      * could be placed on the clip board during a copy operation,

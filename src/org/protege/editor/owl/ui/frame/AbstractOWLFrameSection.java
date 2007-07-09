@@ -196,10 +196,10 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
             }
         }
 
-        Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
-        if (comparator != null) {
-            Collections.sort(rows, comparator);
-        }
+//        Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
+//        if (comparator != null) {
+//            Collections.sort(rows, comparator);
+//        }
         fireContentChanged();
     }
 

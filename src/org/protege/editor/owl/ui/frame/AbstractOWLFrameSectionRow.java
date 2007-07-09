@@ -90,6 +90,11 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
     }
 
 
+    public boolean isFixedHeight() {
+        return false;
+    }
+
+
     final public OWLFrameSectionRowObjectEditor<E> getEditor() {
         OWLFrameSectionRowObjectEditor<E> editor = getObjectEditor();
         if (editor != null) {

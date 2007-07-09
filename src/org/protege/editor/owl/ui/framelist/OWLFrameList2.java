@@ -28,6 +28,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
@@ -94,7 +95,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                                                 BasicStroke.CAP_ROUND,
                                                 BasicStroke.JOIN_ROUND,
                                                 1.0f,
-                                                new float []{3.0f, 3.0f},
+                                                new float[]{3.0f, 3.0f},
                                                 1.0f);
 
 
@@ -220,6 +221,13 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 }
             }
         });
+
+        setUI(new OWLFrameListUI());
+    }
+
+
+    public void updateUI() {
+
     }
 
 
@@ -341,7 +349,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
 
     public void handleDelete() {
-        int [] selIndices = getSelectedIndices();
+        int[] selIndices = getSelectedIndices();
 
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (int selIndex : selIndices) {
@@ -730,6 +738,11 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         changeListenerMediator.removeChangeListener(changeListener);
     }
 
+
+    public void setLayoutOrientation(int layoutOrientation) {
+        throw new OWLRuntimeException("NOT ALLOWED");
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Common popup menu items
@@ -817,8 +830,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
         protected void updateState() {
             for (OWLFrameSectionRow row : getSelectedRows()) {
-                if (row.getOntology() == null || row.getOntology().equals(editorKit.getOWLModelManager().getActiveOntology()))
-                {
+                if (row.getOntology() == null || row.getOntology().equals(editorKit.getOWLModelManager().getActiveOntology())) {
                     setEnabled(false);
                     return;
                 }
@@ -912,5 +924,196 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 return -1;
             }
         }
+    }
+
+
+    /**
+     * An override of the BasicListUI.  This is necessary because of the
+     * very poor performance of the default Java implementation.  Also,
+     * this list UI uses a hybrid fixed/non-fixed cell size approach - specific
+     * to AbstractOWLFrameSectionRow.
+     */
+
+
+    private class OWLFrameListUI extends BasicListUI {
+
+        private int[] cumulativeCellHeight;
+
+
+        protected boolean isFixedCellHeightRow(int index) {
+            Object value = getModel().getElementAt(index);
+            if (!(value instanceof AbstractOWLFrameSectionRow)) {
+                return false;
+            }
+            AbstractOWLFrameSectionRow row = (AbstractOWLFrameSectionRow) value;
+            if (index < getModel().getSize() - 1) {
+                if (getModel().getElementAt(index + 1) instanceof AbstractOWLFrameSection) {
+                    return false;
+                }
+            }
+            return row.isFixedHeight();
+        }
+
+
+        protected void updateLayoutState() {
+
+            cumulativeCellHeight = new int[list.getModel().getSize()];
+
+            /* If both JList fixedCellWidth and fixedCellHeight have been
+             * set, then initialize cellWidth and cellHeight, and set
+             * cellHeights to null.
+             */
+            int fixedCellHeight = list.getFixedCellHeight();
+            int fixedCellWidth = list.getFixedCellWidth();
+
+            cellWidth = (fixedCellWidth != -1) ? fixedCellWidth : -1;
+
+            if (fixedCellHeight != -1) {
+                cellHeight = fixedCellHeight;
+                cellHeights = null;
+            }
+            else {
+                cellHeight = -1;
+                cellHeights = new int[list.getModel().getSize()];
+            }
+
+            /* If either of  JList fixedCellWidth and fixedCellHeight haven't
+             * been set, then initialize cellWidth and cellHeights by
+             * scanning through the entire model.  Note: if the renderer is
+             * null, we just set cellWidth and cellHeights[*] to zero,
+             * if they're not set already.
+             */
+
+            if ((fixedCellWidth == -1) || (fixedCellHeight == -1)) {
+
+                ListModel dataModel = list.getModel();
+                int dataModelSize = dataModel.getSize();
+                ListCellRenderer renderer = list.getCellRenderer();
+
+                if (renderer != null) {
+                    int cumulativeHeight = 0;
+                    for (int index = 0; index < dataModelSize; index++) {
+                        Object value = dataModel.getElementAt(index);
+                        if (isFixedCellHeightRow(index)) {
+                            if (fixedCellHeight == -1) {
+                                cellHeights[index] = 22;
+                            }
+                        }
+                        else {
+                            Component c = renderer.getListCellRendererComponent(list, value, index, false, false);
+                            rendererPane.add(c);
+                            Dimension cellSize = c.getPreferredSize();
+                            if (fixedCellWidth == -1) {
+                                cellWidth = Math.max(cellSize.width, cellWidth);
+                            }
+                            if (fixedCellHeight == -1) {
+                                cellHeights[index] = cellSize.height;
+                            }
+                        }
+
+                        cumulativeHeight += cellHeights[index];
+                        cumulativeCellHeight[index] = cumulativeHeight;
+                    }
+                }
+                else {
+                    if (cellWidth == -1) {
+                        cellWidth = 0;
+                    }
+                    if (cellHeights == null) {
+                        cellHeights = new int[dataModelSize];
+                    }
+                    for (int index = 0; index < dataModelSize; index++) {
+                        cellHeights[index] = 0;
+                    }
+                }
+            }
+        }
+
+
+        public Rectangle getCellBounds(JList list, int index1, int index2) {
+            maybeUpdateLayoutState();
+
+            int minIndex = Math.min(index1, index2);
+            int maxIndex = Math.max(index1, index2);
+
+            if (minIndex >= list.getModel().getSize()) {
+                return null;
+            }
+
+            Rectangle minBounds = getCellBounds(list, minIndex);
+
+            if (minBounds == null) {
+                return null;
+            }
+            if (minIndex == maxIndex) {
+                return minBounds;
+            }
+            Rectangle maxBounds = getCellBounds(list, maxIndex);
+
+            if (maxBounds != null) {
+                if (minBounds.x != maxBounds.x) {
+                    // Different columns
+                    minBounds.y = 0;
+                    minBounds.height = list.getHeight();
+                }
+                minBounds.add(maxBounds);
+            }
+            return minBounds;
+        }
+
+
+        /**
+         * Gets the bounds of the specified model index, returning the resulting
+         * bounds, or null if <code>index</code> is not valid.
+         */
+        private Rectangle getCellBounds(JList list, int index) {
+            maybeUpdateLayoutState();
+
+            Insets insets = list.getInsets();
+            int x;
+            int w;
+            int y = insets.top;
+            int h;
+
+            x = insets.left;
+
+            if (index >= cellHeights.length) {
+                y = 0;
+            }
+            else {
+                y = cumulativeCellHeight[index] - cellHeights[index];
+            }
+            w = list.getWidth() - (insets.left + insets.right);
+            h = cellHeights[index];
+
+            return new Rectangle(x, y, w, h);
+        }
+
+
+        /**
+         * Paint one List cell: compute the relevant state, get the "rubber stamp"
+         * cell renderer component, and then use the CellRendererPane to paint it.
+         * Subclasses may want to override this method rather than paint().
+         * @see #paint
+         */
+        protected void paintCell(Graphics g, int row, Rectangle rowBounds, ListCellRenderer cellRenderer,
+                                 ListModel dataModel, ListSelectionModel selModel, int leadIndex) {
+            Object value = dataModel.getElementAt(row);
+            boolean cellHasFocus = list.hasFocus() && (row == leadIndex);
+            boolean isSelected = selModel.isSelectedIndex(row);
+
+            Component rendererComponent = cellRenderer.getListCellRendererComponent(list,
+                                                                                    value,
+                                                                                    row,
+                                                                                    isSelected,
+                                                                                    cellHasFocus);
+
+            int cx = rowBounds.x;
+            int cy = rowBounds.y;
+            int cw = rowBounds.width;
+            int ch = rowBounds.height;
+
+            rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
+    }
     }
 }
