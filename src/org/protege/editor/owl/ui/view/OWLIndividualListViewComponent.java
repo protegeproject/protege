@@ -66,6 +66,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
         list.setFixedCellHeight(20);
+        list.setFixedCellWidth(500);
         reset();
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
