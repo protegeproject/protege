@@ -174,6 +174,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         keyWordColorMap.put("disjointUnionOf", axiomColor);
         keyWordColorMap.put("o", axiomColor);
         keyWordColorMap.put("\u279E", axiomColor);
+        keyWordColorMap.put("\u2192", axiomColor);
+        keyWordColorMap.put("\u2227", axiomColor);
 
         defaultAnnotationProperties = new ArrayList<URI>();
         defaultAnnotationProperties.add(OWLRDFVocabulary.RDFS_COMMENT.getURI());
@@ -323,7 +325,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         topBarPanel.add(new OWLEntityNavPanel(getOWLEditorKit()), gbc);
 
         // Install the active ontology combo box
-        Object [] ontArray = new Object[0];
+        Object[] ontArray = new Object[0];
         ontArray = getOWLModelManager().getOWLOntologyManager().getOntologies().toArray();
 
         ontologiesList = new JComboBox(ontArray);

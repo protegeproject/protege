@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.description;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.SWRLRule;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -75,5 +76,11 @@ public interface OWLDescriptionParser {
      * @throws OWLExpressionParserException if the expression cannot be parsed.
      */
     public OWLClassAxiom createOWLClassAxiom(String expression) throws OWLExpressionParserException;
+
+
+    public boolean isSWRLRuleWellFormed(String expression) throws OWLExpressionParserException;
+
+
+    public SWRLRule createSWRLRule(String expression) throws OWLExpressionParserException;
 }
 
