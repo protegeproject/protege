@@ -524,6 +524,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    public void setOWLIconProvider(OWLIconProvider provider) {
+        this.iconProvider = provider;
+    }
+
+
     public OWLCellRenderer createOWLCellRenderer() {
         return createOWLCellRenderer(true, true);
     }
