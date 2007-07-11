@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.hierarchy.tabbed;
 
 import org.semanticweb.owl.model.*;
 
-import java.util.List;
+import java.util.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -40,22 +40,60 @@ public class OWLClassHierarchyCreator extends AbstractOWLObjectHierarchyCreator 
 
     private OWLClass root;
 
+    private boolean makeDisjoint;
 
-    public OWLClassHierarchyCreator(OWLDataFactory dataFactory, OWLClass root, OWLOntology ontology, List<Edge> edges) {
+    private Map<OWLClass, Set<OWLClass>> parent2ChildMap;
+
+
+    public OWLClassHierarchyCreator(OWLDataFactory dataFactory, OWLClass root, boolean makeDisjoint,
+                                    OWLOntology ontology, List<Edge> edges) {
         super(dataFactory, ontology, edges);
         this.root = root;
+        this.makeDisjoint = makeDisjoint;
+        parent2ChildMap = new HashMap<OWLClass, Set<OWLClass>>();
+    }
+
+
+    private void addToMap(OWLClass parent, OWLClass child) {
+        Set<OWLClass> children = parent2ChildMap.get(parent);
+        if (children == null) {
+            children = new HashSet<OWLClass>();
+            parent2ChildMap.put(parent, children);
+        }
+        children.add(child);
+    }
+
+
+    protected List<OWLOntologyChange> hierarchyCreationStart() {
+        parent2ChildMap.clear();
+        return super.hierarchyCreationStart();
+    }
+
+
+    protected List<OWLOntologyChange> hierarchyCreationEnd() {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        if (makeDisjoint) {
+            for (Set<OWLClass> clses : parent2ChildMap.values()) {
+                if (clses.size() > 1) {
+                    changes.add(new AddAxiom(getOntology(), getDataFactory().getOWLDisjointClassesAxiom(clses)));
+                }
+            }
+        }
+        return changes;
     }
 
 
     public OWLOntologyChange getChange(String objName, OWLDataFactory dataFactory) {
-        return new AddAxiom(getOntology(),
-                            dataFactory.getOWLSubClassAxiom(dataFactory.getOWLClass(getURI(objName)), root));
+        OWLClass cls = dataFactory.getOWLClass(getURI(objName));
+        addToMap(root, cls);
+        return new AddAxiom(getOntology(), dataFactory.getOWLSubClassAxiom(cls, root));
     }
 
 
     public OWLOntologyChange getChange(String childName, String parentName, OWLDataFactory dataFactory) {
-        return new AddAxiom(getOntology(),
-                            dataFactory.getOWLSubClassAxiom(dataFactory.getOWLClass(getURI(childName)),
-                                                            dataFactory.getOWLClass(getURI(parentName))));
+        OWLClass sub = dataFactory.getOWLClass(getURI(childName));
+        OWLClass sup = dataFactory.getOWLClass(getURI(parentName));
+        addToMap(sup, sub);
+        return new AddAxiom(getOntology(), dataFactory.getOWLSubClassAxiom(sub, sup));
     }
 }

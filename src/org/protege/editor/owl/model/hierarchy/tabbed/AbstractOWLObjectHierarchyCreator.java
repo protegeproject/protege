@@ -7,6 +7,7 @@ import org.semanticweb.owl.model.OWLOntologyChange;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -57,13 +58,24 @@ public abstract class AbstractOWLObjectHierarchyCreator {
     }
 
 
+    public OWLDataFactory getDataFactory() {
+        return dataFactory;
+    }
+
+
     public OWLOntology getOntology() {
         return ontology;
     }
 
 
+    protected List<OWLOntologyChange> hierarchyCreationStart() {
+        return Collections.emptyList();
+    }
+
+
     public List<OWLOntologyChange> createHierarchy() {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        changes.addAll(hierarchyCreationStart());
         for (Edge e : edges) {
             if (e.isRoot()) {
                 changes.add(getChange(e.getChild(), dataFactory));
@@ -72,7 +84,13 @@ public abstract class AbstractOWLObjectHierarchyCreator {
                 changes.add(getChange(e.getChild(), e.getParent(), dataFactory));
             }
         }
+        changes.addAll(hierarchyCreationEnd());
         return changes;
+    }
+
+
+    protected List<OWLOntologyChange> hierarchyCreationEnd() {
+        return Collections.emptyList();
     }
 
 
