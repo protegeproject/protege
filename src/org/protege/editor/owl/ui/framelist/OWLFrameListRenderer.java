@@ -116,20 +116,6 @@ public class OWLFrameListRenderer implements ListCellRenderer {
                                                                                     isSelected,
                                                                                     cellHasFocus);
             }
-//            OWLAxiom ax = ((OWLFrameSectionRow) value).getAxiom();
-//            boolean commentedOut = false;
-//            for (OWLOntology ont : getOWLEditorKit().getOWLModelManager().getActiveOntologies()) {
-//                for(OWLAxiomAnnotationAxiom annoAx : ax.getAnnotationAxioms(ont)) {
-//                    if(annoAx.getAnnotation().getAnnotationURI().equals(COMMENTED_OUT_URI)) {
-//                        owlCellRenderer.setCommentedOut(true);
-//                        commentedOut = true;
-//                        break;
-//                    }
-//                }
-//                if(commentedOut) {
-//                    break;
-//                }
-//            }
             boolean commentedOut = false;
             OWLFrameSectionRow row = ((OWLFrameSectionRow) value);
             if (row.getOntology() != null && row.getAxiom() != null) {

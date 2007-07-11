@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
@@ -151,6 +152,8 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     private List<OWLFrameListPopupMenuAction<R>> actions;
 
+    private static final Color INFERRED_ROW_BG_COLOR = new Color(255, 255, 215);
+
 
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
         this.editorKit = editorKit;
@@ -250,6 +253,16 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
             }
         }
         return super.getButtons(value);
+    }
+
+
+    protected Color getItemBackgroundColor(MListItem item) {
+        if (item instanceof AbstractOWLFrameSectionRow) {
+            if (((AbstractOWLFrameSectionRow) item).isInferred()) {
+                return INFERRED_ROW_BG_COLOR;
+            }
+        }
+        return super.getItemBackgroundColor(item);
     }
 
 
@@ -1114,6 +1127,6 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
             int ch = rowBounds.height;
 
             rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
-    }
+        }
     }
 }
