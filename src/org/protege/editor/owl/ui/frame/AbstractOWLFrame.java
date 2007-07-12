@@ -61,6 +61,12 @@ public abstract class AbstractOWLFrame<R extends OWLObject> implements OWLFrame<
     }
 
 
+    protected void clearSections() {
+        sections.clear();
+        fireContentChanged();
+    }
+
+
     public void dispose() {
         for (OWLFrameSection section : sections) {
             section.dispose();
@@ -93,7 +99,7 @@ public abstract class AbstractOWLFrame<R extends OWLObject> implements OWLFrame<
     }
 
 
-    protected void refill() {
+    public void refill() {
         for (OWLFrameSection<R, ? extends Object, ? extends Object> section : getFrameSections()) {
             try {
                 section.setRootObject(rootObject);
