@@ -3,8 +3,8 @@ package org.protege.editor.core;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
-import javax.swing.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,7 +102,7 @@ public class ProtegeManager {
      *         <code>null</code> if there is no such <code>Workspace</code> or
      *         no frame exists.
      */
-    public JFrame getFrame(Workspace workspace) {
+    public WorkspaceFrame getFrame(Workspace workspace) {
         return getEditorKitManager().getWorkspaceManager().getFrame(workspace);
     }
 
@@ -193,6 +193,7 @@ public class ProtegeManager {
 
     public void saveEditorKitAs(EditorKit editorKit) throws Exception {
         editorKit.handleSaveAs();
+        getFrame(editorKit.getWorkspace()).updateTitle();
     }
 
 
