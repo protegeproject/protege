@@ -71,13 +71,16 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
 
     private void update() {
         Component c = FocusManager.getCurrentManager().getFocusOwner();
+        if (c instanceof JRootPane || c == null) {
+            return;
+        }
         // By default text components are pasteable
         if (c instanceof TextComponent) {
             setEnabled(true);
             return;
         }
 
-        C target = getPasteable();
+        C target = getTarget();
         if (currentTarget != null) {
             detatchListener();
         }
@@ -97,13 +100,10 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
     }
 
 
-    private C getPasteable() {
+    private C getTarget() {
         Component c = FocusManager.getCurrentManager().getFocusOwner();
         if (targetClass.isInstance(c)) {
             return (C) c;
-        }
-        if (c == null) {
-            return null;
         }
         return (C) SwingUtilities.getAncestorOfClass(targetClass, c);
     }
