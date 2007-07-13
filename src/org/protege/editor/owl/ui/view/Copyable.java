@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.owl.ui.action.ActionTarget;
 import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.event.ChangeListener;
@@ -41,7 +42,7 @@ import java.util.List;
  * implement this interface, so that they will work with the copy action
  * on the edit menu.
  */
-public interface Copyable {
+public interface Copyable extends ActionTarget {
 
     /**
      * Determines whether or not at least one <code>OWLObject</code>
