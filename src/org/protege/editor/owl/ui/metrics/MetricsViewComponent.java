@@ -1,12 +1,17 @@
 package org.protege.editor.owl.ui.metrics;
 
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.OWLOntologyChangeListener;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -54,11 +59,16 @@ public class MetricsViewComponent extends AbstractOWLViewComponent {
 
     private JTree tree;
 
+    private HierarchyListener hierarchyListener;
+
+    private boolean dirty;
+
+    private OWLOntologyChangeListener changeListener;
+
 
     protected void initialiseOWLView() throws Exception {
 
         nodeMap = new IdentityHashMap<Metric, MetricsTreeNode>();
-        update();
         rootNode = new DefaultMutableTreeNode();
         tree = new JTree(rootNode);
         setLayout(new BorderLayout());
@@ -75,12 +85,40 @@ public class MetricsViewComponent extends AbstractOWLViewComponent {
         tree.expandPath(new TreePath(rootNode.getPath()));
         tree.setRootVisible(false);
         tree.setCellRenderer(new MetricTreeCellRenderer());
-        update();
         add(new JScrollPane(tree));
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
         tree.setShowsRootHandles(true);
+        hierarchyListener = new HierarchyListener() {
+            public void hierarchyChanged(HierarchyEvent e) {
+                refresh();
+            }
+        };
+        addHierarchyListener(hierarchyListener);
+
+        changeListener = new OWLOntologyChangeListener() {
+
+            public void ontologiesChanged(List<? extends OWLOntologyChange> list) throws OWLException {
+                dirty = true;
+                refresh();
+            }
+        };
+        getOWLModelManager().addOntologyChangeListener(changeListener);
+        updateMetrics();
+    }
+
+
+    private void refresh() {
+        if (isShowing() && dirty) {
+            for (Metric metric : nodeMap.keySet()) {
+                metric.updateMetric();
+            }
+            dirty = false;
+        }
+        else {
+            dirty = true;
+        }
     }
 
 
@@ -99,7 +137,7 @@ public class MetricsViewComponent extends AbstractOWLViewComponent {
     }
 
 
-    protected void update() {
+    protected void updateMetrics() {
         for (Metric metric : nodeMap.keySet()) {
             metric.updateMetric();
         }
@@ -107,6 +145,8 @@ public class MetricsViewComponent extends AbstractOWLViewComponent {
 
 
     protected void disposeOWLView() {
+        getOWLModelManager().removeOntologyChangeListener(changeListener);
+        removeHierarchyListener(hierarchyListener);
     }
 
 
