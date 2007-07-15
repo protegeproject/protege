@@ -40,8 +40,8 @@ import java.awt.*;
 public class InferredOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent {
 
     protected void performExtraInitialisation() throws Exception {
-        addAction(new AddSubClassAction(getOWLEditorKit(), getTree()), "A", "A");
-        addAction(new AddSiblingClassAction(getOWLEditorKit(), getTree()), "A", "B");
+//        addAction(new AddSubClassAction(getOWLEditorKit(), getTree()), "A", "A");
+//        addAction(new AddSiblingClassAction(getOWLEditorKit(), getTree()), "A", "B");
         getTree().setBackground(new Color(255, 255, 215));
     }
 
