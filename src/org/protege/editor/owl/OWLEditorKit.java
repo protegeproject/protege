@@ -228,6 +228,13 @@ public class OWLEditorKit implements EditorKit {
         if (file == null) {
             return;
         }
+        int extensionIndex = file.toString().lastIndexOf('.');
+        if (extensionIndex == -1) {
+            file = new File(file.toString() + ".owl");
+        }
+        else if (extensionIndex != file.toString().length() - 4) {
+            file = new File(file.toString() + ".owl");
+        }
         man.setOntologyFormat(getOWLModelManager().getActiveOntology(), format);
         man.setPhysicalURIForOntology(getOWLModelManager().getActiveOntology(), file.toURI());
         getOWLModelManager().setDirty(getOWLModelManager().getActiveOntology());

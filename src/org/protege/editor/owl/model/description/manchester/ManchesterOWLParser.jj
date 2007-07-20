@@ -25,12 +25,14 @@
 
 options {
     STATIC=false;
+    UNICODE_INPUT=true;
     //LOOKAHEAD=2;
+    //DEBUG_TOKEN_MANAGER=true;
 }
 
 PARSER_BEGIN(ManchesterOWLParser)
 
-package org.protege.owl.model.description.manchester;
+package org.protege.editor.owl.model.description.manchester;
 
 import java.io.Reader;
 import java.util.Set;
@@ -38,7 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.net.URI;
-import org.protege.owl.model.description.*;
+import org.protege.editor.owl.model.description.*;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
@@ -155,6 +157,21 @@ TOKEN:
 TOKEN:
 {
     <CLOSESQPAR: "]">
+}
+
+TOKEN:
+{
+    <QUESTION_MARK: "?">
+}
+
+TOKEN:
+{
+    <RULE_IMP: "->" | "\u2192">
+}
+
+TOKEN:
+{
+    <RULE_AND: "/\\" | "\u2227">
 }
 
 TOKEN:
@@ -350,7 +367,7 @@ TOKEN:
 
 TOKEN:
 {
-    <IDENTIFIER: ((["a"-"z"] | ["A"-"Z"]) (["a"-"z"] | ["A"-"Z"] | ["0"-"9"] | "_" | ":" | "-" | "+")*) | ("'"((~["'"])+)"'") |  (((~[" ", "(", ")", ",", "{", "}", "[", "]", "\n", "\t"])+))> {
+    <IDENTIFIER: ((["a"-"z"] | ["A"-"Z"]) (["a"-"z"] | ["A"-"Z"] | ["0"-"9"] | "_" | ":" | "-" | "+")*) | ("'"((~["'"])+)"'") |  (((~[" ", "(", ")", ",", "{", "}", "[", "]", "\n", "\t", "?"])+))> {
 
         OWLEntity owlEntity = entityMapper.getOWLEntity(image.toString());
         if(owlEntity == null) {
@@ -455,10 +472,148 @@ OWLClassAxiom ParseClassAxiom() :
         }
         return axiom;
     }
+}
 
+SWRLRule ParseRule() :
+{
+    List<SWRLAtom> body;
+    List<SWRLAtom> head;
+}
+{
+    (body=RuleAtomList() <RULE_IMP> head=RuleAtomList() <EOF>) {
+        return dataFactory.getSWRLRule(new HashSet<SWRLAtom>(body), new HashSet<SWRLAtom>(head));
+    }
 }
 
 
+List<SWRLAtom> RuleAtomList() :
+{
+    SWRLAtom atom;
+    List<SWRLAtom> list = new ArrayList<SWRLAtom>();
+}
+{
+    ((atom=RuleAtom() {list.add(atom);}) (((<RULE_AND>atom=RuleAtom() {list.add(atom);}))*)) {
+        return list;
+    }
+}
+
+SWRLAtom RuleAtom() :
+{
+    SWRLAtom atom;
+}
+{
+    (atom=ClassAtom() | atom=ObjectPropertyAtom() | atom=DataRangeAtom()) {
+        return atom;
+    }
+}
+
+SWRLAtom ClassAtom() :
+{
+    OWLDescription desc;
+    SWRLAtomIObject iobject;
+}
+{
+    (desc=NamedClassOrNestedDescription()<OPENPAR>iobject=IObject()<CLOSEPAR>) {
+        return dataFactory.getSWRLClassAtom(desc, iobject);
+    }
+}
+
+SWRLAtomIObject IObject() :
+{
+    SWRLAtomIObject iobject;
+}
+{
+    (iobject=IndividualObject() | iobject=IVariable()) {
+        return iobject;
+    }
+}
+
+SWRLAtomIVariable IVariable() :
+{
+    Token t;
+    SWRLAtomIVariable ivariable;
+}
+{
+    <QUESTION_MARK>t=<IDENTIFIER> {
+        String shortName = t.image.trim();
+        URI uri = URI.create("http://www.semanticweb.org/ontologies#" +  t.image);
+        return dataFactory.getSWRLAtomIVariable(uri);
+    }
+}
+
+SWRLAtomIndividualObject IndividualObject() :
+{
+    OWLIndividual ind;
+}
+{
+    ind=Individual() {
+        if(create) {
+            return dataFactory.getSWRLAtomIndividualObject(ind);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+SWRLAtom DataRangeAtom() :
+{
+    OWLDataRange dr;
+    SWRLAtomDObject dobject;
+}
+{
+    (dr=DataRange()<OPENPAR>dobject=DObject()<CLOSEPAR>) {
+        return dataFactory.getSWRLDataRangeAtom(dr, dobject);
+    }
+}
+
+SWRLAtomDObject DObject() :
+{
+    SWRLAtomDObject dobject;
+}
+{
+    (dobject=ConstantObject() | dobject=DVariable()) {
+        return dobject;
+    }
+}
+
+SWRLAtomDVariable DVariable() :
+{
+    Token t;
+    SWRLAtomDVariable dvariable;
+}
+{
+    <QUESTION_MARK>t=<IDENTIFIER> {
+        String shortName = t.image.trim();
+        URI uri = URI.create("http://www.semanticweb.org/ontologies#" +  t.image);
+        return dataFactory.getSWRLAtomDVariable(uri);
+    }
+}
+
+SWRLAtomDObject ConstantObject() :
+{
+    OWLConstant con;
+}
+{
+    con=DataValue() {
+        return dataFactory.getSWRLAtomConstantObject(con);
+    }
+}
+
+SWRLAtom ObjectPropertyAtom() :
+{
+    SWRLAtomIObject obj0;
+    SWRLAtomIObject obj1;
+    OWLObjectPropertyExpression prop;
+}
+{
+    (prop = ObjectProperty() <OPENPAR> obj0 = IObject() <COMMA> obj1 = IObject() <CLOSEPAR> ) {
+        return dataFactory.getSWRLObjectPropertyAtom(prop, obj0, obj1);
+    }
+}
+
+
+/*
 OWLDescriptionNode ParseQuery() :
 {
     OWLDescriptionNode node;
@@ -557,7 +712,7 @@ OWLDescriptionNode ParseNode() :
     ) {return node;})
 }
 
-
+*/
 
 
 OWLDescription And() :

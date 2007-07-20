@@ -80,6 +80,19 @@ import org.semanticweb.owl.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owl.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owl.model.OWLTypedConstant;
 import org.semanticweb.owl.model.OWLUntypedConstant;
+import org.semanticweb.owl.model.SWRLAtom;
+import org.semanticweb.owl.model.SWRLAtomConstantObject;
+import org.semanticweb.owl.model.SWRLAtomDVariable;
+import org.semanticweb.owl.model.SWRLAtomIVariable;
+import org.semanticweb.owl.model.SWRLAtomIndividualObject;
+import org.semanticweb.owl.model.SWRLBuiltInAtom;
+import org.semanticweb.owl.model.SWRLClassAtom;
+import org.semanticweb.owl.model.SWRLDataRangeAtom;
+import org.semanticweb.owl.model.SWRLDataValuedPropertyAtom;
+import org.semanticweb.owl.model.SWRLDifferentFromAtom;
+import org.semanticweb.owl.model.SWRLObjectPropertyAtom;
+import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owl.model.SWRLSameAsAtom;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
@@ -832,6 +845,113 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     public void visit(OWLConstantAnnotation annotation) {
         write(annotation.getAnnotationURI().toString());
         write(annotation.getAnnotationValue().toString());
+    }
+
+
+    public void visit(SWRLRule swrlRule) {
+        for (Iterator<SWRLAtom> it = swrlRule.getBody().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" \u2227 ");
+            }
+        }
+        write(" \u2192 ");
+        for (Iterator<SWRLAtom> it = swrlRule.getHead().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" \u2227 ");
+            }
+        }
+    }
+
+
+    public void visit(SWRLClassAtom swrlClassAtom) {
+        OWLDescription desc = swrlClassAtom.getPredicate();
+        if (desc.isAnonymous()) {
+            write("(");
+        }
+        desc.accept(this);
+        if (desc.isAnonymous()) {
+            write(")");
+        }
+        write("(");
+        swrlClassAtom.getArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLDataRangeAtom swrlDataRangeAtom) {
+        swrlDataRangeAtom.getPredicate().accept(this);
+        write("(");
+        swrlDataRangeAtom.getArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLObjectPropertyAtom swrlObjectPropertyAtom) {
+        swrlObjectPropertyAtom.getPredicate().accept(this);
+        write("(");
+        swrlObjectPropertyAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlObjectPropertyAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLDataValuedPropertyAtom swrlDataValuedPropertyAtom) {
+        swrlDataValuedPropertyAtom.getPredicate().accept(this);
+        write("(");
+        swrlDataValuedPropertyAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlDataValuedPropertyAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLBuiltInAtom swrlBuiltInAtom) {
+        super.visit(swrlBuiltInAtom);
+    }
+
+
+    public void visit(SWRLAtomDVariable swrlAtomDVariable) {
+        write("?");
+        write(swrlAtomDVariable.getURI().getFragment());
+    }
+
+
+    public void visit(SWRLAtomIVariable swrlAtomIVariable) {
+        write("?");
+        write(swrlAtomIVariable.getURI().getFragment());
+    }
+
+
+    public void visit(SWRLAtomIndividualObject swrlAtomIndividualObject) {
+        swrlAtomIndividualObject.getIndividual().accept(this);
+    }
+
+
+    public void visit(SWRLAtomConstantObject swrlAtomConstantObject) {
+        swrlAtomConstantObject.getConstant().accept(this);
+    }
+
+
+    public void visit(SWRLDifferentFromAtom swrlDifferentFromAtom) {
+        swrlDifferentFromAtom.getPredicate().accept(this);
+        write("(");
+        swrlDifferentFromAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlDifferentFromAtom.getSecondArgument().accept(this);
+        write(")");
+    }
+
+
+    public void visit(SWRLSameAsAtom swrlSameAsAtom) {
+        swrlSameAsAtom.getPredicate().accept(this);
+        write("(");
+        swrlSameAsAtom.getFirstArgument().accept(this);
+        write(", ");
+        swrlSameAsAtom.getSecondArgument().accept(this);
+        write(")");
     }
 
 

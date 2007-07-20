@@ -71,7 +71,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent {
         URL dataPropURL = getClass().getResource("/selected-entity-view-dataproperty-panel.xml");
         dataPropertiesViewsPane = new ViewsPane(getOWLWorkspace(),
                                                 new ViewsPaneMemento(dataPropURL,
-                                                                     "org.protege.editor.owl.ui.view.selectedentityview.objectproperties"));
+                                                                     "org.protege.editor.owl.ui.view.selectedentityview.dataproperties"));
         cardPanel.add(dataPropertiesViewsPane, DATA_PROPERTIES_PANEL);
 
         URL indURL = getClass().getResource("/selected-entity-view-individual-panel.xml");

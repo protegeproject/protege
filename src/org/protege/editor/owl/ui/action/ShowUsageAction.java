@@ -22,12 +22,17 @@ public class ShowUsageAction extends SelectedOWLEntityAction {
 
     protected void actionPerformed(OWLEntity selectedEntity) {
         OWLEntity ent = getSelectedEntity();
+        if (ent == null) {
+            return;
+        }
         ent.accept(new OWLEntityVisitor() {
             public void visit(OWLClass cls) {
-                View view = getOWLWorkspace().showResultsView("OWLClassUsageView",
+                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLClassUsageView",
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                view.setPinned(true);
+                if (view != null) {
+                    view.setPinned(true);
+                }
             }
 
 
@@ -36,26 +41,32 @@ public class ShowUsageAction extends SelectedOWLEntityAction {
 
 
             public void visit(OWLIndividual individual) {
-                View view = getOWLWorkspace().showResultsView("OWLIndividualUsageView",
+                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLIndividualUsageView",
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                view.setPinned(true);
+                if (view != null) {
+                    view.setPinned(true);
+                }
             }
 
 
             public void visit(OWLDataProperty property) {
-                View view = getOWLWorkspace().showResultsView("OWLDataPropertyUsageView",
+                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLDataPropertyUsageView",
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                view.setPinned(true);
+                if (view != null) {
+                    view.setPinned(true);
+                }
             }
 
 
             public void visit(OWLObjectProperty property) {
-                View view = getOWLWorkspace().showResultsView("OWLObjectPropertyUsageView",
+                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLObjectPropertyUsageView",
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                view.setPinned(true);
+                if (view != null) {
+                    view.setPinned(true);
+                }
             }
         });
     }

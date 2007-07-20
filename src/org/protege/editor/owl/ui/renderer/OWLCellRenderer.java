@@ -7,6 +7,7 @@ import java.awt.Composite;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.awt.Point;
@@ -110,7 +111,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JLabel iconLabel;
 
-    private JTextPane textPane = new JTextPane();
+    private boolean stylesApplied;
+
+    private JTextPane textPane = new JTextPane() {
+        protected void paintComponent(Graphics g) {
+            if (!stylesApplied) {
+                applyStyles((StyledDocument) getDocument());
+            }
+            super.paintComponent(g);
+        }
+    };
 
     private int preferredWidth;
 
@@ -576,6 +586,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private void prepareTextPane(Object value, boolean selected) {
         textPane.setBorder(null);
         textPane.setText(value.toString());
+        stylesApplied = false;
         if (commentedOut) {
             textPane.setText("// " + textPane.getText());
         }
@@ -642,7 +653,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 }
             }
         }
+    }
 
+
+    private void applyStyles(StyledDocument doc) {
+        stylesApplied = true;
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),.\n'", true);
@@ -692,12 +707,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                         }
                         catch (OWLReasonerException e) {
                             e.printStackTrace();
-//                            throw new OWLRuntimeException(e);
+                            //                            throw new OWLRuntimeException(e);
                         }
                     }
                     // We did have a check here for changed entities
                     if (!styleSet) {
-//                        C = getColor(entity, textPane.getForeground());
+                        //                        C = getColor(entity, textPane.getForeground());
                     }
                 }
             }

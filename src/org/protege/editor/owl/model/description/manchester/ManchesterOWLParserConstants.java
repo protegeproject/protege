@@ -13,91 +13,97 @@ public interface ManchesterOWLParserConstants {
 
     int CLOSESQPAR = 8;
 
-    int OPENBRACE = 9;
+    int QUESTION_MARK = 9;
 
-    int CLOSEBRACE = 10;
+    int RULE_IMP = 10;
 
-    int QUOTE = 11;
+    int RULE_AND = 11;
 
-    int AND = 12;
+    int OPENBRACE = 12;
 
-    int OR = 13;
+    int CLOSEBRACE = 13;
 
-    int NOT = 14;
+    int QUOTE = 14;
 
-    int SOME = 15;
+    int AND = 15;
 
-    int ALL = 16;
+    int OR = 16;
 
-    int HAS = 17;
+    int NOT = 17;
 
-    int MIN = 18;
+    int SOME = 18;
 
-    int MAX = 19;
+    int ALL = 19;
 
-    int EXACT = 20;
+    int HAS = 20;
 
-    int THAT = 21;
+    int MIN = 21;
 
-    int COMMA = 22;
+    int MAX = 22;
 
-    int COMPOSITION = 23;
+    int EXACT = 23;
 
-    int SUBCLASSOF = 24;
+    int THAT = 24;
 
-    int EQUIVALENTTO = 25;
+    int COMMA = 25;
 
-    int DISJPOINTWITH = 26;
+    int COMPOSITION = 26;
 
-    int PLUS = 27;
+    int SUBCLASSOF = 27;
 
-    int UNION = 28;
+    int EQUIVALENTTO = 28;
 
-    int MINUS = 29;
+    int DISJPOINTWITH = 29;
 
-    int POSSIBLY = 30;
+    int PLUS = 30;
 
-    int INV = 31;
+    int UNION = 31;
 
-    int MIN_EXC = 32;
+    int MINUS = 32;
 
-    int MIN_INC = 33;
+    int POSSIBLY = 33;
 
-    int MAX_EXC = 34;
+    int INV = 34;
 
-    int MAX_INC = 35;
+    int MIN_EXC = 35;
 
-    int PAT = 36;
+    int MIN_INC = 36;
 
-    int LEN = 37;
+    int MAX_EXC = 37;
 
-    int INT = 38;
+    int MAX_INC = 38;
 
-    int FLOAT = 39;
+    int PAT = 39;
 
-    int DOUBLE_CARET = 40;
+    int LEN = 40;
 
-    int BOOLEAN = 41;
+    int INT = 41;
 
-    int STRING = 42;
+    int FLOAT = 42;
 
-    int IDENTIFIER = 43;
+    int DOUBLE_CARET = 43;
 
-    int CLASSID = 44;
+    int BOOLEAN = 44;
 
-    int OBJECTPROPID = 45;
+    int STRING = 45;
 
-    int DATAPROPID = 46;
+    int IDENTIFIER = 46;
 
-    int INDIVIDUALID = 47;
+    int CLASSID = 47;
 
-    int DATATYPEID = 48;
+    int OBJECTPROPID = 48;
 
-    int DATAVALUE = 49;
+    int DATAPROPID = 49;
 
-    int ERROR = 50;
+    int INDIVIDUALID = 50;
+
+    int DATATYPEID = 51;
+
+    int DATAVALUE = 52;
+
+    int ERROR = 53;
 
     int DEFAULT = 0;
 
-    String[] tokenImage = {"<EOF>", "\" \"", "\"\\n\"", "\"\\r\"", "\"\\r\\n\"", "\"(\"", "\")\"", "\"[\"", "\"]\"", "\"{\"", "\"}\"", "\"\\\"\"", "\"and\"", "\"or\"", "\"not\"", "\"some\"", "\"only\"", "\"value\"", "\"min\"", "\"max\"", "\"exactly\"", "\"that\"", "\",\"", "\"o\"", "\"subClassOf\"", "\"equivalentTo\"", "\"disjointWith\"", "\"plus\"", "\"union\"", "\"minus\"", "\"possibly\"", "\"inv\"", "\">\"", "\">=\"", "\"<\"", "\"<=\"", "\"pattern\"", "\"length\"", "<INT>", "<FLOAT>", "\"^^\"", "<BOOLEAN>", "<STRING>", "<IDENTIFIER>", "<CLASSID>", "<OBJECTPROPID>", "<DATAPROPID>", "<INDIVIDUALID>", "<DATATYPEID>", "<DATAVALUE>", "<ERROR>",};
+    String[] tokenImage = {"<EOF>", "\" \"", "\"\\n\"", "\"\\r\"", "\"\\r\\n\"", "\"(\"", "\")\"", "\"[\"", "\"]\"", "\"?\"", "<RULE_IMP>", "<RULE_AND>", "\"{\"", "\"}\"", "\"\\\"\"", "\"and\"", "\"or\"", "\"not\"", "\"some\"", "\"only\"", "\"value\"", "\"min\"", "\"max\"", "\"exactly\"", "\"that\"", "\",\"", "\"o\"", "\"subClassOf\"", "\"equivalentTo\"", "\"disjointWith\"", "\"plus\"", "\"union\"", "\"minus\"", "\"possibly\"", "\"inv\"", "\">\"", "\">=\"", "\"<\"", "\"<=\"", "\"pattern\"", "\"length\"", "<INT>", "<FLOAT>", "\"^^\"", "<BOOLEAN>", "<STRING>", "<IDENTIFIER>", "<CLASSID>", "<OBJECTPROPID>", "<DATAPROPID>", "<INDIVIDUALID>", "<DATATYPEID>", "<DATAVALUE>", "<ERROR>",};
 }

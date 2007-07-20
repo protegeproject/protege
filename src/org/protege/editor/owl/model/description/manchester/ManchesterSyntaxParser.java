@@ -8,13 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.OWLDescriptionNode;
-import org.protege.editor.owl.model.description.OWLDescriptionNodeParser;
+import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
+import org.semanticweb.owl.model.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -25,7 +21,7 @@ import org.semanticweb.owl.model.OWLObjectPropertyExpression;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
+public class ManchesterSyntaxParser implements OWLDescriptionParser {
 
     private OWLModelManager owlModelManager;
 
@@ -83,6 +79,9 @@ public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
         addTokenDescription(ManchesterOWLParserConstants.FLOAT, "Float value e.g. 33.3");
         addTokenDescription(ManchesterOWLParserConstants.INT, "Integer value e.g. 33");
         addTokenDescription(ManchesterOWLParserConstants.STRING, "String");
+        addTokenDescription(ManchesterOWLParserConstants.RULE_IMP, "Rule implication symbol (\u2192)");
+        addTokenDescription(ManchesterOWLParserConstants.RULE_IMP, "Rule atom conjunction symbol (\u2227)");
+        addTokenDescription(ManchesterOWLParserConstants.QUESTION_MARK);
     }
 
 
@@ -165,6 +164,37 @@ public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
     }
 
 
+    public boolean isSWRLRuleWellFormed(String expression) throws OWLExpressionParserException {
+        try {
+            ManchesterOWLParser manchesterOWLParser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
+                                                                              owlModelManager.getOWLDataFactory(),
+                                                                              entityMapper,
+                                                                              dataTypeMapper,
+                                                                              new StringReader(expression));
+            manchesterOWLParser.ParseRule();
+            return true;
+        }
+        catch (ParseException e) {
+            throw getOWLDescriptionParserException(e);
+        }
+    }
+
+
+    public SWRLRule createSWRLRule(String expression) throws OWLExpressionParserException {
+        try {
+            ManchesterOWLParser manchesterOWLParser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
+                                                                              owlModelManager.getOWLDataFactory(),
+                                                                              entityMapper,
+                                                                              dataTypeMapper,
+                                                                              new StringReader(expression));
+            return manchesterOWLParser.ParseRule();
+        }
+        catch (ParseException e) {
+            throw getOWLDescriptionParserException(e);
+        }
+    }
+
+
     public OWLClassAxiom createOWLClassAxiom(String expression) throws OWLExpressionParserException {
         try {
             ManchesterOWLParser parser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
@@ -208,49 +238,49 @@ public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
         }
     }
 
-
-    public boolean isWellFormedNode(String text) throws OWLExpressionParserException, OWLException {
-        try {
-            ManchesterOWLParser manchesterOWLParser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
-                                                                              null,
-                                                                              entityMapper,
-                                                                              dataTypeMapper,
-                                                                              new StringReader(text));
-            manchesterOWLParser.ParseQuery();
-            return true;
-        }
-        catch (ParseException e) {
-            throw getOWLDescriptionParserException(e);
-        }
-    }
-
-
-    public OWLDescriptionNode createOWLDescriptionNode(String text) throws OWLExpressionParserException, OWLException {
-        try {
-            ManchesterOWLParser parser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
-                                                                 owlModelManager.getOWLDataFactory(),
-                                                                 entityMapper,
-                                                                 dataTypeMapper,
-                                                                 new StringReader(text)
-
-            );
-            try {
-                return parser.ParseQuery();
-            }
-            catch (ParseException e) {
-                throw getOWLDescriptionParserException(e);
-            }
-        }
-        catch (OWLException e) {
-            throw new OWLExpressionParserException(e);
-        }
-    }
+//    public boolean isWellFormedNode(String text) throws OWLExpressionParserException, OWLException {
+//        try {
+//            ManchesterOWLParser manchesterOWLParser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
+//                                                                              null,
+//                                                                              entityMapper,
+//                                                                              dataTypeMapper,
+//                                                                              new StringReader(text));
+//            manchesterOWLParser.ParseQuery();
+//            return true;
+//        }
+//        catch (ParseException e) {
+//            throw getOWLDescriptionParserException(e);
+//        }
+//    }
+//
+//
+//    public OWLDescriptionNode createOWLDescriptionNode(String text) throws OWLExpressionParserException, OWLException {
+//        try {
+//            ManchesterOWLParser parser = new ManchesterOWLParser(owlModelManager.getActiveOntologies(),
+//                                                                 owlModelManager.getOWLDataFactory(),
+//                                                                 entityMapper,
+//                                                                 dataTypeMapper,
+//                                                                 new StringReader(text)
+//
+//            );
+//            try {
+//                return parser.ParseQuery();
+//            }
+//            catch (ParseException e) {
+//                throw getOWLDescriptionParserException(e);
+//            }
+//        }
+//        catch (OWLException e) {
+//            throw new OWLExpressionParserException(e);
+//        }
+//    }
 
 
     private static boolean isTokenExpected(ParseException e, int tokenId) {
         for (int i = 0; i < e.expectedTokenSequences.length; i++) {
-            int expectedToken = e.expectedTokenSequences[i][0];
-            if (expectedToken == tokenId) {
+            int[] currentSequence = e.expectedTokenSequences[i];
+            int expectedToken = currentSequence[currentSequence.length - 1];
+            if (tokenId == expectedToken) {
                 return true;
             }
         }
@@ -260,6 +290,7 @@ public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
 
     private OWLExpressionParserException getOWLDescriptionParserException(ParseException e) {
         return new OWLExpressionParserException(getErrorMessage(e),
+
                                                 e.currentToken.next.beginColumn - 1,
                                                 e.currentToken.next.endColumn,
                                                 isTokenExpected(e, ManchesterOWLParserConstants.CLASSID),
@@ -281,10 +312,15 @@ public class ManchesterSyntaxParser implements OWLDescriptionNodeParser {
         buffer.append(e.currentToken.next.beginColumn);
         buffer.append('\n');
         buffer.append("Was expecting either:\n");
+        Set<Integer> added = new HashSet<Integer>();
         for (int i = 0; i < e.expectedTokenSequences.length; i++) {
-            buffer.append("\t\t");
-            buffer.append(tokenDescriptionMap.get(e.expectedTokenSequences[i][0]));
-            buffer.append('\n');
+            int current = e.expectedTokenSequences[i][0];
+            if (!added.contains(current)) {
+                buffer.append("\t\t");
+                buffer.append(tokenDescriptionMap.get(current));
+                buffer.append('\n');
+                added.add(current);
+            }
         }
         return buffer.toString();
     }
