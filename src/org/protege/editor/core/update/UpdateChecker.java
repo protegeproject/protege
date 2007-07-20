@@ -29,7 +29,7 @@ public class UpdateChecker {
 
     public UpdateChecker(URI updateFileURL, Bundle pluginDescriptor) {
         this.uri = updateFileURL;
-        this.b = b;
+        this.b = pluginDescriptor;
     }
 
 

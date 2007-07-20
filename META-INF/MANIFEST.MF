@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Protege Editor Framework
 Bundle-SymbolicName: org.protege.editor.core.application;singleton:=true
-Bundle-Version: 4.0.0
+Bundle-Version: 4.0.53
 Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
 Bundle-ClassPath: .
@@ -28,7 +28,7 @@ Export-Package: org.protege.editor.core,
  org.protege.editor.core.ui.workspace,
  org.protege.editor.core.ui.workspace.views,
  org.protege.editor.core.update
-Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common
+Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common,org.protege.common
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.packageadmin,org.osgi.util.tracker,
  org.eclipse.core.runtime; registry="split",

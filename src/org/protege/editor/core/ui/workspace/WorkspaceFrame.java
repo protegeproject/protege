@@ -158,6 +158,14 @@ public class WorkspaceFrame extends JFrame {
     }
 
 
+    public void updateTitle() {
+        String title = workspace.getTitle();
+        if (title != null) {
+            setTitle(title);
+        }
+    }
+
+
     private void createMenuBar() {
         // Delegate to the menu builder, which will create the
         // menus based on installed plugins.
