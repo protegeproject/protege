@@ -45,6 +45,11 @@ public class ProtegeProperties extends Properties {
 
     private static ProtegeProperties instance;
 
+	public static final String PLASTIC_3D_LAF = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
+
+	//Default Protege L&F
+	public static final String PLASTIC_LAF_NAME = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
+
 
     private ProtegeProperties() {
 

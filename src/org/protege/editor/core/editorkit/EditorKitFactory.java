@@ -24,7 +24,7 @@ public interface EditorKitFactory {
      * and therefore type of extension point to the protege
      * application.  This member contains the ID of the extension point.
      */
-    public static final String ID = "EditorKitFactory";
+    public static final String EXTENSION_POINT_ID = "EditorKitFactory";
 
 
     /**

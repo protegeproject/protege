@@ -26,7 +26,7 @@ public class ViewsPaneMemento {
 
     public ViewsPaneMemento(WorkspaceTab workspaceTab) {
         initialCongigFileURL = workspaceTab.getDefaultViewConfigurationFile();
-        workspaceTab.getId();
+        viewPaneId = workspaceTab.getId();
     }
 
 

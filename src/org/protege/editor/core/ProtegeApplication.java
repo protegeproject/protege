@@ -1,10 +1,13 @@
 package org.protege.editor.core;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
 import javax.swing.UIManager;
 
 import org.apache.log4j.BasicConfigurator;
@@ -12,8 +15,10 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
@@ -22,8 +27,38 @@ import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.update.UpdateManager;
 
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+
+
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ * Modifications to the initial code base are copyright of their
+ * respective authors, or their employers as appropriate.  Authorship
+ * of the modifications may be determined from the ChangeLog placed at
+ * the end of this file.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 /**
  * Author: Matthew Horridge<br>
@@ -42,6 +77,8 @@ public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
+    public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
+
     public static final String ID = "org.protege.editor.core.application";
 
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
@@ -49,7 +86,9 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
     
     private static BundleContext context;
-
+    
+    private boolean bundles_loaded = false;
+    
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
@@ -61,6 +100,7 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeApplication application = new ProtegeApplication();
         application.initApplication(new String[0]);
         ProtegeManager.getInstance().initialise(this);
+        application.startApplication();
     }
 
 
@@ -96,6 +136,7 @@ public class ProtegeApplication implements BundleActivator {
             }
         });
         processCommandLineURIs(args);
+        loadPlugins();
         return this;
     }
 
@@ -126,17 +167,42 @@ public class ProtegeApplication implements BundleActivator {
 
     private static void loadPreferences() {
         // Just the look and feel
-        String sysLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+        //String sysLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
-        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, sysLookAndFeelClassName);
+        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, ProtegeProperties.PLASTIC_LAF_NAME);
         try {
-            UIManager.setLookAndFeel(lafClsName);
+        	if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
+        		setProtegeDefaultLookAndFeel(lafClsName);
+        	} else {
+        		UIManager.setLookAndFeel(lafClsName);
+        	}
         }
         catch (Exception e) {
             logger.error(e);
         }
     }
 
+    
+    private static void setProtegeDefaultLookAndFeel(String lafName) {		
+		try {
+			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
+
+			PopupFactory.setSharedInstance(new PopupFactory());
+			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+
+			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+			UIManager.setLookAndFeel(lookAndFeel);		
+		} catch (ClassNotFoundException e) {
+			logger.warn("Look and feel not found: " + lafName);
+		} catch (Exception e) {
+			logger.warn(e.toString());
+		}
+	}
 
     private static void setupLogging() {
         BasicConfigurator.configure();
@@ -159,7 +225,7 @@ public class ProtegeApplication implements BundleActivator {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
                 errorLog.uncaughtException(t, e);
-                logger.warn(e.getMessage());
+                logger.warn("Uncaught Exception in thread " + t.getName(), e);
             }
         });
     }
@@ -181,6 +247,45 @@ public class ProtegeApplication implements BundleActivator {
                 logger.error(e);
             }
         }
+    }
+    
+    private void loadPlugins() {
+        if (bundles_loaded) return;
+        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
+        if  (dir_name == null) {
+            logger.info("no plugins found");
+            return;
+        }
+        File dir = new File(dir_name);
+        if (!dir.exists() || !dir.isDirectory()) {
+            logger.error("Plugin directory " + dir_name + " is invalid");
+            return;
+        }
+        List<Bundle> plugins = new ArrayList<Bundle>();
+        for (File plugin : dir.listFiles()) {
+            Bundle b = null;
+            try {
+                b = context.installBundle(plugin.toURI().toString());
+                plugins.add(b);
+            }
+            catch (Throwable t) {
+                logger.error("Could not install plugin ", t);
+            }
+        }
+        for (Bundle b  : plugins) {
+            try {
+                b.start();
+                String name = (String) b.getHeaders().get(Constants.BUNDLE_NAME);
+                if (name == null) {
+                    name = b.getSymbolicName();
+                }
+                logger.info("Installed plugin " + name);
+            }
+            catch (Throwable t) {
+                logger.error("Could not start bundle " + b.getSymbolicName(), t);
+            }
+        }
+        bundles_loaded = true;
     }
 
     /////////////////////////////////////////////////////////////////////////////////

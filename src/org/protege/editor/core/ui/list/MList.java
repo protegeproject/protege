@@ -54,6 +54,9 @@ public class MList extends JList {
 
     private static Font SECTION_HEADER_FONT = new Font("Lucida Grande", Font.PLAIN, 10);
 
+    private static final Color itemBackgroundColor = new Color(240, 245, 240);
+
+
     private List<MListButton> editAndDeleteButtons;
 
     private List<MListButton> deleteButtonOnly;
@@ -181,9 +184,13 @@ public class MList extends JList {
     }
 
 
+    protected Color getItemBackgroundColor(MListItem item) {
+        return itemBackgroundColor;
+    }
+
+
     private class MListCellRenderer implements ListCellRenderer {
 
-        private Color itemBackgroundColor = new Color(240, 245, 240);
 
         private ListCellRenderer contentRenderer;
 
@@ -231,7 +238,7 @@ public class MList extends JList {
                                                             BorderFactory.createEmptyBorder(1, 1, 1, buttonSpan));
                 component.setBorder(border);
                 if (!isSelected) {
-                    component.setBackground(itemBackgroundColor);
+                    component.setBackground(getItemBackgroundColor((MListItem) value));
                 }
             }
             if (isSelected) {

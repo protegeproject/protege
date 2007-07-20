@@ -19,6 +19,7 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -28,6 +29,45 @@ import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
 import org.protege.editor.core.ui.view.ViewHolder;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
+import org.protege.editor.core.ui.view.*;
+
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.Set;
+
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ * Modifications to the initial code base are copyright of their
+ * respective authors, or their employers as appropriate.  Authorship
+ * of the modifications may be determined from the ChangeLog placed at
+ * the end of this file.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 
 /**
@@ -53,7 +93,7 @@ public abstract class Workspace extends JComponent {
     public static final String WINDOW_MENU_NAME = "Window";
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
-
+            	
     private EditorKit editorKit;
 
     private WorkspaceViewManager viewManager;
@@ -134,21 +174,74 @@ public abstract class Workspace extends JComponent {
     private void installLookAndFeelMenu(JMenu windowMenu) {
         windowMenu.addSeparator();
         JMenu menu = new JMenu("Look & Feel");
+        ButtonGroup lafMenuItemGroup = new ButtonGroup();
+        
         windowMenu.add(menu);
+        
+        Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
+        String lafName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
+        
+        JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
+			public void actionPerformed(ActionEvent arg0) {
+				setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
+			}        	
+        });
+        lafMenuItemGroup.add(protegeDefaultMenuItem);
+        protegeDefaultMenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_LAF_NAME));
+        menu.add(protegeDefaultMenuItem);    
+        
         for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            menu.add(new AbstractAction(info.getName()) {
-                public void actionPerformed(ActionEvent e) {
-                    setLookAndFeel(info.getClassName());
-                }
-            });
+        	final String className = info.getClassName();
+        	JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem( 
+        			new AbstractAction(info.getName()) {
+        				public void actionPerformed(ActionEvent e) {
+        					setLookAndFeel(className);
+        				}
+        	});
+        	lafMenuItemGroup.add(menuItem);
+        	menuItem.setSelected(lafName.equals(className));
+        	menu.add(menuItem);
         }
-        menu.add(new AbstractAction("Plastic 3D") {
+        
+        JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
             public void actionPerformed(ActionEvent e) {
-                setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+                setLookAndFeel(ProtegeProperties.PLASTIC_3D_LAF);
             }
         });
+        lafMenuItemGroup.add(plastic3DmenuItem);
+        plastic3DmenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_3D_LAF));        
+        menu.add(plastic3DmenuItem);
     }
 
+    
+    private void setProtegeDefaultLookAndFeel(String lafName) {		 
+		try {
+			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
+
+			PopupFactory.setSharedInstance(new PopupFactory());
+			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+
+			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+			UIManager.setLookAndFeel(lookAndFeel);
+			
+			//copied from below
+            SwingUtilities.updateComponentTreeUI(Workspace.this);
+            
+            Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
+            p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
+			
+		} catch (ClassNotFoundException e) {
+			logger.warn("Look and feel not found: " + lafName);
+		} catch (Exception e) {
+			logger.warn(e.toString());
+		}
+	}
+    
 
     private void setLookAndFeel(String clsName) {
         try {
