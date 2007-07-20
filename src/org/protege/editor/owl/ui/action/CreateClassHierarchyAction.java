@@ -33,6 +33,7 @@ public class CreateClassHierarchyAction extends ProtegeOWLAction {
                 List<Edge> edges = parser.parse(new StringReader(hierarchy));
                 OWLClassHierarchyCreator creator = new OWLClassHierarchyCreator(getOWLModelManager().getOWLDataFactory(),
                                                                                 w.getRootClass(),
+                                                                                w.isMakeSiblingClassesDisjoint(),
                                                                                 getOWLModelManager().getActiveOntology(),
                                                                                 edges);
                 List<OWLOntologyChange> changes = creator.createHierarchy();

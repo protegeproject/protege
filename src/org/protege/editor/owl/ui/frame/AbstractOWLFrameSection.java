@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
@@ -226,7 +227,11 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
 
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
         if (comparator != null) {
-            Collections.sort(rows, comparator);
+//            Collections.sort(rows, comparator);
+            TreeSet ts = new TreeSet(comparator);
+            ts.addAll(rows);
+            rows.clear();
+            rows.addAll(ts);
         }
         fireContentChanged();
     }

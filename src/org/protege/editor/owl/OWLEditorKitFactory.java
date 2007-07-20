@@ -18,6 +18,7 @@ import org.protege.editor.core.editorkit.EditorKitFactory;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEditorKitFactory implements EditorKitFactory {
+    public static final String ID = "org.protege.editor.owl.OWLEditorKitFactory";
 
     public static final List<String> OWL_EXTENSIONS = Arrays.asList(".owl", ".rdf", ".xml");
 
@@ -28,7 +29,7 @@ public class OWLEditorKitFactory implements EditorKitFactory {
      *         clsdescriptioneditor kit factory.
      */
     public String getId() {
-        return "OWLEditorKitFactory";
+        return ID;
     }
 
 
