@@ -10,12 +10,17 @@
 	
 
   <target name="bundle" depends="init">
+    <copy todir="${commonlibs.classes}/lib">
+        <fileset dir="${commonlibs.dir}/lib"/>
+    </copy>
+    <!--
     <unjar src = "${commonlibs.dir}/lib/commons-logging.jar"
            dest="${commonlibs.classes}"/>
     <unjar src = "${commonlibs.dir}/lib/log4j.jar"
            dest="${commonlibs.classes}"/>
     <unjar src = "${commonlibs.dir}/lib/looks.jar"
            dest="${commonlibs.classes}"/>
+    -->
     <jar basedir = "${commonlibs.classes}"
          jarfile  = "${commonlibs.jar}"
          manifest = "${commonlibs.dir}/META-INF/MANIFEST.MF"/>
