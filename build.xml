@@ -9,10 +9,11 @@
         <!-- =================================================================== -->
         <!-- Classpath declaration - used in the "compile" target -->
         <!-- =================================================================== -->
-        <path id = "core.classpath">    
-                <pathelement path="${commonlibs.jar}"/>
-                <path refid = "osgi.libs"/>
-                <fileset dir="${lib.dir}"/>
+        <path id = "local.classpath">    
+            <pathelement path="${commonlibs.jar}"/>
+            <path refid="commonlibs.classpath"/>
+            <path refid = "osgi.libs"/>
+            <path refid="core.classpath"/>
         </path>
 
         <!-- =================================================================== -->
@@ -33,7 +34,7 @@
                        debug = "${debug}" 
                        source = "${source}" 
                        includeAntRuntime = "${includeAntRuntime}">
-                        <classpath refid = "core.classpath"/>
+                        <classpath refid = "local.classpath"/>
                 </javac>
         </target>
         
@@ -46,8 +47,15 @@
             <fileset dir="${resources.dir}"/>
           </copy>
           <copy file="${core.dir}/plugin.xml" todir="${core.classes}"/>
-          <unjar src="${lib.dir}/mdock.jar"               dest="${core.classes}"/>
-          <unjar src="${lib.dir}/swing-worker.jar"        dest="${core.classes}"/>
+          <copy todir="${core.classes}/lib">
+              <fileset dir="${core.dir}/lib"/>
+          </copy>
+          <!--
+          <unjar src="${lib.dir}/mdock.jar"               
+                 dest="${core.classes}"/>
+          <unjar src="${lib.dir}/swing-worker.jar"        
+                 dest="${core.classes}"/>
+          -->
           <jar basedir = "${core.classes}"
                destfile = "${core.jar}"
                manifest = "${core.dir}/META-INF/MANIFEST.MF"/>
