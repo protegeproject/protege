@@ -11,7 +11,9 @@
     <path id = "owleditor.classpath">    
         <path refid = "osgi.libs"/>
         <pathelement path="${commonlibs.jar}"/>
+        <path refid="commonlibs.classpath"/>
         <pathelement location = "${core.jar}"/>
+        <path refid="core.classpath"/>
         <pathelement location = "${owlapi.jar}"/>
     </path>
 
