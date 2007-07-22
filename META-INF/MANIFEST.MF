@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.protege.editor.core.application;singleton:=true
 Bundle-Version: 4.0.53
 Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
-Bundle-ClassPath: .
+Bundle-ClassPath: .,lib/mdock.jar,lib/swing-worker.jar
 Bundle-Activator: org.protege.editor.core.ProtegeApplication
 Export-Package: org.protege.editor.core,
  org.protege.editor.core.editorkit,
