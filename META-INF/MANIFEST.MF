@@ -11,11 +11,13 @@ Export-Package: org.protege.editor.core,
  org.protege.editor.core.editorkit,
  org.protege.editor.core.plugin,
  org.protege.editor.core.prefs,
+ org.protege.editor.core.ui,
  org.protege.editor.core.ui.about,
  org.protege.editor.core.ui.action,
  org.protege.editor.core.ui.error,
  org.protege.editor.core.ui.list,
- org.protege.editor.core.ui.menu.editorkit,
+ org.protege.editor.core.ui.menu,
+ org.protege.editor.core.ui.preferences,
  org.protege.editor.core.ui.preferences.node,
  org.protege.editor.core.ui.split,
  org.protege.editor.core.ui.tabbedpane,
@@ -32,7 +34,8 @@ Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common,org.prot
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.packageadmin,org.osgi.util.tracker,
  org.eclipse.core.runtime; registry="split",
- org.apache.log4j
+ org.apache.log4j,
+ javax.servlet
 Update-Url: http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml
 Bundle-Description: Generic Ontology Editor Bundle
 Bundle-Category: protege
