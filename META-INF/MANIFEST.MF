@@ -7,6 +7,7 @@ Bundle-Vendor: Protege Development Team
 Bundle-Category: protege
 Bundle-ClassPath: .,lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar
 Import-Package: org.osgi.framework
+DynamicImport-Package: javax.swing.*
 Export-Package: org.apache.log4j,
  com.jgoodies.looks,
  com.jgoodies.looks.common,
@@ -16,4 +17,5 @@ Export-Package: org.apache.log4j,
  com.jgoodies.looks.windows,
  com.jgoodies.looks.windows.icons,
  org.apache.commons.logging,
- org.apache.commons.logging.impl
+ org.apache.commons.logging.impl,
+ org.apache.log4j.spi
