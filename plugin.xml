@@ -803,7 +803,7 @@
     <!-- Finder prefs -->
 
     <extension id="ui.find.prefs"
-                point="org.protege.editor.core.application.org.protege.editor.core.preferencespanel">
+                point="org.protege.editor.core.application.preferencespanel">
         <label value="Find/Search"/>
         <class value="org.protege.editor.owl.ui.find.FinderPreferencesPanel"/>
     </extension>
