@@ -4,6 +4,8 @@ Bundle-SymbolicName: org.protege.common
 Bundle-Version: 1.0.0
 Bundle-Description: Some common libraries
 Bundle-Vendor: Protege Development Team
+Bundle-ContactAddress: p4-feedback@lists.stanford.edu
+Bundle-DocURL: http://protege.stanford.edu
 Bundle-Category: protege
 Bundle-ClassPath: .,lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar
 Import-Package: org.osgi.framework
