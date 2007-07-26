@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.LookAndFeel;
@@ -78,6 +79,10 @@ public class ProtegeApplication implements BundleActivator {
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
+    
+    public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
+    
+    public final static char BUNDLE_EXTRA_SEPARATOR = ':';
 
     public static final String ID = "org.protege.editor.core.application";
 
@@ -249,6 +254,24 @@ public class ProtegeApplication implements BundleActivator {
         }
     }
     
+    private List<File> getExtraBundles() {
+    	String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
+    	List<File> extra_bundles = new ArrayList<File>();
+    	while (remaining != null && remaining.length() != 0) {
+    		int index = remaining.indexOf(BUNDLE_EXTRA_SEPARATOR);
+    		if (index < 0) {
+    			extra_bundles.add(new File(remaining));
+    			return extra_bundles;
+    		}
+    		else {
+    			extra_bundles.add(new File(remaining.substring(0, index)));
+    			remaining = remaining.substring(index+1);
+    		}
+    	}
+    	return extra_bundles;
+    }
+
+    
     private void loadPlugins() {
         if (bundles_loaded) return;
         String dir_name = System.getProperty(BUNDLE_DIR_PROP);
@@ -261,8 +284,11 @@ public class ProtegeApplication implements BundleActivator {
             logger.error("Plugin directory " + dir_name + " is invalid");
             return;
         }
+        List<File> locations = new ArrayList<File>();
+        for (File f : dir.listFiles()) locations.add(f);
+        locations.addAll(getExtraBundles());
         List<Bundle> plugins = new ArrayList<Bundle>();
-        for (File plugin : dir.listFiles()) {
+        for (File plugin : locations) {
             Bundle b = null;
             try {
                 b = context.installBundle(plugin.toURI().toString());
@@ -332,12 +358,9 @@ public class ProtegeApplication implements BundleActivator {
         UpdateManager.getInstance().checkForUpdates(false);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Implementation of Plugin
-    //
-    /////////////////////////////////////////////////////////////////////////////////
 
+
+  
 
 
 }
