@@ -41,9 +41,9 @@ import org.eclipse.core.runtime.IExtension;
  */
 public abstract class JPFUtil implements ProtegePlugin {
     private static final Logger log = Logger.getLogger(JPFUtil.class);
+    public final static String EXTENSION_DOCUMENTATION = "documentation";
 
     public static String getDocumentation(IExtension extension) {
-        log.error("Don't know what to do about documentation yet");
-        return "";
+        return PluginUtilities.getAttribute(extension, EXTENSION_DOCUMENTATION);
     }
 }
