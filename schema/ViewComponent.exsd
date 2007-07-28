@@ -20,6 +20,7 @@ docking system that is present in the core system
             <element ref="headerColor" minOccurs="0" maxOccurs="1"/>
             <element ref="userCreatable" minOccurs="0" maxOccurs="1"/>
             <element ref="category"/>
+            <element ref="documentation" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -127,6 +128,18 @@ own.
       </annotation>
       <complexType>
          <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="document">
+      <complexType>
+         <attribute name="value" type="string">
             <annotation>
                <documentation>
                   
