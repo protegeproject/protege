@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.about;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -25,7 +26,7 @@ import org.protege.editor.core.ProtegeApplication;
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
-    private List<Bundle> bundles;
+    private List<Bundle> bundles = new ArrayList<Bundle>();
     
     public enum Columns  {
         NAME("Name/ID"), VERSION("Version"), BUILD("Build");
