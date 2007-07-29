@@ -1,9 +1,3 @@
-The OWL API jars were checked out from the OWLAPI subversion repository
+The OWL API jars correspond to release 2.1.0 (see OWL API release-2.1.0 tag)
 
-https://owlapi.svn.sourceforge.net/svnroot/owlapi/owl1_1/trunk
-
-Revision 307
-
-They were built using Maven using the following command
-
-mvn package assembly:assembly
+https://owlapi.svn.sourceforge.net/svnroot/owlapi/owl1_1/tags
