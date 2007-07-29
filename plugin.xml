@@ -4,7 +4,8 @@
 
     <!-- requires the core protege application plug-in -->
     <requires>
-        <import exported="false" match="compatible" optional="false" plugin-id="org.protege.editor.core.application" reverse-lookup="false"/>
+        <import exported="false" match="compatible" optional="false" plugin-id="org.protege.editor.core.application"
+                reverse-lookup="false"/>
     </requires>
 
     <runtime>
@@ -30,6 +31,9 @@
         <library id="owlapi-apibinding" path="lib/owlapi-apibinding.jar" type="code">
             <export prefix="*"/>
         </library>
+        <library id="owlapi-change" path="lib/owlapi-change.jar" type="code">
+            <export prefix="*"/>
+        </library>
         <library id="owlapi-debugging" path="lib/owlapi-debugging.jar" type="code">
             <export prefix="*"/>
         </library>
@@ -46,6 +50,9 @@
             <export prefix="*"/>
         </library>
         <library id="owlapi-krssparser" path="lib/owlapi-krssparser.jar" type="code">
+            <export prefix="*"/>
+        </library>
+        <library id="owlapi-metrics" path="lib/owlapi-metrics.jar" type="code">
             <export prefix="*"/>
         </library>
         <library id="owlapi-oboparser" path="lib/owlapi-oboparser.jar" type="code">
@@ -85,7 +92,8 @@
         <parameter-def id="class" multiplicity="one" type="string"/>
     </extension-point>
 
-    <extension id="FolderLibrary" plugin-id="org.protege.editor.owl" point-id="org.protege.editor.owl.model.libraryfactory">
+    <extension id="FolderLibrary" plugin-id="org.protege.editor.owl"
+               point-id="org.protege.editor.owl.model.libraryfactory">
         <parameter id="class" value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
     </extension>
 
@@ -99,14 +107,16 @@
 
     <!-- Renderer prefs -->
 
-    <extension id="org.protege.editor.owl.ui.preferences.renderer" plugin-id="org.protege.editor.core.application" point-id="org.protege.editor.core.preferencespanel">
+    <extension id="org.protege.editor.owl.ui.preferences.renderer" plugin-id="org.protege.editor.core.application"
+               point-id="org.protege.editor.core.preferencespanel">
         <parameter id="label" value="Renderer"/>
         <parameter id="class" value="org.protege.editor.owl.ui.renderer.RendererPreferencesPanel"/>
     </extension>
 
     <!-- Ontology Tab -->
 
-    <extension id="org.protege.editor.owl.OWLOntologyTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLOntologyTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Active Ontology"/>
         <parameter id="class" value="org.protege.editor.owl.ui.ontology.OWLOntologyTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -115,7 +125,8 @@
     </extension>
 
     <!-- Entities Tab -->
-    <extension id="org.protege.editor.owl.OWLEntitesTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLEntitesTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Entities"/>
         <parameter id="class" value="org.protege.editor.owl.ui.OWLEntitiesTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -124,7 +135,8 @@
     </extension>
     <!-- Classes Tab -->
 
-    <extension id="org.protege.editor.owl.OWLClassesTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLClassesTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Classes"/>
         <parameter id="class" value="org.protege.editor.owl.ui.OWLClassesTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -134,7 +146,8 @@
 
     <!-- Object Properties Tab -->
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertiesTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLObjectPropertiesTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Object Properties"/>
         <parameter id="class" value="org.protege.editor.owl.ui.OWLObjectPropertiesTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -144,7 +157,8 @@
 
     <!-- Data properties tab -->
 
-    <extension id="org.protege.editor.owl.OWLDataPropertiesTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLDataPropertiesTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Data Properties"/>
         <parameter id="class" value="org.protege.editor.owl.ui.OWLDataPropertiesTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -154,7 +168,8 @@
 
     <!-- Individuals view -->
 
-    <extension id="org.protege.editor.owl.OWLIndividualsTab" plugin-id="org.protege.editor.core.application" point-id="WorkspaceTab">
+    <extension id="org.protege.editor.owl.OWLIndividualsTab" plugin-id="org.protege.editor.core.application"
+               point-id="WorkspaceTab">
         <parameter id="label" value="Individuals"/>
         <parameter id="class" value="org.protege.editor.owl.ui.OWLIndividualsTab"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
@@ -176,35 +191,49 @@
 
     <!-- Views -->
 
-    <extension id="org.protege.editor.owl.OWLOntologyAnnotationsView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLOntologyAnnotationsView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Ontology Annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLOntologyAnnotationViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLOntologyMetricsView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLOntologyMetricsView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Ontology Metrics"/>
         <parameter id="class" value="org.protege.editor.owl.ui.metrics.MetricsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.DLMetricsView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.DLMetricsView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="DL Metrics"/>
         <parameter id="class" value="org.protege.editor.owl.ui.metrics.DLMetricsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLOntologyImportsTable" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLOntologyImportsTable" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Imported Ontologies"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLImportsDeclarationsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.GeneralClassAxioms" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+
+    <extension id="org.protege.editor.owl.SWRLRules" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
+        <parameter id="label" value="SWRL Rules"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.view.SWRLRulesViewComponent"/>
+        <parameter id="headerColor" value="@org.protege.ontologycolor"/>
+        <parameter id="category" value="@org.protege.ontologycategory"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.GeneralClassAxioms" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="General Class Axioms"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLGeneralAxiomsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
@@ -212,21 +241,24 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLAssertedClassHierarchy" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLAssertedClassHierarchy" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Asserted Class Hierarchy"/>
         <parameter id="class" value="org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
         <parameter id="category" value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLAssertedSuperClassHierarchy" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLAssertedSuperClassHierarchy"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Asserted Superclass Hierarchy"/>
         <parameter id="class" value="org.protege.editor.owl.ui.clshierarchy.ToldSuperClassHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
         <parameter id="category" value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLInferredSuperClassHierarchy" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLInferredSuperClassHierarchy"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Inferred Superclass Hierarchy"/>
         <parameter id="class" value="org.protege.editor.owl.ui.clshierarchy.InferredSuperClassHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
@@ -234,14 +266,16 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLIndividualsByClass" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualsByClass" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Individuals By Class"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualsByClassViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
         <parameter id="category" value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLClassAnnotations" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLClassAnnotations" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Class Annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLClassAnnotationsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
@@ -249,35 +283,40 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLClassDescription" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLClassDescription" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Class Description"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLClassDescriptionViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
         <parameter id="category" value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyTree" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyTree" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Object Properties"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
         <parameter id="category" value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyTree" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyTree" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Data Properties"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
         <parameter id="category" value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyAnnotations" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyAnnotations" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyAnnotationsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
         <parameter id="category" value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyDescription" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyDescription" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Description"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyDescriptionViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
@@ -285,42 +324,48 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyDomainsAndRanges" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyDomainsAndRanges"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Domains and ranges"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyDomainsAndRangesViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
         <parameter id="category" value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyDescription" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyDescription" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Description"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyDescriptionViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
         <parameter id="category" value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyCharacteristics" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyCharacteristics"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Characteristics"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyCharacteristicsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
         <parameter id="category" value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyAnnotations" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyAnnotations" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Data Property Annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyAnnotationsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
         <parameter id="category" value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyDomainsAndRanges" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyDomainsAndRanges"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Domains and ranges"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyDomainsAndRangesViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
         <parameter id="category" value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyCharacteristics" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyCharacteristics"
+               plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
         <parameter id="label" value="Data Property characteristics"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyCharacteristicsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
@@ -328,7 +373,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.OWLIndividualsList" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualsList" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Individuals"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualListViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
@@ -345,21 +391,24 @@
     </extension>
     -->
 
-    <extension id="org.protege.editor.owl.OWLIndividualAnnotations" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualAnnotations" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Individual Annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualAnnotationsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
         <parameter id="category" value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualTypes" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualTypes" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Description"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualDescriptionViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
         <parameter id="category" value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualRelationships" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualRelationships" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Property assertions"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualPropertyAssertionsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
@@ -369,21 +418,24 @@
 
     <!-- Renderer views -->
 
-    <extension id="org.protege.editor.owl.RDFXML" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.RDFXML" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="RDF/XML Rendering"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.RDFXMLRenderingViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLXML" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLXML" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="OWL/XML Rendering"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLXMLRenderingViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLFunctionalSyntax" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLFunctionalSyntax" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="OWL Functional Syntax Rendering"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLFunctionalSyntaxRenderingViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
@@ -401,7 +453,8 @@
     <!-- Menu items -->
     <!-- File menu -->
 
-    <extension id="org.protege.editor.core.menu.FileMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.FileMenu" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="File"/>
         <parameter id="toolTip" value="File menu"/>
         <parameter id="path" value="/SlotA-A"/>
@@ -409,7 +462,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.openfromURI" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.openfromURI" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Open from URI..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.OpenFromURIAction"/>
         <parameter id="toolTip" value="Open an ontology from a URI"/>
@@ -419,14 +473,16 @@
     </extension>
 
 
-    <extension id="org.protege.editor.core.menu.EditMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.EditMenu" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Edit"/>
         <parameter id="toolTip" value=""/>
         <parameter id="path" value="/SlotB-A"/>
         <parameter id="editorKitId" value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.change.undo" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.change.undo" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Undo"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.UndoAction"/>
         <parameter id="toolTip" value="Undo the last set of changes"/>
@@ -435,17 +491,20 @@
         <parameter id="accelerator" value="Z"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.gatherontologies" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.gatherontologies" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Gather ontologies..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.GatherOntologiesAction"/>
-        <parameter id="toolTip" value="Collects together all loaded ontologies in a particular folder without modifying the originals"/>
+        <parameter id="toolTip"
+                   value="Collects together all loaded ontologies in a particular folder without modifying the originals"/>
         <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAB-C"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
         <parameter id="accelerator" value="shift G"/>
     </extension>
 
 
-    <extension id="org.protege.editor.owl.change.redo" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.change.redo" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Redo"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.RedoAction"/>
         <parameter id="toolTip" value="Redo the last set of changes"/>
@@ -455,7 +514,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.find" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.find" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Find in view..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.FindAction"/>
         <parameter id="toolTip" value="Find an entity in the focused view"/>
@@ -465,7 +525,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.cut" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.cut" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Cut"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CutAction"/>
         <parameter id="toolTip" value="Cut"/>
@@ -475,7 +536,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.copy" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.copy" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Copy"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CopyAction"/>
         <parameter id="toolTip" value="Copy"/>
@@ -485,7 +547,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.paste" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.paste" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Paste"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.PasteAction"/>
         <parameter id="toolTip" value="Paste"/>
@@ -497,7 +560,8 @@
 
     <!-- Create actions -->
 
-    <extension id="org.protege.editor.owl.createnew" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.createnew" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Create new"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CreateNewObjectAction"/>
         <parameter id="toolTip" value="Create a new object in the selected view"/>
@@ -507,7 +571,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.createnewchild" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.createnewchild" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Create child"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CreateNewChildAction"/>
         <parameter id="toolTip" value="Create a child of the selected object in the selected view"/>
@@ -516,7 +581,8 @@
         <parameter id="accelerator" value="BACK_SLASH"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.createnewsibling" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.createnewsibling" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Create sibling"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CreateNewSiblingAction"/>
         <parameter id="toolTip" value="Create a sibling of the selected object in the selected view"/>
@@ -526,16 +592,19 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.edit.duplicate" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.edit.duplicate" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Duplicate selected class"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
-        <parameter id="toolTip" value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
+        <parameter id="toolTip"
+                   value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
         <parameter id="path" value="org.protege.editor.core.menu.EditMenu/SlotM-A"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
         <parameter id="accelerator" value="shift C"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.ConvertToPrimitveClass" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.ConvertToPrimitveClass" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Convert to primitive class"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.ConvertToPrimitiveClassAction"/>
         <parameter id="toolTip" value="Converts the equivalent classes of the selected class to superclasses."/>
@@ -545,7 +614,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.menu.ConvertToDefinedClass" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.ConvertToDefinedClass" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Convert to defined class"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.ConvertToDefinedClassAction"/>
         <parameter id="toolTip" value="Converts the superclasses of the selected class to an equivalent class."/>
@@ -554,18 +624,22 @@
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.AddCoveringAxiom" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.AddCoveringAxiom" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Add covering axiom"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.AddCoveringAxiomAction"/>
-        <parameter id="toolTip" value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D              then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one              of its subclasses."/>
+        <parameter id="toolTip"
+                   value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D              then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one              of its subclasses."/>
         <parameter id="path" value="org.protege.editor.core.menu.EditMenu/SlotM-D"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.MakeAllIndividualsDistinct" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.MakeAllIndividualsDistinct"
+               plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Make all individuals distinct..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
-        <parameter id="toolTip" value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
+        <parameter id="toolTip"
+                   value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
         <parameter id="path" value="org.protege.editor.core.menu.EditMenu/SlotM-E"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
@@ -581,17 +655,20 @@
     </extension>
     -->
 
-    <extension id="org.protege.editor.owl.menu.MakePrimitiveSiblingsDisjoint" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.MakePrimitiveSiblingsDisjoint"
+               plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Make primitive siblings disjoint"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
-        <parameter id="toolTip" value="Makes primitive sibling classes disjoint.  All disjoint axioms are added             to the current ontology."/>
+        <parameter id="toolTip"
+                   value="Makes primitive sibling classes disjoint.  All disjoint axioms are added             to the current ontology."/>
         <parameter id="path" value="org.protege.editor.core.menu.EditMenu/SlotM-F"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
         <parameter id="accelerator" value="J"/>
     </extension>
 
 
-    <extension id="org.protege.editor.owl.ui.prefix" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.ui.prefix" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Prefixes..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.prefix.ShowPrefixMappingsAction"/>
         <parameter id="toolTip" value="View and edit the prefix value mappings"/>
@@ -603,7 +680,8 @@
 
     <!-- Ontology libraries/locations -->
 
-    <extension id="org.protege.editor.owl.file.showontologylibraries" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.file.showontologylibraries" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Ontology libraries..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.library.ShowOntologyLibrariesAction"/>
         <parameter id="toolTip" value="View, add and edit the ontology libraries"/>
@@ -612,24 +690,28 @@
         <parameter id="accelerator" value="L"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.file.ontologylocations" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.file.ontologylocations" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Loaded ontology sources..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
-        <parameter id="toolTip" value="Shows the physical URIs from where currently loaded ontologies were obtained from"/>
+        <parameter id="toolTip"
+                   value="Shows the physical URIs from where currently loaded ontologies were obtained from"/>
         <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotD-B"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 
     <!-- Reasoner menu -->
 
-    <extension id="org.protege.editor.core.menu.Reasoner" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.core.menu.Reasoner" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Reasoner"/>
         <parameter id="toolTip" value="Invoke and configure reasoners"/>
         <parameter id="path" value="/SlotD-A"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.inference.computeinconsistentclasses" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.inference.computeinconsistentclasses"
+               plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Classify..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.inference.ClassifyAction"/>
         <parameter id="toolTip" value="Classify ontology and show resutls"/>
@@ -639,7 +721,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.InferredOWLClassHierarchy" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.InferredOWLClassHierarchy" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Inferred class hierarchy"/>
         <parameter id="class" value="org.protege.editor.owl.ui.clshierarchy.InferredOWLClassHierarchyViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
@@ -648,7 +731,8 @@
 
     <!-- Refactor menu -->
 
-    <extension id="org.protege.editor.owl.menu.Refactor" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.Refactor" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Refactor"/>
         <parameter id="toolTip" value="Refactor the ontology, or the selected class, property or individual"/>
         <parameter id="path" value="/SlotH-A"/>
@@ -656,7 +740,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.deleteentity" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.deleteentity" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Delete ..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.DeleteAction"/>
         <parameter id="toolTip" value="Deletes the selection in the focused view"/>
@@ -665,7 +750,8 @@
         <parameter id="accelerator" value="DELETE"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.RenameEntity" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.RenameEntity" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Rename..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.RenameEntityAction"/>
         <parameter id="toolTip" value="Change the URI of the selected entity (rename)"/>
@@ -674,7 +760,18 @@
         <parameter id="accelerator" value="U"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.ChangeOntologyURI" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.ChangePropertyAssertionPunsToAnnotations"
+               plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+        <parameter id="name" value="Convert property assertion on class/individual puns to annotations"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.ConvertAssertionsOnPunsToAnnotations"/>
+        <parameter id="toolTip"
+                   value="Converts any property assertions with a subject which is a pun to an annotation on the class which is punned"/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotA-D"/>
+        <parameter id="editorKitId" value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.menu.ChangeOntologyURI" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Change ontology URI..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.ChangeOntologyURI"/>
         <parameter id="toolTip" value="Change the URI of the active ontology"/>
@@ -683,7 +780,8 @@
     </extension>
 
 
-    <extension id="org.protege.editor.owl.menu.MergeOntologies" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.MergeOntologies" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Merge ontologies..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.MergeOntologiesAction"/>
         <parameter id="toolTip" value="Merge one or more ontologies into an existing or new ontology."/>
@@ -704,13 +802,15 @@
 
     <!-- Tools menu -->
 
-    <extension id="org.protege.editor.owl.menu.tools" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.tools" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Tools"/>
         <parameter id="path" value="/SlotG-A"/>
         <parameter id="editorKitId" value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.file.usage" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.file.usage" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Usage..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.ShowUsageAction"/>
         <parameter id="toolTip" value="Shows the usage of the selected entity"/>
@@ -730,10 +830,12 @@
 
 
     <!-- Hierarchy creation -->
-    <extension id="org.protege.editor.owl.menu.CreateClassHierarchy" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+    <extension id="org.protege.editor.owl.menu.CreateClassHierarchy" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
         <parameter id="name" value="Create class hierarchy..."/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.CreateClassHierarchyAction"/>
-        <parameter id="toolTip" value="Creates a class hierarchy from tab indented text, and inserts the new                        hierarchy into the existing class hierarchy at a specified position."/>
+        <parameter id="toolTip"
+                   value="Creates a class hierarchy from tab indented text, and inserts the new                        hierarchy into the existing class hierarchy at a specified position."/>
         <parameter id="path" value="org.protege.editor.owl.menu.tools/SlotF-A"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
@@ -741,28 +843,32 @@
 
     <!-- Usage Views -->
 
-    <extension id="org.protege.editor.owl.OWLClassUsageView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLClassUsageView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Class Usage"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLClassUsageViewComponent"/>
         <parameter id="headerColor" value="@org.protege.classcolor"/>
         <parameter id="category" value="@org.protege.classcategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLObjectPropertyUsageView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLObjectPropertyUsageView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Object Property Usage"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLObjectPropertyUsageViewComponent"/>
         <parameter id="headerColor" value="@org.protege.objectpropertycolor"/>
         <parameter id="category" value="@org.protege.objectpropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLDataPropertyUsageView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLDataPropertyUsageView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Data Property Usage"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLDataPropertyUsageViewComponent"/>
         <parameter id="headerColor" value="@org.protege.datapropertycolor"/>
         <parameter id="category" value="@org.protege.datapropertycategory"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.OWLIndividualUsageView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.OWLIndividualUsageView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Individual Usage"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.OWLIndividualUsageViewComponent"/>
         <parameter id="headerColor" value="@org.protege.individualcolor"/>
@@ -796,7 +902,8 @@
     </extension>
     -->
 
-    <extension id="NoOpReasoner" plugin-id="org.protege.editor.owl" point-id="org.protege.editor.owl.inference.reasonerfactory">
+    <extension id="NoOpReasoner" plugin-id="org.protege.editor.owl"
+               point-id="org.protege.editor.owl.inference.reasonerfactory">
         <parameter id="name" value="None"/>
         <parameter id="class" value="org.protege.editor.owl.model.inference.NoOpReasonerFactory"/>
         <parameter id="defaultReasoner" value="true"/>
@@ -807,25 +914,36 @@
 
     <!-- Ontology prefs -->
 
-    <extension id="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel" plugin-id="org.protege.editor.core.application" point-id="org.protege.editor.core.preferencespanel">
+    <extension id="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"
+               plugin-id="org.protege.editor.core.application" point-id="org.protege.editor.core.preferencespanel">
         <parameter id="label" value="New Ontologies"/>
         <parameter id="class" value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
     <!-- Finder prefs -->
 
-    <extension id="org.protege.editor.owl.ui.find.prefs" plugin-id="org.protege.editor.core.application" point-id="org.protege.editor.core.preferencespanel">
+    <extension id="org.protege.editor.owl.ui.find.prefs" plugin-id="org.protege.editor.core.application"
+               point-id="org.protege.editor.core.preferencespanel">
         <parameter id="label" value="Find/Search"/>
         <parameter id="class" value="org.protege.editor.owl.ui.find.FinderPreferencesPanel"/>
     </extension>
 
     <!-- Reasoner prefs -->
 
-    <extension id="org.protege.editor.owl.SelectedEntityView" plugin-id="org.protege.editor.core.application" point-id="ViewComponent">
+    <extension id="org.protege.editor.owl.SelectedEntityView" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
         <parameter id="label" value="Selected entity"/>
         <parameter id="class" value="org.protege.editor.owl.ui.view.SelectedEntityCardView"/>
         <parameter id="headerColor" value="565656"/>
         <parameter id="category" value="@org.protege.individualcategory"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.SelectedEntityView2" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
+        <parameter id="label" value="Selected entity 2"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.view.OWLEntityViewComponent"/>
+        <parameter id="headerColor" value="565656"/>
+        <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
 
