@@ -69,4 +69,4 @@ Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
  org.protege.editor.core.application,
- owlapi
+ org.semanticweb.owl.owlapi
