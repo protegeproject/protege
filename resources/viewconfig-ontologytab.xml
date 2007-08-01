@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <HSNode splits="0.625 0.375 ">
-        <VSNode splits="0.625 0.375">
+    <VSNode splits="0.625 0.375 ">
+        <HSNode splits="0.625 0.375">
 
             <CNode>
                 <Component label="Ontology Annotations">
@@ -9,39 +9,32 @@
                 </Component>
             </CNode>
 
-            <HSNode splits="0.4 0.6">
-                <CNode>
-                    <Component label="Ontology Metrics">
-                        <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyMetricsView"/>
-                    </Component>
-                </CNode>
-                <CNode>
-                    <Component label="DL Metrics">
-                        <Property id="pluginId" value="org.protege.editor.owl.DLMetricsView"/>
-                    </Component>
-                </CNode>
-            </HSNode>
+            <CNode>
+                <Component label="Ontology Imports">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
+                </Component>
+                <Component label="General axioms">
+                    <Property id="pluginId" value="org.protege.editor.owl.GeneralClassAxioms"/>
+                </Component>
+                <Component label="RDF/XML Rendering">
+                    <Property id="pluginId" value="org.protege.editor.owl.RDFXML"/>
+                </Component>
+                <Component label="OWL/XML Rendering">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLXML"/>
+                </Component>
+                <Component label="OWL Functional Syntax Rendering">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLFunctionalSyntax"/>
+                </Component>
+            </CNode>
 
+        </HSNode>
 
-        </VSNode>
 
         <CNode>
-            <Component label="Ontology Imports">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
-            </Component>
-            <Component label="General axioms">
-                <Property id="pluginId" value="org.protege.editor.owl.GeneralClassAxioms"/>
-            </Component>
-            <Component label="RDF/XML Rendering">
-                <Property id="pluginId" value="org.protege.editor.owl.RDFXML"/>
-            </Component>
-            <Component label="OWL/XML Rendering">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLXML"/>
-            </Component>
-            <Component label="OWL Functional Syntax Rendering">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLFunctionalSyntax"/>
+            <Component label="Ontology Metrics">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyMetricsView"/>
             </Component>
         </CNode>
 
-    </HSNode>
+    </VSNode>
 </layout>
