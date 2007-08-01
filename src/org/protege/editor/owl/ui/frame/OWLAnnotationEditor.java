@@ -79,6 +79,7 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
         editors = new ArrayList<OWLAnnotationValueEditor>();
         editors.add(new OWLConstantEditor(owlEditorKit));
         editors.add(new OWLIndividualAnnotationValueEditor(owlEditorKit));
+        editors.add(new OWLAnnonymousIndividualAnnotationValueEditor(owlEditorKit));
         for (OWLAnnotationValueEditor editor : editors) {
             tabbedPane.add(editor.getEditorTypeName(), editor.getComponent());
         }
