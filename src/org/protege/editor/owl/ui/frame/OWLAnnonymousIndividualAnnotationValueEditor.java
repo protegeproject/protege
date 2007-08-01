@@ -73,7 +73,7 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
         }
         frameList.setRootObject((OWLIndividual) object);
         if (object != null) {
-            mainComponent.setBorder(ComponentFactory.createTitledBorder(editorKit.getOWLModelManager().getRendering((OWLIndividual) object)));
+            mainComponent.setBorder(ComponentFactory.createTitledBorder("Property values for 'target' individual"));
         }
     }
 
