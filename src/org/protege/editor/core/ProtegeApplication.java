@@ -11,7 +11,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.PopupFactory;
 import javax.swing.UIManager;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -133,7 +132,6 @@ public class ProtegeApplication implements BundleActivator {
         loadDefaults();
         loadRecentEditorKits();
         loadPreferences();
-        // setupLogging();
         setupExceptionHandler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
@@ -208,22 +206,6 @@ public class ProtegeApplication implements BundleActivator {
 			logger.warn(e.toString());
 		}
 	}
-
-    private static void setupLogging() {
-        BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR);
-        Logger.getRootLogger().addAppender(new ConsoleAppender() {
-            public void append(LoggingEvent loggingEvent) {
-                if (loggingEvent.getMessage() instanceof Throwable) {
-                    ((Throwable) loggingEvent.getMessage()).printStackTrace();
-                }
-                else {
-                    super.append(loggingEvent);
-                }
-            }
-        });
-    }
-
 
     private static void setupExceptionHandler() {
         errorLog = new ErrorLog();
