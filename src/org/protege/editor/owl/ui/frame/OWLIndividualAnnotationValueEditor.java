@@ -1,7 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
+import org.semanticweb.owl.model.OWLIndividual;
+
+import javax.swing.*;
+import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -30,21 +34,42 @@ import org.semanticweb.owl.model.OWLObjectProperty;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 29-Jan-2007<br><br>
+ * Date: 01-Aug-2007<br><br>
  */
-public class OWLObjectPropertyDescriptionFrame extends AbstractOWLFrame<OWLObjectProperty> {
+public class OWLIndividualAnnotationValueEditor implements OWLAnnotationValueEditor {
 
-    public OWLObjectPropertyDescriptionFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
-        addSection(new OWLObjectPropertyDomainFrameSection(editorKit, this));
-        addSection(new OWLObjectPropertyRangeFrameSection(editorKit, this));
-
-        addSection(new OWLEquivalentObjectPropertiesAxiomFrameSection(editorKit, this));
-        addSection(new OWLSubObjectPropertyAxiomSuperPropertyFrameSection(editorKit, this));
-        addSection(new OWLInverseObjectPropertiesAxiomFrameSection(editorKit, this));
+    private OWLIndividualSelectorPanel individualSelectorPanel;
 
 
-        addSection(new OWLDisjointObjectPropertiesFrameSection(editorKit, this));
-        addSection(new OWLPropertyChainAxiomFrameSection(editorKit, this));
+    public OWLIndividualAnnotationValueEditor(OWLEditorKit owlEditorKit) {
+        individualSelectorPanel = new OWLIndividualSelectorPanel(owlEditorKit);
+        individualSelectorPanel.setPreferredSize(new Dimension(400, 300));
+    }
+
+
+    public boolean canEdit(Object object) {
+        return object instanceof OWLIndividual;
+    }
+
+
+    public Object getEditedObject() {
+        return individualSelectorPanel.getSelectedIndividual();
+    }
+
+
+    public void setEditedObject(Object object) {
+        if (object != null) {
+            individualSelectorPanel.setSelectedIndividual((OWLIndividual) object);
+        }
+    }
+
+
+    public String getEditorTypeName() {
+        return "Individual";
+    }
+
+
+    public JComponent getComponent() {
+        return individualSelectorPanel;
     }
 }

@@ -202,7 +202,7 @@
     <extension id="org.protege.editor.owl.OWLOntologyMetricsView" plugin-id="org.protege.editor.core.application"
                point-id="ViewComponent">
         <parameter id="label" value="Ontology Metrics"/>
-        <parameter id="class" value="org.protege.editor.owl.ui.metrics.MetricsViewComponent"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.metrics.AxiomMetricsViewComponent"/>
         <parameter id="headerColor" value="@org.protege.ontologycolor"/>
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>

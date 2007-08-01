@@ -1080,7 +1080,12 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
          * bounds, or null if <code>index</code> is not valid.
          */
         private Rectangle getCellBounds(JList list, int index) {
+
             maybeUpdateLayoutState();
+
+            if (index >= cumulativeCellHeight.length) {
+                return null;
+            }
 
             Insets insets = list.getInsets();
             int x;
