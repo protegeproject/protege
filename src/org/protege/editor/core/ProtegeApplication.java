@@ -1,5 +1,10 @@
 package org.protege.editor.core;
 
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -17,17 +22,9 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
-import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.UpdateManager;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-
 import javax.swing.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -78,7 +75,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
-    
+
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
@@ -133,42 +130,60 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
 
     private static void loadPreferences() {
         // Just the look and feel
-        //String sysLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
-        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, ProtegeProperties.PLASTIC_LAF_NAME);
+        // If the OS is a Mac then the Mac L&F is set by default.  I've had too many complaints
+        // from Mac users that the first thing they do is switch the L&F over to OS X - the Protege
+        // L&F might be nicer on other platforms with L&Fs like motif, but the OS X L&F looks much better
+        // than the Protege L&F and, moreover, the keybindings for keys such as copy&paste in the
+        // Protege L&F are hardcoded to be windows key bindings e.g. Copy is CTRL+C (where as on a
+        // Mac it should be CMD+C)
+        // I don't know if Windows users would prefer the Windows L&F to be the default one - although
+        // the Windows L&F keybindings are the same as the Protege L&F keybindings.
+        String defaultLAFClassName;
+        if (System.getProperty("os.name").indexOf("OS X") != -1) {
+            defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
+        }
+        else {
+            defaultLAFClassName = ProtegeProperties.PLASTIC_LAF_NAME;
+        }
+        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, defaultLAFClassName);
         try {
-        	if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
-        		setProtegeDefaultLookAndFeel(lafClsName);
-        	} else {
-        		UIManager.setLookAndFeel(lafClsName);
-        	}
+            if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
+                setProtegeDefaultLookAndFeel(lafClsName);
+            }
+            else {
+                UIManager.setLookAndFeel(lafClsName);
+            }
         }
         catch (Exception e) {
             logger.error(e);
         }
     }
 
-    
-    private static void setProtegeDefaultLookAndFeel(String lafName) {		
-		try {
-			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
 
-			PopupFactory.setSharedInstance(new PopupFactory());
-			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+    private static void setProtegeDefaultLookAndFeel(String lafName) {
+        try {
+            LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
 
-			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
-			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
-			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+            PopupFactory.setSharedInstance(new PopupFactory());
+            PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
 
-			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
-			UIManager.setLookAndFeel(lookAndFeel);		
-		} catch (ClassNotFoundException e) {
-			logger.warn("Look and feel not found: " + lafName);
-		} catch (Exception e) {
-			logger.warn(e.toString());
-		}
-	}
+            FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+            FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+            PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+            UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+            UIManager.setLookAndFeel(lookAndFeel);
+        }
+        catch (ClassNotFoundException e) {
+            logger.warn("Look and feel not found: " + lafName);
+        }
+        catch (Exception e) {
+            logger.warn(e.toString());
+        }
+    }
+
 
     private static void setupLogging() {
         BasicConfigurator.configure();
@@ -202,7 +217,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     }
 
 
-    private void processCommandLineURIs(String [] strings) {
+    private void processCommandLineURIs(String[] strings) {
         commandLineURIs = new ArrayList<URI>();
         for (String s : strings) {
             try {
