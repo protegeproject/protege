@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.semanticweb.owl.util.InferredAxiomGenerator;
 
 import javax.swing.*;
@@ -55,7 +54,8 @@ public class ExportInferredOntologyWizardSelectAxiomsPanel extends AbstractOWLWi
         parent.setLayout(new BorderLayout());
         parent.add(holderPanel);
         holderPanel.add(exportInferredOntologyPanel = new ExportInferredOntologyPanel(), BorderLayout.WEST);
-        setInstructions("Please select the kinds of inferred axioms that you want to export.");
+        setInstructions(
+                "This wizard will merge inferred an asserted information from ontologies in the imports closure of the active ontology into one ontology." + "Please select the kinds of inferred axioms that you want to export.");
     }
 
 
@@ -65,6 +65,6 @@ public class ExportInferredOntologyWizardSelectAxiomsPanel extends AbstractOWLWi
 
 
     public Object getNextPanelDescriptor() {
-        return OntologyURIPanel.ID;
+        return ExportInferredOntologyIncludeAssertedAxiomsPanel.ID;
     }
 }

@@ -46,12 +46,16 @@ public class ExportInferredOntologyWizard extends Wizard {
 
     private PhysicalLocationPanel locationPanel;
 
+    private ExportInferredOntologyIncludeAssertedAxiomsPanel assertedAxiomsPanel;
+
 
     public ExportInferredOntologyWizard(OWLEditorKit editorKit) {
         setTitle("Export inferred axioms as ontology");
         registerWizardPanel(ExportInferredOntologyWizardSelectAxiomsPanel.ID,
                             axiomsPanel = new ExportInferredOntologyWizardSelectAxiomsPanel(editorKit));
         setCurrentPanel(ExportInferredOntologyWizardSelectAxiomsPanel.ID);
+        registerWizardPanel(ExportInferredOntologyIncludeAssertedAxiomsPanel.ID,
+                            assertedAxiomsPanel = new ExportInferredOntologyIncludeAssertedAxiomsPanel(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new ExportInferredOntologyURIPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit));
     }
@@ -69,5 +73,15 @@ public class ExportInferredOntologyWizard extends Wizard {
 
     public URI getPhysicalURI() {
         return locationPanel.getLocationURI();
+    }
+
+
+    public boolean isIncludeAnnotations() {
+        return assertedAxiomsPanel.isIncludeAnnotationAxioms();
+    }
+
+
+    public boolean isIncludeAssertedLogicalAxioms() {
+        return assertedAxiomsPanel.isIncludeAssertedLogicalAxioms();
     }
 }
