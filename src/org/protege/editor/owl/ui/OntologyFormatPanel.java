@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui;
 
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
@@ -54,6 +55,7 @@ public class OntologyFormatPanel extends JPanel {
         formats.add(new RDFXMLOntologyFormat());
         formats.add(new OWLXMLOntologyFormat());
         formats.add(new OWLFunctionalSyntaxOntologyFormat());
+        formats.add(new ManchesterOWLSyntaxOntologyFormat());
         formatComboBox = new JComboBox(formats.toArray());
         setLayout(new BorderLayout());
         add(formatComboBox, BorderLayout.NORTH);
