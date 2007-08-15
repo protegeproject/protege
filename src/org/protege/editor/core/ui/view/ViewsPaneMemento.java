@@ -39,10 +39,19 @@ public class ViewsPaneMemento {
 
     private String viewPaneId;
 
+    private boolean forceReset;
+
 
     public ViewsPaneMemento(URL initialConfigFileURL, String viewPaneId) {
         this.initialCongigFileURL = initialConfigFileURL;
         this.viewPaneId = viewPaneId;
+    }
+
+
+    public ViewsPaneMemento(URL initialCongigFileURL, String viewPaneId, boolean forceReset) {
+        this.initialCongigFileURL = initialCongigFileURL;
+        this.viewPaneId = viewPaneId;
+        this.forceReset = forceReset;
     }
 
 
@@ -59,5 +68,15 @@ public class ViewsPaneMemento {
 
     public String getViewPaneId() {
         return viewPaneId;
+    }
+
+
+    public boolean isForceReset() {
+        return forceReset;
+    }
+
+
+    public void setForceReset(boolean forceReset) {
+        this.forceReset = forceReset;
     }
 }

@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.workspace;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.Resettable;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -192,6 +193,17 @@ public abstract class TabbedWorkspace extends Workspace {
                 save();
             }
         });
+        tabMenu.addSeparator();
+        Action resetTabAction = new AbstractAction("Reset selected tab to default state") {
+
+            public void actionPerformed(ActionEvent e) {
+                Resettable tab = (Resettable) tabbedPane.getSelectedComponent();
+                tab.reset();
+                tabbedPane.getSelectedComponent().validate();
+            }
+        };
+        resetTabAction.setEnabled(tabbedPane.getSelectedComponent() instanceof Resettable);
+        tabMenu.add(resetTabAction);
     }
 
 
