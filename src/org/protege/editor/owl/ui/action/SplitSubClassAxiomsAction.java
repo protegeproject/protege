@@ -1,6 +1,8 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.action;
 
-import javax.swing.*;
+import org.semanticweb.owl.SplitSubClassAxioms;
+
+import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -29,27 +31,22 @@ import javax.swing.*;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 01-Aug-2007<br><br>
+ * Date: 15-Aug-2007<br><br>
  */
-public interface OWLAnnotationValueEditor<O extends Object> {
-
-    boolean canEdit(Object object);
+public class SplitSubClassAxiomsAction extends ProtegeOWLAction {
 
 
-    boolean isPreferred(Object object);
+    public void initialise() throws Exception {
+    }
 
 
-    O getEditedObject();
+    public void dispose() throws Exception {
+    }
 
 
-    void setEditedObject(O object);
-
-
-    String getEditorTypeName();
-
-
-    JComponent getComponent();
-
-
-    void dispose();
+    public void actionPerformed(ActionEvent e) {
+        SplitSubClassAxioms change = new SplitSubClassAxioms(getOWLModelManager().getActiveOntologies(),
+                                                             getOWLDataFactory());
+        getOWLModelManager().applyChanges(change.getChanges());
+    }
 }

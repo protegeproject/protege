@@ -163,6 +163,8 @@ public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUBCLASS));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.EQUIVALENT_CLASSES));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.DISJOINT_CLASSES));
+        metrics.add(new GCICount(getOWLModelManager().getOWLOntologyManager()));
+        metrics.add(new HiddenGCICount(getOWLModelManager().getOWLOntologyManager()));
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Class axioms", metricManager);
     }
@@ -247,7 +249,6 @@ public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
     protected void updateView(OWLOntology activeOntology) throws Exception {
         for (OWLMetricManager man : metricManagerMap.values()) {
             man.setOntology(activeOntology);
-            tableModelMap.get(man).updateMetrics();
         }
     }
 }

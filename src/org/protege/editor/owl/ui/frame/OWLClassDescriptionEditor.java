@@ -149,8 +149,12 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     public void dispose() {
-        classSelectorPanel.dispose();
-        restrictionCreatorPanel.dispose();
+        if (classSelectorPanel != null) {
+            classSelectorPanel.dispose();
+        }
+        if (restrictionCreatorPanel != null) {
+            restrictionCreatorPanel.dispose();
+        }
     }
 
 

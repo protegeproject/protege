@@ -22,6 +22,15 @@
         <library id="commons-lang" path="lib/commons-lang-2.2.jar" type="code">
             <export prefix="*"/>
         </library>
+        <library id="antlr-runtime" path="lib/antlr-runtime-3.0.jar" type="code">
+            <export prefix="*"/>
+        </library>
+        <library id="mansyntaxparser" path="lib/owlapi-mansyntaxparser.jar" type="code">
+            <export prefix="*"/>
+        </library>
+        <library id="mansyntaxrenderer" path="lib/owlapi-mansyntaxrenderer.jar" type="code">
+            <export prefix="*"/>
+        </library>
         <library id="log4j" path="lib/log4j.jar" type="code">
             <export prefix="*"/>
         </library>
@@ -111,6 +120,12 @@
                point-id="org.protege.editor.core.preferencespanel">
         <parameter id="label" value="Renderer"/>
         <parameter id="class" value="org.protege.editor.owl.ui.renderer.RendererPreferencesPanel"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.ui.preferences.annotation" plugin-id="org.protege.editor.core.application"
+               point-id="org.protege.editor.core.preferencespanel">
+        <parameter id="label" value="Annotations"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.preferences.AnnotationPreferencesPanel"/>
     </extension>
 
     <!-- Ontology Tab -->
@@ -434,6 +449,14 @@
         <parameter id="category" value="@org.protege.ontologycategory"/>
     </extension>
 
+    <extension id="org.protege.editor.owl.ManchesterOWLSyntax" plugin-id="org.protege.editor.core.application"
+               point-id="ViewComponent">
+        <parameter id="label" value="Manchester Syntax Rendering"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.view.ManchesterSyntaxRenderingViewComponent"/>
+        <parameter id="headerColor" value="@org.protege.ontologycolor"/>
+        <parameter id="category" value="@org.protege.ontologycategory"/>
+    </extension>
+
     <extension id="org.protege.editor.owl.OWLFunctionalSyntax" plugin-id="org.protege.editor.core.application"
                point-id="ViewComponent">
         <parameter id="label" value="OWL Functional Syntax Rendering"/>
@@ -502,6 +525,15 @@
         <parameter id="accelerator" value="shift G"/>
     </extension>
 
+    <extension id="org.protege.editor.owl.exportinferredaxioms" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
+        <parameter id="name" value="Export inferred axioms as ontology..."/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.ExportInferredOntologyAction"/>
+        <parameter id="toolTip"
+                   value="Exports inferred axioms as an ontology"/>
+        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAB-D"/>
+        <parameter id="editorKitId" value="OWLEditorKit"/>
+    </extension>
 
     <extension id="org.protege.editor.owl.change.redo" plugin-id="org.protege.editor.core.application"
                point-id="EditorKitMenuAction">
@@ -760,22 +792,54 @@
         <parameter id="accelerator" value="U"/>
     </extension>
 
+    <extension id="org.protege.editor.owl.menu.ChangeOntologyURI" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
+        <parameter id="name" value="Change ontology URI..."/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.ChangeOntologyURI"/>
+        <parameter id="toolTip" value="Change the URI of the active ontology"/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotA-B"/>
+        <parameter id="editorKitId" value="OWLEditorKit"/>
+    </extension>
+
+
     <extension id="org.protege.editor.owl.menu.ChangePropertyAssertionPunsToAnnotations"
                plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
         <parameter id="name" value="Convert property assertion on class/individual puns to annotations"/>
         <parameter id="class" value="org.protege.editor.owl.ui.action.ConvertAssertionsOnPunsToAnnotations"/>
         <parameter id="toolTip"
                    value="Converts any property assertions with a subject which is a pun to an annotation on the class which is punned"/>
-        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotA-D"/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotB-A"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 
-    <extension id="org.protege.editor.owl.menu.ChangeOntologyURI" plugin-id="org.protege.editor.core.application"
+    <extension id="org.protege.editor.owl.menu.CoerceDataPropertyValuesIntoPropertyRange"
+               plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
+        <parameter id="name" value="Coerce data property values into property range"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.CoerceDataPropertyValuesIntoPropertyRangeAction"/>
+        <parameter id="toolTip"
+                   value="Coerces any data property value into (to be typed by) the range of the data property"/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotB-B"/>
+        <parameter id="editorKitId" value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.menu.SplitSubClassAxioms" plugin-id="org.protege.editor.core.application"
                point-id="EditorKitMenuAction">
-        <parameter id="name" value="Change ontology URI..."/>
-        <parameter id="class" value="org.protege.editor.owl.ui.action.ChangeOntologyURI"/>
-        <parameter id="toolTip" value="Change the URI of the active ontology"/>
-        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotA-X"/>
+        <parameter id="name" value="Split subclass axioms"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.SplitSubClassAxiomsAction"/>
+        <parameter id="toolTip" value="Splits subclass axioms in the active ontologies into more fine
+        grained axioms.  For example, A subClassOf (B and C) would be split into A subClassOf B, and
+        A subClassOf C"/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotC-A"/>
+        <parameter id="editorKitId" value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="org.protege.editor.owl.menu.AmalgamateSubClassAxioms" plugin-id="org.protege.editor.core.application"
+               point-id="EditorKitMenuAction">
+        <parameter id="name" value="Amalgamate subclass axioms"/>
+        <parameter id="class" value="org.protege.editor.owl.ui.action.AmalgamateSuperClassesAction"/>
+        <parameter id="toolTip" value="Merges subclass axioms that have a common left hand side.  For example,
+        A subClassOf B, A subClassOf C would be merged into a single subclass axiom, A subClassOf (B and C)."/>
+        <parameter id="path" value="org.protege.editor.owl.menu.Refactor/SlotC-B"/>
         <parameter id="editorKitId" value="OWLEditorKit"/>
     </extension>
 

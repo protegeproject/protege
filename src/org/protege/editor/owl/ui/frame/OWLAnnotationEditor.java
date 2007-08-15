@@ -55,6 +55,8 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
 
     private List<OWLAnnotationValueEditor> editors;
 
+    private URI lastSelectedURI;
+
 
     public OWLAnnotationEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
@@ -72,6 +74,7 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
         splitPane.setRightComponent(tabbedPane);
         splitPane.setBorder(null);
         loadEditors();
+        lastSelectedURI = OWLRDFVocabulary.RDFS_COMMENT.getURI();
     }
 
 
@@ -99,6 +102,7 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
     public void setAnnotation(OWLAnnotation annotation) {
         uriList.rebuildAnnotationURIList();
         int tabIndex = -1;
+        boolean preferred = false;
         if (annotation != null) {
             uriList.setSelectedURI(annotation.getAnnotationURI());
             for (int i = 0; i < editors.size(); i++) {
@@ -108,6 +112,9 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
                     if (tabIndex == -1) {
                         tabIndex = i;
                     }
+                    else if (preferred == false) {
+                        tabIndex = i;
+                    }
                 }
                 else {
                     editor.setEditedObject(null);
@@ -115,7 +122,7 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
             }
         }
         else {
-            uriList.setSelectedURI(OWLRDFVocabulary.RDFS_COMMENT.getURI());
+            uriList.setSelectedURI(lastSelectedURI);
             for (int i = 0; i < editors.size(); i++) {
                 OWLAnnotationValueEditor editor = editors.get(i);
                 editor.setEditedObject(null);
@@ -127,6 +134,10 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
 
     public OWLAnnotation getAnnotation() {
         URI uri = uriList.getSelectedURI();
+        lastSelectedURI = uriList.getSelectedURI();
+        if (lastSelectedURI == null) {
+            lastSelectedURI = OWLRDFVocabulary.RDFS_COMMENT.getURI();
+        }
         OWLAnnotationValueEditor editor = getSelectedEditor();
         Object obj = editor.getEditedObject();
         if (obj instanceof OWLConstant) {
@@ -164,6 +175,8 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
 
 
     public void dispose() {
-
+        for (OWLAnnotationValueEditor editor : editors) {
+            editor.dispose();
+        }
     }
 }

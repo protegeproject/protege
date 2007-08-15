@@ -74,6 +74,11 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
     }
 
 
+    public boolean isPreferred(Object object) {
+        return object instanceof OWLConstant;
+    }
+
+
     public OWLConstant getEditedObject() {
         return getValue();
     }
@@ -291,5 +296,9 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
                                    new Insets(5, 5, 5, 5),
                                    40,
                                    0));
+    }
+
+
+    public void dispose() {
     }
 }

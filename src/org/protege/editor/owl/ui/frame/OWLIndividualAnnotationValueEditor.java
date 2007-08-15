@@ -52,6 +52,11 @@ public class OWLIndividualAnnotationValueEditor implements OWLAnnotationValueEdi
     }
 
 
+    public boolean isPreferred(Object object) {
+        return object instanceof OWLIndividual && !((OWLIndividual) object).isAnonymous();
+    }
+
+
     public Object getEditedObject() {
         return individualSelectorPanel.getSelectedIndividual();
     }
@@ -71,5 +76,10 @@ public class OWLIndividualAnnotationValueEditor implements OWLAnnotationValueEdi
 
     public JComponent getComponent() {
         return individualSelectorPanel;
+    }
+
+
+    public void dispose() {
+        individualSelectorPanel.dispose();
     }
 }

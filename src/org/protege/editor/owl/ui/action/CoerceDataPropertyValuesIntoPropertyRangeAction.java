@@ -1,6 +1,8 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.action;
 
-import javax.swing.*;
+import org.semanticweb.owl.CoerceConstantsIntoDataPropertyRange;
+
+import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -29,27 +31,23 @@ import javax.swing.*;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 01-Aug-2007<br><br>
+ * Date: 13-Aug-2007<br><br>
  */
-public interface OWLAnnotationValueEditor<O extends Object> {
-
-    boolean canEdit(Object object);
+public class CoerceDataPropertyValuesIntoPropertyRangeAction extends ProtegeOWLAction {
 
 
-    boolean isPreferred(Object object);
+    public void actionPerformed(ActionEvent e) {
+        CoerceConstantsIntoDataPropertyRange refactor = new CoerceConstantsIntoDataPropertyRange(getOWLDataFactory(),
+                                                                                                 getOWLModelManager().getOntologies());
+
+        getOWLModelManager().applyChanges(refactor.getChanges());
+    }
 
 
-    O getEditedObject();
+    public void initialise() throws Exception {
+    }
 
 
-    void setEditedObject(O object);
-
-
-    String getEditorTypeName();
-
-
-    JComponent getComponent();
-
-
-    void dispose();
+    public void dispose() throws Exception {
+    }
 }

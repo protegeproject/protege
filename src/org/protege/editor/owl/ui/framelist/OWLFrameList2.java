@@ -409,6 +409,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     private void showEditorDialog(final OWLFrameObject frameObject, final EditHandler handler) {
         // If we don't have any editing component then just return
+        final boolean isRowEditor = frameObject instanceof OWLFrameSectionRow;
         final OWLFrameSectionRowObjectEditor editor = frameObject.getEditor();
         if (editor == null) {
             return;
@@ -451,6 +452,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 }
                 setSelectedValue(frameObject, true);
 //                editor.dispose();
+                if (isRowEditor) {
+                    editor.dispose();
+                }
             }
         });
         OWLObject rootObject = null;

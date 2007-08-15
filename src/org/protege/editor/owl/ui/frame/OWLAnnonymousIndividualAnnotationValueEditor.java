@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.semanticweb.owl.model.OWLIndividual;
 
@@ -46,18 +46,35 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
 
     private OWLEditorKit editorKit;
 
+    private JLabel annotationValueLabel;
+
 
     public OWLAnnonymousIndividualAnnotationValueEditor(OWLEditorKit owlEditorKit) {
         editorKit = owlEditorKit;
-        frameList = new OWLFrameList2<OWLIndividual>(owlEditorKit,
-                                                     new OWLIndividualPropertyAssertionsFrame(owlEditorKit));
-        mainComponent = new JPanel(new BorderLayout());
-        mainComponent.add(new JScrollPane(frameList));
+        OWLIndividualPropertyAssertionsFrame frame = new OWLIndividualPropertyAssertionsFrame(owlEditorKit);
+        frame.addSection(new OWLClassAssertionAxiomTypeFrameSection(owlEditorKit, frame), 0);
+        frame.addSection(new OWLAnnotationFrameSection(owlEditorKit, frame), 0);
+
+        frameList = new OWLFrameList2<OWLIndividual>(owlEditorKit, frame);
+
+        mainComponent = new JPanel(new BorderLayout(7, 7));
+        JScrollPane sp = new JScrollPane(frameList);
+        JPanel scrollPaneHolder = new JPanel(new BorderLayout());
+        scrollPaneHolder.add(sp);
+        scrollPaneHolder.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+        mainComponent.add(scrollPaneHolder);
+        annotationValueLabel = new JLabel();
+        mainComponent.add(annotationValueLabel, BorderLayout.NORTH);
     }
 
 
     public boolean canEdit(Object object) {
         return object instanceof OWLIndividual;
+    }
+
+
+    public boolean isPreferred(Object object) {
+        return object instanceof OWLIndividual && ((OWLIndividual) object).isAnonymous();
     }
 
 
@@ -73,7 +90,14 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
         }
         frameList.setRootObject((OWLIndividual) object);
         if (object != null) {
-            mainComponent.setBorder(ComponentFactory.createTitledBorder("Property values for 'target' individual"));
+            mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
+            annotationValueLabel.setText(editorKit.getOWLModelManager().getOWLObjectRenderer().render((OWLIndividual) object,
+                                                                                                      editorKit.getOWLModelManager().getOWLEntityRenderer()));
+        }
+        else {
+            annotationValueLabel.setIcon(null);
+            annotationValueLabel.setText("");
         }
     }
 
@@ -85,5 +109,10 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
 
     public JComponent getComponent() {
         return mainComponent;
+    }
+
+
+    public void dispose() {
+        frameList.dispose();
     }
 }

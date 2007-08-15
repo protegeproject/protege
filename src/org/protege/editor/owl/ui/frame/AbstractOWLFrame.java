@@ -56,6 +56,17 @@ public abstract class AbstractOWLFrame<R extends OWLObject> implements OWLFrame<
     }
 
 
+    protected void addSection(OWLFrameSection<? extends Object, ? extends Object, ? extends Object> section,
+                              int index) {
+        sections.add(index, section);
+    }
+
+
+    protected int getSectionCount() {
+        return sections.size();
+    }
+
+
     protected void addSection(OWLFrameSection<? extends Object, ? extends Object, ? extends Object> section) {
         sections.add(section);
     }

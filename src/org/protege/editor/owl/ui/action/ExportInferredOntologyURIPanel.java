@@ -1,4 +1,7 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.action;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 
 import javax.swing.*;
 /*
@@ -29,27 +32,23 @@ import javax.swing.*;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 01-Aug-2007<br><br>
+ * Date: 09-Aug-2007<br><br>
  */
-public interface OWLAnnotationValueEditor<O extends Object> {
-
-    boolean canEdit(Object object);
+public class ExportInferredOntologyURIPanel extends OntologyURIPanel {
 
 
-    boolean isPreferred(Object object);
+    public ExportInferredOntologyURIPanel(OWLEditorKit editorKit) {
+        super(editorKit);
+    }
 
 
-    O getEditedObject();
+    protected void createUI(JComponent parent) {
+        super.createUI(parent);
+        setInstructions("Please specify the ontology URI for the inferred ontology");
+    }
 
 
-    void setEditedObject(O object);
-
-
-    String getEditorTypeName();
-
-
-    JComponent getComponent();
-
-
-    void dispose();
+    public Object getBackPanelDescriptor() {
+        return ExportInferredOntologyWizardSelectAxiomsPanel.ID;
+    }
 }

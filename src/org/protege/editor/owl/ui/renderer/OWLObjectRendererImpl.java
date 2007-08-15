@@ -728,6 +728,9 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     public void visit(OWLImportsDeclaration axiom) {
         write(axiom.getImportedOntologyURI().toString());
+        if (!owlModelManager.getOWLOntologyManager().contains(axiom.getImportedOntologyURI())) {
+            write("      (Not Loaded)");
+        }
     }
 
 

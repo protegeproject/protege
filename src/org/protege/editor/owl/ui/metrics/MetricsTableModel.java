@@ -81,18 +81,4 @@ public class MetricsTableModel extends AbstractTableModel {
         }
         fireTableDataChanged();
     }
-
-
-    public void updateMetrics() {
-        boolean updated = false;
-        for (OWLMetric metric : metricManager.getMetrics()) {
-//            if(metric.isDirty()) {
-            metric.recomputeMetric();
-            updated = true;
-//            }
-        }
-        if (updated) {
-            fireTableDataChanged();
-        }
-    }
 }

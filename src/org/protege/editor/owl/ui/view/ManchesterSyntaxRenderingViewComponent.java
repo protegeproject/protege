@@ -1,6 +1,9 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.view;
 
-import javax.swing.*;
+import org.semanticweb.owl.model.OWLOntology;
+import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxRenderer;
+
+import java.io.Writer;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -29,27 +32,14 @@ import javax.swing.*;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 01-Aug-2007<br><br>
+ * Date: 13-Aug-2007<br><br>
  */
-public interface OWLAnnotationValueEditor<O extends Object> {
-
-    boolean canEdit(Object object);
+public class ManchesterSyntaxRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
 
 
-    boolean isPreferred(Object object);
-
-
-    O getEditedObject();
-
-
-    void setEditedObject(O object);
-
-
-    String getEditorTypeName();
-
-
-    JComponent getComponent();
-
-
-    void dispose();
+    protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
+        ManchesterOWLSyntaxRenderer ren = new ManchesterOWLSyntaxRenderer(getOWLModelManager().getOWLOntologyManager());
+        ren.render(ontology, writer);
+        writer.flush();
+    }
 }

@@ -1,11 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -41,8 +43,11 @@ public class OWLDifferentIndividualsAxiomFrameSection extends AbstractOWLFrameSe
 
     public static final String LABEL = "Different individuals";
 
+    private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
+
 
     protected void clear() {
+        added.clear();
     }
 
 
@@ -62,7 +67,12 @@ public class OWLDifferentIndividualsAxiomFrameSection extends AbstractOWLFrameSe
                                                                   ontology,
                                                                   getRootObject(),
                                                                   ax));
+            added.addAll(ax.getIndividuals());
         }
+    }
+
+
+    protected void refillInferred() throws OWLReasonerException {
     }
 
 
