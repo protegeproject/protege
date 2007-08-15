@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.preferences;
 
-import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 
 import javax.swing.*;
@@ -41,8 +41,6 @@ import java.util.*;
  */
 public class PreferencesDialogPanel extends JPanel {
 
-    private static final Logger logger = Logger.getLogger(PreferencesDialogPanel.class);
-
 
     private EditorKit editorKit;
 
@@ -73,7 +71,7 @@ public class PreferencesDialogPanel extends JPanel {
                 tabbedPane.addTab(plugin.getLabel(), panel);
             }
             catch (Exception e) {
-                logger.error(e);
+                ProtegeApplication.getErrorLog().logError(e);
             }
         }
         add(tabbedPane);
@@ -86,7 +84,7 @@ public class PreferencesDialogPanel extends JPanel {
                 panel.dispose();
             }
             catch (Exception e) {
-                logger.warn("BAD PREFS PANEL: (" + panel.getClass().getSimpleName() + ")");
+                ProtegeApplication.getErrorLog().logError(e);
             }
         }
         map.clear();
@@ -99,7 +97,7 @@ public class PreferencesDialogPanel extends JPanel {
                 panel.applyChanges();
             }
             catch (Exception e) {
-                logger.error(e);
+                ProtegeApplication.getErrorLog().logError(e);
             }
         }
     }
