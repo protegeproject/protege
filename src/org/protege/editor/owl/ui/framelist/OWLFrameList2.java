@@ -443,6 +443,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         // The editor shouldn't be modal (or should it?)
         dlg.setModal(false);
         dlg.setResizable(true);
+        dlg.pack();
         dlg.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
                 Object retVal = optionPane.getValue();
