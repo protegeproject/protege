@@ -49,7 +49,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
 
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
-        super(owlEditorKit, provider, new OWLEntityComparator(owlEditorKit.getOWLModelManager()));
+        super(owlEditorKit, provider);
         this.owlEditorKit = owlEditorKit;
         setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
         setHighlightKeywords(false);

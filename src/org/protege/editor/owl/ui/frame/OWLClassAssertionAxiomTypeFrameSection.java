@@ -138,6 +138,12 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
             public int compare(OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription> o1,
                                OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription> o2) {
+                if (o1.isInferred() && !o2.isInferred()) {
+                    return 1;
+                }
+                else if (o2.isInferred() && !o1.isInferred()) {
+                    return -1;
+                }
                 return comparator.compare(o1.getAxiom().getDescription(), o2.getAxiom().getDescription());
             }
         };

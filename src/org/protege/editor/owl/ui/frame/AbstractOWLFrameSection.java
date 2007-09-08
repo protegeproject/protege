@@ -114,6 +114,11 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
     }
 
 
+    protected void setLabel(String label) {
+        this.label = label;
+    }
+
+
     protected OWLReasoner getReasoner() {
         return getOWLModelManager().getReasoner();
     }

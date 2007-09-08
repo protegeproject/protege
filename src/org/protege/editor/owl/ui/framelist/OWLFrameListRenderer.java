@@ -44,7 +44,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
         this.owlEditorKit = owlEditorKit;
         owlCellRenderer = new OWLCellRenderer(owlEditorKit);
         separatorRenderer = new DefaultListCellRenderer();
-        annotationRenderer = new OWLAnnotationRenderer();
+        annotationRenderer = new OWLAnnotationRenderer(owlEditorKit);
         highlightKeywords = true;
     }
 

@@ -39,19 +39,6 @@ public class CreateClassHierarchyAction extends ProtegeOWLAction {
                 List<OWLOntologyChange> changes = creator.createHierarchy();
                 w.dispose();
                 getOWLModelManager().applyChanges(changes);
-//                List<OWLOntologyChange> disjointsChanges = null;
-//                if (w.isMakeSiblingClassesDisjoint()) {
-//                    disjointsChanges = new ArrayList<OWLOntologyChange>();
-//                    for(OWLClass parent : creator.getParents()) {
-//                        MakePrimitiveSubClassesDisjoint gen = new MakePrimitiveSubClassesDisjoint(getOWLModelManager().getActiveOntologies(),
-//                                                                                                  getOWLModelManager().getActiveOntology(),
-//                                                                                                  parent,
-//                                                                                                  getOWLModelManager().getOWLClassHierarchyProvider());
-//                        disjointsChanges.addAll(gen.getChanges());
-//                    }
-//                }
-//                getOWLModelManager().applyChanges(disjointsChanges);
-
             }
             catch (Exception e1) {
                 e1.printStackTrace();

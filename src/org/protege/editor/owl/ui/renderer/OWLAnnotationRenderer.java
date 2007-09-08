@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.semanticweb.owl.model.OWLAnnotation;
+import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -27,8 +31,13 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
 
     private JTextArea annotationContentArea;
 
+    private JLabel iconLabel;
 
-    public OWLAnnotationRenderer() {
+    private OWLEditorKit owlEditorKit;
+
+
+    public OWLAnnotationRenderer(OWLEditorKit owlEditorKit) {
+        this.owlEditorKit = owlEditorKit;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
         annotationURILabel = new JLabel();
@@ -38,9 +47,15 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
         annotationContentArea.setLineWrap(true);
         annotationContentArea.setWrapStyleWord(true);
         add(annotationURILabel, BorderLayout.NORTH);
-        add(annotationContentArea, BorderLayout.SOUTH);
+        JPanel contentPanel = new JPanel(new BorderLayout(3, 3));
+        contentPanel.add(annotationContentArea, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.SOUTH);
         annotationContentArea.setOpaque(false);
-        annotationContentArea.setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 2));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 2));
+        contentPanel.setOpaque(false);
+        iconLabel = new JLabel();
+        contentPanel.add(iconLabel, BorderLayout.WEST);
+        iconLabel.setIcon(OWLIcons.getIcon("individual.png"));
     }
 
 
@@ -54,7 +69,10 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
                 ren = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
             }
             annotationURILabel.setText(ren);
-            annotationContentArea.setText(anno.getAnnotationValue().toString());
+            String val = owlEditorKit.getOWLModelManager().getOWLObjectRenderer().render(anno.getAnnotationValue(),
+                                                                                         owlEditorKit.getOWLModelManager().getOWLEntityRenderer());
+            annotationContentArea.setText(val);
+            iconLabel.setVisible(anno.getAnnotationValue() instanceof OWLEntity);
         }
         else {
             annotationURILabel.setText("WARNING!");

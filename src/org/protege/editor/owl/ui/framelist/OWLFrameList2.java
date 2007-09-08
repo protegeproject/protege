@@ -465,6 +465,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     private void showEditorDialog(final OWLFrameObject frameObject, final EditHandler handler) {
         // If we don't have any editing component then just return
+        final boolean isRowEditor = frameObject instanceof OWLFrameSectionRow;
         final OWLFrameSectionRowObjectEditor editor = frameObject.getEditor();
         if (editor == null) {
             return;
@@ -498,6 +499,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         // The editor shouldn't be modal (or should it?)
         dlg.setModal(false);
         dlg.setResizable(true);
+        dlg.pack();
         dlg.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
                 Object retVal = optionPane.getValue();
@@ -507,6 +509,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 }
                 setSelectedValue(frameObject, true);
 //                editor.dispose();
+                if (isRowEditor) {
+                    editor.dispose();
+                }
             }
         });
         OWLObject rootObject = null;
@@ -1136,7 +1141,12 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
          * bounds, or null if <code>index</code> is not valid.
          */
         private Rectangle getCellBounds(JList list, int index) {
+
             maybeUpdateLayoutState();
+
+            if (index >= cumulativeCellHeight.length) {
+                return null;
+            }
 
             Insets insets = list.getInsets();
             int x;

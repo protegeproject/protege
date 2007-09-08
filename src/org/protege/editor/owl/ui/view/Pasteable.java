@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.event.ChangeListener;
 
+import org.protege.editor.owl.ui.action.ActionTarget;
 import org.semanticweb.owl.model.OWLObject;
 
 
@@ -16,7 +17,7 @@ import org.semanticweb.owl.model.OWLObject;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface Pasteable {
+public interface Pasteable extends ActionTarget {
 
     boolean canPaste(List<OWLObject> objects);
 

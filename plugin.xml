@@ -38,6 +38,13 @@
         <class value="org.protege.editor.owl.ui.renderer.RendererPreferencesPanel"/>
     </extension>
 
+    <extension id="org.protege.editor.owl.ui.preferences.annotation" 
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Annotations"/>
+        <class value="org.protege.editor.owl.ui.preferences.AnnotationPreferencesPanel"/>
+    </extension>
+
+
     <!-- Ontology Tab -->
 
     <extension id="OWLOntologyTab"
@@ -145,6 +152,14 @@
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Imported Ontologies"/>
         <class value="org.protege.editor.owl.ui.view.OWLImportsDeclarationsViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
+    <extension id="SWRLRules" 
+                point="org.protege.editor.core.application.ViewComponent">
+        <label value="SWRL Rules"/>
+        <class value="org.protege.editor.owl.ui.view.SWRLRulesViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -359,6 +374,15 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
+
+    <extension id="ManchesterOWLSyntax"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Manchester Syntax Rendering"/>
+        <class value="org.protege.editor.owl.ui.view.ManchesterSyntaxRenderingViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
     <extension id="OWLFunctionalSyntax"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="OWL Functional Syntax Rendering"/>
@@ -400,6 +424,16 @@
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-C"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift G"/>
+    </extension>
+
+
+    <extension id="exportinferredaxioms"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Export inferred axioms as ontology..."/>
+        <class value="org.protege.editor.owl.ui.action.ExportInferredOntologyAction"/>
+        <toolTip value="Exports inferred axioms as an ontology"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-D"/>
+        <editorKitId value="OWLEditorKit"/>
     </extension>
 
 
@@ -668,6 +702,47 @@
     </extension>
 
 
+    <extension id="menu.ChangePropertyAssertionPunsToAnnotations"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Convert property assertion on class/individual puns to annotations"/>
+        <class value="org.protege.editor.owl.ui.action.ConvertAssertionsOnPunsToAnnotations"/>
+        <toolTip value="Converts any property assertions with a subject which is a pun to an annotation on the class which is punned"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotB-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.CoerceDataPropertyValuesIntoPropertyRange"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Coerce data property values into property range"/>
+        <class value="org.protege.editor.owl.ui.action.CoerceDataPropertyValuesIntoPropertyRangeAction"/>
+        <toolTip value="Coerces any data property value into (to be typed by) the range of the data property"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotB-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.SplitSubClassAxioms" 
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Split subclass axioms"/>
+        <class value="org.protege.editor.owl.ui.action.SplitSubClassAxiomsAction"/>
+        <toolTip value="Splits subclass axioms in the active ontologies into more fine
+        grained axioms.  For example, A subClassOf (B and C) would be split into A subClassOf B, and
+        A subClassOf C"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotC-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.AmalgamateSubClassAxioms"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Amalgamate subclass axioms"/>
+        <class value="org.protege.editor.owl.ui.action.AmalgamateSuperClassesAction"/>
+        <toolTip value="Merges subclass axioms that have a common left hand side.  For example,
+        A subClassOf B, A subClassOf C would be merged into a single subclass axiom, A subClassOf (B and C)."/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotC-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+
+
     <extension id="menu.MergeOntologies"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Merge ontologies..."/>
@@ -817,6 +892,15 @@
         <headerColor value="565656"/>
         <category value="@org.protege.individualcategory"/>
     </extension>
+
+    <extension id="SelectedEntityView2"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Selected entity 2"/>
+        <class value="org.protege.editor.owl.ui.view.OWLEntityViewComponent"/>
+        <headerColor value="565656"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
 
 
 </plugin>

@@ -2,11 +2,15 @@ package org.protege.editor.owl.ui.action;
 
 import java.awt.Component;
 import java.awt.TextComponent;
+import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
+import org.protege.editor.owl.ui.view.Pasteable;
+import org.protege.editor.owl.ui.view.ViewClipboard;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLRuntimeException;
+
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -33,26 +37,45 @@ import org.semanticweb.owl.model.OWLRuntimeException;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class PasteAction extends ProtegeOWLAction {
+public class PasteAction extends FocusedComponentAction<Pasteable> {
 
-    private static final Logger logger = Logger.getLogger(PasteAction.class);
+    protected boolean canPerform() {
+        return getCurrentTarget().canPaste(getObjectsOnClipboard());
+    }
 
 
-    private Pasteable currentPasteable;
-
-    private PropertyChangeListener listener;
-
-    private ChangeListener changeListener;
+    protected Class<Pasteable> initialiseAction() {
+        return Pasteable.class;
+    }
 
 
     public void actionPerformed(ActionEvent e) {
         List<OWLObject> objects = getObjectsOnClipboard();
         if (!objects.isEmpty()) {
-            currentPasteable.pasteObjects(objects);
+            getCurrentTarget().pasteObjects(objects);
         }
     }
 
+//    private static final Logger logger = Logger.getLogger(PasteAction.class);
+//
+//
+//    private Pasteable currentPasteable;
+//
+//    private PropertyChangeListener listener;
+//
+//    private ChangeListener changeListener;
+//
+//
+//    public void actionPerformed(ActionEvent e) {
+//        List<OWLObject> objects = getObjectsOnClipboard();
+//        if (!objects.isEmpty()) {
+//            currentPasteable.pasteObjects(objects);
+//        }
+//    }
+//
 
+
+    //
     private static List<OWLObject> getObjectsOnClipboard() {
         try {
             Transferable transferable = ViewClipboard.getInstance().getClipboard().getContents(null);
@@ -71,76 +94,76 @@ public class PasteAction extends ProtegeOWLAction {
         }
         return Collections.emptyList();
     }
-
-
-    public void initialise() throws Exception {
-        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    update();
-                }
-            }
-        });
-        changeListener = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                update();
-            }
-        };
-        update();
-    }
-
-
-    private void update() {
-        Component c = FocusManager.getCurrentManager().getFocusOwner();
-        // By default text components are pasteable
-        if (c instanceof TextComponent) {
-            setEnabled(true);
-            return;
-        }
-
-        Pasteable pasteable = getPasteable();
-        if (currentPasteable != null) {
-            detatchListener();
-        }
-        currentPasteable = pasteable;
-        if (currentPasteable != null) {
-            attatchListeners();
-            if (getObjectsOnClipboard().isEmpty()) {
-                setEnabled(false);
-            }
-            else {
-                setEnabled(currentPasteable.canPaste(getObjectsOnClipboard()));
-            }
-        }
-        else {
-            setEnabled(false);
-        }
-    }
-
-
-    private static Pasteable getPasteable() {
-        Component c = FocusManager.getCurrentManager().getFocusOwner();
-        if (c instanceof Pasteable) {
-            return (Pasteable) c;
-        }
-        if (c == null) {
-            return null;
-        }
-        return (Pasteable) SwingUtilities.getAncestorOfClass(Pasteable.class, c);
-    }
-
-
-    private void attatchListeners() {
-        currentPasteable.addChangeListener(changeListener);
-    }
-
-
-    private void detatchListener() {
-        currentPasteable.removeChangeListener(changeListener);
-    }
-
-
-    public void dispose() {
-        FocusManager.getCurrentManager().removePropertyChangeListener(listener);
-    }
+//
+//
+//    public void initialise() throws Exception {
+//        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
+//            public void propertyChange(PropertyChangeEvent evt) {
+//                if (evt.getPropertyName().equals("focusOwner")) {
+//                    update();
+//                }
+//            }
+//        });
+//        changeListener = new ChangeListener() {
+//            public void stateChanged(ChangeEvent e) {
+//                update();
+//            }
+//        };
+//        update();
+//    }
+//
+//
+//    private void update() {
+//        Component c = FocusManager.getCurrentManager().getFocusOwner();
+//        // By default text components are pasteable
+//        if (c instanceof TextComponent) {
+//            setEnabled(true);
+//            return;
+//        }
+//
+//        Pasteable pasteable = getPasteable();
+//        if (currentPasteable != null) {
+//            detatchListener();
+//        }
+//        currentPasteable = pasteable;
+//        if (currentPasteable != null) {
+//            attatchListeners();
+//            if (getObjectsOnClipboard().isEmpty()) {
+//                setEnabled(false);
+//            }
+//            else {
+//                setEnabled(currentPasteable.canPaste(getObjectsOnClipboard()));
+//            }
+//        }
+//        else {
+//            setEnabled(false);
+//        }
+//    }
+//
+//
+//    private static Pasteable getPasteable() {
+//        Component c = FocusManager.getCurrentManager().getFocusOwner();
+//        if (c instanceof Pasteable) {
+//            return (Pasteable) c;
+//        }
+//        if (c == null) {
+//            return null;
+//        }
+//        return (Pasteable) SwingUtilities.getAncestorOfClass(Pasteable.class, c);
+//    }
+//
+//
+//    private void attatchListeners() {
+//        currentPasteable.addChangeListener(changeListener);
+//    }
+//
+//
+//    private void detatchListener() {
+//        currentPasteable.removeChangeListener(changeListener);
+//    }
+//
+//
+//    public void dispose() {
+//        FocusManager.getCurrentManager().removePropertyChangeListener(listener);
+//    }
 }

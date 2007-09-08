@@ -3,10 +3,14 @@ package org.protege.editor.owl.ui.action;
 import java.awt.Component;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
+import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
+import org.protege.editor.owl.ui.view.Copyable;
+import org.protege.editor.owl.ui.view.ViewClipboard;
+import org.semanticweb.owl.model.OWLObject;
+
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.FocusManager;
@@ -30,19 +34,20 @@ import org.semanticweb.owl.model.OWLObject;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class CopyAction extends ProtegeOWLAction {
+public class CopyAction extends FocusedComponentAction<Copyable> {
 
-    private static final Logger logger = Logger.getLogger(CopyAction.class);
+    protected boolean canPerform() {
+        return getCurrentTarget().canCopy();
+    }
 
-    private Copyable currentCopyable;
 
-    private PropertyChangeListener listener;
-
-    private ChangeListener changeListener;
+    protected Class<Copyable> initialiseAction() {
+        return Copyable.class;
+    }
 
 
     public void actionPerformed(ActionEvent e) {
-        List<OWLObject> objects = currentCopyable.getObjectsToCopy();
+        List<OWLObject> objects = getCurrentTarget().getObjectsToCopy();
         if (objects.isEmpty()) {
             // Shouldn't really happen, but just in case
             return;
@@ -65,69 +70,103 @@ public class CopyAction extends ProtegeOWLAction {
         // OWLObject should be serializable!!!
     }
 
-
-    public void initialise() throws Exception {
-        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    update();
-                }
-            }
-        });
-        changeListener = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                update();
-            }
-        };
-        update();
-    }
-
-
-    private void update() {
-        Component c = FocusManager.getCurrentManager().getFocusOwner();
-        // By default text components are pasteable
-        if (c instanceof TextComponent) {
-            setEnabled(true);
-            return;
-        }
-        Copyable copyable = getCopyable();
-        if (currentCopyable != null) {
-            detatchListener();
-        }
-        currentCopyable = copyable;
-        if (currentCopyable != null) {
-            attatchListeners();
-            setEnabled(currentCopyable.canCopy());
-        }
-        else {
-            setEnabled(false);
-        }
-    }
-
-
-    private static Copyable getCopyable() {
-        Component c = FocusManager.getCurrentManager().getFocusOwner();
-        if (c instanceof Copyable) {
-            return (Copyable) c;
-        }
-        if (c == null) {
-            return null;
-        }
-        return (Copyable) SwingUtilities.getAncestorOfClass(Copyable.class, c);
-    }
-
-
-    private void attatchListeners() {
-        currentCopyable.addChangeListener(changeListener);
-    }
-
-
-    private void detatchListener() {
-        currentCopyable.removeChangeListener(changeListener);
-    }
-
-
-    public void dispose() {
-        FocusManager.getCurrentManager().removePropertyChangeListener(listener);
-    }
+//
+//    private static final Logger logger = Logger.getLogger(CopyAction.class);
+//
+//    private Copyable currentCopyable;
+//
+//    private PropertyChangeListener listener;
+//
+//    private ChangeListener changeListener;
+//
+//
+//    public void actionPerformed(ActionEvent e) {
+//        List<OWLObject> objects = currentCopyable.getObjectsToCopy();
+//        if (objects.isEmpty()) {
+//            // Shouldn't really happen, but just in case
+//            return;
+//        }
+//        // Push the objects on to the clip board
+//        ViewClipboard clipboard = ViewClipboard.getInstance();
+//        clipboard.getClipboard().setContents(new TransferableOWLObject(getOWLModelManager(), objects), null);
+//
+//        new TransferableOWLObject(getOWLModelManager(), objects);
+//
+//        StringBuilder buffer = new StringBuilder();
+//        for (OWLObject owlObject : objects) {
+//            buffer.append(getOWLModelManager().getOWLObjectRenderer().render(owlObject,
+//                                                                             getOWLModelManager().getOWLEntityRenderer()));
+//            buffer.append("\n");
+//        }
+//        StringSelection stringSelection = new StringSelection(buffer.toString().trim());
+//        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+//        // Actually, we could put text on to the system clipboard
+//        // OWLObject should be serializable!!!
+//    }
+//
+//
+//    public void initialise() throws Exception {
+//        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
+//            public void propertyChange(PropertyChangeEvent evt) {
+//                if (evt.getPropertyName().equals("focusOwner")) {
+//                    update();
+//                }
+//            }
+//        });
+//        changeListener = new ChangeListener() {
+//            public void stateChanged(ChangeEvent e) {
+//                update();
+//            }
+//        };
+//        update();
+//    }
+//
+//
+//    private void update() {
+//        Component c = FocusManager.getCurrentManager().getFocusOwner();
+//        // By default text components are pasteable
+//        if (c instanceof TextComponent) {
+//            setEnabled(true);
+//            return;
+//        }
+//        Copyable copyable = getCopyable();
+//        if (currentCopyable != null) {
+//            detatchListener();
+//        }
+//        currentCopyable = copyable;
+//        if (currentCopyable != null) {
+//            attatchListeners();
+//            setEnabled(currentCopyable.canCopy());
+//        }
+//        else {
+//            setEnabled(false);
+//        }
+//    }
+//
+//
+//    private static Copyable getCopyable() {
+//        Component c = FocusManager.getCurrentManager().getFocusOwner();
+//        if (c instanceof Copyable) {
+//            return (Copyable) c;
+//        }
+//        if (c == null) {
+//            return null;
+//        }
+//        return (Copyable) SwingUtilities.getAncestorOfClass(Copyable.class, c);
+//    }
+//
+//
+//    private void attatchListeners() {
+//        currentCopyable.addChangeListener(changeListener);
+//    }
+//
+//
+//    private void detatchListener() {
+//        currentCopyable.removeChangeListener(changeListener);
+//    }
+//
+//
+//    public void dispose() {
+//        FocusManager.getCurrentManager().removePropertyChangeListener(listener);
+//    }
 }

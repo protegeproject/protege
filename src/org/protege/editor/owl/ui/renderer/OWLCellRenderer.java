@@ -76,7 +76,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean renderExpression;
 
-    private int indentation;
 
     private OWLOntology ontology;
 
@@ -111,16 +110,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JLabel iconLabel;
 
-    private boolean stylesApplied;
-
-    private JTextPane textPane = new JTextPane() {
-        protected void paintComponent(Graphics g) {
-            if (!stylesApplied) {
-                applyStyles((StyledDocument) getDocument());
-            }
-            super.paintComponent(g);
-        }
-    };
+    private JTextPane textPane = new JTextPane();
 
     private int preferredWidth;
 
@@ -142,6 +132,46 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon) {
         this(owlEditorKit, renderExpression, renderIcon, 0);
+    }
+
+
+    /**
+     * @param owlEditorKit     The editor kit
+     * @param renderExpression determines if values are rendered as expressions (i.e. whether key words are
+     *                         highlighted or not)
+     * @param renderIcon       Determines if an icon is shown
+     * @param indentation      Legacy - has no effect
+     * @deprecated Use OWLCellRenderer(OWLEditorKit, renderExpression, renderIcon)
+     *             Creates a cell renderer
+     */
+    public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, int indentation) {
+        this.owlEditorKit = owlEditorKit;
+        this.renderExpression = renderExpression;
+        this.renderIcon = renderIcon;
+        this.equivalentObjects = new HashSet<OWLObject>();
+        setFontSize(owlEditorKit.getWorkspace().getFontSize());
+        renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
+        renderingComponent.setOpaque(false);
+        iconLabel = new JLabel("");
+        iconLabel.setVerticalAlignment(JLabel.TOP);
+        renderingComponent.add(iconLabel);
+        renderingComponent.add(textPane);
+        iconLabel.setOpaque(false);
+        renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        entityColorProviders = new ArrayList<OWLEntityColorProvider>();
+        OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
+        for (OWLEntityColorProviderPlugin plugin : loader.getPlugins()) {
+            try {
+                OWLEntityColorProvider prov = plugin.newInstance();
+                prov.initialise();
+                entityColorProviders.add(prov);
+            }
+            catch (Exception e) {
+                logger.error(e);
+            }
+        }
+        prepareStyles();
     }
 
 
@@ -188,12 +218,24 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    /**
+     * Sets equivalent objects for the object being rendered.  For example,
+     * if the object being rendered is A, and B and C are equivalent to A, then
+     * setting the equivalent objects to {B, C} will cause the rendering to
+     * have (= B = C) appended to it
+     * @param objects The objects that are equivalent to the object
+     *                being rendered
+     */
     public void setEquivalentObjects(Set<OWLObject> objects) {
         equivalentObjects.clear();
         equivalentObjects.addAll(objects);
     }
 
 
+    /**
+     * Specifies whether or not this row displays inferred information (the
+     * default value is false)
+     */
     public void setInferred(boolean inferred) {
         this.inferred = inferred;
     }
@@ -216,38 +258,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public void setRightMargin(int rightMargin) {
         this.rightMargin = rightMargin;
-    }
-
-
-    public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, int indentation) {
-        this.owlEditorKit = owlEditorKit;
-        this.renderExpression = renderExpression;
-        this.renderIcon = renderIcon;
-        this.equivalentObjects = new HashSet<OWLObject>();
-        setFontSize(owlEditorKit.getWorkspace().getFontSize());
-        renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
-        renderingComponent.setOpaque(false);
-        iconLabel = new JLabel("");
-        iconLabel.setVerticalAlignment(JLabel.TOP);
-        renderingComponent.add(iconLabel);
-        renderingComponent.add(textPane);
-        iconLabel.setOpaque(false);
-        renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        entityColorProviders = new ArrayList<OWLEntityColorProvider>();
-        OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
-        for (OWLEntityColorProviderPlugin plugin : loader.getPlugins()) {
-            try {
-                OWLEntityColorProvider prov = plugin.newInstance();
-                prov.initialise();
-                entityColorProviders.add(prov);
-            }
-            catch (Exception e) {
-                logger.error(e);
-            }
-        }
-        this.indentation = indentation;
-        prepareStyles();
     }
 
 
@@ -586,14 +596,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private void prepareTextPane(Object value, boolean selected) {
         textPane.setBorder(null);
         textPane.setText(value.toString());
-        stylesApplied = false;
         if (commentedOut) {
             textPane.setText("// " + textPane.getText());
         }
 //        textPane.setSize(textPane.getPreferredSize());
         StyledDocument doc = textPane.getStyledDocument();
 //        doc.setParagraphAttributes(0, doc.getLength(), linespacingStyle, false);
-        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
+        resetStyles(doc);
+
         if (selected) {
             doc.setParagraphAttributes(0, doc.getLength(), selectionForeground, false);
         }
@@ -610,17 +620,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 if (!getOWLModelManager().getReasoner().isClassified()) {
                     doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
                 }
-                else {
-                    doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
-                }
             }
             catch (OWLReasonerException e) {
                 e.printStackTrace();
             }
         }
-        else {
-            doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
-        }
+
         if (ontology != null) {
             if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(
                     ontology)) {
@@ -653,11 +658,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 }
             }
         }
-    }
 
-
-    private void applyStyles(StyledDocument doc) {
-        stylesApplied = true;
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),.\n'", true);
@@ -707,12 +708,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                         }
                         catch (OWLReasonerException e) {
                             e.printStackTrace();
-                            //                            throw new OWLRuntimeException(e);
+//                            throw new OWLRuntimeException(e);
                         }
                     }
                     // We did have a check here for changed entities
                     if (!styleSet) {
-                        //                        C = getColor(entity, textPane.getForeground());
+//                        C = getColor(entity, textPane.getForeground());
                     }
                 }
             }
@@ -754,6 +755,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         if (renderLinks && !linkRendered) {
             linkedObjectComponent.setLinkedObject(null);
         }
+    }
+
+
+    private void resetStyles(StyledDocument doc) {
+        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
     }
 
 

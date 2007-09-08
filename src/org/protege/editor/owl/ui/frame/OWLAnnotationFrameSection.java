@@ -34,8 +34,20 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
+        boolean hidden = false;
         for (OWLEntityAnnotationAxiom ax : ontology.getEntityAnnotationAxioms(getRootObject())) {
-            addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+            if (!getOWLEditorKit().getOWLWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
+                addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+            }
+            else {
+                hidden = true;
+            }
+        }
+        if (hidden) {
+            setLabel(LABEL + " (some annotations are hidden)");
+        }
+        else {
+            setLabel(LABEL);
         }
     }
 
