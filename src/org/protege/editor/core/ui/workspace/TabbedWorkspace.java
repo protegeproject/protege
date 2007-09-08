@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -21,6 +22,7 @@ import javax.swing.event.MenuListener;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.Resettable;
 
 
 /**
@@ -181,6 +183,17 @@ public abstract class TabbedWorkspace extends Workspace {
                 save();
             }
         });
+        tabMenu.addSeparator();
+        Action resetTabAction = new AbstractAction("Reset selected tab to default state") {
+
+            public void actionPerformed(ActionEvent e) {
+                Resettable tab = (Resettable) tabbedPane.getSelectedComponent();
+                tab.reset();
+                tabbedPane.getSelectedComponent().validate();
+            }
+        };
+        resetTabAction.setEnabled(tabbedPane.getSelectedComponent() instanceof Resettable);
+        tabMenu.add(resetTabAction);
     }
 
 

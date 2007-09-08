@@ -162,7 +162,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                                 dispose();
                             }
                             catch (Exception e1) {
-                                logger.error(e1);
+                                logger.error("Exception caught setting up recent editor kits", e1);
                             }
                         }
                     }));
