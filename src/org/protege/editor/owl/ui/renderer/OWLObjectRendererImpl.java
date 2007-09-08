@@ -413,9 +413,8 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLIndividual node) {
-        write(getRendering(node));
         if (node.isAnonymous()) {
-            write(" : [");
+            write("Anonymous : [");
             for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
                 for (OWLDescription desc : node.getTypes(ont)) {
                     write(" ");
@@ -423,6 +422,9 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
                 }
             }
             write(" ]");
+        }
+        else {
+            write(getRendering(node));
         }
     }
 
@@ -790,6 +792,9 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     public void visit(OWLImportsDeclaration axiom) {
         write(axiom.getImportedOntologyURI().toString());
+        if (!owlModelManager.getOWLOntologyManager().contains(axiom.getImportedOntologyURI())) {
+            write("      (Not Loaded)");
+        }
     }
 
 

@@ -14,6 +14,8 @@ public class OWLDataPropertyDescriptionFrame extends AbstractOWLFrame<OWLDataPro
 
     public OWLDataPropertyDescriptionFrame(OWLEditorKit owlEditorKit) {
         super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
+        addSection(new OWLDataPropertyDomainFrameSection(owlEditorKit, this));
+        addSection(new OWLDataPropertyRangeFrameSection(owlEditorKit, this));
         addSection(new OWLEquivalentDataPropertiesFrameSection(owlEditorKit, this));
         addSection(new OWLSubDataPropertyAxiomSuperPropertyFrameSection(owlEditorKit, this));
         addSection(new OWLDisjointDataPropertiesFrameSection(owlEditorKit, this));

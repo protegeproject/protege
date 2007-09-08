@@ -20,7 +20,7 @@
                 </Component>
             </CNode>
 
-            <VSNode splits="0.3 0.3 0.3">
+            <VSNode splits="0.3 0.7">
                 <CNode>
                     <Component label="Data Property Characteristics">
                         <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyCharacteristics"/>
@@ -29,11 +29,6 @@
                 <CNode>
                     <Component label="Data Property Description">
                         <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyDescription"/>
-                    </Component>
-                </CNode>
-                <CNode>
-                    <Component label="Data Property Ranges">
-                        <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyDomainsAndRanges"/>
                     </Component>
                 </CNode>
 

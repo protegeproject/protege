@@ -44,11 +44,13 @@ public class OWLOntologyAnnotationAxiomFrameSection extends AbstractOWLFrameSect
      */
     protected void refill(OWLOntology ontology) {
         for (OWLOntologyAnnotationAxiom ax : getRootObject().getAnnotations(ontology)) {
-            addRow(new OWLOntologyAnnotationAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                 this,
-                                                                 ontology,
-                                                                 getRootObject(),
-                                                                 ax));
+            if (!getOWLEditorKit().getOWLWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
+                addRow(new OWLOntologyAnnotationAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                     this,
+                                                                     ontology,
+                                                                     getRootObject(),
+                                                                     ax));
+            }
         }
     }
 

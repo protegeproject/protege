@@ -105,6 +105,11 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
 
+    public void setSelectedIndividual(OWLIndividual individual) {
+        list.setSelectedValue(individual, true);
+    }
+
+
     private void reset() {
 
         list.setListData(individualsInList.toArray());

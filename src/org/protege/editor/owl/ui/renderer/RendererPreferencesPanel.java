@@ -48,8 +48,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox showHyperlinksCheckBox;
 
-    private JCheckBox showChangedEntitiesCheckBox;
-
     private JCheckBox highlightKeyWordsCheckBox;
 
 
@@ -69,7 +67,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         }
         prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
-        prefs.setHighlightChangedEntities(showChangedEntitiesCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
     }
 
@@ -136,13 +133,11 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
                                                       prefs.isHighlightActiveOntologyStatements());
         showHyperlinksCheckBox = new JCheckBox("Show hyperlinks in components that support them",
                                                prefs.isRenderHyperlinks());
-        showChangedEntitiesCheckBox = new JCheckBox("Highlight changes entities", prefs.isHighlightChangedEntities());
         highlightKeyWordsCheckBox = new JCheckBox("Highlight keywords", prefs.isHighlightKeyWords());
         Box optBox = new Box(BoxLayout.Y_AXIS);
         optBox.setBorder(ComponentFactory.createTitledBorder("Appearance"));
         optBox.add(highlightAOStatementsCheckBox);
         optBox.add(showHyperlinksCheckBox);
-        optBox.add(showChangedEntitiesCheckBox);
         optBox.add(highlightKeyWordsCheckBox);
         holderBox.add(optBox);
     }

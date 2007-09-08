@@ -12,7 +12,7 @@
             </Component>
         </CNode>
 
-        <VSNode splits="0.2 0.4 0.4">
+        <VSNode splits="0.2 0.8">
             <CNode>
                 <Component label="Characteristics">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyCharacteristics"/>
@@ -24,13 +24,6 @@
                     <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyDescription"/>
                 </Component>
             </CNode>
-
-            <CNode>
-                <Component label="Domains and ranges">
-                    <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyDomainsAndRanges"/>
-                </Component>
-            </CNode>
-
         </VSNode>
     </HSNode>
 </layout>

@@ -105,6 +105,12 @@ public class OWLFrameListComponent<R extends OWLObject> extends JPanel {
     }
 
 
+    public void dispose() {
+        mainList.dispose();
+        annotationFrameList.dispose();
+    }
+
+
     private void sync() {
         Object selVal = mainList.getSelectedValue();
         if (selVal instanceof OWLFrameSectionRow) {

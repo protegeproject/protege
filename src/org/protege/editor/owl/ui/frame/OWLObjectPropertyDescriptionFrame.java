@@ -14,9 +14,13 @@ public class OWLObjectPropertyDescriptionFrame extends AbstractOWLFrame<OWLObjec
 
     public OWLObjectPropertyDescriptionFrame(OWLEditorKit editorKit) {
         super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        addSection(new OWLObjectPropertyDomainFrameSection(editorKit, this));
+        addSection(new OWLObjectPropertyRangeFrameSection(editorKit, this));
+
         addSection(new OWLEquivalentObjectPropertiesAxiomFrameSection(editorKit, this));
         addSection(new OWLSubObjectPropertyAxiomSuperPropertyFrameSection(editorKit, this));
         addSection(new OWLInverseObjectPropertiesAxiomFrameSection(editorKit, this));
+
 
         addSection(new OWLDisjointObjectPropertiesFrameSection(editorKit, this));
         addSection(new OWLPropertyChainAxiomFrameSection(editorKit, this));

@@ -67,6 +67,7 @@ import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
+import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLIconProvider;
 import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
@@ -133,6 +134,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private OWLIndividualSelectorPanel individualSelectorPanel;
 
     private OWLEntityCollectingOntologyChangeListener listener;
+
+    private Set<URI> hiddenAnnotationURIs;
 
 
     public OWLEditorKit getOWLEditorKit() {
@@ -205,6 +208,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reselectionEventTypes.add(EventType.ENTITY_RENDERING_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
+
+        hiddenAnnotationURIs = new HashSet<URI>();
+        hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
         owlModelManagerListener = new OWLModelManagerListener() {
 
@@ -280,6 +286,41 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                                                     lastSelectedIndividual,
                                                     lastSelectedObjectProperty,
                                                     selectedEntity));
+    }
+
+
+    public boolean isHiddenAnnotationURI(URI annotationURI) {
+        return hiddenAnnotationURIs.contains(annotationURI);
+    }
+
+
+    public Set<URI> getHiddenAnnotationURIs() {
+        return Collections.unmodifiableSet(hiddenAnnotationURIs);
+    }
+
+
+    public void setHiddenAnnotationURI(URI annotationURI, boolean hidden) {
+        boolean changed;
+        if (hidden) {
+            changed = hiddenAnnotationURIs.add(annotationURI);
+        }
+        else {
+            changed = hiddenAnnotationURIs.remove(annotationURI);
+        }
+        if (changed) {
+            AnnotationPreferences.setHiddenAnnotationURIs(hiddenAnnotationURIs);
+            getOWLEditorKit().getOWLModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
+        }
+    }
+
+
+    public void setHiddenAnnotationURIs(Set<URI> hiddenURIs) {
+        if (!hiddenURIs.equals(hiddenAnnotationURIs)) {
+            hiddenAnnotationURIs.clear();
+            hiddenAnnotationURIs.addAll(hiddenURIs);
+            AnnotationPreferences.setHiddenAnnotationURIs(hiddenAnnotationURIs);
+            getOWLEditorKit().getOWLModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
+        }
     }
 
 
