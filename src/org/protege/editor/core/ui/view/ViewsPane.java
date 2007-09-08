@@ -73,7 +73,7 @@ public class ViewsPane extends JPanel {
         // See if there is a customised file
         File file = getCustomConfigFile();
         URL url = null;
-        if (file == null || !file.exists()) {
+        if (file == null || !file.exists() || memento.isForceReset()) {
             // No file, so default to default one :)
             url = memento.getInitialCongigFileURL();
         }

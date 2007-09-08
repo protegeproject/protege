@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.util.Resettable;
+import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 
@@ -18,7 +20,7 @@ import org.protege.editor.core.ui.view.ViewsPaneMemento;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class WorkspaceViewsTab extends WorkspaceTab {
+public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
 
     public static final Logger logger = Logger.getLogger(WorkspaceViewsTab.class);
 
@@ -33,6 +35,26 @@ public class WorkspaceViewsTab extends WorkspaceTab {
     public void initialise() {
         setLayout(new BorderLayout());
         ViewsPaneMemento memento = new ViewsPaneMemento(this);
+        viewsPane = new ViewsPane(getWorkspace(), memento);
+        add(viewsPane, BorderLayout.CENTER);
+        getWorkspace().getViewManager().registerViews(this);
+    }
+
+
+    public void reset() {
+
+        for (View view : viewsPane.getViews()) {
+            if (view.getViewComponent() != null) {
+                if (view.getViewComponent() instanceof Resettable) {
+                    ((Resettable) view.getViewComponent()).reset();
+                }
+            }
+        }
+        getWorkspace().getViewManager().unregisterViews(this);
+        remove(viewsPane);
+        viewsPane.dispose();
+        ViewsPaneMemento memento = new ViewsPaneMemento(this);
+        memento.setForceReset(true);
         viewsPane = new ViewsPane(getWorkspace(), memento);
         add(viewsPane, BorderLayout.CENTER);
         getWorkspace().getViewManager().registerViews(this);
