@@ -229,7 +229,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
                                    0,
                                    0));
 
-        add(new JLabel("Annotation value"),
+        add(new JLabel("Value"),
             new GridBagConstraints(1,
                                    0,
                                    5,
