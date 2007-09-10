@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui;
 import java.util.Comparator;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.model.OWLObject;
 
 
@@ -22,15 +24,15 @@ public class OWLObjectComparator<E extends OWLObject> implements Comparator<E> {
 
     private OWLModelManager owlModelManager;
 
-
     public OWLObjectComparator(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
     }
 
-
     public int compare(OWLObject o1, OWLObject o2) {
-        String ren1 = owlModelManager.getRendering(o1);
-        String ren2 = owlModelManager.getRendering(o2);
+        final OWLObjectRenderer objRen = owlModelManager.getOWLObjectRenderer();
+        final OWLModelManagerEntityRenderer entityRen = owlModelManager.getOWLEntityRenderer();
+        String ren1 = objRen.render(o1, entityRen);
+        String ren2 = objRen.render(o2, entityRen);
         return ren1.compareToIgnoreCase(ren2);
     }
 }
