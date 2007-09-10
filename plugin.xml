@@ -135,7 +135,7 @@
     <extension id="OWLOntologyMetricsView"
                 point="org.protege.editor.core.application.ViewComponent">
         <label value="Ontology Metrics"/>
-        <class value="org.protege.editor.owl.ui.metrics.MetricsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.metrics.AxiomMetricsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
