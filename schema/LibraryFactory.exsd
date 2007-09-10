@@ -1,18 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.protege.editor.owl">
-
-
-  <annotation>
-    <appInfo>
-      <meta.schema 
-          plugin="org.protege.editor.owl" 
-          id="modle_libraryfactory" name="Library Factory"/>
-     </appInfo>
-     <documentation>
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.protege.editor.owl" id="model.libraryfactory" name="Library Factory"/>
+      </appInfo>
+      <documentation>
          [Enter description of this extension point.]
-     </documentation>
-  </annotation>
+      </documentation>
+   </annotation>
 
    <element name="extension">
       <complexType>
@@ -54,7 +50,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute kind="java" basedOn=":org.protege.editor.owl.model.library.OntologyLibraryFactory"/>
                </appInfo>
             </annotation>
          </attribute>
