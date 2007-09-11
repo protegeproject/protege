@@ -233,7 +233,7 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
         if (comparator != null) {
 //            Collections.sort(rows, comparator);
-            TreeSet ts = new TreeSet(comparator);
+            TreeSet<OWLFrameSectionRow<R,A,E>> ts = new TreeSet<OWLFrameSectionRow<R,A,E>>(comparator);
             ts.addAll(rows);
             rows.clear();
             rows.addAll(ts);

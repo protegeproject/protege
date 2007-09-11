@@ -154,7 +154,7 @@ public class EntityFinderField extends JTextField {
 
     private void executeFind() {
         if (getText().trim().length() > 0) {
-            Set<OWLEntity> results = results = editorKit.getOWLModelManager().getEntityFinder().getEntities(getText());
+            Set<OWLEntity> results = editorKit.getOWLModelManager().getEntityFinder().getEntities(getText());
             showResults(results);
         }
         else {
@@ -200,7 +200,7 @@ public class EntityFinderField extends JTextField {
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
             window.setSize(getWidth(), 200);
-            TreeSet ts = new TreeSet(new OWLEntityComparator(editorKit.getOWLModelManager()));
+            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(new OWLEntityComparator(editorKit.getOWLModelManager()));
             ts.addAll(results);
             resultsList.setListData(ts.toArray());
             window.setVisible(true);

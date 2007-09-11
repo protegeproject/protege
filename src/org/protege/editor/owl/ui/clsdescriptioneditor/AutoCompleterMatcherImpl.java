@@ -27,13 +27,13 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
     }
 
 
-    public Set getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
-                          boolean individuals, boolean datatypes) {
-        TreeSet set = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                String ren1 = owlModelManager.getOWLObjectRenderer().render((OWLObject) o1,
+    public Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
+    		                         boolean individuals, boolean datatypes) {
+        TreeSet<OWLObject> set = new TreeSet<OWLObject>(new Comparator<OWLObject>() {
+            public int compare(OWLObject o1, OWLObject o2) {
+                String ren1 = owlModelManager.getOWLObjectRenderer().render(o1,
                                                                             owlModelManager.getOWLEntityRenderer());
-                String ren2 = owlModelManager.getOWLObjectRenderer().render((OWLObject) o2,
+                String ren2 = owlModelManager.getOWLObjectRenderer().render(o2,
                                                                             owlModelManager.getOWLEntityRenderer());
                 return ren1.compareTo(ren2);
             }

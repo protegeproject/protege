@@ -1,24 +1,10 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.Component;
-import java.awt.TextComponent;
 import java.awt.Toolkit;
-import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.ViewClipboard;
-import org.semanticweb.owl.model.OWLObject;
-
-import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.FocusManager;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.Copyable;
 import org.protege.editor.owl.ui.view.ViewClipboard;

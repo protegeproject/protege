@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import java.util.Set;
-
+import org.semanticweb.owl.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>
@@ -14,6 +14,6 @@ import java.util.Set;
  */
 public interface AutoCompleterMatcher {
 
-    Set getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
-                   boolean individuals, boolean datatypes);
+    Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
+    		                  boolean individuals, boolean datatypes);
 }
