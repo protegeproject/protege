@@ -1,7 +1,5 @@
 package org.protege.editor.core.plugin;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExtension;
 
 

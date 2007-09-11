@@ -8,11 +8,15 @@ import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -24,27 +28,18 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
 import org.protege.editor.core.ui.view.ViewHolder;
-import org.protege.editor.core.ui.util.ProtegePlasticTheme;
-import org.protege.editor.core.ui.view.*;
 
 import com.jgoodies.looks.FontPolicies;
 import com.jgoodies.looks.FontPolicy;
 import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Collections;
-import java.util.Set;
 
 /*
  * Copyright (C) 2007, University of Manchester

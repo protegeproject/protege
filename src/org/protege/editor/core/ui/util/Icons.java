@@ -8,7 +8,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.osgi.framework.Bundle;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 
 

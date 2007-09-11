@@ -1,17 +1,10 @@
 package org.protege.editor.core;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.editorkit.*;
-import org.protege.editor.core.ui.workspace.Workspace;
-import org.protege.editor.core.ui.workspace.WorkspaceFrame;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -21,6 +14,7 @@ import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
 
 /**
