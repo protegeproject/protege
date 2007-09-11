@@ -32,7 +32,7 @@ public class OWLEntityListPanel<E extends OWLEntity> extends OWLObjectListPanel<
 
 
     private static <E extends OWLEntity> Set<E> getOrderedSet(OWLModelManager owlModelManager, Set<E> objects) {
-        TreeSet ts = new TreeSet(new OWLEntityComparator<E>(owlModelManager));
+        TreeSet<E> ts = new TreeSet<E>(new OWLEntityComparator<E>(owlModelManager));
         ts.addAll(objects);
         return ts;
     }

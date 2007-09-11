@@ -26,7 +26,7 @@ public class NamespaceManagerImpl extends AbstractNamespaceManager {
 
 
     public Map<String, String> getNamespaceMap() {
-        return new TreeMap(new NamespaceComparator());
+        return new TreeMap<String, String>(new NamespaceComparator());
     }
 
 

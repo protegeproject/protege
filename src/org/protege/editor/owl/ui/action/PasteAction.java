@@ -1,13 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.Component;
-import java.awt.TextComponent;
-import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.protege.editor.owl.ui.view.Pasteable;
-import org.protege.editor.owl.ui.view.ViewClipboard;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLRuntimeException;
-
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
@@ -15,12 +7,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.FocusManager;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.view.Pasteable;
 import org.protege.editor.owl.ui.view.ViewClipboard;

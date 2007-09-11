@@ -203,7 +203,7 @@ public class OWLDescriptionAutoCompleter {
                 }
                 catch (OWLExpressionParserException e) {
                     String word = getWordToComplete();
-                    Set matches = matcher.getMatches(word,
+                    Set<OWLObject> matches = matcher.getMatches(word,
                                                      e.isOWLClassExpected(),
                                                      e.isOWLObjectPropertyExpected(),
                                                      e.isOWLDataPropertyExpected(),
