@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.plugin.PluginUtilities;
 
 

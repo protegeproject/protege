@@ -11,15 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import org.apache.log4j.Logger;
-import org.coode.mdock.*;
-import org.protege.editor.core.FileManager;
-import org.protege.editor.core.ui.workspace.Workspace;
-
-import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
-import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;

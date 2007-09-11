@@ -13,7 +13,6 @@ import javax.swing.JScrollPane;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.util.Icons;
 
