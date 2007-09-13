@@ -767,7 +767,15 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLOntology ontology) {
-        write(ontology.getURI().toString());
+        String uri = ontology.getURI().toString();
+        int lastSepIndex = uri.lastIndexOf('/');
+        if (lastSepIndex != -1) {
+            write(uri.substring(lastSepIndex + 1, uri.length()) + "  (" + uri + ")");
+        }
+        else {
+            write(uri);
+        }
+//        write(ontology.getURI().toString());
     }
 
 

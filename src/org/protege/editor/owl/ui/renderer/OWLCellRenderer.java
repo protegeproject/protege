@@ -631,7 +631,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         // Highlight text
-        StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),.\n'", true);
+        StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n'", true);
         OWLEntity curEntity = null;
         boolean linkRendered = false;
         int tokenStartIndex = 0;
