@@ -29,6 +29,7 @@ import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLIconProvider;
 import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
@@ -371,19 +372,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         ontologiesList = new JComboBox(ontArray);
         ontologiesList.setToolTipText("Active ontology");
-        ontologiesList.setRenderer(new DefaultListCellRenderer() {
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                          boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list,
-                                                                           value,
-                                                                           index,
-                                                                           isSelected,
-                                                                           cellHasFocus);
-                label.setText(((OWLOntology) value).getURI().toString());
-                label.setIcon(getOWLIconProvider().getIcon((OWLOntology) value));
-                return label;
-            }
-        });
+        ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
 
 
         gbc.gridx = 1;
