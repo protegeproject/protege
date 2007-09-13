@@ -423,21 +423,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             entity.accept(activeEntityVisitor);
         }
-        String rendering = "";
-        if (value instanceof OWLObject) {
-            rendering = getOWLModelManager().getOWLObjectRenderer().render((OWLObject) value,
-                                                                           getOWLModelManager().getOWLEntityRenderer());
-        }
-        else if (value != null) {
-            rendering = value.toString();
-        }
-        for (OWLObject equivObj : equivalentObjects) {
-            rendering += " \u2261 ";
-            rendering += getOWLModelManager().getOWLObjectRenderer().render(equivObj,
-                                                                            getOWLModelManager().getOWLEntityRenderer());
-        }
 
-        prepareTextPane(rendering, isSelected);
+        prepareTextPane(getRendering(value), isSelected);
+
         if (isSelected) {
             textPane.setBackground(SELECTION_BACKGROUND);
             textPane.setForeground(SELECTION_FOREGROUND);
