@@ -508,22 +508,37 @@ public class View extends JComponent implements NodeComponent {
         Dimension size = getSize();
         Point loc = getLocation();
         SwingUtilities.convertPointToScreen(loc, this);
-        View view = createView(plugin);
+        final View view = createView(plugin);
         final JDialog dlg = new JDialog(ProtegeManager.getInstance().getFrame(workspace));
         view.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         view.syncronizing = false;
         viewBarComponent.setEnabled(false);
-        dlg.setContentPane(view);
+        JPanel holder = new JPanel(new BorderLayout(3, 3));
+        holder.add(view);
+        final JCheckBox cb = new JCheckBox();
+        JPanel checkBoxHolder = new JPanel(new BorderLayout());
+        checkBoxHolder.add(cb, BorderLayout.SOUTH);
+        checkBoxHolder.setBorder(BorderFactory.createEmptyBorder(1, 4, 4, 2));
+        holder.add(checkBoxHolder, BorderLayout.SOUTH);
+        cb.setAction(new AbstractAction("Synchronising") {
+
+            public void actionPerformed(ActionEvent e) {
+                view.setSyncronizing(cb.isSelected());
+                view.setPinned(!cb.isSelected());
+            }
+        });
+        dlg.setContentPane(holder);
         dlg.setSize(size);
         dlg.setLocation(loc);
         dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dlg.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 try {
-                    viewComponent.dispose();
+                    view.dispose();
+                    view.getViewComponent().dispose();
                 }
                 catch (Exception e1) {
-                    logger.warn("BAD VIEW: (" + viewComponent.getClass().getSimpleName() + ") - exception on dispose: " + e1.getMessage());
+                    logger.warn("BAD VIEW: (" + view.getViewComponent().getClass().getSimpleName() + ") - exception on dispose: " + e1.getMessage());
                 }
             }
         });
