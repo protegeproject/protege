@@ -59,7 +59,8 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
         this.owlEditorKit = owlEditorKit;
         editor = new ExpressionEditor<List<OWLObjectPropertyExpression>>(owlEditorKit,
                                                                          new OWLPropertyChainChecker(owlEditorKit.getOWLModelManager()));
-        editor.setPreferredSize(editor.getPreferredSize());
+        Dimension prefSize = editor.getPreferredSize();
+        editor.setPreferredSize(new Dimension(350, prefSize.height));
         impliesLabel = new JLabel();
         panel = new JPanel(new BorderLayout(7, 7));
         panel.add(editor);
