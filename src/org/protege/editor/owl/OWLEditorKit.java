@@ -171,20 +171,15 @@ public class OWLEditorKit implements EditorKit {
         if (f == null) {
             return false;
         }
-        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(f.toURI());
         addRecent(f.toURI());
+        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(f.toURI());
         return true;
     }
 
 
     public boolean handleLoadFrom(URI uri) throws Exception {
-        long t0 = System.currentTimeMillis();
-
-        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(uri);
-        long t1 = System.currentTimeMillis();
-        System.out.println("Loaded in " + (t1 - t0));
-
         addRecent(uri);
+        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(uri);
         return true;
     }
 
