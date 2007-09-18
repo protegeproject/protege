@@ -128,6 +128,7 @@ public class ViewBanner extends JPanel {
         backgroundColor = color;
         labelPanel.setBackground(backgroundColor);
         toolBarPanel.setBackground(backgroundColor);
+        revalidate();
     }
 
 
