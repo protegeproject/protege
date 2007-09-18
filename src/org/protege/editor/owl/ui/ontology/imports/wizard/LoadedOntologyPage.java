@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.model.OWLOntology;
 
 
@@ -57,6 +58,7 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
     protected void createUI(JComponent parent) {
         setInstructions("Please select an existing (pre-loaded) ontology that you want to import.");
         ontologyList = new OWLObjectList(getOWLEditorKit());
+        ontologyList.setCellRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
         ontologyList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {

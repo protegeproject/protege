@@ -88,19 +88,12 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public String getToolTipText(MouseEvent event) {
-        Point pt = event.getPoint();
-        TreePath path = getPathForLocation(pt.x, pt.y);
-        if (path == null) {
-            return null;
-        }
-        OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
-        N obj = node.getOWLObject();
+        N obj = getOWLObjectAtMousePosition(event);
         if (obj instanceof OWLEntity) {
             return ((OWLEntity) obj).getURI().toString();
         }
         return null;
     }
-
 
     public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
                          Comparator<N> owlObjectComparator) {
@@ -654,4 +647,14 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             expandPath(getPathForRow(i));
         }
     }
+
+    protected N getOWLObjectAtMousePosition(MouseEvent event){
+        Point pt = event.getPoint();
+        TreePath path = getPathForLocation(pt.x, pt.y);
+        if (path == null) {
+            return null;
+        }
+        OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
+        return node.getOWLObject();
+    }    
 }

@@ -8,7 +8,9 @@ import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
+import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.util.SimpleURIMapper;
 
 
 /**
@@ -55,6 +57,13 @@ public class URLImportFileVerifier implements ImportVerifier {
 
                     public void performImportSetup(OWLEditorKit editorKit) {
                         // May be we need to add a mapping?
+                        try {
+                            OWLOntologyManager man = editorKit.getOWLModelManager().getOWLOntologyManager();
+                            man.addURIMapper(new SimpleURIMapper(ontologyURI, url.toURI()));
+                        }
+                        catch (URISyntaxException e) {
+                            throw new OWLRuntimeException(e);
+                        }
                     }
                 };
             }
