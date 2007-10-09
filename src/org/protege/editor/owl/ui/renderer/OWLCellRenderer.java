@@ -75,6 +75,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean renderExpression;
 
+    private boolean strikeThrough;
 
     private OWLOntology ontology;
 
@@ -122,6 +123,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean inferred;
 
     private boolean highlightKeywords;
+
+    private boolean wrap = true;
 
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
@@ -208,6 +211,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         focusedEntity = null;
         commentedOut = false;
         inferred = false;
+        strikeThrough = false;
 //        highlightKeywords = true;
     }
 
@@ -237,6 +241,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
      */
     public void setInferred(boolean inferred) {
         this.inferred = inferred;
+    }
+
+
+    public void setStrikeThrough(boolean strikeThrough) {
+        this.strikeThrough = strikeThrough;
     }
 
 
@@ -278,6 +287,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public void setCommentedOut(boolean commentedOut) {
         this.commentedOut = commentedOut;
+    }
+
+
+    public boolean isWrap() {
+        return wrap;
+    }
+
+
+    public void setWrap(boolean wrap) {
+        this.wrap = wrap;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -520,6 +539,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style plainStyle;
 
+    private Style boldStyle;
+
+    private Style nonBoldStyle;
+
     private Style selectionForeground;
 
     private Style foreground;
@@ -550,6 +573,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        StyleConstants.setForeground(plainStyle, Color.BLACK);
         StyleConstants.setItalic(plainStyle, false);
         StyleConstants.setSpaceAbove(plainStyle, 0);
+        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
+
+        boldStyle = doc.addStyle("BOLD_STYLE", null);
+        StyleConstants.setBold(boldStyle, true);
+
+
+        nonBoldStyle = doc.addStyle("NON_BOLD_STYLE", null);
+        StyleConstants.setBold(nonBoldStyle, true);
 
         selectionForeground = doc.addStyle("SEL_FG_STYPE", null);
         StyleConstants.setForeground(selectionForeground, SELECTION_FOREGROUND);
@@ -582,7 +613,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void prepareTextPane(Object value, boolean selected) {
         textPane.setBorder(null);
-        textPane.setText(value.toString());
+        String theVal = value.toString();
+        if (!wrap) {
+            theVal = theVal.replace('\n', ' ');
+            theVal = theVal.replace('\t', ' ');
+            theVal = theVal.replaceAll(" [ ]+", " ");
+        }
+        textPane.setText(theVal);
         if (commentedOut) {
             textPane.setText("// " + textPane.getText());
         }
@@ -603,23 +640,19 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             return;
         }
         else if (inferred) {
-            try {
-                if (!getOWLModelManager().getReasoner().isClassified()) {
-                    doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
-                }
-            }
-            catch (OWLReasonerException e) {
-                e.printStackTrace();
-            }
+
+        }
+        if (strikeThrough) {
+            doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
         }
 
         if (ontology != null) {
             if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(
                     ontology)) {
-                textPane.setFont(boldFont);
+                doc.setParagraphAttributes(0, doc.getLength(), boldStyle, false);
             }
             else {
-                textPane.setFont(plainFont);
+                doc.setParagraphAttributes(0, doc.getLength(), nonBoldStyle, false);
             }
         }
         else {
@@ -746,7 +779,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private void resetStyles(StyledDocument doc) {
-        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
+        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, true);
     }
 
 

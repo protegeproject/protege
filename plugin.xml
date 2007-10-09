@@ -840,6 +840,15 @@
     </extension>
 
 
+    <extension id="ExplanationResultsView" 
+                point="org.protege.editor.core.application.ViewComponent">
+        <label value="Explanation"/>
+        <class value="org.protege.editor.owl.ui.view.ExplanationResultsViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.individualcategory"/>
+    </extension>
+
+
     <!--
 
     <extension id="SPARQLQueryTab">

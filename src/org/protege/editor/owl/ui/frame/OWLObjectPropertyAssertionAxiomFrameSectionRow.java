@@ -25,7 +25,9 @@ public class OWLObjectPropertyAssertionAxiomFrameSectionRow extends AbstractOWLF
 
 
     protected OWLFrameSectionRowObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
-        return null;
+        OWLObjectPropertyIndividualPairEditor editor = new OWLObjectPropertyIndividualPairEditor(getOWLEditorKit());
+        editor.setObjectPropertyAxiom(getAxiom());
+        return editor;
     }
 
 

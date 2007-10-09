@@ -196,8 +196,10 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
             return;
         }
         initialUpdatePerformed = true;
-        lastDisplayedObject = updateView();
-        updateHeader(lastDisplayedObject);
+        if (isSynchronizing()){
+            lastDisplayedObject = updateView();
+            updateHeader(lastDisplayedObject);
+        }
     }
 
 

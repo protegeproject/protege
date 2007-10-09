@@ -98,7 +98,9 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         OWLEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
         OWLClass thing = owlModelManager.getOWLDataFactory().getOWLThing();
         owlClassMap.put(entityRenderer.render(thing), thing);
+        entityRenderingMap.put(thing, entityRenderer.render(thing));
         OWLClass nothing = owlModelManager.getOWLDataFactory().getOWLNothing();
+        entityRenderingMap.put(nothing, entityRenderer.render(nothing));
         owlClassMap.put(entityRenderer.render(nothing), nothing);
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             for (OWLClass cls : ont.getReferencedClasses()) {

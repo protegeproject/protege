@@ -76,6 +76,11 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLDataProper
     }
 
 
+    public void show(OWLDataProperty property) {
+        tree.setSelectedOWLObject(property);
+    }
+
+
     private void createProperty() {
         OWLEntityCreationSet<OWLDataProperty> set = getOWLWorkspace().createOWLDataProperty();
         if (set != null) {

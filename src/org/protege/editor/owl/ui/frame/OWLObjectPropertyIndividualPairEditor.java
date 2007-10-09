@@ -13,7 +13,8 @@ import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLObjectPropertyExpression;
+import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
 
 
 /**
@@ -42,8 +43,12 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLFrameSecti
     }
 
 
-    public void setObjectPropertyIndividual(OWLObjectPropertyAssertionAxiom ax) {
-
+    public void setObjectPropertyAxiom(OWLPropertyAssertionAxiom<OWLObjectPropertyExpression, OWLIndividual> ax) {
+        OWLObjectPropertyExpression p = ax.getProperty();
+        if (p instanceof OWLObjectProperty){
+            objectPropertyPanel.setSelectedOWLObjectProperty((OWLObjectProperty)p);
+        }
+        individualSelectorPanel.setSelectedIndividual(ax.getObject());
     }
 
 

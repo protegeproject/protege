@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -52,12 +51,10 @@ import javax.swing.plaf.basic.BasicListUI;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.protege.editor.owl.ui.debugging.JustificationHierarchyProvider;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -69,12 +66,11 @@ import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLObjectTreeCellRenderer;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Copyable;
 import org.protege.editor.owl.ui.view.Cuttable;
 import org.protege.editor.owl.ui.view.Deleteable;
+import org.protege.editor.owl.ui.view.ExplanationResultsViewComponent;
 import org.protege.editor.owl.ui.view.Pasteable;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.debugging.BlackBoxOWLDebugger;
@@ -564,48 +560,31 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                                                                                                URI.create(
                                                                                                        "http://semanticweb.org/ontology" + System.nanoTime())),
                                                                    r);
-            Set<OWLAxiom> axs = debugger.getSOSForIncosistentClass(desc);
-            StringBuilder sb = new StringBuilder();
-            for (OWLAxiom justAx : axs) {
-                String s = editorKit.getOWLModelManager().getOWLObjectRenderer().render(justAx,
-                                                                                        editorKit.getOWLModelManager().getOWLEntityRenderer());
+            Set<Set<OWLAxiom>> axs = debugger.getAllSOSForIncosistentClass(desc);
+//            StringBuilder sb = new StringBuilder();
+//            for (OWLAxiom justAx : axs) {
+//                String s = editorKit.getOWLModelManager().getOWLObjectRenderer().render(justAx,
+//                                                                                        editorKit.getOWLModelManager().getOWLEntityRenderer());
+//
+//                sb.append(s);
+//                sb.append("\n\n");
+//            }
 
-                sb.append(s);
-                sb.append("\n\n");
-            }
-            ExpressionEditor<OWLAxiom> editor = new ExpressionEditor<OWLAxiom>(editorKit, new OWLExpressionChecker() {
-                public void check(String text) throws OWLExpressionParserException, OWLException {
-                }
-
-
-                public Object createObject(String text) throws OWLExpressionParserException, OWLException {
-                    return null;
-                }
-            });
-            editor.setText(editorKit.getOWLModelManager().getRendering(ax));
 //            JFrame textFrame = new JFrame();
 //            textFrame.getContentPane().add(editor);
 //            textFrame.pack();
 //            textFrame.setVisible(true);
             int count = 0;
-            for (OWLAxiom expAx : axs) {
-                count++;
-                System.out.println(count + ") " + expAx);
-            }
-            JustificationHierarchyProvider prov = new JustificationHierarchyProvider(editorKit.getOWLModelManager().getOWLOntologyManager(),
-                                                                                     desc,
-                                                                                     axs);
-            OWLObjectTree<OWLAxiom> tree = new OWLObjectTree<OWLAxiom>(editorKit, prov);
-            OWLObjectTreeCellRenderer ren = new OWLObjectTreeCellRenderer(editorKit);
-            tree.setCellRenderer(ren);
-            tree.setRowHeight(-1);
-            tree.setOWLObjectComparator(new OWLAxiomComparator());
-            JFrame frame = new JFrame("Explanation for " + ax);
-            frame.getContentPane().add(tree);
-//            tree.expandAll();
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.pack();
-            frame.setVisible(true);
+//            for (OWLAxiom expAx : axs) {
+//                count++;
+//                System.out.println(count + ") " + expAx);
+//            }
+            View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
+                                                                    false,
+                                                                    Workspace.BOTTOM_RESULTS_VIEW);
+            ExplanationResultsViewComponent expView = (ExplanationResultsViewComponent) view.getViewComponent();
+
+            expView.setExplanation(ax, axs);
         }
         catch (OWLException e) {
             throw new OWLRuntimeException(e);
