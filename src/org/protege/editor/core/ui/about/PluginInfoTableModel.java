@@ -70,11 +70,15 @@ public class PluginInfoTableModel extends AbstractTableModel {
         }
         switch (Columns.values()[columnIndex]) {
         case NAME:
-            return bundle.getSymbolicName();
+        	String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
+        	if (name == null) {
+        		name = bundle.getSymbolicName();
+        	}
+            return name;
         case VERSION:
             return v == null ? "" : "" + v.getMajor() + "." + v.getMinor();
         case BUILD:
-            return "" + v.getMicro();
+            return v== null ? "" : ""+ v.getMicro();
         default:
             throw new RuntimeException("Programmer error - missed a case");
         }
