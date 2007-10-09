@@ -75,6 +75,12 @@ public abstract class ViewComponent extends JComponent implements ProtegePluginI
         return false;
     }
 
+    protected boolean isSynchronizing() {
+        if (view != null) {
+            return view.isSyncronizing();
+        }
+        return false;
+    }
 
     protected SelectionProvider getSelectionProvider() {
         return null;

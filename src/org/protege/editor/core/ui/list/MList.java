@@ -118,17 +118,26 @@ public class MList extends JList {
 
 
     protected void handleAdd() {
-
+        if (getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) getSelectedValue();
+            item.handleDelete();
+        }
     }
 
 
     protected void handleDelete() {
-
+        if (getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) getSelectedValue();
+            item.handleDelete();
+        }
     }
 
 
     protected void handleEdit() {
-
+        if (getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) getSelectedValue();
+            item.handleDelete();
+        }
     }
 
 
