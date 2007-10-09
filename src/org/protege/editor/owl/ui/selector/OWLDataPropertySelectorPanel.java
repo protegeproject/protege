@@ -66,4 +66,8 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel {
     public void dispose() {
         view.dispose();
     }
+
+    public void setSelectedOWLDataProperty(OWLDataProperty property) {
+        view.show(property);
+    }
 }

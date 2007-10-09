@@ -216,9 +216,8 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     protected String getRendering(OWLEntity entity) {
-        owlModelManager.getRendering(entity);
-
-        return entityRenderer.render(entity);
+        return owlModelManager.getRendering(entity);
+//        return RenderingEscapeUtils.getEscapedRendering(rendering);
     }
 
 
@@ -754,16 +753,16 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLDataPropertyDomainAxiom axiom) {
-        axiom.getDomain().accept(this);
-        write(" domainOf ");
         axiom.getProperty().accept(this);
+        write(" hasDomain ");
+        axiom.getDomain().accept(this);
     }
 
 
     public void visit(OWLDataPropertyRangeAxiom axiom) {
-        axiom.getRange().accept(this);
-        write(" rangeOf ");
         axiom.getProperty().accept(this);
+        write(" hasRange ");
+        axiom.getRange().accept(this);
     }
 
 

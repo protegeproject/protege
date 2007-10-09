@@ -18,6 +18,8 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
 
     public static final String LABEL = "Negative data property assertions";
 
+    private OWLDataPropertyRelationshipEditor editor;
+    
 
     public OWLNegativeDataPropertyAssertionFrameSection(OWLEditorKit editorKit,
                                                         OWLFrame<? extends OWLIndividual> frame) {
@@ -53,7 +55,10 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
 
 
     public OWLFrameSectionRowObjectEditor<OWLDataPropertyConstantPair> getObjectEditor() {
-        return null;
+        if (editor == null) {
+            editor = new OWLDataPropertyRelationshipEditor(getOWLEditorKit());
+        }
+        return editor;
     }
 
 

@@ -69,6 +69,11 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel {
     }
 
 
+    public void setSelectedOWLObjectProperty(OWLObjectProperty p){
+        view.show(p);
+    }
+
+
     public void dispose() {
         view.dispose();
     }
