@@ -1,9 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
+import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -44,7 +46,7 @@ public class OWLEntityColorProviderPluginLoader extends AbstractPluginLoader<OWL
 
 
     public OWLEntityColorProviderPluginLoader(OWLModelManager owlModelManager) {
-        super("org.protege.editor.owl", OWLEntityColorProviderPlugin.ID);
+        super(ProtegeOWL.ID, OWLEntityColorProviderPlugin.ID);
         this.owlModelManager = owlModelManager;
     }
 
@@ -54,7 +56,7 @@ public class OWLEntityColorProviderPluginLoader extends AbstractPluginLoader<OWL
     }
 
 
-    protected OWLEntityColorProviderPlugin createInstance(Extension extension) {
+    protected OWLEntityColorProviderPlugin createInstance(IExtension extension) {
         return new OWLEntityColorProviderPluginJPFImpl(owlModelManager, extension);
     }
 }

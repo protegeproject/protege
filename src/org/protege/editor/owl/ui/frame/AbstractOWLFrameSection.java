@@ -1,35 +1,64 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
-
-import java.util.*;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.semanticweb.owl.model.AddAxiom;
+import org.semanticweb.owl.model.OWLAntiSymmetricObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
+import org.semanticweb.owl.model.OWLAxiomVisitor;
+import org.semanticweb.owl.model.OWLClassAssertionAxiom;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owl.model.OWLDataSubPropertyAxiom;
+import org.semanticweb.owl.model.OWLDeclarationAxiom;
+import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owl.model.OWLDisjointDataPropertiesAxiom;
+import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
+import org.semanticweb.owl.model.OWLDisjointUnionAxiom;
+import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
+import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
+import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owl.model.OWLFunctionalDataPropertyAxiom;
+import org.semanticweb.owl.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLImportsDeclaration;
+import org.semanticweb.owl.model.OWLInverseFunctionalObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owl.model.OWLIrreflexiveObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
+import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owl.model.OWLObjectPropertyRangeAxiom;
+import org.semanticweb.owl.model.OWLObjectSubPropertyAxiom;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.OWLSameIndividualsAxiom;
+import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owl.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owl.model.SWRLRule;
 
 
 /**
@@ -204,7 +233,7 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
         if (comparator != null) {
 //            Collections.sort(rows, comparator);
-            TreeSet ts = new TreeSet(comparator);
+            TreeSet<OWLFrameSectionRow<R,A,E>> ts = new TreeSet<OWLFrameSectionRow<R,A,E>>(comparator);
             ts.addAll(rows);
             rows.clear();
             rows.addAll(ts);

@@ -1,6 +1,0 @@
-The OWL API jars correspond to release 2.1.1 (see OWL API release-2.1.1 tag)
-
-https://owlapi.svn.sourceforge.net/svnroot/owlapi/owl1_1/tags
-
-The owlapi-util.jar corresponds to the 2.1.2-SNAPSHOT.  This particular jar was updated to fix a critical
- bug to do with namespace generation when saving annotation URIs.

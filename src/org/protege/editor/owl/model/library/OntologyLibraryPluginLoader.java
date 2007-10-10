@@ -1,9 +1,7 @@
 package org.protege.editor.owl.model.library;
 
-import org.java.plugin.registry.Extension;
-import org.protege.editor.core.plugin.AbstractPluginLoader;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.core.plugin.PluginExtensionMatcher;
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -28,6 +26,12 @@ import org.protege.editor.core.plugin.PluginExtensionMatcher;
  */
 
 
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionMatcher;
+import org.protege.editor.owl.ProtegeOWL;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -40,7 +44,7 @@ import org.protege.editor.core.plugin.PluginExtensionMatcher;
 public class OntologyLibraryPluginLoader extends AbstractPluginLoader<OntologyLibraryFactoryPlugin> {
 
     public OntologyLibraryPluginLoader() {
-        super("org.protege.editor.owl", OntologyLibraryFactoryPlugin.ID);
+        super(ProtegeOWL.ID, OntologyLibraryFactoryPlugin.ID);
     }
 
 
@@ -62,7 +66,7 @@ public class OntologyLibraryPluginLoader extends AbstractPluginLoader<OntologyLi
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected OntologyLibraryFactoryPlugin createInstance(Extension extension) {
+    protected OntologyLibraryFactoryPlugin createInstance(IExtension extension) {
         return new OntologyLibraryFactoryPluginJPFImpl(extension);
     }
 }

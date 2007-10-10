@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.inference;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginProperties;
@@ -45,10 +46,10 @@ public class ProtegeOWLReasonerFactoryPluginJPFImpl implements ProtegeOWLReasone
 
     private OWLModelManager owlModelManager;
 
-    private Extension extension;
+    private IExtension extension;
 
 
-    public ProtegeOWLReasonerFactoryPluginJPFImpl(OWLModelManager owlModelManager, Extension extension) {
+    public ProtegeOWLReasonerFactoryPluginJPFImpl(OWLModelManager owlModelManager, IExtension extension) {
         this.owlModelManager = owlModelManager;
         this.extension = extension;
     }
@@ -58,7 +59,7 @@ public class ProtegeOWLReasonerFactoryPluginJPFImpl implements ProtegeOWLReasone
      * Gets a <code>String</code> that represents the reasoner ID.
      */
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 

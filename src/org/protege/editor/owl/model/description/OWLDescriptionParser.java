@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.SWRLRule;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *

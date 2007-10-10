@@ -453,7 +453,7 @@ public class ManchesterOWLParser implements ManchesterOWLParserConstants {
 
     */
     final public OWLDescription And() throws ParseException {
-        Set<OWLDescription> descriptions = new HashSet();
+        Set<OWLDescription> descriptions = new HashSet<OWLDescription>();
         OWLDescription desc0;
         OWLDescription descN;
         desc0 = Or();
@@ -858,7 +858,7 @@ public class ManchesterOWLParser implements ManchesterOWLParserConstants {
 
 
     final public OWLDescription ObjectEnumeration() throws ParseException {
-        Set<OWLIndividual> individuals = new HashSet();
+        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
         OWLIndividual ind;
         jj_consume_token(OPENBRACE);
         label_4:

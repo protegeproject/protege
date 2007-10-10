@@ -1,12 +1,19 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDataProperty;
-
-import javax.swing.*;
-import java.awt.*;
+import org.semanticweb.owl.model.OWLDataPropertyExpression;
+import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -63,6 +70,14 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
                                                                                                              5,
                                                                                                              5,
                                                                                                              5)));
+    }
+
+    public void setDataPropertyAxiom(OWLPropertyAssertionAxiom<OWLDataPropertyExpression, OWLConstant> ax) {
+        OWLDataPropertyExpression p = ax.getProperty();
+        if (p instanceof OWLDataProperty){
+            dataPropertySelectorPanel.setSelectedOWLDataProperty((OWLDataProperty)p);
+        }
+        constantEditorComponent.setOWLConstant(ax.getObject());
     }
 
 
