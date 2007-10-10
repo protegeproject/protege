@@ -1,8 +1,11 @@
 package org.protege.editor.core.ui.util;
 
-import org.java.plugin.registry.Extension;
+
 
 import javax.swing.*;
+
+import org.eclipse.core.runtime.IExtension;
+
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -42,7 +45,7 @@ class ComponentExceptionPanel extends JPanel {
     public static final int BORDER_THICKNESS = 4;
 
 
-    public ComponentExceptionPanel(String message, Exception exception, Extension extension) {
+    public ComponentExceptionPanel(String message, Throwable exception, IExtension extension) {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(BORDER_THICKNESS,
                                                                                      BORDER_THICKNESS,

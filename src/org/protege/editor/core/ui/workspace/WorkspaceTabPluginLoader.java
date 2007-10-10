@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
@@ -78,7 +79,7 @@ public class WorkspaceTabPluginLoader extends AbstractApplicationPluginLoader<Wo
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected WorkspaceTabPlugin createInstance(Extension extension) {
+    protected WorkspaceTabPlugin createInstance(IExtension extension) {
         return new WorkspaceTabPluginJPFImpl(workspace, extension);
     }
 }

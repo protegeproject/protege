@@ -1,6 +1,6 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Extension;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,8 @@ import java.util.Map;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
+import org.eclipse.core.runtime.IExtension;
 
 
 /**
@@ -80,15 +82,11 @@ public class PluginParameterExtensionMatcher implements PluginExtensionMatcher {
      * @return <code>true</code> if the <code>Extension</code> matches
      *         or <code>false</code> if the <code>Extension</code> doesn't match.
      */
-    public boolean matches(Extension extension) {
+    public boolean matches(IExtension extension) {
         for (String key : keyValueMap.keySet()) {
-            Extension.Parameter param = extension.getParameter(key);
-            if (param == null) {
-                return false;
-            }
-            if (param.valueAsString().equals(keyValueMap.get(key)) == false) {
-                return false;
-            }
+            String value = PluginUtilities.getAttribute(extension, key);
+            if (value == null)  return false;
+            if (!value.equals(keyValueMap.get(key))) return false;
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.view;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginProperties;
@@ -51,7 +52,7 @@ public class ViewActionPluginJPFImpl extends ToolBarActionPluginJPFImpl implemen
     private View view;
 
 
-    public ViewActionPluginJPFImpl(EditorKit editorKit, View view, Extension extension) {
+    public ViewActionPluginJPFImpl(EditorKit editorKit, View view, IExtension extension) {
         super(editorKit, extension);
         this.view = view;
     }

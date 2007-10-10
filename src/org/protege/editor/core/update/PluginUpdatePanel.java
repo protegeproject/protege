@@ -1,11 +1,16 @@
 package org.protege.editor.core.update;
 
-import org.java.plugin.registry.Version;
+
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+import org.protege.editor.core.plugin.PluginUtilities;
+
 import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -187,16 +192,19 @@ public class PluginUpdatePanel extends JPanel {
                 return install.get(rowIndex);
             }
             else if (columnIndex == 1) {
-                return updateInfoList.get(rowIndex).getPluginDescriptor().getVersion().getName();
+                Bundle bundle = updateInfoList.get(rowIndex).getPluginDescriptor();
+                Version version = PluginUtilities.getBundleVersion(bundle);
+                return version.getQualifier();
             }
             else if (columnIndex == 2) {
-                Version version = updateInfoList.get(rowIndex).getPluginDescriptor().getVersion();
+                Bundle bundle = updateInfoList.get(rowIndex).getPluginDescriptor();
+                Version version = PluginUtilities.getBundleVersion(bundle);
                 StringBuilder versionString = new StringBuilder();
                 versionString.append(version.getMajor());
                 versionString.append(".");
                 versionString.append(version.getMinor());
                 versionString.append(".");
-                versionString.append(version.getBuild());
+                versionString.append(version.getMicro());
                 return versionString;
             }
             else {

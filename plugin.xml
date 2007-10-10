@@ -1,244 +1,176 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
-<plugin class="org.protege.editor.core.ProtegeApplication" id="org.protege.editor.core.application" version="4.0.54.Core Protege">
-
-    <attributes>
-        <attribute id="update-url" value="http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml"/>
-    </attributes>
-
-    <!-- =================================================================== -->
-    <!-- RUNTIME LIBRARIES -->
-    <!-- =================================================================== -->
-    <runtime>
-
-        <!-- code libraries -->
-        <library id="core" path="classes/" type="code">
-            <export prefix="*"/>
-        </library>
-
-        <!-- third-party libraries -->
-        <library id="swing-worker" path="lib/swing-worker.jar" type="code"/>
-        <library id="mdock" path="lib/mdock.jar" type="code"/>
-
-        <!-- resource libraries -->
-        <library id="icons" path="icons/" type="resources"/>
-
-    </runtime>
-
-    <!-- Declare extension points for the app -->
-
-    <!-- EditorKitFactories -->
-    <extension-point extension-multiplicity="any" id="EditorKitFactory">
-        <!-- The name of the clsdescriptioneditor kit factory that will appear in the menu -->
-        <parameter-def id="label" multiplicity="one" type="string"/>
-        <!-- The name of the EditorKitFactoryClass that will be instatiated.  This must implement the EditorKitFactory inferface -->
-        <parameter-def id="class" multiplicity="one" type="string"/>
-    </extension-point>
-
-    <extension-point extension-multiplicity="any" id="WorkspaceTab">
-        <parameter-def id="label" multiplicity="one" type="string"/>
-        <parameter-def id="icon" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="class" multiplicity="one" type="string"/>
-        <parameter-def id="index" multiplicity="one" type="string"/>
-        <parameter-def id="editorKitId" multiplicity="one" type="string"/>
-        <parameter-def id="defaultViewConfigFileName" multiplicity="none-or-one" type="string"/>
-    </extension-point>
-
-    <!-- View components provide views within editor kits.  The
-user is able to configure view tabs using these views and the
-docking system that is present in the core system. -->
-    <extension-point extension-multiplicity="any" id="ViewComponent">
-        <!-- The label that will appear in the view menu etc. -->
-        <parameter-def id="label" multiplicity="one" type="string"/>
-        <!-- The class that should be instantiated to create the view.
-        This should extend the ViewComponent class -->
-        <parameter-def id="class" multiplicity="one" type="string"/>
-        <!-- The colour of the view header -->
-        <parameter-def id="headerColor" multiplicity="none-or-one" type="string"/>
-        <!-- Whether or not the view is user creatable.  By default,
-        the view is user createable.  Setting this parameter value to
-        "false" prevents the user creating a new view -->
-        <parameter-def id="userCreatable" multiplicity="none-or-one" type="string"/>
-        <!-- Gets the view categorisations, for example "class",
-        "property", "visualisation".  Developers should attempt to
-        fit in with existing categorisations before inventing their
-        own. -->
-        <parameter-def id="category" multiplicity="any" type="string"/>
-    </extension-point>
-
-    <extension-point extension-multiplicity="any" id="ViewAction">
-        <parameter-def id="toolTip" multiplicity="one" type="string"/>
-        <parameter-def id="icon" multiplicity="one" type="string"/>
-        <parameter-def id="class" multiplicity="one" type="string"/>
-        <parameter-def id="viewId" multiplicity="one" type="string"/>
-        <parameter-def id="group" multiplicity="one" type="string"/>
-        <parameter-def id="groupIndex" multiplicity="one" type="string"/>
-    </extension-point>
-
-    <extension-point extension-multiplicity="any" id="EditorKitMenuAction">
-        <parameter-def id="name" multiplicity="one" type="string"/>
-        <parameter-def id="icon" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="toolTip" multiplicity="none-or-one" type="string"/>
-        <!-- The class that gets instantiated to represent the action
-         note that this parameter in none-or-one, since sub menus don't
-         have actions -->
-        <parameter-def id="class" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="path" multiplicity="one" type="string"/>
-        <parameter-def id="accelerator" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="editorKitId" multiplicity="one" type="string"/>
-        <parameter-def id="dynamic" multiplicity="none-or-one" type="string"/>
-    </extension-point>
-
-    <extension-point extension-multiplicity="any" id="ToolBarAction">
-        <parameter-def id="name" multiplicity="one" type="string"/>
-        <parameter-def id="icon" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="toolTip" multiplicity="none-or-one" type="string"/>
-        <parameter-def id="class" multiplicity="one" type="string"/>
-        <parameter-def id="group" multiplicity="one" type="string"/>
-        <parameter-def id="groupIndex" multiplicity="one" type="string"/>
-        <parameter-def id="editorKitId" multiplicity="one" type="string"/>
-    </extension-point>
-
-    <extension-point extension-multiplicity="any" id="org.protege.editor.core.preferencespanel">
-        <parameter-def id="label" multiplicity="one" type="string"/>
-        <parameter-def id="class" multiplicity="one" type="string"/>
-    </extension-point>
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="EditorKitFactory" name="EditorKitFactory" 
+                    schema="schema/EditorKitFactory.exsd"/>
+   <extension-point id="WorkspaceTab" name="WorkspaceTab"
+                    schema="schema/WorkspaceTab.exsd"/>
+   <extension-point id="ViewComponent" name="ViewComponent" 
+                    schema="schema/ViewComponent.exsd"/>
+   <extension-point id="ViewAction" name="ViewAction"
+                    schema="schema/ViewAction.exsd"/>
+   <extension-point id="EditorKitMenuAction"
+                    name="EditorKitMenuAction"
+                    schema="schema/EditorKitMenuAction.exsd"/>
+   <extension-point id="ToolBarAction" name="ToolBarAction"
+                    schema="schema/ToolBarAction.exsd"/>
+   <extension-point id="preferencespanel" 
+                    name="preferencespanel"
+                    schema="schema/preferencespanel.exsd"/>
 
     <!-- Set up standard menus -->
 
     <!-- File menu -->
 
-    <extension id="org.protege.editor.core.menu.FileMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="File"/>
-        <parameter id="toolTip" value="File menu tool tip!"/>
-        <parameter id="path" value="/SlotA-A"/>
-        <parameter id="editorKitId" value="any"/>
+
+   <extension
+         id="menu.FileMenu"
+         name="FileMenu"
+         point="org.protege.editor.core.application.EditorKitMenuAction">
+      <name value="File"/>
+      <toolTip value="File menu tool tip!"/>
+      <path value="/SlotA-A"/>
+      <editorKitId value="any"/>
+   </extension>
+
+    <extension id="menu.file.new" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="New..."/>
+        <toolTip value="Create a new empty ontology"/>
+        <class value="org.protege.editor.core.ui.action.NewAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-E"/>
+        <editorKitId value="any"/>
+        <accelerator value="shift N"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.new" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="New..."/>
-        <parameter id="toolTip" value="Create a new empty ontology"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.NewAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAA-E"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="shift N"/>
+    <extension id="menu.file.open" 
+    		   point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Open..."/>
+        <toolTip value="Open an ontology"/>
+        <class value="org.protege.editor.core.ui.action.OpenAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-F"/>
+        <editorKitId value="any"/>
+        <accelerator value="O"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.open" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Open..."/>
-        <parameter id="toolTip" value="Open an ontology"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.OpenAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAA-F"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="O"/>
+    <extension id="menu.file.openrecent" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Open recent"/>
+        <toolTip value="Open a recent ontology"/>
+        <class value="org.protege.editor.core.ui.action.OpenRecentAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-G"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.openrecent" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Open recent"/>
-        <parameter id="toolTip" value="Open a recent ontology"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.OpenRecentAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAA-G"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="dynamic" value="true"/>
+    <extension id="menu.file.close" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Close"/>
+        <toolTip value="Close the current set of ontologies"/>
+        <class value="org.protege.editor.core.ui.action.CloseAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
+        <editorKitId value="any"/>
+        <accelerator value="W"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.close" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Close"/>
-        <parameter id="toolTip" value="Close the current set of ontologies"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.CloseAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAB-A"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="W"/>
+    <extension id="menu.file.save" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Save"/>
+        <toolTip value="Save"/>
+        <class value="org.protege.editor.core.ui.action.SaveAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
+        <editorKitId value="any"/>
+        <accelerator value="S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.save" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Save"/>
-        <parameter id="toolTip" value="Save"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.SaveAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAB-A"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="S"/>
+    <extension id="menu.file.saveas" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Save as..."/>
+        <toolTip value="Save as"/>
+        <class value="org.protege.editor.core.ui.action.SaveAsAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-B"/>
+        <editorKitId value="any"/>
+        <accelerator value="shift S"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.file.saveas" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Save as..."/>
-        <parameter id="toolTip" value="Save as"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.SaveAsAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotAB-B"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="shift S"/>
-    </extension>
-
-    <extension id="org.protege.editor.core.menu.file.preferences" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Preferences..."/>
-        <parameter id="path" value="org.protege.editor.core.menu.FileMenu/SlotE-A"/>
-        <parameter id="toolTip" value="Preferences"/>
-        <parameter id="class" value="org.protege.editor.core.ui.preferences.ShowPreferencesAction"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="COMMA"/>
+    <extension id="menu.file.preferences" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Preferences..."/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotE-A"/>
+        <toolTip value="Preferences"/>
+        <class value="org.protege.editor.core.ui.preferences.ShowPreferencesAction"/>
+        <editorKitId value="any"/>
+        <accelerator value="COMMA"/>
     </extension>
 
     <!-- Edit menu -->
+
+    <extension id="menu.EditMenu"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Edit"/>
+        <toolTip value=""/>
+        <path value="/SlotB-A"/>
+        <editorKitId value="any"/>
+    </extension>
 
     <!-- View menu -->
 
     <!-- Window menu -->
 
-    <extension id="org.protege.editor.core.menu.window" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Window"/>
-        <parameter id="path" value="/SlotW-A"/>
-        <parameter id="editorKitId" value="any"/>
+    <extension id="menu.window" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Window"/>
+        <path value="/SlotW-A"/>
+        <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.increasefontsize" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Increase font size"/>
-        <parameter id="path" value="org.protege.editor.core.menu.window/SlotD-A"/>
-        <parameter id="toolTip" value="Increase the font size"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="EQUALS"/>
+    <extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Increase font size"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-A"/>
+        <toolTip value="Increase the font size"/>
+        <class value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>
+        <editorKitId value="any"/>
+        <accelerator value="EQUALS"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.window.decreasefontsize" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Decrease font size"/>
-        <parameter id="path" value="org.protege.editor.core.menu.window/SlotD-B"/>
-        <parameter id="toolTip" value="Decrease the font size"/>
-        <parameter id="class" value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>
-        <parameter id="editorKitId" value="any"/>
-        <parameter id="accelerator" value="MINUS"/>
+    <extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Decrease font size"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-B"/>
+        <toolTip value="Decrease the font size"/>
+        <class value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>
+        <editorKitId value="any"/>
+        <accelerator value="MINUS"/>
     </extension>
 
     <!-- View menu -->
 
-    <extension id="org.protege.editor.core.menu.view" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="View"/>
-        <parameter id="path" value="/SlotK-A"/>
-        <parameter id="editorKitId" value="any"/>
+    <extension id="menu.view" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="View"/>
+        <path value="/SlotK-A"/>
+        <editorKitId value="any"/>
     </extension>
 
     <!-- Tabs menu -->
 
-    <extension id="org.protege.editor.core.menu.tabs" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Tabs"/>
-        <parameter id="path" value="/SlotJ-A"/>
-        <parameter id="editorKitId" value="any"/>
+    <extension id="menu.tabs" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Tabs"/>
+        <path value="/SlotJ-A"/>
+        <editorKitId value="any"/>
     </extension>
 
     <!-- Help menu -->
 
-    <extension id="org.protege.editor.core.menu.HelpMenu" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="Help"/>
-        <parameter id="toolTip" value="Help menu"/>
-        <parameter id="class" value="org.protege.editor.core.ui.menu.NullMenuAction"/>
-        <parameter id="path" value="/SlotZZZZ-Z"/>
-        <parameter id="editorKitId" value="any"/>
+    <extension id="menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Help"/>
+        <toolTip value="Help menu"/>
+        <class value="org.protege.editor.core.ui.menu.NullMenuAction"/>
+        <path value="/SlotZZZZ-Z"/>
+        <editorKitId value="any"/>
     </extension>
 
-    <extension id="org.protege.editor.core.menu.AboutMenuItem" plugin-id="org.protege.editor.core.application" point-id="EditorKitMenuAction">
-        <parameter id="name" value="About..."/>
-        <parameter id="toolTip" value="About menu!"/>
-        <parameter id="class" value="org.protege.editor.core.ui.about.AboutProtegeAction"/>
-        <parameter id="path" value="org.protege.editor.core.menu.HelpMenu/SlotA-A"/>
-        <parameter id="editorKitId" value="any"/>
+    <extension id="menu.AboutMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="About..."/>
+        <toolTip value="About menu!"/>
+        <class value="org.protege.editor.core.ui.about.AboutProtegeAction"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotA-A"/>
+        <editorKitId value="any"/>
     </extension>
+
+
 </plugin>

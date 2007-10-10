@@ -1,29 +1,22 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.PluginManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IContributor;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.Version;
+import org.osgi.service.packageadmin.PackageAdmin;
+import org.osgi.util.tracker.ServiceTracker;
 import org.protege.editor.core.ProtegeApplication;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**
@@ -36,10 +29,17 @@ import org.protege.editor.core.ProtegeApplication;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginUtilities {
+    private static final Logger log = Logger.getLogger(PluginUtilities.class.getName());
 
     private static PluginUtilities instance;
 
     private ProtegeApplication protegeApplication;
+    
+    private BundleContext context;
+    
+    private ServiceTracker registryServiceTracker;
+    
+    private ServiceTracker packageServiceTracker;
 
 
     private PluginUtilities() {
@@ -57,24 +57,96 @@ public class PluginUtilities {
         return instance;
     }
 
+    public void dispose() {
+        if (registryServiceTracker != null) registryServiceTracker.close();
+        if (packageServiceTracker != null)  packageServiceTracker.close();
+        instance = null;
+    }
+    
+    public BundleContext getApplicationContext() {
+        return context;
+    }
+    
+    public Bundle getApplicationBundle() {
+        return context.getBundle();
+    }
 
     /**
      * This method is called by the system to initialise the
      * plugin utilities.  Users should <b>not</b> call this method.
      */
-    public void initialise(ProtegeApplication protegeApplication) {
+    public void initialise(ProtegeApplication protegeApplication, BundleContext context) {
         this.protegeApplication = protegeApplication;
+        this.context = context;
     }
-
-
-    /**
-     * Gets the Java Plugin Framework <code>PluginManager</code>.
-     */
-    public PluginManager getPluginManager() {
-        return protegeApplication.getManager();
+    
+    public Bundle getBundle(IExtension extension) {
+        IContributor contributor = extension.getContributor();
+        return getBundle(contributor);
     }
+    
+    public Bundle getExtensionPointBundle(IExtension extension) {
+        IExtensionRegistry  registry = getExtensionRegistry();
+        String extensionPtId = extension.getExtensionPointUniqueIdentifier();
+        IExtensionPoint extensionPt = registry.getExtensionPoint(extensionPtId);
+        IContributor contributor = extensionPt.getContributor();
+        return getBundle(contributor);
+    }
+    
+    public Bundle getBundle(IContributor contributor) {
+        String name = contributor.getName();
+        PackageAdmin admin = getPackageAdmin();
+        Bundle[]  bundles = admin.getBundles(name, null);
+        if (bundles == null || bundles.length == 0) return null;
+        return bundles[0];  // if there is more than one we need more work...
+    }
+    
+    public IExtensionRegistry getExtensionRegistry() {
+        if (registryServiceTracker == null) {
+            registryServiceTracker = new ServiceTracker(context, IExtensionRegistry.class.getName(), null);
+            registryServiceTracker.open();
+        }
+        return (IExtensionRegistry) registryServiceTracker.getService();
+    }
+    
+    public PackageAdmin getPackageAdmin() {
+        if (packageServiceTracker == null) {
+            packageServiceTracker = new ServiceTracker(context, PackageAdmin.class.getName(), null);
+            packageServiceTracker.open();
+        }
+        return (PackageAdmin) packageServiceTracker.getService();
+    }
+    
+    public static Map<String, String> getAttributes(IExtension ext) {
+        Map<String, String> attributes = new HashMap<String, String>();
+        for (IConfigurationElement config : ext.getConfigurationElements()) {
+            String id = config.getName();
+            String value = config.getAttribute(PluginProperties.PLUGIN_XML_VALUE);
+            attributes.put(id, value);
+        }
+        return attributes;
+    }
+    
+    public static String getAttribute(IExtension ext, String key) {
+        return getAttributes(ext).get(key);
+    }
+    
+    public Object getExtensionObject(IExtension ext, String property) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        Bundle b = getBundle(ext);
+        return b.loadClass(getAttribute(ext, property)).newInstance();
+        // return config.createExecutableExtension(property);
+    }
+    
+    public static Version getBundleVersion(Bundle b) {
+        String vn = (String) b.getHeaders().get(Constants.BUNDLE_VERSION);
+        if (vn == null) return null;
+        return new Version(vn);
+    }
+    
+    public String getDocumentation(IExtension extension) {
+        log.error("Don't know how to get documentation yet");
+        return "";
+    }
+    
 }
-
-
-
 

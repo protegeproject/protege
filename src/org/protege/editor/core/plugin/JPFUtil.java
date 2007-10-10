@@ -1,7 +1,11 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Documentation;
-import org.java.plugin.registry.Extension;
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
+
+
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -36,17 +40,10 @@ import org.java.plugin.registry.Extension;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class JPFUtil implements ProtegePlugin {
+    private static final Logger log = Logger.getLogger(JPFUtil.class);
+    public final static String EXTENSION_DOCUMENTATION = "documentation";
 
-    public static String getDocumentation(Extension extension) {
-        Documentation docs = extension.getDocumentation();
-        if (docs != null) {
-            String text = docs.getCaption();
-            text += '\n';
-            text += docs.getText().trim();
-            return text;
-        }
-        else {
-            return null;
-        }
+    public static String getDocumentation(IExtension extension) {
+        return PluginUtilities.getAttribute(extension, EXTENSION_DOCUMENTATION);
     }
 }

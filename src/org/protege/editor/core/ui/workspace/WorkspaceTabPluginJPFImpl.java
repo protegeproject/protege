@@ -1,36 +1,18 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.java.plugin.PluginManager;
-import org.java.plugin.registry.Extension;
-import org.java.plugin.registry.PluginDescriptor;
+
+
+
+import java.net.URL;
+
+import javax.swing.Icon;
+
+import org.eclipse.core.runtime.IExtension;
+import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginProperties;
-
-import javax.swing.*;
-import java.net.URL;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.protege.editor.core.plugin.PluginUtilities;
 
 
 /**
@@ -73,10 +55,10 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
     private TabbedWorkspace workspace;
 
-    private Extension extension;
+    private IExtension extension;
 
 
-    public WorkspaceTabPluginJPFImpl(TabbedWorkspace workspace, Extension extension) {
+    public WorkspaceTabPluginJPFImpl(TabbedWorkspace workspace, IExtension extension) {
         this.extension = extension;
         this.workspace = workspace;
     }
@@ -94,7 +76,7 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
@@ -109,10 +91,6 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public Icon getIcon() {
-        Extension.Parameter param = extension.getParameter(ICON_PARAM);
-        if (param == null) {
-            return null;
-        }
         return null;
     }
 
@@ -131,10 +109,9 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public URL getDefaultViewConfigFile() {
-        PluginManager manager = PluginManager.lookup(this);
-        PluginDescriptor descriptor = extension.getDeclaringPluginDescriptor();
-        ClassLoader loader = manager.getPluginClassLoader(descriptor);
+        PluginUtilities util = PluginUtilities.getInstance();
+        Bundle contributor = util.getBundle(extension);
         String resource = PluginProperties.getParameterValue(extension, DEFAULT_VIEW_CONFIG_FILE_NAME_PARAM, null);
-        return loader.getResource(resource);
+        return contributor.getResource(resource);
     }
 }

@@ -1,41 +1,35 @@
 package org.protege.editor.core.ui.view;
 
-import org.apache.log4j.Logger;
-import org.coode.mdock.*;
-import org.protege.editor.core.FileManager;
-import org.protege.editor.core.ui.workspace.Workspace;
-
-import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+import javax.swing.JPanel;
+import javax.xml.parsers.ParserConfigurationException;
 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.apache.log4j.Logger;
+import org.coode.mdock.DynamicConfigPanel;
+import org.coode.mdock.NodePanel;
+import org.coode.mdock.NodeReanimator;
+import org.coode.mdock.NodeSerialiser;
+import org.coode.mdock.SplitterNode;
+import org.coode.mdock.Util;
+import org.coode.mdock.VerticalSplitterNode;
+import org.protege.editor.core.FileManager;
+import org.protege.editor.core.ui.workspace.Workspace;
 
 
 /**
@@ -98,7 +92,7 @@ public class ViewsPane extends JPanel {
             }
         }
         else {
-            // There isn't event a default xml config file.  We don't want the system
+            // There isn't even a default xml config file.  We don't want the system
             // to keel over, so just create a blank panel (the user can drag views on
             // to it as they wish).
             VerticalSplitterNode node = new VerticalSplitterNode(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
@@ -143,10 +137,9 @@ public class ViewsPane extends JPanel {
      * for this tab.
      */
     private File getCustomConfigFile() {
-        String id = memento.getViewPaneId();
-        File viewConfigFolder = FileManager.getViewConfigurationsFolder();
-        if (viewConfigFolder != null) {
-            return new File(viewConfigFolder, id + "-tab-viewconfig.xml");
+        URL url = memento.getInitialCongigFileURL();
+        if (url != null) {
+            return new File(FileManager.getViewConfigurationsFolder(), url.getFile());
         }
         else {
             return null;
