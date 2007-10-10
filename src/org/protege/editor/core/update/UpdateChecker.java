@@ -1,8 +1,11 @@
 package org.protege.editor.core.update;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.registry.PluginDescriptor;
-import org.java.plugin.registry.Version;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+import org.protege.editor.core.plugin.PluginUtilities;
+
+
 
 import java.net.URI;
 
@@ -21,24 +24,24 @@ public class UpdateChecker {
 
     private URI uri;
 
-    private PluginDescriptor pluginDescriptor;
+    private Bundle b;
 
 
-    public UpdateChecker(URI updateFileURL, PluginDescriptor pluginDescriptor) {
+    public UpdateChecker(URI updateFileURL, Bundle pluginDescriptor) {
         this.uri = updateFileURL;
-        this.pluginDescriptor = pluginDescriptor;
+        this.b = pluginDescriptor;
     }
 
 
     public UpdateInfo run() {
         try {
-
+            Version pluginVersion = PluginUtilities.getBundleVersion(b);
             final UpdateDocument updateDocument = new UpdateDocument(uri.toURL());
             if (updateDocument.isValid()) {
                 final Version version = updateDocument.getVersion();
-                if (version.isGreaterThan(pluginDescriptor.getVersion())) {
+                if (version.compareTo(pluginVersion) > 0) {
                     // New version available!
-                    return new UpdateInfo(pluginDescriptor,
+                    return new UpdateInfo(b,
                                           version,
                                           updateDocument.getDownloadLocation(),
                                           updateDocument.getReadmeLocation());

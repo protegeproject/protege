@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.view;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
@@ -59,7 +60,7 @@ public class ViewComponentPluginLoader extends AbstractApplicationPluginLoader<V
     }
 
 
-    protected ViewComponentPlugin createInstance(Extension extension) {
+    protected ViewComponentPlugin createInstance(IExtension extension) {
         return new ViewComponentPluginJPFImpl(workspace, extension);
     }
 }

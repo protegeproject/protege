@@ -1,18 +1,20 @@
 package org.protege.editor.core;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
-import org.java.plugin.boot.Application;
-import org.java.plugin.boot.ApplicationPlugin;
-import org.java.plugin.util.ExtendedProperties;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
@@ -24,11 +26,12 @@ import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.update.UpdateManager;
 
-import javax.swing.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -52,7 +55,6 @@ import java.util.List;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -66,9 +68,15 @@ import java.util.List;
  * The ProtegeApplication is the main entry point to Protge.  The application
  * is actually a plugin to the Java Plugin Framework
  */
-public class ProtegeApplication extends ApplicationPlugin implements Application {
+public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
+
+    public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
+    
+    public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
+    
+    public final static char BUNDLE_EXTRA_SEPARATOR = ':';
 
     public static final String ID = "org.protege.editor.core.application";
 
@@ -76,9 +84,36 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
 
+    private static BundleContext context;
+    
+    private boolean bundles_loaded = false;
+    
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
+    
+    
+
+    public void start(BundleContext context) throws Exception {
+        ProtegeApplication.context = context;
+        displayPlatform();
+        initApplication(new String[0]);
+        ProtegeManager.getInstance().initialise(this);
+        startApplication();
+    }
+
+
+    /* TODO - this needs work */
+    public void stop(BundleContext arg0) throws Exception {
+        BookMarkedURIManager.getInstance().dispose();
+        RecentEditorKitManager.getInstance().dispose();
+        PluginUtilities.getInstance().dispose();
+        ProtegeManager.getInstance().dispose();
+    }
+    
+    public static BundleContext getContext() {
+        return context;
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
     //
@@ -87,19 +122,31 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    protected Application initApplication(ExtendedProperties extendedProperties, String[] strings) throws Exception {
-        PluginUtilities.getInstance().initialise(this);
+    // If this isn't liked info can be replaced with debug.
+    // It helps with diagnosing problems with the FaCT++ plugin.
+    private void displayPlatform() {
+        logger.info("Starting Protege 4 OWL Editor");
+        logger.info("Platform:");
+        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) 
+        					+ " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
+        logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME)
+        					+ " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
+        logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
+    }
+
+    protected ProtegeApplication initApplication(String args[]) throws Exception {
+        PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
         loadRecentEditorKits();
         loadPreferences();
-        // setupLogging();
         setupExceptionHandler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 RecentEditorKitManager.getInstance().save();
             }
         });
-        processCommandLineURIs(strings);
+        processCommandLineURIs(args);
+        loadPlugins();
         return this;
     }
 
@@ -185,28 +232,12 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
     }
 
 
-    private static void setupLogging() {
-        BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR);
-        Logger.getRootLogger().addAppender(new ConsoleAppender() {
-            public void append(LoggingEvent loggingEvent) {
-                if (loggingEvent.getMessage() instanceof Throwable) {
-                    ((Throwable) loggingEvent.getMessage()).printStackTrace();
-                }
-                else {
-                    super.append(loggingEvent);
-                }
-            }
-        });
-    }
-
-
     private static void setupExceptionHandler() {
         errorLog = new ErrorLog();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
                 errorLog.uncaughtException(t, e);
-                logger.warn(e.getMessage());
+                logger.warn("Uncaught Exception in thread " + t.getName(), e);
             }
         });
     }
@@ -228,6 +259,66 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
                 logger.error(e);
             }
         }
+    }
+    
+    private List<File> getExtraBundles() {
+    	String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
+    	List<File> extra_bundles = new ArrayList<File>();
+    	while (remaining != null && remaining.length() != 0) {
+    		int index = remaining.indexOf(BUNDLE_EXTRA_SEPARATOR);
+    		if (index < 0) {
+    			extra_bundles.add(new File(remaining));
+    			return extra_bundles;
+    		}
+    		else {
+    			extra_bundles.add(new File(remaining.substring(0, index)));
+    			remaining = remaining.substring(index+1);
+    		}
+    	}
+    	return extra_bundles;
+    }
+
+    
+    private void loadPlugins() {
+        if (bundles_loaded) return;
+        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
+        if  (dir_name == null) {
+            logger.info("no plugins found");
+            return;
+        }
+        File dir = new File(dir_name);
+        if (!dir.exists() || !dir.isDirectory()) {
+            logger.error("Plugin directory " + dir_name + " is invalid");
+            return;
+        }
+        List<File> locations = new ArrayList<File>();
+        for (File f : dir.listFiles()) locations.add(f);
+        locations.addAll(getExtraBundles());
+        List<Bundle> plugins = new ArrayList<Bundle>();
+        for (File plugin : locations) {
+            Bundle b = null;
+            try {
+                b = context.installBundle(plugin.toURI().toString());
+                plugins.add(b);
+            }
+            catch (Throwable t) {
+                logger.error("Could not install plugin ", t);
+            }
+        }
+        for (Bundle b  : plugins) {
+            try {
+                b.start();
+                String name = (String) b.getHeaders().get(Constants.BUNDLE_NAME);
+                if (name == null) {
+                    name = b.getSymbolicName();
+                }
+                logger.info("Installed plugin " + name);
+            }
+            catch (Throwable t) {
+                logger.error("Could not start bundle " + b.getSymbolicName(), t);
+            }
+        }
+        bundles_loaded = true;
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +344,7 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
 //        });
         frame.setVisible(true);
         try {
-            if (!commandLineURIs.isEmpty()) {
+            if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
                 // Open any command line URIs
                 EditorKitFactoryPluginLoader loader = new EditorKitFactoryPluginLoader();
                 List<EditorKitFactory> factories = new ArrayList<EditorKitFactory>();
@@ -274,17 +365,9 @@ public class ProtegeApplication extends ApplicationPlugin implements Application
         UpdateManager.getInstance().checkForUpdates(false);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Implementation of Plugin
-    //
-    /////////////////////////////////////////////////////////////////////////////////
 
 
-    protected void doStart() throws Exception {
-    }
+  
 
 
-    protected void doStop() throws Exception {
-    }
 }

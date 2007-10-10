@@ -1,7 +1,8 @@
 package org.protege.editor.core.ui.menu;
 
 import org.apache.log4j.Logger;
-import org.java.plugin.registry.Extension;
+import org.eclipse.core.runtime.IExtension;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
@@ -191,7 +192,7 @@ public class MenuBuilder {
 
         PluginParameterExtensionMatcher generalMatcher = new PluginParameterExtensionMatcher();
         generalMatcher.put(PluginProperties.EDITOR_KIT_PARAM_NAME, "any");
-        for (Extension ext : generalFilter.getExtensions()) {
+        for (IExtension ext : generalFilter.getExtensions()) {
             MenuActionPluginJPFImpl plugin = new MenuActionPluginJPFImpl(editorKit, ext);
             result.put(plugin.getId(), plugin);
         }
@@ -201,9 +202,9 @@ public class MenuBuilder {
         PluginExtensionFilter specificFilter = new PluginExtensionFilter(ProtegeApplication.ID,
                                                                          MenuActionPluginJPFImpl.EXTENSION_POINT_ID,
                                                                          specificMatcher);
-        for (Extension ext : specificFilter.getExtensions()) {
+        for (IExtension ext : specificFilter.getExtensions()) {
             MenuActionPluginJPFImpl plugin = new MenuActionPluginJPFImpl(editorKit, ext);
-            result.put(ext.getId(), plugin);
+            result.put(ext.getUniqueIdentifier(), plugin);
         }
         // Dynamically create plugins for the installed clsdescriptioneditor kits.  These are menu items
         // that are on the File -> Open, and File -> New menus

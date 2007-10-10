@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.toolbar;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
@@ -75,7 +76,7 @@ public class MainToolBarActionPluginLoader extends AbstractApplicationPluginLoad
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected ToolBarActionPluginJPFImpl createInstance(Extension extension) {
+    protected ToolBarActionPluginJPFImpl createInstance(IExtension extension) {
         return new ToolBarActionPluginJPFImpl(editorKit, extension);
     }
 }

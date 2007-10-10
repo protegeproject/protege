@@ -1,38 +1,28 @@
 package org.protege.editor.core.ui.workspace;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.Resettable;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
-import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**
@@ -98,7 +88,7 @@ public abstract class TabbedWorkspace extends Workspace {
                 tab = plugin.newInstance();
                 addTab(tab);
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 if (tab != null) {
                     String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
                     tab.setLayout(new BorderLayout());
@@ -118,7 +108,7 @@ public abstract class TabbedWorkspace extends Workspace {
             man.save();
         }
         catch (Exception e) {
-            Logger.getLogger(getClass()).error(e);
+            Logger.getLogger(getClass()).error("Exception caught doing save", e);
         }
     }
 
@@ -180,7 +170,7 @@ public abstract class TabbedWorkspace extends Workspace {
                         }
                     }
                     catch (Exception ex) {
-                        logger.error(ex);
+                        logger.error("Exception caught (re) building tab menu", ex);
                     }
                 }
             });

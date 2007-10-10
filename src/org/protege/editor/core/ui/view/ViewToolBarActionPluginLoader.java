@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.view;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
@@ -73,7 +74,7 @@ public class ViewToolBarActionPluginLoader extends AbstractPluginLoader<ViewActi
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected ViewActionPluginJPFImpl createInstance(Extension extension) {
+    protected ViewActionPluginJPFImpl createInstance(IExtension extension) {
         return new ViewActionPluginJPFImpl(editorKit, view, extension);
     }
 }

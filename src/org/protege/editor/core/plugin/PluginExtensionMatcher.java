@@ -1,6 +1,8 @@
 package org.protege.editor.core.plugin;
 
-import org.java.plugin.registry.Extension;
+import org.eclipse.core.runtime.IExtension;
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -48,5 +50,5 @@ public interface PluginExtensionMatcher {
      * @return <code>true</code> if the <code>Extension</code> matches
      *         or <code>false</code> if the <code>Extension</code> doesn't match.
      */
-    public boolean matches(Extension extension);
+    public boolean matches(IExtension extension);
 }
