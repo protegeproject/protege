@@ -96,10 +96,10 @@ public class ProtegeApplication implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
         ProtegeApplication.context = context;
-        ProtegeApplication application = new ProtegeApplication();
-        application.initApplication(new String[0]);
+        displayPlatform();
+        initApplication(new String[0]);
         ProtegeManager.getInstance().initialise(this);
-        application.startApplication();
+        startApplication();
     }
 
 
@@ -121,6 +121,18 @@ public class ProtegeApplication implements BundleActivator {
     //
     /////////////////////////////////////////////////////////////////////////////////
 
+
+    // If this isn't liked info can be replaced with debug.
+    // It helps with diagnosing problems with the FaCT++ plugin.
+    private void displayPlatform() {
+        logger.info("Starting Protege 4 OWL Editor");
+        logger.info("Platform:");
+        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) 
+        					+ " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
+        logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME)
+        					+ " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
+        logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
+    }
 
     protected ProtegeApplication initApplication(String args[]) throws Exception {
         PluginUtilities.getInstance().initialise(this, context);
