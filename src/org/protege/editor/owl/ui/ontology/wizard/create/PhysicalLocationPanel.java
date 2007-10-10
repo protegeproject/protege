@@ -1,18 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.wizard.WizardPanel;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -21,28 +10,28 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+import javax.swing.AbstractAction;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.wizard.WizardPanel;
+import org.protege.editor.owl.ProtegeOWL;
 
 
 /**
@@ -71,7 +60,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public PhysicalLocationPanel(EditorKit editorKit) {
         super(ID, "Physical Location", editorKit);
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         String path = prefs.getString(DEFAULT_LOCAL_BASE_KEY,
                                       new File(new File(System.getProperty("user.home")), "ontologies").toString());
         locationBase = new File(path);
@@ -181,7 +170,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public void loadRecentLocations() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         List<String> list = new ArrayList<String>();
         list = prefs.getStringList(RECENT_LOCATIONS_KEY, list);
         DefaultListModel model = new DefaultListModel();
@@ -197,7 +186,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public void storeRecentLocations() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
         List<String> list = new ArrayList<String>();
         DefaultListModel model = ((DefaultListModel) recentLocations.getModel());
         // Add in current file
@@ -225,7 +214,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         File folder = UIUtil.chooseFolder(this, "Please select a folder");
         if (folder != null) {
             locationBase = folder;
-            Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences("org.protege.editor.owl");
+            Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
             prefs.putString(DEFAULT_LOCAL_BASE_KEY, locationBase.toString());
             updateLocationField();
         }

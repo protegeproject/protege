@@ -1,71 +1,56 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <project name = "owl" default = "compile" basedir = "..">
+    <property name = "lib.dir" value = "${owleditor.dir}/lib"/>
+    <property name = "icons.dir" value = "${owleditor.dir}/icons"/>
+    <property name = "resources.dir" value = "${owleditor.dir}/resources"/>
+    <property name = "src.dir" value = "${owleditor.dir}/src"/>
+    
+    <!-- =================================================================== -->
+    <!-- Classpath declaration - used in the "compile" target -->
+    <!-- =================================================================== -->
+    <path id = "owleditor.classpath">    
+        <path refid = "osgi.libs"/>
+        <pathelement path="${commonlibs.jar}"/>
+        <path refid="commonlibs.classpath"/>
+        <pathelement location = "${core.jar}"/>
+        <path refid="core.classpath"/>
+        <pathelement location = "${owlapi.jar}"/>
+    </path>
 
-	<property name = "distribution.zipfile" value = "${dist.dir}/plugins/org.protege.editor.owl.zip"/>
-	<property name = "distribution.jarfile" value = "${dist.dir}/plugins/org.protege.editor.owl.jar"/>
-	<property name = "lib.dir" value = "${owl.dir}/lib"/>
-	<property name = "icons.dir" value = "${owl.dir}/icons"/>
-	<property name = "resources.dir" value = "${owl.dir}/resources"/>
-	<property name = "src.dir" value = "${owl.dir}/src"/>
+    <!-- =================================================================== -->
+    <!-- INIT -->
+    <!-- =================================================================== -->
+    <target name = "init">
+        <echo message="---------------Building the OWL Editor Plugin -------------"/>
+        <tstamp/>
+        <mkdir dir = "${owleditor.classes}"/>
+    </target>  
 
-	<!-- =================================================================== -->
-	<!-- Classpath declaration - used in the "compile" target -->
-	<!-- =================================================================== -->
-	<path id = "owl.classpath">    
-		<filelist refid = "common.libs"/>
-		<path refid = "core.libs"/>
-		<fileset refid = "owl.libs"/>
-		<pathelement location = "${classes.core}"/>
-	</path>
-
-	<!-- =================================================================== -->
-	<!-- INIT -->
-	<!-- =================================================================== -->
-	<target name = "init">
-		<tstamp/>
-		<mkdir dir = "${classes.owl}"/>
-	</target>  
-
-	<!-- =================================================================== -->
-	<!-- COMPILE -->
-	<!-- =================================================================== -->
-	<target name = "compile" depends = "init">    
-		<javac srcdir = "${src.dir}" destdir = "${classes.owl}" debug="${debug}" source = "${source}" includeAntRuntime = "${includeAntRuntime}">
-			<classpath refid = "owl.classpath"/>
-		</javac>
-	</target>
-	
-	<!-- ===================================================================================== -->
-	<!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
-	<!-- ===================================================================================== -->
-	<target name = "jar" depends = "compile">
-		<jar destfile = "${distribution.jarfile}">
-			<fileset dir = "${owl.dir}">
-				<patternset excludes = "artwork/**, src/**, test/**">
-					<exclude name = "build.xml"/>
-				</patternset>
-			</fileset>
-		</jar>
-	</target>
-	
-	<!-- ================================================================================= -->
-	<!-- ZIP -  - create the distribution ZIP file that goes in the JPF "plugins" directory -->
-	<!-- ================================================================================= -->
-	<target name = "zip" depends = "compile">
-		<zip zipfile = "${distribution.zipfile}" update = "no">
-			<zipfileset dir = "${classes.owl}" prefix = "classes"/>
-			<zipfileset dir = "${owl.dir}" includes = "plugin.xml"/>
-			<zipfileset dir = "${icons.dir}" prefix = "icons"/>
-			<zipfileset dir = "${resources.dir}" prefix = "resources"/>
-			<zipfileset dir = "${lib.dir}" prefix = "lib" includes = "**/*.jar"/>
-		</zip>
-	</target>
-
-	<!-- =================================================================== -->
-	<!-- CLEAN -->
-	<!-- =================================================================== -->
-	<target name = "clean">
-		<delete dir = "${classes.owl}"/>
-		<delete dir = "${distribution.dir}"/>
-	</target>
+    <!-- =================================================================== -->
+    <!-- COMPILE -->
+    <!-- =================================================================== -->
+    <target name = "compile" depends = "init"> 
+        <javac srcdir = "${src.dir}" 
+               destdir = "${owleditor.classes}" 
+               debug="${debug}" 
+               source = "${source}" 
+               includeAntRuntime = "${includeAntRuntime}">
+            <classpath refid = "owleditor.classpath"/>
+        </javac>
+    </target>
+    
+    <!-- ===================================================================================== -->
+    <!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
+    <!-- ===================================================================================== -->
+    <target name = "bundle" depends = "compile">
+        <copy todir="${owleditor.classes}">
+            <fileset dir="${resources.dir}"/>
+            <fileset dir="${icons.dir}"/>
+        </copy>
+        <copy todir="${owleditor.classes}" file="${owleditor.dir}/plugin.xml"/>
+        <jar basedir = "${owleditor.classes}"
+             destfile = "${owleditor.jar}"
+             manifest="${owleditor.dir}/META-INF/MANIFEST.MF"/>
+    </target>
+    
 </project>

@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.inference;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
+import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -43,7 +45,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
 
 
     public ProtegeOWLReasonerFactoryPluginLoader(OWLModelManager owlModelManager) {
-        super("org.protege.editor.owl", ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
+        super(ProtegeOWL.ID, ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
         this.owlModelManager = owlModelManager;
     }
 
@@ -56,7 +58,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected ProtegeOWLReasonerFactoryPlugin createInstance(Extension extension) {
+    protected ProtegeOWLReasonerFactoryPlugin createInstance(IExtension extension) {
         return new ProtegeOWLReasonerFactoryPluginJPFImpl(owlModelManager, extension);
     }
 
@@ -75,7 +77,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
              * @return <code>true</code> if the <code>Extension</code> matches
              *         or <code>false</code> if the <code>Extension</code> doesn't match.
              */
-            public boolean matches(Extension extension) {
+            public boolean matches(IExtension extension) {
                 return true;
             }
         };

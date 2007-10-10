@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/antlr-runtime-3.0.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-api.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-apibinding.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-change.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-debugging.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-dig1_1.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-functionalparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-functionalrenderer.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-impl.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-krssparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-mansyntaxparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-mansyntaxrenderer.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-metrics.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-oboparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-owlxmlparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-owlxmlrenderer.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-rdfapi.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-rdfxmlparser.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-rdfxmlrenderer.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/owlapi-util.jar"/>
+	<classpathentry kind="lib" path="/org.semanticweb.owl.owlapi/lib/servlet-api.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

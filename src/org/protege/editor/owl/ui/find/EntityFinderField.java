@@ -1,40 +1,35 @@
 package org.protege.editor.owl.ui.find;
 
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.EntityFinderPreferences;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.semanticweb.owl.model.OWLEntity;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Set;
-import java.util.TreeSet;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 
 
 /**
@@ -159,7 +154,7 @@ public class EntityFinderField extends JTextField {
 
     private void executeFind() {
         if (getText().trim().length() > 0) {
-            Set<OWLEntity> results = results = editorKit.getOWLModelManager().getEntityFinder().getEntities(getText());
+            Set<OWLEntity> results = editorKit.getOWLModelManager().getEntityFinder().getEntities(getText());
             showResults(results);
         }
         else {
@@ -205,7 +200,7 @@ public class EntityFinderField extends JTextField {
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
             window.setSize(getWidth(), 200);
-            TreeSet ts = new TreeSet(new OWLEntityComparator(editorKit.getOWLModelManager()));
+            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(new OWLEntityComparator(editorKit.getOWLModelManager()));
             ts.addAll(results);
             resultsList.setListData(ts.toArray());
             window.setVisible(true);

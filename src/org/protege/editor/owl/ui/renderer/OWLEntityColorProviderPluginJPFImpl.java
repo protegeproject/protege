@@ -1,7 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.java.plugin.registry.Extension;
+
+import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
+import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -40,22 +42,22 @@ public class OWLEntityColorProviderPluginJPFImpl implements OWLEntityColorProvid
 
     private OWLModelManager owlModelManager;
 
-    private Extension extension;
+    private IExtension extension;
 
 
-    public OWLEntityColorProviderPluginJPFImpl(OWLModelManager owlModelManager, Extension extension) {
+    public OWLEntityColorProviderPluginJPFImpl(OWLModelManager owlModelManager, IExtension extension) {
         this.owlModelManager = owlModelManager;
         this.extension = extension;
     }
 
 
     public String getId() {
-        return extension.getId();
+        return extension.getUniqueIdentifier();
     }
 
 
     public String getDocumentation() {
-        return extension.getDocumentation().getText();
+        return PluginUtilities.getInstance().getDocumentation(extension);
     }
 
 

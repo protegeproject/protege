@@ -1,40 +1,57 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
+import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.View;
+import javax.swing.tree.TreeCellRenderer;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
-
-import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.*;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLDeclarationAxiom;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLEntityVisitor;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -58,6 +75,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean renderExpression;
 
+    private boolean strikeThrough;
 
     private OWLOntology ontology;
 
@@ -105,6 +123,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean inferred;
 
     private boolean highlightKeywords;
+
+    private boolean wrap = true;
 
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
@@ -191,6 +211,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         focusedEntity = null;
         commentedOut = false;
         inferred = false;
+        strikeThrough = false;
 //        highlightKeywords = true;
     }
 
@@ -220,6 +241,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
      */
     public void setInferred(boolean inferred) {
         this.inferred = inferred;
+    }
+
+
+    public void setStrikeThrough(boolean strikeThrough) {
+        this.strikeThrough = strikeThrough;
     }
 
 
@@ -261,6 +287,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public void setCommentedOut(boolean commentedOut) {
         this.commentedOut = commentedOut;
+    }
+
+
+    public boolean isWrap() {
+        return wrap;
+    }
+
+
+    public void setWrap(boolean wrap) {
+        this.wrap = wrap;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -503,6 +539,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style plainStyle;
 
+    private Style boldStyle;
+
+    private Style nonBoldStyle;
+
     private Style selectionForeground;
 
     private Style foreground;
@@ -533,6 +573,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        StyleConstants.setForeground(plainStyle, Color.BLACK);
         StyleConstants.setItalic(plainStyle, false);
         StyleConstants.setSpaceAbove(plainStyle, 0);
+        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
+
+        boldStyle = doc.addStyle("BOLD_STYLE", null);
+        StyleConstants.setBold(boldStyle, true);
+
+
+        nonBoldStyle = doc.addStyle("NON_BOLD_STYLE", null);
+        StyleConstants.setBold(nonBoldStyle, true);
 
         selectionForeground = doc.addStyle("SEL_FG_STYPE", null);
         StyleConstants.setForeground(selectionForeground, SELECTION_FOREGROUND);
@@ -565,7 +613,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void prepareTextPane(Object value, boolean selected) {
         textPane.setBorder(null);
-        textPane.setText(value.toString());
+        String theVal = value.toString();
+        if (!wrap) {
+            theVal = theVal.replace('\n', ' ');
+            theVal = theVal.replace('\t', ' ');
+            theVal = theVal.replaceAll(" [ ]+", " ");
+        }
+        textPane.setText(theVal);
         if (commentedOut) {
             textPane.setText("// " + textPane.getText());
         }
@@ -586,23 +640,19 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             return;
         }
         else if (inferred) {
-            try {
-                if (!getOWLModelManager().getReasoner().isClassified()) {
-                    doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
-                }
-            }
-            catch (OWLReasonerException e) {
-                e.printStackTrace();
-            }
+
+        }
+        if (strikeThrough) {
+            doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
         }
 
         if (ontology != null) {
             if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(
                     ontology)) {
-                textPane.setFont(boldFont);
+                doc.setParagraphAttributes(0, doc.getLength(), boldStyle, false);
             }
             else {
-                textPane.setFont(plainFont);
+                doc.setParagraphAttributes(0, doc.getLength(), nonBoldStyle, false);
             }
         }
         else {
@@ -729,7 +779,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private void resetStyles(StyledDocument doc) {
-        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, false);
+        doc.setParagraphAttributes(0, doc.getLength(), plainStyle, true);
     }
 
 

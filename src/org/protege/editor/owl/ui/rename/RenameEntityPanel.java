@@ -1,16 +1,22 @@
 package org.protege.editor.owl.ui.rename;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLEntity;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLEntity;
 
 
 /**
