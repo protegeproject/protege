@@ -3,13 +3,34 @@
 
   <property name="src" location="${commonlibs.dir}/src"/>
 	
+	
+    <!-- =================================================================== -->
+    <!-- Classpath declaration - used in the "compile" target -->
+    <!-- =================================================================== -->
+    <path id = "local.classpath">    
+	  <fileset dir="${commonlibs.dir}/lib"/>
+    </path>
+	
   <target name="init"> 
     <echo message="---------------Building the common libs Bundle-------------"/>
     <mkdir dir="${commonlibs.classes}"/>
   </target>
 	
+    <!-- =================================================================== -->
+    <!-- COMPILE -->
+    <!-- =================================================================== -->
+  <target name = "compile" depends = "init">    
+      <javac srcdir = "${commonlibs.dir}/src" 
+             destdir = "${commonlibs.classes}" 
+             debug = "${debug}" 
+             source = "${source}" 
+             includeAntRuntime = "${includeAntRuntime}">
+          <classpath refid = "local.classpath"/>
+       </javac>
+  </target>
+	
 
-  <target name="bundle" depends="init">
+  <target name="bundle" depends="compile">
     <copy todir="${commonlibs.classes}/lib">
         <fileset dir="${commonlibs.dir}/lib"/>
     </copy>
