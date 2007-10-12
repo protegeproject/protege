@@ -302,7 +302,10 @@ public class ProtegeApplication implements BundleActivator {
                 plugins.add(b);
             }
             catch (Throwable t) {
-                logger.error("Could not install plugin ", t);
+                logger.error("Could not install plugin in file/directory named " + plugin + ": " + t);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception caught", t);
+                }
             }
         }
         for (Bundle b  : plugins) {
@@ -315,7 +318,10 @@ public class ProtegeApplication implements BundleActivator {
                 logger.info("Installed plugin " + name);
             }
             catch (Throwable t) {
-                logger.error("Could not start bundle " + b.getSymbolicName(), t);
+                logger.error("Could not start bundle " + b.getSymbolicName() + ": " + t);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception caught", t);
+                }
             }
         }
         bundles_loaded = true;
