@@ -20,4 +20,5 @@ Export-Package: org.apache.log4j,
  com.jgoodies.looks.windows.icons,
  org.apache.commons.logging,
  org.apache.commons.logging.impl,
- org.apache.log4j.spi
+ org.apache.log4j.spi,
+ org.protege.common
