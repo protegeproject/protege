@@ -75,7 +75,8 @@ public class ProtegeApplication implements BundleActivator {
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
     
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
-    
+
+
     public final static char BUNDLE_EXTRA_SEPARATOR = ':';
 
     public static final String ID = "org.protege.editor.core.application";
@@ -111,9 +112,6 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeManager.getInstance().dispose();
     }
     
-    public static BundleContext getContext() {
-        return context;
-    }
 
     /////////////////////////////////////////////////////////////////////////////////
     //
@@ -243,10 +241,6 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    public static ErrorLog getErrorLog() {
-        return errorLog;
-    }
-
 
     private void processCommandLineURIs(String[] strings) {
         commandLineURIs = new ArrayList<URI>();
@@ -334,7 +328,7 @@ public class ProtegeApplication implements BundleActivator {
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    public void startApplication() throws Exception {
+    private void startApplication() throws Exception {
         ProtegeWelcomeFrame frame = new ProtegeWelcomeFrame();
 
 //        frame.addWindowListener(new WindowAdapter() {
@@ -371,9 +365,18 @@ public class ProtegeApplication implements BundleActivator {
         UpdateManager.getInstance().checkForUpdates(false);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Visible Application Interfaces
+    //
+    /////////////////////////////////////////////////////////////////////////////////
 
+    public static BundleContext getContext() {
+        return context;
+    }
 
-  
-
+    public static ErrorLog getErrorLog() {
+        return errorLog;
+    }
 
 }
