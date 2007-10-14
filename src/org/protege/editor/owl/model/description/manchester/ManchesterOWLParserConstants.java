@@ -3,107 +3,112 @@ package org.protege.editor.owl.model.description.manchester;
 
 public interface ManchesterOWLParserConstants {
 
-    int EOF = 0;
+  int EOF = 0;
+  int OPENPAR = 5;
+  int CLOSEPAR = 6;
+  int OPENSQPAR = 7;
+  int CLOSESQPAR = 8;
+  int QUESTION_MARK = 9;
+  int RULE_IMP = 10;
+  int OPENBRACE = 11;
+  int CLOSEBRACE = 12;
+  int QUOTE = 13;
+  int AND = 14;
+  int OR = 15;
+  int NOT = 16;
+  int SOME = 17;
+  int ALL = 18;
+  int HAS = 19;
+  int MIN = 20;
+  int MAX = 21;
+  int EXACT = 22;
+  int THAT = 23;
+  int COMMA = 24;
+  int COMPOSITION = 25;
+  int SUBCLASSOF = 26;
+  int EQUIVALENTTO = 27;
+  int DISJPOINTWITH = 28;
+  int PLUS = 29;
+  int UNION = 30;
+  int MINUS = 31;
+  int POSSIBLY = 32;
+  int INV = 33;
+  int MIN_EXC = 34;
+  int MIN_INC = 35;
+  int MAX_EXC = 36;
+  int MAX_INC = 37;
+  int PAT = 38;
+  int LEN = 39;
+  int INT = 40;
+  int FLOAT = 41;
+  int DOUBLE_CARET = 42;
+  int BOOLEAN = 43;
+  int STRING = 44;
+  int IDENTIFIER = 45;
+  int CLASSID = 46;
+  int OBJECTPROPID = 47;
+  int DATAPROPID = 48;
+  int INDIVIDUALID = 49;
+  int DATATYPEID = 50;
+  int DATAVALUE = 51;
+  int ERROR = 52;
 
-    int OPENPAR = 5;
+  int DEFAULT = 0;
 
-    int CLOSEPAR = 6;
+  String[] tokenImage = {
+    "<EOF>",
+    "\" \"",
+    "\"\\n\"",
+    "\"\\r\"",
+    "\"\\r\\n\"",
+    "\"(\"",
+    "\")\"",
+    "\"[\"",
+    "\"]\"",
+    "\"?\"",
+    "<RULE_IMP>",
+    "\"{\"",
+    "\"}\"",
+    "\"\\\"\"",
+    "\"and\"",
+    "\"or\"",
+    "\"not\"",
+    "\"some\"",
+    "\"only\"",
+    "\"value\"",
+    "\"min\"",
+    "\"max\"",
+    "\"exactly\"",
+    "\"that\"",
+    "\",\"",
+    "\"o\"",
+    "\"subClassOf\"",
+    "\"equivalentTo\"",
+    "\"disjointWith\"",
+    "\"plus\"",
+    "\"union\"",
+    "\"minus\"",
+    "\"possibly\"",
+    "\"inv\"",
+    "\">\"",
+    "\">=\"",
+    "\"<\"",
+    "\"<=\"",
+    "\"pattern\"",
+    "\"length\"",
+    "<INT>",
+    "<FLOAT>",
+    "\"^^\"",
+    "<BOOLEAN>",
+    "<STRING>",
+    "<IDENTIFIER>",
+    "<CLASSID>",
+    "<OBJECTPROPID>",
+    "<DATAPROPID>",
+    "<INDIVIDUALID>",
+    "<DATATYPEID>",
+    "<DATAVALUE>",
+    "<ERROR>",
+  };
 
-    int OPENSQPAR = 7;
-
-    int CLOSESQPAR = 8;
-
-    int QUESTION_MARK = 9;
-
-    int RULE_IMP = 10;
-
-    int RULE_AND = 11;
-
-    int OPENBRACE = 12;
-
-    int CLOSEBRACE = 13;
-
-    int QUOTE = 14;
-
-    int AND = 15;
-
-    int OR = 16;
-
-    int NOT = 17;
-
-    int SOME = 18;
-
-    int ALL = 19;
-
-    int HAS = 20;
-
-    int MIN = 21;
-
-    int MAX = 22;
-
-    int EXACT = 23;
-
-    int THAT = 24;
-
-    int COMMA = 25;
-
-    int COMPOSITION = 26;
-
-    int SUBCLASSOF = 27;
-
-    int EQUIVALENTTO = 28;
-
-    int DISJPOINTWITH = 29;
-
-    int PLUS = 30;
-
-    int UNION = 31;
-
-    int MINUS = 32;
-
-    int POSSIBLY = 33;
-
-    int INV = 34;
-
-    int MIN_EXC = 35;
-
-    int MIN_INC = 36;
-
-    int MAX_EXC = 37;
-
-    int MAX_INC = 38;
-
-    int PAT = 39;
-
-    int LEN = 40;
-
-    int INT = 41;
-
-    int FLOAT = 42;
-
-    int DOUBLE_CARET = 43;
-
-    int BOOLEAN = 44;
-
-    int STRING = 45;
-
-    int IDENTIFIER = 46;
-
-    int CLASSID = 47;
-
-    int OBJECTPROPID = 48;
-
-    int DATAPROPID = 49;
-
-    int INDIVIDUALID = 50;
-
-    int DATATYPEID = 51;
-
-    int DATAVALUE = 52;
-
-    int ERROR = 53;
-
-    int DEFAULT = 0;
-
-    String[] tokenImage = {"<EOF>", "\" \"", "\"\\n\"", "\"\\r\"", "\"\\r\\n\"", "\"(\"", "\")\"", "\"[\"", "\"]\"", "\"?\"", "<RULE_IMP>", "<RULE_AND>", "\"{\"", "\"}\"", "\"\\\"\"", "\"and\"", "\"or\"", "\"not\"", "\"some\"", "\"only\"", "\"value\"", "\"min\"", "\"max\"", "\"exactly\"", "\"that\"", "\",\"", "\"o\"", "\"subClassOf\"", "\"equivalentTo\"", "\"disjointWith\"", "\"plus\"", "\"union\"", "\"minus\"", "\"possibly\"", "\"inv\"", "\">\"", "\">=\"", "\"<\"", "\"<=\"", "\"pattern\"", "\"length\"", "<INT>", "<FLOAT>", "\"^^\"", "<BOOLEAN>", "<STRING>", "<IDENTIFIER>", "<CLASSID>", "<OBJECTPROPID>", "<DATAPROPID>", "<INDIVIDUALID>", "<DATATYPEID>", "<DATAVALUE>", "<ERROR>",};
 }
