@@ -54,6 +54,9 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
     private OWLDataFactory dataFactory;
 
+    private String lastLanguage;
+
+    private OWLDataType lastDatatype;
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
         dataFactory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
@@ -101,8 +104,8 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
     public void clear() {
         annotationContent.setText("");
-        datatypeComboBox.setSelectedItem(null);
-        langComboBox.setSelectedItem(null);
+        datatypeComboBox.setSelectedItem(lastDatatype);
+        langComboBox.setSelectedItem(lastLanguage);
     }
 
 
@@ -121,14 +124,18 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
 
     public OWLConstant getValue() {
+        lastDatatype = null;
+        lastLanguage = null;
         String value = annotationContent.getText();
         OWLConstant constant;
         if (isDataTypeSelected()) {
             constant = dataFactory.getOWLTypedConstant(value, getSelectedDataType());
+            lastDatatype = getSelectedDataType();
         }
         else {
             if (isLangSelected()) {
                 constant = dataFactory.getOWLUntypedConstant(value, getSelectedLang());
+                lastLanguage = getSelectedLang();
             }
             else {
                 constant = dataFactory.getOWLUntypedConstant(value);
