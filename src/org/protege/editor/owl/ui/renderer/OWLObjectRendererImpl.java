@@ -864,10 +864,10 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         for (Iterator<SWRLAtom> it = swrlRule.getBody().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
-                write(" \u2227 ");
+                write(" , ");
             }
         }
-        write(" \u2192 ");
+        write(" -> ");
         for (Iterator<SWRLAtom> it = swrlRule.getHead().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
