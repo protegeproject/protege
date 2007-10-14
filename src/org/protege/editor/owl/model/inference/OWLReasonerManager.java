@@ -35,6 +35,8 @@ public interface OWLReasonerManager {
      */
     public String getCurrentReasonerFactoryId();
 
+    public String getCurrentReasonerName();
+
 
     /**
      * Sets the current reasoner to be the reasoner specified by the
