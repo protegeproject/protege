@@ -4,35 +4,7 @@ import javax.swing.Icon;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.semanticweb.owl.model.OWLAnonymousIndividual;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataAllRestriction;
-import org.semanticweb.owl.model.OWLDataExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataOneOf;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataSomeRestriction;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLDataValueRestriction;
-import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectAllRestriction;
-import org.semanticweb.owl.model.OWLObjectComplementOf;
-import org.semanticweb.owl.model.OWLObjectExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectIntersectionOf;
-import org.semanticweb.owl.model.OWLObjectMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectOneOf;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLObjectSelfRestriction;
-import org.semanticweb.owl.model.OWLObjectSomeRestriction;
-import org.semanticweb.owl.model.OWLObjectUnionOf;
-import org.semanticweb.owl.model.OWLObjectValueRestriction;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
 
@@ -54,6 +26,8 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     private OWLModelManager owlModelManager;
 
     private int size = 16;
+
+    private Icon individualIcon = OWLIcons.getIcon("individual.png");;
 
 
     public OWLIconProviderImpl(OWLModelManager owlModelManager) {
@@ -118,12 +92,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLIndividual owlIndividual) {
-        icon = OWLIcons.getIcon("individual.png");
+        icon = individualIcon;
     }
 
 
     public void visit(OWLAnonymousIndividual individual) {
-        icon = OWLIcons.getIcon("individual.png");
+        icon = individualIcon;
     }
 
 
@@ -204,6 +178,16 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
         else {
             icon = OWLIcons.getIcon("ontology.missing.png");
         }
+    }
+
+
+    public void visit(OWLSubClassAxiom owlSubClassAxiom) {
+        icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLClassAssertionAxiom owlClassAssertionAxiom) {
+        icon = individualIcon;
     }
 
 
