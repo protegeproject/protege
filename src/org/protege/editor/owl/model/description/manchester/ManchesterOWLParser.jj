@@ -169,10 +169,6 @@ TOKEN:
     <RULE_IMP: "->" | "\u2192">
 }
 
-TOKEN:
-{
-    <RULE_AND: "/\\" | "\u2227">
-}
 
 TOKEN:
 {
@@ -492,7 +488,7 @@ List<SWRLAtom> RuleAtomList() :
     List<SWRLAtom> list = new ArrayList<SWRLAtom>();
 }
 {
-    ((atom=RuleAtom() {list.add(atom);}) (((<RULE_AND>atom=RuleAtom() {list.add(atom);}))*)) {
+    ((atom=RuleAtom() {list.add(atom);}) (((<COMMA>atom=RuleAtom() {list.add(atom);}))*)) {
         return list;
     }
 }
