@@ -101,6 +101,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
     }
 
 
+    public String getCurrentReasonerName() {
+        return currentReasonerFactory.getReasonerName();
+    }
+
+
     /**
      * Loads the active ontologies into the current reasoner
      */
