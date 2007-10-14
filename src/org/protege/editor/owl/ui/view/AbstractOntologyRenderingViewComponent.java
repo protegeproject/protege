@@ -40,7 +40,6 @@ public abstract class AbstractOntologyRenderingViewComponent extends AbstractAct
     protected void updateView(OWLOntology activeOntology) throws Exception {
         StringWriter w = new StringWriter();
         renderOntology(activeOntology, new BufferedWriter(w));
-        System.out.println("Written");
         textArea.setText(w.getBuffer().toString());
     }
 

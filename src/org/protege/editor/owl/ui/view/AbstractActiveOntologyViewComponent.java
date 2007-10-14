@@ -77,6 +77,14 @@ public abstract class AbstractActiveOntologyViewComponent extends AbstractOWLVie
 
     private void markForUpdate() {
         if (isShowing() && updateView) {
+            try {
+                if (isSynchronizing()) {
+                    updateView(getOWLModelManager().getActiveOntology());
+                }
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             updateView = false;
         }
         else {
