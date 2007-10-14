@@ -172,6 +172,13 @@
         <category value="@org.protege.classcategory"/>
     </extension>
 
+    <extension id="InferredAxioms"
+                point="org.protege.editor.core.application.ViewComponent">
+        <label value="Inferred Axioms"/>
+        <class value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
 
     <extension id="OWLAssertedClassHierarchy"
                 point="org.protege.editor.core.application.ViewComponent">
