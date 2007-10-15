@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 
 
 /**
@@ -25,7 +26,7 @@ public class SaveAction extends ProtegeAction {
             ProtegeManager.getInstance().saveEditorKit(getEditorKit());
         }
         catch (Exception e1) {
-            logger.error(e);
+            ErrorLogPanel.showErrorDialog(e1);
         }
     }
 

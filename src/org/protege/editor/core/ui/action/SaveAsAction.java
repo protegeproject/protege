@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 
 
 /**
@@ -21,7 +22,8 @@ public class SaveAsAction extends ProtegeAction {
             ProtegeManager.getInstance().saveEditorKitAs(getEditorKit());
         }
         catch (Exception e1) {
-            e1.printStackTrace();
+
+            ErrorLogPanel.showErrorDialog(e1);
         }
     }
 

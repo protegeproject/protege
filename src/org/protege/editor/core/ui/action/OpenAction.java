@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 
 
@@ -19,8 +20,6 @@ import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OpenAction extends ProtegeAction {
-
-    private static final Logger logger = Logger.getLogger(OpenAction.class);
 
 
     public void actionPerformed(ActionEvent e) {
@@ -43,7 +42,7 @@ public class OpenAction extends ProtegeAction {
             }
         }
         catch (Exception e1) {
-            logger.error(e1);
+            ErrorLogPanel.showErrorDialog(e1);
         }
     }
 
