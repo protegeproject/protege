@@ -1,7 +1,12 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.ui.list.OWLAxiomList;
+import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameListRenderer;
+import org.protege.editor.owl.ui.frame.ExplanationFrame;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,11 +45,19 @@ public class ExplanationResultsViewComponent extends AbstractOWLViewComponent {
 
     private OWLAxiomList axiomList;
 
+    private OWLFrameList2<OWLAxiom> frameList;
+
+    private ExplanationFrame explanationFrame;
+
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        axiomList = new OWLAxiomList(getOWLEditorKit());
-        add(new JScrollPane(axiomList));
+        explanationFrame = new ExplanationFrame(getOWLEditorKit());
+        frameList = new OWLFrameList2<OWLAxiom>(getOWLEditorKit(), explanationFrame);
+        explanationFrame.setRootObject(null);
+
+        frameList.setWrap(false);
+        add(new JScrollPane(frameList));
     }
 
 
@@ -53,8 +66,8 @@ public class ExplanationResultsViewComponent extends AbstractOWLViewComponent {
 
 
     public void setExplanation(OWLAxiom subject, Set<Set<OWLAxiom>> explanations) {
+        explanationFrame.setExplanation(subject, explanations);
         String subjectRendering = getOWLModelManager().getRendering(subject);
         getView().setHeaderText("Explanations for: " + subjectRendering);
-        axiomList.setAxioms(explanations, getOWLModelManager().getActiveOntologies());
     }
 }
