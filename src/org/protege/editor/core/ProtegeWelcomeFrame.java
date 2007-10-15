@@ -12,20 +12,15 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 import java.util.Map;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
 
@@ -162,7 +157,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                                 dispose();
                             }
                             catch (Exception e1) {
-                                logger.error("Exception caught setting up recent editor kits", e1);
+                                ErrorLogPanel.showErrorDialog(e1);
                             }
                         }
                     }));

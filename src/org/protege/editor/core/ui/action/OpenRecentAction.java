@@ -2,11 +2,12 @@ package org.protege.editor.core.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.JMenu;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 
@@ -67,7 +68,7 @@ public class OpenRecentAction extends ProtegeDynamicAction {
                 ProtegeManager.getInstance().openAndSetupRecentEditorKit(descriptor);
             }
             catch (Exception e1) {
-                logger.error(e1);
+                ErrorLogPanel.showErrorDialog(e1);
             }
         }
     }

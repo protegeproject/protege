@@ -6,11 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 
 /**
@@ -36,21 +32,30 @@ public class ErrorLogPanel extends JPanel {
         textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         JPanel contentPane = new JPanel(new BorderLayout(7, 7));
         contentPane.add(new JScrollPane(textArea));
-        JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(new JButton(new AbstractAction("Send bug report") {
-            public void actionPerformed(ActionEvent e) {
-                if (handleSendErrorReport()) {
-                    ErrorLogPanel.this.errorLog.clear();
+        JPanel buttonPanel = null;
+        if (handler != null) {
+            buttonPanel = new JPanel(new BorderLayout());
+            buttonPanel.add(new JButton(new AbstractAction("Send bug report") {
+                public void actionPerformed(ActionEvent e) {
+                    if (handleSendErrorReport()) {
+                        ErrorLogPanel.this.errorLog.clear();
+                    }
                 }
-            }
-        }), BorderLayout.WEST);
-        contentPane.add(buttonPanel, BorderLayout.SOUTH);
+            }), BorderLayout.WEST);
+            contentPane.add(buttonPanel, BorderLayout.SOUTH);
+        }
         add(contentPane);
+        fillLog();
     }
 
 
     private boolean handleSendErrorReport() {
-        return errorReportHandler.sendErrorReport(errorLog);
+        if (errorReportHandler != null) {
+            return errorReportHandler.sendErrorReport(errorLog);
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -78,5 +83,17 @@ public class ErrorLogPanel extends JPanel {
             textArea.append(
                     "---------------------------------------------------------------------------------------------------\n\n");
         }
+    }
+
+
+    /**
+     * Shows a local error dialog for displaying one exception
+     * @param throwable The exception to be displayed
+     */
+    public static void showErrorDialog(Throwable throwable) {
+        ErrorLog errorLog = new ErrorLog();
+        errorLog.logError(throwable);
+        ErrorLogPanel panel = new ErrorLogPanel(errorLog, null);
+        JOptionPane.showMessageDialog(null, panel, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
