@@ -186,6 +186,26 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLDisjointClassesAxiom owlDisjointClassesAxiom) {
+        icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLDisjointUnionAxiom owlDisjointUnionAxiom) {
+        icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
+        icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLSameIndividualsAxiom owlSameIndividualsAxiom) {
+        icon = individualIcon;
+    }
+
+    
     public void visit(OWLClassAssertionAxiom owlClassAssertionAxiom) {
         icon = individualIcon;
     }

@@ -50,6 +50,8 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox highlightKeyWordsCheckBox;
 
+    private JCheckBox useThatAsSynonymForAndCheckBox;
+
 
     public void applyChanges() {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
@@ -68,6 +70,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
+        prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
     }
 
 
@@ -134,11 +137,16 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         showHyperlinksCheckBox = new JCheckBox("Show hyperlinks in components that support them",
                                                prefs.isRenderHyperlinks());
         highlightKeyWordsCheckBox = new JCheckBox("Highlight keywords", prefs.isHighlightKeyWords());
+
+        useThatAsSynonymForAndCheckBox = new JCheckBox("Use the 'that' keyword as a synonym for the 'and' keyword",
+                                                       prefs.isUseThatKeyword());
+
         Box optBox = new Box(BoxLayout.Y_AXIS);
         optBox.setBorder(ComponentFactory.createTitledBorder("Appearance"));
         optBox.add(highlightAOStatementsCheckBox);
         optBox.add(showHyperlinksCheckBox);
         optBox.add(highlightKeyWordsCheckBox);
+        optBox.add(useThatAsSynonymForAndCheckBox);
         holderBox.add(optBox);
     }
 
