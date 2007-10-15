@@ -17,7 +17,7 @@ public class OWLClassDescriptionFrame extends AbstractOWLFrame<OWLClass> {
 //        addSection(new OWLAnnotationFrameSection(owlModelManager, this));
         addSection(new OWLEquivalentClassesAxiomFrameSection(editorKit, this));
         addSection(new OWLSubClassAxiomFrameSection(editorKit, this));
-        addSection(new InheritedAnonymousClassesFrameSection(editorKit, this));
+//        addSection(new InheritedAnonymousClassesFrameSection(editorKit, this));
         addSection(new OWLClassAssertionAxiomIndividualSection(editorKit, this));
         addSection(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
     }
