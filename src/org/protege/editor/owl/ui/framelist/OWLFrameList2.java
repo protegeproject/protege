@@ -206,6 +206,8 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     private static final Color INFERRED_ROW_BG_COLOR = new Color(255, 255, 215);
 
+    private OWLFrameListRenderer cellRenderer;
+
 
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
         this.editorKit = editorKit;
@@ -217,7 +219,8 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         };
         frame.addFrameListener(listener);
 
-        setCellRenderer(new OWLFrameListRenderer(editorKit));
+        cellRenderer = new OWLFrameListRenderer(editorKit);
+        setCellRenderer(cellRenderer);
 
         mediator = new LinkedObjectComponentMediator(editorKit, this);
 
@@ -280,11 +283,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         setUI(new OWLFrameListUI());
     }
 
-
     public void updateUI() {
 
     }
-
 
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected,
                                           boolean cellHasFocus) {
@@ -336,6 +337,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         addToPopupMenu(new MoveAxiomsToOntologyAction());
     }
 
+    public void setWrap(boolean b) {
+        cellRenderer.setWrap(b);
+    }
 
     private void showPopupMenu(MouseEvent e) {
         for (OWLFrameListPopupMenuAction action : actions) {
@@ -561,24 +565,6 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                                                                                                        "http://semanticweb.org/ontology" + System.nanoTime())),
                                                                    r);
             Set<Set<OWLAxiom>> axs = debugger.getAllSOSForIncosistentClass(desc);
-//            StringBuilder sb = new StringBuilder();
-//            for (OWLAxiom justAx : axs) {
-//                String s = editorKit.getOWLModelManager().getOWLObjectRenderer().render(justAx,
-//                                                                                        editorKit.getOWLModelManager().getOWLEntityRenderer());
-//
-//                sb.append(s);
-//                sb.append("\n\n");
-//            }
-
-//            JFrame textFrame = new JFrame();
-//            textFrame.getContentPane().add(editor);
-//            textFrame.pack();
-//            textFrame.setVisible(true);
-            int count = 0;
-//            for (OWLAxiom expAx : axs) {
-//                count++;
-//                System.out.println(count + ") " + expAx);
-//            }
             View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
                                                                     false,
                                                                     Workspace.BOTTOM_RESULTS_VIEW);

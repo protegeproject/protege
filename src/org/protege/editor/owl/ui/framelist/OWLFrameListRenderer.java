@@ -111,12 +111,21 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             owlCellRenderer.setTransparent();
             owlCellRenderer.setInferred(((OWLFrameSectionRow) value).isInferred());
             owlCellRenderer.setHighlightKeywords(highlightKeywords);
+            if(row.getOntology() != null) {
+                if(!row.getOntology().containsAxiom(row.getAxiom())) {
+                    owlCellRenderer.setStrikeThrough(true);
+                }
+            }
             return (JComponent) owlCellRenderer.getListCellRendererComponent(list,
                                                                              valueToRender,
                                                                              index,
                                                                              isSelected,
                                                                              cellHasFocus);
         }
+    }
+
+    public void setWrap(boolean b) {
+        owlCellRenderer.setWrap(b);
     }
 
 
