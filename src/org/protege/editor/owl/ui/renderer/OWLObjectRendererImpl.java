@@ -286,7 +286,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
             if (i < ops.size() - 1) {
                 write("\n");
                 insertIndent(indent);
-                if (curOp instanceof OWLClass && ops.get(i + 1) instanceof OWLRestriction) {
+                if (curOp instanceof OWLClass && ops.get(i + 1) instanceof OWLRestriction && OWLRendererPreferences.getInstance().isUseThatKeyword()) {
                     write("that ");
                 }
                 else {

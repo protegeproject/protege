@@ -26,6 +26,8 @@ public class OWLRendererPreferences {
 
     public static final String RENDERER_CLASS = "RENDERER_CLASS";
 
+    public static final String USE_THAT_KEYWORD = "USE_THAT_KEYWORD";
+
 
     private static OWLRendererPreferences instance;
 
@@ -36,6 +38,8 @@ public class OWLRendererPreferences {
     private boolean highlightChangedEntities;
 
     private boolean highlightKeyWords;
+
+    private boolean useThatKeyword;
 
     private String rendererClass;
 
@@ -65,6 +69,7 @@ public class OWLRendererPreferences {
         highlightActiveOntologyStatements = p.getBoolean(HIGHLIGHT_ACTIVE_ONTOLOGY_STATEMENTS, true);
         highlightChangedEntities = p.getBoolean(HIGHLIGHT_CHANGED_ENTITIES, false);
         highlightKeyWords = p.getBoolean(HIGHLIGHT_KEY_WORDS, true);
+        useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
         rendererClass = p.getString(RENDERER_CLASS, OWLEntityRendererImpl.class.getName());
     }
 
@@ -74,6 +79,7 @@ public class OWLRendererPreferences {
         highlightActiveOntologyStatements = true;
         highlightChangedEntities = false;
         highlightKeyWords = true;
+        useThatKeyword = false;
     }
 
 
@@ -90,6 +96,17 @@ public class OWLRendererPreferences {
     public void setRendererClass(String rendererClass) {
         this.rendererClass = rendererClass;
         getPreferences().putString(RENDERER_CLASS, rendererClass);
+    }
+
+
+    public boolean isUseThatKeyword() {
+        return useThatKeyword;
+    }
+
+
+    public void setUseThatKeyword(boolean useThatKeyword) {
+        this.useThatKeyword = useThatKeyword;
+        getPreferences().putBoolean(USE_THAT_KEYWORD, useThatKeyword);
     }
 
 

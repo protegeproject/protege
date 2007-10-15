@@ -42,16 +42,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLDeclarationAxiom;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -459,6 +450,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             entity.accept(activeEntityVisitor);
         }
+        
 
         prepareTextPane(getRendering(value), isSelected);
 
