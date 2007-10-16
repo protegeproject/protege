@@ -8,7 +8,7 @@
     <!-- Classpath declaration - used in the "compile" target -->
     <!-- =================================================================== -->
     <path id = "local.classpath">    
-	  <fileset dir="${commonlibs.dir}/lib"/>
+	  <fileset dir="${commonlibs.dir}/lib" includes="*.jar"/>
     </path>
 	
   <target name="init"> 
