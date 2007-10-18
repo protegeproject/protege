@@ -24,12 +24,14 @@ public class OWLGeneralClassAxiomFrameSectionRow extends AbstractOWLFrameSection
 
 
     protected OWLFrameSectionRowObjectEditor<OWLClassAxiom> getObjectEditor() {
-        return null;
+        OWLGeneralAxiomEditor editor =  new OWLGeneralAxiomEditor(getOWLEditorKit());
+        editor.setEditedObject(getAxiom());
+        return editor;
     }
 
 
     protected OWLClassAxiom createAxiom(OWLClassAxiom editedObject) {
-        return null;
+        return editedObject;
     }
 
 
