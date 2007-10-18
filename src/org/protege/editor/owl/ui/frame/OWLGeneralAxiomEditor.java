@@ -39,6 +39,10 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
         editingComponent.setPreferredSize(new Dimension(400, 200));
     }
 
+    public void setEditedObject(OWLClassAxiom axiom) {
+        editor.setText(editorKit.getOWLModelManager().getRendering(axiom));
+    }
+
 
     public JComponent getInlineEditorComponent() {
         // Same as general editor component
