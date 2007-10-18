@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLInverseObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -42,9 +39,11 @@ public class OWLInverseObjectPropertiesAxiomFrameSectionRow extends AbstractOWLF
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<? extends OWLObject> getManipulatableObjects() {
         Set<OWLObjectPropertyExpression> props = new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
-        props.remove(getRootObject());
+        if(props.size() > 1) {
+            props.remove(getRootObject());
+        }
         return new ArrayList(props);
     }
 }
