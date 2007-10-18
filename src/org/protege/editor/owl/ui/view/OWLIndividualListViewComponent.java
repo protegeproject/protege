@@ -17,20 +17,16 @@ import javax.swing.event.ListSelectionListener;
 
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDeclarationAxiom;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owl.util.OWLEntityCollector;
 
 
 /**
@@ -51,7 +47,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
     private Set<OWLIndividual> individualsInList;
 
-    private ChangeProcessor changeProcessor;
+    private OWLModelManagerListener modelManagerListener;
 
 
     public void initialiseIndividualsView() throws Exception {
@@ -87,13 +83,21 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                 return getSelectedIndividuals();
             }
         }), "B", "A");
-        changeProcessor = new ChangeProcessor();
         changeListenerMediator = new ChangeListenerMediator();
-        individualsInList = new TreeSet<OWLIndividual>(new OWLEntityComparator(getOWLModelManager()));
+        individualsInList = new TreeSet<OWLIndividual>(new OWLEntityComparator<OWLIndividual>(getOWLModelManager()));
         // Initial fill
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             individualsInList.addAll(ont.getReferencedIndividuals());
         }
+        modelManagerListener = new OWLModelManagerListener() {
+
+            public void handleChange(OWLModelManagerChangeEvent event) {
+                if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                    reset();
+                }
+            }
+        };
+        getOWLModelManager().addListener(modelManagerListener);
         reset();
     }
 
@@ -121,6 +125,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
     public void disposeView() {
         getOWLModelManager().removeOntologyChangeListener(listener);
+        getOWLModelManager().removeListener(modelManagerListener);
     }
 
 
@@ -139,14 +144,36 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     private void processChanges(List<? extends OWLOntologyChange> changes) {
-        changeProcessor.reset();
-        for (OWLOntologyChange change : changes) {
-            if (change.isAxiomChange()) {
-                changeProcessor.setAdd(change instanceof AddAxiom);
-                change.getAxiom().accept(changeProcessor);
+        OWLEntityCollector addedCollector = new OWLEntityCollector();
+        OWLEntityCollector removedCollector = new OWLEntityCollector();
+
+        for(OWLOntologyChange chg : changes) {
+            if(chg.isAxiomChange()) {
+                OWLAxiomChange axChg = (OWLAxiomChange) chg;
+                if(axChg instanceof AddAxiom) {
+                    axChg.getAxiom().accept(addedCollector);
+                }
+                else {
+                    axChg.getAxiom().accept(removedCollector);
+                }
             }
         }
-        if (changeProcessor.isModified()) {
+        boolean mod = false;
+        for(OWLEntity ent : addedCollector.getObjects()) {
+            if(ent instanceof OWLIndividual) {
+                if(individualsInList.add((OWLIndividual) ent)) {
+                    mod = true;
+                }
+            }
+        }
+        for(OWLEntity ent : removedCollector.getObjects()) {
+            if(ent instanceof OWLIndividual) {
+                if(individualsInList.remove((OWLIndividual) ent)) {
+                    mod = true;
+                }
+            }
+        }
+        if(mod) {
             reset();
         }
     }
@@ -227,56 +254,4 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     public void createNewObject() {
         addIndividual();
     }
-
-
-    private class ChangeProcessor extends OWLAxiomVisitorAdapter {
-
-        private boolean add;
-
-        private boolean modified;
-
-
-        public void setAdd(boolean add) {
-            this.add = add;
-        }
-
-
-        public void reset() {
-            modified = false;
-        }
-
-
-        private void checkIndividual(OWLIndividual ind) {
-            if (add) {
-                if (individualsInList.add(ind)) {
-                    modified = true;
-                }
-            }
-            else {
-                if (individualsInList.remove(ind)) {
-                    modified = true;
-                }
-            }
-        }
-
-
-        public boolean isModified() {
-            return modified;
-        }
-
-
-        public void visit(OWLClassAssertionAxiom owlClassAssertionAxiom) {
-            checkIndividual(owlClassAssertionAxiom.getIndividual());
-        }
-
-
-        public void visit(OWLDeclarationAxiom owlDeclarationAxiom) {
-            if (owlDeclarationAxiom.getEntity() instanceof OWLIndividual) {
-                checkIndividual((OWLIndividual) owlDeclarationAxiom.getEntity());
-            }
-        }
-    }
-
-
-    ;
 }
