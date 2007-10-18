@@ -3,8 +3,9 @@ package org.protege.editor.owl.ui.tree;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Enumeration;
-import java.util.Set;
+import java.awt.event.ComponentListener;
+import java.awt.event.ComponentEvent;
+import java.util.*;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -65,6 +66,13 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
 
             }
         });
+        autoExpandTree();
+    }
+
+
+    public void reload() {
+        super.reload();
+        autoExpandTree();
     }
 
 
@@ -73,6 +81,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
         if (ren instanceof OWLObjectTreeCellRenderer) {
             ((OWLObjectTreeCellRenderer) ren).setHighlightKeywords(b);
         }
+
     }
 
 
@@ -84,6 +93,42 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
         setupListener();
         installPopupMenu();
         setRowHeight(-1);
+        autoExpandTree();
+    }
+
+
+
+    private void autoExpandTree() {
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        if (!prefs.isAutoExpandEnabled()) {
+            return;
+        }
+        OWLObjectHierarchyProvider<N> prov = getProvider();
+        for (N root : prov.getRoots()) {
+            autoExpand(root, 0);
+        }
+    }
+
+
+    private void autoExpand(N node, int currentDepth) {
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        int maxDepth = prefs.getAutoExpansionDepthLimit();
+        if (currentDepth >= maxDepth) {
+            return;
+        }
+        OWLObjectHierarchyProvider<N> prov = getProvider();
+        int childCountLimit = prefs.getAutoExpansionChildLimit();
+        Set<N> children = prov.getChildren(node);
+        if (children.size() <= childCountLimit) {
+            for (OWLObjectTreeNode<N> treeNode : getNodes(node)) {
+                TreePath path = new TreePath(treeNode.getPath());
+                expandPath(path);
+            }
+            for(N child : prov.getChildren(node)) {
+                autoExpand(child, currentDepth + 1);
+            }
+        }
+
     }
 
 
