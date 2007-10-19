@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.3">
+        <CNode>
+            <Component label="Inferred axioms">
+                <Property id="pluginId" value="org.protege.editor.owl.ExplanationView"/>
+            </Component>
+        </CNode>
+    </VSNode>
+</layout>
