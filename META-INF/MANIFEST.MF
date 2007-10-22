@@ -7,10 +7,11 @@ Bundle-Vendor: Protege Development Team
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
 Bundle-DocURL: http://protege.stanford.edu
 Bundle-Category: protege
-Bundle-ClassPath: .,lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar
+Bundle-ClassPath: .,lib/commons-logging.jar,lib/log4j.jar,lib/looks.jar,lib/commons-lang-2.2.jar
 Import-Package: org.osgi.framework
 DynamicImport-Package: javax.swing.*
-Export-Package: org.apache.log4j,
+Export-Package: org.apache.commons.lang,
+ org.apache.log4j,
  com.jgoodies.looks,
  com.jgoodies.looks.common,
  com.jgoodies.looks.plastic,
@@ -22,3 +23,4 @@ Export-Package: org.apache.log4j,
  org.apache.commons.logging.impl,
  org.apache.log4j.spi,
  org.protege.common
+
