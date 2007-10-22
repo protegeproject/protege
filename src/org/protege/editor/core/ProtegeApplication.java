@@ -76,6 +76,7 @@ public class ProtegeApplication implements BundleActivator {
     
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
 
+    public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
     public final static char BUNDLE_EXTRA_SEPARATOR = ':';
 
@@ -98,6 +99,7 @@ public class ProtegeApplication implements BundleActivator {
     public void start(BundleContext context) throws Exception {
         ProtegeApplication.context = context;
         displayPlatform();
+        clearRecentOnFirstOSGiRun();
         initApplication(new String[0]);
         ProtegeManager.getInstance().initialise(this);
         startApplication();
@@ -110,6 +112,25 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
+    }
+
+
+    /**
+     * This method determines if the OSGi version of Protege has been run before.  If it
+     * hasn't then the recent items are cleared.  This is needed because the original recent
+     * items set by the JPF version of Protege don't seem to work in the OSGi version.  Less
+     * than ideal, but this probably saves a lot of time trying to find a solution to a problem
+     * that won't really affect many people!
+     */
+    private static void clearRecentOnFirstOSGiRun() {
+        boolean runOnce = PreferencesManager.getInstance().getApplicationPreferences(RUN_ONCE).getBoolean(RUN_ONCE, false);
+        if(!runOnce) {
+            logger.info("First OSGi Run - Clearing recent items");
+            RecentEditorKitManager.getInstance().load();
+            RecentEditorKitManager.getInstance().clear();
+            RecentEditorKitManager.getInstance().save();
+            PreferencesManager.getInstance().getApplicationPreferences(RUN_ONCE).putBoolean(RUN_ONCE, true);
+        }
     }
     
 
