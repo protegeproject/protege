@@ -10,7 +10,8 @@ Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
 Bundle-ClassPath: .
 Import-Package: org.osgi.framework,
- org.apache.log4j
+ org.apache.log4j,
+ org.apache.commons.lang
 Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.model,
  org.protege.editor.owl.model.cache,
@@ -64,8 +65,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.transfer,
  org.protege.editor.owl.ui.tree,
  org.protege.editor.owl.ui.view
-Bundle-Version: 4.0.7
-Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator 
+Bundle-Version: 4.0.7 
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
  org.protege.editor.core.application,
