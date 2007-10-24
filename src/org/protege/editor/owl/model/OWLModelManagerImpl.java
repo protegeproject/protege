@@ -715,7 +715,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // Look for a cached version of the rending first!
         if (object instanceof OWLEntity) {
             getOWLEntityRenderer();
-            return owlEntityRenderingCache.getRendering((OWLEntity) object);
+            String rendering = owlEntityRenderingCache.getRendering((OWLEntity) object);
+            if(rendering != null) {
+                return rendering;
+            }
+            else {
+                return getOWLEntityRenderer().render((OWLEntity) object);
+            }
         }
         return getOWLObjectRenderer().render(object, getOWLEntityRenderer());
     }
