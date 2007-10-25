@@ -36,7 +36,32 @@ Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common,org.prot
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.packageadmin,org.osgi.util.tracker,
  org.eclipse.core.runtime; registry="split",
- org.apache.log4j
+ org.apache.log4j,
+ javax.swing,
+ javax.swing.border,
+ javax.swing.colorchooser,
+ javax.swing.event,
+ javax.swing.filechooser,
+ javax.swing.plaf,
+ javax.swing.plaf.basic,
+ javax.swing.plaf.metal,
+ javax.swing.plaf.multi,
+ javax.swing.plaf.synth,
+ javax.swing.table,
+ javax.swing.text,
+ javax.swing.text.html,
+ javax.swing.text.html.parser,
+ javax.swing.text.rtf,
+ javax.swing.tree,
+ javax.swing.undo,
+ org.w3c.dom,
+ org.w3c.dom.bootstrap,
+ org.w3c.dom.events,
+ org.w3c.dom.ls,
+ org.xml.sax,
+ org.xml.sax.ext,
+ org.xml.sax.helpers,
+ javax.xml.parsers
 Update-Url: http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml
 Bundle-Description: Generic Ontology Editor Bundle
 Bundle-Category: protege
