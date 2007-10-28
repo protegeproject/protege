@@ -31,6 +31,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
 import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider2;
 import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
@@ -120,7 +121,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
-    private AssertedClassHierarchyProvider assertedClassHierarchyProvider;
+    private OWLObjectHierarchyProvider<OWLClass> assertedClassHierarchyProvider;
 
     private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
 
