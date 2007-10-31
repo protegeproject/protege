@@ -2,9 +2,7 @@ package org.protege.editor.owl.model.hierarchy.roots;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Level;
@@ -24,7 +22,13 @@ import org.apache.log4j.Logger;
  * <center>
  *      x &le; y
  * </center>
- * we have x &asymp; y.
+ * we have x &asymp; y.  This definition is different than the more natural definition that x in X
+ * is terminal if for all y and z with
+ * <center>
+ *      x &asymp; y and y &le; z
+ * </center>
+ * we have x &asymp; z.  Coincidentally the second definition is both more difficult to calculate and
+ * (whew...) not what the gui wants.
  * <p>
  * We want to use  the algorithm in this class in an incremental fashion so at any given time so this routine
  * contain state that includes the current set of all terminal elements. The algorithm calculates whether an 
@@ -69,12 +73,9 @@ import org.apache.log4j.Logger;
 public class TerminalElementFinder<X> {
     private static Logger log = Logger.getLogger(TerminalElementFinder.class);
 
-    private enum Status {
-        TERMINAL, NONTERMINAL, UNKNOWN
-    }
     private Relation<X> r;
     private Set<X> terminalElements = new HashSet<X>();
-    private Map<X, EquivalenceClass> equivalenceMapping = new HashMap<X, EquivalenceClass>();
+    private EquivalenceRelation<X> equivalence = new EquivalenceRelation<X>();
     
     public TerminalElementFinder(Relation<X> r) {
         this.r = r;
@@ -88,7 +89,7 @@ public class TerminalElementFinder<X> {
     
     public void clear() {
         terminalElements.clear();
-        equivalenceMapping.clear();
+        equivalence.clear();
     }
     
     public void appendTerminalElements(Set<X> candidates) {
@@ -99,14 +100,13 @@ public class TerminalElementFinder<X> {
             buildEquivalenceMapping(candidate, null);
             if (log.isDebugEnabled()) {
                 log.debug("Call to build equivs completed at " + candidate);
-                logEquivalences(Level.DEBUG);
+                equivalence.logEquivalences(log, Level.DEBUG);
             }
         }
     }
         
     public void finish() {
-        collectTerminalElements(equivalenceMapping);
-        equivalenceMapping.clear();
+        equivalence.clear();
     }
     
     public Set<X> getTerminalElements() {
@@ -114,25 +114,20 @@ public class TerminalElementFinder<X> {
     }
     
     private void buildEquivalenceMapping(X x, Path<X> p) {
-        EquivalenceClass xequiv;
         if (p != null && p.contains(x)) {
-            EquivalenceClass.merge(equivalenceMapping, p.getLoop(x));
+            equivalence.merge(p.getLoop(x));
             if (log.isDebugEnabled()) {
                 log.debug("Found loop");
                 logLoop(p, x, Level.DEBUG);
             }
             return;
         }
-        if (equivalenceMapping.get(x) != null) {
+        Collection<X> relatedToX = r.getR(x);
+        if (relatedToX == null || relatedToX.isEmpty()) {
+            terminalElements.add(x);
             return;
         }
-        else {
-            xequiv = new EquivalenceClass();
-            equivalenceMapping.put(x, xequiv);
-        }
         Path<X> newPath  = new Path<X>(p, x);
-        Collection<X> relatedToX = r.getR(x);
-        if (relatedToX == null) relatedToX = Collections.emptyList();
         for  (X y : relatedToX) {
             if (log.isDebugEnabled()) {
                 log.debug("calling build equivs at " + y + " with path ");
@@ -141,41 +136,18 @@ public class TerminalElementFinder<X> {
             buildEquivalenceMapping(y,  newPath);
             if (log.isDebugEnabled()) {
                 log.debug("Call to build equivs completed at " + y);
-                logEquivalences(Level.DEBUG);
-            }
-            xequiv = xequiv.getMostMerged();
-            EquivalenceClass yequiv = equivalenceMapping.get(y);
-            if (xequiv.getStatus() != Status.UNKNOWN) {
-                continue;
-            }
-            else if (yequiv.getStatus() == Status.NONTERMINAL) {
-                xequiv.setStatus(Status.NONTERMINAL);
-            }
-            else if (!xequiv.equals(equivalenceMapping.get(y))) {
-                xequiv.setStatus(Status.NONTERMINAL);
+                equivalence.logEquivalences(log, Level.DEBUG);
             }
         }
-        if (xequiv.getStatus() != Status.UNKNOWN) return;
-        for (X y : relatedToX) {
-            if (!xequiv.equals(equivalenceMapping.get(y))) {
-                return;
+        boolean terminal = true;
+        for (X y: relatedToX) {
+            if (!equivalence.equivalent(x, y)) {
+                terminal = false;
+                break;
             }
         }
-        for (Path<X> point = p; point != null; point = point.getNext()) {
-            if (xequiv.equals(equivalenceMapping.get(point.getObject()))) {
-                return;
-            }
-        }
-        xequiv.setStatus(Status.TERMINAL);
-    }
-    
-    private void collectTerminalElements(Map<X, EquivalenceClass> equivalenceMapping) {
-        for (Map.Entry<X, EquivalenceClass> entry : equivalenceMapping.entrySet()) {
-            X x = entry.getKey();
-            EquivalenceClass eq = entry.getValue();
-            if (eq.getStatus() == Status.TERMINAL) {
-                terminalElements.add(x);
-            }
+        if (terminal) {
+            terminalElements.add(x);
         }
     }
 
@@ -213,73 +185,4 @@ public class TerminalElementFinder<X> {
             log.log(level, "Pathelement = " + x);
         }
     }
-    
-    private void logEquivalences(Level level) {
-        if (log.isEnabledFor(level)) {
-            for (Map.Entry<X, EquivalenceClass> entry : equivalenceMapping.entrySet()) {
-                log.log(level, "Object " + entry.getKey() + " in class " + entry.getValue());
-            }
-        }
-    }
-    
-    private static class EquivalenceClass {
-        private static int equivalenceClassCounter = 0;
-        private int equivalenceClass;
-        private EquivalenceClass mergedInto;
-        private Status status = Status.UNKNOWN;
-        
-        public EquivalenceClass() {
-            equivalenceClass = equivalenceClassCounter++;
-        }
-        
-        public EquivalenceClass getMergedInto() {
-            return mergedInto;
-        }
-        
-        public EquivalenceClass getMostMerged() {
-            EquivalenceClass mostMerged = this;
-            while (mostMerged.getMergedInto() != null) {
-                mostMerged = mostMerged.getMergedInto();
-            }
-            return mostMerged;
-        }
-        
-        public Status getStatus() {
-            return getMostMerged().status;
-        }
-        
-        public void setStatus(Status status) {
-            getMostMerged().status = status;
-        }
-        
-        public static <Y> void merge(Map<Y, EquivalenceClass> equivalenceMapping, Collection<Y> toBeMerged) {
-            EquivalenceClass merged = new EquivalenceClass();
-            for (Y y : toBeMerged) {
-                EquivalenceClass existingEq = equivalenceMapping.put(y, merged);
-                if (existingEq != null) {
-                    existingEq = existingEq.getMostMerged();
-                    Status existingStatus = existingEq.getStatus();
-                    existingEq.mergedInto = merged;
-                    if (existingStatus != Status.UNKNOWN) {
-                        merged.setStatus(existingStatus);
-                    }
-                }
-            }
-        }
-        
-        public boolean equals(Object o) {
-            if (!(o instanceof EquivalenceClass)) return false;
-            EquivalenceClass me = getMostMerged();
-            EquivalenceClass other = (EquivalenceClass) o;
-            other = other.getMostMerged();
-            return me.equivalenceClass == other.equivalenceClass;
-        }
-        
-        public String toString() {
-            return "EqClass[" + equivalenceClass + ", " + status + "]";
-        }
-        
-    }
-    
-
 }

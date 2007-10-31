@@ -48,4 +48,12 @@ public class Path<X> {
         } while ((point = point.getNext()) != null);
         return result;
     }
+    
+    public String toString() {
+        String objectVal = object == null ? "null" : object.toString();
+        if (next == null) {
+            return objectVal;
+        }
+        return objectVal + " -> " + next.toString();
+    }
 }
