@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.hierarchy.roots.Relation;
 import org.protege.editor.owl.model.hierarchy.roots.TerminalElementFinder;
+import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLAxiomChange;
 import org.semanticweb.owl.model.OWLClass;
@@ -23,6 +24,7 @@ import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.model.OWLOntologyChangeListener;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.RemoveAxiom;
 import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 
@@ -135,7 +137,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
     private void updateImplicitRoots(OWLOntologyChange change) {
         if (change.isAxiomChange()) {
-            ImplicitUpdatesVisitor visitor = new ImplicitUpdatesVisitor();
+            ImplicitUpdatesVisitor visitor = new ImplicitUpdatesVisitor(change instanceof RemoveAxiom);
             Set<OWLClass> oldOrphans = rootFinder.getTerminalElements();
             change.getAxiom().accept(visitor);
             if (visitor.isRootChanged()) {
@@ -266,8 +268,13 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public class ImplicitUpdatesVisitor extends OWLAxiomVisitorAdapter {
-        boolean changed = false;
+    private class ImplicitUpdatesVisitor extends OWLAxiomVisitorAdapter {
+        private boolean changed = false;
+        private boolean remove;
+        
+        public ImplicitUpdatesVisitor(boolean remove) {
+            this.remove = true;
+        }
         
         @Override
         public void visit(OWLSubClassAxiom ax) {
@@ -277,9 +284,10 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                 if (!extractor.getResult().isEmpty()) {
                     changed = true;
                     Set<OWLClass> orphanCandidates = new HashSet<OWLClass>();
-                    orphanCandidates.addAll(rootFinder.getTerminalElements());
                     orphanCandidates.add((OWLClass) ax.getSubClass());
                     orphanCandidates.addAll(extractor.getResult());
+                    pruneDeletedClasses(orphanCandidates);
+                    orphanCandidates.addAll(rootFinder.getTerminalElements());
                     rootFinder.findTerminalElements(orphanCandidates);
                 }
             }
@@ -302,6 +310,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                 description.accept(extractor);
             }
             Set<OWLClass> orphanCandidates = extractor.getResult();
+            pruneDeletedClasses(orphanCandidates);
             orphanCandidates.addAll(rootFinder.getTerminalElements());
             rootFinder.findTerminalElements(orphanCandidates);
         }
@@ -309,17 +318,44 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         @Override
         public void visit(OWLDeclarationAxiom axiom) {
             if (axiom.getEntity() instanceof OWLClass) {
-                rootFinder.appendTerminalElements(Collections.singleton((OWLClass) axiom.getEntity()));
+                OWLClass cls = (OWLClass) axiom.getEntity();
+                if (remove && isDeleted(cls)) {
+                    return;
+                }
+                rootFinder.appendTerminalElements(Collections.singleton(cls));
                 changed = true;
             }
         }
         
-        private void addSuperClassesFromDescription(OWLClass cls, OWLDescription desc) {
-    
-        }
-        
         public boolean isRootChanged() {
             return changed;
+        }
+        
+        private void pruneDeletedClasses(Set<OWLClass> orphanCandidates) {
+            if (remove) {
+                Set<OWLClass> deletedClasses = null;
+                for (OWLClass orphanCandidate : orphanCandidates) {
+                    if (isDeleted(orphanCandidate)) {
+                        if (deletedClasses == null) {
+                            deletedClasses = new HashSet<OWLClass>();
+                        }
+                        deletedClasses.add(orphanCandidate);
+                    }
+                }
+                if (deletedClasses != null) {
+                    orphanCandidates.removeAll(deletedClasses);
+                }
+            }
+        }
+        
+        private boolean isDeleted(OWLClass cls) {
+            for (OWLOntology ontology  : ontologies) {
+                Set<OWLAxiom> axioms = ontology.getReferencingAxioms(cls);
+                if (axioms != null && !axioms.isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
