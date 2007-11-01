@@ -284,6 +284,9 @@ public class MList extends JList {
 
 
     private List<MListButton> getButtons(int index) {
+        if(index < 0) {
+            return Collections.emptyList();
+        }
         Object obj = getModel().getElementAt(index);
         List<MListButton> buttons = getButtons(obj);
         Rectangle rowBounds = getCellBounds(index, index);
@@ -384,7 +387,7 @@ public class MList extends JList {
                                                                                             g2).getBounds().width + BUTTON_MARGIN * 2;
                 }
                 int midLine = rowBounds.y + (BUTTON_DIMENSION + BUTTON_MARGIN) / 2;
-                g2.drawLine(endOfButtonRun, midLine, getWidth() - 2, midLine);
+//                g2.drawLine(endOfButtonRun, midLine, getWidth() - 2, midLine);
             }
         }
         g.setColor(oldColor);
