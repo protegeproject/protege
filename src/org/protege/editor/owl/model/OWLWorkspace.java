@@ -685,12 +685,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public static KeyStroke getCreateSubKeyStroke() {
-        return KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        return KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SLASH, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
     }
 
 
     public static KeyStroke getCreateSibKeyStroke() {
-        return KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        return KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
     }
 
 
