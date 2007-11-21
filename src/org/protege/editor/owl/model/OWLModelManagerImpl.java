@@ -30,11 +30,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
-import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider2;
-import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.*;
 import org.protege.editor.owl.model.hierarchy.cls.InferredOWLClassHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
@@ -111,6 +107,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLDescriptionParser owlDescriptionParser;
 
+    private boolean includeImports = true;
+
     private OWLOntology activeOntology;
 
     private MissingImportHandler missingImportHandler;
@@ -121,7 +119,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
-    private OWLObjectHierarchyProvider<OWLClass> assertedClassHierarchyProvider;
+    private AssertedClassHierarchyProvider2 assertedClassHierarchyProvider;
 
     private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
 
@@ -276,6 +274,17 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
+    public boolean isIncludeImports() {
+        return includeImports;
+    }
+
+
+    public void setIncludeImports(boolean b) {
+        includeImports = b;
+        setActiveOntology(getActiveOntology(), true);
+    }
+
+
     /**
      * A convenience method that loads an ontology from a file
      * The location of the file is specified by the URI argument.
@@ -410,7 +419,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public Set<OWLOntology> getActiveOntologies() {
         // I suppose that the imports closure could be cached, but
         // this makes history tracking easier for now.
-        return Collections.unmodifiableSet(activeOntologies);
+        if(includeImports) {
+            return Collections.unmodifiableSet(activeOntologies);
+        }
+        else {
+            return Collections.singleton(activeOntology);
+        }
+
     }
 
 
@@ -438,7 +453,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
         if (assertedClassHierarchyProvider == null) {
-            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider(manager);
+            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider2(manager);
             assertedClassHierarchyProvider.setOntologies(getActiveOntologies());
         }
         return assertedClassHierarchyProvider;
