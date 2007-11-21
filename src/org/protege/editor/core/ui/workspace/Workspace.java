@@ -6,19 +6,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSplitPane;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
@@ -311,13 +299,13 @@ public abstract class Workspace extends JComponent {
             return view;
         }
         catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            ProtegeApplication.getErrorLog().logError(e);
         }
         catch (IllegalAccessException e) {
-            e.printStackTrace();
+            ProtegeApplication.getErrorLog().logError(e);
         }
         catch (InstantiationException e) {
-            e.printStackTrace();
+            ProtegeApplication.getErrorLog().logError(e);
         }
         return null;
     }
