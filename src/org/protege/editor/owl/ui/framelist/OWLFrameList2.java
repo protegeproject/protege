@@ -1,35 +1,17 @@
 package org.protege.editor.owl.ui.framelist;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Stroke;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
+import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.*;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
+import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
+import org.protege.editor.owl.ui.view.*;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -37,58 +19,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicListUI;
-
-import org.protege.editor.core.ui.list.MList;
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.core.ui.view.View;
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.workspace.Workspace;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
-import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.OWLFrame;
-import org.protege.editor.owl.ui.frame.OWLFrameListener;
-import org.protege.editor.owl.ui.frame.OWLFrameObject;
-import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
-import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.protege.editor.owl.ui.view.ChangeListenerMediator;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.Cuttable;
-import org.protege.editor.owl.ui.view.Deleteable;
-import org.protege.editor.owl.ui.view.ExplanationResultsViewComponent;
-import org.protege.editor.owl.ui.view.Pasteable;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.model.RemoveAxiom;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owl.util.OWLOntologyMerger;
-import org.semanticweb.owl.debugging.OWLDebugger;
-import org.semanticweb.owl.debugging.BlackBoxOWLDebugger;
-import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
-import com.clarkparsia.explanation.BlackBoxExplanation;
-import com.clarkparsia.explanation.ExplanationGenerator;
-import com.clarkparsia.explanation.HSTExplanationGenerator;
-import com.clarkparsia.explanation.SatisfiabilityConverter;
-import com.clarkparsia.explanation.reasoner.FaCTPPReasonerFactory;
-import com.clarkparsia.explanation.reasoner.PelletReasonerFactory;
-import com.clarkparsia.explanation.reasoner.ReasonerFactory;
+import java.awt.*;
+import java.awt.dnd.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Logger;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -266,11 +203,11 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         createPopupMenu();
 
         inferredRowButtons = new ArrayList<MListButton>();
-        inferredRowButtons.add(new ExplainButton(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handleExplain();
-            }
-        }));
+//        inferredRowButtons.add(new ExplainButton(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                handleExplain();
+//            }
+//        }));
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
@@ -583,38 +520,38 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
 
     private void handleExplain() {
-        Object obj = getSelectedValue();
-        if (!(obj instanceof OWLFrameSectionRow)) {
-            return;
-        }
-        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
-        OWLAxiom ax = row.getAxiom();
-        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
-        ax.accept(gen);
-        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-
-        SatisfiabilityConverter satCon = new SatisfiabilityConverter(editorKit.getOWLModelManager().getOWLDataFactory());
-        OWLDescription desc = satCon.convert(ax);
-
-        BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
-        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
-        bbexp.setOntology(ontology);
-        OWLReasoner reasoner = editorKit.getOWLModelManager().getReasoner();
-        bbexp.setReasoner(reasoner);
-        bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
-        
-
-        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
-
-        ExplanationGenerator debugger = hstGen;
-
-
-        Set<Set<OWLAxiom>> axs = debugger.getExplanations(desc);
-        View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
-                                                                false,
-                                                                Workspace.BOTTOM_RESULTS_VIEW);
-        ExplanationResultsViewComponent viewComp = (ExplanationResultsViewComponent) view.getViewComponent();
-        viewComp.setExplanation(ax, axs);
+//        Object obj = getSelectedValue();
+//        if (!(obj instanceof OWLFrameSectionRow)) {
+//            return;
+//        }
+//        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
+//        OWLAxiom ax = row.getAxiom();
+//        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
+//        ax.accept(gen);
+//        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+//
+//        SatisfiabilityConverter satCon = new SatisfiabilityConverter(editorKit.getOWLModelManager().getOWLDataFactory());
+//        OWLDescription desc = satCon.convert(ax);
+//
+//        BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
+//        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
+//        bbexp.setOntology(ontology);
+//        OWLReasoner reasoner = editorKit.getOWLModelManager().getReasoner();
+//        bbexp.setReasoner(reasoner);
+//        bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+//
+//
+//        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
+//
+//        ExplanationGenerator debugger = hstGen;
+//
+//
+//        Set<Set<OWLAxiom>> axs = debugger.getExplanations(desc);
+//        View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
+//                                                                false,
+//                                                                Workspace.BOTTOM_RESULTS_VIEW);
+//        ExplanationResultsViewComponent viewComp = (ExplanationResultsViewComponent) view.getViewComponent();
+//        viewComp.setExplanation(ax, axs);
 //            View view = editorKit.getOWLWorkspace().showPopupView("org.protege.editor.owl.ExplanationResultsView");
 //            ExplanationResultsViewComponent expView = (ExplanationResultsViewComponent) view.getViewComponent();
 //
