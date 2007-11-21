@@ -47,8 +47,6 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
 
     private OWLFrameSection section;
 
-    private int indent;
-
     protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                          R rootObject, A axiom) {
         this.owlEditorKit = owlEditorKit;
@@ -56,7 +54,6 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
         this.ontology = ontology;
         this.rootObject = rootObject;
         this.axiom = axiom;
-        this.indent = 0;
     }
 
 
@@ -86,11 +83,6 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
     public boolean isFixedHeight() {
         return false;
     }
-
-    public int getIndent() {
-        return indent;
-    }
-
 
     final public OWLFrameSectionRowObjectEditor<E> getEditor() {
         OWLFrameSectionRowObjectEditor<E> editor = getObjectEditor();
