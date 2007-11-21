@@ -290,11 +290,12 @@ public class MList extends JList {
         Object obj = getModel().getElementAt(index);
         List<MListButton> buttons = getButtons(obj);
         Rectangle rowBounds = getCellBounds(index, index);
+        
         if (obj instanceof MListSectionHeader) {
             MListSectionHeader section = (MListSectionHeader) obj;
             Rectangle nameBounds = getGraphics().getFontMetrics(SECTION_HEADER_FONT).getStringBounds(section.getName(),
                                                                                                      getGraphics()).getBounds();
-            int x = 2 + nameBounds.width + 2;
+            int x = 7 + nameBounds.width + 2;
             for (MListButton button : buttons) {
                 button.setBounds(new Rectangle(x, rowBounds.y + 2, BUTTON_DIMENSION, BUTTON_DIMENSION));
                 x += BUTTON_DIMENSION;
@@ -339,6 +340,7 @@ public class MList extends JList {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
         Color oldColor = g.getColor();
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -346,6 +348,8 @@ public class MList extends JList {
         Stroke oldStroke = g2.getStroke();
         Rectangle clipBound = g.getClipBounds();
         boolean paintedSomeRows = false;
+        boolean useQuartz = Boolean.getBoolean(System.getProperty("-Dapple.awt.graphics.UseQuartz"));
+        
         for (int index = 0; index < getModel().getSize(); index++) {
             Rectangle rowBounds = getCellBounds(index, index);
             if (!rowBounds.intersects(clipBound)) {
@@ -360,11 +364,13 @@ public class MList extends JList {
             for (MListButton button : buttons) {
                 Rectangle buttonBounds = button.getBounds();
                 if (buttonBounds.intersects(clipBound)) {
-//                    g2.translate(buttonBounds.x, buttonBounds.y);
-//                    Ellipse2D ellipse = new Ellipse2D.Float(0, 0, buttonBounds.width, buttonBounds.height);
                     g2.setColor(getButtonColor(button));
-                    g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
-//                    g2.fill(ellipse);
+                    if (!useQuartz) {
+                        g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width + 1, buttonBounds.height + 1);
+                    }
+                    else {
+                        g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
+                    }
                     g2.setColor(Color.WHITE);
                     Stroke curStroke = g2.getStroke();
                     g2.setStroke(BUTTON_STROKE);
@@ -376,11 +382,17 @@ public class MList extends JList {
             }
             if (getModel().getElementAt(index) instanceof MListSectionHeader) {
                 MListSectionHeader header = (MListSectionHeader) getModel().getElementAt(index);
-                g2.setColor(Color.GRAY);
+                if (isSelectedIndex(index)) {
+                    g2.setColor(getSelectionForeground());
+                }
+                else {
+                    g2.setColor(Color.GRAY);
+                }
+                int indent = 4;
                 int baseLine = rowBounds.y + (BUTTON_DIMENSION + BUTTON_MARGIN - g.getFontMetrics().getHeight()) / 2 + g.getFontMetrics().getAscent();
                 Font oldFont = g2.getFont();
                 g2.setFont(SECTION_HEADER_FONT);
-                g2.drawString(header.getName(), 1, baseLine);
+                g2.drawString(header.getName(), 1 + indent, baseLine);
                 g2.setFont(oldFont);
                 if (endOfButtonRun == -1) {
                     endOfButtonRun = g2.getFontMetrics(SECTION_HEADER_FONT).getStringBounds(header.getName(),
@@ -398,7 +410,7 @@ public class MList extends JList {
     private Color getButtonColor(MListButton button) {
         Point pt = getMousePosition();
         if (pt == null) {
-            return Color.LIGHT_GRAY;
+            return button.getBackground();
         }
         if (button.getBounds().contains(pt)) {
             if (mouseDown) {
@@ -408,7 +420,7 @@ public class MList extends JList {
                 return button.getRollOverColor();
             }
         }
-        return Color.LIGHT_GRAY;
+        return button.getBackground();
     }
 
 //    public static class TestItem implements MListItem {
