@@ -96,7 +96,16 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
                         }
                     }
                     if(add) {
-                        addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
+                        if(ax instanceof OWLSubClassAxiom) {
+                            OWLSubClassAxiom subClsAx = (OWLSubClassAxiom) ax;
+                            if(!subClsAx.getSuperClass().isOWLThing()) {
+                                addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
+                            }
+                        }
+                        else {
+                            addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
+                        }
+
                     }
                 }
             }
