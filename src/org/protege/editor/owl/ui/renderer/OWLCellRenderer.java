@@ -30,6 +30,7 @@ import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -142,7 +143,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<OWLObject>();
-        setFontSize(owlEditorKit.getWorkspace().getFontSize());
+        setFontSize(10);
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
         renderingComponent.setOpaque(false);
         iconLabel = new JLabel("");
@@ -345,14 +346,19 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         tree.setToolTipText(value != null ? value.toString() : "");
         Component c = prepareRenderer(value, selected, hasFocus);
-        textPane.setOpaque(true);
-        if (trasparent) {
-            textPane.setOpaque(false);
-        }
+        adjustTransparency();
         reset();
         return c;
     }
 
+
+    private void adjustTransparency() {
+        textPane.setOpaque(true);
+        renderingComponent.setOpaque(true);
+        if (trasparent) {
+            textPane.setOpaque(false);
+        }
+    }
 
     private boolean gettingCellBounds;
 
@@ -375,11 +381,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         setupLinkedObjectComponent(list, cellBounds);
         Component c = prepareRenderer(value, isSelected, cellHasFocus);
-        textPane.setOpaque(true);
-        renderingComponent.setOpaque(true);
-        if (trasparent) {
-            textPane.setOpaque(false);
-        }
+        adjustTransparency();
         reset();
         return c;
     }
@@ -442,6 +444,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private Component prepareRenderer(Object value, boolean isSelected, boolean hasFocus) {
+        renderingComponent.setBorder(null);
         if (value instanceof OWLEntity) {
             OWLEntity entity = (OWLEntity) value;
             OWLDeclarationAxiom declAx = getOWLModelManager().getOWLDataFactory().getOWLDeclarationAxiom(entity);
@@ -549,8 +552,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style commentedOutStyle;
 
-    private Style inferredInformationOutOfDate;
-
 
     private void prepareStyles() {
         StyledDocument doc = textPane.getStyledDocument();
@@ -598,8 +599,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         StyleConstants.setForeground(commentedOutStyle, Color.GRAY);
         StyleConstants.setItalic(commentedOutStyle, true);
 
-        inferredInformationOutOfDate = doc.addStyle("INFERRED_INFO_OUT_OF_DATE", null);
-        StyleConstants.setStrikeThrough(inferredInformationOutOfDate, true);
     }
 
 
@@ -634,9 +633,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         else if (inferred) {
 
         }
-        if (strikeThrough) {
-            doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
-        }
+//        if (strikeThrough) {
+//            doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
+//        }
 
         if (ontology != null) {
             if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(

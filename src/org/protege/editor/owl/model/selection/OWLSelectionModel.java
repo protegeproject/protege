@@ -1,10 +1,6 @@
 package org.protege.editor.owl.model.selection;
 
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -55,6 +51,11 @@ public interface OWLSelectionModel {
      */
     public OWLIndividual getLastSelectedIndividual();
 
+    /**
+     * Gets the last selected entity.
+     * @return The <code>OWLEntity</code> that was last selected.
+     */
+    public OWLEntity getSelectedEntity();
 
     /**
      * If any of the last selected entities are equal to
@@ -71,11 +72,10 @@ public interface OWLSelectionModel {
     public void setSelectedEntity(OWLEntity entity);
 
 
-    /**
-     * Gets the last selected entity.
-     * @return The <code>OWLEntity</code> that was last selected.
-     */
-    public OWLEntity getSelectedEntity();
+    public void setSelectedObject(OWLObject object);
+
+    public OWLObject getSelectedObject();
+
 
 
     /**

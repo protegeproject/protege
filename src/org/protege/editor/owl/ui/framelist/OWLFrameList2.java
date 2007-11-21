@@ -31,17 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -73,8 +63,6 @@ import org.protege.editor.owl.ui.view.Deleteable;
 import org.protege.editor.owl.ui.view.ExplanationResultsViewComponent;
 import org.protege.editor.owl.ui.view.Pasteable;
 import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.debugging.BlackBoxOWLDebugger;
-import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
@@ -91,6 +79,16 @@ import org.semanticweb.owl.model.OWLSubClassAxiom;
 import org.semanticweb.owl.model.RemoveAxiom;
 import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owl.util.OWLOntologyMerger;
+import org.semanticweb.owl.debugging.OWLDebugger;
+import org.semanticweb.owl.debugging.BlackBoxOWLDebugger;
+import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
+import com.clarkparsia.explanation.BlackBoxExplanation;
+import com.clarkparsia.explanation.ExplanationGenerator;
+import com.clarkparsia.explanation.HSTExplanationGenerator;
+import com.clarkparsia.explanation.SatisfiabilityConverter;
+import com.clarkparsia.explanation.reasoner.FaCTPPReasonerFactory;
+import com.clarkparsia.explanation.reasoner.PelletReasonerFactory;
+import com.clarkparsia.explanation.reasoner.ReasonerFactory;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -208,6 +206,8 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     private OWLFrameListRenderer cellRenderer;
 
+    private ExplanationHandler explanationHandler;
+
 
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
         this.editorKit = editorKit;
@@ -281,11 +281,31 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         });
 
         setUI(new OWLFrameListUI());
+
+
+        explanationHandler = new ExplanationHandler() {
+
+            public void handleExplain() {
+                OWLFrameList2.this.handleExplain();
+            }
+        };
     }
+
+
+    public void setExplanationHandler(ExplanationHandler handler) {
+        this.explanationHandler = handler;
+    }
+
+
+    public OWLFrame<R> getFrame() {
+        return frame;
+    }
+
 
     public void updateUI() {
 
     }
+
 
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected,
                                           boolean cellHasFocus) {
@@ -295,17 +315,37 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 return inferredBorder;
             }
         }
-        return super.createListItemBorder(list, value, index, isSelected, cellHasFocus);
+        Border border = super.createListItemBorder(list, value, index, isSelected, cellHasFocus);
+//
+//            if(value instanceof AbstractOWLFrameSectionRow) {
+//                int indent = ((AbstractOWLFrameSectionRow) value).getIndent();
+//                indent = index % 2 * 50;
+//                if(indent > 0) {
+//                    return BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,
+//                                                                                              indent,
+//                                                                                              0, 0, list.getBackground()),
+//                                                              border);
+//                }
+//            }
+        return border;
     }
 
 
     protected List<MListButton> getButtons(Object value) {
+        List<MListButton> buttons = super.getButtons(value);
         if (value instanceof OWLFrameSectionRow) {
             if (((OWLFrameSectionRow) value).isInferred()) {
-                return inferredRowButtons;
+                buttons = inferredRowButtons;
             }
         }
-        return super.getButtons(value);
+        if(value instanceof AbstractOWLFrameSectionRow) {
+            List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
+            if(!additional.isEmpty()) {
+                buttons = new ArrayList<MListButton>(buttons);
+                buttons.addAll(additional);
+            }
+        }
+        return buttons;
     }
 
 
@@ -337,9 +377,11 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         addToPopupMenu(new MoveAxiomsToOntologyAction());
     }
 
+
     public void setWrap(boolean b) {
         cellRenderer.setWrap(b);
     }
+
 
     private void showPopupMenu(MouseEvent e) {
         for (OWLFrameListPopupMenuAction action : actions) {
@@ -541,40 +583,42 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
 
     private void handleExplain() {
-        try {
-            Object obj = getSelectedValue();
-            if (!(obj instanceof OWLFrameSectionRow)) {
-                return;
-            }
-            OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
-            OWLAxiom ax = row.getAxiom();
-            DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
-            ax.accept(gen);
-            OWLDescription desc = gen.getDebuggerDescription();
-            if (desc == null) {
-                System.out.println("Can't currently handle explanation for " + ax);
-                return;
-            }
-            OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-            OWLReasoner r = editorKit.getOWLModelManager().getOWLReasonerManager().createReasoner(man);
-            OWLOntologyMerger merger = new OWLOntologyMerger(editorKit.getOWLModelManager().getOWLOntologyManager(),
-                                                             true);
-            BlackBoxOWLDebugger debugger = new BlackBoxOWLDebugger(man,
-                                                                   merger.createMergedOntology(man,
-                                                                                               URI.create(
-                                                                                                       "http://semanticweb.org/ontology" + System.nanoTime())),
-                                                                   r);
-            Set<Set<OWLAxiom>> axs = debugger.getAllSOSForIncosistentClass(desc);
-            View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
-                                                                    false,
-                                                                    Workspace.BOTTOM_RESULTS_VIEW);
-            ExplanationResultsViewComponent expView = (ExplanationResultsViewComponent) view.getViewComponent();
+        Object obj = getSelectedValue();
+        if (!(obj instanceof OWLFrameSectionRow)) {
+            return;
+        }
+        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
+        OWLAxiom ax = row.getAxiom();
+        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
+        ax.accept(gen);
+        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
 
-            expView.setExplanation(ax, axs);
-        }
-        catch (OWLException e) {
-            throw new OWLRuntimeException(e);
-        }
+        SatisfiabilityConverter satCon = new SatisfiabilityConverter(editorKit.getOWLModelManager().getOWLDataFactory());
+        OWLDescription desc = satCon.convert(ax);
+
+        BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
+        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
+        bbexp.setOntology(ontology);
+        OWLReasoner reasoner = editorKit.getOWLModelManager().getReasoner();
+        bbexp.setReasoner(reasoner);
+        bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+        
+
+        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
+
+        ExplanationGenerator debugger = hstGen;
+
+
+        Set<Set<OWLAxiom>> axs = debugger.getExplanations(desc);
+        View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
+                                                                false,
+                                                                Workspace.BOTTOM_RESULTS_VIEW);
+        ExplanationResultsViewComponent viewComp = (ExplanationResultsViewComponent) view.getViewComponent();
+        viewComp.setExplanation(ax, axs);
+//            View view = editorKit.getOWLWorkspace().showPopupView("org.protege.editor.owl.ExplanationResultsView");
+//            ExplanationResultsViewComponent expView = (ExplanationResultsViewComponent) view.getViewComponent();
+//
+//            expView.setExplanation(ax, axs);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -923,7 +967,10 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
 
         public void actionPerformed(ActionEvent e) {
-            getOWLModelManager().setActiveOntology(getSelectedRowOntology());
+            OWLOntology ont = getSelectedRowOntology();
+            if (ont != null) {
+                getOWLModelManager().setActiveOntology(ont);
+            }
         }
     }
 
@@ -1107,6 +1154,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
          */
         private Rectangle getCellBounds(JList list, int index) {
 
+            if (index < 0) {
+                return new Rectangle();
+            }
             maybeUpdateLayoutState();
 
             if (index >= cumulativeCellHeight.length) {

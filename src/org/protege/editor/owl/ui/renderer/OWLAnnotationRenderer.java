@@ -34,13 +34,15 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
 
     private OWLEditorKit owlEditorKit;
 
+    private static final Color LABEL_COLOR = Color.BLUE.darker();
+
 
     public OWLAnnotationRenderer(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
         annotationURILabel = new JLabel();
-        annotationURILabel.setForeground(Color.BLUE.darker());
+        annotationURILabel.setForeground(LABEL_COLOR);
         annotationContentArea = new JTextArea();
         annotationContentArea.setFont(new Font("lucida grande", Font.PLAIN, 12));
         annotationContentArea.setLineWrap(true);
@@ -71,6 +73,14 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
             String val = owlEditorKit.getOWLModelManager().getOWLObjectRenderer().render(anno.getAnnotationValue(),
                                                                                          owlEditorKit.getOWLModelManager().getOWLEntityRenderer());
             annotationContentArea.setText(val);
+            if (isSelected) {
+                annotationContentArea.setForeground(list.getSelectionForeground());
+                annotationURILabel.setForeground(list.getSelectionForeground());
+            }
+            else {
+                annotationContentArea.setForeground(list.getForeground());
+                annotationURILabel.setForeground(LABEL_COLOR);
+            }
             iconLabel.setVisible(anno.getAnnotationValue() instanceof OWLEntity);
         }
         else {

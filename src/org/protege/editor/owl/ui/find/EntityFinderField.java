@@ -54,6 +54,7 @@ public class EntityFinderField extends JTextField {
 
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
         super(20);
+        putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         this.editorKit = editorKit;
         addKeyListener(new KeyAdapter() {

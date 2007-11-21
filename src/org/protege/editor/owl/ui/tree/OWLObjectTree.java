@@ -263,7 +263,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
     }
 
-
     private void handleExpansionEvent(TreeExpansionEvent event) {
         if (menuShortCutKeyDown) {
             // Recursively expand
