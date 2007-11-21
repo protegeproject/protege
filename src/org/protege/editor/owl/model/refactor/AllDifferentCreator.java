@@ -2,9 +2,10 @@ package org.protege.editor.owl.model.refactor;
 
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.ArrayList;
 
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -18,28 +19,28 @@ import org.semanticweb.owl.model.OWLOntologyChange;
  */
 public class AllDifferentCreator {
 
+    private OWLOntology ont;
+
     private Set<OWLOntology> ontologies;
 
+    private OWLDataFactory dataFactory;
 
-    public AllDifferentCreator(Set<OWLOntology> ontologies) {
+    public AllDifferentCreator(OWLDataFactory dataFactory, OWLOntology ont, Set<OWLOntology> ontologies) {
+        this.ont =  ont;
         this.ontologies = ontologies;
+        this.dataFactory = dataFactory;
     }
 
 
     public List<OWLOntologyChange> getChanges() {
-        throw new RuntimeException("NOT IMPLEMENTED");
-//        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-//        for(OWLOntology ont : ontologies) {
-//            for(OWLIndividualAxiom axiom : ont.getIndividualAxioms()) {
-//                if(axiom instanceof OWLDifferentIndividualsAxiom) {
-//                    changes.add(new RemoveIndividualAxiom(ont, axiom, null));
-//                }
-//            }
-//            changes.add(new AddIndividualAxiom(ont,
-//                                               ont.getOWLDataFactory().getOWLDifferentIndividualsAxiom(
-//                                                       ont.getIndividuals()
-//                                               ), null));
-//        }
-//        return changes;
+        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
+        for(OWLOntology ont : ontologies) {
+            individuals.addAll(ont.getReferencedIndividuals());
+        }
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        if(!individuals.isEmpty()) {
+            changes.add(new AddAxiom(ont, dataFactory.getOWLDifferentIndividualsAxiom(individuals)));
+        }
+        return changes;
     }
 }
