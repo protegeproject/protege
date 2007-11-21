@@ -252,19 +252,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 return inferredBorder;
             }
         }
-        Border border = super.createListItemBorder(list, value, index, isSelected, cellHasFocus);
-//
-//            if(value instanceof AbstractOWLFrameSectionRow) {
-//                int indent = ((AbstractOWLFrameSectionRow) value).getIndent();
-//                indent = index % 2 * 50;
-//                if(indent > 0) {
-//                    return BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,
-//                                                                                              indent,
-//                                                                                              0, 0, list.getBackground()),
-//                                                              border);
-//                }
-//            }
-        return border;
+        return super.createListItemBorder(list, value, index, isSelected, cellHasFocus);
     }
 
 
