@@ -156,9 +156,9 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    <extension id="SWRLRules" 
+    <extension id="Rules" 
                 point="org.protege.editor.core.application.ViewComponent">
-        <label value="SWRL Rules"/>
+        <label value="Rules"/>
         <class value="org.protege.editor.owl.ui.view.SWRLRulesViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
@@ -852,7 +852,7 @@
         <label value="Explanation"/>
         <class value="org.protege.editor.owl.ui.view.ExplanationResultsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.individualcategory"/>
+        <category value="@org.protege.ontologycategory"/>
     </extension>
 
 
@@ -909,14 +909,29 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
-    <extension id="SelectedEntityView2"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Selected entity 2"/>
-        <class value="org.protege.editor.owl.ui.view.OWLEntityViewComponent"/>
-        <headerColor value="565656"/>
+    <extension id="NavigationView"
+                point="org.protege.editor.core.application.ViewComponent">
+        <label value="Navigation view"/>
+        <class value="org.protege.editor.owl.ui.view.ObjectSelectorViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
 
+
+    <extension id="SelectedObjectView"
+                point="org.protege.editor.core.application.ViewComponent">
+        <label value="Navigation subject"/>
+        <class value="org.protege.editor.owl.ui.view.SelectedObjectViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
+    <extension
+         id="TreePreferencesPanel"
+         point="org.protege.editor.core.application.preferencespanel">
+        <label value="Tree preferences"/>
+        <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
+    </extension>
 
 </plugin>
