@@ -10,6 +10,7 @@ import java.util.Set;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.core.ui.list.MListButton;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLDataFactory;
@@ -46,6 +47,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
 
     private OWLFrameSection section;
 
+    private int indent;
 
     protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                          R rootObject, A axiom) {
@@ -54,6 +56,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
         this.ontology = ontology;
         this.rootObject = rootObject;
         this.axiom = axiom;
+        this.indent = 0;
     }
 
 
@@ -82,6 +85,10 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
 
     public boolean isFixedHeight() {
         return false;
+    }
+
+    public int getIndent() {
+        return indent;
     }
 
 
@@ -277,5 +284,9 @@ public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends 
 
     public boolean handleDelete() {
         return false;
+    }
+
+    public List<MListButton> getAdditionalButtons() {
+        return Collections.emptyList();
     }
 }
