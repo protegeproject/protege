@@ -1,24 +1,21 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.semanticweb.owl.metrics.*;
 import org.semanticweb.owl.model.*;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.util.ComponentFactory;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.awt.event.HierarchyListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -47,15 +44,29 @@ import java.util.List;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 30-Jul-2007<br><br>
+ * Date: 29-Oct-2007<br><br>
  */
-public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
+public class MetricsPanel extends JPanel {
 
     private Map<String, OWLMetricManager> metricManagerMap;
 
     private Map<OWLMetricManager, MetricsTableModel> tableModelMap;
 
     private boolean update;
+
+    private OWLEditorKit owlEditorKit;
+
+
+    public MetricsPanel(OWLEditorKit owlEditorKit) {
+        this.owlEditorKit = owlEditorKit;
+        try {
+            initialiseOWLView();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private OWLModelManagerListener listener = new OWLModelManagerListener() {
 
@@ -103,6 +114,11 @@ public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
         getOWLModelManager().addListener(listener);
         getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
         addHierarchyListener(hierarchyListener);
+        for(OWLMetricManager man : metricManagerMap.values()) {
+            for(OWLMetric m : man.getMetrics()) {
+                m.setImportsClosureUsed(true);
+            }
+        }
     }
 
 
@@ -137,45 +153,16 @@ public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
             table.getColumnModel().setColumnMargin(2);
-            final JPanel tablePanel = new JPanel(new BorderLayout());
+            JPanel tablePanel = new JPanel(new BorderLayout());
             tablePanel.add(table);
             tablePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 14, 2),
                                                                     ComponentFactory.createTitledBorder(metricsSet)));
             table.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-            tablePanel.addMouseListener(new MouseAdapter() {
-
-                public void mousePressed(MouseEvent e) {
-                    if(e.isPopupTrigger()) {
-                        showMenu(e);
-                    }
-                }
-
-
-                public void mouseReleased(MouseEvent e) {
-                    if(e.isPopupTrigger()) {
-                        showMenu(e);
-                    }
-                }
-
-                private void showMenu(MouseEvent e) {
-                    JPopupMenu menu = new JPopupMenu();
-                    menu.add(new AbstractAction("Copy metrics to clipboard") {
-
-                        public void actionPerformed(ActionEvent e) {
-                            exportCSV();
-                        }
-                    });
-                    menu.show(tablePanel, e.getX(), e.getY());
-                }
-            });
             box.add(tablePanel);
-
         }
         JScrollPane sp = new JScrollPane(box);
         sp.setOpaque(false);
         add(sp);
-
     }
 
 
@@ -279,20 +266,13 @@ public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
     }
 
 
-    protected void updateView(OWLOntology activeOntology) throws Exception {
+    public void updateView(OWLOntology activeOntology) throws Exception {
         for (OWLMetricManager man : metricManagerMap.values()) {
             man.setOntology(activeOntology);
         }
     }
 
-    private void exportCSV() {
-        StringBuilder sb = new StringBuilder();
-        for(OWLMetricManager man : metricManagerMap.values()) {
-            sb.append(man.toString());
-        }
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(new StringSelection(sb.toString()), null); 
+    private OWLModelManager getOWLModelManager() {
+        return owlEditorKit.getOWLModelManager();
     }
-
-
 }

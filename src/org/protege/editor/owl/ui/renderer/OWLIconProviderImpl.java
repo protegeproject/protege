@@ -23,6 +23,8 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     private Icon primitiveClassIcon = OWLIcons.getIcon("class.primitive.png");
 
+    private Icon objectPropertyIcon = OWLIcons.getIcon("property.object.png");
+
     private OWLModelManager owlModelManager;
 
     private int size = 16;
@@ -88,6 +90,41 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLDifferentIndividualsAxiom owlDifferentIndividualsAxiom) {
+    }
+
+
+    public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLInverseObjectPropertiesAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLObjectPropertyDomainAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLObjectPropertyRangeAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLObjectSubPropertyAxiom axiom) {
+        icon = objectPropertyIcon;
     }
 
 
