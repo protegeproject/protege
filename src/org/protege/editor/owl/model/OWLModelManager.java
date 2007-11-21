@@ -197,6 +197,10 @@ public interface OWLModelManager extends ModelManager {
 
     void setActiveOntology(OWLOntology activeOntology);
 
+    void setIncludeImports(boolean b);
+
+    boolean isIncludeImports();
+
     ////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Change
