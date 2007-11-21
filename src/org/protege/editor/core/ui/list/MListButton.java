@@ -66,6 +66,9 @@ public abstract class MListButton {
         return bounds;
     }
 
+    public Color getBackground() {
+        return Color.LIGHT_GRAY;
+    }
 
     /**
      * Paints the button content. For convenience, the graphics origin will be
