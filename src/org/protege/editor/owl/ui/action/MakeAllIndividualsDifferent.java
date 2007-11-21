@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.refactor.AllDifferentCreator;
+import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -18,11 +19,9 @@ import org.protege.editor.owl.model.refactor.AllDifferentCreator;
  */
 public class MakeAllIndividualsDifferent extends ProtegeOWLAction {
 
-    private static final Logger logger = Logger.getLogger(MakeAllIndividualsDifferent.class);
-
-
     public void actionPerformed(ActionEvent e) {
-        AllDifferentCreator creator = new AllDifferentCreator(Collections.singleton(getOWLModelManager().getActiveOntology()));
+        OWLOntology ont = getOWLModelManager().getActiveOntology();
+        AllDifferentCreator creator = new AllDifferentCreator(getOWLModelManager().getOWLDataFactory(), ont, Collections.singleton(ont));
         getOWLModelManager().applyChanges(creator.getChanges());
     }
 
