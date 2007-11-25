@@ -85,19 +85,26 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         }), "B", "A");
         changeListenerMediator = new ChangeListenerMediator();
         individualsInList = new TreeSet<OWLIndividual>(new OWLEntityComparator<OWLIndividual>(getOWLModelManager()));
-        // Initial fill
-        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            individualsInList.addAll(ont.getReferencedIndividuals());
-        }
+        refill();
+
         modelManagerListener = new OWLModelManagerListener() {
 
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    reset();
+                    refill();
                 }
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
+    }
+
+
+    private void refill() {
+        // Initial fill
+        individualsInList.clear();
+        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+            individualsInList.addAll(ont.getReferencedIndividuals());
+        }
         reset();
     }
 
