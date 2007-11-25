@@ -62,6 +62,7 @@ public class ExplanationResultsViewComponent extends AbstractOWLViewComponent {
 
 
     protected void disposeOWLView() {
+        frameList.dispose();
     }
 
 
