@@ -119,7 +119,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
-    private AssertedClassHierarchyProvider2 assertedClassHierarchyProvider;
+    private AssertedClassHierarchyProvider assertedClassHierarchyProvider;
 
     private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
 
@@ -453,7 +453,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
         if (assertedClassHierarchyProvider == null) {
-            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider2(manager);
+            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider(manager);
             assertedClassHierarchyProvider.setOntologies(getActiveOntologies());
         }
         return assertedClassHierarchyProvider;
