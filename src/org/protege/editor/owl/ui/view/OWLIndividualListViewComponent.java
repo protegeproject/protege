@@ -125,8 +125,10 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     protected OWLIndividual updateView(OWLIndividual selelectedIndividual) {
-        list.setSelectedValue(selelectedIndividual, true);
-        return selelectedIndividual;
+        if (!isPinned()) {
+            list.setSelectedValue(selelectedIndividual, true);
+        }
+        return (OWLIndividual) list.getSelectedValue();
     }
 
 
@@ -196,7 +198,10 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         getOWLModelManager().applyChanges(changes);
         OWLIndividual ind = set.getOWLEntity();
         if (ind != null) {
-            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(ind);
+            list.setSelectedValue(ind,  true);
+            if (!isPinned()) {
+                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(ind);
+            }
         }
     }
 
