@@ -53,6 +53,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
     private boolean reload;
 
+    private OWLReasonerExceptionHandler exceptionHandler;
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -61,6 +62,17 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
         installFactories();
         owlModelManager.addListener(this);
         reload = true;
+        exceptionHandler = new DefaultOWLReasonerExceptionHandler();
+    }
+
+
+    public void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler) {
+        if(handler != null) {
+            exceptionHandler = handler;
+        }
+        else {
+            exceptionHandler = new DefaultOWLReasonerExceptionHandler();
+        }
     }
 
 
@@ -103,6 +115,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
     public String getCurrentReasonerName() {
         return currentReasonerFactory.getReasonerName();
+    }
+
+
+    public ProtegeOWLReasonerFactory getCurrentReasonerFactory() {
+        return currentReasonerFactory;
     }
 
 
@@ -222,8 +239,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     currentReasoner = r;
                     fireReclassified();
                 }
-                catch (OWLReasonerException e) {
-                    throw new OWLRuntimeException(e);
+                catch (Exception e) {
+                    exceptionHandler.handle(new ReasonerException(e));
                 }
             }
         });
