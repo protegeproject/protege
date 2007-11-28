@@ -891,6 +891,14 @@
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
+
+    <extension
+         id="io.rdfxmlwriter.XMLWriterPreferences"
+         point="org.protege.editor.core.application.preferencespanel">
+        <label value="XML Writer"/>
+        <class value="org.protege.editor.owl.ui.preferences.XMLWriterPreferencesPanel"/>
+    </extension>
+
     <!-- Finder prefs -->
 
     <extension id="ui.find.prefs"
@@ -916,8 +924,6 @@
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
-
-
 
     <extension id="SelectedObjectView"
                 point="org.protege.editor.core.application.ViewComponent">
