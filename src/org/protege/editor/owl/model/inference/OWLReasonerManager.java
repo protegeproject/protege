@@ -35,6 +35,8 @@ public interface OWLReasonerManager {
      */
     public String getCurrentReasonerFactoryId();
 
+    public ProtegeOWLReasonerFactory getCurrentReasonerFactory();
+
     public String getCurrentReasonerName();
 
 
@@ -63,4 +65,7 @@ public interface OWLReasonerManager {
 
 
     public void classifyAsynchronously();
+
+    public void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
+    
 }
