@@ -60,7 +60,7 @@ public class OWLClassAssertionAxiomIndividualSection extends AbstractOWLFrameSec
 
     protected void refillInferred() {
         try {
-            for (OWLIndividual ind : getOWLModelManager().getReasoner().getIndividuals(getRootObject(), true)) {
+            for (OWLIndividual ind : getOWLModelManager().getReasoner().getIndividuals(getRootObject(), false)) {
                 if (!added.contains(ind)) {
                     addRow(new OWLClassAssertionAxiomIndividualSectionRow(getOWLEditorKit(),
                                                                           this,
