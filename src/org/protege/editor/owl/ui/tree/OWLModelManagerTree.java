@@ -24,6 +24,8 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
 
@@ -37,7 +39,7 @@ import org.semanticweb.owl.model.OWLObject;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
+public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> implements RefreshableComponent {
 
     private static final Logger logger = Logger.getLogger(OWLModelManagerTree.class);
 
@@ -67,6 +69,11 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
             }
         });
         autoExpandTree();
+    }
+
+
+    public void refreshComponent() {
+        reload();
     }
 
 
@@ -196,72 +203,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> {
 
 
     protected void handlePopupMenuInvoked(TreePath path, Point pt) {
-//        try {
-//            OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
-//            OWLEntity owlEntity = node.getOWLObject();
-//            final JMenu menu = new JMenu("Switch to defining ontology");
-//            for(final OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-//                if (!ont.equals(getOWLModelManager().getActiveOntology())) {
-//                    owlEntity.accept(new OWLEntityVisitor() {
-//
-//                        private void setupMenuItem(final OWLOntology ont) {
-//                            menu.add(new AbstractAction(ont.getURI().toString()) {
-//                                public void actionPerformed(ActionEvent e) {
-//                                    getOWLModelManager().setActiveOntology(ont);
-//                                }
-//                            });
-//                        }
-//
-//                        public void visit(OWLClass cls) {
-//                            if(!ont.getAxioms(cls).isEmpty()) {
-//                                setupMenuItem(ont);
-//                            }
-//                        }
-//
-//
-//                        public void visit(OWLObjectProperty property) {
-//                            if(!ont.getAxioms(property).isEmpty()) {
-//                                setupMenuItem(ont);
-//                            }
-//                        }
-//
-//
-//                        public void visit(OWLDataProperty property) {
-//                            if(!ont.getAxioms(property).isEmpty()) {
-//                                setupMenuItem(ont);
-//                            }
-//                        }
-//
-//
-//                        public void visit(OWLAnonymousIndividual individual) {
-////                            if(!ont.getAxioms(individual).isEmpty()) {
-////                                setupMenuItem(ont);
-////                            }
-//                        }
-//
-//
-//                        public void visit(OWLIndividual individual) {
-//                            if(!ont.getAxioms(individual).isEmpty()) {
-//                                setupMenuItem(ont);
-//                            }
-//                        }
-//
-//
-//                        public void visit(OWLDataType dataType) {
-//
-//                        }
-//                    });
-//                }
-//            }
-//            if (menu.getSubElements().length > 0) {
-//                JPopupMenu popupMenu = new JPopupMenu();
-//                popupMenu.add(menu);
-//                popupMenu.show(this, pt.x, pt.y);
-//            }
-//        }
-//        catch (OWLException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
 

@@ -118,6 +118,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean wrap = true;
 
+    private boolean highlightUnsatisfiableClasses = true;
+
+    private boolean highlightUnsatisfiableProperties = true;
+
+    private Set<OWLEntity> crossedOutEntities;
+
+    private boolean focusedEntityIsSelectedEntity;
+
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
@@ -165,6 +173,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 logger.error(e);
             }
         }
+        crossedOutEntities = new HashSet<OWLEntity>();
         prepareStyles();
     }
 
@@ -184,6 +193,21 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    public void setHighlightUnsatisfiableClasses(boolean highlightUnsatisfiableClasses) {
+        this.highlightUnsatisfiableClasses = highlightUnsatisfiableClasses;
+    }
+
+
+    public void setHighlightUnsatisfiableProperties(boolean highlightUnsatisfiableProperties) {
+        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
+    }
+
+
+    public void setFocusedEntityIsSelectedEntity(boolean focusedEntityIsSelectedEntity) {
+        this.focusedEntityIsSelectedEntity = focusedEntityIsSelectedEntity;
+    }
+
+
     public void setOntology(OWLOntology ont) {
         forceReadOnlyRendering = false;
         this.ontology = ont;
@@ -194,6 +218,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         iconObject = object;
     }
 
+    public void setCrossedOutEntities(Set<OWLEntity> entities) {
+        crossedOutEntities.addAll(entities);
+    }
 
     public void reset() {
         iconObject = null;
@@ -204,6 +231,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         commentedOut = false;
         inferred = false;
         strikeThrough = false;
+        highlightUnsatisfiableClasses = true;
+        highlightUnsatisfiableProperties = true;
+        crossedOutEntities.clear();
+        focusedEntityIsSelectedEntity = false;
 //        highlightKeywords = true;
     }
 
@@ -262,7 +293,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private void setFontSize(int fontSize) {
-        plainFont = new Font("lucida grande", Font.PLAIN, fontSize);
+        plainFont = new Font("symbol", Font.PLAIN, fontSize);
+//        plainFont = new Font("lucida grande", Font.PLAIN, fontSize);
         boldFont = plainFont.deriveFont(Font.BOLD);
     }
 
@@ -552,6 +584,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style commentedOutStyle;
 
+    private Style strikeOutStyle;
+
 
     private void prepareStyles() {
         StyledDocument doc = textPane.getStyledDocument();
@@ -598,6 +632,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         commentedOutStyle = doc.addStyle("COMMENTED_OUT_STYLE", null);
         StyleConstants.setForeground(commentedOutStyle, Color.GRAY);
         StyleConstants.setItalic(commentedOutStyle, true);
+
+        strikeOutStyle = doc.addStyle("STRIKE_OUT", null);
+        StyleConstants.setStrikeThrough(strikeOutStyle, true);
+        StyleConstants.setBold(strikeOutStyle, false);
 
     }
 
@@ -711,7 +749,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                         // If it is a class then paint the word red if the class
                         // is inconsistent
                         try {
-                            if (!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) entity)) {
+                            if (highlightUnsatisfiableClasses && !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) entity)) {
                                 // Paint red because of inconsistency
                                 doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                                 styleSet = true;
@@ -720,6 +758,29 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                         catch (OWLReasonerException e) {
                             e.printStackTrace();
 //                            throw new OWLRuntimeException(e);
+                        }
+                    }
+                    else if(highlightUnsatisfiableProperties && entity instanceof OWLObjectProperty) {
+                        try {
+                            OWLObjectProperty prop = (OWLObjectProperty) entity;
+                            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
+                            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                            }
+                        }
+                        catch (OWLReasonerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(crossedOutEntities.contains(entity)) {
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, strikeOutStyle, false);
+                    }
+                    if(focusedEntityIsSelectedEntity) {
+                        OWLEntity selEnt = owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
+                        if(selEnt != null) {
+                            if(entity.equals(selEnt)) {
+                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
+                            }
                         }
                     }
                     // We did have a check here for changed entities

@@ -7,6 +7,7 @@ import javax.swing.JTree;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 
 
 /**
@@ -20,8 +21,12 @@ import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
  */
 public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
 
+    private OWLCellRendererSimple delegate;
+
+
     public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
+        delegate = new OWLCellRendererSimple(owlEditorKit);
     }
 
 
@@ -29,12 +34,13 @@ public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
                                                   boolean leaf, int row, boolean hasFocus) {
         OWLObjectTreeNode node = (OWLObjectTreeNode) value;
         setEquivalentObjects(node.getEquivalentObjects());
-        return (JComponent) super.getTreeCellRendererComponent(tree,
-                                                               node.getOWLObject(),
-                                                               selected,
-                                                               expanded,
-                                                               leaf,
-                                                               row,
-                                                               hasFocus);
+        return delegate.getTreeCellRendererComponent(tree, node.getOWLObject(), selected, expanded, leaf, row, hasFocus);
+//        return (JComponent) super.getTreeCellRendererComponent(tree,
+//                                                               node.getOWLObject(),
+//                                                               selected,
+//                                                               expanded,
+//                                                               leaf,
+//                                                               row,
+//                                                               hasFocus);
     }
 }

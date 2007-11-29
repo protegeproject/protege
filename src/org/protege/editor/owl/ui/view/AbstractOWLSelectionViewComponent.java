@@ -12,6 +12,7 @@ import org.protege.editor.owl.model.selection.FilteringOWLSelectionModelListener
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLEntity;
@@ -31,7 +32,7 @@ import org.semanticweb.owl.model.OWLObjectProperty;
  * <p/>
  * A view that has a notion of a selected <code>OWLObject</code>
  */
-public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewComponent {
+public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewComponent implements RefreshableComponent {
 
     private OWLSelectionModelListener listener;
 
@@ -120,6 +121,11 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         initialiseView();
         updateViewContentAndHeader();
+    }
+
+
+    public void refreshComponent() {
+        updateHeader(lastDisplayedObject);
     }
 
 

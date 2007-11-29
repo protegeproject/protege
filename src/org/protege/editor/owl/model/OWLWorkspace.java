@@ -1,13 +1,6 @@
 package org.protege.editor.owl.model;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,6 +45,7 @@ import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
@@ -237,6 +231,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                         setSelectedTab(0);
                     }
                 }
+
+                if(event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                    refreshComponents();
+                }
             }
         };
         getOWLModelManager().addListener(owlModelManagerListener);
@@ -249,6 +247,21 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         getOWLModelManager().getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
     }
 
+    public void refreshComponents() {
+        refreshComponents(this);
+    }
+
+    private void refreshComponents(Component component) {
+        if(component instanceof Container) {
+            Container cont = (Container) component;
+            for(Component childComp : cont.getComponents()) {
+                refreshComponents(childComp);
+            }
+        }
+        if(component instanceof RefreshableComponent) {
+            ((RefreshableComponent) component).refreshComponent();
+        }
+    }
 
     protected void verifySelection(Set<? extends OWLEntity> entities) {
         Set<OWLEntity> unreferencedEntities = new HashSet<OWLEntity>(entities);
@@ -349,13 +362,34 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             });
         }
         updateTitleBar();
+        JMenu windowMenu = getWindowMenu(menuBar);
+        windowMenu.addSeparator();
+        if(windowMenu != null) {
+            windowMenu.add(new AbstractAction("Refresh User Interface") {
+
+                public void actionPerformed(ActionEvent e) {
+                    refreshComponents();
+                }
+            });
+        }
     }
 
 
+
+
     private static JMenu getReasonerMenu(JMenuBar menuBar) {
+        return getMenu(menuBar, "Reasoner");
+    }
+
+
+    private static JMenu getWindowMenu(JMenuBar menuBar) {
+        return getMenu(menuBar, "Window");
+    }
+
+    private static JMenu getMenu(JMenuBar menuBar, String name) {
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             if (menuBar.getMenu(i).getText() != null) {
-                if (menuBar.getMenu(i).getText().equals("Reasoner")) {
+                if (menuBar.getMenu(i).getText().equals(name)) {
                     return menuBar.getMenu(i);
                 }
             }

@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -37,7 +38,7 @@ import org.semanticweb.owl.util.OWLEntityCollector;
  * <p/>
  * This definitely needs a rethink - it is a totally inefficient hack!
  */
-public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent implements Findable<OWLIndividual>, Deleteable, CreateNewTarget {
+public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent implements Findable<OWLIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
 
     private OWLObjectList list;
 
@@ -96,6 +97,11 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
+    }
+
+
+    public void refreshComponent() {
+        refill();
     }
 
 

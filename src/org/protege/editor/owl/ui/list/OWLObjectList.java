@@ -7,6 +7,7 @@ import javax.swing.JList;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.transfer.OWLObjectListDragGestureListener;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 
 
 /**
@@ -21,7 +22,7 @@ import org.protege.editor.owl.ui.transfer.OWLObjectListDragGestureListener;
 public class OWLObjectList extends JList {
 
     public OWLObjectList(OWLEditorKit owlEditorKit) {
-        setCellRenderer(owlEditorKit.getOWLWorkspace().createOWLCellRenderer());
+        setCellRenderer(new OWLCellRendererSimple(owlEditorKit));
         DragSource ds = DragSource.getDefaultDragSource();
         ds.createDefaultDragGestureRecognizer(this,
                                               DnDConstants.ACTION_COPY,
