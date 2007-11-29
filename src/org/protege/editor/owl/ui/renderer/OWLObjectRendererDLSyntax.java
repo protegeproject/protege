@@ -273,8 +273,6 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(" ");
         node.getProperty().accept(this);
         write(" ");
-        write(".");
-        write(" ");
         node.getFiller().accept(this);
     }
 
@@ -288,8 +286,6 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
-        write(" ");
-        write(".");
         write(" ");
         node.getFiller().accept(this);
     }
@@ -314,8 +310,6 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(getAllKeyWord());
         write(" ");
         node.getProperty().accept(this);
-        write(" ");
-        write(".");
         write(" ");
         writeOpenBracket(node.getFiller());
         node.getFiller().accept(this);
@@ -388,8 +382,6 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
-        write(" ");
-        write(".");
         write(" ");
         writeOpenBracket(node.getFiller());
         node.getFiller().accept(this);
@@ -466,7 +458,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
-                write("  disjointWith  ");
+                write("  \u2291 \u00ac ");
             }
         }
     }
@@ -476,7 +468,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
-                write("  equivalentTo  ");
+                write("  \u2261  ");
             }
         }
     }
@@ -484,7 +476,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
     public void visit(OWLSubClassAxiom node) {
         node.getSubClass().accept(this);
-        write("  subClassOf  ");
+        write(" \u2291 ");
         node.getSuperClass().accept(this);
     }
 

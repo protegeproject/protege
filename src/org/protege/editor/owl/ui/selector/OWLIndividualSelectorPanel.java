@@ -75,6 +75,10 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel {
 
 
     public void setSelectedIndividual(OWLIndividual ind) {
+        if(viewComponent.getView() != null) {
+            viewComponent.getView().setPinned(false);
+        }
         viewComponent.setSelectedIndividual(ind);
+
     }
 }

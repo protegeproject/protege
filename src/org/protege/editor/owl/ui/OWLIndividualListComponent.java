@@ -126,19 +126,27 @@ public class OWLIndividualListComponent extends JPanel {
         getOWLModelManager().addOntologyChangeListener(listener);
         changeListenerMediator = new ChangeListenerMediator();
         individualsInList = new TreeSet<OWLIndividual>(new OWLEntityComparator<OWLIndividual>(getOWLModelManager()));
-        // Initial fill
-        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            individualsInList.addAll(ont.getReferencedIndividuals());
-        }
+
         modelManagerListener = new OWLModelManagerListener() {
 
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    reset();
+                    refill();
                 }
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
+
+        refill();
+        
+    }
+
+
+    private void refill() {
+        individualsInList.clear();
+        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+            individualsInList.addAll(ont.getReferencedIndividuals());
+        }
         reset();
     }
 
@@ -243,24 +251,6 @@ public class OWLIndividualListComponent extends JPanel {
     public void show(OWLIndividual owlEntity) {
         list.setSelectedValue(owlEntity, true);
     }
-
-
-    private class AddIndividualAction extends DisposableAction {
-
-        public AddIndividualAction() {
-            super("Add individual", OWLIcons.getIcon("individual.add.png"));
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            addIndividual();
-        }
-
-
-        public void dispose() {
-        }
-    }
-
 
     public void addChangeListener(ChangeListener listener) {
         changeListenerMediator.addChangeListener(listener);
