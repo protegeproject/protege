@@ -3,12 +3,14 @@ package org.protege.editor.owl.ui.action;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -40,6 +42,15 @@ public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
         Set<OWLClass> clses = new HashSet<OWLClass>();
         for (OWLClass par : provider.getParents(selCls)) {
             clses.addAll(provider.getChildren(par));
+        }
+        for(Iterator<OWLClass> it = clses.iterator(); it.hasNext(); ) {
+            OWLClass cls = it.next();
+            for(OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+                if(cls.isDefined(ont)) {
+                    it.remove();
+                    break;
+                }
+            }
         }
         OWLAxiom ax = getOWLDataFactory().getOWLDisjointClassesAxiom(clses);
         getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
