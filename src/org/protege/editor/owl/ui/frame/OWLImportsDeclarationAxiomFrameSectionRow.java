@@ -2,11 +2,16 @@ package org.protege.editor.owl.ui.frame;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.core.ui.list.MListButton;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
 
 
 /**
@@ -17,10 +22,21 @@ import org.semanticweb.owl.model.OWLOntology;
  */
 public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration> {
 
+    private MListButton fixImportsButton = new FixImportsButton(new ActionListener() {
+
+        public void actionPerformed(ActionEvent e) {
+            handleImportsFix();
+        }
+    });
+
+    private List<MListButton> additionalButtons;
+
     public OWLImportsDeclarationAxiomFrameSectionRow(OWLEditorKit editorKit, OWLFrameSection section,
                                                      OWLOntology ontology, OWLOntology rootObject,
                                                      OWLImportsDeclaration axiom) {
         super(editorKit, section, ontology, rootObject, axiom);
+        additionalButtons = new ArrayList<MListButton>();
+        additionalButtons.add(fixImportsButton);
     }
 
 
@@ -51,5 +67,76 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
      */
     public List<? extends OWLObject> getManipulatableObjects() {
         return Arrays.asList(getAxiom());
+    }
+
+
+    public List<MListButton> getAdditionalButtons() {
+        OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getImportedOntology(getAxiom());
+        if (!getAxiom().getImportedOntologyURI().equals(ont.getURI())) {
+            return additionalButtons;
+        }
+        else {
+            return super.getAdditionalButtons();
+        }
+    }
+
+    private void handleImportsFix() {
+        int ret = JOptionPane.showConfirmDialog(getOWLEditorKit().getOWLWorkspace(),
+                                      getMismatchedImportMessage(),
+                                      "Mismatched import",
+                                      JOptionPane.YES_NO_OPTION,
+                                      JOptionPane.WARNING_MESSAGE);
+
+        if(ret == JOptionPane.YES_OPTION) {
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            OWLImportsDeclaration decl = getAxiom();
+            changes.add(new RemoveAxiom(getOntology(), decl));
+            OWLOntology impOnt = getOWLOntologyManager().getImportedOntology(decl);
+            changes.add(new AddAxiom(getOntology(), getOWLDataFactory().getOWLImportsDeclarationAxiom(getOntology(), impOnt.getURI())));
+            getOWLModelManager().applyChanges(changes);
+        }
+    }
+
+    private String getMismatchedImportMessage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><body>");
+        OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getImportedOntology(getAxiom());
+        sb.append("The imports URI:<br>");
+        sb.append("<font color=\"blue\">");
+        sb.append(getAxiom().getImportedOntologyURI());
+        sb.append("</font>");
+        sb.append("<br>");
+        sb.append("does not match the URI of the ontology that has been imported:<br>");
+        sb.append("<font color=\"blue\">");
+        sb.append(ont.getURI());
+        sb.append("</font><br><br>");
+        sb.append("Do you want to fix the mismatch by modifying the imports statement?");
+        sb.append("</body></html>");
+
+        return sb.toString();
+    }
+
+
+    private class FixImportsButton extends MListButton {
+
+
+        public FixImportsButton(ActionListener actionListener) {
+            super("Mismatched import!", Color.ORANGE, actionListener);
+        }
+
+
+        public void paintButtonContent(Graphics2D g) {
+            Rectangle bounds = getBounds();
+            g.translate(bounds.x, bounds.y - 1);
+            g.drawLine(bounds.width / 2, 4, 4, bounds.height - 4);
+            g.drawLine(bounds.width / 2, 4, bounds.width - 4, bounds.height - 4);
+            g.drawLine(4, bounds.height - 4, bounds.width - 4, bounds.height - 4);
+            g.translate(-bounds.x, -bounds.y + 1);
+        }
+
+
+        public Color getBackground() {
+            return Color.ORANGE;
+        }
     }
 }
