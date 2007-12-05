@@ -314,6 +314,7 @@ public class ProtegeApplication implements BundleActivator {
         for (File f : dir.listFiles()) locations.add(f);
         locations.addAll(getExtraBundles());
         List<Bundle> plugins = new ArrayList<Bundle>();
+        boolean warnAboutDirectories = false;
         for (File plugin : locations) {
             Bundle b = null;
             try {
@@ -322,10 +323,16 @@ public class ProtegeApplication implements BundleActivator {
             }
             catch (Throwable t) {
                 logger.error("Could not install plugin in file/directory named " + plugin + ": " + t);
+                if (plugin.isDirectory() && canReadDirectoryBundles()) warnAboutDirectories = true;
                 if (logger.isDebugEnabled()) {
                     logger.debug("Exception caught", t);
                 }
             }
+        }
+        if (warnAboutDirectories) {
+            logger.warn("\nDetected directory-style plugins (recommended for debugging use only)");
+            logger.warn("Consider bundling your plugins or using -D" + OSGI_READS_DIRECTORIES + "=false");
+            logger.warn("in case OSGi cannot read directory-style plugins in this configuration\n");
         }
         for (Bundle b  : plugins) {
             try {
