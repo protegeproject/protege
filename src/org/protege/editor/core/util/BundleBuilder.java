@@ -14,6 +14,8 @@ public class BundleBuilder {
     private static final int BUFFER_SIZE = 10240;
     
     private static final transient Logger log = Logger.getLogger(BundleBuilder.class);
+    public static final char JAR_SEPARATOR = '/';
+    
     
     private File topLevelDirectory;
     private int topLevelDirectoryLength;
@@ -56,7 +58,7 @@ public class BundleBuilder {
     
     private void addDirectory(JarOutputStream jar, File dir) throws IOException {
         for (File f : dir.listFiles()) {
-            String path = f.getAbsolutePath().substring(topLevelDirectoryLength + 1);
+            String path = calculatePath(f);
             if (f.isFile()) {
                 if (f.equals(getManifest())) {
                     if (log.isDebugEnabled()) {
@@ -85,6 +87,12 @@ public class BundleBuilder {
                 addDirectory(jar, f);
             }
         }
+    }
+    
+    private String calculatePath(File f) {
+        String path = f.getAbsolutePath().substring(topLevelDirectoryLength + 1);
+        path = path.replace(File.separatorChar, JAR_SEPARATOR);
+        return path;
     }
     
     private File getManifest() {
