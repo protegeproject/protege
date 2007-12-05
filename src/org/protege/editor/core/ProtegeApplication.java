@@ -1,6 +1,7 @@
 package org.protege.editor.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.update.UpdateManager;
+import org.protege.editor.core.util.BundleBuilder;
 
 import com.jgoodies.looks.FontPolicies;
 import com.jgoodies.looks.FontPolicy;
@@ -73,8 +75,10 @@ public class ProtegeApplication implements BundleActivator {
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
-    
+
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
+    
+    public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
 
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
@@ -313,7 +317,7 @@ public class ProtegeApplication implements BundleActivator {
         for (File plugin : locations) {
             Bundle b = null;
             try {
-                b = context.installBundle(plugin.toURI().toString());
+                b = context.installBundle(getBundleLocation(plugin));
                 plugins.add(b);
             }
             catch (Throwable t) {
@@ -340,6 +344,25 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
         bundles_loaded = true;
+    }
+    
+    private String getBundleLocation(File source) throws IOException {
+        boolean directoryBundlesWork = canReadDirectoryBundles();
+        if (source.isFile() || directoryBundlesWork) { // the normal case
+            return source.toURI().toString();
+        }
+        else { // this is a hack for IDE developers
+            long start = System.currentTimeMillis();
+            BundleBuilder builder = new BundleBuilder(source);
+            File jar = File.createTempFile("ProtegeBundle", ".jar");
+            builder.createJarFile(jar);
+            logger.warn("Converted directory (" + source + ") to plugin (" + (System.currentTimeMillis() - start) + " ms)");
+            return jar.toURI().toString();
+        }
+    }
+    
+    private boolean canReadDirectoryBundles() {
+        return System.getProperty(OSGI_READS_DIRECTORIES, "true").toLowerCase().equals("true");
     }
 
     /////////////////////////////////////////////////////////////////////////////////
