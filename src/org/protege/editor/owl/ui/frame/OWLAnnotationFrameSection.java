@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import java.util.Comparator;
+import java.net.URI;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLAnnotation;
@@ -18,6 +19,8 @@ import org.semanticweb.owl.model.OWLOntology;
 public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> {
 
     private static final String LABEL = "Annotations";
+
+    private static OWLAnnotationSectionRowComparator comparator = new OWLAnnotationSectionRowComparator();
 
 
     public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLEntity> frame) {
@@ -69,13 +72,32 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
     public Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> getRowComparator() {
-        return null;
+
+        return comparator;
     }
 
 
     public void visit(OWLEntityAnnotationAxiom axiom) {
         if (axiom.getSubject().equals(getRootObject())) {
             reset();
+        }
+    }
+
+
+    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> {
+
+
+        public int compare(OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o1,
+                           OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o2) {
+            String fragment1 =  o1.getAxiom().getAnnotation().getAnnotationURI().getFragment();
+            if(fragment1 == null) {
+                fragment1 = o1.getAxiom().getAnnotation().getAnnotationURI().toString();
+            }
+            String fragment2 =  o2.getAxiom().getAnnotation().getAnnotationURI().getFragment();
+            if(fragment2 == null) {
+                fragment2 = o2.getAxiom().getAnnotation().getAnnotationURI().toString();
+            }
+            return fragment1.compareTo(fragment2);
         }
     }
 }
