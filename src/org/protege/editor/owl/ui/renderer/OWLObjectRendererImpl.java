@@ -596,7 +596,17 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLEquivalentClassesAxiom node) {
-        for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
+        List<OWLDescription> orderedDescs = sort(node.getDescriptions());
+        for(Iterator<OWLDescription> it = orderedDescs.iterator(); it.hasNext(); ) {
+            OWLDescription desc = it.next();
+            if(orderedDescs.get(0).isOWLNothing()) {
+                it.remove();
+                orderedDescs.add(desc);
+                break;
+            }
+        }
+
+        for (Iterator<OWLDescription> it = orderedDescs.iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write(" equivalentTo ");
@@ -791,7 +801,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     public void visit(OWLImportsDeclaration axiom) {
         write(axiom.getImportedOntologyURI().toString());
-        if (!owlModelManager.getOWLOntologyManager().contains(axiom.getImportedOntologyURI())) {
+        if (owlModelManager.getOWLOntologyManager().getImportedOntology(axiom) == null) {
             write("      (Not Loaded)");
         }
     }
