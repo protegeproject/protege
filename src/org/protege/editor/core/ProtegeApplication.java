@@ -279,12 +279,26 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
     }
+    private List<File> getPluginBundles() {
+        ArrayList<File> pluginBundles = new ArrayList<File>();
+        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
+        if  (dir_name != null) {
+            File dir = new File(dir_name);
+            if (dir.exists() && dir.isDirectory()) {
+                for (File f : dir.listFiles()) pluginBundles.add(f);
+            }
+            else {
+                logger.error("Plugin directory " + dir_name + " is invalid");
+            }
+        }
+        return pluginBundles;
+    }
     
     private List<File> getExtraBundles() {
     	String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
     	List<File> extra_bundles = new ArrayList<File>();
     	while (remaining != null && remaining.length() != 0) {
-    		int index = remaining.indexOf(BUNDLE_EXTRA_SEPARATOR);
+    		int index = remaining.indexOf(File.pathSeparator);
     		if (index < 0) {
     			extra_bundles.add(new File(remaining));
     			return extra_bundles;
@@ -300,19 +314,12 @@ public class ProtegeApplication implements BundleActivator {
     
     private void loadPlugins() {
         if (bundles_loaded) return;
-        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
-        if  (dir_name == null) {
-            logger.info("no plugins found");
-            return;
-        }
-        File dir = new File(dir_name);
-        if (!dir.exists() || !dir.isDirectory()) {
-            logger.error("Plugin directory " + dir_name + " is invalid");
-            return;
-        }
         List<File> locations = new ArrayList<File>();
-        for (File f : dir.listFiles()) locations.add(f);
+        locations.addAll(getPluginBundles());
         locations.addAll(getExtraBundles());
+        if (locations.isEmpty()) {
+            logger.warn("No plugins found");
+        }
         List<Bundle> plugins = new ArrayList<Bundle>();
         boolean warnAboutDirectories = false;
         for (File plugin : locations) {
@@ -333,6 +340,7 @@ public class ProtegeApplication implements BundleActivator {
             logger.warn("\nDetected directory-style plugins (recommended for debugging use only)");
             logger.warn("Consider bundling your plugins or using -D" + OSGI_READS_DIRECTORIES + "=false");
             logger.warn("in case OSGi cannot read directory-style plugins in this configuration\n");
+            logger.warn("If you are using an equinox distribution consider -Dosgi.clean=true\n");
         }
         for (Bundle b  : plugins) {
             try {
@@ -356,8 +364,6 @@ public class ProtegeApplication implements BundleActivator {
     private String getBundleLocation(File source) throws IOException {
         boolean directoryBundlesWork = canReadDirectoryBundles();
         if (source.isFile() || directoryBundlesWork) { // the normal case
-            // return source.toURI().toString() seems more robust but it introduces full paths
-            // into the cache when running the equinox distribution.
             return "file:" + source.getPath();
         }
         else { // this is a hack for IDE developers
