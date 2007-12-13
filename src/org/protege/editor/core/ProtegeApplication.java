@@ -356,7 +356,9 @@ public class ProtegeApplication implements BundleActivator {
     private String getBundleLocation(File source) throws IOException {
         boolean directoryBundlesWork = canReadDirectoryBundles();
         if (source.isFile() || directoryBundlesWork) { // the normal case
-            return source.toURI().toString();
+            // return source.toURI().toString() seems more robust but it introduces full paths
+            // into the cache when running the equinox distribution.
+            return "file:" + source.getPath();
         }
         else { // this is a hack for IDE developers
             long start = System.currentTimeMillis();
