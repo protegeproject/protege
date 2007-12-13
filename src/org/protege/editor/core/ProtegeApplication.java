@@ -75,10 +75,9 @@ public class ProtegeApplication implements BundleActivator {
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
-
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
-    
     public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
+    public static final String USE_RELATIVE_URIS = "org.protege.relative.bundle.uris";
 
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
@@ -364,7 +363,12 @@ public class ProtegeApplication implements BundleActivator {
     private String getBundleLocation(File source) throws IOException {
         boolean directoryBundlesWork = canReadDirectoryBundles();
         if (source.isFile() || directoryBundlesWork) { // the normal case
-            return "file:" + source.getPath();
+            if (useRelativeBundleURIs()) {
+                return "file:" + source.getPath();
+            }
+            else {
+                return source.toURI().toString();
+            }
         }
         else { // this is a hack for IDE developers
             long start = System.currentTimeMillis();
@@ -378,6 +382,10 @@ public class ProtegeApplication implements BundleActivator {
     
     private boolean canReadDirectoryBundles() {
         return System.getProperty(OSGI_READS_DIRECTORIES, "true").toLowerCase().equals("true");
+    }
+    
+    private boolean useRelativeBundleURIs() {
+        return System.getProperty(USE_RELATIVE_URIS, "false").toLowerCase().equals("true");
     }
 
     /////////////////////////////////////////////////////////////////////////////////
