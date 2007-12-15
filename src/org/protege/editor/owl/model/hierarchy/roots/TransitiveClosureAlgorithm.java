@@ -9,6 +9,27 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
+ * This class represents a recursive algorithm for calculating the transitive closure of a relation, r.  The point
+ * of making the algorithm into a class is to make it  easy to construct variations of the algorithm for different
+ * needs.
+ * 
+ * The algorithm follows the following logic. It recursively generates all paths  <i>x, x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub>, ...</i>
+ *       where <i>x<sub>i+1</sub> &isin; r(x<sub>i</sub>)</i> and 
+ *       <i>x<sub>i</sub> &ne; x<sub>j</sub></i> for <i>i&ne; j</i>.  It is an assumption of the algorithm that 
+ *       these paths won't be that long.  
+ *       When the path
+ *       <center><i>
+ *           x, x<sub>1</sub>, ..., x<sub>n</sub>
+ *       </i></center>
+ *       cannot be extended any further it looks at all  <i>x<sub>i</sub> &ge; x<sub>n</sub></i> and generates the 
+ *       assertion that 
+ *       <center><i>
+ *           x<sub>i</sub>, x<sub>i+1</sub>, ..., x<sub>n</sub>
+ *       </i></center>
+ *       are equivalent.
+ * 
+ * 
+ * 
  * This class encapsulates a relation, <i>r: X &rarr; X</i>.  Its purpose is to calculate the set of terminal 
  * elements of the transitive closure of the relation r.  We will  define the notion of a terminal
  * element below. 
@@ -34,20 +55,7 @@ import org.apache.log4j.Logger;
  * contain state that includes the current set of all terminal elements. The algorithm calculates whether an 
  * element x in X is terminal as follows:
  * <ol>
- *  <li> it recursively generates all paths  <i>x, x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub>, ...</i>
- *       where <i>x<sub>i+1</sub> &isin; r(x<sub>i</sub>)</i> and 
- *       <i>x<sub>i</sub> &ne; x<sub>j</sub></i> for <i>i&ne; j</i>.  It is an assumption of the algorithm that 
- *       these paths won't be that long.  
- *       When the path
- *       <center><i>
- *           x, x<sub>1</sub>, ..., x<sub>n</sub>
- *       </i></center>
- *       cannot be extended any further it looks at all  <i>x<sub>i</sub> &ge; x<sub>n</sub></i> and generates the 
- *       assertion that 
- *       <center><i>
- *           x<sub>i</sub>, x<sub>i+1</sub>, ..., x<sub>n</sub>
- *       </i></center>
- *       are equivalent.
+ *  <li> 
  *    </li>
  *    <li> Once all the paths with a given prefix
  *       <center><i>
@@ -70,14 +78,14 @@ import org.apache.log4j.Logger;
  * @author Timothy Redmond
  *
  */
-public class TerminalElementFinder<X> {
-    private static Logger log = Logger.getLogger(TerminalElementFinder.class);
+public class TransitiveClosureAlgorithm<X> {
+    private static Logger log = Logger.getLogger(TransitiveClosureAlgorithm.class);
 
     private Relation<X> r;
     private Set<X> terminalElements = new HashSet<X>();
     private EquivalenceRelation<X> equivalence = new EquivalenceRelation<X>();
     
-    public TerminalElementFinder(Relation<X> r) {
+    public TransitiveClosureAlgorithm(Relation<X> r) {
         this.r = r;
     }
     
@@ -113,7 +121,7 @@ public class TerminalElementFinder<X> {
         return Collections.unmodifiableSet(terminalElements);
     }
     
-    private void buildEquivalenceMapping(X x, Path<X> p) {
+    protected void buildEquivalenceMapping(X x, Path<X> p) {
         if (p != null && p.contains(x)) {
             equivalence.merge(p.getLoop(x));
             if (log.isDebugEnabled()) {
@@ -149,10 +157,6 @@ public class TerminalElementFinder<X> {
         if (terminal) {
             terminalElements.add(x);
         }
-    }
-    
-    public boolean removeTerminalElement(X x) {
-        return terminalElements.remove(x);
     }
 
     public void addRelation(X x, X y) {
