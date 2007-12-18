@@ -17,7 +17,6 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDataProperty;
@@ -64,18 +63,6 @@ public interface OWLModelManager extends ModelManager {
      *            ontology is determined by the resolving mechanism.
      */
     OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException;
-
-//
-//    /**
-//     * Forces the system to use a particular mapping from
-//     * an ontology URI (logicalURI) to a physical URI. When
-//     * the system is asked to load the ontology specified by
-//     * the logicalURI it will load it from the location
-//     * specified by the physical URI.
-//     * @param logicalURI
-//     * @param physicalURI
-//     */
-//    void setPhysicalURIMapping(URI logicalURI, URI physicalURI);
 
 
     /**
@@ -317,16 +304,4 @@ public interface OWLModelManager extends ModelManager {
 
 
     String getRendering(OWLObject object);
-
-
-    boolean isCommentedOut(OWLOntology ontology, OWLAxiom axiom);
-
-
-    void setCommentedOut(OWLOntology ontology, OWLAxiom axiom, boolean b);
-
-
-    Set<OWLAxiom> getCommentedOutAxioms(OWLOntology ontology);
-
-
-    Set<OWLOntology> getCommentOntologies();
 }
