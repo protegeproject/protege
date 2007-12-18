@@ -13,15 +13,9 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.net.URL;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import org.protege.editor.core.ModelManager;
@@ -43,6 +37,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
     private JTextArea instructionArea;
 
     private JPanel marginPanel;
+
+    private JLabel marginLabel;
 
     private Icon backgroundImage;
 
@@ -86,16 +82,25 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         return editorKit;
     }
 
+    public void setBackgroundImage(String name) {
+        backgroundImage = Icons.getIcon(name);
+    }
+
+    public void setMarginImage(String name) {
+        marginLabel.setIcon(Icons.getIcon(name));
+    }
 
     protected void createUI() {
         backgroundImage = Icons.getIcon("logo.wizard.png");
         setLayout(new BorderLayout(7, 7));
-        marginPanel = new JPanel();
+        marginPanel = new JPanel(new BorderLayout());
         marginPanel.setPreferredSize(new Dimension(150, 400));
         add(marginPanel, BorderLayout.WEST);
         marginPanel.setOpaque(false);
         marginPanel.setEnabled(false);
-
+        marginLabel = new JLabel();
+        marginPanel.add(marginLabel, BorderLayout.NORTH);
+        marginLabel.setBorder(BorderFactory.createEmptyBorder(30, 8, 0, 0));
         instructionArea = new JTextArea("");
         instructionArea.setOpaque(false);
         instructionArea.setWrapStyleWord(true);
