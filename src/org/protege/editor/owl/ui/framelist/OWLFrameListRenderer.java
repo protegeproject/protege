@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.framelist;
 
 import java.awt.Component;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
@@ -19,6 +21,7 @@ import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.model.OWLAnnotationAxiom;
 import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLEntity;
 
 
 /**
@@ -39,13 +42,21 @@ public class OWLFrameListRenderer implements ListCellRenderer {
 
     private boolean highlightKeywords;
 
+    private boolean highlightUnsatisfiableClasses;
+
+    private boolean highlightUnsatisfiableProperties;
+
+    private Set<OWLEntity> crossedOutEntities;
 
     public OWLFrameListRenderer(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        owlCellRenderer = new OWLCellRenderer(owlEditorKit);
+        owlCellRenderer = new OWLCellRenderer(owlEditorKit) {
+
+        };
         separatorRenderer = new DefaultListCellRenderer();
         annotationRenderer = new OWLAnnotationRenderer(owlEditorKit);
         highlightKeywords = true;
+        crossedOutEntities = new HashSet<OWLEntity>();
     }
 
 
@@ -58,6 +69,35 @@ public class OWLFrameListRenderer implements ListCellRenderer {
         this.highlightKeywords = highlightKeywords;
     }
 
+
+    public OWLCellRenderer getOWLCellRenderer() {
+        return owlCellRenderer;
+    }
+
+    public void setHighlightUnsatisfiableClasses(boolean b) {
+        this.highlightUnsatisfiableClasses = b;
+    }
+
+
+    public boolean isHighlightUnsatisfiableClasses() {
+        return highlightUnsatisfiableClasses;
+    }
+
+
+    public boolean isHighlightUnsatisfiableProperties() {
+        return highlightUnsatisfiableProperties;
+    }
+
+
+    public void setHighlightUnsatisfiableProperties(boolean highlightUnsatisfiableProperties) {
+        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
+    }
+
+
+    public void setCrossedOutEntities(Set<OWLEntity> entities) {
+        this.crossedOutEntities.clear();
+        this.crossedOutEntities.addAll(entities);
+    }
 
     /**
      * Return a component that has been configured to display the specified
@@ -101,9 +141,6 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             }
             boolean commentedOut = false;
             OWLFrameSectionRow row = ((OWLFrameSectionRow) value);
-            if (row.getOntology() != null && row.getAxiom() != null) {
-                commentedOut = getOWLEditorKit().getOWLModelManager().isCommentedOut(row.getOntology(), row.getAxiom());
-            }
             owlCellRenderer.setCommentedOut(commentedOut);
             Object valueToRender = getValueToRender(list, value, index, isSelected, cellHasFocus);
             owlCellRenderer.setIconObject(getIconObject(list, value, index, isSelected, cellHasFocus));
@@ -111,6 +148,8 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             owlCellRenderer.setTransparent();
             owlCellRenderer.setInferred(((OWLFrameSectionRow) value).isInferred());
             owlCellRenderer.setHighlightKeywords(highlightKeywords);
+            owlCellRenderer.setHighlightUnsatisfiableClasses(highlightUnsatisfiableClasses);
+            owlCellRenderer.setCrossedOutEntities(crossedOutEntities);
             if(row.getOntology() != null) {
                 if(!row.getOntology().containsAxiom(row.getAxiom())) {
                     owlCellRenderer.setStrikeThrough(true);
