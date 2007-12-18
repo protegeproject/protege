@@ -12,7 +12,7 @@ import org.semanticweb.owl.model.OWLObject;
  * Bio-Health Informatics Group<br>
  * Date: 25-Jan-2007<br><br>
  */
-public interface OWLFrameObject<R extends OWLObject, A extends OWLAxiom, E> {
+public interface OWLFrameObject<R extends Object, A extends OWLAxiom, E> {
 
     OWLFrameSectionRowObjectEditor<E> getEditor();
 

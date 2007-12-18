@@ -1,14 +1,9 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.*;
 import org.protege.editor.owl.OWLEditorKit;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Set;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,26 +32,32 @@ import java.util.HashSet;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 14-Oct-2007<br><br>
+ * Date: 06-Dec-2007<br><br>
  */
-public class ExplanationFrame extends AbstractOWLFrame<OWLAxiom> {
+public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiomAnnotationsRoot, OWLAxiomAnnotationAxiom, OWLAnnotation>{
 
-    private OWLEditorKit owlEditorKit;
 
-    public ExplanationFrame(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
-        this.owlEditorKit = owlEditorKit;
-        addSection(new ExplanationFrameSection(owlEditorKit, 0, null, new HashSet<OWLAxiom>(), this));
+    public OWLAxiomAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
+                                              OWLAxiomAnnotationsRoot rootObject, OWLAxiomAnnotationAxiom axiom) {
+        super(owlEditorKit, section, ontology, rootObject, axiom);
     }
 
-    public void setExplanation(OWLAxiom axiom, Set<Set<OWLAxiom>> explanations) {
-        clearSections();
-        int count = 1;
-        for(Set<OWLAxiom> explanation : explanations) {
-            ExplanationFrameSection section = new ExplanationFrameSection(owlEditorKit, count, axiom, explanation, this);
-            addSection(section);
-            count++;
-        }
-        setRootObject(axiom);
+
+    protected OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
+        OWLAnnotationEditor editor =  new OWLAnnotationEditor(getOWLEditorKit());
+        editor.setAnnotation(getAxiom().getAnnotation());
+        return editor;
     }
+
+
+    protected OWLAxiomAnnotationAxiom createAxiom(OWLAnnotation editedObject) {
+        return null;
+    }
+
+
+    public List<? extends OWLObject> getManipulatableObjects() {
+        return null;
+    }
+
+    
 }

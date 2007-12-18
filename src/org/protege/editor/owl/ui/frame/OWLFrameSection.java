@@ -14,7 +14,7 @@ import org.semanticweb.owl.model.OWLObject;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public interface OWLFrameSection<R extends OWLObject, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListSectionHeader {
+public interface OWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListSectionHeader {
 
     void dispose();
 

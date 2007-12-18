@@ -11,7 +11,7 @@ import org.semanticweb.owl.model.OWLObject;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public interface OWLFrame<R extends OWLObject> {
+public interface OWLFrame<R extends Object> {
 
     /**
      * Disposes of the frame by cleaning up any

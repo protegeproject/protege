@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owl.util.OWLEntityCollector;
 import org.protege.editor.owl.OWLEditorKit;
 
-import java.util.Comparator;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -43,9 +42,17 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
 
     private Set<OWLAxiom> axioms;
 
-    public ExplanationFrameSection(OWLEditorKit editorKit, int explanationNumber, Set<OWLAxiom> axioms,  OWLFrame<? extends OWLAxiom> owlFrame) {
+    private OWLAxiom entailedAxiom;
+
+    private boolean addedEntailedAxiom;
+
+    private Set<OWLAxiom> added;
+
+    public ExplanationFrameSection(OWLEditorKit editorKit, int explanationNumber, OWLAxiom entailedAxiom, Set<OWLAxiom> axioms,  OWLFrame<? extends OWLAxiom> owlFrame) {
         super(editorKit, "Explanation " + explanationNumber, owlFrame);
         this.axioms = new HashSet<OWLAxiom>(axioms);
+        this.entailedAxiom = entailedAxiom;
+        added = new HashSet<OWLAxiom>();
     }
 
 
@@ -55,7 +62,8 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
 
 
     protected void clear() {
-
+        addedEntailedAxiom = false;
+        added.clear();
     }
 
 
@@ -74,9 +82,16 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
     }
 
 
+
     protected void refill(OWLOntology ontology) {
+        if(!addedEntailedAxiom) {
+            addRow(new ExplanationFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), entailedAxiom));
+            addedEntailedAxiom = true;
+        }
         for(OWLAxiom ax : axioms) {
-            if(ontology.containsAxiom(ax)) {
+
+            if(!added.contains(ax)) {
+                added.add(ax);
                 addRow(new ExplanationFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
             }
         }
@@ -85,5 +100,44 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
 
     public Comparator<OWLFrameSectionRow<OWLAxiom, OWLAxiom, OWLAxiom>> getRowComparator() {
         return null;
+    }
+
+
+    private void orderAxioms() {
+
+        Map<OWLEntity, Set<OWLAxiom>> lhs2AxiomMap = new HashMap<OWLEntity, Set<OWLAxiom>>();
+        for(OWLFrameSectionRow row : getRows()) {
+            OWLAxiom ax = row.getAxiom();
+        }
+    }
+
+
+    private class OrderingVisitor extends OWLAxiomVisitorAdapter {
+
+        private Map<OWLEntity, Set<OWLAxiom>> orderingMap;
+
+
+        public OrderingVisitor(Map<OWLEntity, Set<OWLAxiom>> orderingMap) {
+            this.orderingMap = orderingMap;
+        }
+
+        private Set<OWLAxiom> getAxioms(OWLEntity ent) {
+            Set<OWLAxiom> axs = orderingMap.get(ent);
+            if(axs == null) {
+                axs = new HashSet<OWLAxiom>();
+                orderingMap.put(ent, axs);
+            }
+            return axs;
+        }
+
+
+        public void visit(OWLSubClassAxiom owlSubClassAxiom) {
+            if(!owlSubClassAxiom.getSubClass().isAnonymous()) {
+                OWLClass lhs = owlSubClassAxiom.getSubClass().asOWLClass();
+                getAxioms(lhs).add(owlSubClassAxiom);
+            }
+        }
+
+        
     }
 }
