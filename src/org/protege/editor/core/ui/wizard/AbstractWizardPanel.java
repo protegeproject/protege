@@ -86,8 +86,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         backgroundImage = Icons.getIcon(name);
     }
 
-    public void setMarginImage(String name) {
-        marginLabel.setIcon(Icons.getIcon(name));
+    public void setMarginImage(Icon icon) {
+        marginLabel.setIcon(icon);
     }
 
     protected void createUI() {
