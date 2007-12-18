@@ -21,12 +21,12 @@ import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
  */
 public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
 
-    private OWLCellRendererSimple delegate;
+    private OWLCellRenderer delegate;
 
 
     public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
-        delegate = new OWLCellRendererSimple(owlEditorKit);
+        delegate = new OWLCellRenderer(owlEditorKit);
     }
 
 

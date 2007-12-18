@@ -14,7 +14,7 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public abstract class AbstractOWLFrame<R extends OWLObject> implements OWLFrame<R> {
+public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> {
 
     private static final Logger logger = Logger.getLogger(AbstractOWLFrame.class);
 

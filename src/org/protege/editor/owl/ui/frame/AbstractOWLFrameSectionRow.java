@@ -27,7 +27,7 @@ import org.semanticweb.owl.model.RemoveAxiom;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public abstract class AbstractOWLFrameSectionRow<R extends OWLObject, A extends OWLAxiom, E> implements OWLFrameSectionRow<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E> {
+public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> implements OWLFrameSectionRow<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E> {
 
     public static final String DEFAULT_DELIMETER = ", ";
 

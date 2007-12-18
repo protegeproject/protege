@@ -19,7 +19,7 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  * An <code>OWLFrameSectionRow</code> constitues a row in a frame section, which represents
  * an axiom.
  */
-public interface OWLFrameSectionRow<R extends OWLObject, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListItem {
+public interface OWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListItem {
 
     /**
      * Gets the frame section which this row belongs to.

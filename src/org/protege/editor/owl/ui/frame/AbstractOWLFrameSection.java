@@ -67,7 +67,7 @@ import org.semanticweb.owl.model.SWRLRule;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWLAxiom, E> implements OWLFrameSection<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E>, OWLAxiomVisitor {
+public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> implements OWLFrameSection<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E>, OWLAxiomVisitor {
 
     private OWLEditorKit owlEditorKit;
 
@@ -218,9 +218,6 @@ public abstract class AbstractOWLFrameSection<R extends OWLObject, A extends OWL
         if (rootObject != null) {
             for (OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
                 refill(ontology);
-            }
-            for (OWLOntology commentOntology : getOWLModelManager().getCommentOntologies()) {
-                refill(commentOntology);
             }
             try {
                 refillInferred();
