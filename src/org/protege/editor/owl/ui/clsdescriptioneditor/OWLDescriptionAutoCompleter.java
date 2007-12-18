@@ -47,6 +47,8 @@ public class OWLDescriptionAutoCompleter {
 
     private static Logger logger = Logger.getLogger(OWLDescriptionAutoCompleter.class);
 
+    public static final int DEFAULT_MAX_ENTRIES = 100;
+
     private OWLEditorKit owlEditorKit;
 
     private JTextComponent textComponent;
@@ -67,12 +69,16 @@ public class OWLDescriptionAutoCompleter {
 
     private OWLExpressionChecker checker;
 
+    private String lastTextUpdate = "*";
 
-    public OWLDescriptionAutoCompleter(OWLEditorKit owlEditorKit, JTextComponent textComponent,
+    private int maxEntries = DEFAULT_MAX_ENTRIES;
+
+
+    public OWLDescriptionAutoCompleter(OWLEditorKit owlEditorKit, JTextComponent tc,
                                        OWLExpressionChecker checker) {
         this.owlEditorKit = owlEditorKit;
         this.checker = checker;
-        this.textComponent = textComponent;
+        this.textComponent = tc;
         keyListener = new KeyAdapter() {
 
             public void keyPressed(KeyEvent e) {
@@ -81,8 +87,10 @@ public class OWLDescriptionAutoCompleter {
 
 
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_UP == false && e.getKeyCode() == KeyEvent.VK_DOWN == false) {
-                    if (popupWindow.isVisible()) {
+
+                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN) {
+                    if (popupWindow.isVisible() && !lastTextUpdate.equals(textComponent.getText())) {
+                        lastTextUpdate = textComponent.getText();
                         updatePopup(getMatches());
                     }
                 }
@@ -189,7 +197,7 @@ public class OWLDescriptionAutoCompleter {
     }
 
 
-    private Collection getMatches() {
+    private List getMatches() {
         // We need to determine if the matches should be classes, individuals etc.
 
         int wordIndex = getWordIndex();
@@ -216,6 +224,7 @@ public class OWLDescriptionAutoCompleter {
                         }
                     }
                     kwMatches.addAll(matches);
+
                     return kwMatches;
                 }
                 catch (OWLException owlEx) {
@@ -226,7 +235,7 @@ public class OWLDescriptionAutoCompleter {
                 Logger.getLogger(getClass()).warn(e);
             }
         }
-        return Collections.EMPTY_SET;
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -241,15 +250,16 @@ public class OWLDescriptionAutoCompleter {
 
 
     private void performAutoCompletion() {
-        Collection matches = getMatches();
+        List matches = getMatches();
         if (matches.size() == 1) {
             // Don't show popup
             insertWord(getInsertText(matches.iterator().next()));
         }
         else if (matches.size() > 1) {
             // Show popup
+            lastTextUpdate = textComponent.getText();
             showPopup();
-            updatePopup(getMatches());
+            updatePopup(matches);
         }
     }
 
@@ -297,8 +307,17 @@ public class OWLDescriptionAutoCompleter {
     }
 
 
-    private void updatePopup(Collection matches) {
-        popupList.setListData(matches.toArray());
+    private void updatePopup(List matches) {
+        int count = matches.size();
+        if(count > maxEntries) {
+            count = maxEntries;
+        }
+        if (!matches.isEmpty()) {
+            popupList.setListData(matches.subList(0, count - 1).toArray());
+        }
+        else {
+            popupList.setListData(matches.toArray());
+        }
         popupList.setSelectedIndex(0);
 
         popupWindow.setSize(POPUP_WIDTH, POPUP_HEIGHT);
