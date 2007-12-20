@@ -89,6 +89,15 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         this.rows = new ArrayList<OWLFrameSectionRow<R, A, E>>();
         listener = new OWLOntologyChangeListener() {
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+                handleChanges(changes);
+            }
+        };
+        editorKit.getOWLModelManager().addOntologyChangeListener(listener);
+        Comparator<OWLFrameSectionRow<R, A, E>> comparator = null;
+        comparator = getRowComparator();
+    }
+
+    protected void handleChanges(List<? extends OWLOntologyChange> changes) {
                 if (getRootObject() == null) {
                     return;
                 }
@@ -97,11 +106,6 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
                         change.getAxiom().accept(AbstractOWLFrameSection.this);
                     }
                 }
-            }
-        };
-        editorKit.getOWLModelManager().addOntologyChangeListener(listener);
-        Comparator<OWLFrameSectionRow<R, A, E>> comparator = null;
-        comparator = getRowComparator();
     }
 
 
