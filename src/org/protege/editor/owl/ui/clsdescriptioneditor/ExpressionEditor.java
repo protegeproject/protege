@@ -246,7 +246,7 @@ public class ExpressionEditor<O> extends JTextPane {
         Color oldColor = g.getColor();
         try {
             // Paint in error range if there is one
-            if (errorStartIndex != errorEndIndex && errorStartIndex > -1) {
+            if (errorStartIndex != errorEndIndex && errorStartIndex > -1 && errorStartIndex < getDocument().getLength()) {
                 Rectangle start = modelToView(errorStartIndex);
                 Rectangle end = modelToView(errorEndIndex);
                 g.setColor(Color.RED);
@@ -256,7 +256,7 @@ public class ExpressionEditor<O> extends JTextPane {
             }
         }
         catch (BadLocationException e) {
-            logger.error(e);
+            e.printStackTrace();
         }
         g.setColor(oldColor);
     }
@@ -301,7 +301,7 @@ public class ExpressionEditor<O> extends JTextPane {
                     }
                 }
                 catch (BadLocationException e) {
-                    logger.error(e);
+                    e.printStackTrace();
                 }
             }
         });

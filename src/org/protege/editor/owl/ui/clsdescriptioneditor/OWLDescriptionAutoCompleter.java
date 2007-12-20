@@ -294,7 +294,7 @@ public class OWLDescriptionAutoCompleter {
                 popupWindow.setLocation(p);
             }
             catch (BadLocationException e) {
-                Logger.getLogger(getClass()).error(e);
+                e.printStackTrace();
             }
             popupWindow.setVisible(true);
         }
@@ -313,7 +313,7 @@ public class OWLDescriptionAutoCompleter {
             count = maxEntries;
         }
         if (!matches.isEmpty()) {
-            popupList.setListData(matches.subList(0, count - 1).toArray());
+            popupList.setListData(matches.subList(0, count).toArray());
         }
         else {
             popupList.setListData(matches.toArray());

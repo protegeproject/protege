@@ -31,10 +31,8 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
     		                         boolean individuals, boolean datatypes) {
         TreeSet<OWLObject> set = new TreeSet<OWLObject>(new Comparator<OWLObject>() {
             public int compare(OWLObject o1, OWLObject o2) {
-                String ren1 = owlModelManager.getOWLObjectRenderer().render(o1,
-                                                                            owlModelManager.getOWLEntityRenderer());
-                String ren2 = owlModelManager.getOWLObjectRenderer().render(o2,
-                                                                            owlModelManager.getOWLEntityRenderer());
+                String ren1 = owlModelManager.getRendering(o1);
+                String ren2 = owlModelManager.getRendering(o2);
                 return ren1.compareTo(ren2);
             }
         });
