@@ -7,15 +7,17 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
 
 import javax.swing.*;
 import java.util.*;
 import java.util.List;
-import java.awt.event.HierarchyListener;
-import java.awt.event.HierarchyEvent;
+import java.awt.event.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -56,15 +58,45 @@ public class MetricsPanel extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
+    private JPopupMenu popupMenu;
 
-    public MetricsPanel(OWLEditorKit owlEditorKit) {
-        this.owlEditorKit = owlEditorKit;
-        try {
-            initialiseOWLView();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    private AxiomCountMetric lastMetric;
+
+    public MetricsPanel(OWLEditorKit editorKit) {
+        this.owlEditorKit = editorKit;
+        initialiseOWLView();
+        createPopupMenu();
+    }
+
+
+    private void createPopupMenu() {
+        popupMenu = new JPopupMenu();
+        popupMenu.add(new AbstractAction("Show axioms") {
+            public void actionPerformed(ActionEvent e) {
+                showAxiomTypeDialog();
+
+            }
+        });
+    }
+
+
+    private void showAxiomTypeDialog() {
+        Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
+        final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
+        Set<OWLAxiom> axs = new HashSet<OWLAxiom>(axioms);
+        panel.setRoot(axs);
+        panel.setPreferredSize(new Dimension(800, 300));
+        JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dlg = op.createDialog(this, lastMetric.getName());
+        dlg.setResizable(true);
+        dlg.addWindowListener(new WindowAdapter() {
+
+            public void windowClosed(WindowEvent e) {
+                panel.dispose();
+            }
+        });
+        dlg.setModal(false);
+        dlg.setVisible(true);
     }
 
 
@@ -100,7 +132,7 @@ public class MetricsPanel extends JPanel {
     };
 
 
-    protected void initialiseOWLView() throws Exception {
+    protected void initialiseOWLView() {
         metricManagerMap = new LinkedHashMap<String, OWLMetricManager>();
         tableModelMap = new HashMap<OWLMetricManager, MetricsTableModel>();
         createBasicMetrics();
@@ -117,6 +149,7 @@ public class MetricsPanel extends JPanel {
         for(OWLMetricManager man : metricManagerMap.values()) {
             for(OWLMetric m : man.getMetrics()) {
                 m.setImportsClosureUsed(true);
+                m.setOntology(owlEditorKit.getOWLModelManager().getActiveOntology());
             }
         }
     }
@@ -147,13 +180,75 @@ public class MetricsPanel extends JPanel {
         for (String metricsSet : metricManagerMap.keySet()) {
             MetricsTableModel tableModel = new MetricsTableModel(metricManagerMap.get(metricsSet));
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
-            JTable table = new JTable(tableModel);
+            final JTable table = new JTable(tableModel);
             table.setGridColor(Color.LIGHT_GRAY);
             table.setRowHeight(table.getRowHeight() + 4);
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
             table.getColumnModel().setColumnMargin(2);
-            JPanel tablePanel = new JPanel(new BorderLayout());
+            table.addMouseListener(new MouseAdapter() {
+
+                public void mousePressed(MouseEvent e) {
+                    if(e.isPopupTrigger()) {
+                        handleTablePopupRequest(table, e);
+                    }
+                }
+
+
+                public void mouseReleased(MouseEvent e) {
+                    if(e.isPopupTrigger()) {
+                        handleTablePopupRequest(table, e);
+                    }
+                }
+
+                private void handleTablePopupRequest(JTable table, MouseEvent e) {
+                    int row = table.rowAtPoint(e.getPoint());
+                    int col = table.columnAtPoint(e.getPoint());
+                    if(row == -1 || col == -1) {
+                        return;
+                    }
+                    MetricsTableModel model = (MetricsTableModel) table.getModel();
+                    for(OWLMetricManager man : tableModelMap.keySet()) {
+                        if(tableModelMap.get(man).equals(model)) {
+                            OWLMetric metric = man.getMetrics().get(row);
+                            if(metric instanceof AxiomCountMetric) {
+                                lastMetric = (AxiomCountMetric) metric;
+                                popupMenu.show(table, e.getX(), e.getY());
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
+
+            final JPanel tablePanel = new JPanel(new BorderLayout());
+            tablePanel.addMouseListener(new MouseAdapter() {
+
+                public void mousePressed(MouseEvent e) {
+                    if(e.isPopupTrigger()) {
+                        showMenu(e);
+                    }
+                }
+
+
+                public void mouseReleased(MouseEvent e) {
+                    if(e.isPopupTrigger()) {
+                        showMenu(e);
+                    }
+                }
+
+                private void showMenu(MouseEvent e) {
+                    JPopupMenu menu = new JPopupMenu();
+                    menu.add(new AbstractAction("Copy metrics to clipboard") {
+
+                        public void actionPerformed(ActionEvent e) {
+                            exportCSV();
+                        }
+                    });
+                    menu.show(tablePanel, e.getX(), e.getY());
+                }
+            });
             tablePanel.add(table);
             tablePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 14, 2),
                                                                     ComponentFactory.createTitledBorder(metricsSet)));
@@ -164,6 +259,11 @@ public class MetricsPanel extends JPanel {
         sp.setOpaque(false);
         add(sp);
     }
+
+
+
+
+
 
 
     private void createBasicMetrics() {
@@ -266,7 +366,7 @@ public class MetricsPanel extends JPanel {
     }
 
 
-    public void updateView(OWLOntology activeOntology) throws Exception {
+    public void updateView(OWLOntology activeOntology) {
         for (OWLMetricManager man : metricManagerMap.values()) {
             man.setOntology(activeOntology);
         }
@@ -274,5 +374,14 @@ public class MetricsPanel extends JPanel {
 
     private OWLModelManager getOWLModelManager() {
         return owlEditorKit.getOWLModelManager();
+    }
+
+    private void exportCSV() {
+        StringBuilder sb = new StringBuilder();
+        for(OWLMetricManager man : metricManagerMap.values()) {
+            sb.append(man.toString());
+        }
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(sb.toString()), null);
     }
 }
