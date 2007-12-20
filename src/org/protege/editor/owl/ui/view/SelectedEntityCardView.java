@@ -65,7 +65,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
                 processSelection();
             }
         });
-//        getView().setShowViewBar(false);
+        getView().setShowViewBar(false);
         processSelection();
     }
 
