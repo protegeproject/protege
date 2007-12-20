@@ -19,7 +19,7 @@ import org.semanticweb.owl.model.OWLObject;
  * Bio-Health Informatics Group<br>
  * Date: 23-Feb-2007<br><br>
  */
-public abstract class OWLFrameListPopupMenuAction<R extends OWLObject> extends AbstractAction {
+public abstract class OWLFrameListPopupMenuAction<R extends Object> extends AbstractAction {
 
     private OWLFrameList2<R> frameList;
 

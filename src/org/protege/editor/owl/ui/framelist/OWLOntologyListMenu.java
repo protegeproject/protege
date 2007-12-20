@@ -24,8 +24,6 @@ import org.semanticweb.owl.model.OWLOntology;
  */
 public class OWLOntologyListMenu extends JPopupMenu {
 
-    private static final Logger logger = Logger.getLogger(OWLOntologyListMenu.class);
-
     private OWLEditorKit owlEditorKit;
 
     private OntologySelectedHandler handler;
@@ -47,11 +45,11 @@ public class OWLOntologyListMenu extends JPopupMenu {
 
     public void show(Component invoker, int x, int y) {
         for (final OWLOntology ont : ontologies) {
-            String rendering = ont.getURI().toString();
+            StringBuilder rendering = new StringBuilder(ont.getURI().toString());
             if (owlEditorKit.getModelManager().getActiveOntology().equals(ont)) {
-                rendering += " (Active)";
+                rendering.append(" (Active)");
             }
-            add(new AbstractAction(rendering, OWLIcons.getIcon("ontology.png")) {
+            add(new AbstractAction(rendering.toString(), OWLIcons.getIcon("ontology.png")) {
                 public void actionPerformed(ActionEvent e) {
                     handler.ontologySelected(ont);
                 }

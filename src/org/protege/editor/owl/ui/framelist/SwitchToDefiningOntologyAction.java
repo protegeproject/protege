@@ -1,6 +1,9 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+
+import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -29,9 +32,43 @@ import org.semanticweb.owl.model.OWLAxiom;
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
- * Date: 17-Oct-2007<br><br>
+ * Date: 18-Dec-2007<br><br>
  */
-public interface ExplanationHandler {
+public class SwitchToDefiningOntologyAction<R> extends OWLFrameListPopupMenuAction<R> {
 
-    void handleExplain(OWLAxiom axiom);
+    protected String getName() {
+        return "Switch to defining ontology";
+    }
+
+
+    protected void initialise() throws Exception {
+    }
+
+
+    protected void dispose() throws Exception {
+    }
+
+
+    private OWLOntology getSelectedRowOntology() {
+        Object selVal = getFrameList().getSelectedValue();
+        if (selVal instanceof OWLFrameSectionRow) {
+            return ((OWLFrameSectionRow) selVal).getOntology();
+        }
+        else {
+            return null;
+        }
+    }
+
+
+    protected void updateState() {
+        setEnabled(getSelectedRowOntology() != null);
+    }
+
+
+    public void actionPerformed(ActionEvent e) {
+        OWLOntology ont = getSelectedRowOntology();
+        if (ont != null) {
+            getOWLModelManager().setActiveOntology(ont);
+        }
+    }
 }
