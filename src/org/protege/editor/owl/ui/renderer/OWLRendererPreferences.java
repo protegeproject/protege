@@ -28,6 +28,8 @@ public class OWLRendererPreferences {
 
     public static final String USE_THAT_KEYWORD = "USE_THAT_KEYWORD";
 
+    public static final String RENDER_DOMAIN_AXIOMS_AS_GCIS = "RENDER_DOMAIN_AXIOMS_AS_GCIS";
+
 
     private static OWLRendererPreferences instance;
 
@@ -42,6 +44,8 @@ public class OWLRendererPreferences {
     private boolean useThatKeyword;
 
     private String rendererClass;
+
+    private boolean renderDomainAxiomsAsGCIs;
 
 
     private OWLRendererPreferences() {
@@ -71,6 +75,7 @@ public class OWLRendererPreferences {
         highlightKeyWords = p.getBoolean(HIGHLIGHT_KEY_WORDS, true);
         useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
         rendererClass = p.getString(RENDERER_CLASS, OWLEntityRendererImpl.class.getName());
+        renderDomainAxiomsAsGCIs = p.getBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
     }
 
 
@@ -146,5 +151,14 @@ public class OWLRendererPreferences {
     public void setHighlightKeyWords(boolean highlightKeyWords) {
         this.highlightKeyWords = highlightKeyWords;
         getPreferences().putBoolean(HIGHLIGHT_KEY_WORDS, highlightKeyWords);
+    }
+
+    public void setRenderDomainAxiomsAsGCIs(boolean b) {
+        this.renderDomainAxiomsAsGCIs = b;
+        getPreferences().putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, b);
+    }
+
+    public boolean isRenderDomainAxiomsAsGCIs() {
+        return renderDomainAxiomsAsGCIs;
     }
 }
