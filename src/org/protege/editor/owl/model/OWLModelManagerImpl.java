@@ -22,6 +22,7 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.manchester.ManchesterSyntaxParser;
+import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.LabelledOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactoryImpl;
@@ -176,7 +177,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
 
         objectRenderer = new OWLObjectRendererImpl(this);
-        owlDescriptionParser = new ManchesterSyntaxParser();
+        owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
         owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
@@ -615,21 +616,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                     setActiveOntology(getActiveOntology(), true);
                     break;
                 }
-                // Might be commented out
-                if (isCommentedOut(change.getOntology(), axiom)) {
-                    if (change.isAxiomChange()) {
-                        if (change instanceof AddAxiom) {
-                            try {
-                                // If an axiom has been added then it can't be commented out - or can it?
-                                commentedOutOntologyManager.applyChange(new RemoveAxiom(commentedOutOntologyManager.getOntology(
-                                        change.getOntology().getURI()), change.getAxiom()));
-                            }
-                            catch (OWLOntologyChangeException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -1061,57 +1047,5 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private URI resolveMissingImport(URI logicalURI) {
         return missingImportHandler.getPhysicalURI(logicalURI);
-    }
-
-
-    public boolean isCommentedOut(OWLOntology ontology, OWLAxiom axiom) {
-        if (!commentedOutOntologyManager.contains(ontology.getURI())) {
-            return false;
-        }
-        OWLOntology comOnt = commentedOutOntologyManager.getOntology(ontology.getURI());
-        return comOnt.containsAxiom(axiom);
-    }
-
-
-    public void setCommentedOut(OWLOntology ontology, OWLAxiom axiom, boolean b) {
-        try {
-            if (!commentedOutOntologyManager.contains(ontology.getURI())) {
-                commentedOutOntologyManager.createOntology(ontology.getURI());
-            }
-            OWLOntology comOnt = commentedOutOntologyManager.getOntology(ontology.getURI());
-            OWLOntologyChange change;
-            OWLOntologyChange comOntchange;
-            if (b) {
-                comOntchange = new AddAxiom(comOnt, axiom);
-                change = new RemoveAxiom(ontology, axiom);
-            }
-            else {
-                comOntchange = new RemoveAxiom(comOnt, axiom);
-                change = new AddAxiom(ontology, axiom);
-            }
-            commentedOutOntologyManager.applyChange(comOntchange);
-            manager.applyChange(change);
-        }
-        catch (OWLOntologyCreationException e) {
-            throw new OWLRuntimeException(e);
-        }
-        catch (OWLOntologyChangeException e) {
-            throw new OWLRuntimeException(e);
-        }
-    }
-
-
-    public Set<OWLAxiom> getCommentedOutAxioms(OWLOntology ontology) {
-        if (!commentedOutOntologyManager.contains(ontology.getURI())) {
-            return Collections.emptySet();
-        }
-        else {
-            return commentedOutOntologyManager.getOntology(ontology.getURI()).getAxioms();
-        }
-    }
-
-
-    public Set<OWLOntology> getCommentOntologies() {
-        return commentedOutOntologyManager.getOntologies();
     }
 }
