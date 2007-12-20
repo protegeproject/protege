@@ -2,8 +2,8 @@ package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLOntologyManager;
+import com.clarkparsia.explanation.ReasonerFactory;
 
 
 /**
@@ -12,7 +12,7 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
+public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance, ReasonerFactory {
 
     void setup(OWLOntologyManager manager, String id, String name);
 
@@ -34,5 +34,7 @@ public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
      * create a <i>new</i> instance.
      * @param owlOntologyManager The manager to be used by the reaoner.
      */
-    OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) throws OWLException;
+    OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager);
+
+    
 }

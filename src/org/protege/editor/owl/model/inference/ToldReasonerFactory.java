@@ -13,7 +13,7 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  */
 public class ToldReasonerFactory extends ProtegeOWLReasonerFactoryAdapter {
 
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) throws OWLException {
+    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) {
         return null;
     }
 
@@ -23,5 +23,10 @@ public class ToldReasonerFactory extends ProtegeOWLReasonerFactoryAdapter {
 
 
     public void dispose() throws Exception {
+    }
+
+
+    public boolean requiresExplicitClassification() {
+        return false;
     }
 }
