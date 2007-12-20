@@ -27,7 +27,7 @@ public class NoOpReasonerFactory implements ProtegeOWLReasonerFactory {
     }
 
 
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) throws OWLException {
+    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) {
         return new NoOpReasoner(owlOntologyManager);
     }
 
@@ -38,4 +38,12 @@ public class NoOpReasonerFactory implements ProtegeOWLReasonerFactory {
 
     public void dispose() throws Exception {
     }
+
+
+    public boolean requiresExplicitClassification() {
+        return false;
+    }
+
+
+
 }
