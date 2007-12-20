@@ -66,6 +66,8 @@ public class OWLEntitySelectorPanel extends JPanel {
 
     private AssertedInferredHierarchyProvider<OWLClass> classHierarchyProvider;
 
+    private JSplitPane classHierarchySplitPane;
+
 
     public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
@@ -90,10 +92,14 @@ public class OWLEntitySelectorPanel extends JPanel {
 
     private void createUI() {
         setLayout(new BorderLayout(7, 7));
+        classHierarchySplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        classHierarchySplitPane.setBorder(null);
+        classHierarchySplitPane.setResizeWeight(0.8);
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(tabbedPane.getFont().deriveFont(Font.PLAIN, 11.0f));
-        add(tabbedPane, BorderLayout.CENTER);
-        createButtonPanel();
+        add(classHierarchySplitPane, BorderLayout.CENTER);
+        classHierarchySplitPane.setBottomComponent(tabbedPane);
+//        createButtonPanel();
         createClassTree();
         createObjectPropertyTree();
         createDataPropertyTree();
@@ -143,7 +149,8 @@ public class OWLEntitySelectorPanel extends JPanel {
                 setModelSelection(classTree.getSelectedOWLObject());
             }
         });
-        tabbedPane.add("Classes", createHierarchyHolder(classTree));
+        classHierarchySplitPane.setTopComponent(new JScrollPane(classTree));
+//        tabbedPane.add("Classes", createHierarchyHolder(classTree));
     }
 
     private void createObjectPropertyTree() {
@@ -265,13 +272,13 @@ public class OWLEntitySelectorPanel extends JPanel {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void handleReasonerChanged() {
-        String name = getOWLModelManager().getOWLReasonerManager().getCurrentReasonerName();
-        if(name.equals("None")) {
-            classHierarchyProvider.swapToAsserted();
-        }
-        else {
-            classHierarchyProvider.swapToInferred();
-        }
+//        String name = getOWLModelManager().getOWLReasonerManager().getCurrentReasonerName();
+//        if(name.equals("None")) {
+//            classHierarchyProvider.swapToAsserted();
+//        }
+//        else {
+//            classHierarchyProvider.swapToInferred();
+//        }
     }
 
 
