@@ -177,7 +177,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
 
         objectRenderer = new OWLObjectRendererImpl(this);
-        owlDescriptionParser = new ManchesterSyntaxParser();
+        owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
         owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
