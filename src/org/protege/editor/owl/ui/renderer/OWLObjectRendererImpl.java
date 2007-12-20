@@ -258,7 +258,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         for (Iterator<OWLConstant> it = node.getValues().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
-                write(" ");
+                write(", ");
             }
         }
         write("}");
@@ -277,6 +277,13 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         }
         write("]");
 //        writeCloseBracket(node);
+    }
+
+
+    public void visit(OWLDataComplementOf owlDataComplementOf) {
+        write("not(");
+        owlDataComplementOf.getDataRange().accept(this);
+        write(")");
     }
 
 
