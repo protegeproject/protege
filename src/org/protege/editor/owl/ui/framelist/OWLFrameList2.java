@@ -11,7 +11,6 @@ import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.view.*;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -23,8 +22,8 @@ import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /*
@@ -56,14 +55,20 @@ import java.util.logging.Logger;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
+ * <p/>
+ * An OWLFrameList2 is a common component that displays sections and section
+ * content.  Most of the standard component in protege use this.
  */
-public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable {
+public class OWLFrameList2<R extends Object> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable {
 
     private static final Logger logger = Logger.getLogger(OWLFrameList2.class.getName());
 
     public static final int BUTTON_DIMENSION = 14;
 
     public static final int BUTTON_MARGIN = 3;
+    
+    private static Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
+
 
     private OWLEditorKit editorKit;
 
@@ -76,62 +81,6 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     private List<MListButton> inferredRowButtons;
 
     private ChangeListenerMediator changeListenerMediator;
-
-    private Border inferredBorder = new Border() {
-
-        private Stroke stroke = new BasicStroke(1.0f,
-                                                BasicStroke.CAP_ROUND,
-                                                BasicStroke.JOIN_ROUND,
-                                                1.0f,
-                                                new float[]{3.0f, 3.0f},
-                                                1.0f);
-
-
-        /**
-         * Paints the border for the specified component with the specified
-         * position and size.
-         * @param c      the component for which this border is being painted
-         * @param g      the paint graphics
-         * @param x      the x position of the painted border
-         * @param y      the y position of the painted border
-         * @param width  the width of the painted border
-         * @param height the height of the painted border
-         */
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Color oldColor = g.getColor();
-            Graphics2D g2 = (Graphics2D) g;
-            Stroke oldStroke = g2.getStroke();
-            g2.setColor(Color.LIGHT_GRAY);
-            g2.setStroke(stroke);
-            g2.drawRect(x, y, width, height);
-            g2.setColor(oldColor);
-            g2.setStroke(oldStroke);
-        }
-
-
-        /**
-         * Returns the insets of the border.
-         * @param c the component for which this border insets value applies
-         */
-        public Insets getBorderInsets(Component c) {
-            return new Insets(1, 1, 1, 1);
-        }
-
-
-        /**
-         * Returns whether or not the border is opaque.  If the border
-         * is opaque, it is responsible for filling in it's own
-         * background when painting.
-         */
-        public boolean isBorderOpaque() {
-            return false;
-        }
-    };
-
-
-    // A flag to indicate whether or not sections
-    // should be shown in the list
-    private boolean showSections = true;
 
     private JPopupMenu popupMenu;
 
@@ -146,20 +95,27 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     private ExplanationHandler explanationHandler;
 
 
+
+
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
         this.editorKit = editorKit;
         this.frame = frame;
-        listener = new OWLFrameListener() {
-            public void frameContentChanged() throws Exception {
-                refillRows();
-            }
-        };
-        frame.addFrameListener(listener);
-
         cellRenderer = new OWLFrameListRenderer(editorKit);
+        mediator = new LinkedObjectComponentMediator(editorKit, this);
+
+        InputMap im = getInputMap(JComponent.WHEN_FOCUSED);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "DELETE_SEL");
+        ActionMap am = getActionMap();
+        am.put("DELETE_SEL", new AbstractAction() {
+
+            public void actionPerformed(ActionEvent e) {
+                handleDelete();
+            }
+        });
+        setupFrameListener();
+
         setCellRenderer(cellRenderer);
 
-        mediator = new LinkedObjectComponentMediator(editorKit, this);
 
         addMouseListener(new MouseAdapter() {
 
@@ -190,9 +146,6 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
         setupKeyboardAddHandler();
 
-        DropTarget dt = new DropTarget(this, this);
-        dt.setActive(true);
-
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
                 repaint();
@@ -203,11 +156,11 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         createPopupMenu();
 
         inferredRowButtons = new ArrayList<MListButton>();
-//        inferredRowButtons.add(new ExplainButton(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                handleExplain();
-//            }
-//        }));
+        inferredRowButtons.add(new ExplainButton(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                invokeExplanationHandler();
+            }
+        }));
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
@@ -220,12 +173,35 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         setUI(new OWLFrameListUI());
 
 
-        explanationHandler = new ExplanationHandler() {
+        explanationHandler = new OWLFrameListExplanationHandler(editorKit);
+    }
 
-            public void handleExplain() {
-                OWLFrameList2.this.handleExplain();
+    public OWLFrame<R> getFrame() {
+        return frame;
+    }
+
+    private void setupFrameListener() {
+        listener = new OWLFrameListener() {
+            public void frameContentChanged() throws Exception {
+                refillRows();
             }
         };
+        this.frame.addFrameListener(listener);
+    }
+
+
+    public void setHighlightUnsatifiableClasses(boolean b) {
+        cellRenderer.setHighlightUnsatisfiableClasses(b);
+    }
+
+
+    public void setHighlightUnsatisfiableProperties(boolean b) {
+        cellRenderer.setHighlightUnsatisfiableProperties(b);
+    }
+
+
+    public void setCrossedOutEntities(Set<OWLEntity> entities) {
+        cellRenderer.setCrossedOutEntities(entities);
     }
 
 
@@ -234,9 +210,6 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     }
 
 
-    public OWLFrame<R> getFrame() {
-        return frame;
-    }
 
 
     public void updateUI() {
@@ -263,9 +236,9 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 buttons = inferredRowButtons;
             }
         }
-        if(value instanceof AbstractOWLFrameSectionRow) {
+        if (value instanceof AbstractOWLFrameSectionRow) {
             List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
-            if(!additional.isEmpty()) {
+            if (!additional.isEmpty()) {
                 buttons = new ArrayList<MListButton>(buttons);
                 buttons.addAll(additional);
             }
@@ -294,17 +267,13 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     }
 
 
-    private void createPopupMenu() {
-        actions = new ArrayList<OWLFrameListPopupMenuAction<R>>();
-        popupMenu = new JPopupMenu();
-        addToPopupMenu(new SwitchToDefiningOntologyAction());
-        addToPopupMenu(new PullIntoActiveOntologyAction());
-        addToPopupMenu(new MoveAxiomsToOntologyAction());
+    public void setWrap(boolean b) {
+        cellRenderer.setWrap(b);
     }
 
 
-    public void setWrap(boolean b) {
-        cellRenderer.setWrap(b);
+    public Point getLastMouseDownPoint() {
+        return lastMouseDownPoint;
     }
 
 
@@ -313,6 +282,15 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
             action.updateState();
         }
         popupMenu.show(this, e.getX(), e.getY());
+    }
+
+
+    private void createPopupMenu() {
+        actions = new ArrayList<OWLFrameListPopupMenuAction<R>>();
+        popupMenu = new JPopupMenu();
+        addToPopupMenu(new SwitchToDefiningOntologyAction<R>());
+        addToPopupMenu(new PullIntoActiveOntologyAction<R>());
+        addToPopupMenu(new MoveAxiomsToOntologyAction<R>());
     }
 
 
@@ -362,19 +340,11 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     private void refillRows() {
         List<OWLFrameObject> rows = new ArrayList<OWLFrameObject>();
         for (OWLFrameSection<R, ? extends Object, ? extends Object> section : frame.getFrameSections()) {
-            if (showSections) {
-                rows.add(section);
-            }
+            rows.add(section);
             for (OWLFrameSectionRow row : section.getRows()) {
                 rows.add(row);
             }
         }
-//        if (rows.size() > 100) {
-//            setFixedCellHeight(24);
-//        }
-//        else {
-//            setFixedCellHeight(-1);
-//        }
         setListData(rows.toArray());
     }
 
@@ -387,7 +357,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
     public void handleDelete() {
         int[] selIndices = getSelectedIndices();
 
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<? extends OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (int selIndex : selIndices) {
             Object val = getModel().getElementAt(selIndex);
             if (val instanceof OWLFrameSectionRow) {
@@ -481,69 +451,34 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
                 }
             }
         });
-        OWLObject rootObject = null;
+        Object rootObject = null;
         if (frameObject instanceof OWLFrameSectionRow) {
             rootObject = ((OWLFrameSectionRow) frameObject).getFrameSection().getRootObject();
         }
         else if (frameObject instanceof OWLFrameSection) {
             rootObject = ((OWLFrameSection) frameObject).getRootObject();
         }
-        dlg.setTitle(editorKit.getOWLModelManager().getOWLObjectRenderer().render(rootObject,
-                                                                                  editorKit.getOWLModelManager().getOWLEntityRenderer()));
+
+        if (rootObject instanceof OWLObject) {
+            dlg.setTitle(editorKit.getOWLModelManager().getOWLObjectRenderer().render((OWLObject) rootObject,
+                                                                                      editorKit.getOWLModelManager().getOWLEntityRenderer()));
+        }
+        else if (rootObject != null) {
+            dlg.setTitle(rootObject.toString());
+        }
 
         dlg.setVisible(true);
     }
 
 
-    private Font sectionFont;
-
-
-    private Font getSectionFont() {
-        if (sectionFont == null) {
-            float fontSize = getGraphics().getFont().getSize() * 0.85f;
-            sectionFont = getGraphics().getFont().deriveFont(Font.PLAIN, fontSize);
+    private void invokeExplanationHandler() {
+        Object obj = getSelectedValue();
+        if (!(obj instanceof OWLFrameSectionRow)) {
+            return;
         }
-        return sectionFont;
-    }
-
-
-    private void handleExplain() {
-//        Object obj = getSelectedValue();
-//        if (!(obj instanceof OWLFrameSectionRow)) {
-//            return;
-//        }
-//        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
-//        OWLAxiom ax = row.getAxiom();
-//        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
-//        ax.accept(gen);
-//        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-//
-//        SatisfiabilityConverter satCon = new SatisfiabilityConverter(editorKit.getOWLModelManager().getOWLDataFactory());
-//        OWLDescription desc = satCon.convert(ax);
-//
-//        BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
-//        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
-//        bbexp.setOntology(ontology);
-//        OWLReasoner reasoner = editorKit.getOWLModelManager().getReasoner();
-//        bbexp.setReasoner(reasoner);
-//        bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
-//
-//
-//        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
-//
-//        ExplanationGenerator debugger = hstGen;
-//
-//
-//        Set<Set<OWLAxiom>> axs = debugger.getExplanations(desc);
-//        View view = editorKit.getOWLWorkspace().showResultsView("org.protege.editor.owl.ExplanationResultsView",
-//                                                                false,
-//                                                                Workspace.BOTTOM_RESULTS_VIEW);
-//        ExplanationResultsViewComponent viewComp = (ExplanationResultsViewComponent) view.getViewComponent();
-//        viewComp.setExplanation(ax, axs);
-//            View view = editorKit.getOWLWorkspace().showPopupView("org.protege.editor.owl.ExplanationResultsView");
-//            ExplanationResultsViewComponent expView = (ExplanationResultsViewComponent) view.getViewComponent();
-//
-//            expView.setExplanation(ax, axs);
+        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
+        OWLAxiom ax = row.getAxiom();
+        explanationHandler.handleExplain(ax);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -590,7 +525,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
     // DnD Stuff
 
-    boolean dragOver;
+    private boolean dragOver;
 
 
     public void dragEnter(DropTargetDragEvent dtde) {
@@ -673,10 +608,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
 
 
     public boolean canCopy() {
-        if (getRootObject() == null) {
-            return false;
-        }
-        return getSelectedIndex() != -1;
+        return getRootObject() != null && getSelectedIndex() != -1;
     }
 
 
@@ -751,191 +683,10 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
         throw new OWLRuntimeException("NOT ALLOWED");
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Common popup menu items
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    private class MoveAxiomsToOntologyAction extends OWLFrameListPopupMenuAction<R> implements OWLOntologyListMenu.OntologySelectedHandler {
-
-        protected String getName() {
-            return "Move axiom to ontology...";
-        }
-
-
-        protected void initialise() throws Exception {
-
-        }
-
-
-        protected void dispose() throws Exception {
-
-        }
-
-
-        protected void updateState() {
-            for (Object val : getFrameList().getSelectedValues()) {
-                if (!(val instanceof OWLFrameSectionRow)) {
-                    setEnabled(false);
-                    return;
-                }
-                else {
-                    if (((OWLFrameSectionRow) val).getOntology() == null) {
-                        setEnabled(false);
-                        return;
-                    }
-                }
-            }
-            setEnabled(true);
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            String title = "Select ontology to move to";
-            OWLOntologyListMenu menu = new OWLOntologyListMenu(title,
-                                                               editorKit,
-                                                               editorKit.getOWLModelManager().getOntologies(),
-                                                               this);
-            menu.show(OWLFrameList2.this, lastMouseDownPoint.x, lastMouseDownPoint.y);
-        }
-
-
-        public void ontologySelected(OWLOntology ontology) {
-            moveAxiomsToOntology(ontology);
-        }
-
-
-        private void moveAxiomsToOntology(OWLOntology ontology) {
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (OWLFrameSectionRow row : getSelectedRows()) {
-                OWLAxiom ax = row.getAxiom();
-                OWLOntology currentOnt = row.getOntology();
-                changes.add(new RemoveAxiom(currentOnt, ax));
-                changes.add(new AddAxiom(ontology, ax));
-            }
-            getOWLModelManager().applyChanges(changes);
-        }
-    }
-
-
-    private class PullIntoActiveOntologyAction extends OWLFrameListPopupMenuAction<R> {
-
-        protected String getName() {
-            return "Pull into active ontology";
-        }
-
-
-        protected void initialise() throws Exception {
-
-        }
-
-
-        protected void dispose() throws Exception {
-        }
-
-
-        protected void updateState() {
-            for (OWLFrameSectionRow row : getSelectedRows()) {
-                if (row.getOntology() == null || row.getOntology().equals(editorKit.getOWLModelManager().getActiveOntology())) {
-                    setEnabled(false);
-                    return;
-                }
-            }
-            setEnabled(!getSelectedRows().isEmpty());
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (OWLFrameSectionRow row : getSelectedRows()) {
-                OWLAxiom ax = row.getAxiom();
-                OWLOntology currentOnt = row.getOntology();
-                changes.add(new RemoveAxiom(currentOnt, ax));
-                changes.add(new AddAxiom(editorKit.getOWLModelManager().getActiveOntology(), ax));
-            }
-            getOWLModelManager().applyChanges(changes);
-        }
-    }
-
-
-    private class SwitchToDefiningOntologyAction extends OWLFrameListPopupMenuAction<R> {
-
-        protected String getName() {
-            return "Switch to defining ontology";
-        }
-
-
-        protected void initialise() throws Exception {
-        }
-
-
-        protected void dispose() throws Exception {
-        }
-
-
-        private OWLOntology getSelectedRowOntology() {
-            Object selVal = getFrameList().getSelectedValue();
-            if (selVal instanceof OWLFrameSectionRow) {
-                return ((OWLFrameSectionRow) selVal).getOntology();
-            }
-            else {
-                return null;
-            }
-        }
-
-
-        protected void updateState() {
-            setEnabled(getSelectedRowOntology() != null);
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            OWLOntology ont = getSelectedRowOntology();
-            if (ont != null) {
-                getOWLModelManager().setActiveOntology(ont);
-            }
-        }
-    }
-
-
-    private class OWLAxiomComparator extends OWLAxiomVisitorAdapter implements Comparator<OWLAxiom> {
-
-
-        public void visit(OWLSubClassAxiom axiom) {
-            result = 2;
-        }
-
-
-        public void visit(OWLEquivalentClassesAxiom axiom) {
-            result = 1;
-        }
-
-
-        public void visit(OWLDisjointClassesAxiom axiom) {
-            result = 0;
-        }
-
-
-        private int result;
-
-
-        public int compare(OWLAxiom o1, OWLAxiom o2) {
-            result = 0;
-            o1.accept(this);
-            int result1 = result;
-            o2.accept(this);
-            int result2 = result;
-            int diff = result2 - result1;
-            if (diff != 0) {
-                return diff;
-            }
-            else {
-                return -1;
-            }
-        }
-    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     /**
@@ -1091,7 +842,7 @@ public class OWLFrameList2<R extends OWLObject> extends MList implements LinkedO
             Insets insets = list.getInsets();
             int x;
             int w;
-            int y = insets.top;
+            int y;
             int h;
 
             x = insets.left;
