@@ -7,6 +7,7 @@ import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.expression.OWLEntityChecker;
 import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.vocab.Namespaces;
+import org.semanticweb.owl.vocab.XSDVocabulary;
 import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxDescriptionParser;
 
 import java.net.URI;
@@ -70,7 +71,13 @@ public class ManchesterOWLSyntaxParser implements OWLDescriptionParser {
 
 
             public OWLDataType getOWLDataType(String string) {
-                return owlModelManager.getOWLDataFactory().getOWLDataType(URI.create(Namespaces.XSD + string));
+                String fullName = Namespaces.XSD + string;
+                for(XSDVocabulary v : XSDVocabulary.values()) {
+                    if(v.toString().equals(fullName)) {
+                        return owlModelManager.getOWLDataFactory().getOWLDataType(URI.create(Namespaces.XSD + string));
+                    }
+                }
+                return null;
             }
 
 
