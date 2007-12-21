@@ -89,7 +89,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.transfer,
  org.protege.editor.owl.ui.tree,
  org.protege.editor.owl.ui.view
-Bundle-Version: 4.0.7
+Bundle-Version: 4.0.8
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
  org.protege.editor.core.application,
