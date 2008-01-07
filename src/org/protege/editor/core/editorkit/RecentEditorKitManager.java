@@ -14,6 +14,8 @@ import java.util.prefs.Preferences;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileManager;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
 
 
 /**
@@ -61,6 +63,18 @@ public class RecentEditorKitManager {
         return new ArrayList<EditorKitDescriptor>(editorKitDescriptors);
     }
 
+    public void pruneInvalidDescriptors() {
+
+        for(EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
+            EditorKitFactory factory = plugin.newInstance();
+            for(Iterator<EditorKitDescriptor> it = editorKitDescriptors.iterator(); it.hasNext(); ) {
+                if(!factory.isValidDescriptor(it.next())) {
+                    it.remove();
+                }
+            }
+        }
+    }
+
 
     public void clear() {
         editorKitDescriptors.clear();
@@ -93,6 +107,7 @@ public class RecentEditorKitManager {
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(prefsBytes));
             editorKitDescriptors = (List<EditorKitDescriptor>) ois.readObject();
             ois.close();
+            pruneInvalidDescriptors();
         }
         catch (Exception e) {
             logger.error(e);

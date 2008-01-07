@@ -39,4 +39,15 @@ public interface EditorKitFactory {
 
 
     public EditorKit createEditorKit() throws Exception;
+
+
+    /**
+     * Determines if the editor kit descriptor is valid.  A descriptor
+     * might not be valid because the original set of files or file that
+     * the descriptor describes may have been moved or deleted for example.
+     * @param descriptor The descriptor, which will have the same id as this
+     * editor kit factory
+     * @return <code>true</code> if the descriptor is valid, otherwise false.
+     */
+    public boolean isValidDescriptor(EditorKitDescriptor descriptor);
 }

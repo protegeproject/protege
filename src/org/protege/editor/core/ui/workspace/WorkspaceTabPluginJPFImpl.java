@@ -112,6 +112,11 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
         PluginUtilities util = PluginUtilities.getInstance();
         Bundle contributor = util.getBundle(extension);
         String resource = PluginProperties.getParameterValue(extension, DEFAULT_VIEW_CONFIG_FILE_NAME_PARAM, null);
-        return contributor.getResource(resource);
+        if (resource != null) {
+            return contributor.getResource(resource);
+        }
+        else {
+            return null;
+        }
     }
 }
