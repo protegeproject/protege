@@ -158,7 +158,6 @@ public class ProtegeApplication implements BundleActivator {
     protected ProtegeApplication initApplication(String args[]) throws Exception {
         PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
-        loadRecentEditorKits();
         loadPreferences();
         setupExceptionHandler();
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -168,6 +167,7 @@ public class ProtegeApplication implements BundleActivator {
         });
         processCommandLineURIs(args);
         loadPlugins();
+        loadRecentEditorKits();
         return this;
     }
 
