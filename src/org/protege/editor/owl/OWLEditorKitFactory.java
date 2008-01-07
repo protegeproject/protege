@@ -3,9 +3,11 @@ package org.protege.editor.owl;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.io.File;
 
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactory;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
 
 
 /**
@@ -46,5 +48,19 @@ public class OWLEditorKitFactory implements EditorKitFactory {
             }
         }
         return false;
+    }
+
+
+    public boolean isValidDescriptor(EditorKitDescriptor descriptor) {
+        URI uri = descriptor.getURI(OWLEditorKit.URI_KEY);
+        if(uri == null) {
+            return false;
+        }
+        if(uri.getScheme().equals("file")) {
+            File file = new File(uri);
+            return file.exists();
+        }
+        return true;
+
     }
 }
