@@ -36,7 +36,7 @@ public class OWLTreePreferences {
 
     private static OWLTreePreferences instance;
 
-    private static final String TREE_PREFS_KEY = "TREE_PREFS";
+    private static final String TREE_PREFS_KEY = "TREE_PREFERENCES";
 
     private static final String AUTO_EXPAND_ENABLED_KEY = "AUTO_EXPAND_ENABLED_KEY";
 
@@ -75,7 +75,7 @@ public class OWLTreePreferences {
     }
 
     public boolean isAutoExpandEnabled() {
-        return getPreferences().getBoolean(AUTO_EXPAND_ENABLED_KEY, true);
+        return getPreferences().getBoolean(AUTO_EXPAND_ENABLED_KEY, false);
     }
 
     public void setAutoExpansionEnabled(boolean enabled) {
