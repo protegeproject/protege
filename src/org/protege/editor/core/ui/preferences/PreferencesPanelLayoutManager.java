@@ -43,9 +43,9 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
 
     private JComponent baseComponent;
 
-    int prefHeight = 0;
+    int prefHeight = 500;
 
-    int prefWidth = 0;
+    int prefWidth = 200;
 
 
     public PreferencesPanelLayoutManager(JComponent component) {
@@ -145,6 +145,8 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
                 curY = curY + prefSize.height + ROW_MARGIN;
             }
         }
+        this.prefWidth = curX;
+        this.prefHeight = curY;
     }
 
 
