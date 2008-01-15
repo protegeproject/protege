@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -28,6 +29,22 @@ public abstract class MListButton {
     protected MListButton(String name, Color rollOverColor, ActionListener actionListener) {
         this.name = name;
         this.rollOverColor = rollOverColor;
+        this.actionListener = actionListener;
+        if(actionListener == null) {
+            actionListener = new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                }
+            };
+        }
+    }
+
+    protected MListButton(String name, Color rollOverColor) {
+        this(name, rollOverColor, null);
+    }
+
+
+    public void setActionListener(ActionListener actionListener) {
         this.actionListener = actionListener;
     }
 
