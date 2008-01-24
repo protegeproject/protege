@@ -6,10 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -42,10 +39,6 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
     private Map<Component, JLabel> labelMap;
 
     private JComponent baseComponent;
-
-    int prefHeight = 500;
-
-    int prefWidth = 200;
 
 
     public PreferencesPanelLayoutManager(JComponent component) {
@@ -100,6 +93,31 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
 
 
     public Dimension preferredLayoutSize(Container parent) {
+        Insets insets = parent.getInsets();
+        int prefWidth = insets.left + insets.right + GUTTER_WIDTH;
+        int prefHeight = insets.top + insets.bottom;
+        int maxLabelWidth = 0;
+        for (JLabel label : labelMap.values()) {
+            int labelPrefWidth = label.getPreferredSize().width;
+            if (labelPrefWidth > maxLabelWidth) {
+                maxLabelWidth = labelPrefWidth;
+            }
+        }
+        prefWidth = prefWidth + maxLabelWidth;
+
+        int maxComponentPrefWidth = 0;
+        for (Iterator<Component> it = compList.iterator(); it.hasNext(); ) {
+            Component c = it.next();
+            Dimension prefCompSize = c.getPreferredSize();
+            if(prefCompSize.width > maxComponentPrefWidth) {
+                maxComponentPrefWidth = prefCompSize.width;
+            }
+            prefHeight = prefHeight + prefCompSize.height;
+            if(it.hasNext()) {
+                prefHeight = prefHeight + ROW_MARGIN;
+            }
+        }
+        prefWidth += maxComponentPrefWidth;
         return new Dimension(prefWidth, prefHeight);
     }
 
@@ -145,8 +163,6 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
                 curY = curY + prefSize.height + ROW_MARGIN;
             }
         }
-        this.prefWidth = curX;
-        this.prefHeight = curY;
     }
 
 
