@@ -69,7 +69,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         inverseFunctionalCB = new JCheckBox("Inverse functional");
         transitiveCB = new JCheckBox("Transitive");
         symmetricCB = new JCheckBox("Symmetric");
-        antiSymmetricCB = new JCheckBox("Antisymmetric");
+        antiSymmetricCB = new JCheckBox("Asymmetric");
         reflexiveCB = new JCheckBox("Reflexive");
         irreflexiveCB = new JCheckBox("Irreflexive");
 
