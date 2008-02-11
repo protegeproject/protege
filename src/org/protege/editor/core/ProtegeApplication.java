@@ -353,6 +353,7 @@ public class ProtegeApplication implements BundleActivator {
                 logger.info("Installed plugin " + name);
                 if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && b.getResource("/plugin.xml") == null) {
                     logger.warn("\t" + name + " Plugin has no plugin.xml resource");
+                    logger.info("\t Add a " + BUNDLE_WITHOUT_PLUGIN_XML + " entry in the manifest if this is deliberate.");
                 }
                     
             }
