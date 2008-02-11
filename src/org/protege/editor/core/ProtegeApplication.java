@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.LookAndFeel;
@@ -73,6 +74,8 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
+    
+    public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
 
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
@@ -348,6 +351,10 @@ public class ProtegeApplication implements BundleActivator {
                     name = b.getSymbolicName();
                 }
                 logger.info("Installed plugin " + name);
+                if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && b.getResource("/plugin.xml") == null) {
+                    logger.warn("\t" + name + " Plugin has no plugin.xml resource");
+                }
+                    
             }
             catch (Throwable t) {
                 logger.error("Could not start bundle " + b.getSymbolicName() + ": " + t);
