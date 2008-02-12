@@ -73,7 +73,7 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
 
     private String [] disjointClassesAxiomSymbolChoices = new String [] {"disjointWith", "\u2192 not", "\u2291 \u00AC"};
 
-    private Action cancelAction = new AbstractAction("Cancel") {
+    private Action cancelAction = new AbstractAction("Stop") {
 
         public void actionPerformed(ActionEvent e) {
             handleCancel();
@@ -124,7 +124,7 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
         add(new JScrollPane(frameList));
         explanations = new HashSet<Set<OWLAxiom>>();
         JPanel buttonPanel = new JPanel(new BorderLayout());
-//        buttonPanel.add(new JButton(cancelAction), BorderLayout.EAST);
+        buttonPanel.add(new JButton(cancelAction), BorderLayout.EAST);
         add(buttonPanel, BorderLayout.SOUTH);
 
         final JCheckBox hightlightUnsatisfiableClasses = new JCheckBox("Highlight unsatisfiable classes");
