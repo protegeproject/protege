@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.semanticweb.owl.util.*;
+import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,8 +72,8 @@ public class ExportInferredOntologyPanel extends JPanel {
     }
 
 
-    public List<InferredAxiomGenerator> getInferredAxiomGenerators() {
-        List<InferredAxiomGenerator> result = new ArrayList<InferredAxiomGenerator>();
+    public List<InferredAxiomGenerator<? extends OWLAxiom>> getInferredAxiomGenerators() {
+        List<InferredAxiomGenerator<? extends OWLAxiom>> result = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
         for (JCheckBox checkBox : map.keySet()) {
             if (checkBox.isSelected()) {
                 result.add(map.get(checkBox));

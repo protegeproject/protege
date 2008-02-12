@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.semanticweb.owl.util.InferredAxiomGenerator;
+import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,7 +60,7 @@ public class ExportInferredOntologyWizardSelectAxiomsPanel extends AbstractOWLWi
     }
 
 
-    public List<InferredAxiomGenerator> getInferredAxiomGenerators() {
+    public List<InferredAxiomGenerator<? extends OWLAxiom>> getInferredAxiomGenerators() {
         return exportInferredOntologyPanel.getInferredAxiomGenerators();
     }
 
