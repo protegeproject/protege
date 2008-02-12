@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.explanation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -9,14 +11,23 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.*;
 import java.util.List;
+import java.net.URI;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.inference.OWLReasoner;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.inference.OWLReasonerAdapter;
+import org.semanticweb.owl.util.InferredAxiomGenerator;
+import org.semanticweb.owl.util.InferredSubClassAxiomGenerator;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.frame.ExplanationFrame;
-import org.protege.editor.owl.ui.frame.ExplanationFrameSectionRow;
+import org.protege.editor.owl.ui.framelist.ExplanationFrameList;
+import org.protege.editor.owl.ui.framelist.ConfigurableFrameListExplanationHandler;
+import org.protege.editor.owl.ui.frame.*;
 import org.protege.editor.owl.ui.view.Copyable;
+import org.protege.editor.owl.ui.list.OWLAxiomList;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import com.clarkparsia.explanation.util.ExplanationProgressMonitor;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -56,12 +67,20 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
 
     private OWLAxiom axiom;
 
+    private String [] subClassAxiomSymbolChoices = new String [] {"\u2192", "subClassOf", "\u2291"};
+
+    private String [] equivalentClassesAxiomSymbolChoices = new String [] {"\u2194", "equivalentTo", "\u2263"};
+
+    private String [] disjointClassesAxiomSymbolChoices = new String [] {"disjointWith", "\u2192 not", "\u2291 \u00AC"};
+
     private Action cancelAction = new AbstractAction("Cancel") {
 
         public void actionPerformed(ActionEvent e) {
             handleCancel();
         }
     };
+
+    private List<Action> frameSectionRowActions;
 
     private boolean cancelled;
 
@@ -83,22 +102,29 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
 
     };
 
-    private OWLFrameList2<OWLAxiom> frameList;
+    private ExplanationFrameList frameList;
 
     private ExplanationFrame explanationFrame;
+
+    private JComboBox subClassAxiomSymbolCombo;
+
+    private JComboBox equivClassesAxiomSymbolCombo;
+
+    private JCheckBox obfuscateNamesCheckBox;
 
     public ExplanationGeneratorPanel(OWLAxiom axiom, OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
         this.axiom = axiom;
         explanationFrame = new ExplanationFrame(owlEditorKit);
-        frameList = new OWLFrameList2<OWLAxiom>(owlEditorKit, explanationFrame);
+        frameList = new ExplanationFrameList(owlEditorKit);
+        explanationFrame = frameList.getFrame();
         explanationFrame.setRootObject(null);
         frameList.setWrap(false);
         setLayout(new BorderLayout(7, 7));
         add(new JScrollPane(frameList));
         explanations = new HashSet<Set<OWLAxiom>>();
         JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(new JButton(cancelAction), BorderLayout.EAST);
+//        buttonPanel.add(new JButton(cancelAction), BorderLayout.EAST);
         add(buttonPanel, BorderLayout.SOUTH);
 
         final JCheckBox hightlightUnsatisfiableClasses = new JCheckBox("Highlight unsatisfiable classes");
@@ -109,28 +135,174 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
                 explanationFrame.refill();
             }
         });
-        add(hightlightUnsatisfiableClasses, BorderLayout.NORTH);
-        add(new JButton(new AbstractAction("Copy to clipboard") {
+        obfuscateNamesCheckBox = new JCheckBox("Obfuscate entity names", explanationFrame.isObfuscateNames());
+        obfuscateNamesCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanationFrame.setObfuscateNames(obfuscateNamesCheckBox.isSelected());
+            }
+        });
+        explanationFrame.setObfuscateNames(obfuscateNamesCheckBox.isSelected());
+
+        JPanel formattingPanel = new JPanel();
+        formattingPanel.setLayout(new PreferencesPanelLayoutManager(formattingPanel));
+        formattingPanel.add(hightlightUnsatisfiableClasses, null);
+        subClassAxiomSymbolCombo = new JComboBox(subClassAxiomSymbolChoices);
+        formattingPanel.add(subClassAxiomSymbolCombo, "Subclass axiom symbol");
+        subClassAxiomSymbolCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanationFrame.setSubClassAxiomSymbol(subClassAxiomSymbolCombo.getSelectedItem().toString());
+            }
+        });
+        explanationFrame.setSubClassAxiomSymbol(subClassAxiomSymbolCombo.getSelectedItem().toString());
+
+        equivClassesAxiomSymbolCombo = new JComboBox(equivalentClassesAxiomSymbolChoices);
+        formattingPanel.add(equivClassesAxiomSymbolCombo, "Equivalent classes axiom symbol");
+        equivClassesAxiomSymbolCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanationFrame.setEquivalentClassesAxiomSymbol(equivClassesAxiomSymbolCombo.getSelectedItem().toString());
+            }
+        });
+        explanationFrame.setEquivalentClassesAxiomSymbol(equivClassesAxiomSymbolCombo.getSelectedItem().toString());
+
+        final JComboBox disjointClassesAxiomSymbolCombo = new JComboBox(disjointClassesAxiomSymbolChoices);
+        formattingPanel.add(disjointClassesAxiomSymbolCombo, "Disjoint classes axiom symbol");
+        disjointClassesAxiomSymbolCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanationFrame.setDisjointClassesAxiomSymbol(disjointClassesAxiomSymbolCombo.getSelectedItem().toString());                
+            }
+        });
+
+        formattingPanel.add(obfuscateNamesCheckBox, null);
+        final JCheckBox useOrderingCheckBox = new JCheckBox("Use ordering", explanationFrame.isUseOrdering());
+        useOrderingCheckBox.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                handleCopy();
+                explanationFrame.setUseOrdering(useOrderingCheckBox.isSelected());
             }
-        }), BorderLayout.NORTH);
+        });
+        formattingPanel.add(useOrderingCheckBox, null);
+
+        JPanel northPanel = new JPanel(new BorderLayout(7, 7));
+        add(northPanel, BorderLayout.NORTH);
+
+        northPanel.add(formattingPanel, BorderLayout.WEST);
+        JPanel actionPanelHolder = new JPanel(new BorderLayout());
+        northPanel.add(actionPanelHolder, BorderLayout.EAST);
+        JPanel actionPanel = new JPanel(new GridLayout(2, 1));
+        actionPanelHolder.add(actionPanel, BorderLayout.SOUTH);
 
 
+        Action extractOntologyAction = new AbstractAction("Extract ontology...") {
+            public void actionPerformed(ActionEvent e) {
+                extractOntology();
+            }
+        };
+        frameList.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if(!e.getValueIsAdjusting()) {
+                    updateFrameSectionActions();
+                }
+            }
+        });
+        frameSectionRowActions = new ArrayList<Action>();
+        frameSectionRowActions.add(extractOntologyAction);
 
+        Action viewJustificationEntailments = new AbstractAction("View justification entailments...") {
+
+            public void actionPerformed(ActionEvent e) {
+                showAtomicEntailments();
+            }
+        };
+
+        actionPanel.add(new JButton(viewJustificationEntailments));
+        frameSectionRowActions.add(viewJustificationEntailments);
+        updateFrameSectionActions();
+        actionPanel.add(new JButton(extractOntologyAction));
+    }
+
+    private void showAtomicEntailments() {
+        Object selVal = frameList.getSelectedValue();
+        if(selVal == null) {
+            return;
+        }
+        ExplanationFrameSection section = null;
+        if(selVal instanceof ExplanationFrameSection) {
+            section = (ExplanationFrameSection) selVal;
+        }
+        else if(selVal instanceof ExplanationFrameSectionRow) {
+            section = ((ExplanationFrameSectionRow) selVal).getFrameSection();
+        }
+        if(section == null) {
+            return;
+        }
+        try {
+            Set<OWLAxiom> axioms = section.getAxioms();
+            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            OWLOntology ont = manager.createOntology(URI.create("http://another.com/ont"));
+            for(OWLAxiom ax : axioms) {
+                manager.applyChange(new AddAxiom(ont, ax));
+            }
+            OWLReasoner reasoner = owlEditorKit.getOWLModelManager().getOWLReasonerManager().createReasoner(manager);
+//            AtomicEntailmentsCountMetric metric = new AtomicEntailmentsCountMetric(owlEditorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+           
+            AxiomListFrame listFrame = new AxiomListFrame(owlEditorKit);
+            OWLFrameList2<Set<OWLAxiom>> frameList2 = new OWLFrameList2<Set<OWLAxiom>>(owlEditorKit, listFrame);
+//            Set<OWLAxiom> entailedAxioms = metric.getEntailments(axioms);
+
+//            entailedAxioms.remove(axiom);
+//            frameList2.setRootObject(entailedAxioms);
+            frameList2.setExplanationHandler(new ConfigurableFrameListExplanationHandler(owlEditorKit, reasoner, ont));
+            JScrollPane sp = new JScrollPane(frameList2);
+            sp.setPreferredSize(new Dimension(600, 400));
+            JOptionPane op = new JOptionPane(sp, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
+            JDialog dlg = op.createDialog(this, "Justification entailments");
+            dlg.setModal(false);
+            dlg.setResizable(true);
+            dlg.setVisible(true);
+        }
+//        catch(ExplanationMetricException e) {
+//            e.printStackTrace();
+//        }
+        catch(OWLOntologyChangeException e) {
+            e.printStackTrace();
+        }
+        catch (OWLOntologyCreationException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void extractOntology() {
+        Object selVal = frameList.getSelectedValue();
+        if(selVal == null) {
+            return;
+        }
+        ExplanationFrameSection section = null;
+        if(selVal instanceof ExplanationFrameSection) {
+            section = (ExplanationFrameSection) selVal;
+        }
+        else if(selVal instanceof ExplanationFrameSectionRow) {
+            section = ((ExplanationFrameSectionRow) selVal).getFrameSection();
+        }
+        if(section == null) {
+            return;
+        }
+        section.extractOntology();
+    }
+
+    private void updateFrameSectionActions() {
+        Object selVal = frameList.getSelectedValue();
+        boolean valid = selVal instanceof OWLFrameSection ||
+                selVal instanceof OWLFrameSectionRow;
+        for(Action action : frameSectionRowActions) {
+            action.setEnabled(valid);
+        }
     }
 
     private void handleCancel() {
         cancelAction.setEnabled(false);
         cancelled = true;
     }
-
-
-    public Dimension getPreferredSize() {
-        return new Dimension(500, 400);
-    }
-
 
     private void handleFoundExplanation(Set<OWLAxiom> set) {
         explanations.add(set);
@@ -192,7 +364,6 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
                 sb.append(") ");
                 String ren = owlEditorKit.getOWLModelManager().getRendering(ax);
                 ren = ren.replace("\n", " ");
-                ren = ren.replace("\t", " ");
                 ren = ren.replaceAll("\\s+", " ");
                 sb.append(ren);
                 sb.append("\n");
