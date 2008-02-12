@@ -5,6 +5,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owl.util.InferredAxiomGenerator;
+import org.semanticweb.owl.model.OWLAxiom;
 
 import java.net.URI;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ExportInferredOntologyWizard extends Wizard {
     }
 
 
-    public List<InferredAxiomGenerator> getInferredAxiomGenerators() {
+    public List<InferredAxiomGenerator<? extends OWLAxiom>> getInferredAxiomGenerators() {
         return axiomsPanel.getInferredAxiomGenerators();
     }
 

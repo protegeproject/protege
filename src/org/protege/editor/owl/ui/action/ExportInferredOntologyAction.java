@@ -53,7 +53,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
             if (ret != Wizard.FINISH_RETURN_CODE) {
                 return;
             }
-            List<InferredAxiomGenerator> inferredAxiomGenerator = wizard.getInferredAxiomGenerators();
+            List<InferredAxiomGenerator<? extends OWLAxiom>> inferredAxiomGenerator = wizard.getInferredAxiomGenerators();
 
             OWLOntologyManager tempMan = OWLManager.createOWLOntologyManager();
             InferredOntologyGenerator gen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(),
