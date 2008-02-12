@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -92,7 +90,7 @@ public class PreferencesDialogPanel extends JPanel {
 
 
     public Dimension getPreferredSize() {
-        return new Dimension(600, 400);
+        return new Dimension(600, 600);
     }
 
 
@@ -102,11 +100,11 @@ public class PreferencesDialogPanel extends JPanel {
         if (c != null) {
             panel.tabbedPane.setSelectedComponent(c);
         }
-        int ret = JOptionPane.showConfirmDialog(null,
-                                                panel,
-                                                "Preferences",
-                                                JOptionPane.OK_CANCEL_OPTION,
-                                                JOptionPane.PLAIN_MESSAGE);
+        JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dlg = op.createDialog(editorKit.getWorkspace(), "Preferences");
+        dlg.setResizable(true);
+        dlg.setVisible(true);
+        int ret = (Integer) op.getValue();
         if (ret == JOptionPane.OK_OPTION) {
             panel.applyPreferences();
         }
