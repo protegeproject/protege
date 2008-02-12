@@ -3,6 +3,13 @@ package org.protege.editor.owl.ui.renderer;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.util.logging.Logger;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -30,6 +37,13 @@ public class OWLRendererPreferences {
 
     public static final String RENDER_DOMAIN_AXIOMS_AS_GCIS = "RENDER_DOMAIN_AXIOMS_AS_GCIS";
 
+    public static final String FONT_SIZE = "FONT_SIZE";
+
+    public static final String FONT_NAME = "FONT_NAME";
+
+    public static final int DEFAULT_FONT_SIZE = 14;
+
+    public static final String DEFAULT_FONT_NAME = "Courier";
 
     private static OWLRendererPreferences instance;
 
@@ -46,6 +60,47 @@ public class OWLRendererPreferences {
     private String rendererClass;
 
     private boolean renderDomainAxiomsAsGCIs;
+
+    private int fontSize;
+
+    private String fontName = DEFAULT_FONT_NAME;
+
+    private Font font;
+
+
+    public Font getFont() {
+       return font;
+    }
+
+
+    public String getFontName() {
+        return fontName;
+    }
+
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+        getPreferences().putString(FONT_NAME, fontName);
+        resetFont();
+
+    }
+
+    private void resetFont() {
+        font = new Font(this.fontName, Font.PLAIN, fontSize);
+    }
+
+
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+        getPreferences().putInt(FONT_SIZE, fontSize);
+        resetFont();
+    }
 
 
     private OWLRendererPreferences() {
@@ -75,7 +130,11 @@ public class OWLRendererPreferences {
         highlightKeyWords = p.getBoolean(HIGHLIGHT_KEY_WORDS, true);
         useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
         rendererClass = p.getString(RENDERER_CLASS, OWLEntityRendererImpl.class.getName());
-        renderDomainAxiomsAsGCIs = p.getBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
+        renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
+        fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
+        fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
+        resetFont();
+
     }
 
 
@@ -85,6 +144,7 @@ public class OWLRendererPreferences {
         highlightChangedEntities = false;
         highlightKeyWords = true;
         useThatKeyword = false;
+        fontSize = DEFAULT_FONT_SIZE;
     }
 
 

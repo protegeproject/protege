@@ -1,23 +1,16 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
 
@@ -43,7 +36,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JList annotationPropertiesList;
 
-
     private JCheckBox highlightAOStatementsCheckBox;
 
     private JCheckBox showHyperlinksCheckBox;
@@ -51,6 +43,10 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
     private JCheckBox highlightKeyWordsCheckBox;
 
     private JCheckBox useThatAsSynonymForAndCheckBox;
+
+    private JSpinner fontSizeSpinner;
+
+    private JComboBox fontCombo;
 
 
     public void applyChanges() {
@@ -71,6 +67,10 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
         prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
+        prefs.setFontSize((Integer) fontSizeSpinner.getValue());
+        prefs.setFontName(fontCombo.getSelectedItem().toString());
+        getOWLEditorKit().getOWLWorkspace().refreshComponents();
+
     }
 
 
@@ -142,12 +142,32 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
                                                        prefs.isUseThatKeyword());
 
         Box optBox = new Box(BoxLayout.Y_AXIS);
+        optBox.setAlignmentX(0.0f);
         optBox.setBorder(ComponentFactory.createTitledBorder("Appearance"));
         optBox.add(highlightAOStatementsCheckBox);
         optBox.add(showHyperlinksCheckBox);
         optBox.add(highlightKeyWordsCheckBox);
         optBox.add(useThatAsSynonymForAndCheckBox);
         holderBox.add(optBox);
+        
+
+        JPanel fontSizePanel = new JPanel();
+        PreferencesPanelLayoutManager man = new PreferencesPanelLayoutManager(fontSizePanel);
+        fontSizePanel.setLayout(man);
+        fontSizePanel.setBorder(ComponentFactory.createTitledBorder("Font"));
+        fontSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getFontSize(), 1, 120, 1));
+        fontSizePanel.add("Font size", fontSizeSpinner);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font [] fonts = ge.getAllFonts();
+        ArrayList<String> fontNames = new ArrayList<String>();
+        for(Font f : fonts) {
+            fontNames.add(f.getName());
+        }
+        fontCombo = new JComboBox(fontNames.toArray());
+        fontSizePanel.add("Font", fontCombo);
+        fontCombo.setSelectedItem(prefs.getFontName());
+
+        holderBox.add(fontSizePanel);
     }
 
 
