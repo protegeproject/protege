@@ -229,8 +229,8 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     }
 
 
-    protected Object getObjectRendering(Object ob) {
-        return ob.toString();
+    protected Object getObjectRendering(OWLObject ob) {
+        return getOWLModelManager().getRendering(ob);
     }
 
 
@@ -250,7 +250,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         for (Iterator it = getManipulatableObjects().iterator(); it.hasNext();) {
             Object obj = it.next();
             if (obj instanceof OWLObject) {
-                sb.append(getObjectRendering(obj));
+                sb.append(getObjectRendering((OWLObject) obj));
             }
             else {
                 sb.append(obj.toString());

@@ -42,6 +42,8 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
 
     private OWLModelManager owlModelManager;
 
+    private OWLDescription focusedDescription;
+
 
     public OWLDescriptionComparator(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -49,7 +51,25 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
     }
 
 
+    public OWLDescription getFocusedDescription() {
+        return focusedDescription;
+    }
+
+
+    public void setFocusedDescription(OWLDescription focusedDescription) {
+        this.focusedDescription = focusedDescription;
+    }
+
+
     public int compare(OWLDescription o1, OWLDescription o2) {
+        if(focusedDescription != null) {
+            if(o1.equals(focusedDescription)) {
+                return -1;
+            }
+            else if(o2.equals(focusedDescription)) {
+                return -1;
+            }
+        }
         o1.accept(typeVisitor);
         int type1 = typeVisitor.getType();
         o2.accept(typeVisitor);

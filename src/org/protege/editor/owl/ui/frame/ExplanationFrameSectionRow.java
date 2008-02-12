@@ -3,10 +3,19 @@ package org.protege.editor.owl.ui.frame;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.io.OWLObjectRenderer;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.core.ui.list.MListButton;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import uk.ac.manchester.cs.owl.dlsyntax.DLSyntaxObjectRenderer;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -41,12 +50,14 @@ public class ExplanationFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAx
 
     private OWLAxiom axiom;
 
+    private List<MListButton> additionalButtons;
+
     public ExplanationFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology, OWLAxiom rootObject,
                                       OWLAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
         this.axiom = axiom;
+        additionalButtons = new ArrayList<MListButton>();
     }
-
 
     protected OWLAxiom createAxiom(OWLAxiom editedObject) {
         return editedObject;
@@ -71,4 +82,55 @@ public class ExplanationFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAx
     public List<? extends OWLObject> getManipulatableObjects() {
         return Arrays.asList(axiom);
     }
+
+
+    public List<MListButton> getAdditionalButtons() {
+        if(getOntology() == null) {
+            return Collections.emptyList();
+        }
+        else {
+            return additionalButtons;    
+        }
+
+    }
+
+
+    public ExplanationFrameSection getFrameSection() {
+        return (ExplanationFrameSection) super.getFrameSection();
+    }
+
+
+    public String getPrefix() {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < getFrameSection().getIndent(getAxiom()); i++) {
+            sb.append("\t");
+        }
+        return sb.toString();
+    }
+
+
+    protected Object getObjectRendering(OWLObject ob) {
+        OWLObjectRenderer ren = getFrameSection().getFrame().getRenderer();
+        if (ren != null) {
+            return ren.render(ob);
+        }
+        else {
+            return super.getObjectRendering(ob);
+        }
+    }
+
+
+    public String getRendering() {
+        String ren = super.getRendering();
+        ExplanationFrame explanationFrame = ((ExplanationFrame) getFrameSection().getFrame());
+        if(explanationFrame.isObfuscateNames()) {
+            ren = getFrameSection().replaceNames(ren);
+        }
+        ren = ren.replace("subClassOf", explanationFrame.getSubClassAxiomSymbol());
+        ren = ren.replace("equivalentTo", explanationFrame.getEquivalentClassesAxiomSymbol());
+        ren = ren.replace("disjointWith", explanationFrame.getDisjointClassesAxiomSymbol());
+        return ren;
+    }
+    
+
 }

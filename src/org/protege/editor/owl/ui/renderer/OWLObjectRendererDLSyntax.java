@@ -77,6 +77,11 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
+    public void setFocusedObject(OWLObject object) {
+        
+    }
+
+
     public void setup(OWLModelManager owlModelManager) {
     }
 

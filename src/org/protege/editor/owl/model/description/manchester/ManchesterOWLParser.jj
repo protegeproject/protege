@@ -470,6 +470,7 @@ OWLClassAxiom ParseClassAxiom() :
     }
 }
 
+
 SWRLRule ParseRule() :
 {
     List<SWRLAtom> body;

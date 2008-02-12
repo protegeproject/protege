@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.protege.editor.owl.ui.explanation.ExplanationGeneratorPanel;
@@ -48,25 +45,36 @@ import javax.swing.*;
 public class OWLFrameListExplanationHandler implements ExplanationHandler {
 
     private OWLEditorKit editorKit;
-
+    
 
     public OWLFrameListExplanationHandler(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
     }
 
+    protected OWLDataFactory getOWLDataFactory() {
+        return editorKit.getOWLModelManager().getOWLDataFactory();
+    }
+
+    protected OWLReasoner getReasoner() {
+        return editorKit.getOWLModelManager().getReasoner();
+    }
+
+    protected OWLOntology getOntology() {
+        return editorKit.getOWLModelManager().getActiveOntology();
+    }
 
     public void handleExplain(OWLAxiom ax) {
-        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory());
+        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(getOWLDataFactory());
         ax.accept(gen);
         OWLOntologyManager man = OWLManager.createOWLOntologyManager();
 
-        SatisfiabilityConverter satCon = new SatisfiabilityConverter(editorKit.getOWLModelManager().getOWLDataFactory());
+        SatisfiabilityConverter satCon = new SatisfiabilityConverter(getOWLDataFactory());
         final OWLDescription desc = satCon.convert(ax);
 
         BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
-        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
+        OWLOntology ontology = getOntology();
         bbexp.setOntology(ontology);
-        OWLReasoner reasoner = editorKit.getOWLModelManager().getReasoner();
+        OWLReasoner reasoner = getReasoner();
         bbexp.setReasoner(reasoner);
         bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
 

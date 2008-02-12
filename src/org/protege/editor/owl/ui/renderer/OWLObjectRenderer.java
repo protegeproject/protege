@@ -15,4 +15,6 @@ import org.semanticweb.owl.model.OWLObject;
 public interface OWLObjectRenderer {
 
     public String render(OWLObject object, OWLEntityRenderer entityRenderer);
+
+    public void setFocusedObject(OWLObject object);
 }

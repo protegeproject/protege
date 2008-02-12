@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -95,6 +96,10 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         editorKit.getOWLModelManager().addOntologyChangeListener(listener);
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = null;
         comparator = getRowComparator();
+    }
+
+    public List<MListButton> getAdditionalButtons() {
+        return Collections.emptyList();
     }
 
     protected void handleChanges(List<? extends OWLOntologyChange> changes) {
