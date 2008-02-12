@@ -23,8 +23,10 @@ import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObject;
 
@@ -43,7 +45,7 @@ import org.semanticweb.owl.model.OWLObject;
  * that the text is well formed and provides feedback if the
  * text is not well formed.
  */
-public class ExpressionEditor<O> extends JTextPane {
+public class ExpressionEditor<O> extends JTextPane implements RefreshableComponent {
 
 
     private static Logger logger = Logger.getLogger(ExpressionEditor.class);
@@ -121,8 +123,15 @@ public class ExpressionEditor<O> extends JTextPane {
                 checkExpression();
             }
         });
+        refreshComponent();
         OWLDescriptionAutoCompleter completer = new OWLDescriptionAutoCompleter(owlEditorKit, this, checker);
         createStyles();
+
+    }
+
+
+    public void refreshComponent() {
+        setFont(OWLRendererPreferences.getInstance().getFont());
     }
 
 

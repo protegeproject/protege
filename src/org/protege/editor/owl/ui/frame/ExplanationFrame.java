@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.io.OWLObjectRenderer;
 import org.protege.editor.owl.OWLEditorKit;
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntax;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Set;
-import java.util.Collections;
 import java.util.HashSet;
+
+import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -43,6 +43,19 @@ public class ExplanationFrame extends AbstractOWLFrame<OWLAxiom> {
 
     private OWLEditorKit owlEditorKit;
 
+    private String subClassAxiomSymbol = "subClassOf";
+
+    private String equivalentClassesAxiomSymbol = "equivalentTo";
+
+    private String disjointClassesAxiomSymbol = "disjointWith";
+
+    private boolean obfuscateNames = true;
+
+    private boolean useOrdering = true;
+
+    private OWLObjectRenderer renderer = null;
+
+
     public ExplanationFrame(OWLEditorKit owlEditorKit) {
         super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
         this.owlEditorKit = owlEditorKit;
@@ -58,5 +71,69 @@ public class ExplanationFrame extends AbstractOWLFrame<OWLAxiom> {
             count++;
         }
         setRootObject(axiom);
+    }
+
+
+    public void setRenderer(OWLObjectRenderer renderer) {
+        this.renderer = renderer;
+    }
+
+
+    public OWLObjectRenderer getRenderer() {
+        return renderer;
+    }
+
+
+    public String getSubClassAxiomSymbol() {
+        return subClassAxiomSymbol;
+    }
+
+    public String getEquivalentClassesAxiomSymbol() {
+        return equivalentClassesAxiomSymbol;
+    }
+
+
+    public void setSubClassAxiomSymbol(String subClassAxiomSymbol) {
+        this.subClassAxiomSymbol = subClassAxiomSymbol;
+        fireContentChanged();
+    }
+
+
+    public void setEquivalentClassesAxiomSymbol(String equivalentClassesAxiomSymbol) {
+        this.equivalentClassesAxiomSymbol = equivalentClassesAxiomSymbol;
+        fireContentChanged();
+    }
+
+
+    public String getDisjointClassesAxiomSymbol() {
+        return disjointClassesAxiomSymbol;
+    }
+
+
+    public void setDisjointClassesAxiomSymbol(String disjointClassesAxiomSymbol) {
+        this.disjointClassesAxiomSymbol = disjointClassesAxiomSymbol;
+        fireContentChanged();
+    }
+
+
+    public boolean isUseOrdering() {
+        return useOrdering;
+    }
+
+
+    public void setUseOrdering(boolean useOrdering) {
+        this.useOrdering = useOrdering;
+        refill();
+    }
+
+
+    public boolean isObfuscateNames() {
+        return obfuscateNames;
+    }
+
+
+    public void setObfuscateNames(boolean obfuscateNames) {
+        this.obfuscateNames = obfuscateNames;
+        fireContentChanged();
     }
 }

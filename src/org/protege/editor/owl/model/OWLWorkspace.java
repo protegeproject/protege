@@ -165,11 +165,17 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         keyWordColorMap.put("or", logicalOpColor);
         keyWordColorMap.put("not", logicalOpColor);
         keyWordColorMap.put("subClassOf", axiomColor);
+        keyWordColorMap.put("SubClassOf", axiomColor);
         keyWordColorMap.put("disjointWith", axiomColor);
+        keyWordColorMap.put("DisjointWith", axiomColor);
         keyWordColorMap.put("equivalentTo", axiomColor);
+        keyWordColorMap.put("EquivalentTo", axiomColor);
         keyWordColorMap.put("domainOf", axiomColor);
+        keyWordColorMap.put("DomainOf", axiomColor);
         keyWordColorMap.put("rangeOf", axiomColor);
+        keyWordColorMap.put("RangeOf", axiomColor);
         keyWordColorMap.put("instanceOf", axiomColor);
+        keyWordColorMap.put("InstanceOf", axiomColor);
         keyWordColorMap.put("minus", queryColor);
         keyWordColorMap.put("plus", queryColor);
         keyWordColorMap.put("possibly", queryColor);

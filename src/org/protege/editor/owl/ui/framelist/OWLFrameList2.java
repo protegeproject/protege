@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.*;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
@@ -59,7 +60,7 @@ import java.util.logging.Logger;
  * An OWLFrameList2 is a common component that displays sections and section
  * content.  Most of the standard component in protege use this.
  */
-public class OWLFrameList2<R extends Object> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable {
+public class OWLFrameList2<R extends Object> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
 
     private static final Logger logger = Logger.getLogger(OWLFrameList2.class.getName());
 
@@ -176,6 +177,12 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
         explanationHandler = new OWLFrameListExplanationHandler(editorKit);
     }
 
+
+    public void refreshComponent() {
+        refillRows();
+    }
+
+
     public OWLFrame<R> getFrame() {
         return frame;
     }
@@ -230,18 +237,20 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
 
 
     protected List<MListButton> getButtons(Object value) {
-        List<MListButton> buttons = super.getButtons(value);
+        List<MListButton> buttons = new ArrayList<MListButton>(super.getButtons(value));
         if (value instanceof OWLFrameSectionRow) {
             if (((OWLFrameSectionRow) value).isInferred()) {
-                buttons = inferredRowButtons;
+                buttons.addAll(inferredRowButtons);
             }
         }
         if (value instanceof AbstractOWLFrameSectionRow) {
             List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
             if (!additional.isEmpty()) {
-                buttons = new ArrayList<MListButton>(buttons);
                 buttons.addAll(additional);
             }
+        }
+        if(value instanceof AbstractOWLFrameSection) {
+            buttons.addAll(((AbstractOWLFrameSection) value).getAdditionalButtons());
         }
         return buttons;
     }

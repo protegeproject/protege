@@ -1,12 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.protege.editor.owl.OWLEditorKit;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
+import java.util.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -41,8 +39,11 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
 
     private RowComparator rowComparator = new RowComparator();
 
+    private Set<OWLAxiom> added;
+
     public AxiomListFrameSection(OWLEditorKit editorKit, OWLFrame<Set<OWLAxiom>> owlFrame) {
         super(editorKit, "Axioms", owlFrame);
+        added = new HashSet<OWLAxiom>();
     }
 
 
@@ -66,7 +67,18 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
     }
 
 
+    protected void refillInferred() throws OWLReasonerException {
+        Set<OWLAxiom> axs = getRootObject();
+        for(OWLAxiom ax : axs) {
+            if (!added.contains(ax)) {
+                addRow(new AxiomListFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
+            }
+        }
+    }
+
+
     protected void clear() {
+        added.clear();
     }
 
 

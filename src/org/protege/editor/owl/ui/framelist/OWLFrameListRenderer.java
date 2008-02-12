@@ -184,20 +184,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
 
     protected Object getValueToRender(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (value instanceof AbstractOWLFrameSectionRow) {
-            AbstractOWLFrameSectionRow row = (AbstractOWLFrameSectionRow) value;
-            StringBuilder sb = new StringBuilder();
-            sb.append(row.getPrefix());
-            for (Iterator<? extends OWLObject> it = row.getManipulatableObjects().iterator(); it.hasNext();) {
-                Object curObj = it.next();
-                OWLObjectRenderer ren = getOWLEditorKit().getOWLModelManager().getOWLObjectRenderer();
-                OWLEntityRenderer entRen = getOWLEditorKit().getOWLModelManager().getOWLEntityRenderer();
-                sb.append(ren.render(((OWLObject) curObj), entRen));
-                if (it.hasNext()) {
-                    sb.append(row.getDelimeter());
-                }
-            }
-            sb.append(row.getSuffix());
-            return sb.toString();
+            ((AbstractOWLFrameSectionRow) value).getRendering();
         }
         return value;
     }

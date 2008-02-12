@@ -30,7 +30,6 @@ import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -120,12 +119,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean highlightUnsatisfiableClasses = true;
 
-    private boolean highlightUnsatisfiableProperties = true;
+    private boolean highlightUnsatisfiableProperties = false;
 
     private Set<OWLEntity> crossedOutEntities;
 
     private boolean focusedEntityIsSelectedEntity;
 
+    private Set<String> unsatisfiableNames;
+
+    private Set<String> boxedNames;
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
@@ -151,13 +153,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<OWLObject>();
-        setFontSize(10);
+        setupFont();
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
         renderingComponent.setOpaque(false);
         iconLabel = new JLabel("");
         iconLabel.setVerticalAlignment(JLabel.TOP);
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
+//        textPane.setFont(new Font("courier", Font.PLAIN, 16));
         iconLabel.setOpaque(false);
         renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -174,6 +177,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
         crossedOutEntities = new HashSet<OWLEntity>();
+        unsatisfiableNames = new HashSet<String>();
+        boxedNames = new HashSet<String>();
         prepareStyles();
     }
 
@@ -188,6 +193,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    public void setUnsatisfiableNames(Set<String> unsatisfiableNames) {
+        this.unsatisfiableNames.clear();
+        this.unsatisfiableNames.addAll(unsatisfiableNames);
+    }
+
+
     public void setHighlightKeywords(boolean hightlighKeywords) {
         this.highlightKeywords = hightlighKeywords;
     }
@@ -199,7 +210,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     public void setHighlightUnsatisfiableProperties(boolean highlightUnsatisfiableProperties) {
-        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
+//        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
     }
 
 
@@ -222,6 +233,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         crossedOutEntities.addAll(entities);
     }
 
+    public void addBoxedName(String name) {
+        boxedNames.add(name);
+    }
+
+    public boolean isBoxedName(String name) {
+        return boxedNames.contains(name);
+    }
+
     public void reset() {
         iconObject = null;
         trasparent = false;
@@ -235,7 +254,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         highlightUnsatisfiableProperties = true;
         crossedOutEntities.clear();
         focusedEntityIsSelectedEntity = false;
-//        highlightKeywords = true;
+        unsatisfiableNames.clear();
     }
 
 
@@ -292,10 +311,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    private void setFontSize(int fontSize) {
-        plainFont = new Font("symbol", Font.PLAIN, fontSize);
+    private void setupFont() {
+        plainFont = OWLRendererPreferences.getInstance().getFont();
 //        plainFont = new Font("lucida grande", Font.PLAIN, fontSize);
         boldFont = plainFont.deriveFont(Font.BOLD);
+        textPane.setFont(plainFont);
+    }
+
+    protected int getFontSize() {
+        return OWLRendererPreferences.getInstance().getFontSize();
     }
 
 
@@ -586,6 +610,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style strikeOutStyle;
 
+    private Style fontSizeStyle;
 
     private void prepareStyles() {
         StyledDocument doc = textPane.getStyledDocument();
@@ -600,7 +625,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        StyleConstants.setForeground(plainStyle, Color.BLACK);
         StyleConstants.setItalic(plainStyle, false);
         StyleConstants.setSpaceAbove(plainStyle, 0);
-        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
+//        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
 
         boldStyle = doc.addStyle("BOLD_STYLE", null);
         StyleConstants.setBold(boldStyle, true);
@@ -637,15 +662,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         StyleConstants.setStrikeThrough(strikeOutStyle, true);
         StyleConstants.setBold(strikeOutStyle, false);
 
+        fontSizeStyle = doc.addStyle("FONT_SIZE", null);
+        StyleConstants.setFontSize(fontSizeStyle, 40);
     }
 
 
     private void prepareTextPane(Object value, boolean selected) {
+
         textPane.setBorder(null);
         String theVal = value.toString();
         if (!wrap) {
             theVal = theVal.replace('\n', ' ');
-            theVal = theVal.replace('\t', ' ');
             theVal = theVal.replaceAll(" [ ]+", " ");
         }
         textPane.setText(theVal);
@@ -710,7 +737,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         // Highlight text
-        StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n'", true);
+        StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
         OWLEntity curEntity = null;
         boolean linkRendered = false;
         int tokenStartIndex = 0;
@@ -756,41 +783,21 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                             }
                         }
                         catch (OWLReasonerException e) {
-                            e.printStackTrace();
-//                            throw new OWLRuntimeException(e);
                         }
                     }
                     else if(highlightUnsatisfiableProperties && entity instanceof OWLObjectProperty) {
-                        try {
-                            OWLObjectProperty prop = (OWLObjectProperty) entity;
-                            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
-                            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
-                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                            }
-                        }
-                        catch (OWLReasonerException e) {
-                            e.printStackTrace();
-                        }
+                        highlightPropertyIfUnsatisfiable(entity, doc, tokenStartIndex, tokenLength);
                     }
-                    if(crossedOutEntities.contains(entity)) {
-                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, strikeOutStyle, false);
-                    }
-                    if(focusedEntityIsSelectedEntity) {
-                        OWLEntity selEnt = owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
-                        if(selEnt != null) {
-                            if(entity.equals(selEnt)) {
-                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
-                            }
-                        }
-                    }
-                    // We did have a check here for changed entities
-                    if (!styleSet) {
-//                        C = getColor(entity, textPane.getForeground());
+                    strikeoutEntityIfCrossedOut(entity, doc, tokenStartIndex, tokenLength);
+                }
+                else {
+                    if (highlightUnsatisfiableClasses && unsatisfiableNames.contains(curToken)) {
+                        // Paint red because of inconsistency
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                     }
                 }
             }
             try {
-                boolean isLink = false;
                 if (curEntity != null && renderLinks) {
                     Rectangle startRect = textPane.modelToView(tokenStartIndex);
                     Rectangle endRect = textPane.modelToView(tokenStartIndex + tokenLength);
@@ -809,7 +816,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                                 if (tokenRect.contains(mouseCellLocation)) {
                                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
                                     linkedObjectComponent.setLinkedObject(curEntity);
-                                    isLink = true;
                                     linkRendered = true;
                                 }
                             }
@@ -830,8 +836,35 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    private void strikeoutEntityIfCrossedOut(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
+                                             int tokenLength) {
+        if(crossedOutEntities.contains(entity)) {
+            doc.setCharacterAttributes(tokenStartIndex, tokenLength, strikeOutStyle, false);
+        }
+    }
+
+
+    private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
+                                                  int tokenLength) {
+        try {
+            OWLObjectProperty prop = (OWLObjectProperty) entity;
+            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
+            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+            }
+        }
+        catch (OWLReasonerException e) {
+        }
+    }
+
+
     private void resetStyles(StyledDocument doc) {
         doc.setParagraphAttributes(0, doc.getLength(), plainStyle, true);
+        StyleConstants.setFontSize(fontSizeStyle, getFontSize());
+        Font f = OWLRendererPreferences.getInstance().getFont();
+        StyleConstants.setFontFamily(fontSizeStyle, f.getFamily());
+        doc.setParagraphAttributes(0, doc.getLength(), fontSizeStyle, false);
+        setupFont();
     }
 
 

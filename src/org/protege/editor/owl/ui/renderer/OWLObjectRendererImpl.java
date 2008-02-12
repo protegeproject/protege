@@ -46,6 +46,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     private Map<URI, Boolean> simpleRenderDatatypes;
 
+    private OWLObject focusedObject;
 
     public OWLObjectRendererImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -74,6 +75,19 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void dispose() {
+    }
+
+
+    public OWLObject getFocusedObject() {
+        return focusedObject;
+    }
+
+
+    public void setFocusedObject(OWLObject focusedObject) {
+        this.focusedObject = focusedObject;
+        if(focusedObject instanceof OWLDescription) {
+            comparator.setFocusedDescription((OWLDescription) focusedObject);
+        }
     }
 
 
