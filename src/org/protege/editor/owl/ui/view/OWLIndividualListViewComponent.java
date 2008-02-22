@@ -1,33 +1,29 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JScrollPane;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLEntityCollector;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
-import org.semanticweb.owl.util.OWLEntityCollector;
+
+import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -183,8 +179,17 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         }
         for(OWLEntity ent : removedCollector.getObjects()) {
             if(ent instanceof OWLIndividual) {
-                if(individualsInList.remove((OWLIndividual) ent)) {
-                    mod = true;
+                boolean stillReferenced = false;
+                for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
+                    if (ont.containsIndividualReference(ent.getURI())){
+                        stillReferenced = true;
+                        break;
+                    }
+                }
+                if (!stillReferenced){
+                    if(individualsInList.remove((OWLIndividual) ent)) {
+                        mod = true;
+                    }
                 }
             }
         }
