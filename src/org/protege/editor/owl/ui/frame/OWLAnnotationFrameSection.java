@@ -1,13 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.net.URI;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.semanticweb.owl.model.*;
+
+import java.util.Comparator;
 
 
 /**
@@ -20,11 +18,12 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
     private static final String LABEL = "Annotations";
 
-    private static OWLAnnotationSectionRowComparator comparator = new OWLAnnotationSectionRowComparator();
+    private static OWLAnnotationSectionRowComparator comparator;
 
 
     public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLEntity> frame) {
         super(editorKit, LABEL, frame);
+        comparator = new OWLAnnotationSectionRowComparator(editorKit.getOWLModelManager());
     }
 
 
@@ -86,18 +85,15 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
     private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> {
 
+        private OWLObjectComparator<OWLAnnotationAxiom> owlObjectComparator;
+
+        public OWLAnnotationSectionRowComparator(OWLModelManager owlModelManager) {
+             owlObjectComparator = new OWLObjectComparator<OWLAnnotationAxiom>(owlModelManager);
+        }
 
         public int compare(OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o1,
                            OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o2) {
-            String fragment1 =  o1.getAxiom().getAnnotation().getAnnotationURI().getFragment();
-            if(fragment1 == null) {
-                fragment1 = o1.getAxiom().getAnnotation().getAnnotationURI().toString();
-            }
-            String fragment2 =  o2.getAxiom().getAnnotation().getAnnotationURI().getFragment();
-            if(fragment2 == null) {
-                fragment2 = o2.getAxiom().getAnnotation().getAnnotationURI().toString();
-            }
-            return fragment1.compareTo(fragment2);
+                return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
         }
     }
 }
