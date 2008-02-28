@@ -1,14 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLDescriptionComparator;
@@ -17,6 +8,9 @@ import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
+
+import java.net.URI;
+import java.util.*;
 
 
 /**
@@ -511,15 +505,10 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     public void visit(OWLObjectOneOf node) {
         write("{");
-        int size = node.getIndividuals().size();
-        int count = 0;
-        int indent = getIndent();
         for (Iterator<OWLIndividual> it = node.getIndividuals().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
-//                write("\n");
-//                insertIndent(indent);
-                write(" ");
+                write(", ");
             }
         }
         write("}");
