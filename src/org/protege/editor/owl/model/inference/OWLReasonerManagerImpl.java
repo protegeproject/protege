@@ -1,11 +1,5 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
-
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
@@ -20,6 +14,11 @@ import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.NullProgressMonitor;
 import org.semanticweb.owl.util.ProgressMonitor;
+
+import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
 
 
 /**
@@ -103,9 +102,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
             // all ontologies.
             currentReasoner.clearOntologies();
             reload = true;
-            if (currentReasoner.isClassified()) {
-                classifyAsynchronously();
-            }
+            
+// reclassification on every active ontology change
+//            if (currentReasoner.isClassified()) {
+//                classifyAsynchronously();
+//            }
         }
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);
