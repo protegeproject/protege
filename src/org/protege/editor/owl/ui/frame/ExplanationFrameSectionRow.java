@@ -1,21 +1,17 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.io.OWLObjectRenderer;
-import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.io.OWLObjectRenderer;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLOntology;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.util.List;
 
-import uk.ac.manchester.cs.owl.dlsyntax.DLSyntaxObjectRenderer;
 /*
  * Copyright (C) 2007, University of Manchester
  *
