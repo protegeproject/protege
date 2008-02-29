@@ -7,6 +7,9 @@
                 <Component label="Ontology Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyAnnotationsView"/>
                 </Component>
+                <Component label="Inferred axioms">
+                    <Property id="pluginId" value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
+                </Component>
             </CNode>
 
             <CNode>
