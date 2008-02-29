@@ -120,23 +120,25 @@
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Increase font size"/>
-        <path value="org.protege.editor.core.application.menu.window/SlotD-A"/>
-        <toolTip value="Increase the font size"/>
-        <class value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>
-        <editorKitId value="any"/>
-        <accelerator value="EQUALS"/>
-    </extension>
+    <!-- Got rid of increase/decrease font size menu items in favour of a fonts preferences panel -->
 
-    <extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Decrease font size"/>
-        <path value="org.protege.editor.core.application.menu.window/SlotD-B"/>
-        <toolTip value="Decrease the font size"/>
-        <class value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>
-        <editorKitId value="any"/>
-        <accelerator value="MINUS"/>
-    </extension>
+    <!--<extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">-->
+        <!--<name value="Increase font size"/>-->
+        <!--<path value="org.protege.editor.core.application.menu.window/SlotD-A"/>-->
+        <!--<toolTip value="Increase the font size"/>-->
+        <!--<class value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>-->
+        <!--<editorKitId value="any"/>-->
+        <!--<accelerator value="EQUALS"/>-->
+    <!--</extension>-->
+
+    <!--<extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">-->
+        <!--<name value="Decrease font size"/>-->
+        <!--<path value="org.protege.editor.core.application.menu.window/SlotD-B"/>-->
+        <!--<toolTip value="Decrease the font size"/>-->
+        <!--<class value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>-->
+        <!--<editorKitId value="any"/>-->
+        <!--<accelerator value="MINUS"/>-->
+    <!--</extension>-->
 
     <!-- View menu -->
 
