@@ -1,24 +1,21 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.JScrollPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -90,6 +87,11 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLDataProper
     }
 
 
+    public Set<OWLDataProperty> getSelectedProperties() {
+        return new HashSet<OWLDataProperty>(tree.getSelectedOWLObjects());
+    }
+
+    
     private void createSubProperty() {
         if (tree.getSelectedOWLObject() == null) {
             return;

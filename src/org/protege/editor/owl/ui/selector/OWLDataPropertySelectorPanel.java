@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.Color;
-
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -10,6 +8,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLDataProperty;
+
+import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -62,6 +63,9 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel {
         return view.getSelectedDataProperty();
     }
 
+    public Set<OWLDataProperty> getSelectedOWLDataProperties() {
+        return view.getSelectedProperties();
+    }
 
     public void dispose() {
         view.dispose();
