@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.frame.OWLOntologyFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.metrics.MetricsPanel;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -85,5 +85,4 @@ public class OWLOntologyDisplayPanel extends JPanel {
             e.printStackTrace();
         }
     }
-
 }
