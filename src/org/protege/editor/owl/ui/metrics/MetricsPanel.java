@@ -1,23 +1,21 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.semanticweb.owl.metrics.*;
-import org.semanticweb.owl.model.*;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
+import org.semanticweb.owl.metrics.*;
+import org.semanticweb.owl.model.AxiomType;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
-import java.util.*;
-import java.util.List;
-import java.awt.event.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -53,8 +51,6 @@ public class MetricsPanel extends JPanel {
     private Map<String, OWLMetricManager> metricManagerMap;
 
     private Map<OWLMetricManager, MetricsTableModel> tableModelMap;
-
-    private boolean update;
 
     private OWLEditorKit owlEditorKit;
 
@@ -100,38 +96,6 @@ public class MetricsPanel extends JPanel {
     }
 
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                try {
-                    updateView(getOWLModelManager().getActiveOntology());
-                }
-                catch (Exception e) {
-                    ProtegeApplication.getErrorLog().logError(e);
-                }
-            }
-        }
-    };
-
-    private OWLOntologyChangeListener ontologyChangeListener = new OWLOntologyChangeListener() {
-
-        public void ontologiesChanged(List<? extends OWLOntologyChange> list) throws OWLException {
-            handleChanges();
-        }
-    };
-
-
-    private HierarchyListener hierarchyListener = new HierarchyListener() {
-
-        public void hierarchyChanged(HierarchyEvent e) {
-            if (update) {
-                updateMetrics();
-            }
-        }
-    };
-
-
     protected void initialiseOWLView() {
         metricManagerMap = new LinkedHashMap<String, OWLMetricManager>();
         tableModelMap = new HashMap<OWLMetricManager, MetricsTableModel>();
@@ -142,35 +106,13 @@ public class MetricsPanel extends JPanel {
         createIndividualAxiomMetrics();
         createAnnotationAxiomMetrics();
         createUI();
-        updateMetrics();
-        getOWLModelManager().addListener(listener);
-        getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
-        addHierarchyListener(hierarchyListener);
+        updateView(owlEditorKit.getOWLModelManager().getActiveOntology());
         for(OWLMetricManager man : metricManagerMap.values()) {
             for(OWLMetric m : man.getMetrics()) {
                 m.setImportsClosureUsed(true);
                 m.setOntology(owlEditorKit.getOWLModelManager().getActiveOntology());
             }
         }
-    }
-
-
-    private void handleChanges() {
-        if (isShowing()) {
-            updateMetrics();
-        }
-        else {
-            update = true;
-        }
-    }
-
-
-    private void updateMetrics() {
-        update = false;
-        for (OWLMetricManager man : metricManagerMap.values()) {
-            man.setOntology(getOWLModelManager().getActiveOntology());
-        }
-        repaint();
     }
 
 
@@ -259,9 +201,6 @@ public class MetricsPanel extends JPanel {
         sp.setOpaque(false);
         add(sp);
     }
-
-
-
 
 
 
@@ -357,19 +296,13 @@ public class MetricsPanel extends JPanel {
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Annotation axioms", metricManager);
     }
-
-
-    protected void disposeOWLView() {
-        getOWLModelManager().removeListener(listener);
-        getOWLModelManager().removeOntologyChangeListener(ontologyChangeListener);
-        removeHierarchyListener(hierarchyListener);
-    }
-
+    
 
     public void updateView(OWLOntology activeOntology) {
         for (OWLMetricManager man : metricManagerMap.values()) {
             man.setOntology(activeOntology);
         }
+        repaint();
     }
 
     private OWLModelManager getOWLModelManager() {

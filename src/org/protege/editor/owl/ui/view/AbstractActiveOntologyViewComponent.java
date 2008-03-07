@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.util.List;
-
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.model.OWLOntologyChangeListener;
+
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.util.List;
 
 
 /**
@@ -33,6 +33,7 @@ public abstract class AbstractActiveOntologyViewComponent extends AbstractOWLVie
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                    updateView = true;
                     markForUpdate();
                 }
             }
@@ -43,6 +44,7 @@ public abstract class AbstractActiveOntologyViewComponent extends AbstractOWLVie
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
                 for (OWLOntologyChange chg : changes) {
                     if (chg.getOntology().equals(getOWLModelManager().getActiveOntology())) {
+                        updateView = true;
                         markForUpdate();
                         break;
                     }

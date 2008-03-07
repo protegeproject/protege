@@ -1,24 +1,9 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.ChangeListenerMediator;
-import org.semanticweb.owl.metrics.*;
-import org.semanticweb.owl.model.*;
+import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
+import org.semanticweb.owl.model.OWLOntology;
 
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -49,67 +34,21 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 30-Jul-2007<br><br>
  */
-public class AxiomMetricsViewComponent extends AbstractOWLViewComponent {
-
-    private boolean update;
+public class AxiomMetricsViewComponent extends AbstractActiveOntologyViewComponent {
 
     private MetricsPanel metricsPanel;
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                try {
-                    metricsPanel.updateView(getOWLEditorKit().getOWLModelManager().getActiveOntology());
-                }
-                catch (Exception e) {
-                    ProtegeApplication.getErrorLog().logError(e);
-                }
-            }
-        }
-    };
-
-    private OWLOntologyChangeListener ontologyChangeListener = new OWLOntologyChangeListener() {
-
-        public void ontologiesChanged(List<? extends OWLOntologyChange> list) throws OWLException {
-            handleChanges();
-        }
-    };
-
-
-    private HierarchyListener hierarchyListener = new HierarchyListener() {
-
-        public void hierarchyChanged(HierarchyEvent e) {
-            if (update) {
-                metricsPanel.updateView(getOWLEditorKit().getOWLModelManager().getActiveOntology());
-            }
-        }
-    };
-
-
-    protected void initialiseOWLView() throws Exception {
+    protected void initialiseOntologyView() throws Exception {
         metricsPanel = new MetricsPanel(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(metricsPanel);
-        getOWLModelManager().addListener(listener);
-        getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
-        addHierarchyListener(hierarchyListener);
     }
 
-
-    private void handleChanges() {
-        if (isShowing()) {
-            metricsPanel.updateView(getOWLEditorKit().getOWLModelManager().getActiveOntology());
-        }
-        else {
-            update = true;
-        }
+    protected void disposeOntologyView() {
+        // do nothing
     }
 
-
-    protected void disposeOWLView() {
-        getOWLModelManager().removeListener(listener);
-        getOWLModelManager().removeOntologyChangeListener(ontologyChangeListener);
-        removeHierarchyListener(hierarchyListener);
+    protected void updateView(OWLOntology activeOntology) throws Exception {
+        metricsPanel.updateView(activeOntology);
     }
 }
