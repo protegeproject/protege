@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.find;
 
-import java.util.Set;
+import org.semanticweb.owl.model.*;
 
-import org.semanticweb.owl.model.OWLEntity;
+import java.util.Set;
 
 
 /**
@@ -22,5 +22,14 @@ public interface EntityFinder {
     Set<OWLEntity> getEntities(String match);
 
 
-    Set<OWLEntity> getMatchingClasses(String match);
+    Set<OWLClass> getMatchingOWLClasses(String match);
+
+
+    Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match);
+
+
+    Set<OWLDataProperty> getMatchingOWLDataProperties(String match);
+
+
+    Set<OWLIndividual> getMatchingOWLIndividuals(String match);
 }

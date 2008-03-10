@@ -1,27 +1,12 @@
 package org.protege.editor.owl.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
-import org.protege.editor.owl.model.description.manchester.ManchesterSyntaxParser;
 import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.LabelledOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
@@ -31,7 +16,10 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
-import org.protege.editor.owl.model.hierarchy.*;
+import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.cls.InferredOWLClassHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
@@ -45,30 +33,18 @@ import org.protege.editor.owl.model.util.ListenerManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeException;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLOntologyStorageException;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.model.RemoveAxiom;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-import org.coode.xml.XMLWriterPreferences;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URLConnection;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -113,6 +89,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private Set<OntologyLibrary> automappedLibraries;
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
+
+    private EntityFinder entityFinder;
 
     private AssertedClassHierarchyProvider assertedClassHierarchyProvider;
 
@@ -778,24 +756,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OWLEntity getOWLEntity(String rendering) {
-        // Examine in the order of class, property, individual
-        OWLEntity entity = getOWLClass(rendering);
-        if (entity != null) {
-            return entity;
-        }
-        entity = getOWLObjectProperty(rendering);
-        if (entity != null) {
-            return entity;
-        }
-        entity = getOWLDataProperty(rendering);
-        if (entity != null) {
-            return entity;
-        }
-        entity = getOWLIndividual(rendering);
-        if (entity != null) {
-            return entity;
-        }
-        return null;
+        return owlEntityRenderingCache.getOWLEntity(rendering);
     }
 
 
@@ -825,67 +786,24 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         this.defaultOWLEntityFactory = owlEntityFactory;
     }
 
-    // The following matching methods are just junk implementations.  They should
-    // be replaced with a proper matcher
-
 
     public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLClass> entities = new ArrayList<OWLClass>();
-        for (String s : owlEntityRenderingCache.getOWLClassRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLClass(s);
-                if (entity instanceof OWLClass) {
-                    entities.add((OWLClass) entity);
-                }
-            }
-        }
-        return entities;
+        return new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart));
     }
 
 
     public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLObjectProperty> entities = new ArrayList<OWLObjectProperty>();
-        for (String s : owlEntityRenderingCache.getOWLObjectPropertyRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLObjectProperty(s);
-                if (entity instanceof OWLObjectProperty) {
-                    entities.add((OWLObjectProperty) entity);
-                }
-            }
-        }
-        return entities;
+        return new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart));
     }
 
 
     public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLDataProperty> entities = new ArrayList<OWLDataProperty>();
-        for (String s : owlEntityRenderingCache.getOWLDataPropertyRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLDataProperty(s);
-                if (entity instanceof OWLDataProperty) {
-                    entities.add((OWLDataProperty) entity);
-                }
-            }
-        }
-        return entities;
+        return new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart));
     }
 
 
     public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLIndividual> entities = new ArrayList<OWLIndividual>();
-        for (String s : owlEntityRenderingCache.getOWLIndividualRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLIndividual(s);
-                if (entity instanceof OWLIndividual) {
-                    entities.add((OWLIndividual) entity);
-                }
-            }
-        }
-        return entities;
+        return new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart));
     }
 
 
@@ -901,7 +819,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public EntityFinder getEntityFinder() {
-        return new EntityFinderImpl(this);
+        if (entityFinder == null){
+            entityFinder = new EntityFinderImpl(owlEntityRenderingCache);
+        }
+        return entityFinder;
     }
 
 
