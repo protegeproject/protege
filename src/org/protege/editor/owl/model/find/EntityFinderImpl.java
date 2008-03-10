@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.find;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.OWLEntity;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLEntity;
 
 
 /**
@@ -104,11 +104,13 @@ public class EntityFinderImpl implements EntityFinder {
             }
             for (String rendering : owlModelManager.getOWLEntityRenderings()) {
                 int offset = 0;
-                if (rendering.charAt(0) == '\'') {
-                    offset = 1;
-                }
-                if (matcher.matches(rendering.toLowerCase(), s)) {
-                    results.add(owlModelManager.getOWLEntity(rendering));
+                if (rendering.length() > 0){
+                    if (rendering.charAt(0) == '\'') {
+                        offset = 1;
+                    }
+                    if (matcher.matches(rendering.toLowerCase(), s)) {
+                        results.add(owlModelManager.getOWLEntity(rendering));
+                    }
                 }
             }
         }
