@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.find;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLEntity;
+import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
+import org.semanticweb.owl.model.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,31 +24,45 @@ public class EntityFinderImpl implements EntityFinder {
 
     private static final Logger logger = Logger.getLogger(EntityFinderImpl.class);
 
-    private OWLModelManager owlModelManager;
+    private OWLEntityRenderingCache renderingCache;
 
 
-    public EntityFinderImpl(OWLModelManager owlModelManager) {
-        this.owlModelManager = owlModelManager;
+    public EntityFinderImpl(OWLEntityRenderingCache renderingCache) {
+        this.renderingCache = renderingCache;
     }
 
-
-    public Set<OWLEntity> getMatchingClasses(String match) {
-        return null;
+    public Set<OWLClass> getMatchingOWLClasses(String match) {
+        return getEntities(match, OWLClass.class);
     }
 
+    public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match) {
+        return getEntities(match, OWLObjectProperty.class);
+    }
 
-    public Set<OWLEntity> getEntities(String s) {
-        if (s.length() == 0) {
-            return Collections.EMPTY_SET;
+    public Set<OWLDataProperty> getMatchingOWLDataProperties(String match) {
+        return getEntities(match, OWLDataProperty.class);
+    }
+
+    public Set<OWLIndividual> getMatchingOWLIndividuals(String match) {
+        return getEntities(match, OWLIndividual.class);
+    }
+
+    public Set<OWLEntity> getEntities(String match) {
+        return getEntities(match, OWLEntity.class);
+    }
+
+    private <T extends OWLEntity> Set<T> getEntities(String match, Class<T> type) {
+        if (match.length() == 0) {
+            return Collections.emptySet();
         }
-        Set<OWLEntity> results = new HashSet<OWLEntity>();
+        Set<T> results = new HashSet<T>();
         if (EntityFinderPreferences.getInstance().isUseRegularExpressions()) {
             try {
-                Pattern pattern = Pattern.compile(s);
-                for (String rendering : owlModelManager.getOWLEntityRenderings()) {
+                Pattern pattern = Pattern.compile(match);
+                for (String rendering : getRenderings(type)) {
                     Matcher m = pattern.matcher(rendering);
                     if (m.find()) {
-                        OWLEntity ent = owlModelManager.getOWLEntity(rendering);
+                        T ent = getEntity(rendering, type);
                         if (ent != null) {
                             results.add(ent);
                         }
@@ -61,15 +75,15 @@ public class EntityFinderImpl implements EntityFinder {
         }
         else {
             SimpleWildCardMatcher matcher;
-            if (s.startsWith("*")) {
-                if (s.length() > 1 && s.endsWith("*")) {
+            if (match.startsWith("*")) {
+                if (match.length() > 1 && match.endsWith("*")) {
                     // Contains
                     matcher = new SimpleWildCardMatcher() {
                         public boolean matches(String rendering, String s) {
                             return rendering.indexOf(s) != -1;
                         }
                     };
-                    s = s.substring(1, s.length() - 1);
+                    match = match.substring(1, match.length() - 1);
                 }
                 else {
                     // Ends with
@@ -78,12 +92,12 @@ public class EntityFinderImpl implements EntityFinder {
                             return rendering.indexOf(s) != -1;
                         }
                     };
-                    s = s.substring(1, s.length());
+                    match = match.substring(1, match.length());
                 }
             }
             else {
-                if (s.endsWith("*") && s.length() > 1) {
-                    s = s.substring(0, s.length() - 1);
+                if (match.endsWith("*") && match.length() > 1) {
+                    match = match.substring(0, match.length() - 1);
                 }
                 // Matches exactly?
                 matcher = new SimpleWildCardMatcher() {
@@ -92,30 +106,67 @@ public class EntityFinderImpl implements EntityFinder {
                     }
                 };
             }
-            if (s.trim().length() == 0) {
+            if (match.trim().length() == 0) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Attempt to match the empty string (no results)");
                 }
-                return Collections.EMPTY_SET;
+                return Collections.emptySet();
             }
-            s = s.toLowerCase();
+            match = match.toLowerCase();
             if (logger.isDebugEnabled()) {
-                logger.debug("Match: " + s);
+                logger.debug("Match: " + match);
             }
-            for (String rendering : owlModelManager.getOWLEntityRenderings()) {
+            for (String rendering : getRenderings(type)) {
                 int offset = 0;
                 if (rendering.length() > 0){
                     if (rendering.charAt(0) == '\'') {
                         offset = 1;
                     }
-                    if (matcher.matches(rendering.toLowerCase(), s)) {
-                        results.add(owlModelManager.getOWLEntity(rendering));
+                    if (matcher.matches(rendering.toLowerCase(), match)) {
+                        results.add(getEntity(rendering, type));
                     }
                 }
             }
         }
 
         return results;
+    }
+
+    private <T extends OWLEntity> T getEntity(String rendering, Class<T> type) {
+        if (type.equals(OWLClass.class)){
+            return (T)renderingCache.getOWLClass(rendering);
+        }
+        else if (type.equals(OWLObjectProperty.class)){
+            return (T)renderingCache.getOWLObjectProperty(rendering);
+        }
+        else if (type.equals((OWLDataProperty.class))){
+            return (T)renderingCache.getOWLDataProperty(rendering);
+        }
+        else if (type.equals(OWLIndividual.class)){
+            return (T)renderingCache.getOWLIndividual(rendering);
+        }
+        else{
+            return (T)renderingCache.getOWLEntity(rendering);
+        }
+    }
+
+
+    private <T extends OWLEntity> Set<String> getRenderings(Class<T> type) {
+        if (type.equals(OWLClass.class)){
+            return renderingCache.getOWLClassRenderings();
+        }
+        else if (type.equals(OWLObjectProperty.class)){
+            return renderingCache.getOWLObjectPropertyRenderings();
+        }
+        else if (type.equals((OWLDataProperty.class))){
+            return renderingCache.getOWLDataPropertyRenderings();
+        }
+        else if (type.equals(OWLIndividual.class)){
+            return renderingCache.getOWLIndividualRenderings();
+        }
+        else{
+            return renderingCache.getOWLEntityRenderings();
+        }
     }
 
 

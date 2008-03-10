@@ -1,13 +1,9 @@
 package org.protege.editor.owl.model.cache;
 
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
+
+import java.util.Set;
 
 
 /**
@@ -39,6 +35,9 @@ public interface OWLEntityRenderingCache {
     public void updateRendering(OWLEntity owlEntity);
 
 
+    public OWLEntity getOWLEntity(String rendering);
+
+
     public OWLClass getOWLClass(String rendering);
 
 
@@ -67,4 +66,5 @@ public interface OWLEntityRenderingCache {
 
 
     String getRendering(OWLEntity owlEntity);
+
 }

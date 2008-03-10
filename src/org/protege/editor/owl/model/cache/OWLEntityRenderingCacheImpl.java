@@ -1,26 +1,11 @@
 package org.protege.editor.owl.model.cache;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.semanticweb.owl.model.OWLAnonymousIndividual;
-import org.semanticweb.owl.model.OWLAxiomChange;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.*;
+
+import java.util.*;
 
 
 /**
@@ -176,6 +161,28 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     public String getRendering(OWLEntity owlEntity) {
         return entityRenderingMap.get(owlEntity);
+    }
+
+    
+    public OWLEntity getOWLEntity(String rendering) {
+        // Examine in the order of class, property, individual
+        OWLEntity entity = getOWLClass(rendering);
+        if (entity != null) {
+            return entity;
+        }
+        entity = getOWLObjectProperty(rendering);
+        if (entity != null) {
+            return entity;
+        }
+        entity = getOWLDataProperty(rendering);
+        if (entity != null) {
+            return entity;
+        }
+        entity = getOWLIndividual(rendering);
+        if (entity != null) {
+            return entity;
+        }
+        return null;
     }
 
 
