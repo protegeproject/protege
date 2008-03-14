@@ -1,16 +1,12 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

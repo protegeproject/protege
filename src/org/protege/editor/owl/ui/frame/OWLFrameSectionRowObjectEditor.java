@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
+import javax.swing.*;
 import java.util.Set;
-
-import javax.swing.JComponent;
 
 
 /**
@@ -30,7 +29,7 @@ public interface OWLFrameSectionRowObjectEditor<O> {
 
     boolean isMultiEditSupported();
 
-
+    
     void clear();
 
 

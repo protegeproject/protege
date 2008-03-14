@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.Color;
-import java.util.Set;
-
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -12,6 +9,10 @@ import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
+
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -78,5 +79,9 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel {
 
     public Set<OWLDescription> getSelectedClasses() {
         return viewComponent.getSelectedClasses();
+    }
+
+    public void addSelectionListener(ChangeListener treeSelectionListener) {
+        viewComponent.addChangeListener(treeSelectionListener);// cheating because we know this gets fired when selection changed
     }
 }
