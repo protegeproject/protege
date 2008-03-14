@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.Color;
-import java.util.Set;
-
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -11,6 +8,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLObjectProperty;
+
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>
@@ -76,5 +77,10 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel {
 
     public void dispose() {
         view.dispose();
+    }
+
+
+    public void addSelectionListener(ChangeListener listener) {
+        view.addChangeListener(listener); // cheating because we know this gets called when the selection changes
     }
 }

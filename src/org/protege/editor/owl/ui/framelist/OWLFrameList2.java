@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.framelist;
 
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.*;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
@@ -20,7 +21,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -433,19 +437,35 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
         // so that the buttons and keyboard actions are what are expected
         // by the user.
         final JComponent editorComponent = editor.getEditorComponent();
-        final JOptionPane optionPane = new JOptionPane(editorComponent,
-                                                       JOptionPane.PLAIN_MESSAGE,
-                                                       JOptionPane.OK_CANCEL_OPTION) {
-            public void selectInitialValue() {
-                // This is overriden so that the option pane dialog default button
-                // doesn't get the focus.
-            }
-        };
+
+        final VerifyingOptionPane optionPane = new VerifyingOptionPane(editorComponent);
+
+        // if the editor is verifying, will need to prevent the OK button from being available
+        if (editor instanceof VerifiedInputEditor){
+            optionPane.setOKEnabled(false); // initially the input will be invalid
+            ((VerifiedInputEditor)editor).addStatusChangedListener(new InputVerificationStatusChangedListener(){
+                public void verifiedStatusChanged(boolean verified) {
+                    optionPane.setOKEnabled(verified);
+                }
+            });
+        }
+
+//        final JOptionPane optionPane = new JOptionPane(editorComponent,
+//                                                       JOptionPane.PLAIN_MESSAGE,
+//                                                       JOptionPane.OK_CANCEL_OPTION) {
+//            public void selectInitialValue() {
+//                // This is overriden so that the option pane dialog default button
+//                // doesn't get the focus.
+//            }
+//        };
+
         final JDialog dlg = optionPane.createDialog(getParent(), null);
+
         // The editor shouldn't be modal (or should it?)
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
+        dlg.setLocationRelativeTo(getParent());        
         dlg.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
                 Object retVal = optionPane.getValue();

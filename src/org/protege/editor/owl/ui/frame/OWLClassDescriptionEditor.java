@@ -1,25 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SpinnerNumberModel;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
@@ -31,6 +11,17 @@ import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -38,7 +29,8 @@ import org.semanticweb.owl.model.OWLObjectProperty;
  * Bio-Health Informatics Group<br>
  * Date: 15-Feb-2007<br><br>
  */
-public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDescription> {
+public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDescription>
+        implements VerifiedInputEditor {
 
     private OWLEditorKit editorKit;
 
@@ -56,6 +48,26 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private OWLDescription initialDescription;
 
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+
+    private DocumentListener editorListener = new DocumentListener(){
+        public void insertUpdate(DocumentEvent documentEvent) {
+            handleVerifyEditorContents();
+        }
+        public void removeUpdate(DocumentEvent documentEvent) {
+            handleVerifyEditorContents();
+        }
+        public void changedUpdate(DocumentEvent documentEvent) {
+            handleVerifyEditorContents();
+        }
+    };
+    
+    private ChangeListener changeListener = new ChangeListener(){
+        public void stateChanged(ChangeEvent changeEvent) {
+            handleVerifyEditorContents();
+        }
+    };
+
 
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
         this.editorKit = editorKit;
@@ -63,6 +75,9 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         checker = new OWLDescriptionChecker(editorKit);
         editor = new ExpressionEditor<OWLDescription>(editorKit, checker);
         editor.setExpressionObject(description);
+
+        editor.getDocument().addDocumentListener(editorListener);
+
         tabbedPane = new JTabbedPane();
         tabbedPane.setFocusable(false);
         editingComponent = new JPanel(new BorderLayout());
@@ -76,9 +91,34 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             if (description != null) {
                 classSelectorPanel.setSelectedClass(description.asOWLClass());
             }
-
+            classSelectorPanel.addSelectionListener(changeListener);
+            
             restrictionCreatorPanel = new ObjectRestrictionCreatorPanel();
             tabbedPane.add("Restriction creator", restrictionCreatorPanel);
+            restrictionCreatorPanel.classSelectorPanel.addSelectionListener(changeListener);
+            restrictionCreatorPanel.objectPropertySelectorPanel.addSelectionListener(changeListener);
+
+            tabbedPane.addChangeListener(changeListener);
+        }
+    }
+
+    private void handleVerifyEditorContents() {
+        if (!listeners.isEmpty()){
+            boolean validated = false;
+            if (tabbedPane.getSelectedComponent().equals(editor)){
+                validated = editor.isWellFormed();
+            }
+            else if (tabbedPane.getSelectedComponent().equals(classSelectorPanel)){
+                validated = classSelectorPanel.getSelectedClass() != null;
+            }
+            else if (tabbedPane.getSelectedComponent().equals(restrictionCreatorPanel)){
+                validated = restrictionCreatorPanel.classSelectorPanel.getSelectedClass() != null &&
+                        restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedOWLObjectProperty() != null;
+            }
+
+            for (InputVerificationStatusChangedListener l : listeners){
+                l.verifiedStatusChanged(validated);
+            }
         }
     }
 
@@ -151,6 +191,10 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private OWLDataFactory getDataFactory() {
         return editorKit.getOWLModelManager().getOWLDataFactory();
+    }
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
     }
 
 
@@ -255,8 +299,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
                 return Collections.emptySet();
             }
             creator.createRestrictions(objectPropertySelectorPanel.getSelectedOWLObjectProperties(),
-                                       classSelectorPanel.getSelectedClasses(),
-                                       result);
+                    classSelectorPanel.getSelectedClasses(),
+                    result);
             return result;
         }
 
