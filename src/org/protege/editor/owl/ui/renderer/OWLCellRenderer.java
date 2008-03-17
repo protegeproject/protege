@@ -1,48 +1,18 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.JTree;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import javax.swing.text.View;
-import javax.swing.tree.TreeCellRenderer;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.*;
+import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -251,7 +221,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         inferred = false;
         strikeThrough = false;
         highlightUnsatisfiableClasses = true;
-        highlightUnsatisfiableProperties = true;
+        highlightUnsatisfiableProperties = false;
         crossedOutEntities.clear();
         focusedEntityIsSelectedEntity = false;
         unsatisfiableNames.clear();
