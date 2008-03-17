@@ -89,7 +89,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean highlightUnsatisfiableClasses = true;
 
-    private boolean highlightUnsatisfiableProperties = false;
+    private boolean highlightUnsatisfiableProperties = true;
 
     private Set<OWLEntity> crossedOutEntities;
 
@@ -221,7 +221,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         inferred = false;
         strikeThrough = false;
         highlightUnsatisfiableClasses = true;
-        highlightUnsatisfiableProperties = false;
+        highlightUnsatisfiableProperties = true;
         crossedOutEntities.clear();
         focusedEntityIsSelectedEntity = false;
         unsatisfiableNames.clear();
@@ -479,7 +479,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             entity.accept(activeEntityVisitor);
         }
-        
+
 
         prepareTextPane(getRendering(value), isSelected);
 
@@ -502,11 +502,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     protected String getRendering(Object object) {
         if (object instanceof OWLObject) {
             String rendering = getOWLModelManager().getOWLObjectRenderer().render(((OWLObject) object),
-                                                                                  getOWLModelManager().getOWLEntityRenderer());
+                    getOWLModelManager().getOWLEntityRenderer());
             for (OWLObject eqObj : equivalentObjects) {
                 // Add in the equivalent class symbol
                 rendering += " \u2261 " + getOWLModelManager().getOWLObjectRenderer().render(eqObj,
-                                                                                             getOWLModelManager().getOWLEntityRenderer());
+                        getOWLModelManager().getOWLEntityRenderer());
             }
             return rendering;
         }
@@ -781,8 +781,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                             Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
                             if (mouseCellLocation != null) {
                                 mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
-                                                                                mouseCellLocation,
-                                                                                textPane);
+                                        mouseCellLocation,
+                                        textPane);
                                 if (tokenRect.contains(mouseCellLocation)) {
                                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
                                     linkedObjectComponent.setLinkedObject(curEntity);
@@ -796,7 +796,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             catch (BadLocationException e) {
                 e.printStackTrace();
             }
-            ;
 
             tokenStartIndex += tokenLength;
         }
@@ -817,10 +816,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                                   int tokenLength) {
         try {
-            OWLObjectProperty prop = (OWLObjectProperty) entity;
-            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
-            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
-                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+            if (getOWLModelManager().getReasoner().isClassified()){
+                OWLObjectProperty prop = (OWLObjectProperty) entity;
+                OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
+                if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                }
             }
         }
         catch (OWLReasonerException e) {
