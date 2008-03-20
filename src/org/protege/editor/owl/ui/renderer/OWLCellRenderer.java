@@ -5,12 +5,15 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
+import org.semanticweb.owl.util.URIShortFormProvider;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.*;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.net.URI;
 import java.util.*;
 import java.util.List;
 
@@ -98,6 +101,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private Set<String> unsatisfiableNames;
 
     private Set<String> boxedNames;
+
+    private Set<String> annotationURINames;
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
@@ -225,6 +230,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         crossedOutEntities.clear();
         focusedEntityIsSelectedEntity = false;
         unsatisfiableNames.clear();
+        boxedNames.clear();
+        annotationURINames = null;
     }
 
 
@@ -576,6 +583,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 //    private Style linespacingStyle;
 
+    private Style annotationURIStyle;
+
     private Style commentedOutStyle;
 
     private Style strikeOutStyle;
@@ -623,6 +632,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 //        linespacingStyle = doc.addStyle("LINE_SPACING_STYLE", null);
 //        StyleConstants.setLineSpacing(linespacingStyle, 0.0f);
+
+        annotationURIStyle = doc.addStyle("ANNOTATION_URI_STYLE", null);
+        StyleConstants.setForeground(annotationURIStyle, Color.BLUE);
+        StyleConstants.setItalic(annotationURIStyle, true);
 
         commentedOutStyle = doc.addStyle("COMMENTED_OUT_STYLE", null);
         StyleConstants.setForeground(commentedOutStyle, Color.GRAY);
@@ -710,6 +723,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
         OWLEntity curEntity = null;
         boolean linkRendered = false;
+        boolean annotURIRendered = false;
         int tokenStartIndex = 0;
         while (tokenizer.hasMoreTokens()) {
             curEntity = null;
@@ -765,6 +779,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                         // Paint red because of inconsistency
                         doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                     }
+                    else if (isAnnotationURI(curToken) && !annotURIRendered){ // this could be an annotation URI
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, annotationURIStyle, true);
+                        annotURIRendered = true;
+                    }
                 }
             }
             try {
@@ -804,6 +822,19 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
     }
 
+    private boolean isAnnotationURI(String token) {
+        if (annotationURINames == null){
+            annotationURINames = new HashSet<String>();
+            URIShortFormProvider uriSFP = new SimpleURIShortFormProvider();
+            for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
+                for (URI uri : (ont.getAnnotationURIs())){
+                    annotationURINames.add(uriSFP.getShortForm(uri));
+                }
+            }
+        }
+        return annotationURINames.contains(token);
+    }
+
 
     private void strikeoutEntityIfCrossedOut(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                              int tokenLength) {
@@ -816,11 +847,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                                   int tokenLength) {
         try {
-                OWLObjectProperty prop = (OWLObjectProperty) entity;
-                OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
-                if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
-                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                }
+            OWLObjectProperty prop = (OWLObjectProperty) entity;
+            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
+            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+            }
         }
         catch (OWLReasonerException e) {
         }
