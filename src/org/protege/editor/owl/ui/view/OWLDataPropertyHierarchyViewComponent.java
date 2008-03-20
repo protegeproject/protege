@@ -24,7 +24,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLDataPropertyViewComponent {
+public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLDataPropertyViewComponent implements Findable<OWLDataProperty> {
 
     private OWLModelManagerTree<OWLDataProperty> tree;
 
@@ -70,6 +70,11 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLDataProper
 
     public void disposeView() {
         tree.dispose();
+    }
+
+
+    public java.util.List<OWLDataProperty> find(String match) {
+        return new ArrayList<OWLDataProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLDataProperties(match));
     }
 
 

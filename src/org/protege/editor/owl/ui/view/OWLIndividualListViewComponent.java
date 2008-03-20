@@ -1,21 +1,5 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -25,16 +9,21 @@ import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiomChange;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityCollector;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -229,7 +218,7 @@ public class OWLIndividualListViewComponent extends
 	}
 
 	public List<OWLIndividual> find(String match) {
-		return this.getOWLModelManager().getMatchingOWLIndividuals(match);
+        return new ArrayList<OWLIndividual>(getOWLModelManager().getEntityFinder().getMatchingOWLIndividuals(match));
 	}
 
 	public void show(OWLIndividual owlEntity) {

@@ -1,19 +1,5 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
@@ -28,6 +14,13 @@ import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -237,8 +230,7 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
 
     public List<OWLClass> find(String match) {
-        // Here we should just find classes
-        return getOWLModelManager().getMatchingOWLClasses(match);
+        return new ArrayList<OWLClass>(getOWLModelManager().getEntityFinder().getMatchingOWLClasses(match));
     }
 
 
