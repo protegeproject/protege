@@ -1,6 +1,18 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
+import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
+import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,23 +20,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.JScrollPane;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-
-import org.protege.editor.core.ui.view.DisposableAction;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
-import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
 
 
 /**
@@ -128,7 +123,7 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLObjectPr
 
 
     public List<OWLObjectProperty> find(String match) {
-        return getOWLModelManager().getMatchingOWLObjectProperties(match);
+        return new ArrayList<OWLObjectProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLObjectProperties(match));
     }
 
 

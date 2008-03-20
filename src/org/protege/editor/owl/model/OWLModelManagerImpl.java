@@ -787,23 +787,67 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
+    // The following matching methods are just junk implementations.  They should
+    // be replaced with a proper matcher
+
+
     public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
-        return new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart));
+        renderingStart = renderingStart.toLowerCase();
+        List<OWLClass> entities = new ArrayList<OWLClass>();
+        for (String s : owlEntityRenderingCache.getOWLClassRenderings()) {
+            if (s.toLowerCase().startsWith(renderingStart)) {
+                OWLEntity entity = owlEntityRenderingCache.getOWLClass(s);
+                if (entity instanceof OWLClass) {
+                    entities.add((OWLClass) entity);
+                }
+            }
+        }
+        return entities;
     }
 
 
     public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
-        return new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart));
+        renderingStart = renderingStart.toLowerCase();
+        List<OWLObjectProperty> entities = new ArrayList<OWLObjectProperty>();
+        for (String s : owlEntityRenderingCache.getOWLObjectPropertyRenderings()) {
+            if (s.toLowerCase().startsWith(renderingStart)) {
+                OWLEntity entity = owlEntityRenderingCache.getOWLObjectProperty(s);
+                if (entity instanceof OWLObjectProperty) {
+                    entities.add((OWLObjectProperty) entity);
+                }
+            }
+        }
+        return entities;
     }
 
 
     public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
-        return new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart));
+        renderingStart = renderingStart.toLowerCase();
+        List<OWLDataProperty> entities = new ArrayList<OWLDataProperty>();
+        for (String s : owlEntityRenderingCache.getOWLDataPropertyRenderings()) {
+            if (s.toLowerCase().startsWith(renderingStart)) {
+                OWLEntity entity = owlEntityRenderingCache.getOWLDataProperty(s);
+                if (entity instanceof OWLDataProperty) {
+                    entities.add((OWLDataProperty) entity);
+                }
+            }
+        }
+        return entities;
     }
 
 
     public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
-        return new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart));
+        renderingStart = renderingStart.toLowerCase();
+        List<OWLIndividual> entities = new ArrayList<OWLIndividual>();
+        for (String s : owlEntityRenderingCache.getOWLIndividualRenderings()) {
+            if (s.toLowerCase().startsWith(renderingStart)) {
+                OWLEntity entity = owlEntityRenderingCache.getOWLIndividual(s);
+                if (entity instanceof OWLIndividual) {
+                    entities.add((OWLIndividual) entity);
+                }
+            }
+        }
+        return entities;
     }
 
 
