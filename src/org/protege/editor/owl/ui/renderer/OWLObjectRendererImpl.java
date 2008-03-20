@@ -6,6 +6,7 @@ import org.protege.editor.owl.ui.OWLDescriptionComparator;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
@@ -804,7 +805,8 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLConstantAnnotation annotation) {
-        write(annotation.getAnnotationURI().toString());
+        write(new SimpleURIShortFormProvider().getShortForm(annotation.getAnnotationURI()));
+        write(" ");
         write(annotation.getAnnotationValue().toString());
     }
 
@@ -834,10 +836,9 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLObjectAnnotation owlObjectAnnotation) {
-        write(owlObjectAnnotation.getAnnotationURI().toString());
+        write(new SimpleURIShortFormProvider().getShortForm(owlObjectAnnotation.getAnnotationURI()));
         write(" ");
         owlObjectAnnotation.getAnnotationValue().accept(this);
-
     }
 
 
