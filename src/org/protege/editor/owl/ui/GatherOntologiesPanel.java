@@ -1,25 +1,5 @@
 package org.protege.editor.owl.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
@@ -29,6 +9,15 @@ import org.semanticweb.owl.io.OWLXMLOntologyFormat;
 import org.semanticweb.owl.io.RDFXMLOntologyFormat;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyFormat;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -108,6 +97,8 @@ public class GatherOntologiesPanel extends JPanel {
         JPanel boxHolder = new JPanel(new BorderLayout());
         boxHolder.setBorder(ComponentFactory.createTitledBorder("Ontologies"));
         boxHolder.add(new JScrollPane(box));
+        boxHolder.setPreferredSize(new Dimension(boxHolder.getPreferredSize().width,
+                                                 Math.min(boxHolder.getPreferredSize().height, 300)));
         holderPanel.add(boxHolder, BorderLayout.CENTER);
         holderPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         setLayout(new BorderLayout());
