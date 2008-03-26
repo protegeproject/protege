@@ -1,13 +1,5 @@
 package org.protege.editor.owl;
 
-import java.io.File;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
@@ -21,11 +13,18 @@ import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyFormat;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLOntologyStorerNotFoundException;
+
+import javax.swing.*;
+import java.io.File;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -59,7 +58,7 @@ public class OWLEditorKit implements EditorKit {
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
         loadOntologyLibraries();
-//        modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
+        modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
     }
 
 
