@@ -58,6 +58,7 @@ import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
+import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
@@ -251,6 +252,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         };
         getOWLModelManager().addOntologyChangeListener(listener);
         getOWLModelManager().getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
+        getOWLModelManager().setMissingImportHandler(new MissingImportHandlerUI(getOWLEditorKit()));
     }
 
     public void refreshComponents() {
