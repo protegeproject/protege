@@ -987,7 +987,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             else {
 
                 URI resolvedURI = resolveMissingImport(logicalURI);
-                resolvedMissingImports.put(logicalURI, resolvedURI);
+                if (resolvedURI != null) {
+                    resolvedMissingImports.put(logicalURI, resolvedURI);
+                    return resolvedURI;
+                }
             }
             // Final failsafe
             return logicalURI;
