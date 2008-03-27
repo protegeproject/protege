@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.OWLObject;
+
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLObject;
 
 
 /**
@@ -38,17 +38,20 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
         });
         if (classes) {
             set.addAll(owlModelManager.getMatchingOWLClasses(fragment));
+            set.addAll(owlModelManager.getMatchingOWLClasses("'" + fragment));
         }
         if (objectProperties) {
             set.addAll(owlModelManager.getMatchingOWLObjectProperties(fragment));
+            set.addAll(owlModelManager.getMatchingOWLObjectProperties("'" + fragment));
         }
         if (dataProperties) {
             set.addAll(owlModelManager.getMatchingOWLDataProperties(fragment));
+            set.addAll(owlModelManager.getMatchingOWLDataProperties("'" + fragment));
         }
         if (individuals) {
             set.addAll(owlModelManager.getMatchingOWLIndividuals(fragment));
+            set.addAll(owlModelManager.getMatchingOWLIndividuals("'" + fragment));
         }
-
         if (datatypes) {
             set.addAll(owlModelManager.getMatchingOWLDataTypes(fragment));
         }

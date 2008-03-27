@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.description.manchester;
 
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxDescriptionParser;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.expression.OWLEntityChecker;
 import org.semanticweb.owl.expression.ParserException;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.vocab.Namespaces;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxDescriptionParser;
 
 import java.net.URI;
 /*
@@ -47,26 +47,46 @@ public class ManchesterOWLSyntaxParser implements OWLDescriptionParser {
 
     private ManchesterOWLSyntaxDescriptionParser p;
 
+    private static final String ESCAPE_CHAR = "'";
+
 
     public ManchesterOWLSyntaxParser(OWLModelManager man) {
         this.owlModelManager = man;
         OWLEntityChecker entityChecker = new OWLEntityChecker() {
 
             public OWLClass getOWLClass(String string) {
-                OWLEntity ent = owlModelManager.getOWLEntity(string);
-                if (ent != null && ent.isOWLClass()) {
-                    return ent.asOWLClass();
+                OWLClass ent = owlModelManager.getOWLClass(string);
+                if (ent == null && !string.startsWith(ESCAPE_CHAR) && !string.endsWith(ESCAPE_CHAR)){
+                    ent = getOWLClass(ESCAPE_CHAR + string + ESCAPE_CHAR);
                 }
-                return null;
+                return ent;
+            }
+
+
+            public OWLObjectProperty getOWLObjectProperty(String string) {
+                OWLObjectProperty ent = owlModelManager.getOWLObjectProperty(string);
+                if (ent == null && !string.startsWith(ESCAPE_CHAR) && !string.endsWith(ESCAPE_CHAR)){
+                    return getOWLObjectProperty(ESCAPE_CHAR + string + ESCAPE_CHAR);
+                }
+                return ent;
             }
 
 
             public OWLDataProperty getOWLDataProperty(String string) {
-                OWLEntity ent = owlModelManager.getOWLEntity(string);
-                if (ent != null && ent.isOWLDataProperty()) {
-                    return ent.asOWLDataProperty();
+                OWLDataProperty ent = owlModelManager.getOWLDataProperty(string);
+                if (ent == null && !string.startsWith(ESCAPE_CHAR) && !string.endsWith(ESCAPE_CHAR)){
+                    ent = getOWLDataProperty(ESCAPE_CHAR + string + ESCAPE_CHAR);
                 }
-                return null;
+                return ent;
+            }
+
+
+            public OWLIndividual getOWLIndividual(String string) {
+                OWLIndividual ent = owlModelManager.getOWLIndividual(string);
+                if (ent == null && !string.startsWith(ESCAPE_CHAR) && !string.endsWith(ESCAPE_CHAR)){
+                    return getOWLIndividual(ESCAPE_CHAR + string + ESCAPE_CHAR);
+                }
+                return ent;
             }
 
 
@@ -80,23 +100,6 @@ public class ManchesterOWLSyntaxParser implements OWLDescriptionParser {
                 return null;
             }
 
-
-            public OWLIndividual getOWLIndividual(String string) {
-                OWLEntity ent = owlModelManager.getOWLEntity(string);
-                if (ent != null && ent.isOWLIndividual()) {
-                    return ent.asOWLIndividual();
-                }
-                return null;
-            }
-
-
-            public OWLObjectProperty getOWLObjectProperty(String string) {
-                OWLEntity ent = owlModelManager.getOWLEntity(string);
-                if (ent != null && ent.isOWLObjectProperty()) {
-                    return ent.asOWLObjectProperty();
-                }
-                return null;
-            }
         };
         p = new ManchesterOWLSyntaxDescriptionParser(owlModelManager.getOWLDataFactory(), entityChecker);
     }
@@ -134,8 +137,8 @@ public class ManchesterOWLSyntaxParser implements OWLDescriptionParser {
 
     public boolean isWellFormed(String expression) throws OWLExpressionParserException {
         try {
-            p.parse(expression);
-            return true;
+                p.parse(expression);
+                return true;
         }
         catch (ParserException e) {
             throw convertException(e);
@@ -149,9 +152,13 @@ public class ManchesterOWLSyntaxParser implements OWLDescriptionParser {
 
 
     private static OWLExpressionParserException convertException(ParserException ex) {
+        int endPos = ex.getCurrentToken().length();
+        if (ex.getCurrentToken().equals(ManchesterOWLParserConstants.tokenImage[ManchesterOWLParserConstants.EOF])){
+            endPos = ex.getStartPos(); // because start + length of <EOF> would push us past the end of the document
+        }
         return new OWLExpressionParserException(ex.getMessage(),
                                                 ex.getStartPos(),
-                                                ex.getStartPos() + ex.getCurrentToken().length(),
+                                                endPos,
                                                 ex.isClassNameExpected(),
                                                 ex.isObjectPropertyNameExpected(),
                                                 ex.isDataPropertyNameExpected(),
