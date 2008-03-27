@@ -7,6 +7,9 @@
             <Component label="Individuals">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
             </Component>
+            <Component label="Individuals By Class">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsByClass"/>
+            </Component>            
         </CNode>
 
         <HSNode splits="0.375 0.625">
