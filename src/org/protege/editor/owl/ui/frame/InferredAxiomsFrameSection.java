@@ -1,17 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.*;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.ui.OWLEntityComparator;
 
-import java.util.*;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -69,75 +67,53 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
 
 
     protected void refillInferred() throws OWLReasonerException {
-        try {
-            for(OWLClass cls : getReasoner().getInconsistentClasses()) {
-                if (!cls.isOWLNothing()) {
-                    OWLAxiom unsatAx = getOWLDataFactory().getOWLSubClassAxiom(cls, getOWLDataFactory().getOWLNothing());
-                    addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), unsatAx));
-                }
-            }
-            OWLOntology inferredOnt = getOWLOntologyManager().createOntology(URI.create("http://another.com/ontology" + System.currentTimeMillis()));
-            InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList());
-            ontGen.addGenerator(new InferredSubClassAxiomGenerator());
-            ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
-            ontGen.fillOntology(getOWLOntologyManager(), inferredOnt);
-
-            Set<OWLClass> entities = new TreeSet<OWLClass>(new OWLEntityComparator<OWLClass>(getOWLModelManager()));
-            for(OWLOntology o : getOWLModelManager().getActiveOntologies()) {
-                entities.addAll(o.getReferencedClasses());
-            }
-            for(OWLClass cls : entities) {
-                for(OWLAxiom ax : inferredOnt.getAxioms(cls)) {
-                    boolean add = true;
-                    for (OWLOntology actOnt : getOWLModelManager().getActiveOntologies()) {
-                        if(actOnt.containsAxiom(ax)) {
-                            add = false;
-                            break;
-                        }
-                    }
-                    if(add) {
-                        if(ax instanceof OWLSubClassAxiom) {
-                            OWLSubClassAxiom subClsAx = (OWLSubClassAxiom) ax;
-                            if(!subClsAx.getSuperClass().isOWLThing()) {
-                                addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
-                            }
-                        }
-                        else {
-                            addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
-                        }
-
-                    }
-                }
-            }
+       try {
+           for (OWLClass cls : getReasoner().getInconsistentClasses()) {
+               if (!cls.isOWLNothing()) {
+                   OWLAxiom unsatAx = getOWLDataFactory().getOWLSubClassAxiom(cls,
+                                                                              getOWLDataFactory().getOWLNothing());
+                   addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), unsatAx));
+               }
+           }
+           OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+           OWLOntology inferredOnt = man.createOntology(URI.create("http://another.com/ontology" + System.currentTimeMillis()));
+           InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>());
+           ontGen.addGenerator(new InferredSubClassAxiomGenerator());
+           ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
+           ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
+           ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
+           ontGen.fillOntology(man, inferredOnt);
 
 
-            Set<OWLIndividual> inds = new TreeSet<OWLIndividual>(new OWLEntityComparator<OWLIndividual>(getOWLModelManager()));
-            for(OWLOntology o : getOWLModelManager().getActiveOntologies()) {
-                inds.addAll(o.getReferencedIndividuals());
-            }
-            for(OWLIndividual ind : inds) {
-                for(OWLAxiom ax : inferredOnt.getAxioms(ind)) {
-                    boolean add = true;
-                    for (OWLOntology actOnt : getOWLModelManager().getActiveOntologies()) {
-                        if(actOnt.containsAxiom(ax)) {
-                            add = false;
-                            break;
-                        }
-                    }
-                    if(add) {
-                        addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
-                    }
-                }
-            }
-
-            getOWLOntologyManager().removeOntology(inferredOnt.getURI());
-
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+           for (OWLAxiom ax : new TreeSet<OWLAxiom>(inferredOnt.getAxioms())) {
+               boolean add = true;
+               for (OWLOntology actOnt : getOWLModelManager().getActiveOntologies()) {
+                   if (actOnt.containsAxiom(ax)) {
+                       add = false;
+                       break;
+                   }
+               }
+               if (add) {
+                   if (ax instanceof OWLSubClassAxiom) {
+                       OWLSubClassAxiom subClsAx = (OWLSubClassAxiom) ax;
+                       if (!subClsAx.getSuperClass().isOWLThing()) {
+                           addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(),
+                                                                    this,
+                                                                    null,
+                                                                    getRootObject(),
+                                                                    ax));
+                       }
+                   }
+                   else {
+                       addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
+                   }
+               }
+           }
+       }
+       catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
 
 
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>> getRowComparator() {
