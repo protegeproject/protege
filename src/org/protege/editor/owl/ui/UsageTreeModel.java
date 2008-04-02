@@ -35,7 +35,7 @@ public class UsageTreeModel extends DefaultTreeModel {
 
 
     public UsageTreeModel(OWLEditorKit owlEditorKit, OWLEntity entity) {
-        super(new DefaultMutableTreeNode("Usage for: " + owlEditorKit.getOWLModelManager().getOWLEntityRenderer().render(entity)));
+        super(new DefaultMutableTreeNode(getRootContent(owlEditorKit.getOWLModelManager(), entity)));
         this.owlModelManager = owlEditorKit.getOWLModelManager();
         this.entity = entity;
         rootNode = (DefaultMutableTreeNode) getRoot();
@@ -45,6 +45,10 @@ public class UsageTreeModel extends DefaultTreeModel {
         setOWLEntity(entity);
     }
 
+
+    private static String getRootContent(OWLModelManager mngr, OWLEntity entity){
+        return entity != null ? "Usage for: " + mngr.getOWLEntityRenderer().render(entity) : "Usage for:";
+    }
 
     private void setOWLEntity(OWLEntity owlEntity) {
         axiomsByEntityMap.clear();
@@ -63,7 +67,7 @@ public class UsageTreeModel extends DefaultTreeModel {
 //                insertNodeInto(, getNode(ent), 0);
             }
         }
-        ((DefaultMutableTreeNode) getRoot()).setUserObject("Usage for: " + owlModelManager.getOWLEntityRenderer().render(entity) + " (" + usageCount + " usages)");
+        ((DefaultMutableTreeNode) getRoot()).setUserObject(getRootContent(owlModelManager, entity));
     }
 
 
