@@ -36,7 +36,7 @@ public abstract class SelectedOWLClassAction extends ProtegeOWLAction {
     }
 
 
-    private void updateState() {
+    protected void updateState() {
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         setEnabled(selectedClass != null);
     }

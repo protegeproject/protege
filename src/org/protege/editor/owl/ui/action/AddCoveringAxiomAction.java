@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLSubClassAxiom;
+
+import java.awt.event.ActionEvent;
+import java.util.Set;
 
 
 /**
@@ -28,6 +28,13 @@ public class AddCoveringAxiomAction extends SelectedOWLClassAction {
 
 
     protected void initialiseAction() throws Exception {
+    }
+
+
+    protected void updateState() {
+        OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
+        setEnabled(selectedClass != null &&
+                   getOWLModelManager().getOWLClassHierarchyProvider().getChildren(selectedClass).size() > 1);
     }
 
 
