@@ -62,7 +62,9 @@ public class TabIndentedHierarchyParser {
             if (suffix != null) {
                 trimmedLine = trimmedLine + suffix;
             }
-            lineList.add(new Line(getIndent(normalisedLine), trimmedLine));
+            if (trimmedLine.length() > 0){
+                lineList.add(new Line(getIndent(normalisedLine), trimmedLine));
+            }
         }
     }
 
