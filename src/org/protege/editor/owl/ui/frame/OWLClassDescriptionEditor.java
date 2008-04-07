@@ -83,7 +83,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(tabbedPane);
         editingComponent.setPreferredSize(new Dimension(500, 400));
-        tabbedPane.add("Class expression editor", editor);
+        tabbedPane.add("Class expression editor", new JScrollPane(editor));
 
         if (description == null || !description.isAnonymous()) {
             classSelectorPanel = new OWLClassSelectorPanel(editorKit);
