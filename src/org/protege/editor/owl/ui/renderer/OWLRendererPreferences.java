@@ -2,13 +2,13 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import java.util.logging.Logger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -41,6 +41,8 @@ public class OWLRendererPreferences {
 
     public static final String FONT_NAME = "FONT_NAME";
 
+    public static final String ANNOTATIONS = "ANNOTATIONS";
+
     public static final int DEFAULT_FONT_SIZE = 14;
 
     public static final String DEFAULT_FONT_NAME = "Courier";
@@ -67,9 +69,13 @@ public class OWLRendererPreferences {
 
     private Font font;
 
+    private List<URI> annotationURIS;
+
+    private Map<URI, List<String>> annotationLanguages;
+
 
     public Font getFont() {
-       return font;
+        return font;
     }
 
 
@@ -103,6 +109,44 @@ public class OWLRendererPreferences {
     }
 
 
+    public void setAnnotations(List<URI> uris, Map<URI, List<String>> langMap){
+        annotationURIS = uris;
+        annotationLanguages = langMap;
+        List<String> values = new ArrayList<String>();
+
+        for (URI uri : uris){
+            StringBuilder str = new StringBuilder(uri.toString());
+            final List<String> langs = langMap.get(uri);
+            if (langs != null){
+                for (String lang : langs) {
+                    str.append(", ").append(lang);
+                }
+            }
+            values.add(str.toString());
+        }
+        getPreferences().putStringList(ANNOTATIONS, values);
+    }
+
+
+    public List<URI> getAnnotationURIs(){
+        return new ArrayList<URI>(annotationURIS);
+    }
+
+
+    public List<String> getAnnotationLangs(URI uri){
+        final List<String> langs = annotationLanguages.get(uri);
+        if (langs != null){
+            return new ArrayList<String>(langs);
+        }
+        else{
+            return Collections.emptyList();
+        }
+    }
+
+    public Map<URI, List<String>> getAnnotationLangs(){
+        return annotationLanguages;
+    }
+
     private OWLRendererPreferences() {
         rendererClass = OWLEntityRendererImpl.class.getName();
         load();
@@ -133,8 +177,38 @@ public class OWLRendererPreferences {
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
         fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
+        loadAnnotations();
         resetFont();
+    }
 
+
+    private void loadAnnotations() {
+        annotationURIS = new ArrayList<URI>();
+        annotationLanguages = new HashMap<URI, List<String>>();
+        final List<String> defaultValues = Collections.emptyList();
+        List<String> values = getPreferences().getStringList(ANNOTATIONS, defaultValues);
+
+        if (values.equals(defaultValues)){
+            annotationURIS.add(OWLRDFVocabulary.RDFS_LABEL.getURI());
+            annotationURIS.add(URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+        }
+        else{
+            for (String value : values){
+                String[] tokens = value.split(",");
+                try {
+                    URI uri = new URI(tokens[0].trim());
+                    List<String> langs = new ArrayList<String>();
+                    for (int i=1; i<tokens.length; i++){
+                        langs.add(tokens[i].trim());
+                    }
+                    annotationURIS.add(uri);
+                    annotationLanguages.put(uri, langs);
+                }
+                catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
