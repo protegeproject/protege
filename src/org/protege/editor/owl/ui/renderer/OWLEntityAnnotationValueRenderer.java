@@ -1,15 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 
 /**
@@ -27,14 +21,10 @@ public class OWLEntityAnnotationValueRenderer extends OWLEntityRendererImpl {
 
     private OWLModelManager owlModelManager;
 
-    private List<URI> uris = new ArrayList<URI>();
-
     private AnnotationValueShortFormProvider provider;
 
 
     public OWLEntityAnnotationValueRenderer() {
-        uris.add(OWLRDFVocabulary.RDFS_LABEL.getURI());
-        uris.add(URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
     }
 
 
@@ -50,8 +40,8 @@ public class OWLEntityAnnotationValueRenderer extends OWLEntityRendererImpl {
 
     public void initialise() {
         super.initialise();
-        provider = new AnnotationValueShortFormProvider(uris,
-                                                        new HashMap<URI, List<String>>(),
+        provider = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
+                                                        OWLRendererPreferences.getInstance().getAnnotationLangs(),
                                                         owlModelManager.getOWLOntologyManager());
     }
 

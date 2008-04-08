@@ -1,18 +1,18 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
-import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
 
 /**
  * Author: Matthew Horridge<br>
@@ -111,7 +111,8 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         qNamePanel.add(qnameRendererRadioButton, BorderLayout.NORTH);
 
         JPanel showPrefixesPanel = new JPanel(new BorderLayout());
-        showPrefixesPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        final Border indentBorder = BorderFactory.createEmptyBorder(0, 50, 0, 0);
+        showPrefixesPanel.setBorder(indentBorder);
         final JButton showPrefixedsButton = new JButton(new AbstractAction("Prefixes...") {
             public void actionPerformed(ActionEvent e) {
                 PrefixMappingPanel.showDialog(getOWLEditorKit());
@@ -128,7 +129,28 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         showPrefixedsButton.setEnabled(qnameRendererRadioButton.isSelected());
 
         box.add(Box.createVerticalStrut(4));
-        box.add(annotationValueRadioButton);
+
+        JPanel annotationValuePanel = new JPanel(new BorderLayout());
+        annotationValuePanel.setAlignmentX(0.0f);
+        annotationValuePanel.add(annotationValueRadioButton, BorderLayout.NORTH);
+
+        JPanel showAnnotationsPanel = new JPanel(new BorderLayout());
+        showAnnotationsPanel.setBorder(indentBorder);
+        final JButton showAnnotationsButton = new JButton(new AbstractAction("Annotations...") {
+            public void actionPerformed(ActionEvent e) {
+                AnnotationRendererPanel.showDialog(getOWLEditorKit());
+            }
+        });
+        showAnnotationsPanel.add(showAnnotationsButton, BorderLayout.WEST);
+        annotationValuePanel.add(showAnnotationsPanel, BorderLayout.SOUTH);
+        annotationValueRadioButton.addChangeListener(new ChangeListener(){
+            public void stateChanged(ChangeEvent changeEvent) {
+                showAnnotationsButton.setEnabled(annotationValueRadioButton.isSelected());
+            }
+        });
+        showAnnotationsButton.setEnabled(annotationValueRadioButton.isSelected());
+
+        box.add(annotationValuePanel);
         holderBox.add(box);
 
 
