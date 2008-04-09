@@ -33,4 +33,6 @@ package org.protege.editor.owl.ui.frame;
 public interface VerifiedInputEditor {
 
     void addStatusChangedListener(InputVerificationStatusChangedListener listener);
+
+    void removeStatusChangedListener(InputVerificationStatusChangedListener listener);
 }
