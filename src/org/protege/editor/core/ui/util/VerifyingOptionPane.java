@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.util;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 /*
@@ -70,7 +71,12 @@ public class VerifyingOptionPane extends JComponent {
         }
         dlg = new JDialog((Frame) parent, title);
         dlg.setLayout(new BorderLayout(6, 6));
-        dlg.add(c, BorderLayout.CENTER);
+
+        // need a hostpane to have a nice sized border around the user component
+        JComponent hostPane = new JPanel(new BorderLayout());
+        hostPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        hostPane.add(c, BorderLayout.CENTER);
+        dlg.add(hostPane, BorderLayout.CENTER);
 
         JButton okButton = new JButton(okAction);
         JButton cancelButton = new JButton(cancelAction);
