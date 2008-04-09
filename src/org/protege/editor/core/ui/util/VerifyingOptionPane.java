@@ -1,9 +1,7 @@
 package org.protege.editor.core.ui.util;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -35,68 +33,40 @@ import java.awt.event.ActionEvent;
  * Bio Health Informatics Group<br>
  * Date: Mar 14, 2008<br><br>
  *
- * A pane that resembles an OK_CANCEL_OPTION JOptionPane,
- * but allows us to disable options to allow for user input
+ * A JOptionPane that allows us to disable options to allow for user input
  * verification.
  */
-public class VerifyingOptionPane extends JComponent {
+public class VerifyingOptionPane extends JOptionPane {
 
-    private final JComponent c;
-    private JDialog dlg;
-
-    private int result;
-
-    private Action okAction = new AbstractAction("OK"){
-            public void actionPerformed(ActionEvent actionEvent) {
-                result = JOptionPane.OK_OPTION;
-                dlg.setVisible(false);
-            }
-        };
-
-    private Action cancelAction = new AbstractAction("Cancel"){
-            public void actionPerformed(ActionEvent actionEvent) {
-                result = JOptionPane.CANCEL_OPTION;
-                dlg.setVisible(false);
-            }
-        };
-
+    private JButton okButton;
 
     public VerifyingOptionPane(JComponent c) {
-        this.c = c;
-    }
-
-    public JDialog createDialog(Component parent, String title){
-        while (!(parent instanceof Frame)){
-            parent = parent.getParent();
-        }
-        dlg = new JDialog((Frame) parent, title);
-        dlg.setLayout(new BorderLayout(6, 6));
-
-        // need a hostpane to have a nice sized border around the user component
-        JComponent hostPane = new JPanel(new BorderLayout());
-        hostPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-        hostPane.add(c, BorderLayout.CENTER);
-        dlg.add(hostPane, BorderLayout.CENTER);
-
-        JButton okButton = new JButton(okAction);
-        JButton cancelButton = new JButton(cancelAction);
-
-        JPanel optionsPanel = new JPanel();
-        optionsPanel.add(cancelButton);
-        optionsPanel.add(okButton);
-        dlg.add(optionsPanel, BorderLayout.SOUTH);
-
-        dlg.getRootPane().setDefaultButton(okButton);
-        okAction.setEnabled(true); // by default OK is enabled
-
-        return dlg;
-    }
-
-    public int getValue(){
-        return result;
+        super(c, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
     }
 
     public void setOKEnabled(boolean enabled){
-        okAction.setEnabled(enabled);
+        if (okButton == null){
+            okButton = getComponent(this, JButton.class, "OK");
+        }
+        okButton.setEnabled(enabled);
+    }
+
+    private <T extends JComponent> T getComponent(JComponent parent, Class<T> type, String name) {
+        if (type.isAssignableFrom(parent.getClass())){
+            if (parent instanceof JButton){
+                if (name.equals(((JButton)parent).getText())){
+                    return (T)parent;
+                }
+            }
+        }
+        for (Component c : parent.getComponents()){
+            if (c instanceof JComponent){
+                T target = getComponent((JComponent)c, type, name);
+                if (target != null){
+                    return target;
+                }
+            }
+        }
+        return null;
     }
 }
