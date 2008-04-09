@@ -76,6 +76,9 @@ docking system that is present in the core system
                <documentation>
                   
                </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.protege.editor.core.ui.view.ViewComponent:"/>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -130,7 +133,17 @@ own.
          <attribute name="value" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The traditional values for this field are 
+
+@org.protege.classcategory
+@org.protege.objectpropertycategory
+@org.protege.datapropertycategory
+@org.protege.annotationpropertycategory
+@org.protege.individualcatetory
+@org.protege.ontologycategory
+
+Other values can be used but if you want them to display something needs to be put into the ProtegeProperties showing
+how they should be displayed in the Views menu.
                </documentation>
             </annotation>
          </attribute>
