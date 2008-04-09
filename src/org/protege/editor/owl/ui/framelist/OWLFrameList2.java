@@ -438,7 +438,12 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
         // by the user.
         final JComponent editorComponent = editor.getEditorComponent();
 
-        final VerifyingOptionPane optionPane = new VerifyingOptionPane(editorComponent);
+        final VerifyingOptionPane optionPane = new VerifyingOptionPane(editorComponent){
+            public void selectInitialValue() {
+                // This is overriden so that the option pane dialog default button
+                // doesn't get the focus.
+            }
+        };
 
         final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
             public void verifiedStatusChanged(boolean verified) {
@@ -448,18 +453,8 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
         
         // if the editor is verifying, will need to prevent the OK button from being available
         if (editor instanceof VerifiedInputEditor){
-//            optionPane.setOKEnabled(false); // initially the input will be invalid
             ((VerifiedInputEditor)editor).addStatusChangedListener(verificationListener);
         }
-
-//        final JOptionPane optionPane = new JOptionPane(editorComponent,
-//                                                       JOptionPane.PLAIN_MESSAGE,
-//                                                       JOptionPane.OK_CANCEL_OPTION) {
-//            public void selectInitialValue() {
-//                // This is overriden so that the option pane dialog default button
-//                // doesn't get the focus.
-//            }
-//        };
 
         final JDialog dlg = optionPane.createDialog(getParent(), null);
 
