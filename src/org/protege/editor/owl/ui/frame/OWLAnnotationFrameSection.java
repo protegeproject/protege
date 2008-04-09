@@ -5,7 +5,9 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -75,6 +77,31 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
         return comparator;
     }
 
+
+    public boolean canAcceptDrop(List<OWLObject> objects) {
+        for (OWLObject obj : objects) {
+            if (!(obj instanceof OWLAnnotation)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean dropObjects(List<OWLObject> objects) {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        for (OWLObject obj : objects) {
+            if (obj instanceof OWLAnnotation) {
+                OWLAnnotation annot = (OWLAnnotation)obj;
+                OWLAxiom ax = getOWLDataFactory().getOWLEntityAnnotationAxiom(getRootObject(), annot);
+                changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            }
+            else {
+                return false;
+            }
+        }
+        getOWLModelManager().applyChanges(changes);
+        return true;
+    }
 
     public void visit(OWLEntityAnnotationAxiom axiom) {
         if (axiom.getSubject().equals(getRootObject())) {
