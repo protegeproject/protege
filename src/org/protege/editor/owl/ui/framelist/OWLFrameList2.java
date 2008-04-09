@@ -71,7 +71,7 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
     public static final int BUTTON_DIMENSION = 14;
 
     public static final int BUTTON_MARGIN = 3;
-    
+
     private static Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
 
 
@@ -440,14 +440,16 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
 
         final VerifyingOptionPane optionPane = new VerifyingOptionPane(editorComponent);
 
+        final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
+            public void verifiedStatusChanged(boolean verified) {
+                optionPane.setOKEnabled(verified);
+            }
+        };
+        
         // if the editor is verifying, will need to prevent the OK button from being available
         if (editor instanceof VerifiedInputEditor){
-            optionPane.setOKEnabled(false); // initially the input will be invalid
-            ((VerifiedInputEditor)editor).addStatusChangedListener(new InputVerificationStatusChangedListener(){
-                public void verifiedStatusChanged(boolean verified) {
-                    optionPane.setOKEnabled(verified);
-                }
-            });
+//            optionPane.setOKEnabled(false); // initially the input will be invalid
+            ((VerifiedInputEditor)editor).addStatusChangedListener(verificationListener);
         }
 
 //        final JOptionPane optionPane = new JOptionPane(editorComponent,
@@ -465,7 +467,7 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
-        dlg.setLocationRelativeTo(getParent());        
+        dlg.setLocationRelativeTo(getParent());
         dlg.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e) {
                 Object retVal = optionPane.getValue();
@@ -474,6 +476,10 @@ public class OWLFrameList2<R extends Object> extends MList implements LinkedObje
                     handler.handleEditFinished(editor);
                 }
                 setSelectedValue(frameObject, true);
+
+                if (editor instanceof VerifiedInputEditor){
+                    ((VerifiedInputEditor)editor).removeStatusChangedListener(verificationListener);
+                }
 //                editor.dispose();
                 if (isRowEditor) {
                     editor.dispose();

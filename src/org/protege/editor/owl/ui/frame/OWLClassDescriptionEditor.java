@@ -108,23 +108,27 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private void handleVerifyEditorContents() {
         if (!listeners.isEmpty()){
-            boolean validated = false;
-            final String selectedTabTitle = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-            if (selectedTabTitle.equals(CLASS_EXPRESSION_EDITOR_LABEL)){
-                validated = editor.isWellFormed();
-            }
-            else if (selectedTabTitle.equals(CLASS_TREE_LABEL)){
-                validated = classSelectorPanel.getSelectedClass() != null;
-            }
-            else if (selectedTabTitle.equals(RESTRICTION_CREATOR_LABEL)){
-                validated = restrictionCreatorPanel.classSelectorPanel.getSelectedClass() != null &&
-                        restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedOWLObjectProperty() != null;
-            }
-
             for (InputVerificationStatusChangedListener l : listeners){
-                l.verifiedStatusChanged(validated);
+                l.verifiedStatusChanged(isValidated());
             }
         }
+    }
+
+
+    private boolean isValidated() {
+        boolean validated = false;
+        final String selectedTabTitle = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+        if (selectedTabTitle.equals(CLASS_EXPRESSION_EDITOR_LABEL)){
+            validated = editor.isWellFormed();
+        }
+        else if (selectedTabTitle.equals(CLASS_TREE_LABEL)){
+            validated = classSelectorPanel.getSelectedClass() != null;
+        }
+        else if (selectedTabTitle.equals(RESTRICTION_CREATOR_LABEL)){
+            validated = restrictionCreatorPanel.classSelectorPanel.getSelectedClass() != null &&
+                    restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedOWLObjectProperty() != null;
+        }
+        return validated;
     }
 
 
@@ -200,6 +204,12 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
         listeners.add(listener);
+        listener.verifiedStatusChanged(isValidated());
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
     }
 
 
