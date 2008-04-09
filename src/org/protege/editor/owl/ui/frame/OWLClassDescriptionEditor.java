@@ -32,6 +32,10 @@ import java.util.List;
 public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDescription>
         implements VerifiedInputEditor {
 
+    private static final String CLASS_EXPRESSION_EDITOR_LABEL = "Class expression editor";
+    private static final String CLASS_TREE_LABEL = "Class tree";
+    private static final String RESTRICTION_CREATOR_LABEL = "Restriction creator";
+
     private OWLEditorKit editorKit;
 
     private OWLDescriptionChecker checker;
@@ -83,18 +87,18 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(tabbedPane);
         editingComponent.setPreferredSize(new Dimension(500, 400));
-        tabbedPane.add("Class expression editor", new JScrollPane(editor));
+        tabbedPane.add(CLASS_EXPRESSION_EDITOR_LABEL, new JScrollPane(editor));
 
         if (description == null || !description.isAnonymous()) {
             classSelectorPanel = new OWLClassSelectorPanel(editorKit);
-            tabbedPane.add("Class tree", classSelectorPanel);
+            tabbedPane.add(CLASS_TREE_LABEL, classSelectorPanel);
             if (description != null) {
                 classSelectorPanel.setSelectedClass(description.asOWLClass());
             }
             classSelectorPanel.addSelectionListener(changeListener);
             
             restrictionCreatorPanel = new ObjectRestrictionCreatorPanel();
-            tabbedPane.add("Restriction creator", restrictionCreatorPanel);
+            tabbedPane.add(RESTRICTION_CREATOR_LABEL, restrictionCreatorPanel);
             restrictionCreatorPanel.classSelectorPanel.addSelectionListener(changeListener);
             restrictionCreatorPanel.objectPropertySelectorPanel.addSelectionListener(changeListener);
 
@@ -105,13 +109,14 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     private void handleVerifyEditorContents() {
         if (!listeners.isEmpty()){
             boolean validated = false;
-            if (tabbedPane.getSelectedComponent().equals(editor)){
+            final String selectedTabTitle = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+            if (selectedTabTitle.equals(CLASS_EXPRESSION_EDITOR_LABEL)){
                 validated = editor.isWellFormed();
             }
-            else if (tabbedPane.getSelectedComponent().equals(classSelectorPanel)){
+            else if (selectedTabTitle.equals(CLASS_TREE_LABEL)){
                 validated = classSelectorPanel.getSelectedClass() != null;
             }
-            else if (tabbedPane.getSelectedComponent().equals(restrictionCreatorPanel)){
+            else if (selectedTabTitle.equals(RESTRICTION_CREATOR_LABEL)){
                 validated = restrictionCreatorPanel.classSelectorPanel.getSelectedClass() != null &&
                         restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedOWLObjectProperty() != null;
             }
