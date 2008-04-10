@@ -97,16 +97,12 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
 
     private void handleActiveOntologyChange() {
+        reload = true;
+
         try {
             // The ontology closure is potentially wrong now. Clear
             // all ontologies.
             currentReasoner.clearOntologies();
-            reload = true;
-            
-// reclassification on every active ontology change
-//            if (currentReasoner.isClassified()) {
-//                classifyAsynchronously();
-//            }
         }
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);
