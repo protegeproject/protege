@@ -1,15 +1,17 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.Font;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
-
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -45,7 +47,7 @@ public class OWLRendererPreferences {
 
     public static final int DEFAULT_FONT_SIZE = 14;
 
-    public static final String DEFAULT_FONT_NAME = "Courier";
+    public static final String DEFAULT_FONT_NAME = "Dialog";
 
     private static OWLRendererPreferences instance;
 
