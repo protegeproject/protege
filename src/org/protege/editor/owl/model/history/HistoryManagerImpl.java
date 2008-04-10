@@ -1,14 +1,13 @@
 package org.protege.editor.owl.model.history;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import javax.swing.JList;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLOntologyChange;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -197,6 +196,15 @@ public class HistoryManagerImpl implements HistoryManager {
 
     public void removeUndoManagerListener(UndoManagerListener listener) {
         listeners.remove(listener);
+    }
+
+
+    public List<List<OWLOntologyChange>> getLoggedChanges() {
+        List<List<OWLOntologyChange>> copyOfLog = new ArrayList<List<OWLOntologyChange>>();
+        for (List<OWLOntologyChange> changes : undoStack){
+            copyOfLog.add(new ArrayList<OWLOntologyChange>(changes));
+        }
+        return copyOfLog;
     }
 
 
