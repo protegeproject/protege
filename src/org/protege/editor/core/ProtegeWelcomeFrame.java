@@ -1,28 +1,20 @@
 package org.protege.editor.core;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.util.Map;
-
-import javax.swing.*;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromURIPanel;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+import java.util.Map;
 
 
 /**
@@ -39,12 +31,13 @@ public class ProtegeWelcomeFrame extends JFrame {
     private static final Logger logger = Logger.getLogger(ProtegeWelcomeFrame.class);
 
 
-    public ProtegeWelcomeFrame() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setContentPane(new ProtegeWelcomePanel());
-        pack();
-        centre();
-    }
+	public ProtegeWelcomeFrame() {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setName("ProtegeWelcome");
+		setContentPane(new ProtegeWelcomePanel());
+		pack();
+		centre();
+	}
 
 
     private void centre() {
@@ -90,7 +83,7 @@ public class ProtegeWelcomeFrame extends JFrame {
 
             for (final EditorKitFactoryPlugin plugin : manager.getEditorKitFactoryPlugins()) {
 
-                box.add(new LinkLabel("Create new " + plugin.getLabel(), new ActionListener() {
+            	LinkLabel createLink = new LinkLabel("Create new " + plugin.getLabel(), new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             if (ProtegeManager.getInstance().createAndSetupNewEditorKit(plugin)) {
@@ -101,11 +94,13 @@ public class ProtegeWelcomeFrame extends JFrame {
                             logger.error("Exception caught initializing editor", e1);
                         }
                     }
-                }));
+                });
+            	createLink.setName("Create new " + plugin.getId());
+                box.add(createLink);
 
                 box.add(Box.createVerticalStrut(strutHeight));
 
-                box.add(new LinkLabel("Open " + plugin.getLabel(), new ActionListener() {
+                LinkLabel openLink = new LinkLabel("Open " + plugin.getLabel(), new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             if (ProtegeManager.getInstance().openAndSetupEditorKit(plugin)) {
@@ -116,11 +111,13 @@ public class ProtegeWelcomeFrame extends JFrame {
                             logger.error("Exception caught initializing editor", e1);
                         }
                     }
-                }));
+                });
+                openLink.setName("Open " + plugin.getId());
+                box.add(openLink);
 
                 box.add(Box.createVerticalStrut(strutHeight));
 
-                box.add(new LinkLabel("Open " + plugin.getLabel() + " from URI", new ActionListener() {
+                LinkLabel openFromURILink = new LinkLabel("Open " + plugin.getLabel() + " from URI", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             URI uri = OpenFromURIPanel.showDialog();
@@ -132,10 +129,14 @@ public class ProtegeWelcomeFrame extends JFrame {
                             logger.error(e1);
                         }
                     }
-                }));
+                });
+                openFromURILink.setName("OpenfromURI " + plugin.getId());
+                box.add(openFromURILink);
+                
+                box.add(Box.createVerticalStrut(strutHeight));
             }
 
-            box.add(Box.createVerticalStrut(strutHeight + 20));
+            box.add(Box.createVerticalStrut(2 * strutHeight));
 
             if (RecentEditorKitManager.getInstance().getDescriptors().size() > 0) {
                 Box recentLinkBox = new Box(BoxLayout.Y_AXIS);
