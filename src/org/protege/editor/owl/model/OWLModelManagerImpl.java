@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model;
 
 import org.coode.xml.XMLWriterPreferences;
+import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
@@ -30,7 +31,14 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.protege.editor.owl.model.util.ListenerManager;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.*;
@@ -92,7 +100,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private EntityFinder entityFinder;
 
-    private AssertedClassHierarchyProvider assertedClassHierarchyProvider;
+    private OWLObjectHierarchyProvider<OWLClass> assertedClassHierarchyProvider;
 
     private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
 
