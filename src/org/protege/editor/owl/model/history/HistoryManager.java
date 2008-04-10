@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.history;
 
-import java.util.List;
-
 import org.semanticweb.owl.model.OWLOntologyChange;
+
+import java.util.List;
 
 
 /**
@@ -36,6 +36,10 @@ public interface HistoryManager {
 
     public void removeUndoManagerListener(UndoManagerListener listener);
 
+
+    public List<List<OWLOntologyChange>> getLoggedChanges();
+
+    
 //    public boolean isEntityChanged(OWLEntity entity);
 
 //    public Set<OWLEntity> getChangedEntities();
