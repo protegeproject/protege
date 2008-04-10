@@ -681,9 +681,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         else if (inferred) {
 
         }
-//        if (strikeThrough) {
-//            doc.setParagraphAttributes(0, doc.getLength(), inferredInformationOutOfDate, false);
-//        }
+
+        if (strikeThrough) {
+            doc.setParagraphAttributes(0, doc.getLength(), strikeOutStyle, false);
+        }
 
         if (ontology != null) {
             if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(
