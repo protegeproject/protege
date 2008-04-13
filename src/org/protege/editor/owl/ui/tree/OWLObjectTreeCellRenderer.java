@@ -33,7 +33,7 @@ public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
         OWLObjectTreeNode node = (OWLObjectTreeNode) value;
-        setEquivalentObjects(node.getEquivalentObjects());
+        delegate.setEquivalentObjects(node.getEquivalentObjects());
         return delegate.getTreeCellRendererComponent(tree, node.getOWLObject(), selected, expanded, leaf, row, hasFocus);
 //        return (JComponent) super.getTreeCellRendererComponent(tree,
 //                                                               node.getOWLObject(),
