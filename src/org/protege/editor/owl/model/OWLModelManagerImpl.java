@@ -1,6 +1,20 @@
 package org.protege.editor.owl.model;
 
-import org.coode.xml.XMLWriterPreferences;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
@@ -17,7 +31,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
-import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider2;
 import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
@@ -41,18 +55,27 @@ import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLImportsDeclaration;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.OWLOntologyChangeException;
+import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.OWLOntologyStorageException;
+import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -112,8 +135,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLModelManagerDescriptor owlModelManagerDescriptor;
 
-    private OWLOntologyManager commentedOutOntologyManager;
-
     /**
      * Dirty ontologies are ontologies that have been edited
      * and not saved.
@@ -151,7 +172,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager = OWLManager.createOWLOntologyManager();
         manager.addOntologyChangeListener(this);
         manager.addURIMapper(new RepositoryURIMapper());
-        commentedOutOntologyManager = OWLManager.createOWLOntologyManager();
 
         dirtyOntologies = new HashSet<OWLOntology>();
         ontologyRootFolders = new HashSet<File>();
@@ -436,7 +456,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
         if (assertedClassHierarchyProvider == null) {
-            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider(manager);
+            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider2(manager);
             assertedClassHierarchyProvider.setOntologies(getActiveOntologies());
         }
         return assertedClassHierarchyProvider;
