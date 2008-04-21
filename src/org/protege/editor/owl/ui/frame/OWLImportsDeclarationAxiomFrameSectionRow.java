@@ -1,17 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -72,7 +71,7 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
 
     public List<MListButton> getAdditionalButtons() {
         OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getImportedOntology(getAxiom());
-        if (!getAxiom().getImportedOntologyURI().equals(ont.getURI())) {
+        if (ont != null && !getAxiom().getImportedOntologyURI().equals(ont.getURI())) {
             return additionalButtons;
         }
         else {
@@ -100,7 +99,6 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
     private String getMismatchedImportMessage() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>");
-        OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getImportedOntology(getAxiom());
         sb.append("The imports URI:<br>");
         sb.append("<font color=\"blue\">");
         sb.append(getAxiom().getImportedOntologyURI());
@@ -108,7 +106,8 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
         sb.append("<br>");
         sb.append("does not match the URI of the ontology that has been imported:<br>");
         sb.append("<font color=\"blue\">");
-        sb.append(ont.getURI());
+        OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getImportedOntology(getAxiom());
+        sb.append(ont == null ? "(Not loaded)" : ont.getURI());
         sb.append("</font><br><br>");
         sb.append("Do you want to fix the mismatch by modifying the imports statement?");
         sb.append("</body></html>");
