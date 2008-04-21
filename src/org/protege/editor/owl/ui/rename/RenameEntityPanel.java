@@ -1,22 +1,16 @@
 package org.protege.editor.owl.ui.rename;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 /**
@@ -126,11 +120,12 @@ public class RenameEntityPanel extends JPanel {
 
     public URI getURI() {
         try {
+            String newName = textField.getText().trim().replaceAll(" ", "_");
             if (showFullURICheckBox.isSelected()) {
-                return new URI(textField.getText().trim());
+                return new URI(newName);
             }
             else {
-                return new URI(getBase() + textField.getText().trim());
+                return new URI(getBase() + newName);
             }
         }
         catch (URISyntaxException e) {
