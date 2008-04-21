@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
-import java.net.URI;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
@@ -12,6 +9,9 @@ import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
 import org.semanticweb.owl.model.OWLRuntimeException;
+
+import java.net.URI;
+import java.util.Set;
 
 
 /**
@@ -35,6 +35,8 @@ public class MergeOntologiesWizard extends Wizard {
 
     private OWLModelManager owlModelManager;
 
+    private SelectTargetOntologyPage selectTargetOntologyPage;
+
 
     public MergeOntologiesWizard(OWLEditorKit editorKit) {
         setTitle("Create ontology wizard");
@@ -43,6 +45,7 @@ public class MergeOntologiesWizard extends Wizard {
         registerWizardPanel(MergeTypePage.ID, new MergeTypePage(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, uriPanel = new OntologyURIPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, physicalLocationPanel = new PhysicalLocationPanel(editorKit));
+        registerWizardPanel(SelectTargetOntologyPage.ID, selectTargetOntologyPage = new SelectTargetOntologyPage(editorKit));
         setCurrentPanel(SelectOntologiesPage.ID);
     }
 
@@ -53,12 +56,18 @@ public class MergeOntologiesWizard extends Wizard {
 
 
     public OWLOntology getOntologyToMergeInto() {
-        URI uri = uriPanel.getURI();
-        try {
-            return owlModelManager.createNewOntology(uri, physicalLocationPanel.getLocationURI());
+        OWLOntology ont = selectTargetOntologyPage.getOntology();
+        if (ont == null){
+            try {
+                URI uri = uriPanel.getURI();
+                return owlModelManager.createNewOntology(uri, physicalLocationPanel.getLocationURI());
+            }
+            catch (OWLOntologyCreationException e) {
+                throw new OWLRuntimeException(e);
+            }
         }
-        catch (OWLOntologyCreationException e) {
-            throw new OWLRuntimeException(e);
+        else{
+            return ont;
         }
     }
 }
