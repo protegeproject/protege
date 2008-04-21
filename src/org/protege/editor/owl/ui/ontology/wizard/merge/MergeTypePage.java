@@ -1,17 +1,11 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
-import java.awt.BorderLayout;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
-import javax.swing.JRadioButton;
-
-import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -63,7 +57,7 @@ public class MergeTypePage extends AbstractOWLWizardPanel {
             return OntologyURIPanel.ID;
         }
         else {
-            return WizardPanel.FINISH;
+            return SelectTargetOntologyPage.ID;
         }
     }
 }

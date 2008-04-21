@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
+import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -19,22 +18,23 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class SelectOntologiesPage extends AbstractOWLWizardPanel {
+public class SelectTargetOntologyPage extends AbstractOWLWizardPanel {
 
-    public static final String ID = "SelectOntologiesPage";
+    public static final String ID = "SelectTargetOntologyPage";
 
     private JList list;
 
 
-    public SelectOntologiesPage(OWLEditorKit owlEditorKit) {
-        super(ID, "Select ontologies to merge", owlEditorKit);
+    public SelectTargetOntologyPage(OWLEditorKit owlEditorKit) {
+        super(ID, "Select ontology to merge into", owlEditorKit);
     }
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please select the ontologies that you want to merge into another ontology.");
+        setInstructions("Please select the target ontology to merge into");
         parent.setLayout(new BorderLayout());
         list = new JList();
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setVisibleRowCount(8);
         list.setCellRenderer(getOWLEditorKit().getOWLWorkspace().createOWLCellRenderer());
         list.setListData(getOWLModelManager().getOntologies().toArray());
@@ -43,7 +43,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return MergeTypePage.ID;
+        return WizardPanel.FINISH;
     }
 
 
@@ -53,11 +53,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
     }
 
 
-    public Set<OWLOntology> getOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-        for (Object o : list.getSelectedValues()) {
-            ontologies.add((OWLOntology) o);
-        }
-        return ontologies;
+    public OWLOntology getOntology() {
+        return (OWLOntology)list.getSelectedValue();
     }
 }
