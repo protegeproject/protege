@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -14,6 +16,7 @@ import java.util.List;
  * Date: 28-Feb-2007<br><br>
  */
 public class ErrorLog implements Thread.UncaughtExceptionHandler {
+	private static final Logger logger = Logger.getLogger(ErrorLog.class);
 
     private static int errorCount;
 
@@ -46,6 +49,7 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
 
 
     public void logError(Throwable throwable) {
+    	logger.warn("Error logged", throwable);
         errorCount++;
         errors.add(new ErrorLogEntry(throwable));
         if (errors.size() > MAX_NUMBER_OF_ERRORS) {
