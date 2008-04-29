@@ -30,7 +30,7 @@ import org.semanticweb.owl.model.OWLRuntimeException;
 public class OWLClassAssertionAxiomIndividualSection
 		extends
 		AbstractOWLFrameSection<OWLClass, OWLClassAssertionAxiom, OWLIndividual> {
-	public static final String LABEL = "Instances";
+	public static final String LABEL = "Individuals";
 	private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
 
 	public OWLClassAssertionAxiomIndividualSection(OWLEditorKit editorKit,
