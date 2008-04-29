@@ -22,7 +22,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -43,6 +42,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicListUI;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
@@ -109,8 +109,7 @@ import org.semanticweb.owl.model.RemoveAxiom;
 public class OWLFrameList2<R extends Object> extends MList implements
 		LinkedObjectComponent, DropTargetListener, Copyable, Pasteable,
 		Cuttable, Deleteable, RefreshableComponent {
-	private static final Logger logger = Logger.getLogger(OWLFrameList2.class
-			.getName());
+	private static final Logger logger = Logger.getLogger(OWLFrameList2.class);
 	public static final int BUTTON_DIMENSION = 14;
 	public static final int BUTTON_MARGIN = 3;
 	private static Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
@@ -323,7 +322,9 @@ public class OWLFrameList2<R extends Object> extends MList implements
 			action.initialise();
 			this.actions.add(action);
 		} catch (Exception e) {
-			logger.throwing(this.getClass().getName(), "setupMenuItem", e);
+		    if (logger.isDebugEnabled()) {
+		        logger.debug("Exception thrown", e);
+		    }
 		}
 	}
 
@@ -342,7 +343,9 @@ public class OWLFrameList2<R extends Object> extends MList implements
 			try {
 				action.dispose();
 			} catch (Exception e) {
-				logger.throwing(this.getClass().getName(), "dispose", e);
+			    if (logger.isDebugEnabled()) {
+			        logger.debug("Exception thrown",  e);
+			    }
 			}
 		}
 		this.frame.dispose();
