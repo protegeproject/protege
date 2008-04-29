@@ -1,5 +1,19 @@
 package org.protege.editor.owl.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
@@ -30,21 +44,37 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.protege.editor.owl.model.util.ListenerManager;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLImportsDeclaration;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.OWLOntologyChangeException;
+import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.OWLOntologyStorageException;
+import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -62,7 +92,7 @@ import java.util.logging.Logger;
  * UI components that are used to access the ontology.
  */
 public class OWLModelManagerImpl extends AbstractModelManager implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener {
-
+    private static final Logger logger = Logger.getLogger(OWLModelManagerImpl.class);
 
     private List<OWLModelManagerListener> modelManagerChangeListeners;
 
@@ -118,9 +148,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private Map<URI, URI> resolvedMissingImports;
 
-
-    private static final Logger logger = Logger.getLogger(OWLModelManagerImpl.class.getName());
-
     private OWLEntityFactory defaultOWLEntityFactory;
 
     private OWLEntityFactory labelOWLEntityFactory;
@@ -158,7 +185,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
         activeOntologies = new HashSet<OWLOntology>();
-        logger.setLevel(Level.INFO);
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(
         XMLWriterPrefs.getInstance().isUseEntities());
     }
@@ -181,7 +207,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             getReasoner().dispose();
         }
         catch (Exception e) {
-            logger.severe(e.getMessage() + "\n" + e.getStackTrace());
+            logger.error(e.getMessage() + "\n", e);
         }
         // Empty caches
         owlEntityRenderingCache.dispose();
@@ -321,7 +347,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         for (File curFile : folder.listFiles(new OntologyFileFilter())) {
             OntologyURIExtractor ext = new OntologyURIExtractor(curFile.toURI());
             manager.addURIMapper(new SimpleURIMapper(ext.getOntologyURI(), curFile.toURI()));
-            if (logger.isLoggable(Level.INFO)) {
+            if (logger.isInfoEnabled()) {
                 logger.info("Adding auto-mapping: " + ext.getOntologyURI() + " -> " + curFile.toURI());
             }
         }
@@ -643,7 +669,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 listener.handleChange(event);
             }
             catch (Exception e) {
-                logger.warning("Exception thrown by listener: " + listener.getClass().getName() + ".  Detatching bad listener!");
+                logger.warn("Exception thrown by listener: " + listener.getClass().getName() + ".  Detatching bad listener!");
                 ProtegeApplication.getErrorLog().logError(e);
                 modelManagerChangeListeners.remove(listener);
             }
@@ -669,13 +695,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 setOWLEntityRenderer(ren);
             }
             catch (ClassNotFoundException e) {
-                logger.severe(e.getMessage());
+                logger.error(e.getMessage());
             }
             catch (InstantiationException e) {
-                logger.severe(e.getMessage());
+                logger.error(e.getMessage());
             }
             catch (IllegalAccessException e) {
-                logger.severe(e.getMessage());
+                logger.error(e.getMessage());
             }
             if (entityRenderer == null) {
                 entityRenderer = new OWLEntityRendererImpl();
@@ -937,7 +963,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                     uri = lib.getPhysicalURI(logicalURI);
                     // Map the URI
                     manager.addURIMapper(new SimpleURIMapper(logicalURI, uri));
-                    if (logger.isLoggable(Level.INFO)) {
+                    if (logger.isInfoEnabled()) {
                         logger.info("Mapping (from automapping): " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
                     }
                     return uri;
@@ -949,12 +975,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             OntologyLibrary lib = manager.getLibrary(logicalURI);
             if (lib != null) {
                 uri = lib.getPhysicalURI(logicalURI);
-                if (logger.isLoggable(Level.INFO)) {
+                if (logger.isInfoEnabled()) {
                     logger.info("Mapping (from library: " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
                 }
                 return lib.getPhysicalURI(logicalURI);
             }
-            if (logger.isLoggable(Level.INFO)) {
+            if (logger.isInfoEnabled()) {
                 logger.info("No mapping for " + logicalURI + " found.  Using logical URI");
             }
             // We can't find a local version of the ontology. Can we resolve the URI?
