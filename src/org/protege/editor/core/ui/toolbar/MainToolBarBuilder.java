@@ -3,11 +3,10 @@ package org.protege.editor.core.ui.toolbar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JToolBar;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
@@ -58,7 +57,7 @@ public class MainToolBarBuilder {
                 action.initialise();
             }
             catch (Exception e) {
-                Logger.getLogger(getClass().getName()).log(Level.WARNING, "Couldn't load main toolbar item", e);
+                Logger.getLogger(getClass()).warn("Couldn't load main toolbar item", e);
             }
         }
         return toolBar;
