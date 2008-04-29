@@ -192,8 +192,10 @@ public class OWLEditorKit implements EditorKit {
         catch (OWLOntologyStorerNotFoundException e) {
             OWLOntology ont = getOWLModelManager().getActiveOntology();
             OWLOntologyFormat format = getOWLModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+            String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please selected 'Save As' and select another format.";
+            logger.warn(message);
             JOptionPane.showMessageDialog(getWorkspace(),
-                                          "Could not save ontology in the specified format (" + format + ").\n" + "Please selected 'Save As' and select another format.",
+                                          message,
                                           "Could not save ontology",
                                           JOptionPane.ERROR_MESSAGE);
         }
@@ -216,6 +218,7 @@ public class OWLEditorKit implements EditorKit {
         OWLOntologyFormat format = OntologyFormatPanel.showDialog(this,
                                                                   man.getOntologyFormat(getOWLModelManager().getActiveOntology()));
         if (format == null) {
+            logger.warn("Please select a valid format");
             return;
         }
         UIHelper helper = new UIHelper(this);
