@@ -146,6 +146,7 @@ public class OWLEditorKit implements EditorKit {
         ext.add("xml");
         ext.add("krss");
         ext.add("obo");
+        ext.add("turtle");
         File f = UIUtil.openFile(new JFrame(), "Select an OWL file", ext);
         if (f == null) {
             return false;
@@ -220,6 +221,7 @@ public class OWLEditorKit implements EditorKit {
         UIHelper helper = new UIHelper(this);
         File file = helper.saveOWLFile("Please select a location");
         if (file == null) {
+            logger.warn("No valid file specified for the save operation - quitting");
             return;
         }
         int extensionIndex = file.toString().lastIndexOf('.');
