@@ -1,13 +1,25 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListEditButton;
+import org.protege.editor.core.ui.list.MListRemoveTypeButton;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.RemoveAllDisjointAxioms;
+import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLClassAssertionAxiom;
+import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.RemoveAxiom;
 
 
 /**
@@ -18,7 +30,7 @@ import org.semanticweb.owl.model.OWLOntology;
  */
 public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual> {
 
-    public OWLClassAssertionAxiomIndividualSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLClassAssertionAxiomIndividualSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClass, OWLClassAssertionAxiom, OWLIndividual> section,
                                                       OWLOntology ontology, OWLClass rootObject,
                                                       OWLClassAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
@@ -38,7 +50,37 @@ public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrame
     public boolean isFixedHeight() {
         return true;
     }
+    
+    @Override
+    public boolean isDeletable() {
+        return false;
+    }
+    
+    @Override
+    public List<MListButton> getAdditionalButtons() {
+        List<MListButton> buttons = new ArrayList<MListButton>();
+        if (isEditable()) {
+            
+            buttons.add(new MListRemoveTypeButton(new ActionListener() {
 
+                public void actionPerformed(ActionEvent e) {
+                    OWLModelManager manager = getOWLEditorKit().getOWLModelManager();
+                    OWLDataFactory factory = manager.getOWLDataFactory();
+                    OWLIndividual individual = getAxiom().getIndividual();
+                    
+                    manager.applyChange(new RemoveAxiom(getOntology(), getAxiom()));
+                    
+                    Set<OWLClassAssertionAxiom> typeAxioms = getOntology().getClassAssertionAxioms(individual);
+                    if (typeAxioms == null || typeAxioms.isEmpty()) { // should actually check the import tree?
+                        OWLClassAssertionAxiom declaration = factory.getOWLClassAssertionAxiom(individual, factory.getOWLThing());
+                        manager.applyChange(new AddAxiom(getOntology(), declaration));
+                    }
+                }
+                
+            }));
+        }
+        return buttons;
+    }
 
     /**
      * Gets a list of objects contained in this row.  These objects
