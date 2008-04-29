@@ -43,8 +43,7 @@ public class OntologyFormatPanel extends JPanel {
         formats.add(new OWLFunctionalSyntaxOntologyFormat());
         formats.add(new ManchesterOWLSyntaxOntologyFormat());
         
-        formats.add(new KRSS2OntologyFormat());
-        formats.add(new KRSSOntologyFormat());        
+        formats.add(new KRSS2OntologyFormat());       
         formats.add(new LatexOntologyFormat());
         formats.add(new TurtleOntologyFormat());
         
