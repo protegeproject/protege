@@ -1,5 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
@@ -15,11 +21,6 @@ import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.NullProgressMonitor;
 import org.semanticweb.owl.util.ProgressMonitor;
 
-import javax.swing.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Logger;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -31,12 +32,11 @@ import java.util.logging.Logger;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManagerListener {
+    private static Logger logger = Logger.getLogger(OWLReasonerManager.class);
 
     public static boolean AUTO_RELOAD_ON_ACTIVE_ONTOLOGY_CHANGE = false;
 
     public static boolean AUTO_CLASSIFY_ON_ACTIVE_ONTOLOGY_CHANGE = false;
-
-    private static Logger logger = Logger.getLogger(OWLReasonerManager.class.getName());
 
     private OWLModelManager owlModelManager;
 
