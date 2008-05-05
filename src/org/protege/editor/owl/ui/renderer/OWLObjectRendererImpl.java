@@ -886,7 +886,17 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(SWRLBuiltInAtom swrlBuiltInAtom) {
-        super.visit(swrlBuiltInAtom);
+        write(swrlBuiltInAtom.getPredicate().getShortName());
+        write("(");
+        Iterator<SWRLAtomDObject> it = swrlBuiltInAtom.getArguments().iterator();
+        while (it.hasNext()) {
+            SWRLAtomDObject argument = it.next();
+            argument.accept(this);
+            if (it.hasNext()) {
+                write(", ");
+            }
+        }
+        write(")");
     }
 
 
