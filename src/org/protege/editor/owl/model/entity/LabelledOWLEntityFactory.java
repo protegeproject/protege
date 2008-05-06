@@ -1,22 +1,11 @@
 package org.protege.editor.owl.model.entity;
 
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.*;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLConstant;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 
 /**
@@ -32,9 +21,15 @@ public class LabelledOWLEntityFactory implements OWLEntityFactory {
 
     private OWLModelManager owlModelManager;
 
+    private URI defaultURI;
 
-    public LabelledOWLEntityFactory(OWLModelManager owlModelManager) {
+    private String defaultLang;
+
+
+    public LabelledOWLEntityFactory(OWLModelManager owlModelManager, URI defaultURI, String defaultLang) {
         this.owlModelManager = owlModelManager;
+        this.defaultURI = defaultURI;
+        this.defaultLang = defaultLang;
     }
 
 
@@ -74,9 +69,16 @@ public class LabelledOWLEntityFactory implements OWLEntityFactory {
     protected List<OWLOntologyChange> getChanges(OWLEntity owlEntity, String shortName) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         // Add the label
+        String lang = getLabelLanguage();
         OWLDataFactory df = owlModelManager.getOWLDataFactory();
-        OWLConstant con = df.getOWLUntypedConstant(shortName);
-        OWLAnnotation anno = df.getOWLConstantAnnotation(OWLRDFVocabulary.RDFS_LABEL.getURI(), con);
+        OWLConstant con;
+        if (lang == null){
+            con = df.getOWLUntypedConstant(shortName);
+        }
+        else{
+            con = df.getOWLUntypedConstant(shortName, lang);
+        }
+        OWLAnnotation anno = df.getOWLConstantAnnotation(getLabelURI(), con);
         OWLAxiom ax = df.getOWLEntityAnnotationAxiom(owlEntity, anno);
         changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));
         return changes;
@@ -89,5 +91,14 @@ public class LabelledOWLEntityFactory implements OWLEntityFactory {
             base += "#";
         }
         return URI.create(base + prefix + System.nanoTime());
+    }
+
+
+    public URI getLabelURI() {
+        return defaultURI;
+    }
+
+    public String getLabelLanguage() {
+        return defaultLang;
     }
 }
