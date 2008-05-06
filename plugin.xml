@@ -846,6 +846,12 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
+    <extension id="ui.preferences.usage"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.UsagePreferencesPanel"/>
+    </extension>
+
 
     <extension id="ExplanationResultsView" 
                 point="org.protege.editor.core.application.ViewComponent">

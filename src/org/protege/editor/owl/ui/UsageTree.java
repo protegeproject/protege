@@ -1,16 +1,5 @@
 package org.protege.editor.owl.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
@@ -18,6 +7,10 @@ import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 
 
 /**
@@ -43,7 +36,14 @@ public class UsageTree extends JTree implements LinkedObjectComponent {
 
     public void setOWLEntity(OWLEntity entity) {
         this.entity = entity;
-        setModel(new UsageTreeModel(owlEditorKit, entity));
+
+        final UsagePreferences p = UsagePreferences.getInstance();
+        final UsageTreeModel model = new UsageTreeModel(owlEditorKit);
+        model.setFilterSimpleSubclassAxioms(p.getFilterSimpleSubclassAxioms());
+        model.setFilterDisjointAxioms(p.getFilterDisjointAxioms());
+        model.setOWLEntity(entity);
+        setModel(model);
+
         for (int i = 0; i < getRowCount(); i++) {
             expandRow(i);
             if (i > 100) {
