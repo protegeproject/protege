@@ -33,26 +33,35 @@ public class UsageTreeModel extends DefaultTreeModel {
 
     private int usageCount;
 
+    private boolean filterSimpleSubclasses = false;
 
-    public UsageTreeModel(OWLEditorKit owlEditorKit, OWLEntity entity) {
-        super(new DefaultMutableTreeNode(getRootContent(owlEditorKit.getOWLModelManager(), entity)));
-        this.owlModelManager = owlEditorKit.getOWLModelManager();
-        this.entity = entity;
-        rootNode = (DefaultMutableTreeNode) getRoot();
+    private boolean filterDisjoints = false;
+
+
+    public UsageTreeModel(OWLEditorKit owlEditorKit) {
+        super(new DefaultMutableTreeNode("No usage"));
+        owlModelManager = owlEditorKit.getOWLModelManager();
         axiomSorter = new AxiomSorter();
         nodeMap = new HashMap<OWLEntity, DefaultMutableTreeNode>();
         axiomsByEntityMap = new TreeMap<OWLEntity, Set<OWLAxiom>>(new OWLObjectComparator<OWLEntity>(owlModelManager));
-        setOWLEntity(entity);
     }
 
+    public UsageTreeModel(OWLEditorKit owlEditorKit, OWLEntity entity) {
+        this(owlEditorKit);
+        setOWLEntity(entity);
+    }
 
     private static String getRootContent(OWLModelManager mngr, OWLEntity entity){
         return entity != null ? "Usage for: " + mngr.getOWLEntityRenderer().render(entity) : "Usage for:";
     }
 
-    private void setOWLEntity(OWLEntity owlEntity) {
+    public void setOWLEntity(OWLEntity owlEntity) {
+        this.entity = owlEntity;
+        rootNode = new DefaultMutableTreeNode(getRootContent(owlModelManager, entity));
+        setRoot(rootNode);
         axiomsByEntityMap.clear();
         usageCount = 0;
+
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             currentOntology = ont;
             Set<OWLAxiom> axioms = ont.getReferencingAxioms(owlEntity);
@@ -61,13 +70,13 @@ public class UsageTreeModel extends DefaultTreeModel {
                 ax.accept(axiomSorter);
             }
         }
+
         for (OWLEntity ent : axiomsByEntityMap.keySet()) {
             for (OWLAxiom ax : axiomsByEntityMap.get(ent)) {
                 getNode(ent).add(new UsageTreeNode(null, ax));
 //                insertNodeInto(, getNode(ent), 0);
             }
         }
-        ((DefaultMutableTreeNode) getRoot()).setUserObject(getRootContent(owlModelManager, entity));
     }
 
 
@@ -79,6 +88,16 @@ public class UsageTreeModel extends DefaultTreeModel {
             rootNode.add(node);
         }
         return node;
+    }
+
+
+    public void setFilterSimpleSubclassAxioms(boolean filter) {
+        this.filterSimpleSubclasses = filter;
+    }
+
+
+    public void setFilterDisjointAxioms(boolean filter) {
+        this.filterDisjoints = filter;
     }
 
 
@@ -184,9 +203,11 @@ public class UsageTreeModel extends DefaultTreeModel {
 
 
         public void visit(OWLDisjointClassesAxiom axiom) {
-            for (OWLDescription desc : axiom.getDescriptions()) {
-                if (!desc.isAnonymous()) {
-                    ((OWLClass) desc).accept(this);
+            if (!filterDisjoints){
+                for (OWLDescription desc : axiom.getDescriptions()) {
+                    if (!desc.isAnonymous()) {
+                        ((OWLClass) desc).accept(this);
+                    }
                 }
             }
         }
@@ -207,7 +228,9 @@ public class UsageTreeModel extends DefaultTreeModel {
 
 
         public void visit(OWLDisjointUnionAxiom axiom) {
-            axiom.getOWLClass().accept(this);
+            if (!filterDisjoints){
+                axiom.getOWLClass().accept(this);
+            }
         }
 
 
@@ -322,8 +345,16 @@ public class UsageTreeModel extends DefaultTreeModel {
 
 
         public void visit(OWLSubClassAxiom axiom) {
-            if (!axiom.getSubClass().isAnonymous()) {
+            if (filterSimpleSubclasses){
+                if (!axiom.getSubClass().equals(entity) &&
+                    !axiom.getSuperClass().equals(entity)){
+                    ((OWLClass) axiom.getSubClass()).accept(this);
+                }
+            }
+            else{
+                if (!axiom.getSubClass().isAnonymous()) {
                 ((OWLClass) axiom.getSubClass()).accept(this);
+                }
             }
         }
 
