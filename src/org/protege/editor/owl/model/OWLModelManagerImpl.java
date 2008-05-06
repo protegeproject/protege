@@ -1,18 +1,5 @@
 package org.protege.editor.owl.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
@@ -44,37 +31,20 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.protege.editor.owl.model.util.ListenerManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeException;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLOntologyStorageException;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URLConnection;
+import java.util.*;
 
 
 /**
@@ -741,6 +711,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             entityRenderer.removeListener(this);
             entityRenderer.dispose();
         }
+        if (renderer instanceof OWLEntityAnnotationValueRenderer){
+            labelOWLEntityFactory = null;
+        }
         entityRenderer = renderer;
         entityRenderer.addListener(this);
         entityRenderer.initialise();
@@ -792,7 +765,26 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public synchronized OWLEntityFactory getOWLEntityFactory() {
         if (getOWLEntityRenderer() instanceof OWLEntityAnnotationValueRenderer) {
             if (labelOWLEntityFactory == null) {
-                labelOWLEntityFactory = new LabelledOWLEntityFactory(this);
+                labelOWLEntityFactory = new LabelledOWLEntityFactory(this, OWLRDFVocabulary.RDFS_LABEL.getURI(), null){
+                    public URI getLabelURI() {
+                        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
+                        if (!uris.isEmpty()){
+                            return uris.get(0);
+                        }
+                        return super.getLabelURI();
+                    }
+
+                    public String getLabelLanguage() {
+                        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
+                        if (!uris.isEmpty()){
+                            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(uris.get(0));
+                            if (!langs.isEmpty()){
+                                return langs.get(0);
+                            }
+                        }
+                        return super.getLabelLanguage();
+                    }
+                };
             }
             return labelOWLEntityFactory;
         }
