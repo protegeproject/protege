@@ -65,7 +65,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             handleVerifyEditorContents();
         }
     };
-    
+
     private ChangeListener changeListener = new ChangeListener(){
         public void stateChanged(ChangeEvent changeEvent) {
             handleVerifyEditorContents();
@@ -96,7 +96,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
                 classSelectorPanel.setSelectedClass(description.asOWLClass());
             }
             classSelectorPanel.addSelectionListener(changeListener);
-            
+
             restrictionCreatorPanel = new ObjectRestrictionCreatorPanel();
             tabbedPane.add(RESTRICTION_CREATOR_LABEL, restrictionCreatorPanel);
             restrictionCreatorPanel.classSelectorPanel.addSelectionListener(changeListener);
@@ -107,10 +107,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     }
 
     private void handleVerifyEditorContents() {
-        if (!listeners.isEmpty()){
-            for (InputVerificationStatusChangedListener l : listeners){
-                l.verifiedStatusChanged(isValidated());
-            }
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(isValidated());
         }
     }
 
@@ -314,8 +312,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
                 return Collections.emptySet();
             }
             creator.createRestrictions(objectPropertySelectorPanel.getSelectedOWLObjectProperties(),
-                    classSelectorPanel.getSelectedClasses(),
-                    result);
+                                       classSelectorPanel.getSelectedClasses(),
+                                       result);
             return result;
         }
 

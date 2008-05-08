@@ -1,14 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
@@ -17,6 +8,14 @@ import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -24,7 +23,7 @@ import org.semanticweb.owl.model.OWLObjectPropertyExpression;
  * Bio-Health Informatics Group<br>
  * Date: 22-Feb-2007<br><br>
  */
-public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObjectEditor<List<OWLObjectPropertyExpression>> {
+public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObjectEditor<List<OWLObjectPropertyExpression>> implements VerifiedInputEditor {
 
     private static final Logger logger = Logger.getLogger(OWLObjectPropertyChainEditor.class);
 
@@ -36,6 +35,23 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
 
     protected ExpressionEditor<List<OWLObjectPropertyExpression>> editor;
 
+    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+
+    private DocumentListener docListener = new DocumentListener(){
+
+        public void insertUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+
+        public void removeUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+
+        public void changedUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+    };
+
 
     public OWLObjectPropertyChainEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
@@ -43,6 +59,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
                                                                          new OWLPropertyChainChecker(owlEditorKit.getOWLModelManager()));
         Dimension prefSize = editor.getPreferredSize();
         editor.setPreferredSize(new Dimension(350, prefSize.height));
+        editor.getDocument().addDocumentListener(docListener);
         impliesLabel = new JLabel();
         panel = new JPanel(new BorderLayout(7, 7));
         panel.add(editor);
@@ -91,5 +108,23 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
 
 
     public void dispose() {
+    }
+
+
+    private void handleEditorChange() {
+        // @@TODO push this into the editor (so we use its timeout etc)
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(editor.isWellFormed());
+        }
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
     }
 }
