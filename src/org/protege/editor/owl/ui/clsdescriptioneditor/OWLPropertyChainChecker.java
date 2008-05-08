@@ -1,12 +1,15 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import java.util.List;
-
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.owl.model.description.manchester.ManchesterSyntaxParser;
+import org.protege.editor.owl.model.parser.ParserUtil;
+import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
+import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
+
+import java.util.List;
 
 
 /**
@@ -17,22 +20,29 @@ import org.semanticweb.owl.model.OWLObjectPropertyExpression;
  */
 public class OWLPropertyChainChecker implements OWLExpressionChecker<List<OWLObjectPropertyExpression>> {
 
-    private ManchesterSyntaxParser parser;
+    private OWLModelManager mngr;
 
 
-    public OWLPropertyChainChecker(OWLModelManager owlModelManager) {
-        parser = new ManchesterSyntaxParser();
-        parser.setOWLModelManager(owlModelManager);
+    public OWLPropertyChainChecker(OWLModelManager mngr) {
+        this.mngr = mngr;
     }
 
 
     public void check(String text) throws OWLExpressionParserException, OWLException {
-        parser.isWellFormedObjectPropertyChain(text);
+        createObject(text);
     }
 
 
     public List<OWLObjectPropertyExpression> createObject(String text) throws OWLExpressionParserException,
                                                                               OWLException {
-        return parser.createObjectPropertyChain(text);
+        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
+        parser.setBase(mngr.getActiveOntology().getURI().toString());
+        try {
+            return parser.parseObjectPropertyChain();
+        }
+        catch (ParserException e) {
+            throw ParserUtil.convertException(e);
+        }
     }
 }

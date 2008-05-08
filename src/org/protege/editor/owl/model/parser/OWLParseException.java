@@ -24,7 +24,7 @@ public class OWLParseException extends OWLException {
     public OWLParseException(String message, Throwable cause) {
         super(message, cause);
     }
-
+    
 //    abstract int getStartIndex();
 //
 //    abstract int getEndIndex();
