@@ -112,12 +112,12 @@ public class OWLAxiomList extends MList {
                 ren.setTransparent();
                 ren.setOntology(item.ontology);
                 ren.setHighlightKeywords(true);
-                if (!item.ontology.containsAxiom(item.axiom)) {
-                    ren.setStrikeThrough(true);
-                }
-                else {
-                    ren.setStrikeThrough(false);
-                }
+//                if (!item.ontology.containsAxiom(item.axiom)) {
+//                    ren.setStrikeThrough(true);
+//                }
+//                else {
+//                    ren.setStrikeThrough(false);
+//                }
                 ren.setWrap(false);
                 return ren.getListCellRendererComponent(list, item.axiom, index, isSelected, cellHasFocus);
             }

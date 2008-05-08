@@ -150,11 +150,11 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             owlCellRenderer.setHighlightKeywords(highlightKeywords);
             owlCellRenderer.setHighlightUnsatisfiableClasses(highlightUnsatisfiableClasses);
             owlCellRenderer.setCrossedOutEntities(crossedOutEntities);
-            if(row.getOntology() != null) {
-                if(!row.getOntology().containsAxiom(row.getAxiom())) {
-                    owlCellRenderer.setStrikeThrough(true);
-                }
-            }
+//            if(row.getOntology() != null) {
+//                if(!row.getOntology().containsAxiom(row.getAxiom())) {
+//                    owlCellRenderer.setStrikeThrough(true);
+//                }
+//            }
             return owlCellRenderer.getListCellRendererComponent(list,
                                                                 valueToRender,
                                                                 index,
