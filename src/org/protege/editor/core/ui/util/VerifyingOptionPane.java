@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.util;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 /*
@@ -38,7 +40,10 @@ import java.awt.*;
  */
 public class VerifyingOptionPane extends JOptionPane {
 
+    private static final Logger logger = Logger.getLogger(VerifyingOptionPane.class);
+
     private JButton okButton;
+
 
     public VerifyingOptionPane(JComponent c) {
         super(c, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
@@ -46,12 +51,17 @@ public class VerifyingOptionPane extends JOptionPane {
 
     public void setOKEnabled(boolean enabled){
         if (okButton == null){
-            okButton = getComponent(this, JButton.class, "OK");
+            okButton = getButtonComponent(this, JButton.class, (String)UIManager.get("OptionPane.okButtonText"));
         }
-        okButton.setEnabled(enabled);
+        if (okButton != null){
+            okButton.setEnabled(enabled);
+        }
+        else{
+            logger.warn("Cannot find OK button for this system. Please report this with details of your OS and language.");
+        }
     }
 
-    private <T extends JComponent> T getComponent(JComponent parent, Class<T> type, String name) {
+    private <T extends JComponent> T getButtonComponent(JComponent parent, Class<T> type, String name) {
         if (type.isAssignableFrom(parent.getClass())){
             if (parent instanceof JButton){
                 if (name.equals(((JButton)parent).getText())){
@@ -61,7 +71,7 @@ public class VerifyingOptionPane extends JOptionPane {
         }
         for (Component c : parent.getComponents()){
             if (c instanceof JComponent){
-                T target = getComponent((JComponent)c, type, name);
+                T target = getButtonComponent((JComponent)c, type, name);
                 if (target != null){
                     return target;
                 }
