@@ -108,6 +108,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
 
 
     public void dispose() {
+        editor.getDocument().removeDocumentListener(docListener);
     }
 
 
