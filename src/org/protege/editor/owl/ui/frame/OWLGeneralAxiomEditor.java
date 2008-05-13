@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLClassAxiomChecker;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLException;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,7 +20,7 @@ import org.semanticweb.owl.model.OWLException;
  * Bio-Health Informatics Group<br>
  * Date: 23-Apr-2007<br><br>
  */
-public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLClassAxiom> {
+public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLClassAxiom> implements VerifiedInputEditor {
 
     private OWLEditorKit editorKit;
 
@@ -29,11 +30,30 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
     private JComponent editingComponent;
 
+    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+
+    private DocumentListener docListener = new DocumentListener(){
+
+        public void insertUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+
+        public void removeUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+
+        public void changedUpdate(DocumentEvent event) {
+            handleEditorChange();
+        }
+    };
 
     public OWLGeneralAxiomEditor(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
+
         checker = new OWLClassAxiomChecker(editorKit);
         editor = new ExpressionEditor<OWLClassAxiom>(editorKit, checker);
+        editor.getDocument().addDocumentListener(docListener);
+
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(editor);
         editingComponent.setPreferredSize(new Dimension(400, 200));
@@ -71,12 +91,9 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
      */
     public OWLClassAxiom getEditedObject() {
         try {
-            if (!editor.isWellFormed()) {
-                return null;
-            }
-            String expression = editor.getText();
             if (editor.isWellFormed()) {
-                return editorKit.getOWLModelManager().getOWLDescriptionParser().createOWLClassAxiom(expression);
+                String expression = editor.getText();
+                return editor.getExpressionChecker().createObject(expression);
             }
             else {
                 return null;
@@ -89,5 +106,23 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
 
     public void dispose() {
+        editor.getDocument().removeDocumentListener(docListener);
+    }
+
+    private void handleEditorChange() {
+        // @@TODO push this into the editor (so we use its timeout etc)
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(editor.isWellFormed());
+        }
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
     }
 }
