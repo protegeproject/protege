@@ -1,30 +1,5 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
 import org.coode.mdock.ComponentNode;
 import org.coode.mdock.NodeComponent;
@@ -38,6 +13,14 @@ import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -488,6 +471,7 @@ public class View extends JComponent implements NodeComponent {
             getParent().remove(this);
             dispose();
             nodePanel.rebuild();
+            nodePanel.repaint();
         }
         else {
 
@@ -506,7 +490,6 @@ public class View extends JComponent implements NodeComponent {
         final View view = createView(plugin);
         final JDialog dlg = new JDialog(ProtegeManager.getInstance().getFrame(workspace));
         view.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        view.syncronizing = false;
         viewBarComponent.setEnabled(false);
         JPanel holder = new JPanel(new BorderLayout(3, 3));
         holder.add(view);
@@ -539,6 +522,7 @@ public class View extends JComponent implements NodeComponent {
         });
         dlg.validate();
         dlg.setVisible(true);
+        view.syncronizing = false;
     }
 
 //    private void undockView() {
