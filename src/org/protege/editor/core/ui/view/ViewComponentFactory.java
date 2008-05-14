@@ -1,12 +1,11 @@
 package org.protege.editor.core.ui.view;
 
-import java.util.Map;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-
 import org.coode.mdock.ComponentFactory;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
 
 
 /**
@@ -22,6 +21,8 @@ public class ViewComponentFactory implements ComponentFactory {
 
     private Workspace workspace;
 
+    private ViewComponentPlugin emptyPlugin;
+
 
     public ViewComponentFactory(Workspace workspace) {
         this.workspace = workspace;
@@ -36,6 +37,37 @@ public class ViewComponentFactory implements ComponentFactory {
                 return new View(plugin, workspace);
             }
         }
-        return new JButton("Couldn't load");
+        // we need to return a fully functioning view so that the close button works
+        return new View(getEmptyPlugin(pluginId, "Couldn't load view plugin: " + pluginId), workspace);
+    }
+
+    public ViewComponentPlugin getEmptyPlugin(final String pluginId, final String message) {
+        if (emptyPlugin == null){
+            emptyPlugin = new ViewComponentPluginAdapter(){
+
+                public String getLabel() {
+                    return pluginId;
+                }
+
+                public Workspace getWorkspace() {
+                    return workspace;
+                }
+
+                public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+                    return new ViewComponent(){
+
+                        public void initialise() throws Exception {
+                            setLayout(new BorderLayout());
+                            add(new JLabel(message), BorderLayout.CENTER);
+                        }
+
+                        public void dispose() throws Exception {
+                            // do nothing
+                        }
+                    };
+                }
+            };
+        }
+        return emptyPlugin;
     }
 }
