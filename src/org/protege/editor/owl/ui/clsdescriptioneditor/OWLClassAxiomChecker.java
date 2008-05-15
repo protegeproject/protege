@@ -1,7 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.model.parser.ParserUtil;
+import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
+import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLException;
 
@@ -17,20 +22,28 @@ import org.semanticweb.owl.model.OWLException;
  */
 public class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
-    private OWLEditorKit owlEditorKit;
+    private OWLModelManager mngr;
 
 
-    public OWLClassAxiomChecker(OWLEditorKit owlEditorKit) {
-        this.owlEditorKit = owlEditorKit;
+    public OWLClassAxiomChecker(OWLEditorKit eKit) {
+        this.mngr = eKit.getOWLModelManager();
     }
 
 
     public void check(String text) throws OWLExpressionParserException, OWLException {
-        owlEditorKit.getOWLModelManager().getOWLDescriptionParser().isClassAxiomWellFormed(text);
+        createObject(text);
     }
 
 
     public OWLClassAxiom createObject(String text) throws OWLExpressionParserException, OWLException {
-        return owlEditorKit.getOWLModelManager().getOWLDescriptionParser().createOWLClassAxiom(text);
+        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
+        parser.setBase(mngr.getActiveOntology().getURI().toString());
+        try {
+            return parser.parseClassAxiom();
+        }
+        catch (ParserException e) {
+            throw ParserUtil.convertException(e);
+        }
     }
 }
