@@ -3,10 +3,13 @@ package org.protege.editor.owl.ui.ontology.wizard.merge;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -37,7 +40,9 @@ public class SelectTargetOntologyPage extends AbstractOWLWizardPanel {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setVisibleRowCount(8);
         list.setCellRenderer(getOWLEditorKit().getOWLWorkspace().createOWLCellRenderer());
-        list.setListData(getOWLModelManager().getOntologies().toArray());
+        final java.util.List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(getOWLModelManager().getOntologies());
+        Collections.sort(orderedOntologies, new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
+        list.setListData(orderedOntologies.toArray());
         parent.add(new JScrollPane(list), BorderLayout.NORTH);
     }
 
