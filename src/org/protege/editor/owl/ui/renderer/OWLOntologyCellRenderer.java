@@ -2,9 +2,11 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -48,20 +50,23 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                   boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        String uriString = (((OWLOntology) value).getURI().toString());
-        int lastSepIndex = uriString.lastIndexOf('/');
+
+        SimpleURIShortFormProvider sfp = new SimpleURIShortFormProvider();
+        final URI uri = ((OWLOntology) value).getURI();
+        String shortForm = sfp.getShortForm(uri);
+
         StringBuilder sb = new StringBuilder();
-        if (lastSepIndex != -1) {
+        if (shortForm != null) {
             sb.append("<html><body>");
-            sb.append(uriString.substring(lastSepIndex + 1, uriString.length()));
+            sb.append(shortForm);
             sb.append("    ");
             sb.append("<font color=\"gray\">");
-            sb.append(uriString);
+            sb.append(uri.toString());
             sb.append("</font>");
             sb.append("</body></html>");
         }
         else {
-            sb.append(uriString);
+            sb.append(uri.toString());
         }
         label.setText(sb.toString());
         label.setIcon(editorKit.getOWLWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
