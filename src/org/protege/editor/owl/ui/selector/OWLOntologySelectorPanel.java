@@ -1,17 +1,16 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.semanticweb.owl.model.OWLOntology;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -35,7 +34,12 @@ public class OWLOntologySelectorPanel extends JPanel {
     public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         list = new OWLObjectList(owlEditorKit);
-        list.setListData(owlEditorKit.getOWLModelManager().getOntologies().toArray());
+        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+        final List<OWLOntology> orderedOntologies =
+                new ArrayList<OWLOntology>(mngr.getOntologies());
+        Collections.sort(orderedOntologies,
+                         new OWLObjectComparator<OWLOntology>(mngr));
+        list.setListData(orderedOntologies.toArray());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

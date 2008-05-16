@@ -9,15 +9,14 @@ import org.semanticweb.owl.io.OWLXMLOntologyFormat;
 import org.semanticweb.owl.io.RDFXMLOntologyFormat;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -65,15 +64,14 @@ public class GatherOntologiesPanel extends JPanel {
 
         Box box = new Box(BoxLayout.Y_AXIS);
 
-        for (final OWLOntology ont : owlModelManager.getOntologies()) {
+        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(owlModelManager.getOntologies());
+        Collections.sort(orderedOntologies, new OWLObjectComparator<OWLOntology>(owlModelManager));
+        for (final OWLOntology ont : orderedOntologies) {
             ontologiesToSave.add(ont);
+            String name = new SimpleURIShortFormProvider().getShortForm(ont.getURI());
             String label = ont.getURI().toString();
-            String path = ont.getURI().getPath();
-            String uri = ont.getURI().toString();
-            if (path != null) {
-                String name = path.substring(path.lastIndexOf('/') + 1, path.length());
-                label = "<html><font color=\"gray\">" + uri.substring(0,
-                                                                      uri.length() - name.length()) + "</font><b>" + name + "</b></html>";
+            if (name != null) {
+                label = "<html><b>" + name + "</b>  <font color=\"gray\">(" + label + "</font></html>";
             }
 
             final JCheckBox cb = new JCheckBox(new AbstractAction(label) {
