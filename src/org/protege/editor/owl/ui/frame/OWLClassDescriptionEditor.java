@@ -14,8 +14,6 @@ import org.semanticweb.owl.model.OWLObjectProperty;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,24 +52,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
 
-    private DocumentListener editorListener = new DocumentListener(){
-        public void insertUpdate(DocumentEvent documentEvent) {
-            handleVerifyEditorContents();
-        }
-        public void removeUpdate(DocumentEvent documentEvent) {
-            handleVerifyEditorContents();
-        }
-        public void changedUpdate(DocumentEvent documentEvent) {
-            handleVerifyEditorContents();
-        }
-    };
-
     private ChangeListener changeListener = new ChangeListener(){
         public void stateChanged(ChangeEvent changeEvent) {
             handleVerifyEditorContents();
         }
     };
-
 
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
         this.editorKit = editorKit;
@@ -80,7 +65,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         editor = new ExpressionEditor<OWLDescription>(editorKit, checker);
         editor.setExpressionObject(description);
 
-        editor.getDocument().addDocumentListener(editorListener);
 
         tabbedPane = new JTabbedPane();
         tabbedPane.setFocusable(false);
@@ -202,12 +186,14 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
         listeners.add(listener);
+        editor.addStatusChangedListener(listener);
         listener.verifiedStatusChanged(isValidated());
     }
 
 
     public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
         listeners.remove(listener);
+        editor.removeStatusChangedListener(listener);
     }
 
 

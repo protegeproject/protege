@@ -1,34 +1,29 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.ui.frame.InputVerificationStatusChangedListener;
+import org.protege.editor.owl.ui.frame.VerifiedInputEditor;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owl.model.OWLObject;
 
-import javax.swing.BorderFactory;
-import javax.swing.JTextPane;
-import javax.swing.Timer;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.core.ui.RefreshableComponent;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObject;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 
 /**
@@ -45,7 +40,8 @@ import org.semanticweb.owl.model.OWLObject;
  * that the text is well formed and provides feedback if the
  * text is not well formed.
  */
-public class ExpressionEditor<O> extends JTextPane implements RefreshableComponent {
+public class ExpressionEditor<O> extends JTextPane
+        implements RefreshableComponent, VerifiedInputEditor {
 
 
     private static Logger logger = Logger.getLogger(ExpressionEditor.class);
@@ -92,16 +88,17 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
         setStateBorder(defaultBorder);
         errorBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED);
         errorStroke = new BasicStroke(3.0f,
-                                      BasicStroke.CAP_BUTT,
-                                      BasicStroke.JOIN_ROUND,
-                                      3.0f,
-                                      new float []{4.0f, 2.0f},
-                                      0.0f);
+                BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_ROUND,
+                3.0f,
+                new float []{4.0f, 2.0f},
+                0.0f);
         docListener = new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 timer.restart();
                 clearError();
                 performHighlighting();
+                notifyValidationChanged(false); // updates always disable until parsed
             }
 
 
@@ -109,6 +106,7 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
                 timer.restart();
                 clearError();
                 performHighlighting();
+                notifyValidationChanged(false); // updates always disable until parsed
             }
 
 
@@ -230,6 +228,8 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
 
     private void setError(OWLExpressionParserException e) {
         logger.debug("Set error " + e);
+        notifyValidationChanged(e == null); // if no error, then content is valid
+
         if (e != null) {
             ToolTipManager.sharedInstance().setInitialDelay(ERROR_TOOL_TIP_INITIAL_DELAY);
             ToolTipManager.sharedInstance().setDismissDelay(ERROR_TOOL_TIP_DISMISS_DELAY);
@@ -281,9 +281,9 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
                         return;
                     }
                     StringTokenizer tokenizer = new StringTokenizer(getDocument().getText(lineStartIndex,
-                                                                                          lineEndIndex - lineStartIndex),
-                                                                    " ()[]{},\n\t.'",
-                                                                    true);
+                            lineEndIndex - lineStartIndex),
+                            " ()[]{},\n\t.'",
+                            true);
                     int index = lineStartIndex;
                     boolean inEscapedName = false;
                     while (tokenizer.hasMoreTokens()) {
@@ -302,9 +302,9 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
                                 color = Color.BLACK;
                             }
                             getStyledDocument().setCharacterAttributes(index,
-                                                                       curToken.length(),
-                                                                       getStyledDocument().getStyle(color.toString()),
-                                                                       true);
+                                    curToken.length(),
+                                    getStyledDocument().getStyle(color.toString()),
+                                    true);
                         }
                         index += curToken.length();
                     }
@@ -335,5 +335,30 @@ public class ExpressionEditor<O> extends JTextPane implements RefreshableCompone
             StyleConstants.setBold(style, true);
         }
         StyleConstants.setForeground(getStyledDocument().addStyle(Color.BLACK.toString(), null), Color.BLACK);
+    }
+
+
+///////////////////////// content verification
+
+
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+
+    private boolean previousValue = true;
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyValidationChanged(boolean valid){
+        if (valid != previousValue){ // only report changes
+            previousValue = valid;
+            for (InputVerificationStatusChangedListener l : listeners){
+                l.verifiedStatusChanged(valid);
+            }
+        }
     }
 }

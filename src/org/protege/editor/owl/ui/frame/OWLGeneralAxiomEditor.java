@@ -7,11 +7,7 @@ import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLException;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,34 +26,18 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
     private JComponent editingComponent;
 
-    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
-
-    private DocumentListener docListener = new DocumentListener(){
-
-        public void insertUpdate(DocumentEvent event) {
-            handleEditorChange();
-        }
-
-        public void removeUpdate(DocumentEvent event) {
-            handleEditorChange();
-        }
-
-        public void changedUpdate(DocumentEvent event) {
-            handleEditorChange();
-        }
-    };
 
     public OWLGeneralAxiomEditor(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
 
         checker = new OWLClassAxiomChecker(editorKit);
         editor = new ExpressionEditor<OWLClassAxiom>(editorKit, checker);
-        editor.getDocument().addDocumentListener(docListener);
 
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(editor);
         editingComponent.setPreferredSize(new Dimension(400, 200));
     }
+
 
     public void setEditedObject(OWLClassAxiom axiom) {
         editor.setText(editorKit.getOWLModelManager().getRendering(axiom));
@@ -106,23 +86,15 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
 
     public void dispose() {
-        editor.getDocument().removeDocumentListener(docListener);
-    }
-
-    private void handleEditorChange() {
-        // @@TODO push this into the editor (so we use its timeout etc)
-        for (InputVerificationStatusChangedListener l : listeners){
-            l.verifiedStatusChanged(editor.isWellFormed());
-        }
     }
 
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.add(listener);
+        editor.addStatusChangedListener(listener);
     }
 
 
     public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.remove(listener);
+        editor.removeStatusChangedListener(listener);
     }
 }
