@@ -43,10 +43,13 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     private OWLObject focusedObject;
 
+    private SimpleURIShortFormProvider sfp;
+
     public OWLObjectRendererImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         buffer = new StringBuilder();
         bracketWriter = new BracketWriter();
+        sfp = new SimpleURIShortFormProvider();
         facetMap = new HashMap<OWLRestrictedDataRangeFacetVocabulary, String>();
         facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MIN_EXCLUSIVE, ">");
         facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MAX_EXCLUSIVE, "<");
@@ -740,7 +743,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLImportsDeclaration axiom) {
-        write(axiom.getImportedOntologyURI().toString());
+        writeOntologyURI(axiom.getImportedOntologyURI());
         if (owlModelManager.getOWLOntologyManager().getImportedOntology(axiom) == null) {
             write("      (Not Loaded)");
         }
@@ -780,15 +783,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLOntology ontology) {
-        String uri = ontology.getURI().toString();
-        int lastSepIndex = uri.lastIndexOf('/');
-        if (lastSepIndex != -1) {
-            write(uri.substring(lastSepIndex + 1, uri.length()) + "  (" + uri + ")");
-        }
-        else {
-            write(uri);
-        }
-//        write(ontology.getURI().toString());
+        writeOntologyURI(ontology.getURI());
     }
 
 
@@ -939,6 +934,17 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         write(", ");
         swrlSameAsAtom.getSecondArgument().accept(this);
         write(")");
+    }
+
+
+    private void writeOntologyURI(URI uri) {
+        String shortName = sfp.getShortForm(uri);
+        if (shortName != null) {
+            write(shortName + "  (" + uri + ")");
+        }
+        else {
+            write(uri.toString());
+        }
     }
 
 

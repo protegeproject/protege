@@ -1,15 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLImportsDeclaration;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.model.UnknownOWLOntologyException;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -79,9 +80,14 @@ public class OWLIndirectImportsFrameSection extends AbstractOWLFrameSection<OWLO
 
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration>>() {
+
+            SimpleURIShortFormProvider sfp = new SimpleURIShortFormProvider();
+
             public int compare(OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration> o1,
                                OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration> o2) {
-                return o1.getAxiom().getImportedOntologyURI().compareTo(o2.getAxiom().getImportedOntologyURI());
+                final String uri1 = sfp.getShortForm(o1.getAxiom().getImportedOntologyURI());
+                final String uri2 = sfp.getShortForm(o2.getAxiom().getImportedOntologyURI());
+                return uri1.compareToIgnoreCase(uri2);
             }
         };
     }
