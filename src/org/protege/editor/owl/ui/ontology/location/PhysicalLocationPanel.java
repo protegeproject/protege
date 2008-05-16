@@ -1,34 +1,25 @@
 package org.protege.editor.owl.ui.ontology.location;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.net.URI;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.ViewBanner;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.ShowFileAction;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.net.URI;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -58,12 +49,9 @@ public class PhysicalLocationPanel extends JPanel {
         add(new ViewBanner("Loaded ontology sources", OWLSystemColors.getOWLOntologyColor()), BorderLayout.NORTH);
         Box box = new Box(BoxLayout.Y_AXIS);
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        Set<OWLOntology> ts = new TreeSet<OWLOntology>(new Comparator<OWLOntology>() {
-            public int compare(OWLOntology o1, OWLOntology o2) {
-                return o1.getURI().compareTo(o2.getURI());
-            }
-        });
-        ts.addAll(owlEditorKit.getOWLModelManager().getOntologies());
+        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+        Set<OWLOntology> ts = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(mngr));
+        ts.addAll(mngr.getOntologies());
         for (OWLOntology ont : ts) {
             OntologySourcePanel panel = new OntologySourcePanel(ont);
             panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
@@ -96,11 +84,18 @@ public class PhysicalLocationPanel extends JPanel {
         public OntologySourcePanel(OWLOntology ont) {
             setOpaque(false);
             setLayout(new BorderLayout(3, 3));
-            JLabel ontURILabel = new JLabel(ont.getURI().toString());
-            ontURILabel.setFont(ontURILabel.getFont().deriveFont(Font.BOLD));
+            final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+            String name = new SimpleURIShortFormProvider().getShortForm(ont.getURI());
+            String label = ont.getURI().toString();
+            if (name != null) {
+                label = "<html><b>" + name + "</b>  <font color=\"gray\">(" + label + "</font></html>";
+            }
+
+            JLabel ontURILabel = new JLabel(label);
+//            ontURILabel.setFont(ontURILabel.getFont().deriveFont(Font.BOLD));
             ontURILabel.setIcon(OWLIcons.getIcon("ontology.png"));
             add(ontURILabel, BorderLayout.NORTH);
-            final URI physicalURI = owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont);
+            final URI physicalURI = mngr.getOntologyPhysicalURI(ont);
             JLabel locURILabel = new JLabel();
             if (physicalURI.getScheme().equals("file")) {
                 locURILabel.setText(new File(physicalURI).toString());
