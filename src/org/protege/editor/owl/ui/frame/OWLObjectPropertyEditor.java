@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLObjectProperty;
+
+import javax.swing.*;
 
 
 /**
@@ -27,6 +27,9 @@ public class OWLObjectPropertyEditor extends AbstractOWLFrameSectionRowObjectEdi
         return editor.getSelectedOWLObjectProperty();
     }
 
+    public void setEditedObject(OWLObjectProperty p){
+        editor.setSelectedOWLObjectProperty(p);
+    }
 
     public JComponent getEditorComponent() {
         return editor;
@@ -34,6 +37,7 @@ public class OWLObjectPropertyEditor extends AbstractOWLFrameSectionRowObjectEdi
 
 
     public void clear() {
+        editor.setSelectedOWLObjectProperty(null);
     }
 
 

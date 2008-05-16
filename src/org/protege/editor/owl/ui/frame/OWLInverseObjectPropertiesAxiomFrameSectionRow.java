@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.*;
 
 
 /**
@@ -17,15 +17,28 @@ import org.semanticweb.owl.model.*;
  */
 public class OWLInverseObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLInverseObjectPropertiesAxiom, OWLObjectProperty> {
 
+    private OWLFrameSection section;
+
     public OWLInverseObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                           OWLOntology ontology, OWLObjectProperty rootObject,
                                                           OWLInverseObjectPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+
+        this.section = section;
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLObjectProperty> getObjectEditor() {
-        return new OWLObjectPropertyEditor(getOWLEditorKit());
+        OWLObjectPropertyEditor editor = (OWLObjectPropertyEditor)section.getEditor();
+        OWLObjectPropertyExpression p = axiom.getFirstProperty();
+        if (p.equals(getRootObject())){
+            p = axiom.getSecondProperty();
+        }
+        
+        if (!p.isAnonymous()){
+            editor.setEditedObject(p.asOWLObjectProperty());
+        }
+        return editor;
     }
 
 
