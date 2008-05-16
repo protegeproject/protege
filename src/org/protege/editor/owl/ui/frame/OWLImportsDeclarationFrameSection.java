@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLImportsDeclaration;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
+
+import java.util.Comparator;
 
 
 /**
@@ -71,9 +72,14 @@ public class OWLImportsDeclarationFrameSection extends AbstractOWLFrameSection<O
      */
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration>>() {
+
+            SimpleURIShortFormProvider sfp = new SimpleURIShortFormProvider();
+
             public int compare(OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration> o1,
                                OWLFrameSectionRow<OWLOntology, OWLImportsDeclaration, OWLImportsDeclaration> o2) {
-                return o1.getAxiom().getImportedOntologyURI().compareTo(o2.getAxiom().getImportedOntologyURI());
+                final String uri1 = sfp.getShortForm(o1.getAxiom().getImportedOntologyURI());
+                final String uri2 = sfp.getShortForm(o2.getAxiom().getImportedOntologyURI());
+                return uri1.compareToIgnoreCase(uri2);
             }
         };
     }
