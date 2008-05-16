@@ -132,6 +132,8 @@ public class GatherOntologiesPanel extends JPanel {
 
     public static GatherOntologiesPanel showDialog(OWLEditorKit owlEditorKit) {
         GatherOntologiesPanel panel = new GatherOntologiesPanel(owlEditorKit);
+        panel.setPreferredSize(new Dimension(600, 400));
+
         int ret = JOptionPane.showConfirmDialog(null,
                                                 panel,
                                                 "Gather ontologies",
