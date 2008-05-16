@@ -1,15 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyExpression;
-import org.semanticweb.owl.model.OWLDisjointDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -20,21 +18,34 @@ import org.semanticweb.owl.util.CollectionFactory;
  */
 public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, OWLDataProperty> {
 
+    private OWLFrameSection section;
+
     public OWLDisjointDataPropertiesFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                     OWLOntology ontology, OWLDataProperty rootObject,
                                                     OWLDisjointDataPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+        this.section = section;
     }
 
 
     protected OWLDisjointDataPropertiesAxiom createAxiom(OWLDataProperty editedObject) {
         return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(CollectionFactory.createSet(getRoot(),
-                                                                                                 editedObject));
+                editedObject));
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDataProperty> getObjectEditor() {
-        return null;
+        OWLDataPropertyEditor editor = (OWLDataPropertyEditor) section.getEditor();
+        final Set<OWLDataPropertyExpression> disjoints =
+                new HashSet<OWLDataPropertyExpression>(getAxiom().getProperties());
+        disjoints.remove(getRootObject());
+        if (disjoints.size() == 1){
+            OWLDataPropertyExpression p = disjoints.iterator().next();
+            if (!p.isAnonymous()){
+                editor.setEditedObject(p.asOWLDataProperty());
+            }
+        }
+        return editor;
     }
 
 

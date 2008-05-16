@@ -1,19 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ListSelectionModel;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
@@ -21,6 +7,13 @@ import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.vocab.XSDVocabulary;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 
 /**
@@ -78,6 +71,15 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
         datatypeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
+    public void setEditedObject(OWLDataRange dataRange){
+        if (dataRange == null){
+            datatypeList.clearSelection();
+        }
+        else if (dataRange.isDataType() &&
+            XSDVocabulary.ALL_DATATYPES.contains(((OWLDataType)dataRange).getURI())){
+            datatypeList.setSelectedValue(dataRange, true);
+        }
+    }
 
     public JComponent getEditorComponent() {
         return editorPanel;
@@ -105,6 +107,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
 
     public void clear() {
+        datatypeList.clearSelection();
     }
 
 

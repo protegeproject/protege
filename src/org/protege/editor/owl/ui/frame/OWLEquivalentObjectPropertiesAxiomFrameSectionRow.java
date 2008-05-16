@@ -1,15 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -20,16 +18,29 @@ import org.semanticweb.owl.util.CollectionFactory;
  */
 public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectProperty> {
 
+    private OWLFrameSection section;
+
     public OWLEquivalentObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                              OWLOntology ontology, OWLObjectProperty rootObject,
                                                              OWLEquivalentObjectPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+
+        this.section = section;
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLObjectProperty> getObjectEditor() {
-        return null;
-    }
+        final OWLObjectPropertyEditor editor = (OWLObjectPropertyEditor) section.getEditor();
+        final Set<OWLObjectPropertyExpression> equivs =
+                new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
+        equivs.remove(getRootObject());
+        if (equivs.size() == 1){
+            final OWLObjectPropertyExpression p = equivs.iterator().next();
+            if (!p.isAnonymous()){
+                editor.setEditedObject(p.asOWLObjectProperty());
+           }
+        }
+        return editor;    }
 
 
     protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectProperty editedObject) {

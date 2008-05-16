@@ -1,14 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.*;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLDataRange;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -19,9 +15,12 @@ import org.semanticweb.owl.model.OWLOntology;
  */
 public class OWLDataPropertyRangeFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDataPropertyRangeAxiom, OWLDataRange> {
 
+    private OWLFrameSection section;
+
     public OWLDataPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                                OWLDataProperty rootObject, OWLDataPropertyRangeAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+        this.section = section;
     }
 
 
@@ -31,7 +30,9 @@ public class OWLDataPropertyRangeFrameSectionRow extends AbstractOWLFrameSection
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDataRange> getObjectEditor() {
-        return null;
+        OWLDataRangeEditor editor = (OWLDataRangeEditor)section.getEditor();
+        editor.setEditedObject(getAxiom().getRange());
+        return editor;
     }
 
 

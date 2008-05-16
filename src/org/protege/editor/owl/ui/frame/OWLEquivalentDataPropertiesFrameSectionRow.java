@@ -1,15 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyExpression;
-import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -20,21 +18,34 @@ import org.semanticweb.owl.util.CollectionFactory;
  */
 public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLEquivalentDataPropertiesAxiom, OWLDataProperty> {
 
+    private OWLFrameSection section;
+
     public OWLEquivalentDataPropertiesFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                       OWLOntology ontology, OWLDataProperty rootObject,
                                                       OWLEquivalentDataPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+        this.section = section;
     }
 
 
     protected OWLEquivalentDataPropertiesAxiom createAxiom(OWLDataProperty editedObject) {
         return getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(CollectionFactory.createSet(getRoot(),
-                                                                                                   editedObject));
+                editedObject));
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDataProperty> getObjectEditor() {
-        return null;
+        final OWLDataPropertyEditor editor = (OWLDataPropertyEditor) section.getEditor();
+        final Set<OWLDataPropertyExpression> equivs =
+                new HashSet<OWLDataPropertyExpression>(getAxiom().getProperties());
+        equivs.remove(getRootObject());
+        if (equivs.size() == 1){
+            final OWLDataPropertyExpression p = equivs.iterator().next();
+            if (!p.isAnonymous()){
+                editor.setEditedObject(p.asOWLDataProperty());
+            }
+        }
+        return editor;
     }
 
 
