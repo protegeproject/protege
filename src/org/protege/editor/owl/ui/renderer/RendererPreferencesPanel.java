@@ -7,7 +7,6 @@ import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -34,6 +33,8 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JRadioButton annotationValueRadioButton;
 
+    private JRadioButton annotationWithPrefixesRadioButton;
+
     private JList annotationPropertiesList;
 
     private JCheckBox highlightAOStatementsCheckBox;
@@ -48,10 +49,16 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JComboBox fontCombo;
 
+    private JButton showPrefixedsButton;
+
+    private JButton showAnnotationsButton;
+
 
     public void applyChanges() {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
-        if (annotationValueRadioButton.isSelected()) {
+        prefs.setRenderPrefixes(annotationWithPrefixesRadioButton.isSelected());
+        if (annotationValueRadioButton.isSelected() ||
+            annotationWithPrefixesRadioButton.isSelected()) {
             setupRenderer(new OWLEntityAnnotationValueRenderer());
             prefs.setRendererClass(OWLEntityAnnotationValueRenderer.class.getName());
         }
@@ -84,75 +91,12 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
 
+        OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
+
         Box holderBox = new Box(BoxLayout.Y_AXIS);
         add(holderBox, BorderLayout.NORTH);
-        OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
-        String clsName = prefs.getRendererClass();
-        uriFragmentRadioButton = new JRadioButton("Render entities using URI fragment",
-                                                  clsName.equals(OWLEntityRendererImpl.class.getName()));
-        qnameRendererRadioButton = new JRadioButton("Render entities using qnames",
-                                                    clsName.equals(OWLEntityQNameRenderer.class.getName()));
-        annotationValueRadioButton = new JRadioButton("Render entities using annotation values",
-                                                      clsName.equals(OWLEntityAnnotationValueRenderer.class.getName()));
 
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(uriFragmentRadioButton);
-        bg.add(qnameRendererRadioButton);
-        bg.add(annotationValueRadioButton);
-
-
-        Box box = new Box(BoxLayout.Y_AXIS);
-        box.setBorder(ComponentFactory.createTitledBorder("Entity rendering"));
-        box.add(uriFragmentRadioButton);
-        box.add(Box.createVerticalStrut(4));
-
-        JPanel qNamePanel = new JPanel(new BorderLayout());
-        qNamePanel.setAlignmentX(0.0f);
-        qNamePanel.add(qnameRendererRadioButton, BorderLayout.NORTH);
-
-        JPanel showPrefixesPanel = new JPanel(new BorderLayout());
-        final Border indentBorder = BorderFactory.createEmptyBorder(0, 50, 0, 0);
-        showPrefixesPanel.setBorder(indentBorder);
-        final JButton showPrefixedsButton = new JButton(new AbstractAction("Prefixes...") {
-            public void actionPerformed(ActionEvent e) {
-                PrefixMappingPanel.showDialog(getOWLEditorKit());
-            }
-        });
-        showPrefixesPanel.add(showPrefixedsButton, BorderLayout.WEST);
-        qNamePanel.add(showPrefixesPanel, BorderLayout.SOUTH);
-        box.add(qNamePanel);
-        qnameRendererRadioButton.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                showPrefixedsButton.setEnabled(qnameRendererRadioButton.isSelected());
-            }
-        });
-        showPrefixedsButton.setEnabled(qnameRendererRadioButton.isSelected());
-
-        box.add(Box.createVerticalStrut(4));
-
-        JPanel annotationValuePanel = new JPanel(new BorderLayout());
-        annotationValuePanel.setAlignmentX(0.0f);
-        annotationValuePanel.add(annotationValueRadioButton, BorderLayout.NORTH);
-
-        JPanel showAnnotationsPanel = new JPanel(new BorderLayout());
-        showAnnotationsPanel.setBorder(indentBorder);
-        final JButton showAnnotationsButton = new JButton(new AbstractAction("Annotations...") {
-            public void actionPerformed(ActionEvent e) {
-                AnnotationRendererPanel.showDialog(getOWLEditorKit());
-            }
-        });
-        showAnnotationsPanel.add(showAnnotationsButton, BorderLayout.WEST);
-        annotationValuePanel.add(showAnnotationsPanel, BorderLayout.SOUTH);
-        annotationValueRadioButton.addChangeListener(new ChangeListener(){
-            public void stateChanged(ChangeEvent changeEvent) {
-                showAnnotationsButton.setEnabled(annotationValueRadioButton.isSelected());
-            }
-        });
-        showAnnotationsButton.setEnabled(annotationValueRadioButton.isSelected());
-
-        box.add(annotationValuePanel);
-        holderBox.add(box);
-
+        holderBox.add(createRendererSelectionPanel());
 
         highlightAOStatementsCheckBox = new JCheckBox("Highlight active ontology statements",
                                                       prefs.isHighlightActiveOntologyStatements());
@@ -170,8 +114,9 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         optBox.add(showHyperlinksCheckBox);
         optBox.add(highlightKeyWordsCheckBox);
         optBox.add(useThatAsSynonymForAndCheckBox);
+        optBox.add(Box.createVerticalStrut(4));
         holderBox.add(optBox);
-        
+
 
         JPanel fontSizePanel = new JPanel();
         PreferencesPanelLayoutManager man = new PreferencesPanelLayoutManager(fontSizePanel);
@@ -190,6 +135,75 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         fontCombo.setSelectedItem(prefs.getFontName());
 
         holderBox.add(fontSizePanel);
+    }
+
+    private Component createRendererSelectionPanel() {
+        OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
+        String clsName = prefs.getRendererClass();
+        uriFragmentRadioButton = new JRadioButton("Render entities using URI fragment",
+                                                  clsName.equals(OWLEntityRendererImpl.class.getName()));
+        qnameRendererRadioButton = new JRadioButton("Render entities using qnames",
+                                                    clsName.equals(OWLEntityQNameRenderer.class.getName()));
+        annotationValueRadioButton = new JRadioButton("Render entities using annotation values",
+                                                      clsName.equals(OWLEntityAnnotationValueRenderer.class.getName()) && !prefs.isRenderPrefixes());
+        annotationWithPrefixesRadioButton = new JRadioButton("Render entities using annotation values with prefixes",
+                                                      clsName.equals(OWLEntityAnnotationValueRenderer.class.getName()) && prefs.isRenderPrefixes());
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(uriFragmentRadioButton);
+        bg.add(qnameRendererRadioButton);
+        bg.add(annotationValueRadioButton);
+        bg.add(annotationWithPrefixesRadioButton);
+
+        Box box = new Box(BoxLayout.Y_AXIS);
+        box.setBorder(ComponentFactory.createTitledBorder("Entity rendering"));
+        box.add(uriFragmentRadioButton);
+        box.add(qnameRendererRadioButton);
+        box.add(annotationValueRadioButton);
+        box.add(annotationWithPrefixesRadioButton);
+        box.add(Box.createVerticalStrut(4));
+
+        JPanel optsPanel = new JPanel();
+        optsPanel.setLayout(new BoxLayout(optsPanel, BoxLayout.LINE_AXIS));
+        optsPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        optsPanel.setAlignmentX(0.0f);
+
+        showPrefixedsButton = new JButton(new AbstractAction("Prefixes...") {
+            public void actionPerformed(ActionEvent e) {
+                PrefixMappingPanel.showDialog(getOWLEditorKit());
+            }
+        });
+        optsPanel.add(showPrefixedsButton);
+
+        showAnnotationsButton = new JButton(new AbstractAction("Annotations...") {
+            public void actionPerformed(ActionEvent e) {
+                AnnotationRendererPanel.showDialog(getOWLEditorKit());
+            }
+        });
+        optsPanel.add(showAnnotationsButton);
+
+        box.add(optsPanel);
+
+        final ChangeListener l = new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                updateRendererButtons();
+            }
+        };
+        uriFragmentRadioButton.addChangeListener(l);
+        qnameRendererRadioButton.addChangeListener(l);
+        annotationValueRadioButton.addChangeListener(l);
+        annotationWithPrefixesRadioButton.addChangeListener(l);
+
+        updateRendererButtons();
+
+        return box;
+    }
+
+    private void updateRendererButtons() {
+        showPrefixedsButton.setEnabled(qnameRendererRadioButton.isSelected() ||
+                                       annotationWithPrefixesRadioButton.isSelected());
+
+        showAnnotationsButton.setEnabled(annotationValueRadioButton.isSelected() ||
+                                         annotationWithPrefixesRadioButton.isSelected());
     }
 
 
