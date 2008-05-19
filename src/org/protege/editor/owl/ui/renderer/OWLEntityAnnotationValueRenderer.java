@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.prefix.PrefixMapper;
+import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
 
@@ -41,14 +43,24 @@ public class OWLEntityAnnotationValueRenderer extends OWLEntityRendererImpl {
     public void initialise() {
         super.initialise();
         provider = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
-                                                        OWLRendererPreferences.getInstance().getAnnotationLangs(),
-                                                        owlModelManager.getOWLOntologyManager());
+                OWLRendererPreferences.getInstance().getAnnotationLangs(),
+                owlModelManager.getOWLOntologyManager());
     }
 
 
     public String render(OWLEntity entity) {
-        // We should check the cache!
-        return escape(provider.getShortForm(entity));
+        String shortForm = provider.getShortForm(entity);
+        if (OWLRendererPreferences.getInstance().isRenderPrefixes()){
+            final String uriStr = entity.getURI().toString();
+
+            PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
+            for (String base : mapper.getValues()){
+                if (uriStr.startsWith(base)){
+                    return escape(mapper.getPrefix(base) + ":" + shortForm);
+                }
+            }
+        }
+        return escape(shortForm);
     }
 
 
