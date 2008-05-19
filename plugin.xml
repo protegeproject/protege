@@ -761,11 +761,11 @@
 
     <extension id="menu.ConvertMinOneToSomeValuesFromAction"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Convert min cardinality 1 to someValuesFrom"/>
+        <name value="Convert qualified min cardinality 1 to someValuesFrom"/>
         <class value="org.protege.editor.owl.ui.action.ConvertMinOneToSomeValuesFromAction"/>
-        <toolTip value="Finds all uses of min cardinality 1 restrictions and replaces them with
-        someValuesFrom restrictions."/>
-        <path value="org.protege.editor.owl.menu.Refactor/SlotC-C"/>
+        <toolTip value="Finds all uses of qualified min cardinality 1 restrictions
+         and replaces them with someValuesFrom restrictions."/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
