@@ -39,7 +39,7 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
             }
         }
         getOWLModelManager().applyChanges(changes);
-        logger.info("Converted " + count + " min 1 restrictions to someValuesFrom restrictions");
+        logger.info("Converted " + count + " qualified min 1 restrictions to someValuesFrom restrictions");
     }
 
     public void initialise() throws Exception {
@@ -51,8 +51,8 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
     }
 
     /**
-     * A variant of the duplicator that changes MinCardi1 restrictions
-     * into someValueFrom restrictions
+     * A variant of the duplicator that changes qualified MinCardi1
+     * restrictions into someValueFrom restrictions
      */
     class MinCardiOneReplacer extends OWLObjectDuplicator{
 
@@ -62,7 +62,7 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
 
 
         public void visit(OWLObjectMinCardinalityRestriction min) {
-            if (min.getCardinality() == 1){
+            if (min.getCardinality() == 1 && min.isQualified()){
                 OWLObjectSomeRestriction someValuesFrom =
                         getOWLDataFactory().getOWLObjectSomeRestriction(min.getProperty(), min.getFiller());
                 visit(someValuesFrom);
@@ -74,7 +74,7 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
 
 
         public void visit(OWLDataMinCardinalityRestriction min) {
-            if (min.getCardinality() == 1){
+            if (min.getCardinality() == 1 && min.isQualified()){
                 OWLDataSomeRestriction someValuesFrom =
                         getOWLDataFactory().getOWLDataSomeRestriction(min.getProperty(), min.getFiller());
                 visit(someValuesFrom);
