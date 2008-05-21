@@ -7,6 +7,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.Set;
 
@@ -81,4 +82,6 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
 
     protected abstract ViewComponentPlugin getViewComponentPlugin();
+
+    public abstract void addSelectionListener(ChangeListener selectionListener);
 }

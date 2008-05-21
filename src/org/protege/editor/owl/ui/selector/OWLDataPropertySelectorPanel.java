@@ -9,6 +9,7 @@ import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLDataProperty;
 
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.Set;
 
@@ -68,6 +69,10 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
                 return OWLSystemColors.getOWLDataPropertyColor();
             }
         };
+    }
+
+    public void addSelectionListener(ChangeListener selectionListener) {
+        view.addChangeListener(selectionListener);
     }
 
     public void dispose() {
