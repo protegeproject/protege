@@ -22,13 +22,25 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel {
+public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObjectProperty> {
 
     private OWLObjectPropertyHierarchyViewComponent view;
 
 
     public OWLObjectPropertySelectorPanel(OWLEditorKit editorKit) {
         super(editorKit);
+    }
+
+    public void setSelection(OWLObjectProperty property) {
+        view.show(property);
+    }
+
+    public OWLObjectProperty getSelectedObject() {
+        return view.getSelectedProperty();
+    }
+
+    public Set<OWLObjectProperty> getSelectedObjects() {
+        return view.getSelectedProperties();
     }
 
 
@@ -60,21 +72,6 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel {
     }
 
 
-    public OWLObjectProperty getSelectedOWLObjectProperty() {
-        return view.getSelectedProperty();
-    }
-
-
-    public Set<OWLObjectProperty> getSelectedOWLObjectProperties() {
-        return view.getSelectedProperties();
-    }
-
-
-    public void setSelectedOWLObjectProperty(OWLObjectProperty p){
-        view.show(p);
-    }
-
-
     public void dispose() {
         view.dispose();
     }
@@ -82,5 +79,29 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel {
 
     public void addSelectionListener(ChangeListener listener) {
         view.addChangeListener(listener); // cheating because we know this gets called when the selection changes
+    }
+
+    /**
+     * @deprecated Use <code>setSelection</code>
+     * @param property
+     */
+    public void setSelectedOWLObjectProperty(OWLObjectProperty property) {
+        setSelection(property);
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObject</code>
+     * @return selected OWLObjectProperty
+     */
+    public OWLObjectProperty getSelectedOWLObjectProperty() {
+        return getSelectedObject();
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObjects</code>
+     * @return set of selected OWLObjectProperties
+     */
+    public Set<OWLObjectProperty> getSelectedOWLObjectProperties() {
+        return getSelectedObjects();
     }
 }

@@ -4,9 +4,11 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -21,7 +23,7 @@ import java.awt.*;
  * A common base class for selector panels, so that they
  * all have the same preferred size etc.
  */
-public abstract class AbstractSelectorPanel extends JPanel {
+public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel {
 
     private OWLEditorKit editorKit;
 
@@ -62,6 +64,15 @@ public abstract class AbstractSelectorPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
                                                      BorderFactory.createEmptyBorder(2, 2, 2, 2)));
     }
+
+
+    public abstract void setSelection(O entity);
+
+
+    public abstract O getSelectedObject();
+
+
+    public abstract Set<O> getSelectedObjects();
 
 
     public boolean requestFocusInWindow() {

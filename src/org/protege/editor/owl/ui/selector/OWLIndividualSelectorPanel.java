@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.selector;
 
-import java.awt.Color;
-import java.util.Set;
-
-import javax.swing.ListSelectionModel;
-
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -13,6 +8,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLIndividualListViewComponent;
 import org.semanticweb.owl.model.OWLIndividual;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>
@@ -24,71 +23,94 @@ import org.semanticweb.owl.model.OWLIndividual;
  * www.cs.man.ac.uk/~horridgm<br>
  * <br>
  */
-public class OWLIndividualSelectorPanel extends AbstractSelectorPanel {
-	private OWLIndividualListViewComponent viewComponent;
-	private int selectionMode = ListSelectionModel.SINGLE_SELECTION;
+public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndividual> {
 
-	public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit) {
-		super(owlEditorKit);
-	}
+    private OWLIndividualListViewComponent viewComponent;
+    private int selectionMode = ListSelectionModel.SINGLE_SELECTION;
 
-	/**
-	 * Builds an OWLIndividualSelectorPanel with the input selection mode. The
-	 * valid values are the same described in the constants in
-	 * javax.swing.ListSelectionModel (the default is
-	 * ListSelectionModel.SINGLE_SELECTION)
-	 * 
-	 * @param owlEditorKit
-	 * @param selectionMode
-	 */
-	public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit,
-			int selectionMode) {
-		super(owlEditorKit);
-		this.viewComponent.setSelectionMode(selectionMode);
-	}
+    public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit) {
+        super(owlEditorKit);
+    }
 
-	public void dispose() {
-		this.viewComponent.dispose();
-	}
+    public void setSelection(OWLIndividual ind) {
+        if (viewComponent.getView() != null) {
+            viewComponent.getView().setPinned(false);
+        }
+        viewComponent.setSelectedIndividual(ind);
+    }
 
-	@Override
-	protected ViewComponentPlugin getViewComponentPlugin() {
-		return new ViewComponentPluginAdapter() {
-			public String getLabel() {
-				return "Individuals";
-			}
+    public OWLIndividual getSelectedObject() {
+        return viewComponent.getSelectedIndividual();
+    }
 
-			public Workspace getWorkspace() {
-				return OWLIndividualSelectorPanel.this.getOWLEditorKit()
-						.getOWLWorkspace();
-			}
+    public Set<OWLIndividual> getSelectedObjects() {
+        return viewComponent.getSelectedIndividuals();
+    }
 
-			public ViewComponent newInstance() throws ClassNotFoundException,
-					IllegalAccessException, InstantiationException {
-				OWLIndividualSelectorPanel.this.viewComponent = new OWLIndividualListViewComponent();
-				OWLIndividualSelectorPanel.this.viewComponent.setup(this);
-				return OWLIndividualSelectorPanel.this.viewComponent;
-			}
+    /**
+     * Builds an OWLIndividualSelectorPanel with the input selection mode. The
+     * valid values are the same described in the constants in
+     * javax.swing.ListSelectionModel (the default is
+     * ListSelectionModel.SINGLE_SELECTION)
+     *
+     * @param owlEditorKit
+     * @param selectionMode
+     */
+    public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit,
+                                      int selectionMode) {
+        super(owlEditorKit);
+        viewComponent.setSelectionMode(selectionMode);
+    }
 
-			@Override
-			public Color getBackgroundColor() {
-				return OWLSystemColors.getOWLIndividualColor();
-			}
-		};
-	}
+    public void dispose() {
+        viewComponent.dispose();
+    }
 
-	public OWLIndividual getSelectedIndividual() {
-		return this.viewComponent.getSelectedIndividual();
-	}
+    protected ViewComponentPlugin getViewComponentPlugin() {
+        return new ViewComponentPluginAdapter() {
+            public String getLabel() {
+                return "Individuals";
+            }
 
-	public Set<OWLIndividual> getSelectedIndividuals() {
-		return this.viewComponent.getSelectedIndividuals();
-	}
+            public Workspace getWorkspace() {
+                return OWLIndividualSelectorPanel.this.getOWLEditorKit()
+                        .getOWLWorkspace();
+            }
 
-	public void setSelectedIndividual(OWLIndividual ind) {
-		if (this.viewComponent.getView() != null) {
-			this.viewComponent.getView().setPinned(false);
-		}
-		this.viewComponent.setSelectedIndividual(ind);
-	}
+            public ViewComponent newInstance() throws ClassNotFoundException,
+                    IllegalAccessException, InstantiationException {
+                OWLIndividualSelectorPanel.this.viewComponent = new OWLIndividualListViewComponent();
+                OWLIndividualSelectorPanel.this.viewComponent.setup(this);
+                return OWLIndividualSelectorPanel.this.viewComponent;
+            }
+
+            public Color getBackgroundColor() {
+                return OWLSystemColors.getOWLIndividualColor();
+            }
+        };
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObject</code>
+     * @return
+     */
+    public OWLIndividual getSelectedIndividual() {
+        return getSelectedObject();
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObjects</code>
+     * @return
+     */
+    public Set<OWLIndividual> getSelectedIndividuals() {
+        return getSelectedObjects();
+    }
+
+    /**
+     * @deprecated Use <code>setSelection</code>
+     * @param ind
+     */
+    public void setSelectedIndividual(OWLIndividual ind) {
+        setSelection(ind);
+    }
 }
