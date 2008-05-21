@@ -10,6 +10,7 @@ import org.protege.editor.owl.ui.view.OWLIndividualListViewComponent;
 import org.semanticweb.owl.model.OWLIndividual;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.Set;
 
@@ -88,6 +89,10 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
                 return OWLSystemColors.getOWLIndividualColor();
             }
         };
+    }
+
+    public void addSelectionListener(ChangeListener selectionListener) {
+        viewComponent.addChangeListener(selectionListener);
     }
 
     /**
