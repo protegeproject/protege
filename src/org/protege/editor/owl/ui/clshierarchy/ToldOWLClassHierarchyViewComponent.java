@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -12,15 +7,13 @@ import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.model.RemoveAxiom;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -94,8 +87,8 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     }
 
 
-    public Set<OWLDescription> getSelectedClasses() {
-        return new HashSet<OWLDescription>(getTree().getSelectedOWLObjects());
+    public Set<OWLClass> getSelectedClasses() {
+        return new HashSet<OWLClass>(getTree().getSelectedOWLObjects());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

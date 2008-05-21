@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Set;
-
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owl.model.OWLIndividual;
+
+import javax.swing.*;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>
@@ -58,12 +57,12 @@ public class OWLIndividualEditor extends
 	 * @return The edited object
 	 */
 	public OWLIndividual getEditedObject() {
-		return this.selectorPanel.getSelectedIndividual();
+		return this.selectorPanel.getSelectedObject();
 	}
 
 	@Override
 	public Set<OWLIndividual> getEditedObjects() {
-		return this.selectorPanel.getSelectedIndividuals();
+		return this.selectorPanel.getSelectedObjects();
 	}
 
 	public void dispose() {

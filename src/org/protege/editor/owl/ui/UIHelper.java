@@ -1,5 +1,15 @@
 package org.protege.editor.owl.ui;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.list.OWLEntityListPanel;
+import org.protege.editor.owl.ui.selector.*;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -7,31 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.list.OWLEntityListPanel;
-import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLConstant;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -119,7 +104,7 @@ public class UIHelper {
         OWLClassSelectorPanel clsPanel = new OWLClassSelectorPanel(owlEditorKit);
         int ret = showDialog("Select a class", clsPanel);
         if (ret == JOptionPane.OK_OPTION) {
-            OWLClass cls = clsPanel.getSelectedClass();
+            OWLClass cls = clsPanel.getSelectedObject();
             clsPanel.dispose();
             return cls;
         }
@@ -133,13 +118,21 @@ public class UIHelper {
         OWLIndividualSelectorPanel indPanel = new OWLIndividualSelectorPanel(owlEditorKit);
         int ret = showDialog("Select an individual", indPanel);
         if (ret == JOptionPane.OK_OPTION) {
-            OWLIndividual ind = indPanel.getSelectedIndividual();
+            OWLIndividual ind = indPanel.getSelectedObject();
             indPanel.dispose();
             return ind;
         }
         else {
             return null;
         }
+    }
+
+
+    public OWLOntology pickOWLOntology() {
+        OWLOntologySelectorPanel ontPanel = new OWLOntologySelectorPanel(owlEditorKit);
+        ontPanel.setMultipleSelectionEnabled(false);
+        showDialog("Select an ontology", ontPanel);
+        return ontPanel.getSelectedOntology();
     }
 
 
@@ -177,7 +170,7 @@ public class UIHelper {
     public OWLObjectProperty pickOWLObjectProperty() {
         OWLObjectPropertySelectorPanel objPropPanel = new OWLObjectPropertySelectorPanel(owlEditorKit);
         if (showDialog("Select an object property", objPropPanel) == JOptionPane.OK_OPTION) {
-            return objPropPanel.getSelectedOWLObjectProperty();
+            return objPropPanel.getSelectedObject();
         }
         else {
             return null;
@@ -188,7 +181,7 @@ public class UIHelper {
     public OWLDataProperty pickOWLDataProperty() {
         OWLDataPropertySelectorPanel panel = new OWLDataPropertySelectorPanel(owlEditorKit);
         if (showDialog("Select an object property", panel) == JOptionPane.OK_OPTION) {
-            return panel.getSelectedDataProperty();
+            return panel.getSelectedObject();
         }
         else {
             return null;

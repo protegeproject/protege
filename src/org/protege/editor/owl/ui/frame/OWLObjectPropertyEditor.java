@@ -24,11 +24,11 @@ public class OWLObjectPropertyEditor extends AbstractOWLFrameSectionRowObjectEdi
 
 
     public OWLObjectProperty getEditedObject() {
-        return editor.getSelectedOWLObjectProperty();
+        return editor.getSelectedObject();
     }
 
     public void setEditedObject(OWLObjectProperty p){
-        editor.setSelectedOWLObjectProperty(p);
+        editor.setSelection(p);
     }
 
     public JComponent getEditorComponent() {
@@ -37,7 +37,7 @@ public class OWLObjectPropertyEditor extends AbstractOWLFrameSectionRowObjectEdi
 
 
     public void clear() {
-        editor.setSelectedOWLObjectProperty(null);
+        editor.setSelection(null);
     }
 
 

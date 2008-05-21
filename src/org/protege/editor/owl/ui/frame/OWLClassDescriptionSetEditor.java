@@ -1,15 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
@@ -17,6 +7,11 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionChecker;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -66,7 +61,7 @@ public class OWLClassDescriptionSetEditor extends AbstractOWLFrameSectionRowObje
         if (editorComponent == null) {
             createEditor();
         }
-        classSelectorPanel.setSelectedClass(owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
+        classSelectorPanel.setSelection(owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
         return editorComponent;
     }
 
@@ -80,7 +75,7 @@ public class OWLClassDescriptionSetEditor extends AbstractOWLFrameSectionRowObje
 
     public Set<OWLDescription> getEditedObject() {
         if (tabbedPane.getSelectedComponent().equals(classSelectorPanel)) {
-            return classSelectorPanel.getSelectedClasses();
+            return new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects());
         }
         else {
             try {
