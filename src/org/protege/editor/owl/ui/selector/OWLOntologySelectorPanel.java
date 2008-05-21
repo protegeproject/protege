@@ -45,12 +45,23 @@ public class OWLOntologySelectorPanel extends JPanel {
     }
 
 
+    public void setMultipleSelectionEnabled(boolean multiselect){
+        list.setSelectionMode(multiselect ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
+    }
+
+
     public Set<OWLOntology> getSelectedOntologies() {
         Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
         for (Object o : list.getSelectedValues()) {
             ontologies.add((OWLOntology) o);
         }
         return ontologies;
+    }
+
+
+    public OWLOntology getSelectedOntology() {
+        final Object ont = list.getSelectedValue();
+        return (ont == null) ? null : (OWLOntology) ont;
     }
 
 

@@ -22,13 +22,25 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel {
+public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataProperty> {
 
     private OWLDataPropertyHierarchyViewComponent view;
 
 
     public OWLDataPropertySelectorPanel(OWLEditorKit editorKit) {
         super(editorKit);
+    }
+
+    public void setSelection(OWLDataProperty property) {
+        view.show(property);
+    }
+
+    public OWLDataProperty getSelectedObject() {
+        return view.getSelectedDataProperty();
+    }
+
+    public Set<OWLDataProperty> getSelectedObjects() {
+        return view.getSelectedProperties();
     }
 
 
@@ -58,20 +70,31 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel {
         };
     }
 
-
-    public OWLDataProperty getSelectedDataProperty() {
-        return view.getSelectedDataProperty();
-    }
-
-    public Set<OWLDataProperty> getSelectedOWLDataProperties() {
-        return view.getSelectedProperties();
-    }
-
     public void dispose() {
         view.dispose();
     }
 
+    /**
+     * @deprecated Use <code>setSelection</code>
+     * @param property
+     */
     public void setSelectedOWLDataProperty(OWLDataProperty property) {
-        view.show(property);
+        setSelection(property);
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObject</code>
+     * @return selected OWLDataProperty
+     */
+    public OWLDataProperty getSelectedDataProperty() {
+        return getSelectedObject();
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObjects</code>
+     * @return set of selected OWLDataProperties
+     */
+    public Set<OWLDataProperty> getSelectedOWLDataProperties() {
+        return getSelectedObjects();
     }
 }

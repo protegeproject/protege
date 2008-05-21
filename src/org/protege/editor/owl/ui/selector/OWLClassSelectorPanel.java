@@ -8,7 +8,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
 
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -24,7 +23,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLClassSelectorPanel extends AbstractSelectorPanel {
+public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
     private ToldOWLClassHierarchyViewComponent viewComponent;
 
@@ -61,14 +60,16 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel {
         };
     }
 
-
-    public void setSelectedClass(OWLClass cls) {
+    public void setSelection(OWLClass cls) {
         viewComponent.setSelectedClass(cls);
     }
 
-
-    public OWLClass getSelectedClass() {
+    public OWLClass getSelectedObject() {
         return viewComponent.getSelectedClass();
+    }
+
+    public Set<OWLClass> getSelectedObjects() {
+        return viewComponent.getSelectedClasses();
     }
 
 
@@ -77,11 +78,31 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel {
     }
 
 
-    public Set<OWLDescription> getSelectedClasses() {
-        return viewComponent.getSelectedClasses();
-    }
-
     public void addSelectionListener(ChangeListener treeSelectionListener) {
         viewComponent.addChangeListener(treeSelectionListener);// cheating because we know this gets fired when selection changed
+    }
+
+        /**
+     * @deprecated Use <code>setSelection()</code>
+     * @param cls
+     */
+    public void setSelectedClass(OWLClass cls) {
+        setSelection(cls);
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObject()</code>
+     * @return OWLClass
+     */
+    public OWLClass getSelectedClass() {
+        return getSelectedObject();
+    }
+
+    /**
+     * @deprecated Use <code>getSelectedObjects</code>
+     * @return set of selected classes
+     */
+    public Set<OWLClass> getSelectedClasses() {
+        return viewComponent.getSelectedClasses();
     }
 }
