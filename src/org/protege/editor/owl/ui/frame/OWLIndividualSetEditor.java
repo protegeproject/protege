@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Set;
-
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owl.model.OWLIndividual;
+
+import javax.swing.*;
+import java.util.Set;
 
 
 /**
@@ -26,7 +25,7 @@ public class OWLIndividualSetEditor extends AbstractOWLFrameSectionRowObjectEdit
 
 
     public Set<OWLIndividual> getEditedObject() {
-        return panel.getSelectedIndividuals();
+        return panel.getSelectedObjects();
     }
 
 

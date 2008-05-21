@@ -58,13 +58,13 @@ public class OWLIndividualAnnotationValueEditor implements OWLAnnotationValueEdi
 
 
     public Object getEditedObject() {
-        return individualSelectorPanel.getSelectedIndividual();
+        return individualSelectorPanel.getSelectedObject();
     }
 
 
     public void setEditedObject(Object object) {
         if (object != null) {
-            individualSelectorPanel.setSelectedIndividual((OWLIndividual) object);
+            individualSelectorPanel.setSelection((OWLIndividual) object);
         }
     }
 

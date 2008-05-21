@@ -1,14 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.ListSelectionModel;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
@@ -16,6 +7,11 @@ import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>
@@ -46,10 +42,9 @@ public class OWLObjectPropertyIndividualPairEditor extends
 			OWLPropertyAssertionAxiom<OWLObjectPropertyExpression, OWLIndividual> ax) {
 		OWLObjectPropertyExpression p = ax.getProperty();
 		if (p instanceof OWLObjectProperty) {
-			this.objectPropertyPanel
-					.setSelectedOWLObjectProperty((OWLObjectProperty) p);
+			this.objectPropertyPanel.setSelection((OWLObjectProperty) p);
 		}
-		this.individualSelectorPanel.setSelectedIndividual(ax.getObject());
+		this.individualSelectorPanel.setSelection(ax.getObject());
 	}
 
 	public void clear() {
@@ -57,17 +52,15 @@ public class OWLObjectPropertyIndividualPairEditor extends
 
 	public OWLObjectPropertyIndividualPair getEditedObject() {
 		return new OWLObjectPropertyIndividualPair(this.objectPropertyPanel
-				.getSelectedOWLObjectProperty(), this.individualSelectorPanel
-				.getSelectedIndividual());
+				.getSelectedObject(), this.individualSelectorPanel
+				.getSelectedObject());
 	}
 
 	@Override
 	public Set<OWLObjectPropertyIndividualPair> getEditedObjects() {
 		Set<OWLObjectPropertyIndividualPair> pairs = new HashSet<OWLObjectPropertyIndividualPair>();
-		for (OWLObjectProperty prop : this.objectPropertyPanel
-				.getSelectedOWLObjectProperties()) {
-			for (OWLIndividual ind : this.individualSelectorPanel
-					.getSelectedIndividuals()) {
+		for (OWLObjectProperty prop : this.objectPropertyPanel.getSelectedObjects()) {
+			for (OWLIndividual ind : this.individualSelectorPanel.getSelectedObjects()) {
 				pairs.add(new OWLObjectPropertyIndividualPair(prop, ind));
 			}
 		}

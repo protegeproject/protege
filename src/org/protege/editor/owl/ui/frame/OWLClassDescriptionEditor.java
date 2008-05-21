@@ -77,7 +77,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             classSelectorPanel = new OWLClassSelectorPanel(editorKit);
             tabbedPane.add(CLASS_TREE_LABEL, classSelectorPanel);
             if (description != null) {
-                classSelectorPanel.setSelectedClass(description.asOWLClass());
+                classSelectorPanel.setSelection(description.asOWLClass());
             }
             classSelectorPanel.addSelectionListener(changeListener);
 
@@ -104,11 +104,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             validated = editor.isWellFormed();
         }
         else if (selectedTabTitle.equals(CLASS_TREE_LABEL)){
-            validated = classSelectorPanel.getSelectedClass() != null;
+            validated = classSelectorPanel.getSelectedObject() != null;
         }
         else if (selectedTabTitle.equals(RESTRICTION_CREATOR_LABEL)){
-            validated = restrictionCreatorPanel.classSelectorPanel.getSelectedClass() != null &&
-                    restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedOWLObjectProperty() != null;
+            validated = restrictionCreatorPanel.classSelectorPanel.getSelectedObject() != null &&
+                    restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedObject() != null;
         }
         return validated;
     }
@@ -138,7 +138,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public Set<OWLDescription> getEditedObjects() {
         if (tabbedPane.getSelectedComponent() == classSelectorPanel) {
-            return classSelectorPanel.getSelectedClasses();
+            return new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects());
         }
         else if (tabbedPane.getSelectedComponent() == restrictionCreatorPanel) {
             return restrictionCreatorPanel.createRestrictions();
@@ -297,8 +297,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             if (creator == null) {
                 return Collections.emptySet();
             }
-            creator.createRestrictions(objectPropertySelectorPanel.getSelectedOWLObjectProperties(),
-                                       classSelectorPanel.getSelectedClasses(),
+            creator.createRestrictions(objectPropertySelectorPanel.getSelectedObjects(),
+                                       new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects()),
                                        result);
             return result;
         }
