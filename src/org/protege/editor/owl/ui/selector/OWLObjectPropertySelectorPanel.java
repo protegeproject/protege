@@ -78,7 +78,11 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
 
 
     public void addSelectionListener(ChangeListener listener) {
-        view.addChangeListener(listener); // cheating because we know this gets called when the selection changes
+        view.addChangeListener(listener);
+    }
+
+    public void removeSelectionListener(ChangeListener listener) {
+        view.removeChangeListener(listener);
     }
 
     /**

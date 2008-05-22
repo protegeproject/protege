@@ -91,8 +91,12 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         };
     }
 
-    public void addSelectionListener(ChangeListener selectionListener) {
-        viewComponent.addChangeListener(selectionListener);
+    public void addSelectionListener(ChangeListener listener) {
+        viewComponent.addChangeListener(listener);
+    }
+
+    public void removeSelectionListener(ChangeListener listener) {
+        viewComponent.removeChangeListener(listener);
     }
 
     /**

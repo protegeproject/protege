@@ -71,8 +71,12 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
         };
     }
 
-    public void addSelectionListener(ChangeListener selectionListener) {
-        view.addChangeListener(selectionListener);
+    public void addSelectionListener(ChangeListener listener) {
+        view.addChangeListener(listener);
+    }
+
+    public void removeSelectionListener(ChangeListener listener) {
+        view.removeChangeListener(listener);
     }
 
     public void dispose() {
