@@ -78,11 +78,15 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
     }
 
 
-    public void addSelectionListener(ChangeListener treeSelectionListener) {
-        viewComponent.addChangeListener(treeSelectionListener);// cheating because we know this gets fired when selection changed
+    public void addSelectionListener(ChangeListener listener) {
+        viewComponent.addChangeListener(listener);
     }
 
-        /**
+    public void removeSelectionListener(ChangeListener listener) {
+        viewComponent.removeChangeListener(listener);
+    }
+
+    /**
      * @deprecated Use <code>setSelection()</code>
      * @param cls
      */

@@ -83,5 +83,10 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
     protected abstract ViewComponentPlugin getViewComponentPlugin();
 
-    public abstract void addSelectionListener(ChangeListener selectionListener);
+
+    // cheating because we know this gets fired when selection changed
+    public abstract void addSelectionListener(ChangeListener listener);
+
+    
+    public abstract void removeSelectionListener(ChangeListener listener);
 }
