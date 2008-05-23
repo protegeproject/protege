@@ -5,7 +5,9 @@ import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLDataProperty;
 
@@ -25,11 +27,15 @@ import java.util.Set;
  */
 public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataProperty> {
 
-    private OWLDataPropertyHierarchyViewComponent view;
+    private AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> view;
 
 
     public OWLDataPropertySelectorPanel(OWLEditorKit editorKit) {
         super(editorKit);
+    }
+
+    public OWLDataPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        super(editorKit, editable);
     }
 
     public void setSelection(OWLDataProperty property) {
@@ -37,7 +43,7 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
     }
 
     public OWLDataProperty getSelectedObject() {
-        return view.getSelectedDataProperty();
+        return view.getSelectedProperty();
     }
 
     public Set<OWLDataProperty> getSelectedObjects() {
@@ -59,7 +65,21 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                       InstantiationException {
-                view = new OWLDataPropertyHierarchyViewComponent();
+                if (isEditable()){
+                    view = new OWLDataPropertyHierarchyViewComponent();
+                }
+                else{
+                    view = new AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty>(){
+
+                        protected void performExtraInitialisation() throws Exception {
+                            // do nothing
+                        }
+
+                        protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
+                            return getOWLModelManager().getOWLDataPropertyHierarchyProvider();
+                        }
+                    };
+                }
                 view.setup(this);
                 return view;
             }

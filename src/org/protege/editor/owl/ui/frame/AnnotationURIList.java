@@ -216,6 +216,15 @@ public class AnnotationURIList extends MList {
         return null;
     }
 
+    public Set<URI> getSelectedURIs() {
+        Set<URI> uris = new HashSet<URI>();
+        for (Object selVal : getSelectedValues()){
+            if (selVal instanceof URIItem) {
+                uris.add(((URIItem) selVal).uri);
+            }
+        }
+        return uris;
+    }
 
     private class URIItem implements MListItem, Comparable<URIItem> {
 

@@ -2,24 +2,13 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
-import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
 
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -28,59 +17,24 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLObjectPropertyViewComponent implements Findable<OWLObjectProperty>, Deleteable {
+public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty> {
 
-    private OWLModelManagerTree<OWLObjectProperty> tree;
+    protected boolean isOWLObjectPropertyView() {
+        return true;
+    }
 
 
-    public void initialiseView() throws Exception {
-        tree = new OWLModelManagerTree<OWLObjectProperty>(getOWLEditorKit(),
-                                                          getOWLModelManager().getOWLObjectPropertyHierarchyProvider());
-        tree.setDragAndDropHandler(new OWLObjectPropertyTreeDropHandler(getOWLModelManager()));
-        setLayout(new BorderLayout());
-        add(new JScrollPane(tree), BorderLayout.CENTER);
-        tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                transmitSelection();
-            }
-        });
-        tree.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
-                transmitSelection();
-            }
-        });
+    protected void performExtraInitialisation() throws Exception {
         addAction(new AddPropertyAction(), "A", "A");
         addAction(new AddSubPropertyAction(), "A", "B");
-        addAction(new DeleteObjectPropertyAction(getOWLEditorKit(), tree), "B", "A");
+        addAction(new DeleteObjectPropertyAction(getOWLEditorKit(), getTree()), "B", "A");
+
+        getTree().setDragAndDropHandler(new OWLObjectPropertyTreeDropHandler(getOWLModelManager()));
     }
 
 
-    private void transmitSelection() {
-        OWLObjectProperty prop = tree.getSelectedOWLObject();
-        setSelectedEntity(prop);
-        mediator.fireStateChanged(this);
-    }
-
-
-    protected OWLObjectProperty updateView(OWLObjectProperty property) {
-        OWLObjectProperty treeProp = tree.getSelectedOWLObject();
-        if (treeProp != null && property != null) {
-            if (treeProp.equals(property)) {
-                return property;
-            }
-        }
-        tree.setSelectedOWLObject(property);
-        return property;
-    }
-
-
-    public OWLObjectProperty getSelectedProperty() {
-        return tree.getSelectedOWLObject();
-    }
-
-
-    public void disposeView() {
-        tree.dispose();
+    protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
+        return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
     }
 
 
@@ -88,13 +42,14 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLObjectPr
         OWLEntityCreationSet<OWLObjectProperty> set = getOWLWorkspace().createOWLObjectProperty();
         if (set != null) {
             getOWLModelManager().applyChanges(set.getOntologyChanges());
-            tree.setSelectedOWLObject(set.getOWLEntity());
+            show(set.getOWLEntity());
         }
     }
 
 
     private void createSubProperty() {
-        if (tree.getSelectedOWLObject() == null) {
+        OWLObjectProperty selProp = getSelectedProperty();
+        if (selProp == null) {
             return;
         }
         OWLEntityCreationSet<OWLObjectProperty> set = getOWLWorkspace().createOWLObjectProperty();
@@ -102,76 +57,11 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLObjectPr
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(set.getOntologyChanges());
             OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-            OWLObjectProperty selProp = tree.getSelectedOWLObject();
             OWLAxiom ax = df.getOWLSubObjectPropertyAxiom(set.getOWLEntity(), selProp);
             changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             getOWLModelManager().applyChanges(changes);
-            tree.setSelectedOWLObject(set.getOWLEntity());
+            show(set.getOWLEntity());
         }
-    }
-
-
-    public Set<OWLObjectProperty> getSelectedProperties() {
-        return new HashSet<OWLObjectProperty>(tree.getSelectedOWLObjects());
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Findable
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    public List<OWLObjectProperty> find(String match) {
-        return new ArrayList<OWLObjectProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLObjectProperties(match));
-    }
-
-
-    public void show(OWLObjectProperty owlEntity) {
-        tree.setSelectedOWLObject(owlEntity);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Deletable
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private ChangeListenerMediator mediator = new ChangeListenerMediator();
-
-
-    public boolean canDelete() {
-        return !tree.getSelectedOWLObjects().isEmpty();
-    }
-
-
-    public void handleDelete() {
-        OWLObjectHierarchyDeleter<OWLObjectProperty> deleter = new OWLObjectHierarchyDeleter<OWLObjectProperty>(
-                getOWLEditorKit(),
-                getOWLModelManager().getOWLObjectPropertyHierarchyProvider(),
-                new OWLEntitySetProvider<OWLObjectProperty>() {
-                    public Set<OWLObjectProperty> getEntities() {
-                        return new HashSet<OWLObjectProperty>(tree.getSelectedOWLObjects());
-                    }
-                },
-                "properties");
-
-        deleter.performDeletion();
-    }
-
-
-    public void addChangeListener(ChangeListener listener) {
-        mediator.addChangeListener(listener);
-    }
-
-
-    public void removeChangeListener(ChangeListener listener) {
-        mediator.removeChangeListener(listener);
-    }
-
-
-    public boolean canPerformAction() {
-        return !tree.getSelectedOWLObjects().isEmpty();
     }
 
 

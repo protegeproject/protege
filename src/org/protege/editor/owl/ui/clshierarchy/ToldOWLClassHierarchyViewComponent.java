@@ -76,21 +76,6 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         return getOWLModelManager().getOWLClassHierarchyProvider();
     }
 
-
-    public void setSelectedClass(OWLClass cls) {
-        getTree().setSelectedOWLObject(cls);
-    }
-
-
-    public OWLClass getSelectedClass() {
-        return getTree().getSelectedOWLObject();
-    }
-
-
-    public Set<OWLClass> getSelectedClasses() {
-        return new HashSet<OWLClass>(getTree().getSelectedOWLObjects());
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Create new target

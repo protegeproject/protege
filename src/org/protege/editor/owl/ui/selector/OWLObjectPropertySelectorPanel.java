@@ -5,7 +5,9 @@ import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
@@ -24,11 +26,15 @@ import java.util.Set;
  */
 public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObjectProperty> {
 
-    private OWLObjectPropertyHierarchyViewComponent view;
+    private AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty> view;
 
 
     public OWLObjectPropertySelectorPanel(OWLEditorKit editorKit) {
         super(editorKit);
+    }
+
+    public OWLObjectPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        super(editorKit, editable);
     }
 
     public void setSelection(OWLObjectProperty property) {
@@ -59,7 +65,21 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                       InstantiationException {
-                view = new OWLObjectPropertyHierarchyViewComponent();
+                if (isEditable()){
+                    view = new OWLObjectPropertyHierarchyViewComponent();
+                }
+                else{
+                    view = new AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty>(){
+
+                        protected void performExtraInitialisation() throws Exception {
+                            // do nothing
+                        }
+
+                        protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
+                            return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
+                        }
+                    };
+                }
                 view.setup(this);
                 return view;
             }

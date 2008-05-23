@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.view;
 
-import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
 
@@ -13,24 +12,9 @@ import org.semanticweb.owl.model.OWLObjectProperty;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public abstract class AbstractOWLObjectPropertyViewComponent extends AbstractOWLSelectionViewComponent {
+public abstract class AbstractOWLObjectPropertyViewComponent extends AbstractOWLPropertyViewComponent<OWLObjectProperty> {
 
     protected boolean isOWLObjectPropertyView() {
         return true;
     }
-
-
-    final protected OWLEntity updateView() {
-        OWLObjectProperty selProp = updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedObjectProperty());
-        if (selProp != null) {
-            updateRegisteredActions();
-        }
-        else {
-            disableRegisteredActions();
-        }
-        return selProp;
-    }
-
-
-    protected abstract OWLObjectProperty updateView(OWLObjectProperty property);
 }
