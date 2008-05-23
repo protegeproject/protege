@@ -29,13 +29,12 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
     private JList list;
 
 
-    public SelectOntologiesPage(OWLEditorKit owlEditorKit) {
-        super(ID, "Select ontologies to merge", owlEditorKit);
+    public SelectOntologiesPage(OWLEditorKit owlEditorKit, String title) {
+        super(ID, title, owlEditorKit);
     }
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please select the ontologies that you want to merge into another ontology.");
         parent.setLayout(new BorderLayout());
         list = new JList();
         list.setVisibleRowCount(8);
@@ -54,7 +53,24 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
 
     public void displayingPanel() {
         super.displayingPanel();
+        if (list.getSelectedValue() == null){
+            Set<OWLOntology> defOnts = getDefaultOntologies();
+            for (int i=0; i<list.getModel().getSize(); i++){
+                if (defOnts.contains((OWLOntology)list.getModel().getElementAt(i))){
+                    list.addSelectionInterval(i, i);
+                }
+            }
+        }
         list.requestFocus();
+    }
+
+    /**
+     * Override to set the ontologies that are first shown
+     * @return the set of ontologies that should be selected the first
+     * time this page is shown
+     */
+    protected Set<OWLOntology> getDefaultOntologies() {
+        return Collections.singleton(getOWLModelManager().getActiveOntology());
     }
 
 

@@ -28,13 +28,12 @@ public class SelectTargetOntologyPage extends AbstractOWLWizardPanel {
     private JList list;
 
 
-    public SelectTargetOntologyPage(OWLEditorKit owlEditorKit) {
-        super(ID, "Select ontology to merge into", owlEditorKit);
+    public SelectTargetOntologyPage(OWLEditorKit owlEditorKit, String title) {
+        super(ID, title, owlEditorKit);
     }
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please select the target ontology to merge into");
         parent.setLayout(new BorderLayout());
         list = new JList();
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

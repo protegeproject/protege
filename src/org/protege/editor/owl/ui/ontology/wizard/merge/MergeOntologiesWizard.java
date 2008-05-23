@@ -41,11 +41,15 @@ public class MergeOntologiesWizard extends Wizard {
     public MergeOntologiesWizard(OWLEditorKit editorKit) {
         setTitle("Create ontology wizard");
         this.owlModelManager = editorKit.getOWLModelManager();
-        registerWizardPanel(SelectOntologiesPage.ID, selectOntologiesPage = new SelectOntologiesPage(editorKit));
+        registerWizardPanel(SelectOntologiesPage.ID, selectOntologiesPage = new SelectOntologiesPage(editorKit, "Select ontologies to merge"));
+        selectOntologiesPage.setInstructions("Please select the ontologies that you want to merge into another ontology.");
+
         registerWizardPanel(MergeTypePage.ID, new MergeTypePage(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, uriPanel = new OntologyURIPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, physicalLocationPanel = new PhysicalLocationPanel(editorKit));
-        registerWizardPanel(SelectTargetOntologyPage.ID, selectTargetOntologyPage = new SelectTargetOntologyPage(editorKit));
+        registerWizardPanel(SelectTargetOntologyPage.ID, selectTargetOntologyPage = new SelectTargetOntologyPage(editorKit, "Select ontology to merge into"));
+        selectTargetOntologyPage.setInstructions("Please select the target ontology to merge into");
+
         setCurrentPanel(SelectOntologiesPage.ID);
     }
 
