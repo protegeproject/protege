@@ -30,12 +30,18 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
     private View view;
 
+    private boolean editable;
+
 
     public AbstractSelectorPanel(OWLEditorKit editorKit) {
-        this.editorKit = editorKit;
-        createUI();
+        this(editorKit, true);
     }
 
+    public AbstractSelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        this.editorKit = editorKit;
+        this.editable = editable;
+        createUI();
+    }
 
     public OWLEditorKit getOWLEditorKit() {
         return editorKit;
@@ -80,6 +86,9 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
         return view.requestFocusInWindow();
     }
 
+    protected final boolean isEditable(){
+        return editable;
+    }
 
     protected abstract ViewComponentPlugin getViewComponentPlugin();
 

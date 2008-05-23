@@ -33,6 +33,10 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         super(owlEditorKit);
     }
 
+    public OWLIndividualSelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        super(editorKit, editable);
+    }
+
     public void setSelection(OWLIndividual ind) {
         if (viewComponent.getView() != null) {
             viewComponent.getView().setPinned(false);

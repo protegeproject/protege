@@ -101,6 +101,19 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
                                                                    "classes");
     }
 
+    public void setSelectedClass(OWLClass cls) {
+        tree.setSelectedOWLObject(cls);
+    }
+
+
+    public OWLClass getSelectedClass() {
+        return tree.getSelectedOWLObject();
+    }
+
+
+    public Set<OWLClass> getSelectedClasses() {
+        return new HashSet<OWLClass>(tree.getSelectedOWLObjects());
+    }
 
     private boolean isNothing(OWLClass o1) {
         return o1.getURI().equals(OWLRDFVocabulary.OWL_NOTHING.getURI());

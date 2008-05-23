@@ -5,6 +5,8 @@ import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.clshierarchy.AbstractOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLClass;
@@ -25,13 +27,16 @@ import java.util.Set;
  */
 public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
-    private ToldOWLClassHierarchyViewComponent viewComponent;
+    private AbstractOWLClassHierarchyViewComponent viewComponent;
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
         super(editorKit);
     }
 
+    public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        super(editorKit, editable);
+    }
 
     protected ViewComponentPlugin getViewComponentPlugin() {
 
@@ -47,8 +52,21 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
-                                                      InstantiationException {
-                viewComponent = new ToldOWLClassHierarchyViewComponent();
+                    InstantiationException {
+                if (isEditable()){
+                    viewComponent = new ToldOWLClassHierarchyViewComponent();
+                }
+                else{
+                    viewComponent = new AbstractOWLClassHierarchyViewComponent(){
+                        protected void performExtraInitialisation() throws Exception {
+                            //do nothing
+                        }
+
+                        protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
+                            return getOWLModelManager().getOWLClassHierarchyProvider();
+                        }
+                    };
+                }
                 viewComponent.setup(this);
                 return viewComponent;
             }
@@ -72,11 +90,9 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
         return viewComponent.getSelectedClasses();
     }
 
-
     public void dispose() {
         viewComponent.dispose();
     }
-
 
     public void addSelectionListener(ChangeListener listener) {
         viewComponent.addChangeListener(listener);
