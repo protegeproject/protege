@@ -14,7 +14,7 @@ import java.util.Set;
 public class ClassReferencingAxiomsStrategy extends EntityReferencingAxiomsStrategy<OWLClass> {
 
     public String getName() {
-        return "Axioms referencing a given class";
+        return "Axioms referencing a given class (or classes)";
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {

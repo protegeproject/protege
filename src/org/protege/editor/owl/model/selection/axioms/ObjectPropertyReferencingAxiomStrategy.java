@@ -14,7 +14,7 @@ import java.util.Set;
 public class ObjectPropertyReferencingAxiomStrategy extends EntityReferencingAxiomsStrategy<OWLObjectProperty> {
 
     public String getName() {
-        return "Axioms referencing a given object property";
+        return "Axioms referencing a given object property (or properties)";
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {
