@@ -14,7 +14,7 @@ import java.util.Set;
 public class IndividualReferencingAxiomStrategy extends EntityReferencingAxiomsStrategy<OWLIndividual> {
 
     public String getName() {
-        return "Axioms referencing a given individual";
+        return "Axioms referencing a given individual (or individuals)";
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {
