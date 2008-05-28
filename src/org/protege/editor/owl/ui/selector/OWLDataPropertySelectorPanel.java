@@ -28,14 +28,20 @@ import java.util.Set;
 public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataProperty> {
 
     private AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> view;
+    private OWLObjectHierarchyProvider<OWLDataProperty> hp;
 
 
-    public OWLDataPropertySelectorPanel(OWLEditorKit editorKit) {
-        super(editorKit);
+    public OWLDataPropertySelectorPanel(OWLEditorKit eKit) {
+        super(eKit);
     }
 
-    public OWLDataPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        super(editorKit, editable);
+    public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable) {
+        super(eKit, editable);
+    }
+
+    public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable, OWLObjectHierarchyProvider<OWLDataProperty> hp) {
+        super(eKit, editable);
+        this.hp = hp;
     }
 
     public void setSelection(OWLDataProperty property) {
@@ -66,7 +72,17 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                       InstantiationException {
                 if (isEditable()){
-                    view = new OWLDataPropertyHierarchyViewComponent();
+                    view = new OWLDataPropertyHierarchyViewComponent(){
+
+                        protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return super.getHierarchyProvider();
+                            }
+                        }
+                    };
                 }
                 else{
                     view = new AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty>(){
@@ -76,7 +92,12 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
                         }
 
                         protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
-                            return getOWLModelManager().getOWLDataPropertyHierarchyProvider();
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return getOWLModelManager().getOWLDataPropertyHierarchyProvider();
+                            }
                         }
                     };
                 }

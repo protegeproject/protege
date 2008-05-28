@@ -28,6 +28,7 @@ import java.util.Set;
 public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
     private AbstractOWLClassHierarchyViewComponent viewComponent;
+    private OWLObjectHierarchyProvider<OWLClass> hp;
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
@@ -36,6 +37,11 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable) {
         super(editorKit, editable);
+    }
+
+    public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLClass> hp) {
+        super(editorKit, editable);
+        this.hp = hp;
     }
 
     protected ViewComponentPlugin getViewComponentPlugin() {
@@ -54,7 +60,16 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
                 if (isEditable()){
-                    viewComponent = new ToldOWLClassHierarchyViewComponent();
+                    viewComponent = new ToldOWLClassHierarchyViewComponent(){
+                        protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return super.getOWLClassHierarchyProvider();
+                            }
+                        }
+                    };
                 }
                 else{
                     viewComponent = new AbstractOWLClassHierarchyViewComponent(){
@@ -63,7 +78,12 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
                         }
 
                         protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-                            return getOWLModelManager().getOWLClassHierarchyProvider();
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return getOWLModelManager().getOWLClassHierarchyProvider();
+                            }
                         }
                     };
                 }

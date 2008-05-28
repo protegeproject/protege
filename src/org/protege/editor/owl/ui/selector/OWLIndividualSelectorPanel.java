@@ -8,6 +8,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLIndividualListViewComponent;
 import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -29,12 +30,19 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
     private OWLIndividualListViewComponent viewComponent;
     private int selectionMode = ListSelectionModel.SINGLE_SELECTION;
 
+    private Set<OWLOntology> ontologies;
+
     public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
     }
 
     public OWLIndividualSelectorPanel(OWLEditorKit editorKit, boolean editable) {
         super(editorKit, editable);
+    }
+
+    public OWLIndividualSelectorPanel(OWLEditorKit editorKit, boolean editable, Set<OWLOntology> ontologies) {
+        super(editorKit, editable);
+        this.ontologies = ontologies;
     }
 
     public void setSelection(OWLIndividual ind) {
@@ -84,7 +92,15 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
 
             public ViewComponent newInstance() throws ClassNotFoundException,
                     IllegalAccessException, InstantiationException {
-                OWLIndividualSelectorPanel.this.viewComponent = new OWLIndividualListViewComponent();
+                OWLIndividualSelectorPanel.this.viewComponent = new OWLIndividualListViewComponent(){
+
+                    protected Set<OWLOntology> getOntologies() {
+                        if (ontologies != null){
+                            return ontologies;
+                        }
+                        return super.getOntologies();
+                    }
+                };
                 OWLIndividualSelectorPanel.this.viewComponent.setup(this);
                 return OWLIndividualSelectorPanel.this.viewComponent;
             }

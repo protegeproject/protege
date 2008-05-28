@@ -111,13 +111,17 @@ public class OWLIndividualListViewComponent extends
 	private void refill() {
 		// Initial fill
 		this.individualsInList.clear();
-		for (OWLOntology ont : this.getOWLModelManager().getActiveOntologies()) {
+		for (OWLOntology ont : getOntologies()) {
 			this.individualsInList.addAll(ont.getReferencedIndividuals());
 		}
 		this.reset();
 	}
 
-	public void setSelectedIndividual(OWLIndividual individual) {
+    protected Set<OWLOntology> getOntologies() {
+        return getOWLModelManager().getActiveOntologies();
+    }
+
+    public void setSelectedIndividual(OWLIndividual individual) {
 		this.list.setSelectedValue(individual, true);
 	}
 
@@ -179,8 +183,7 @@ public class OWLIndividualListViewComponent extends
 		for (OWLEntity ent : removedCollector.getObjects()) {
 			if (ent instanceof OWLIndividual) {
 				boolean stillReferenced = false;
-				for (OWLOntology ont : this.getOWLModelManager()
-						.getActiveOntologies()) {
+				for (OWLOntology ont : getOntologies()) {
 					if (ont.containsIndividualReference(ent.getURI())) {
 						stillReferenced = true;
 						break;
