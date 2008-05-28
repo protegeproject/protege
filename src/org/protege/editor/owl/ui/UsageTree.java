@@ -1,12 +1,10 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.tree.OWLLinkedObjectTree;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -19,7 +17,7 @@ import java.awt.*;
  * Bio-Health Informatics Group<br>
  * Date: 21-Feb-2007<br><br>
  */
-public class UsageTree extends JTree implements LinkedObjectComponent {
+public class UsageTree extends OWLLinkedObjectTree {
 
     private OWLEditorKit owlEditorKit;
 
@@ -27,10 +25,10 @@ public class UsageTree extends JTree implements LinkedObjectComponent {
 
 
     public UsageTree(OWLEditorKit owlEditorKit) {
+        super(owlEditorKit);
         this.owlEditorKit = owlEditorKit;
         setCellRenderer(new UsageTreeCellRenderer(owlEditorKit));
         setRowHeight(-1);
-        LinkedObjectComponentMediator mediator = new LinkedObjectComponentMediator(owlEditorKit, this);
     }
 
 
@@ -87,53 +85,6 @@ public class UsageTree extends JTree implements LinkedObjectComponent {
             return c;
         }
     }
-
-
-    private OWLObject linkedObject;
-
-
-    public JComponent getComponent() {
-        return this;
-    }
-
-
-    public OWLObject getLinkedObject() {
-        return linkedObject;
-    }
-
-
-    public Point getMouseCellLocation() {
-        Point mousePos = getMousePosition();
-        if (mousePos == null) {
-            return null;
-        }
-        Rectangle r = getMouseCellRect();
-        if (r == null) {
-            return null;
-        }
-        return new Point(mousePos.x - r.x, mousePos.y - r.y);
-    }
-
-
-    public Rectangle getMouseCellRect() {
-        Point mousePos = getMousePosition();
-        if (mousePos == null) {
-            return null;
-        }
-        int row = getRowForLocation(mousePos.x, mousePos.y);
-        if (row == -1) {
-            return null;
-        }
-        Rectangle r = getRowBounds(row);
-        return r;
-    }
-
-
-    //    public Object getCellObject();
-    public void setLinkedObject(OWLObject object) {
-        linkedObject = object;
-    }
-
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
