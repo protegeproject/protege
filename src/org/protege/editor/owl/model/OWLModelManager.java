@@ -1,9 +1,5 @@
 package org.protege.editor.owl.model;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.core.ModelManager;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
@@ -17,20 +13,11 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLOntologyStorageException;
+import org.semanticweb.owl.model.*;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -280,6 +267,9 @@ public interface OWLModelManager extends ModelManager {
 
 
     void setMissingImportHandler(MissingImportHandler handler);
+
+    
+    void setSaveErrorHandler(SaveErrorHandler handler);
 
 
     URI getOntologyPhysicalURI(OWLOntology ontology);

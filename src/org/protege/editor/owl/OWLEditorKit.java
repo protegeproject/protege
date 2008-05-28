@@ -10,18 +10,17 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyFormat;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLOntologyStorerNotFoundException;
+import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
 import java.io.File;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,6 +58,11 @@ public class OWLEditorKit implements EditorKit {
         modelManager = new OWLModelManagerImpl();
         loadOntologyLibraries();
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
+        modelManager.setSaveErrorHandler(new SaveErrorHandler(){
+            public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
+                handleSaveError(ont, physicalURIForOntology, e);
+            }
+        });
     }
 
 
@@ -202,42 +206,24 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    private void addRecent(URI physicalURI) {
-        String label = physicalURI.toString();
-        if (physicalURI.getScheme().equals("file")) {
-            label = new File(physicalURI).getPath();
-        }
-        EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
-        descriptor.setURI(URI_KEY, physicalURI);
-        RecentEditorKitManager.getInstance().add(descriptor);
-    }
-
-
     public void handleSaveAs() throws Exception {
         OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this,
-                                                                  man.getOntologyFormat(getOWLModelManager().getActiveOntology()));
+        OWLOntology ont = getOWLModelManager().getActiveOntology();
+        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, man.getOntologyFormat(ont));
         if (format == null) {
             logger.warn("Please select a valid format");
             return;
         }
-        UIHelper helper = new UIHelper(this);
-        File file = helper.saveOWLFile("Please select a location");
-        if (file == null) {
-            logger.warn("No valid file specified for the save operation - quitting");
-            return;
+        File file = getSaveAsOWLFile(ont);
+        if (file != null){
+            man.setOntologyFormat(ont, format);
+            man.setPhysicalURIForOntology(ont, file.toURI());
+            getOWLModelManager().setDirty(ont);
+            handleSave();
         }
-        int extensionIndex = file.toString().lastIndexOf('.');
-        if (extensionIndex == -1) {
-            file = new File(file.toString() + ".owl");
+        else{
+            logger.warn("No valid file specified for the save as operation - quitting");
         }
-        else if (extensionIndex != file.toString().length() - 4) {
-            file = new File(file.toString() + ".owl");
-        }
-        man.setOntologyFormat(getOWLModelManager().getActiveOntology(), format);
-        man.setPhysicalURIForOntology(getOWLModelManager().getActiveOntology(), file.toURI());
-        getOWLModelManager().setDirty(getOWLModelManager().getActiveOntology());
-        handleSave();
     }
 
 
@@ -259,5 +245,38 @@ public class OWLEditorKit implements EditorKit {
         catch (Exception e) {
             logger.error(e);
         }
+    }
+
+    private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
+        // catch the case where the user is trying to save an ontology that has been loaded from the web
+        if (e.getCause() != null && e.getCause() instanceof ProtocolException){
+            handleSaveAs();
+        }
+    }
+
+
+    private File getSaveAsOWLFile(OWLOntology ont) {
+        UIHelper helper = new UIHelper(this);
+        File file = helper.saveOWLFile("Please select a location in which to save: " + getOWLModelManager().getRendering(ont));
+        if (file != null) {
+            int extensionIndex = file.toString().lastIndexOf('.');
+            if (extensionIndex == -1) {
+                file = new File(file.toString() + ".owl");
+            }
+            else if (extensionIndex != file.toString().length() - 4) {
+                file = new File(file.toString() + ".owl");
+            }
+        }
+        return file;
+    }
+
+        private void addRecent(URI physicalURI) {
+        String label = physicalURI.toString();
+        if (physicalURI.getScheme().equals("file")) {
+            label = new File(physicalURI).getPath();
+        }
+        EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
+        descriptor.setURI(URI_KEY, physicalURI);
+        RecentEditorKitManager.getInstance().add(descriptor);
     }
 }

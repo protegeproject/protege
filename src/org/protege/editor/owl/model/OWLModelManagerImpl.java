@@ -84,6 +84,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private MissingImportHandler missingImportHandler;
 
+    private SaveErrorHandler saveErrorHandler;
+
     private Set<File> ontologyRootFolders;
 
     private Set<OntologyLibrary> automappedLibraries;
@@ -156,7 +158,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.setOWLModelManager(this);
         activeOntologies = new HashSet<OWLOntology>();
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(
-        XMLWriterPrefs.getInstance().isUseEntities());
+                XMLWriterPrefs.getInstance().isUseEntities());
     }
 
 
@@ -344,9 +346,29 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // Save all of the ontologies that are editable and that
         // have been modified.
         for (OWLOntology ont : dirtyOntologies) {
-            manager.saveOntology(ont, manager.getOntologyFormat(ont), manager.getPhysicalURIForOntology(ont));
+            saveOntology(ont);
         }
         dirtyOntologies.clear();
+    }
+
+
+    private void saveOntology(OWLOntology ont) throws OWLOntologyStorageException {
+        try{
+            manager.saveOntology(ont, manager.getOntologyFormat(ont), manager.getPhysicalURIForOntology(ont));
+        }
+        catch(OWLOntologyStorageException e){
+            if (saveErrorHandler != null){
+                try {
+                    saveErrorHandler.handleErrorSavingOntology(ont, manager.getPhysicalURIForOntology(ont), e);
+                }
+                catch (Exception e1) {
+                    throw new OWLOntologyStorageException(e1);
+                }
+            }
+            else{
+                throw e;
+            }
+        }
     }
 
 
@@ -1026,6 +1048,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void setMissingImportHandler(MissingImportHandler missingImportHandler) {
         this.missingImportHandler = missingImportHandler;
+    }
+
+
+    public void setSaveErrorHandler(SaveErrorHandler handler) {
+        this.saveErrorHandler = handler;
     }
 
 
