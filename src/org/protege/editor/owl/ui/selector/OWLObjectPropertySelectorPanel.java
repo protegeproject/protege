@@ -27,14 +27,20 @@ import java.util.Set;
 public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObjectProperty> {
 
     private AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty> view;
+    private OWLObjectHierarchyProvider<OWLObjectProperty> hp;
 
 
-    public OWLObjectPropertySelectorPanel(OWLEditorKit editorKit) {
-        super(editorKit);
+    public OWLObjectPropertySelectorPanel(OWLEditorKit eKit) {
+        super(eKit);
     }
 
-    public OWLObjectPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        super(editorKit, editable);
+    public OWLObjectPropertySelectorPanel(OWLEditorKit eKit, boolean editable) {
+        super(eKit, editable);
+    }
+
+    public OWLObjectPropertySelectorPanel(OWLEditorKit eKit, boolean editable, OWLObjectHierarchyProvider<OWLObjectProperty> hp) {
+        super(eKit, editable);
+        this.hp = hp;
     }
 
     public void setSelection(OWLObjectProperty property) {
@@ -64,9 +70,20 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
 
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
-                                                      InstantiationException {
+                    InstantiationException {
+
                 if (isEditable()){
-                    view = new OWLObjectPropertyHierarchyViewComponent();
+                    view = new OWLObjectPropertyHierarchyViewComponent(){
+
+                        protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return super.getHierarchyProvider();
+                            }
+                        }
+                    };
                 }
                 else{
                     view = new AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty>(){
@@ -76,7 +93,12 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
                         }
 
                         protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-                            return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
+                            if (hp != null){
+                                return hp;
+                            }
+                            else{
+                                return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
+                            }
                         }
                     };
                 }

@@ -1,6 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider2;
+import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.protege.editor.owl.model.selection.axioms.AnnotationAxiomsStrategy;
 import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
 import org.protege.editor.owl.model.selection.axioms.AxiomTypeStrategy;
@@ -103,13 +107,6 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
             entitySelector = createEntitySelector(type);
 
             if (entitySelector != null){
-//                final JScrollPane scroller = new JScrollPane(entitySelector);
-//                scroller.setOpaque(false);
-//                scroller.getViewport().setOpaque(false);
-//                scroller.getViewport().setBackground(Color.RED);
-//                scroller.getViewport().getView().setBackground(Color.GREEN);
-//                scroller.setBorder(EMPTY_BORDER);
-//                scroller.setViewportBorder(EMPTY_BORDER);
                 helperPanel.add(entitySelector);
             }
             else{
@@ -129,20 +126,30 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
         handleHelperSelectionUpdate();
     }
 
+    /** Return an entity selector.
+     * Only show the entities referenced by the ontologies selected
+     */
     private AbstractSelectorPanel createEntitySelector(Class type) {
         AbstractSelectorPanel selector = null;
 
+        final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
         if (type.equals(OWLClass.class)){
-            selector = new OWLClassSelectorPanel(getOWLEditorKit(), false);
+            OWLObjectHierarchyProvider<OWLClass> hp = new AssertedClassHierarchyProvider2(mngr);
+            hp.setOntologies(getOntologies());
+            selector = new OWLClassSelectorPanel(getOWLEditorKit(), false, hp);
         }
         else if (type.equals(OWLObjectProperty.class)){
-            selector = new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false);
+            OWLObjectHierarchyProvider<OWLObjectProperty> hp = new OWLObjectPropertyHierarchyProvider(mngr);
+            hp.setOntologies(getOntologies());
+            selector = new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false, hp);
         }
         else if (type.equals(OWLDataProperty.class)){
-            selector = new OWLDataPropertySelectorPanel(getOWLEditorKit(), false);
+            OWLObjectHierarchyProvider<OWLDataProperty> hp = new OWLDataPropertyHierarchyProvider(mngr);
+            hp.setOntologies(getOntologies());
+            selector = new OWLDataPropertySelectorPanel(getOWLEditorKit(), false, hp);
         }
         else if (type.equals(OWLIndividual.class)){
-            selector = new OWLIndividualSelectorPanel(getOWLEditorKit(), false);
+            selector = new OWLIndividualSelectorPanel(getOWLEditorKit(), false, getOntologies());
         }
 
         if (selector != null){
