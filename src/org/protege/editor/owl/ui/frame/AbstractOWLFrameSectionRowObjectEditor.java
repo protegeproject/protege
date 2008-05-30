@@ -31,8 +31,9 @@ public abstract class AbstractOWLFrameSectionRowObjectEditor<E> implements OWLFr
 
 
     public Set<E> getEditedObjects() {
-        if (getEditedObject() != null) {
-            return Collections.singleton(getEditedObject());
+        final E object = getEditedObject();
+        if (object != null) {
+            return Collections.singleton(object);
         }
         else {
             return Collections.emptySet();

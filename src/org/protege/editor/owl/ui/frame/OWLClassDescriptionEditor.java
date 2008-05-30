@@ -153,11 +153,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
      */
     public OWLDescription getEditedObject() {
         try {
-            if (!editor.isWellFormed()) {
-                return null;
-            }
-            String expression = editor.getText();
             if (editor.isWellFormed()) {
+                String expression = editor.getText();
                 return editorKit.getOWLModelManager().getOWLDescriptionParser().createOWLDescription(expression);
             }
             else {
