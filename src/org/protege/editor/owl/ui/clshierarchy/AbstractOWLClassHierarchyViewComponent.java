@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
@@ -19,8 +20,10 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -44,7 +47,7 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
     final public void initialiseClassView() throws Exception {
         setLayout(new BorderLayout(7, 7));
         tree = new OWLModelManagerTree<OWLClass>(getOWLEditorKit(), getOWLClassHierarchyProvider());
-        tree.setOWLObjectComparator(new Comparator<OWLClass>() {
+        tree.setOWLObjectComparator(new OWLObjectComparator<OWLClass>(getOWLModelManager()) {
             public int compare(OWLClass o1, OWLClass o2) {
                 if (isNothing(o1)) {
                     return -1;
@@ -53,7 +56,7 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
                     return 1;
                 }
                 else {
-                    return getOWLModelManager().getRendering(o1).compareTo(getOWLModelManager().getRendering(o2));
+                    return super.compare(o1, o2);
                 }
             }
         });
