@@ -64,6 +64,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
         annotationContent.setWrapStyleWord(true);
         annotationContent.setLineWrap(true);
         langComboBox = new JComboBox();
+        langComboBox.setEditable(true);
         datatypeComboBox = new JComboBox();
         setupAutoCompleter(owlEditorKit);
         fillLangComboBox();
