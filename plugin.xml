@@ -769,14 +769,14 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension id="menu.MoveAxiomsToOntologyAction"
+    <!--extension id="menu.MoveAxiomsToOntologyAction"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Move axioms to ontology..."/>
         <class value="org.protege.editor.owl.ui.action.MoveAxiomsToOntologyAction"/>
         <toolTip value="Select and move axioms to the ontology specified."/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
+    </extension-->
 
 
     <!--<extension
