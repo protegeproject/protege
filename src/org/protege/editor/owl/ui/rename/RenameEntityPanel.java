@@ -137,12 +137,14 @@ public class RenameEntityPanel extends JPanel {
     public static URI showDialog(OWLEditorKit owlEditorKit, OWLEntity entity) {
         RenameEntityPanel panel = new RenameEntityPanel(owlEditorKit, entity);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JOptionPaneEx.showConfirmDialog(null,
-                                        "Rename entity",
-                                        panel,
-                                        JOptionPane.PLAIN_MESSAGE,
-                                        JOptionPane.OK_CANCEL_OPTION,
-                                        panel.textField);
-        return panel.getURI();
+        if (JOptionPaneEx.showConfirmDialog(null,
+                                            "Rename entity",
+                                            panel,
+                                            JOptionPane.PLAIN_MESSAGE,
+                                            JOptionPane.OK_CANCEL_OPTION,
+                                            panel.textField) == JOptionPane.OK_OPTION){
+            return panel.getURI();
+        }
+        return null;
     }
 }
