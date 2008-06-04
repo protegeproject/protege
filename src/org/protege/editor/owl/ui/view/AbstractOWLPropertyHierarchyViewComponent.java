@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.semanticweb.owl.model.OWLProperty;
@@ -28,8 +29,10 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
     private OWLModelManagerTree<O> tree;
 
     public void initialiseView() throws Exception {
-        tree = new OWLModelManagerTree<O>(getOWLEditorKit(), getHierarchyProvider());
         setLayout(new BorderLayout());
+
+        tree = new OWLModelManagerTree<O>(getOWLEditorKit(), getHierarchyProvider());
+        tree.setOWLObjectComparator(new OWLObjectComparator<O>(getOWLModelManager()));
         add(new JScrollPane(tree), BorderLayout.CENTER);
 
         tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
