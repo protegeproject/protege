@@ -25,23 +25,21 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
+public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
 
     private AbstractOWLClassHierarchyViewComponent viewComponent;
-    private OWLObjectHierarchyProvider<OWLClass> hp;
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
-        super(editorKit);
+        this(editorKit, true);
     }
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        super(editorKit, editable);
+        this(editorKit, editable, editorKit.getOWLModelManager().getOWLClassHierarchyProvider());
     }
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLClass> hp) {
-        super(editorKit, editable);
-        this.hp = hp;
+        super(editorKit, editable, hp);
     }
 
     protected ViewComponentPlugin getViewComponentPlugin() {
@@ -59,34 +57,17 @@ public class OWLClassSelectorPanel extends AbstractSelectorPanel<OWLClass> {
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                if (isEditable()){
                     viewComponent = new ToldOWLClassHierarchyViewComponent(){
-                        protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
+                        public void performExtraInitialisation() throws Exception {
+                            if (isEditable()){
+                                super.performExtraInitialisation();
                             }
-                            else{
-                                return super.getOWLClassHierarchyProvider();
-                            }
-                        }
-                    };
-                }
-                else{
-                    viewComponent = new AbstractOWLClassHierarchyViewComponent(){
-                        protected void performExtraInitialisation() throws Exception {
-                            //do nothing
                         }
 
                         protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
-                            }
-                            else{
-                                return getOWLModelManager().getOWLClassHierarchyProvider();
-                            }
+                            return getHierarchyProvider();
                         }
                     };
-                }
                 viewComponent.setup(this);
                 return viewComponent;
             }

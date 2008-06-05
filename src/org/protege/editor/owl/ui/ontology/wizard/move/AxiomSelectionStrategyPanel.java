@@ -4,12 +4,14 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.axioms.*;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: nickdrummond
@@ -36,9 +38,10 @@ public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
 
         // @@TODO - persist previous strategy (would need to rename it to be useful)
 
-            currentStrategy = new ClassReferencingAxiomsStrategy();
-            registerStrategy(currentStrategy);
 
+        currentStrategy = new ClassReferencingAxiomsStrategy();
+
+        registerStrategy(currentStrategy);
         registerStrategy(new ObjectPropertyReferencingAxiomStrategy());
         registerStrategy(new DataPropertyReferencingAxiomStrategy());
         registerStrategy(new IndividualReferencingAxiomStrategy());
@@ -47,12 +50,18 @@ public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
         registerStrategy(new AllAxiomsStrategy());
     }
 
+
+    public void aboutToDisplayPanel() {
+        currentStrategy.setOntologies(getSourceOntologies());
+    }
+
+
     private void registerStrategy(final AxiomSelectionStrategy strategy) {
         strategies.add(strategy);
 
         JCheckBox cb = new JCheckBox(new AbstractAction(strategy.getName()){
             public void actionPerformed(ActionEvent actionEvent) {
-                currentStrategy = strategy;
+                selectStrategy(strategy);
             }
         });
 
@@ -61,6 +70,13 @@ public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
         bGroup.add(cb);
         holder.add(cb);
     }
+
+
+    private void selectStrategy(AxiomSelectionStrategy strategy) {
+        currentStrategy = strategy;
+        currentStrategy.setOntologies(getSourceOntologies());
+    }
+
 
     protected void createUI(JComponent parent) {
         parent.setLayout(new BorderLayout());
@@ -76,12 +92,20 @@ public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
     public Object getBackPanelDescriptor() {
         return SelectOntologiesPage.ID;
     }
-    
+
     public Object getNextPanelDescriptor() {
+        StrategyEditor editor = ((StrategyConstrainPanel)getWizardModel().getPanel(StrategyConstrainPanel.ID)).getEditor(currentStrategy);
+        if (editor != null){
+            return StrategyConstrainPanel.ID;
+        }
         return AxiomSelectionPanel.ID;
     }
 
     public AxiomSelectionStrategy getSelectionStrategy() {
         return currentStrategy;
+    }
+
+    protected Set<OWLOntology> getSourceOntologies() {
+        return ((SelectOntologiesPage)getWizardModel().getPanel(SelectOntologiesPage.ID)).getOntologies();
     }
 }

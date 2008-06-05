@@ -25,35 +25,21 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataProperty> {
+public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLDataProperty> {
 
     private AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> view;
-    private OWLObjectHierarchyProvider<OWLDataProperty> hp;
 
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit) {
-        super(eKit);
+        this(eKit, true);
     }
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable) {
-        super(eKit, editable);
+        this(eKit, editable, eKit.getOWLModelManager().getOWLDataPropertyHierarchyProvider());
     }
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable, OWLObjectHierarchyProvider<OWLDataProperty> hp) {
-        super(eKit, editable);
-        this.hp = hp;
-    }
-
-    public void setSelection(OWLDataProperty property) {
-        view.show(property);
-    }
-
-    public OWLDataProperty getSelectedObject() {
-        return view.getSelectedProperty();
-    }
-
-    public Set<OWLDataProperty> getSelectedObjects() {
-        return view.getSelectedProperties();
+        super(eKit, editable, hp);
     }
 
 
@@ -70,37 +56,18 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
 
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
-                                                      InstantiationException {
-                if (isEditable()){
-                    view = new OWLDataPropertyHierarchyViewComponent(){
-
-                        protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
-                            }
-                            else{
-                                return super.getHierarchyProvider();
-                            }
+                    InstantiationException {
+                view = new OWLDataPropertyHierarchyViewComponent(){
+                    protected void performExtraInitialisation() throws Exception {
+                        if (isEditable()){
+                            super.performExtraInitialisation();
                         }
-                    };
-                }
-                else{
-                    view = new AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty>(){
+                    }
 
-                        protected void performExtraInitialisation() throws Exception {
-                            // do nothing
-                        }
-
-                        protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
-                            }
-                            else{
-                                return getOWLModelManager().getOWLDataPropertyHierarchyProvider();
-                            }
-                        }
-                    };
-                }
+                    protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
+                        return OWLDataPropertySelectorPanel.this.getHierarchyProvider();
+                    }
+                };
                 view.setup(this);
                 return view;
             }
@@ -111,6 +78,20 @@ public class OWLDataPropertySelectorPanel extends AbstractSelectorPanel<OWLDataP
             }
         };
     }
+
+
+    public void setSelection(OWLDataProperty property) {
+        view.show(property);
+    }
+
+    public OWLDataProperty getSelectedObject() {
+        return view.getSelectedProperty();
+    }
+
+    public Set<OWLDataProperty> getSelectedObjects() {
+        return view.getSelectedProperties();
+    }
+
 
     public void addSelectionListener(ChangeListener listener) {
         view.addChangeListener(listener);
