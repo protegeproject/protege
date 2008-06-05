@@ -32,15 +32,20 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
     private boolean editable;
 
-
     public AbstractSelectorPanel(OWLEditorKit editorKit) {
         this(editorKit, true);
     }
 
     public AbstractSelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        this(editorKit, editable, true);
+    }
+
+    public AbstractSelectorPanel(OWLEditorKit editorKit, boolean editable, boolean autoCreateUI) {
         this.editorKit = editorKit;
         this.editable = editable;
-        createUI();
+        if (autoCreateUI){
+            createUI();
+        }
     }
 
     public OWLEditorKit getOWLEditorKit() {
@@ -58,20 +63,18 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
     }
 
 
-    private void createUI() {
+    protected void createUI() {
         setLayout(new BorderLayout());
         ViewComponentPlugin plugin = getViewComponentPlugin();
-        View v = new View(plugin, editorKit.getOWLWorkspace());
-        v.setPinned(true);
-        v.setSyncronizing(false);
-        add(v);
-        v.createUI();
-        view = v;
+        view = new View(plugin, editorKit.getOWLWorkspace());
+        view.setPinned(true);
+        view.setSyncronizing(false);
+        view.createUI();
         view.setShowViewBanner(false);
+        add(view);
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
                                                      BorderFactory.createEmptyBorder(2, 2, 2, 2)));
     }
-
 
     public abstract void setSelection(O entity);
 

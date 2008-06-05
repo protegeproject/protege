@@ -24,37 +24,22 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObjectProperty> {
+public class OWLObjectPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLObjectProperty> {
 
     private AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty> view;
-    private OWLObjectHierarchyProvider<OWLObjectProperty> hp;
 
 
     public OWLObjectPropertySelectorPanel(OWLEditorKit eKit) {
-        super(eKit);
+        this(eKit, true);
     }
 
     public OWLObjectPropertySelectorPanel(OWLEditorKit eKit, boolean editable) {
-        super(eKit, editable);
+        this(eKit, editable, eKit.getOWLModelManager().getOWLObjectPropertyHierarchyProvider());
     }
 
     public OWLObjectPropertySelectorPanel(OWLEditorKit eKit, boolean editable, OWLObjectHierarchyProvider<OWLObjectProperty> hp) {
-        super(eKit, editable);
-        this.hp = hp;
+        super(eKit, editable, hp);
     }
-
-    public void setSelection(OWLObjectProperty property) {
-        view.show(property);
-    }
-
-    public OWLObjectProperty getSelectedObject() {
-        return view.getSelectedProperty();
-    }
-
-    public Set<OWLObjectProperty> getSelectedObjects() {
-        return view.getSelectedProperties();
-    }
-
 
     protected ViewComponentPlugin getViewComponentPlugin() {
 
@@ -72,36 +57,17 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
 
-                if (isEditable()){
                     view = new OWLObjectPropertyHierarchyViewComponent(){
-
-                        protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
-                            }
-                            else{
-                                return super.getHierarchyProvider();
-                            }
-                        }
-                    };
-                }
-                else{
-                    view = new AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty>(){
-
                         protected void performExtraInitialisation() throws Exception {
-                            // do nothing
+                            if (isEditable()){
+                                super.performExtraInitialisation();
+                            }
                         }
 
                         protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-                            if (hp != null){
-                                return hp;
-                            }
-                            else{
-                                return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
-                            }
+                            return OWLObjectPropertySelectorPanel.this.getHierarchyProvider();
                         }
                     };
-                }
                 view.setup(this);
                 return view;
             }
@@ -114,6 +80,19 @@ public class OWLObjectPropertySelectorPanel extends AbstractSelectorPanel<OWLObj
     }
 
 
+    public void setSelection(OWLObjectProperty property) {
+        view.show(property);
+    }
+
+    public OWLObjectProperty getSelectedObject() {
+        return view.getSelectedProperty();
+    }
+
+    public Set<OWLObjectProperty> getSelectedObjects() {
+        return view.getSelectedProperties();
+    }
+
+    
     public void dispose() {
         view.dispose();
     }

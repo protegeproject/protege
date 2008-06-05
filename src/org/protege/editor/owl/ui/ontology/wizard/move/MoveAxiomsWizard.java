@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
 import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
 import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
 import org.semanticweb.owl.model.OWLAxiom;
@@ -16,8 +17,11 @@ import java.util.Set;
 public class MoveAxiomsWizard extends Wizard {
 
     private SelectOntologiesPage sourceOntologiesPage;
+    private AxiomSelectionStrategyPanel strategyPanel;
+    private StrategyConstrainPanel strategyConstrainPanel;
     private AxiomSelectionPanel axiomsPage;
     private SelectTargetOntologyPage targetOntologyPage;
+
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
 
@@ -31,11 +35,17 @@ public class MoveAxiomsWizard extends Wizard {
             protected Set<OWLOntology> getDefaultOntologies() {
                 return getOWLModelManager().getActiveOntologies();
             }
+
+            public void aboutToHidePanel() {
+                super.aboutToHidePanel();
+                strategyPanel.getSelectionStrategy().setOntologies(getOntologies());
+            }
         };
         sourceOntologiesPage.setInstructions("Please select the ontologies you wish to move axioms from.");
         registerWizardPanel(SelectOntologiesPage.ID, sourceOntologiesPage);
 
-        registerWizardPanel(AxiomSelectionStrategyPanel.ID, new AxiomSelectionStrategyPanel(eKit));
+        registerWizardPanel(AxiomSelectionStrategyPanel.ID, strategyPanel = new AxiomSelectionStrategyPanel(eKit));
+        registerWizardPanel(StrategyConstrainPanel.ID, strategyConstrainPanel = new StrategyConstrainPanel(eKit));
         registerWizardPanel(AxiomSelectionPanel.ID, axiomsPage = new AxiomSelectionPanel(eKit));
 
         targetOntologyPage = new SelectTargetOntologyPage(eKit, "Select target ontology"){
@@ -54,10 +64,14 @@ public class MoveAxiomsWizard extends Wizard {
     }
 
     public Set<OWLAxiom> getAxioms() {
-        return axiomsPage.getSelectedAxioms();
+        return axiomsPage.getFilteredAxioms();
     }
 
     public OWLOntology getTargetOntology() {
         return targetOntologyPage.getOntology();
+    }
+
+    public AxiomSelectionStrategy getStrategy() {
+        return strategyPanel.getSelectionStrategy();
     }
 }

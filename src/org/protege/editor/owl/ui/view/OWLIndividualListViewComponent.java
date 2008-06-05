@@ -80,14 +80,8 @@ public class OWLIndividualListViewComponent extends
 			}
 		};
 		this.getOWLModelManager().addOntologyChangeListener(this.listener);
-		this.addAction(new AddIndividualAction(), "A", "A");
-		this.addAction(new DeleteIndividualAction(this.getOWLEditorKit(),
-				new OWLEntitySetProvider<OWLIndividual>() {
-					public Set<OWLIndividual> getEntities() {
-						return OWLIndividualListViewComponent.this
-								.getSelectedIndividuals();
-					}
-				}), "B", "A");
+
+        setupActions();
 		this.changeListenerMediator = new ChangeListenerMediator();
 		this.individualsInList = new TreeSet<OWLIndividual>(
 				new OWLEntityComparator<OWLIndividual>(this
@@ -103,7 +97,20 @@ public class OWLIndividualListViewComponent extends
 		this.getOWLModelManager().addListener(this.modelManagerListener);
 	}
 
-	@Override
+
+    protected void setupActions() {
+        this.addAction(new AddIndividualAction(), "A", "A");
+		this.addAction(new DeleteIndividualAction(this.getOWLEditorKit(),
+				new OWLEntitySetProvider<OWLIndividual>() {
+					public Set<OWLIndividual> getEntities() {
+						return OWLIndividualListViewComponent.this
+								.getSelectedIndividuals();
+					}
+				}), "B", "A");
+    }
+
+
+    @Override
 	public void refreshComponent() {
 		this.refill();
 	}

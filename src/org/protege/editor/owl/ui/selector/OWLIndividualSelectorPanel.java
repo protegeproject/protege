@@ -28,21 +28,39 @@ import java.util.Set;
 public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndividual> {
 
     private OWLIndividualListViewComponent viewComponent;
-    private int selectionMode = ListSelectionModel.SINGLE_SELECTION;
 
     private Set<OWLOntology> ontologies;
 
-    public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit);
+    public OWLIndividualSelectorPanel(OWLEditorKit eKit) {
+        this(eKit, true);
     }
 
-    public OWLIndividualSelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        super(editorKit, editable);
+    public OWLIndividualSelectorPanel(OWLEditorKit eKit, boolean editable) {
+        this(eKit, editable, eKit.getOWLModelManager().getActiveOntologies());
     }
 
-    public OWLIndividualSelectorPanel(OWLEditorKit editorKit, boolean editable, Set<OWLOntology> ontologies) {
-        super(editorKit, editable);
+    public OWLIndividualSelectorPanel(OWLEditorKit eKit, boolean editable, Set<OWLOntology> ontologies) {
+        this(eKit, editable, ontologies, ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    public OWLIndividualSelectorPanel(OWLEditorKit eKit, int selectionMode) {
+        this(eKit, true, null, selectionMode);
+    }
+
+    /**
+     * Builds an OWLIndividualSelectorPanel with the input selection mode. The
+     * valid values are the same described in the constants in
+     * javax.swing.ListSelectionModel (the default is
+     * ListSelectionModel.SINGLE_SELECTION)
+     *
+     * @param eKit
+     * @param selectionMode
+     */
+    public OWLIndividualSelectorPanel(OWLEditorKit eKit, boolean editable, Set<OWLOntology> ontologies, int selectionMode) {
+        super(eKit, editable, false);
         this.ontologies = ontologies;
+        createUI();
+        this.viewComponent.setSelectionMode(selectionMode);
     }
 
     public void setSelection(OWLIndividual ind) {
@@ -60,20 +78,6 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         return viewComponent.getSelectedIndividuals();
     }
 
-    /**
-     * Builds an OWLIndividualSelectorPanel with the input selection mode. The
-     * valid values are the same described in the constants in
-     * javax.swing.ListSelectionModel (the default is
-     * ListSelectionModel.SINGLE_SELECTION)
-     *
-     * @param owlEditorKit
-     * @param selectionMode
-     */
-    public OWLIndividualSelectorPanel(OWLEditorKit owlEditorKit,
-                                      int selectionMode) {
-        super(owlEditorKit);
-        viewComponent.setSelectionMode(selectionMode);
-    }
 
     public void dispose() {
         viewComponent.dispose();
@@ -86,13 +90,17 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
             }
 
             public Workspace getWorkspace() {
-                return OWLIndividualSelectorPanel.this.getOWLEditorKit()
-                        .getOWLWorkspace();
+                return getOWLEditorKit().getOWLWorkspace();
             }
 
             public ViewComponent newInstance() throws ClassNotFoundException,
                     IllegalAccessException, InstantiationException {
-                OWLIndividualSelectorPanel.this.viewComponent = new OWLIndividualListViewComponent(){
+                viewComponent = new OWLIndividualListViewComponent(){
+                    protected void setupActions() {
+                        if (isEditable()){
+                            super.setupActions();
+                        }
+                    }
 
                     protected Set<OWLOntology> getOntologies() {
                         if (ontologies != null){
@@ -101,8 +109,8 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
                         return super.getOntologies();
                     }
                 };
-                OWLIndividualSelectorPanel.this.viewComponent.setup(this);
-                return OWLIndividualSelectorPanel.this.viewComponent;
+                viewComponent.setup(this);
+                return viewComponent;
             }
 
             public Color getBackgroundColor() {
