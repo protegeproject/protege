@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
 
 
@@ -17,11 +19,31 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
 
     private InferredSuperClassHierarchyProvider provider;
 
+    private OWLModelManagerListener l = new OWLModelManagerListener(){
 
-    protected AbstractSuperClassHierarchyProvider getOWLClassHierarchyProvider() {
+        public void handleChange(OWLModelManagerChangeEvent event) {
+            if (event.getType() == EventType.REASONER_CHANGED){
+                getOWLClassHierarchyProvider().setReasoner(getOWLModelManager().getReasoner());
+            }
+        }
+    };
+
+
+    protected void performExtraInitialisation() throws Exception {
+        super.performExtraInitialisation();
+        getOWLModelManager().addListener(l);
+    }
+
+
+    public void disposeView() {
+        super.disposeView();
+        getOWLModelManager().removeListener(l);
+    }
+
+
+    protected InferredSuperClassHierarchyProvider getOWLClassHierarchyProvider() {
         if (provider == null) {
             provider = new InferredSuperClassHierarchyProvider(getOWLModelManager());
-            provider.setReasoner(getOWLModelManager().getReasoner());
         }
         return provider;
     }
