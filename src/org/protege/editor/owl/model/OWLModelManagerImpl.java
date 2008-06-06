@@ -30,6 +30,9 @@ import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
+import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
+import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
+import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
@@ -131,6 +134,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private Set<OWLOntology> activeOntologies;
 
+    private OntologySelectionStrategy activeOntologiesStrategy;
+
 
     public OWLModelManagerImpl() {
         super();
@@ -156,7 +161,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
+
         activeOntologies = new HashSet<OWLOntology>();
+        activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
+
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(
                 XMLWriterPrefs.getInstance().isUseEntities());
     }
@@ -250,9 +258,22 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
+    /**
+     * @deprecated use <code>setActiveOntologiesStrategy</code> with either
+     * <code>ActiveOntologySelectionStrategy</code> or
+     * <code>ImportsClosureOntologySelectionStrategy</code>
+     * @param b whether the imports closure of the active ontology should be visible or not
+     */
     public void setIncludeImports(boolean b) {
-        includeImports = b;
-        setActiveOntology(getActiveOntology(), true);
+        if (includeImports != b){
+            includeImports = b;
+            if (includeImports){
+                setActiveOntologiesStrategy(new ImportsClosureOntologySelectionStrategy(this));
+            }
+            else{
+                setActiveOntologiesStrategy(new ActiveOntologySelectionStrategy(this));
+            }
+        }
     }
 
 
@@ -408,15 +429,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public Set<OWLOntology> getActiveOntologies() {
-        // I suppose that the imports closure could be cached, but
-        // this makes history tracking easier for now.
-        if(includeImports) {
-            return Collections.unmodifiableSet(activeOntologies);
-        }
-        else {
-            return Collections.singleton(activeOntology);
-        }
-
+        return activeOntologies;
     }
 
 
@@ -530,7 +543,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
         this.activeOntology = activeOntology;
         logger.info("Setting active ontology to " + activeOntology.getURI());
-        rebuildImportsClosureCache();
+        rebuildActiveOntologiesCache();
         // Rebuild entity indices
         rebuildEntityIndices();
         // Rebuild the various hierarchies
@@ -554,9 +567,21 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    private void rebuildImportsClosureCache() {
+    public void setActiveOntologiesStrategy(OntologySelectionStrategy strategy) {
+        activeOntologiesStrategy = strategy;
+        setActiveOntology(getActiveOntology(), true);
+        fireEvent(EventType.ONTOLOGY_VISIBILITY_CHANGED);
+    }
+
+
+    public OntologySelectionStrategy getActiveOntologiesStrategy() {
+        return activeOntologiesStrategy;
+    }
+
+
+    private void rebuildActiveOntologiesCache() {
         activeOntologies.clear();
-        activeOntologies.addAll(manager.getImportsClosure(getActiveOntology()));
+        activeOntologies.addAll(activeOntologiesStrategy.getOntologies());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////

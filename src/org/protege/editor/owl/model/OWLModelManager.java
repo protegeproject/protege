@@ -10,6 +10,7 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
+import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -171,7 +172,15 @@ public interface OWLModelManager extends ModelManager {
 
     void setActiveOntology(OWLOntology activeOntology);
 
+
+    void setActiveOntologiesStrategy(OntologySelectionStrategy strategy);
+
+
+    OntologySelectionStrategy getActiveOntologiesStrategy();
+
+
     void setIncludeImports(boolean b);
+
 
     boolean isIncludeImports();
 
