@@ -1,21 +1,20 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.awt.BorderLayout;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.model.OWLOntology;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -42,10 +41,11 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
     }
 
 
-    private Set<OWLOntology> getOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    private List<OWLOntology> getOntologies() {
+        List<OWLOntology> ontologies = new ArrayList<OWLOntology>();
         ontologies.addAll(getOWLModelManager().getOntologies());
         ontologies.removeAll(getOWLModelManager().getActiveOntologies());
+        Collections.sort(ontologies, new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
         return ontologies;
     }
 
