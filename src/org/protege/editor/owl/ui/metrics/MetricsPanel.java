@@ -252,6 +252,10 @@ public class MetricsPanel extends JPanel {
                                         AxiomType.REFLEXIVE_OBJECT_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.IRREFLEXIVE_OBJECT_PROPERTY));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
+                                        AxiomType.OBJECT_PROPERTY_DOMAIN));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
+                                        AxiomType.OBJECT_PROPERTY_RANGE));
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Object property axioms", metricManager);
     }
@@ -266,6 +270,10 @@ public class MetricsPanel extends JPanel {
                                         AxiomType.DISJOINT_DATA_PROPERTIES));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.FUNCTIONAL_DATA_PROPERTY));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
+                                        AxiomType.DATA_PROPERTY_DOMAIN));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
+                                        AxiomType.DATA_PROPERTY_RANGE));        
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Data property axioms", metricManager);
     }
