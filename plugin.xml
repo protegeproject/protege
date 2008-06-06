@@ -638,6 +638,53 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+
+    <!-- Ontologies menu -->
+
+    <extension id="menu.OntologyMenu"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Ontologies"/>
+        <toolTip value="Set ontology visibility"/>
+        <path value="/SlotD-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="ontologies.activeontology"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show only the active ontology"/>
+        <class value="org.protege.editor.owl.ui.action.ActiveOntologyStrategyAction"/>
+        <toolTip value="Only the active ontology is visible"/>
+        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="ontologies.importsclosure"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show the imports closure of the active ontology"/>
+        <class value="org.protege.editor.owl.ui.action.ImportsClosureOntologyStrategyAction"/>
+        <toolTip value="Ontologies that are in the imports closure of the active ontology are visible"/>
+        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="ontologies.allontologies"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show all loaded ontologies"/>
+        <class value="org.protege.editor.owl.ui.action.AllOntologiesStrategyAction"/>
+        <toolTip value="All loaded ontologies are visible"/>
+        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-C"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <!--extension id="ontologies.visibilitymanager"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show user selected ontologies..."/>
+        <class value="org.protege.editor.owl.ui.action.VisibilityManagerOntologySelectionStrategyAction"/>
+        <toolTip value="User selected ontologies are visible"/>
+        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension-->
+
     <!-- Reasoner menu -->
 
     <extension id="menu.Reasoner"
@@ -653,7 +700,7 @@
          point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Classify..."/>
         <class value="org.protege.editor.owl.ui.inference.ClassifyAction"/>
-        <toolTip value="Classify ontology and show resutls"/>
+        <toolTip value="Classify ontology and show results"/>
         <path value="org.protege.editor.owl.menu.Reasoner/SlotA-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="R"/>
@@ -769,14 +816,14 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <!--extension id="menu.MoveAxiomsToOntologyAction"
+    <extension id="menu.MoveAxiomsToOntologyAction"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Move axioms to ontology..."/>
         <class value="org.protege.editor.owl.ui.action.MoveAxiomsToOntologyAction"/>
         <toolTip value="Select and move axioms to the ontology specified."/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension-->
+    </extension>
 
 
     <!--<extension
