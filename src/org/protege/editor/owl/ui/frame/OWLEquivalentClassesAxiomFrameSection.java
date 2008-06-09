@@ -1,23 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.inference.UnsupportedReasonerOperationException;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.*;
 
 
 /**
@@ -30,18 +19,18 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSecti
 
     private static final String LABEL = "Equivalent classes";
 
-    private Set<OWLClass> added;
+    private Set<OWLClass> added = new HashSet<OWLClass>();
 
     private boolean inferredEquivalentClasses = true;
 
 
     public OWLEquivalentClassesAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
         super(editorKit, LABEL, frame);
-        added = new HashSet<OWLClass>();
     }
 
 
     protected void clear() {
+        added.clear();
     }
 
 
