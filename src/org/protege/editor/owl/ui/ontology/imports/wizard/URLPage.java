@@ -1,16 +1,12 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.awt.BorderLayout;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.swing.JComponent;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.protege.editor.core.ui.util.URLPanel;
+import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.OWLEditorKit;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.MalformedURLException;
 
 
 /**
@@ -26,7 +22,7 @@ public class URLPage extends AbstractImportSourcePage {
 
     public static final String ID = "URLPage";
 
-    public URLPanel urlPanel;
+    public OpenFromURIPanel urlPanel;
 
 
     public URLPage(OWLEditorKit owlEditorKit) {
@@ -37,23 +33,23 @@ public class URLPage extends AbstractImportSourcePage {
     protected void createUI(JComponent parent) {
         setInstructions("Please specify the URL that points to the file that contains the " + "ontology.  (Please note that this should be the physical URL, rather than the " + "ontology URI)");
         parent.setLayout(new BorderLayout());
-        parent.add(urlPanel = new URLPanel());
-        urlPanel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                URL url = urlPanel.getURL();
-                if (url == null) {
-                    getWizard().setNextFinishButtonEnabled(false);
-                    return;
-                }
+        parent.add(urlPanel = new OpenFromURIPanel(){
+            protected boolean isValidURI() {
                 try {
-                    URI uri = url.toURI();
-
-                    getWizard().setNextFinishButtonEnabled(uri.isAbsolute() && uri.getScheme() != null && uri.getPath() != null);
+                    if (super.isValidURI()){
+                        getURI().toURL();
+                        return true;
+                    }
                 }
-                catch (URISyntaxException e1) {
-                    getWizard().setNextFinishButtonEnabled(false);
-                    return;
+                catch (MalformedURLException e) {
+                    // drop through to return false
                 }
+                return false;
+            }
+        });
+        urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
+            public void verifiedStatusChanged(boolean newState) {
+                getWizard().setNextFinishButtonEnabled(newState);
             }
         });
     }
@@ -76,6 +72,11 @@ public class URLPage extends AbstractImportSourcePage {
 
 
     public ImportVerifier getImportVerifier() {
-        return new URLImportFileVerifier(urlPanel.getURL());
+        try {
+            return new URLImportFileVerifier(urlPanel.getURI().toURL());
+        }
+        catch (MalformedURLException e) {
+            return null;
+        }
     }
 }

@@ -1,35 +1,18 @@
 package org.protege.editor.owl.ui.find;
 
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.EntityFinderPreferences;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -211,7 +194,7 @@ public class EntityFinderField extends JTextField {
         else {
             resultsList.setListData(new Object [0]);
         }
-//        owlModelManager.getEditorKit().getWorkspace().showResultsView("FINDER_RESULTS", "Finder results", Color.GRAY,
+//        owlModelManager.getOWLEditorKit().getWorkspace().showResultsView("FINDER_RESULTS", "Finder results", Color.GRAY,
 //                new OWLEntityFinderViewComponent(results), true);
     }
 }
