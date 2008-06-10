@@ -1,29 +1,26 @@
 package org.protege.editor.core.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -32,11 +29,14 @@ import org.protege.editor.core.ui.util.JOptionPaneEx;
  * Bio-Health Informatics Group<br>
  * Date: 12-May-2007<br><br>
  */
-public class OpenFromURIPanel extends JPanel {
+public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
 
     private JTextField uriField;
 
     private MList bookmarksList;
+
+    private List<InputVerificationStatusChangedListener> listeners =
+            new ArrayList<InputVerificationStatusChangedListener>();
 
 
     public OpenFromURIPanel() {
@@ -47,6 +47,17 @@ public class OpenFromURIPanel extends JPanel {
     private void createUI() {
         setLayout(new BorderLayout());
         uriField = new JTextField(45);
+        uriField.getDocument().addDocumentListener(new DocumentListener(){
+            public void insertUpdate(DocumentEvent event) {
+                handleValueChanged();
+            }
+            public void removeUpdate(DocumentEvent event) {
+                handleValueChanged();
+            }
+            public void changedUpdate(DocumentEvent event) {
+                handleValueChanged();
+            }
+        });
         JPanel uriFieldHolder = new JPanel(new BorderLayout());
         uriFieldHolder.setBorder(ComponentFactory.createTitledBorder("URI"));
         uriFieldHolder.add(uriField, BorderLayout.NORTH);
@@ -78,16 +89,33 @@ public class OpenFromURIPanel extends JPanel {
     }
 
 
+    private void handleValueChanged() {
+        final boolean validURI = isValidURI();
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(validURI);
+        }
+    }
+
+    protected boolean isValidURI(){
+        final URI uri = getURI(false);
+        return uri != null && uri.isAbsolute() && uri.getScheme() != null;        
+    }
+
     public URI getURI() {
+        return getURI(true);
+    }
+
+    private URI getURI(boolean showMessage) {
         try {
             return new URI(uriField.getText().trim());
         }
         catch (URISyntaxException e) {
-            showURIErrorMessage(e);
+            if (showMessage){
+                showURIErrorMessage(e);
+            }
         }
         return null;
     }
-
 
     private void updateTextField() {
         URIListItem item = getSelUriListItem();
@@ -150,6 +178,16 @@ public class OpenFromURIPanel extends JPanel {
     }
 
 
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+
     private class BookmarkedItemListRenderer extends DefaultListCellRenderer {
 
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
@@ -168,7 +206,7 @@ public class OpenFromURIPanel extends JPanel {
     private class AddURIItem implements MListSectionHeader {
 
         public String getName() {
-            return "Bookmared URIs";
+            return "Bookmarked URIs";
         }
 
 
