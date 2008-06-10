@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.transfer;
 
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.semanticweb.owl.model.OWLObject;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -8,10 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.semanticweb.owl.model.OWLObject;
 
 
 /**
@@ -43,6 +43,7 @@ public class TransferableOWLObject implements Transferable {
                 return new ArrayList<OWLObject>(owlObjects);
             }
         });
+
         stringTransferHandler = new TransferHandler() {
             public Object getTransferData() {
                 StringBuilder builder = new StringBuilder();
@@ -54,7 +55,7 @@ public class TransferableOWLObject implements Transferable {
                 return builder.toString();
             }
         };
-        dataFlavorMap.put(DataFlavor.getTextPlainUnicodeFlavor(), stringTransferHandler);
+        dataFlavorMap.put(DataFlavor.stringFlavor, stringTransferHandler);
     }
 
 
