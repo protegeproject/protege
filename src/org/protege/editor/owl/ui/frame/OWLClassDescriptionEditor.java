@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionChecker;
