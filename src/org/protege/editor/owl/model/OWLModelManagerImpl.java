@@ -284,18 +284,28 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public void loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
         // Obtain the actual ontology URI.  This is probably the xml:base
         URI ontologyURI = new OntologyURIExtractor(uri).getOntologyURI();
-        // Set up a mapping from the ontology URI to the physical URI
-        manager.addURIMapper(new SimpleURIMapper(ontologyURI, uri));
-        if (uri.getScheme().equals("file")) {
-            // Load the URIs of other ontologies that are contained in the
-            // same folder.
-            addRootFolder(uri);
-            //loadOntologyURIMap(new File(uri).getParentFile());
-        }
-        // Delegate to the load method using the URI of the ontology
-        loadOntology(ontologyURI);
 
-        owlModelManagerDescriptor = new OWLModelManagerDescriptor(uri);
+        // if the ontology has already been loaded, we cannot have more than one ont with the same URI
+        // in this ontology manager (and therefore workspace)
+        if (manager.getOntology(ontologyURI) != null){
+            throw new OWLOntologyCreationException("Not loaded." +
+                    "\nWorkspace already contains ontology: " + ontologyURI +
+                    ".\nPlease open the ontology in a new frame.");
+        }
+        else{
+            // Set up a mapping from the ontology URI to the physical URI
+            manager.addURIMapper(new SimpleURIMapper(ontologyURI, uri));
+            if (uri.getScheme().equals("file")) {
+                // Load the URIs of other ontologies that are contained in the
+                // same folder.
+                addRootFolder(uri);
+                //loadOntologyURIMap(new File(uri).getParentFile());
+            }
+            // Delegate to the load method using the URI of the ontology
+            loadOntology(ontologyURI);
+
+            owlModelManagerDescriptor = new OWLModelManagerDescriptor(uri);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
