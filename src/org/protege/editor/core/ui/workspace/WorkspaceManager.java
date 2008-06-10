@@ -1,13 +1,12 @@
 package org.protege.editor.core.ui.workspace;
 
+import org.protege.editor.core.ProtegeManager;
+
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.JFrame;
-
-import org.protege.editor.core.ProtegeManager;
 
 
 /**
@@ -36,16 +35,31 @@ public class WorkspaceManager {
             final WorkspaceFrame frame = new WorkspaceFrame(workspace);
             frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
-                    // Remove the listener
-                    frame.removeWindowListener(this);
-                    // Dispose of the clsdescriptioneditor kit
-                    ProtegeManager.getInstance().disposeOfEditorKit(workspace.getEditorKit());
+                    if (doClose(workspace)){
+                        // Remove the listener
+                        frame.removeWindowListener(this);
+                        frame.dispose();
+                    }
                 }
             });
             workspaceFrameMap.put(workspace, frame);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             frame.setVisible(true);
         }
+    }
+
+
+    public boolean doClose(Workspace workspace) {
+        int ret = JOptionPane.showConfirmDialog(ProtegeManager.getInstance().getFrame(workspace),
+                                                "Close the current set of ontologies?",
+                                                "Close?",
+                                                JOptionPane.YES_NO_OPTION,
+                                                JOptionPane.WARNING_MESSAGE);
+        if (ret == JOptionPane.YES_OPTION) {
+            ProtegeManager.getInstance().disposeOfEditorKit(workspace.getEditorKit());
+        }
+
+        return ret == JOptionPane.YES_OPTION;
     }
 
 

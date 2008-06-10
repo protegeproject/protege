@@ -1,17 +1,10 @@
 package org.protege.editor.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.UIManager;
-
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -29,11 +22,15 @@ import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.update.UpdateManager;
 import org.protege.editor.core.util.BundleBuilder;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -74,7 +71,7 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
-    
+
     public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
 
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
@@ -92,14 +89,15 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
 
     private static BundleContext context;
-    
+
     private boolean bundles_loaded = false;
-    
+
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
-    
-    
+
+    private ProtegeWelcomeFrame welcomeFrame;
+
 
     public void start(BundleContext context) throws Exception {
         ProtegeApplication.context = context;
@@ -137,7 +135,7 @@ public class ProtegeApplication implements BundleActivator {
             PreferencesManager.getInstance().getApplicationPreferences(RUN_ONCE).putBoolean(RUN_ONCE, true);
         }
     }
-    
+
 
     /////////////////////////////////////////////////////////////////////////////////
     //
@@ -151,10 +149,10 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         logger.info("Starting Protege 4 OWL Editor");
         logger.info("Platform:");
-        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) 
-        					+ " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
+        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR)
+                + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
         logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME)
-        					+ " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
+                + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
         logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
     }
 
@@ -294,25 +292,25 @@ public class ProtegeApplication implements BundleActivator {
         }
         return pluginBundles;
     }
-    
+
     private List<File> getExtraBundles() {
-    	String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
-    	List<File> extra_bundles = new ArrayList<File>();
-    	while (remaining != null && remaining.length() != 0) {
-    		int index = remaining.indexOf(File.pathSeparator);
-    		if (index < 0) {
-    			extra_bundles.add(new File(remaining));
-    			return extra_bundles;
-    		}
-    		else {
-    			extra_bundles.add(new File(remaining.substring(0, index)));
-    			remaining = remaining.substring(index+1);
-    		}
-    	}
-    	return extra_bundles;
+        String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
+        List<File> extra_bundles = new ArrayList<File>();
+        while (remaining != null && remaining.length() != 0) {
+            int index = remaining.indexOf(File.pathSeparator);
+            if (index < 0) {
+                extra_bundles.add(new File(remaining));
+                return extra_bundles;
+            }
+            else {
+                extra_bundles.add(new File(remaining.substring(0, index)));
+                remaining = remaining.substring(index+1);
+            }
+        }
+        return extra_bundles;
     }
 
-    
+
     private void loadPlugins() {
         if (bundles_loaded) return;
         List<File> locations = new ArrayList<File>();
@@ -355,7 +353,7 @@ public class ProtegeApplication implements BundleActivator {
                     logger.warn("\t" + name + " Plugin has no plugin.xml resource");
                     logger.info("\t Add a " + BUNDLE_WITHOUT_PLUGIN_XML + " entry in the manifest if this is deliberate.");
                 }
-                    
+
             }
             catch (Throwable t) {
                 logger.error("Could not start bundle " + b.getSymbolicName() + ": " + t);
@@ -366,7 +364,7 @@ public class ProtegeApplication implements BundleActivator {
         }
         bundles_loaded = true;
     }
-    
+
     private String getBundleLocation(File source) throws IOException {
         boolean directoryBundlesWork = canReadDirectoryBundles();
         if (source.isFile() || directoryBundlesWork) { // the normal case
@@ -381,11 +379,11 @@ public class ProtegeApplication implements BundleActivator {
             return jar.toURI().toString();
         }
     }
-    
+
     private boolean canReadDirectoryBundles() {
         return System.getProperty(OSGI_READS_DIRECTORIES, "true").toLowerCase().equals("true");
     }
-    
+
     /////////////////////////////////////////////////////////////////////////////////
     //
     //  Implementation of Application
@@ -394,20 +392,7 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private void startApplication() throws Exception {
-        ProtegeWelcomeFrame frame = new ProtegeWelcomeFrame();
-
-//        frame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                try {
-//                    doStop();
-//                    System.exit(0);
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                    System.exit(1);
-//                }
-//            }
-//        });
-        frame.setVisible(true);
+        showWelcomeFrame();
         try {
             if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
                 // Open any command line URIs
@@ -444,4 +429,26 @@ public class ProtegeApplication implements BundleActivator {
         return errorLog;
     }
 
+
+    public void handleClose() {
+        if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+        else{
+            showWelcomeFrame();
+        }
+    }
+
+    private void showWelcomeFrame(){
+        if (welcomeFrame == null){
+            welcomeFrame = new ProtegeWelcomeFrame();
+            welcomeFrame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    handleClose();
+                }
+            });
+            welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        }
+        welcomeFrame.setVisible(true);
+    }
 }

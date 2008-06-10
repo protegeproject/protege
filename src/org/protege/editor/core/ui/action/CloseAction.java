@@ -1,10 +1,8 @@
 package org.protege.editor.core.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JOptionPane;
-
 import org.protege.editor.core.ProtegeManager;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -19,14 +17,7 @@ import org.protege.editor.core.ProtegeManager;
 public class CloseAction extends ProtegeAction {
 
     public void actionPerformed(ActionEvent e) {
-        int ret = JOptionPane.showConfirmDialog(ProtegeManager.getInstance().getFrame(getWorkspace()),
-                                                "Close the current set of ontologies?",
-                                                "Close?",
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.WARNING_MESSAGE);
-        if (ret == JOptionPane.YES_OPTION) {
-            ProtegeManager.getInstance().getEditorKitManager().removeEditorKit(getEditorKit());
-        }
+        ProtegeManager.getInstance().getEditorKitManager().getWorkspaceManager().doClose(getWorkspace());
     }
 
 
