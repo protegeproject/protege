@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.selection.axioms;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
+import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 /**
@@ -13,5 +14,13 @@ public interface AxiomSelectionStrategy {
 
     String getName();
 
-    Set<OWLAxiom> getAxioms(Set<OWLOntology> onts);
+    Set<OWLAxiom> getAxioms();
+
+    void setOntologies(Set<OWLOntology> ontologies);
+
+    Set<OWLOntology> getOntologies();
+
+    void addPropertyChangeListener(PropertyChangeListener l);
+
+    void removePropertyChangeListener(PropertyChangeListener l);    
 }

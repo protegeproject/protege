@@ -10,15 +10,15 @@ import java.util.Set;
  * User: nickdrummond
  * Date: May 21, 2008
  */
-public class AllAxiomsStrategy implements AxiomSelectionStrategy {
+public class AllAxiomsStrategy extends AbstractAxiomSelectionStrategy {
 
     public String getName() {
         return "All axioms in the specified ontologies";
     }
 
-    public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {
+    public Set<OWLAxiom> getAxioms() {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : onts){
+        for (OWLOntology ont : getOntologies()){
             axioms.addAll(ont.getAxioms());
         }
         return axioms;
