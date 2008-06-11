@@ -17,10 +17,10 @@ public class ObjectPropertyReferencingAxiomStrategy extends EntityReferencingAxi
         return "Axioms referencing a given object property (or properties)";
     }
 
-    public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {
+    public Set<OWLAxiom> getAxioms() {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLObjectProperty p : getEntities()){
-            for (OWLOntology ont : onts){
+            for (OWLOntology ont : getOntologies()){
                 axioms.addAll(ont.getReferencingAxioms(p));
             }
         }

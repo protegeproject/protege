@@ -17,10 +17,10 @@ public class ClassReferencingAxiomsStrategy extends EntityReferencingAxiomsStrat
         return "Axioms referencing a given class (or classes)";
     }
 
-    public Set<OWLAxiom> getAxioms(Set<OWLOntology> onts) {
+    public Set<OWLAxiom> getAxioms() {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLClass cls : getEntities()){
-            for (OWLOntology ont : onts){
+            for (OWLOntology ont : getOntologies()){
                 axioms.addAll(ont.getReferencingAxioms(cls));
             }
         }
