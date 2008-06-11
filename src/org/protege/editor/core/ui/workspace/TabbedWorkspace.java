@@ -1,28 +1,20 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import org.apache.log4j.Logger;
+import org.protege.editor.core.FileManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.Resettable;
+
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileFilter;
+import java.net.URL;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -43,6 +35,8 @@ public abstract class TabbedWorkspace extends Workspace {
 
     public static final String TABS_MENU_NAME = "Tabs";
 
+    private static final String TAB_CUSTOM_NAME = "custom-";
+
     private JTabbedPane tabbedPane;
 
     private JMenu tabMenu;
@@ -50,6 +44,12 @@ public abstract class TabbedWorkspace extends Workspace {
     private Set<WorkspaceTab> workspaceTabs;
 
     private static final Logger logger = Logger.getLogger(TabbedWorkspace.class);
+
+    private AbstractAction resetTabAction;
+
+    private static final String VIEWCONFIG_PREFIX = "viewconfig-";
+
+    private static final String VIEWCONFIG_EXTENSION = ".xml";
 
 
     /**
@@ -68,33 +68,26 @@ public abstract class TabbedWorkspace extends Workspace {
 
         // Here we either need to load the default tabs, or
         // restore a set of tabs
-        TabbedWorkspaceStateManager man = new TabbedWorkspaceStateManager();
+        final List<String> visibleTabs = new TabbedWorkspaceStateManager().getTabs();
 
-        WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
-        List<WorkspaceTabPlugin> orderedPlugins = new ArrayList<WorkspaceTabPlugin>(loader.getPlugins());
-        Collections.sort(orderedPlugins, new Comparator<WorkspaceTabPlugin>() {
-            public int compare(WorkspaceTabPlugin o1, WorkspaceTabPlugin o2) {
-                return o1.getIndex().compareTo(o2.getIndex());
-            }
-        });
-        for (WorkspaceTabPlugin plugin : orderedPlugins) {
-            if (!man.getTabs().isEmpty()) {
-                if (!man.getTabs().contains(plugin.getId())) {
-                    continue;
+        if (!visibleTabs.isEmpty()){
+
+            for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
+                if (visibleTabs.contains(plugin.getId())) {
+                    WorkspaceTab tab = null;
+                    try {
+                        tab = plugin.newInstance();
+                        addTab(tab);
+                    }
+                    catch (Throwable e) {
+                        if (tab != null) {
+                            String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
+                            tab.setLayout(new BorderLayout());
+                            tab.add(ComponentFactory.createExceptionComponent(msg, e, null));
+                        }
+                        Logger.getLogger(getClass().getName()).warn(e);
+                    }
                 }
-            }
-            WorkspaceTab tab = null;
-            try {
-                tab = plugin.newInstance();
-                addTab(tab);
-            }
-            catch (Throwable e) {
-                if (tab != null) {
-                    String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
-                    tab.setLayout(new BorderLayout());
-                    tab.add(ComponentFactory.createExceptionComponent(msg, e, null));
-                }
-                Logger.getLogger(getClass().getName()).warn(e);
             }
         }
     }
@@ -115,7 +108,27 @@ public abstract class TabbedWorkspace extends Workspace {
 
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
-        // Add in menus for tabs
+
+        createTabMenu(menuBar);
+
+        tabMenu.addMenuListener(new MenuListener() {
+            public void menuSelected(MenuEvent e) {
+                refreshActions();
+                //rebuildTabMenu(); cannot see any reason to do this every time the menu is selected
+            }
+
+            public void menuDeselected(MenuEvent e) {
+            }
+
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
+        rebuildTabMenu();
+    }
+
+
+    // Add in menus for tabs
+    private void createTabMenu(JMenuBar menuBar) {
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             JMenu menu = menuBar.getMenu(i);
             if (menu.getText() != null) {
@@ -129,71 +142,119 @@ public abstract class TabbedWorkspace extends Workspace {
             tabMenu = new JMenu(TABS_MENU_NAME);
             menuBar.add(tabMenu);
         }
-        tabMenu.addMenuListener(new MenuListener() {
-            public void menuSelected(MenuEvent e) {
-                rebuildTabMenu();
-            }
-
-
-            public void menuDeselected(MenuEvent e) {
-            }
-
-
-            public void menuCanceled(MenuEvent e) {
-            }
-        });
-        rebuildTabMenu();
     }
 
 
     private void rebuildTabMenu() {
         tabMenu.removeAll();
-        WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
-        List<WorkspaceTabPlugin> plugins = new ArrayList<WorkspaceTabPlugin>(loader.getPlugins());
-        Collections.sort(plugins, new Comparator<WorkspaceTabPlugin>() {
-            public int compare(WorkspaceTabPlugin o1, WorkspaceTabPlugin o2) {
-                return o1.getIndex().compareTo(o2.getIndex());
+
+        for (final WorkspaceTabPlugin plugin : getOrderedPlugins()) {
+            addMenuItem(plugin);
+        }
+
+        tabMenu.addSeparator();
+        tabMenu.add(new AbstractAction("Create new tab..."){
+            public void actionPerformed(ActionEvent event) {
+                handleCreateNewTab();
             }
         });
-        for (final WorkspaceTabPlugin plugin : plugins) {
-            JCheckBoxMenuItem item = new JCheckBoxMenuItem(new AbstractAction(plugin.getLabel()) {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        if (containsTab(plugin.getId()) == false) {
-                            WorkspaceTab tab = plugin.newInstance();
-                            addTab(tab);
-                        }
-                        else {
-                            WorkspaceTab tab = getWorkspaceTab(plugin.getId());
-                            removeTab(tab);
-                            tab.dispose();
-                        }
-                    }
-                    catch (Exception ex) {
-                        logger.error("Exception caught (re) building tab menu", ex);
-                    }
-                }
-            });
-            item.setSelected(containsTab(plugin.getId()));
-            tabMenu.add(item);
-        }
+
         tabMenu.addSeparator();
         tabMenu.add(new AbstractAction("Save current layout") {
             public void actionPerformed(ActionEvent e) {
                 save();
             }
         });
-        tabMenu.addSeparator();
-        Action resetTabAction = new AbstractAction("Reset selected tab to default state") {
 
+        tabMenu.addSeparator();
+        tabMenu.add(resetTabAction = new AbstractAction("Reset selected tab to default state") {
             public void actionPerformed(ActionEvent e) {
-                Resettable tab = (Resettable) tabbedPane.getSelectedComponent();
-                tab.reset();
-                tabbedPane.getSelectedComponent().validate();
+                handleReset();
             }
-        };
+        });
+    }
+
+
+    private void refreshActions() {
         resetTabAction.setEnabled(tabbedPane.getSelectedComponent() instanceof Resettable);
-        tabMenu.add(resetTabAction);
+    }
+
+
+    private List<WorkspaceTabPlugin> getOrderedPlugins() {
+        WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
+        List<WorkspaceTabPlugin> plugins = new ArrayList<WorkspaceTabPlugin>(loader.getPlugins());
+
+        plugins.addAll(generatePluginsFromCustomViewConfigs());
+
+        Collections.sort(plugins, new Comparator<WorkspaceTabPlugin>() {
+            public int compare(WorkspaceTabPlugin o1, WorkspaceTabPlugin o2) {
+                return o1.getIndex().compareTo(o2.getIndex());
+            }
+        });
+
+        return plugins;
+    }
+
+
+    // fake up a set of additional plugins from viewconfig files that have been added by the user.
+    // The plugins get their identifiers from the name of the file
+    private Set<WorkspaceTabPlugin> generatePluginsFromCustomViewConfigs() {
+        Set<WorkspaceTabPlugin> plugins = new HashSet<WorkspaceTabPlugin>();
+
+        File viewConfigFolder = FileManager.getViewConfigurationsFolder();
+        if (viewConfigFolder.exists()){
+            List<File> customTabFiles = Arrays.asList(viewConfigFolder.listFiles(new FileFilter() {
+                public boolean accept(File file) {
+                    return (file.getName().startsWith(VIEWCONFIG_PREFIX + TAB_CUSTOM_NAME) && file.getName().endsWith(VIEWCONFIG_EXTENSION));
+                }
+            }));
+
+            for (File customTabFile : customTabFiles){
+                final String label = customTabFile.getName().replaceFirst(VIEWCONFIG_PREFIX + TAB_CUSTOM_NAME, "").replace(VIEWCONFIG_EXTENSION, "");
+                plugins.add(new CustomTabPlugin(label));
+            }
+        }
+        return plugins;
+    }
+
+
+    private void addMenuItem(final WorkspaceTabPlugin plugin) {
+        JCheckBoxMenuItem item = new JCheckBoxMenuItem(new AbstractAction(plugin.getLabel()) {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (!containsTab(plugin.getId())) {
+                        WorkspaceTab tab = plugin.newInstance();
+                        addTab(tab);
+                    }
+                    else {
+                        WorkspaceTab tab = getWorkspaceTab(plugin.getId());
+                        removeTab(tab);
+                        tab.dispose();
+                    }
+                }
+                catch (Exception ex) {
+                    logger.error("Exception caught (re)building tab menu", ex);
+                }
+            }
+        });
+        item.setSelected(containsTab(plugin.getId()));
+        tabMenu.add(item);
+    }
+
+
+    private void handleReset() {
+        Resettable tab = (Resettable) tabbedPane.getSelectedComponent();
+        tab.reset();
+        tabbedPane.getSelectedComponent().validate();
+    }
+
+
+    private void handleCreateNewTab() {
+        final String name = JOptionPane.showInputDialog(this, "Please enter a name for the new tab");
+        if (name != null){
+            addTab(new CustomTab(name));
+            rebuildTabMenu();
+        }
     }
 
 
@@ -286,16 +347,93 @@ public abstract class TabbedWorkspace extends Workspace {
     public void dispose() {
         save();
         // Remove the tabs and call their dispose method
-        int count = tabbedPane.getComponentCount();
-        for (int i = 0; i < count; i++) {
-            WorkspaceTab tab = (WorkspaceTab) tabbedPane.getComponentAt(0);
+        for (WorkspaceTab tab : workspaceTabs){
             try {
                 tab.dispose();
             }
             catch (Exception e) {
                 logger.warn("BAD TAB: " + tab.getClass().getSimpleName() + " - Exception during dispose: " + e.getMessage());
             }
-            removeTab(tab);
+        }
+        workspaceTabs.clear();
+        tabbedPane.removeAll();
+    }
+
+
+    class CustomTabPlugin implements WorkspaceTabPlugin{
+
+        private String label;
+
+
+        CustomTabPlugin(String label) {
+            this.label = label;
+        }
+
+
+        public TabbedWorkspace getWorkspace() {
+            return TabbedWorkspace.this;
+        }
+
+
+        public String getLabel() {
+            return label;
+        }
+
+
+        public Icon getIcon() {
+            return null;
+        }
+
+
+        public String getIndex() {
+            return "Z";
+        }
+
+
+        public URL getDefaultViewConfigFile() {
+            return null;
+        }
+
+
+        public String getId() {
+            return TAB_CUSTOM_NAME + getLabel();
+        }
+
+
+        public String getDocumentation() {
+            return "";
+        }
+
+
+        public WorkspaceTab newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+            return new CustomTab(label);
+        }
+    }
+
+    class CustomTab extends WorkspaceViewsTab {
+
+        private String name;
+
+
+        public CustomTab(String name) {
+            this.name = name;
+        }
+
+
+        public String getLabel() {
+            return name;
+        }
+
+        public String getId() {
+            return TAB_CUSTOM_NAME + getLabel();
+        }
+
+        public TabbedWorkspace getWorkspace() {
+            return TabbedWorkspace.this;
+        }
+
+        public URL getDefaultViewConfigurationFile() {
+            return null;
         }
     }
 }

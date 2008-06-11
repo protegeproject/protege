@@ -1,21 +1,7 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileManager;
 import org.protege.editor.core.prefs.Preferences;
@@ -26,8 +12,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -81,7 +72,7 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
             if (!file.exists()) {
                 return;
             }
-            InputStream is = new BufferedInputStream(new FileInputStream(getVisibleTabsFile()));
+            InputStream is = new BufferedInputStream(new FileInputStream(file));
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             parser.parse(is, this);
             is.close();

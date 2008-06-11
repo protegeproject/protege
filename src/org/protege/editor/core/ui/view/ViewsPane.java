@@ -1,35 +1,19 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import org.apache.log4j.Logger;
+import org.coode.mdock.*;
+import org.protege.editor.core.FileManager;
+import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.JPanel;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.log4j.Logger;
-import org.coode.mdock.DynamicConfigPanel;
-import org.coode.mdock.NodePanel;
-import org.coode.mdock.NodeReanimator;
-import org.coode.mdock.NodeSerialiser;
-import org.coode.mdock.SplitterNode;
-import org.coode.mdock.Util;
-import org.coode.mdock.VerticalSplitterNode;
-import org.protege.editor.core.FileManager;
-import org.protege.editor.core.ui.workspace.Workspace;
 
 
 /**
@@ -141,9 +125,10 @@ public class ViewsPane extends JPanel {
         if (url != null) {
             return new File(FileManager.getViewConfigurationsFolder(), url.getFile());
         }
-        else {
-            return null;
+        else if (memento.getViewPaneId() != null){
+            return new File(FileManager.getViewConfigurationsFolder(), "viewconfig-" + memento.getViewPaneId() + ".xml");
         }
+        return null;
     }
 
 
