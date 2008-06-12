@@ -48,4 +48,9 @@ public class ActiveOntologySelectionStrategy implements OntologySelectionStrateg
     public Set<OWLOntology> getOntologies() {
         return Collections.singleton(mngr.getActiveOntology());
     }
+
+
+    public String getName() {
+        return "Show only the active ontology";
+    }
 }

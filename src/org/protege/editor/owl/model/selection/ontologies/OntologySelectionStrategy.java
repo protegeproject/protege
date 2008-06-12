@@ -36,4 +36,6 @@ import java.util.Set;/*
 public interface OntologySelectionStrategy {
 
     Set<OWLOntology> getOntologies();
+
+    String getName();
 }

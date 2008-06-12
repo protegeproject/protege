@@ -47,4 +47,9 @@ public class AllLoadedOntologiesSelectionStrategy implements OntologySelectionSt
     public Set<OWLOntology> getOntologies() {
         return mngr.getOWLOntologyManager().getOntologies();
     }
+
+
+    public String getName() {
+        return "Show all loaded ontologies";
+    }
 }

@@ -47,4 +47,9 @@ public class ImportsClosureOntologySelectionStrategy implements OntologySelectio
     public Set<OWLOntology> getOntologies() {
         return mngr.getOWLOntologyManager().getImportsClosure(mngr.getActiveOntology());
     }
+
+
+    public String getName() {
+        return "Show the imports closure of the active ontology";
+    }
 }
