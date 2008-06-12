@@ -31,6 +31,7 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
+import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
@@ -134,6 +135,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private Set<OWLOntology> activeOntologies;
 
+    private Set<OntologySelectionStrategy> ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
+
     private OntologySelectionStrategy activeOntologiesStrategy;
 
 
@@ -163,7 +166,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.setOWLModelManager(this);
 
         activeOntologies = new HashSet<OWLOntology>();
-        activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
+
+        registerOntologySelectionStrategy(new ActiveOntologySelectionStrategy(this));
+        registerOntologySelectionStrategy(new AllLoadedOntologiesSelectionStrategy(this));
+        registerOntologySelectionStrategy(activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this));
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(
                 XMLWriterPrefs.getInstance().isUseEntities());
@@ -587,6 +593,17 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public OntologySelectionStrategy getActiveOntologiesStrategy() {
         return activeOntologiesStrategy;
     }
+
+
+    public Set<OntologySelectionStrategy> getActiveOntologiesStrategies() {
+        return ontSelectionStrategies;
+    }
+
+
+    public void registerOntologySelectionStrategy(OntologySelectionStrategy strategy) {
+        ontSelectionStrategies.add(strategy);
+    }
+
 
 
     private void rebuildActiveOntologiesCache() {

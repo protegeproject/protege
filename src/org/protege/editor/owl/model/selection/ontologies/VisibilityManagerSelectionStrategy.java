@@ -46,4 +46,9 @@ public class VisibilityManagerSelectionStrategy implements OntologySelectionStra
     public Set<OWLOntology> getOntologies() {
         return vm.getVisibleOntologies();
     }
+
+
+    public String getName() {
+        return "Show user selected ontologies...";
+    }
 }
