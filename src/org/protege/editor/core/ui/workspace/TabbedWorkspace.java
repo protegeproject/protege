@@ -70,23 +70,20 @@ public abstract class TabbedWorkspace extends Workspace {
         // restore a set of tabs
         final List<String> visibleTabs = new TabbedWorkspaceStateManager().getTabs();
 
-        if (!visibleTabs.isEmpty()){
-
-            for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
-                if (visibleTabs.contains(plugin.getId())) {
-                    WorkspaceTab tab = null;
-                    try {
-                        tab = plugin.newInstance();
-                        addTab(tab);
+        for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
+            if (visibleTabs.isEmpty() || visibleTabs.contains(plugin.getId())) {
+                WorkspaceTab tab = null;
+                try {
+                    tab = plugin.newInstance();
+                    addTab(tab);
+                }
+                catch (Throwable e) {
+                    if (tab != null) {
+                        String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
+                        tab.setLayout(new BorderLayout());
+                        tab.add(ComponentFactory.createExceptionComponent(msg, e, null));
                     }
-                    catch (Throwable e) {
-                        if (tab != null) {
-                            String msg = "An error occurred when creating the " + plugin.getLabel() + " tab.";
-                            tab.setLayout(new BorderLayout());
-                            tab.add(ComponentFactory.createExceptionComponent(msg, e, null));
-                        }
-                        Logger.getLogger(getClass().getName()).warn(e);
-                    }
+                    Logger.getLogger(getClass().getName()).warn(e);
                 }
             }
         }
