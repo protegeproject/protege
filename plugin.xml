@@ -645,11 +645,11 @@
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Ontologies"/>
         <toolTip value="Set ontology visibility"/>
-        <path value="/SlotD-A"/>
+        <path value="/SlotC-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension id="ontologies.activeontology"
+    <!--extension id="ontologies.activeontology"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Show only the active ontology"/>
         <class value="org.protege.editor.owl.ui.action.ActiveOntologyStrategyAction"/>
@@ -674,7 +674,7 @@
         <toolTip value="All loaded ontologies are visible"/>
         <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-C"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
+    </extension-->
 
     <!--extension id="ontologies.visibilitymanager"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
