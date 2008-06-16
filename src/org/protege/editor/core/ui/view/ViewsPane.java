@@ -177,7 +177,7 @@ public class ViewsPane extends JPanel {
 
     public void bringViewToFront(String id) {
         for (View view : getViews()) {
-            if (view.getId().equals(id)) {
+            if (view.getId() != null && view.getId().equals(id)) {
                 Util.bringToFront(view);
                 // Carry on until all views with the specified
                 // view id are in front
