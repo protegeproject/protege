@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -52,9 +52,11 @@ public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
                 }
             }
         }
-        OWLAxiom ax = getOWLDataFactory().getOWLDisjointClassesAxiom(clses);
-        getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
 
+        if (clses.size() > 1){
+            OWLAxiom ax = getOWLDataFactory().getOWLDisjointClassesAxiom(clses);
+            getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+        }
         // 2) Get the named subs
 
 //        try {
