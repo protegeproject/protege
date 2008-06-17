@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
-import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLOntology;
-import org.protege.editor.owl.OWLEditorKit;
 
 import java.util.Comparator;
 /*
@@ -60,7 +60,7 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
     }
 
 
-    public boolean canAddRows() {
+    public boolean canAdd() {
         return getRootObject().getSubject() != null;
     }
 

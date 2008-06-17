@@ -1,11 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.List;
-
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
+
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -47,6 +46,7 @@ public interface OWLFrameSection<R extends Object, A extends OWLAxiom, E> extend
 
 
     /**
+     * @deprecated use <code>canAdd</code> instead
      * Determines if rows can be added to this section.
      * @return <code>true</code> if rows can be added to this section,
      *         or <code>false</code> if rows cannot be added to this section.

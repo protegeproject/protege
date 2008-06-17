@@ -1,19 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.*;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -113,7 +107,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    public boolean canAddRows() {
+    public boolean canAdd() {
         return false;
     }
 

@@ -1,24 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.core.ui.list.MListButton;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.RemoveAxiom;
+import org.semanticweb.owl.model.*;
+
+import java.util.*;
 
 
 /**
@@ -189,7 +177,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
      * if the <code>isEditable</code> method returns <code>false</code>.
      */
     public List<? extends OWLOntologyChange> getDeletionChanges() {
-        if (isDeletable()) {
+        if (isDeleteable()) {
             return Arrays.asList(new RemoveAxiom(getOntology(), getAxiom()));
         }
         else {
@@ -209,8 +197,12 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     }
 
 
+    /**
+     * @deprecated use <code>isDeleateable</code> instead
+     * @return
+     */
     public boolean isDeletable() {
-        return isEditable();
+        return isDeleteable();
     }
 
 
@@ -265,7 +257,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
 
 
     public boolean isDeleteable() {
-        return isDeletable();
+        return isEditable();
     }
 
 

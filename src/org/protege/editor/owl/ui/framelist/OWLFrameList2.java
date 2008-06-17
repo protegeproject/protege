@@ -340,7 +340,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         final Object val = getSelectedValue();
         if (val instanceof OWLFrameObject) {
             if (val instanceof OWLFrameSection) {
-                if (!((OWLFrameSection) val).canAddRows()) {
+                if (!((OWLFrameSection) val).canAdd()) {
                     return;
                 }
             } else {
