@@ -49,7 +49,7 @@ public class OWLIndirectImportsFrameSection extends AbstractOWLFrameSection<OWLO
     }
 
 
-    public boolean canAddRows() {
+    public boolean canAdd() {
         return false;
     }
 

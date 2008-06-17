@@ -49,7 +49,7 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
     }
 
 
-    public boolean isDeletable() {
+    public boolean isDeleteable() {
         return super.isEditable();
     }
 

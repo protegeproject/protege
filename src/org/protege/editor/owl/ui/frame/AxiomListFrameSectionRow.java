@@ -1,15 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.AxiomType;
-import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLOntology;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -69,7 +67,7 @@ public class AxiomListFrameSectionRow extends AbstractOWLFrameSectionRow<Set<OWL
     }
 
 
-    public boolean isDeletable() {
+    public boolean isDeleteable() {
         return true;
     }
 }

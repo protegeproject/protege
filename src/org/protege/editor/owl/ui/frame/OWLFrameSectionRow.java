@@ -1,13 +1,9 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.List;
-
 import org.protege.editor.core.ui.list.MListItem;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.*;
+
+import java.util.List;
 
 
 /**
@@ -70,6 +66,10 @@ public interface OWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> ext
     boolean isEditable();
 
 
+    /**
+     * @deprecated Use <code>isDeleateable</code> instead
+     * @return true if the row can be deleted, false otherwise
+     */
     boolean isDeletable();
 
 

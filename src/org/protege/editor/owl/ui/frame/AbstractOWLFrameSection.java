@@ -1,65 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAntiSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
-import org.semanticweb.owl.model.OWLAxiomVisitor;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLDataSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLDeclarationAxiom;
-import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
-import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
-import org.semanticweb.owl.model.OWLDisjointDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLDisjointUnionAxiom;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLFunctionalDataPropertyAxiom;
-import org.semanticweb.owl.model.OWLFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLInverseFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLInverseObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLIrreflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLNegativeObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLObjectSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLReflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.model.OWLSameIndividualsAxiom;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.model.OWLSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLTransitiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owl.model.*;
+
+import java.util.*;
 
 
 /**
@@ -300,17 +249,16 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
 
     /**
-     * Determines if rows can be added to this section.
-     * @return <code>true</code> if rows can be added to this section,
-     *         or <code>false</code> if rows cannot be added to this section.
+     * @deprecated use <code>canAdd</code> instead
+     * @return
      */
     public boolean canAddRows() {
-        return getOWLModelManager().isActiveOntologyMutable();
+        return canAdd();
     }
 
 
     public boolean canAdd() {
-        return canAddRows();
+        return getOWLModelManager().isActiveOntologyMutable();
     }
 
 

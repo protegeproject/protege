@@ -1,25 +1,17 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListRemoveTypeButton;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.core.ui.list.MListEditButton;
-import org.protege.editor.core.ui.list.MListRemoveTypeButton;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.RemoveAllDisjointAxioms;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.RemoveAxiom;
 
 
 /**
@@ -52,7 +44,7 @@ public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrame
     }
     
     @Override
-    public boolean isDeletable() {
+    public boolean isDeleteable() {
         return false;
     }
     

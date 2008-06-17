@@ -70,7 +70,7 @@ public class ExplanationFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAx
     }
 
 
-    public boolean isDeletable() {
+    public boolean isDeleteable() {
         return true;
     }
 

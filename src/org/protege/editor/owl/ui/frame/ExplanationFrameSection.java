@@ -1,24 +1,22 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntityCollector;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
-
-import javax.swing.*;
-import java.util.*;
-import java.util.List;
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLEntityCollector;
+import uk.ac.manchester.cs.bhig.util.Tree;
 import uk.ac.manchester.cs.owl.explanation.ordering.DefaultExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
-import uk.ac.manchester.cs.bhig.util.Tree;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -188,7 +186,7 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
     }
 
 
-    public boolean canAddRows() {
+    public boolean canAdd() {
         return false;
     }
 
