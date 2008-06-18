@@ -209,6 +209,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
+    public boolean isDirty() {
+        return !dirtyOntologies.isEmpty();
+    }
+
+
     public OWLOntologyManager getOWLOntologyManager() {
         return manager;
     }

@@ -228,23 +228,7 @@ public class OWLEditorKit implements EditorKit {
 
 
     public void close() {
-        try {
-            saveOntologyLibraries();
-            if (!getOWLModelManager().getDirtyOntologies().isEmpty()) {
-                // Ask user if they want to save?
-                int ret = JOptionPane.showConfirmDialog(getWorkspace(),
-                                                        "Save modified ontologies?",
-                                                        "Unsaved ontologies",
-                                                        JOptionPane.YES_NO_OPTION,
-                                                        JOptionPane.WARNING_MESSAGE);
-                if (ret == JOptionPane.YES_OPTION) {
-                    handleSave();
-                }
-            }
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
+        saveOntologyLibraries();
     }
 
     private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
