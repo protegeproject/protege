@@ -1,5 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ import java.util.Map;
  */
 public class WorkspaceManager {
 
+    private static final Logger logger = Logger.getLogger(WorkspaceManager.class);
 
     private Map<Workspace, WorkspaceFrame> workspaceFrameMap;
 
@@ -50,16 +52,40 @@ public class WorkspaceManager {
 
 
     public boolean doClose(Workspace workspace) {
-        int ret = JOptionPane.showConfirmDialog(ProtegeManager.getInstance().getFrame(workspace),
-                                                "Close the current set of ontologies?",
-                                                "Close?",
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.WARNING_MESSAGE);
-        if (ret == JOptionPane.YES_OPTION) {
+        boolean close = false;
+        if (workspace.getEditorKit().getModelManager().isDirty()) {
+            // Ask user if they want to save?
+            int ret = JOptionPane.showConfirmDialog(workspace,
+                                                    "Save modified ontologies?",
+                                                    "Unsaved ontologies",
+                                                    JOptionPane.YES_NO_CANCEL_OPTION,
+                                                    JOptionPane.WARNING_MESSAGE);
+            if (ret == JOptionPane.YES_OPTION) {
+                try {
+                    workspace.getEditorKit().handleSave();
+                    close = true;
+                }
+                catch (Exception e) {
+                    logger.error(e);
+                }
+            }
+            else if (ret == JOptionPane.NO_OPTION){
+                close = true;
+            }
+        }
+        else{
+            close = (JOptionPane.showConfirmDialog(ProtegeManager.getInstance().getFrame(workspace),
+                                                  "Close the current set of ontologies?",
+                                                  "Close?",
+                                                  JOptionPane.YES_NO_OPTION,
+                                                  JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION);
+        }
+
+        if (close) {
             ProtegeManager.getInstance().disposeOfEditorKit(workspace.getEditorKit());
         }
 
-        return ret == JOptionPane.YES_OPTION;
+        return close;
     }
 
 

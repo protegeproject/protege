@@ -51,4 +51,7 @@ public interface ModelManager {
 
 
     public void fireModelManagerEvent(ModelManagerEvent event);
+
+
+    public boolean isDirty();
 }
