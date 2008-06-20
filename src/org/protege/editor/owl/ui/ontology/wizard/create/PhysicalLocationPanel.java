@@ -1,28 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -32,6 +9,19 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ProtegeOWL;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -56,6 +46,14 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
     private File locationBase;
 
     private JList recentLocations;
+
+    private ListSelectionListener listSelectionListener = new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                setBaseFromRecentLocationList();
+            }
+        }
+    };
 
 
     public PhysicalLocationPanel(EditorKit editorKit) {
@@ -89,14 +87,8 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         holder.add(button);
         parent.add(holder, BorderLayout.SOUTH);
         parent.add(locationPanel, BorderLayout.NORTH);
+
         recentLocations = new JList(new DefaultListModel());
-        recentLocations.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    setBaseFromRecentLocationList();
-                }
-            }
-        });
         JPanel recentLocationsPanel = new JPanel(new BorderLayout(3, 3));
         recentLocationsPanel.add(new JLabel("RecentLocations"), BorderLayout.NORTH);
         recentLocationsPanel.add(ComponentFactory.createScrollPane(recentLocations));
@@ -165,7 +157,15 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public void displayingPanel() {
         updateLocationField();
+        recentLocations.addListSelectionListener(listSelectionListener);
         locationField.requestFocus();
+    }
+
+
+    public void aboutToHidePanel() {
+        super.aboutToHidePanel();
+        // remove listener otherwise a selection event is called when the component is hidden
+        recentLocations.removeListSelectionListener(listSelectionListener);
     }
 
 
