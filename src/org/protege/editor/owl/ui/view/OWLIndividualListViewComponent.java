@@ -41,7 +41,7 @@ public class OWLIndividualListViewComponent extends
 	private ChangeListenerMediator changeListenerMediator;
 	private Set<OWLIndividual> individualsInList;
 	private OWLModelManagerListener modelManagerListener;
-	private int selectionMode = ListSelectionModel.SINGLE_SELECTION;
+	private int selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 
 	@Override
 	public void initialiseIndividualsView() throws Exception {
