@@ -1,19 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.CollectionFactory;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.util.CollectionFactory;
 
 
 /**
@@ -66,6 +60,6 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
 
 
     public String getTooltip() {
-        return "Inherited from " + getRootObject();
+        return "Inherited from " + getOWLModelManager().getOWLObjectRenderer().render(getRootObject(), getOWLModelManager().getOWLEntityRenderer());
     }
 }
