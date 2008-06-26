@@ -41,11 +41,32 @@ public class OWLLinkedObjectTree extends JTree implements LinkedObjectComponent 
 
     private OWLObject linkedObject;
 
+    private boolean drawNodeSeperators = false;
+
 
     public OWLLinkedObjectTree(OWLEditorKit eKit) {
+        setCellRenderer(new OWLObjectTreeCellRenderer(eKit));
+        setRowHeight(-1); // gets the height from the renderer - used for wrapped objects        
         LinkedObjectComponentMediator mediator = new LinkedObjectComponentMediator(eKit, this);
     }
 
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (drawNodeSeperators){
+            Color oldColor = g.getColor();
+            g.setColor(Color.LIGHT_GRAY);
+            for (int i = 0; i < getRowCount(); i++) {
+                Rectangle rowBounds = getRowBounds(i);
+                if (g.getClipBounds().intersects(rowBounds)) {
+                    if (getPathForRow(i).getPathCount() == 2) {
+                        g.drawLine(0, rowBounds.y, getWidth(), rowBounds.y);
+                    }
+                }
+            }
+            g.setColor(oldColor);
+        }
+    }
 
     public JComponent getComponent() {
         return this;
@@ -89,4 +110,8 @@ public class OWLLinkedObjectTree extends JTree implements LinkedObjectComponent 
         linkedObject = object;
     }
 
+
+    public void setDrawNodeSeperators(boolean drawNodeSeperators) {
+        this.drawNodeSeperators = drawNodeSeperators;
+    }
 }

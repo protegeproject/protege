@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.tree;
 
-import java.awt.Component;
-
-import javax.swing.JComponent;
-import javax.swing.JTree;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -21,26 +18,22 @@ import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
  */
 public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
 
-    private OWLCellRenderer delegate;
+//    private OWLCellRenderer delegate;
 
 
     public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
-        delegate = new OWLCellRenderer(owlEditorKit);
+//        delegate = new OWLCellRenderer(owlEditorKit);
     }
 
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
-        OWLObjectTreeNode node = (OWLObjectTreeNode) value;
-        delegate.setEquivalentObjects(node.getEquivalentObjects());
-        return delegate.getTreeCellRendererComponent(tree, node.getOWLObject(), selected, expanded, leaf, row, hasFocus);
-//        return (JComponent) super.getTreeCellRendererComponent(tree,
-//                                                               node.getOWLObject(),
-//                                                               selected,
-//                                                               expanded,
-//                                                               leaf,
-//                                                               row,
-//                                                               hasFocus);
+        if (value instanceof OWLObjectTreeNode){
+            OWLObjectTreeNode node = (OWLObjectTreeNode) value;
+            setEquivalentObjects(node.getEquivalentObjects());
+            value = node.getOWLObject();
+        }
+        return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
 }
