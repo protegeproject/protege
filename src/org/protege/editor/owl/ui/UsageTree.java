@@ -28,7 +28,6 @@ public class UsageTree extends OWLLinkedObjectTree {
         super(owlEditorKit);
         this.owlEditorKit = owlEditorKit;
         setCellRenderer(new UsageTreeCellRenderer(owlEditorKit));
-        setRowHeight(-1);
     }
 
 
