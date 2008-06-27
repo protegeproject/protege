@@ -184,7 +184,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
 
     protected Object getValueToRender(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (value instanceof AbstractOWLFrameSectionRow) {
-            ((AbstractOWLFrameSectionRow) value).getRendering();
+            value = ((AbstractOWLFrameSectionRow) value).getRendering();
         }
         return value;
     }
