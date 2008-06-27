@@ -783,7 +783,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 return rendering;
             }
             else {
-                logger.warn("Could not find rendering in cache for: " + object);
                 return getOWLEntityRenderer().render((OWLEntity) object);
             }
         }
