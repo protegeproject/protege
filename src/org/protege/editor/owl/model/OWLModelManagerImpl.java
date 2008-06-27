@@ -7,6 +7,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
+import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.LabelledOWLEntityFactory;
@@ -96,6 +97,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
+    /**
+     * P4 repeatedly asks for the same rendering multiple times in a row
+     * because of the components listening to mouse events etc so cache a
+     * small number of objects we have just rendered
+     */
+    private OWLObjectRenderingCache owlObjectRenderingCache;
+
     private EntityFinder entityFinder;
 
     private OWLObjectHierarchyProvider<OWLClass> assertedClassHierarchyProvider;
@@ -165,6 +173,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
+        owlObjectRenderingCache = new OWLObjectRenderingCache(this);
 
         activeOntologies = new HashSet<OWLOntology>();
 
@@ -201,6 +210,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
         // Empty caches
         owlEntityRenderingCache.dispose();
+        owlObjectRenderingCache.dispose();
 
         owlReasonerManager.dispose();
         // Name and shame plugins that do not (or can't be bothered to) clean up
@@ -777,12 +787,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 return getOWLEntityRenderer().render((OWLEntity) object);
             }
         }
-        return getOWLObjectRenderer().render(object, getOWLEntityRenderer());
+
+        return owlObjectRenderingCache.getRendering(object, getOWLObjectRenderer());
     }
 
 
     public void renderingChanged(OWLEntity entity, final OWLEntityRenderer renderer) {
         owlEntityRenderingCache.updateRendering(entity);
+        owlObjectRenderingCache.clear();
         // We should inform listeners
         for (OWLModelManagerListener listener : new ArrayList<OWLModelManagerListener>(modelManagerChangeListeners)) {
             listener.handleChange(new OWLModelManagerChangeEvent(this, EventType.ENTITY_RENDERING_CHANGED));
@@ -974,6 +986,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         logger.info("Rebuilding entity indices...");
         long t0 = System.currentTimeMillis();
         owlEntityRenderingCache.rebuild();
+        owlObjectRenderingCache.clear();
         logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
     }
 
