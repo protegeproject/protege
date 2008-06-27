@@ -91,7 +91,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         List<URI> annotURIs = null;
         String selectedClassName = null;
         if (ren instanceof OWLEntityAnnotationValueRenderer){
-            selectedClassName = ren.render(selectedClass);
+            selectedClassName = getOWLModelManager().getRendering(selectedClass);
             annotURIs = OWLRendererPreferences.getInstance().getAnnotationURIs();
         }
 

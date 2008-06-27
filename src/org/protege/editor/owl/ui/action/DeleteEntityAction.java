@@ -1,22 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import java.util.Set;
-
-import javax.swing.JOptionPane;
-
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLDeclarationAxiom;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityRemover;
+
+import javax.swing.*;
+import java.util.Set;
 
 
 /**
@@ -58,7 +48,7 @@ public class DeleteEntityAction extends SelectedOWLEntityAction {
 
 
     private int showConfirmationDialog() {
-        String rendering = getOWLModelManager().getOWLEntityRenderer().render(getSelectedEntity());
+        String rendering = getOWLModelManager().getRendering(getSelectedEntity());
         return JOptionPane.showConfirmDialog(getOWLWorkspace(),
                                              "Delete " + rendering + "?",
                                              "Really delete?",
@@ -68,7 +58,7 @@ public class DeleteEntityAction extends SelectedOWLEntityAction {
 
 
     private int showUsageConfirmationDialog() {
-        String rendering = getOWLModelManager().getOWLEntityRenderer().render(getSelectedEntity());
+        String rendering = getOWLModelManager().getRendering(getSelectedEntity());
         Object [] OPTIONS = {"Delete", "View usage", "Cancel"};
         return JOptionPane.showOptionDialog(getOWLWorkspace(),
                                             rendering + " is used throught the loaded ontologies.  Delete anyway?",

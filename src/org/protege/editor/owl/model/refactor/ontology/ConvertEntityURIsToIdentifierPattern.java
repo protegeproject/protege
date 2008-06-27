@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import java.net.URI;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.net.URI;
+import java.util.Set;
 
 
 /**
@@ -66,6 +66,6 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     private URI getNextURI(OWLEntity entity) {
         count++;
-        return URI.create("http://www.co-ode.org/test#Entity" + owlModelManager.getOWLEntityRenderer().render(entity).hashCode());
+        return URI.create("http://www.co-ode.org/test#Entity" + owlModelManager.getRendering(entity).hashCode());
     }
 }
