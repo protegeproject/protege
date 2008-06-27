@@ -52,7 +52,7 @@ public class UsageTreeModel extends DefaultTreeModel {
     }
 
     private static String getRootContent(OWLModelManager mngr, OWLEntity entity){
-        return entity != null ? "Usage for: " + mngr.getOWLEntityRenderer().render(entity) : "Usage for:";
+        return entity != null ? "Usage for: " + mngr.getRendering(entity) : "Usage for:";
     }
 
     public void setOWLEntity(OWLEntity owlEntity) {

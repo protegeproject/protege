@@ -1,22 +1,16 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.util.OWLEntityRemover;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -54,7 +48,7 @@ public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OW
         Set<E> selents = getSelectedEntities();
         String name;
         if (selents.size() == 1) {
-            name = owlEditorKit.getOWLModelManager().getOWLEntityRenderer().render(selents.iterator().next());
+            name = owlEditorKit.getOWLModelManager().getRendering(selents.iterator().next());
         }
         else {
             name = getPluralDescription();

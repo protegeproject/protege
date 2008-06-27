@@ -1,20 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.BorderLayout;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -56,7 +51,7 @@ public class OWLObjectHierarchyDeleter<E extends OWLEntity> {
         Set<E> selents = entitySetProvider.getEntities();
         String name;
         if (selents.size() == 1) {
-            name = owlEditorKit.getOWLModelManager().getOWLEntityRenderer().render(selents.iterator().next());
+            name = owlEditorKit.getOWLModelManager().getRendering(selents.iterator().next());
         }
         else {
             name = pluralName;

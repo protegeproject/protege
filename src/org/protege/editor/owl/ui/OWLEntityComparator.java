@@ -1,10 +1,9 @@
 package org.protege.editor.owl.ui;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owl.model.OWLEntity;
+
+import java.util.Comparator;
 
 
 /**
@@ -27,9 +26,7 @@ public class OWLEntityComparator<E extends OWLEntity> implements Comparator<E> {
     }
 
 
-    //public int compare(OWLEntity o1, OWLEntity o2) {
     public int compare(E o1, E o2) {
-        OWLEntityRenderer renderer = owlModelManager.getOWLEntityRenderer();
-        return renderer.render(o1).compareToIgnoreCase(renderer.render(o2));
+        return owlModelManager.getRendering(o1).compareToIgnoreCase(owlModelManager.getRendering(o2));
     }
 }
