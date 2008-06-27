@@ -427,22 +427,23 @@ public class OWLFrameList2<R extends Object> extends MList implements
                 }
             }
         });
+
         Object rootObject = null;
+
         if (frameObject instanceof OWLFrameSectionRow) {
-            rootObject = ((OWLFrameSectionRow) frameObject).getFrameSection()
-                    .getRootObject();
-        } else if (frameObject instanceof OWLFrameSection) {
+            rootObject = ((OWLFrameSectionRow) frameObject).getFrameSection().getRootObject();
+        }
+        else if (frameObject instanceof OWLFrameSection) {
             rootObject = ((OWLFrameSection) frameObject).getRootObject();
         }
+
         if (rootObject instanceof OWLObject) {
-            dlg.setTitle(editorKit.getOWLModelManager()
-                    .getOWLObjectRenderer().render(
-                    (OWLObject) rootObject,
-                    editorKit.getOWLModelManager()
-                            .getOWLEntityRenderer()));
-        } else if (rootObject != null) {
+            dlg.setTitle(editorKit.getOWLModelManager().getRendering((OWLObject)rootObject));
+        }
+        else if (rootObject != null) {
             dlg.setTitle(rootObject.toString());
         }
+        
         dlg.setVisible(true);
     }
 

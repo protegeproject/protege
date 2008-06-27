@@ -33,8 +33,6 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     private StringBuilder buffer;
 
-    private OWLEntityRenderer entityRenderer;
-
     private BracketWriter bracketWriter;
 
     private Map<OWLRestrictedDataRangeFacetVocabulary, String> facetMap;
@@ -44,6 +42,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     private OWLObject focusedObject;
 
     private SimpleURIShortFormProvider sfp;
+
 
     public OWLObjectRendererImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -138,7 +137,6 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
      */
     public String render(OWLObject object, OWLEntityRenderer entityRenderer) {
         reset();
-        this.entityRenderer = entityRenderer;
         try {
             object.accept(this);
             return buffer.toString();

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.transfer;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owl.model.OWLObject;
 
 import java.awt.datatransfer.DataFlavor;
@@ -48,8 +47,7 @@ public class TransferableOWLObject implements Transferable {
             public Object getTransferData() {
                 StringBuilder builder = new StringBuilder();
                 for (OWLObject obj : owlObjects) {
-                    OWLEntityRenderer ren = owlModelManager.getOWLEntityRenderer();
-                    builder.append(owlModelManager.getOWLObjectRenderer().render(obj, ren));
+                    builder.append(owlModelManager.getRendering(obj));
                     builder.append("\n");
                 }
                 return builder.toString();

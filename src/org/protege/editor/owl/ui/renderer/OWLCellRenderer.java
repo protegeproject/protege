@@ -508,12 +508,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     protected String getRendering(Object object) {
         if (object instanceof OWLObject) {
-            String rendering = getOWLModelManager().getOWLObjectRenderer().render(((OWLObject) object),
-                    getOWLModelManager().getOWLEntityRenderer());
+            String rendering = getOWLModelManager().getRendering(((OWLObject) object));
             for (OWLObject eqObj : equivalentObjects) {
                 // Add in the equivalent class symbol
-                rendering += " \u2261 " + getOWLModelManager().getOWLObjectRenderer().render(eqObj,
-                        getOWLModelManager().getOWLEntityRenderer());
+                rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);
             }
             return rendering;
         }

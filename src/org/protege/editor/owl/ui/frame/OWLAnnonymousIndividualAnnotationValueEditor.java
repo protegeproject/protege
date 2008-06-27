@@ -92,8 +92,7 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
         if (object != null) {
             mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
-            annotationValueLabel.setText(editorKit.getOWLModelManager().getOWLObjectRenderer().render((OWLIndividual) object,
-                                                                                                      editorKit.getOWLModelManager().getOWLEntityRenderer()));
+            annotationValueLabel.setText(editorKit.getOWLModelManager().getRendering((OWLIndividual) object));
         }
         else {
             annotationValueLabel.setIcon(null);

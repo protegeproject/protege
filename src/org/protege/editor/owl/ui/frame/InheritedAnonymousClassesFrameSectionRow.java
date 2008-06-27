@@ -60,6 +60,6 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
 
 
     public String getTooltip() {
-        return "Inherited from " + getOWLModelManager().getOWLObjectRenderer().render(getRootObject(), getOWLModelManager().getOWLEntityRenderer());
+        return "Inherited from " + getOWLModelManager().getRendering(getRootObject());
     }
 }

@@ -138,8 +138,8 @@ public class ExpressionEditor<O> extends JTextPane
             setText("");
         }
         else if (desc instanceof OWLObject) {
-            OWLModelManager man = getOWLEditorKit().getOWLModelManager();
-            String rendering = man.getOWLObjectRenderer().render((OWLObject) desc, man.getOWLEntityRenderer());
+            OWLModelManager mngr = getOWLEditorKit().getOWLModelManager();
+            String rendering = mngr.getRendering((OWLObject) desc);
             setText(rendering);
         }
         else {

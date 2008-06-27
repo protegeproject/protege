@@ -1,10 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -12,13 +8,12 @@ import org.protege.editor.owl.model.selection.FilteringOWLSelectionModelListener
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
-import org.protege.editor.core.ui.RefreshableComponent;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
+
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -212,17 +207,15 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
     protected void updateHeader(OWLObject object) {
         // Set the label in the header to reflect the entity that the view
         // is displaying
-        String label = "";
         if (object != null) {
-            label += getOWLModelManager().getOWLObjectRenderer().render(object,
-                                                                        getOWLModelManager().getOWLEntityRenderer());
             updateRegisteredActions();
+            getView().setHeaderText(getOWLModelManager().getRendering(object));
         }
         else {
             // Not displaying an entity, so disable all actions
             disableRegisteredActions();
+            getView().setHeaderText("");
         }
-        getView().setHeaderText(label);
     }
 
 
