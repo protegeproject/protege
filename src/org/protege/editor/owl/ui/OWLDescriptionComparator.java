@@ -1,30 +1,9 @@
 package org.protege.editor.owl.ui;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataAllRestriction;
-import org.semanticweb.owl.model.OWLDataExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataSomeRestriction;
-import org.semanticweb.owl.model.OWLDataValueRestriction;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLDescriptionVisitor;
-import org.semanticweb.owl.model.OWLObjectAllRestriction;
-import org.semanticweb.owl.model.OWLObjectComplementOf;
-import org.semanticweb.owl.model.OWLObjectExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectIntersectionOf;
-import org.semanticweb.owl.model.OWLObjectMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectOneOf;
-import org.semanticweb.owl.model.OWLObjectSelfRestriction;
-import org.semanticweb.owl.model.OWLObjectSomeRestriction;
-import org.semanticweb.owl.model.OWLObjectUnionOf;
-import org.semanticweb.owl.model.OWLObjectValueRestriction;
+import org.semanticweb.owl.model.*;
+
+import java.util.Comparator;
 
 
 /**
@@ -79,9 +58,7 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
             return diff;
         }
         if (owlModelManager != null) {
-            OWLObjectRenderer renderer = owlModelManager.getOWLObjectRenderer();
-            OWLEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
-            return renderer.render(o1, entityRenderer).compareTo(renderer.render(o2, entityRenderer));
+            return owlModelManager.getRendering(o1).compareToIgnoreCase(owlModelManager.getRendering(o2));
         }
         return -1;
     }

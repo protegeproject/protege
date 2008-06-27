@@ -135,7 +135,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private Set<OWLOntology> activeOntologies;
 
-    private Set<OntologySelectionStrategy> ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
+    private Set<OntologySelectionStrategy> ontSelectionStrategies;
 
     private OntologySelectionStrategy activeOntologiesStrategy;
 
@@ -153,6 +153,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         dirtyOntologies = new HashSet<OWLOntology>();
         ontologyRootFolders = new HashSet<File>();
         automappedLibraries = new HashSet<OntologyLibrary>();
+        ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
 
         missingImportHandler = new MissingImportHandlerImpl();
         resolvedMissingImports = new HashMap<URI, URI>();

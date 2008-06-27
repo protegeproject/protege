@@ -1,21 +1,12 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -70,8 +61,7 @@ public class OWLAnnotationRenderer extends JPanel implements ListCellRenderer {
                 ren = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
             }
             annotationURILabel.setText(ren);
-            String val = owlEditorKit.getOWLModelManager().getOWLObjectRenderer().render(anno.getAnnotationValue(),
-                                                                                         owlEditorKit.getOWLModelManager().getOWLEntityRenderer());
+            String val = owlEditorKit.getOWLModelManager().getRendering(anno.getAnnotationValue());
             annotationContentArea.setText(val);
             if (isSelected) {
                 annotationContentArea.setForeground(list.getSelectionForeground());

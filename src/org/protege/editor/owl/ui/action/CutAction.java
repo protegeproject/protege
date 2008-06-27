@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.util.List;
-
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.Cuttable;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owl.model.OWLObject;
+
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 
 /**
@@ -43,8 +43,7 @@ public class CutAction extends FocusedComponentAction<Cuttable> {
 
         StringBuilder buffer = new StringBuilder();
         for (OWLObject owlObject : objects) {
-            buffer.append(getOWLModelManager().getOWLObjectRenderer().render(owlObject,
-                                                                             getOWLModelManager().getOWLEntityRenderer()));
+            buffer.append(getOWLModelManager().getRendering(owlObject));
             buffer.append("\n");
         }
         StringSelection stringSelection = new StringSelection(buffer.toString().trim());

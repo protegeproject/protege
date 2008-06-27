@@ -1,29 +1,5 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import java.awt.BorderLayout;
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
@@ -32,6 +8,14 @@ import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -371,8 +355,8 @@ public class OWLDescriptionAutoCompleter {
 
     private String getInsertText(Object o) {
         if (o instanceof OWLObject) {
-            OWLModelManager owlModelManager = owlEditorKit.getOWLModelManager();
-            return owlModelManager.getOWLObjectRenderer().render((OWLObject) o, owlModelManager.getOWLEntityRenderer());
+            OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+            return mngr.getRendering((OWLObject) o);
         }
         else {
             return o.toString();

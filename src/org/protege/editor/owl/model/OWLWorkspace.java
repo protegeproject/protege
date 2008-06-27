@@ -391,7 +391,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(mngr));
         orderedOntologies.addAll(mngr.getOntologies());
         for (final OWLOntology ont : orderedOntologies){
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(mngr.getOWLObjectRenderer().render(ont, mngr.getOWLEntityRenderer()));
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(mngr.getRendering(ont));
             item.setSelected(ont.equals(mngr.getActiveOntology()));
             item.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent event) {
@@ -544,7 +544,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         }
 
-        String ontURI = mngr.getOWLObjectRenderer().render(activeOntology, mngr.getOWLEntityRenderer());
+        String ontURI = mngr.getRendering(activeOntology);
         return ontURI + " - [" + location + "]";
     }
 
