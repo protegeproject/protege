@@ -1,31 +1,12 @@
 package org.protege.editor.core.ui.list;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
 
 
 /**
@@ -83,8 +64,15 @@ public class MList extends JList {
             }
         });
         addMouseMotionListener(new MouseMotionAdapter() {
+            public int lastIndex = 0;
+
             public void mouseMoved(MouseEvent e) {
-                repaint();
+                // more efficient than repainting the whole component every time the mouse moves
+                Point pt = getMousePosition();
+                int index = locationToIndex(pt);
+                // only repaint all the cells the mouse has moved over
+                repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
+                lastIndex = index;
             }
         });
         addMouseListener(new MouseAdapter() {
@@ -92,10 +80,14 @@ public class MList extends JList {
                 mouseDown = true;
             }
 
-
             public void mouseReleased(MouseEvent e) {
                 handleMouseClick(e);
                 mouseDown = false;
+            }
+
+            public void mouseExited(MouseEvent event) {
+                // leave the component cleanly
+                repaint();
             }
         });
         setFixedCellHeight(-1);
@@ -423,65 +415,70 @@ public class MList extends JList {
         return button.getBackground();
     }
 
-//    public static class TestItem implements MListItem {
-//
-//        private String s;
-//
-//
-//        public TestItem(String s) {
-//            this.s = s;
-//        }
-//
-//
-//        public String toString() {
-//            return s;
-//        }
-//
-//
-//        public boolean isEditable() {
-//            return true;
-//        }
-//
-//
-//        public void handleEdit() {
-//        }
-//
-//
-//        public boolean isDeleteable() {
-//            return true;
-//        }
-//
-//
-//        public boolean handleDelete() {
-//            return false;
-//        }
-//    }
-//
-//
-//    public static class TestHeader implements MListSectionHeader {
-//
-//        public String getName() {
-//            return "This is a test section";
-//        }
-//
-//
-//        public boolean canAdd() {
-//            return true;
-//        }
-//
-//
-//        public void handleAdd() {
-//        }
-//    }
-//
-//
-//    public static void main(String[] args) {
-//        MList list = new MList();
-//        JFrame frame = new JFrame();
-//        frame.setContentPane(list);
-//        frame.setVisible(true);
-//
-//        list.setListData(new Object []{new TestHeader(), new TestItem("A"), new TestItem("B"), new TestHeader(), new TestItem(
-//                "C"), "NOT MLI"});
-//    }
+    public static class TestItem implements MListItem {
+
+        private String s;
+
+
+        public TestItem(String s) {
+            this.s = s;
+        }
+
+
+        public String toString() {
+            return s;
+        }
+
+
+        public boolean isEditable() {
+            return true;
+        }
+
+
+        public void handleEdit() {
+        }
+
+
+        public boolean isDeleteable() {
+            return true;
+        }
+
+
+        public boolean handleDelete() {
+            return false;
+        }
+
+
+        public String getTooltip() {
+            return "tooltip";
+        }
+    }
+
+
+    public static class TestHeader implements MListSectionHeader {
+
+        public String getName() {
+            return "This is a test section";
+        }
+
+
+        public boolean canAdd() {
+            return true;
+        }
+
+
+        public void handleAdd() {
+        }
+    }
+
+
+    public static void main(String[] args) {
+        MList list = new MList();
+        JFrame frame = new JFrame();
+        frame.setContentPane(list);
+        frame.setVisible(true);
+
+        list.setListData(new Object []{new TestHeader(), new TestItem("A"), new TestItem("B"), new TestHeader(), new TestItem(
+                "C"), "NOT MLI"});
+    }
 }
