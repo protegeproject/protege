@@ -133,7 +133,9 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         return "exactly";
     }
 
-
+    /* @@TODO tidy this up - entity renderer is never used in favour of the
+     * model manager rendering (as this uses the cache).
+     */
     public String render(OWLObject object, OWLEntityRenderer entityRenderer) {
         reset();
         this.entityRenderer = entityRenderer;

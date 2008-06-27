@@ -48,6 +48,8 @@ public class OWLRendererPreferences {
 
     public static final String DEFAULT_FONT_NAME = "Dialog";
 
+    public static final String ANY_LANGUAGE = "!";
+
     private static OWLRendererPreferences instance;
 
     private boolean renderHyperlinks;
@@ -75,6 +77,7 @@ public class OWLRendererPreferences {
     private List<URI> annotationURIS;
 
     private Map<URI, List<String>> annotationLanguages;
+
 
 
     public Font getFont() {
@@ -122,6 +125,9 @@ public class OWLRendererPreferences {
             final List<String> langs = langMap.get(uri);
             if (langs != null){
                 for (String lang : langs) {
+                    if (lang == null){
+                        lang = ANY_LANGUAGE;
+                    }
                     str.append(", ").append(lang);
                 }
             }
@@ -203,7 +209,11 @@ public class OWLRendererPreferences {
                     URI uri = new URI(tokens[0].trim());
                     List<String> langs = new ArrayList<String>();
                     for (int i=1; i<tokens.length; i++){
-                        langs.add(tokens[i].trim());
+                        String token = tokens[i].trim();
+                        if (token.equals(ANY_LANGUAGE)){
+                            token = null; // OWL API treats this as "no language set"
+                        }
+                        langs.add(token);
                     }
                     annotationURIS.add(uri);
                     annotationLanguages.put(uri, langs);
