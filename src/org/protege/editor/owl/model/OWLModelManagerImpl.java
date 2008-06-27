@@ -167,12 +167,15 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         activeOntologies = new HashSet<OWLOntology>();
 
+        // force the renderer to be created
+        // to prevent double cache rebuild once ontologies loaded
+        getOWLEntityRenderer();
+
         registerOntologySelectionStrategy(new ActiveOntologySelectionStrategy(this));
         registerOntologySelectionStrategy(new AllLoadedOntologiesSelectionStrategy(this));
         registerOntologySelectionStrategy(activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this));
 
-        XMLWriterPreferences.getInstance().setUseNamespaceEntities(
-                XMLWriterPrefs.getInstance().isUseEntities());
+        XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
     }
 
 
