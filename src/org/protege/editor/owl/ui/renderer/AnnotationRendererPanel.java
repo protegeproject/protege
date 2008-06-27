@@ -85,6 +85,7 @@ public class AnnotationRendererPanel extends JPanel {
 
     };
 
+
     public AnnotationRendererPanel(OWLEditorKit owlEditorKit) {
 
         this.eKit = owlEditorKit;
@@ -112,7 +113,7 @@ public class AnnotationRendererPanel extends JPanel {
             }
         });
         model.addColumn("Annotation URI");
-        model.addColumn("Languages (comma separated in order of preference)");
+        model.addColumn("Languages (comma separated in order of preference, ! for none)");
         load();
 
         table = new JTable(model);
@@ -153,6 +154,9 @@ public class AnnotationRendererPanel extends JPanel {
                 if (langsAsString.length() != 0) {
                     langsAsString.append(", ");
                 }
+                if (lang == null){
+                    lang = OWLRendererPreferences.ANY_LANGUAGE;
+                }
                 langsAsString.append(lang);
             }
             if (langsAsString.length() > 1){
@@ -172,7 +176,11 @@ public class AnnotationRendererPanel extends JPanel {
                 if (langsAsString != null){
                     java.util.List<String> langs = new ArrayList<String>();
                     for (String token : langsAsString.split(",")){
-                        langs.add(token.trim());
+                        token = token.trim();
+                        if (token.equals(OWLRendererPreferences.ANY_LANGUAGE)){
+                            token = null; // OWL API treats this as "no language"
+                        }
+                        langs.add(token);
                     }
                     langMap.put(uri, langs);
                 }
