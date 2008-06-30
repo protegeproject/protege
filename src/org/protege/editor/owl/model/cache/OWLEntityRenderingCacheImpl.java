@@ -56,21 +56,21 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         owlModelManager.addOntologyChangeListener(listener);
     }
 
-
     private void processChanges(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange change : changes) {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
                 for (OWLEntity ent : chg.getEntities()) {
-                    boolean added = false;
+                    boolean updateRendering = false;
                     for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
                         if (ont.containsEntityReference(ent)) {
-                            addRendering(ent);
-                            added = true;
+                            updateRendering = true;
+                            break;
                         }
                     }
-                    if (!added) {
-                        removeRendering(ent);
+                    removeRendering(ent); // always remove the old rendering
+                    if (updateRendering) {
+                        addRendering(ent);
                     }
                 }
             }
@@ -223,19 +223,28 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
 
     public void removeRendering(OWLEntity owlEntity) {
+        final String oldRendering = entityRenderingMap.get(owlEntity);
+        entityRenderingMap.remove(owlEntity);
+
         owlEntity.accept(new OWLEntityVisitor() {
+
+            public void visit(OWLClass entity) {
+                owlClassMap.remove(oldRendering);
+            }
+
+
             public void visit(OWLDataProperty entity) {
-                owlDataPropertyMap.remove(owlModelManager.getOWLEntityRenderer().render(entity));
+                owlDataPropertyMap.remove(oldRendering);
             }
 
 
             public void visit(OWLObjectProperty entity) {
-                owlObjectPropertyMap.remove(owlModelManager.getOWLEntityRenderer().render(entity));
+                owlObjectPropertyMap.remove(oldRendering);
             }
 
 
             public void visit(OWLIndividual entity) {
-                owlIndividualMap.remove(owlModelManager.getOWLEntityRenderer().render(entity));
+                owlIndividualMap.remove(oldRendering);
             }
 
 
@@ -245,56 +254,13 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
             public void visit(OWLDataType dataType) {
             }
-
-
-            public void visit(OWLClass entity) {
-                owlClassMap.remove(owlModelManager.getOWLEntityRenderer().render(entity));
-            }
         });
-        entityRenderingMap.remove(owlEntity);
     }
 
 
     public void updateRendering(final OWLEntity owlEntity) {
-        // Need to update the maps
-        owlEntity.accept(new OWLEntityVisitor() {
-            public void visit(OWLDataProperty entity) {
-
-            }
-
-
-            public void visit(OWLObjectProperty entity) {
-            }
-
-
-            public void visit(OWLClass entity) {
-            }
-
-
-            public void visit(OWLAnonymousIndividual individual) {
-            }
-
-
-            public void visit(OWLIndividual individual) {
-            }
-
-
-            public void visit(OWLDataType dataType) {
-            }
-
-
-            private void update(OWLEntity entity, Map<String, OWLEntity> map) {
-                for (String s : map.keySet()) {
-                    OWLEntity ent = map.get(s);
-                    if (owlEntity.equals(ent)) {
-                        // Remove the original rendering
-                        map.remove(s);
-                        addRendering(entity);
-                        break;
-                    }
-                }
-            }
-        });
+        removeRendering(owlEntity);
+        addRendering(owlEntity);
     }
 
 
