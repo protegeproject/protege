@@ -67,12 +67,18 @@ public class MList extends JList {
             public int lastIndex = 0;
 
             public void mouseMoved(MouseEvent e) {
-                // more efficient than repainting the whole component every time the mouse moves
                 Point pt = getMousePosition();
-                int index = locationToIndex(pt);
-                // only repaint all the cells the mouse has moved over
-                repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
-                lastIndex = index;
+                // more efficient than repainting the whole component every time the mouse moves
+                if (pt != null){
+                    int index = locationToIndex(pt);
+                    // only repaint all the cells the mouse has moved over
+                    repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
+                    lastIndex = index;
+                }
+                else{
+                    repaint();
+                    lastIndex = 0;
+                }
             }
         });
         addMouseListener(new MouseAdapter() {
@@ -282,7 +288,7 @@ public class MList extends JList {
         Object obj = getModel().getElementAt(index);
         List<MListButton> buttons = getButtons(obj);
         Rectangle rowBounds = getCellBounds(index, index);
-        
+
         if (obj instanceof MListSectionHeader) {
             MListSectionHeader section = (MListSectionHeader) obj;
             Rectangle nameBounds = getGraphics().getFontMetrics(SECTION_HEADER_FONT).getStringBounds(section.getName(),
@@ -332,7 +338,7 @@ public class MList extends JList {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         Color oldColor = g.getColor();
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -341,7 +347,7 @@ public class MList extends JList {
         Rectangle clipBound = g.getClipBounds();
         boolean paintedSomeRows = false;
         boolean useQuartz = Boolean.getBoolean(System.getProperty("-Dapple.awt.graphics.UseQuartz"));
-        
+
         for (int index = 0; index < getModel().getSize(); index++) {
             Rectangle rowBounds = getCellBounds(index, index);
             if (!rowBounds.intersects(clipBound)) {
