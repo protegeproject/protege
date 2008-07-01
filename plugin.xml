@@ -594,9 +594,9 @@
 
     <extension id="menu.RemoveLocalDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Remove disjoints for descendant classes..."/>
+        <name value="Remove disjoints for subclasses..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveLocalDisjointAxiomsAction"/>
-        <toolTip value="Removes all of the disjoint axioms that reference descendants of the selected class."/>
+        <toolTip value="Removes all of the disjoint axioms that reference subclasses of the selected class."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-G"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
