@@ -1,11 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.net.URI;
-
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
 import org.semanticweb.owl.model.OWLEntity;
+
+import java.net.URI;
 
 
 /**
@@ -19,14 +18,9 @@ import org.semanticweb.owl.model.OWLEntity;
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
 
-
-    public void setup(OWLModelManager owlModelManager) {
-
-    }
-
-
+    
     public void initialise() {
-
+        // do nothing
     }
 
 
@@ -47,10 +41,14 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
                     return uri.toString();
                 }
             }
-//            return provider.shortForm(entity.getURI());
         }
         catch (Exception e) {
             return "<Error! " + e.getMessage() + ">";
         }
+    }
+
+
+    protected void disposeRenderer() {
+        // do nothing
     }
 }

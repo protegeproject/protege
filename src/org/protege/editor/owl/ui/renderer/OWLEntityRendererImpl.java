@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLEntity;
 
 
@@ -17,6 +16,12 @@ import org.semanticweb.owl.model.OWLEntity;
  * if it exists, and if not, renders the full URI.
  */
 public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
+
+
+    public void initialise() {
+        // do nothing
+    }
+
 
     public String render(OWLEntity entity) {
         try {
@@ -37,10 +42,7 @@ public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
     }
 
 
-    public void setup(OWLModelManager owlModelManager) {
-    }
-
-
-    public void initialise() {
+    protected void disposeRenderer() {
+        // do nothing
     }
 }

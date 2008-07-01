@@ -1,11 +1,14 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
 import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
+import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
+
+import java.net.URI;
+import java.util.List;
 
 
 /**
@@ -17,34 +20,16 @@ import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLEntityAnnotationValueRenderer extends OWLEntityRendererImpl {
+public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer {
 
-    private static final Logger logger = Logger.getLogger(OWLEntityAnnotationValueRenderer.class);
-
-    private OWLModelManager owlModelManager;
 
     private AnnotationValueShortFormProvider provider;
 
 
-    public OWLEntityAnnotationValueRenderer() {
-    }
-
-
-    private void checkForChange(OWLEntity entity) {
-        fireRenderingChanged(entity);
-    }
-
-
-    public void setup(OWLModelManager owlModelManager) {
-        this.owlModelManager = owlModelManager;
-    }
-
-
     public void initialise() {
-        super.initialise();
         provider = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
-                OWLRendererPreferences.getInstance().getAnnotationLangs(),
-                owlModelManager.getOWLOntologyManager());
+                                                        OWLRendererPreferences.getInstance().getAnnotationLangs(),
+                                                        getOWLModelManager().getOWLOntologyManager());
     }
 
 
@@ -64,11 +49,28 @@ public class OWLEntityAnnotationValueRenderer extends OWLEntityRendererImpl {
     }
 
 
-    private String escape(String rendering) {
-        return RenderingEscapeUtils.getEscapedRendering(rendering);
+    protected void processChanges(List<? extends OWLOntologyChange> changes) {
+        final List<URI> uris = provider.getAnnotationURIs();
+        for (OWLOntologyChange change : changes) {
+            if (change.isAxiomChange() && change.getAxiom() instanceof OWLEntityAnnotationAxiom) {
+                OWLEntityAnnotationAxiom axiom = (OWLEntityAnnotationAxiom) change.getAxiom();
+                if (uris.contains(axiom.getAnnotation().getAnnotationURI())){
+                    OWLEntity ent = axiom.getSubject();
+                    // @@TODO we need some way to determine whether the rendering really has changed due to these axioms
+                    // otherwise we're telling a whole load of things to update that don't need to
+                    fireRenderingChanged(ent);
+                }
+            }
+        }
     }
 
 
-    public void disposeRenderer() {
+    protected void disposeRenderer() {
+        // do nothing
+    }
+
+
+    private String escape(String rendering) {
+        return RenderingEscapeUtils.getEscapedRendering(rendering);
     }
 }
