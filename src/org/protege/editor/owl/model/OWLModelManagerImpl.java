@@ -212,6 +212,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.dispose();
         owlObjectRenderingCache.dispose();
 
+        if (entityRenderer != null){
+            entityRenderer.dispose();
+        }
+
         owlReasonerManager.dispose();
         // Name and shame plugins that do not (or can't be bothered to) clean up
         // their listeners!

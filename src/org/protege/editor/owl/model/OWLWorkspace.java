@@ -184,7 +184,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         createActiveOntologyPanel();
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
         reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
-        reselectionEventTypes.add(EventType.ENTITY_RENDERING_CHANGED);
+//        reselectionEventTypes.add(EventType.ENTITY_RENDERING_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
 
