@@ -131,8 +131,13 @@ public class UIHelper {
     public OWLOntology pickOWLOntology() {
         OWLOntologySelectorPanel ontPanel = new OWLOntologySelectorPanel(owlEditorKit);
         ontPanel.setMultipleSelectionEnabled(false);
-        showDialog("Select an ontology", ontPanel);
-        return ontPanel.getSelectedOntology();
+        int ret = showDialog("Select an ontology", ontPanel);
+        if (ret == JOptionPane.OK_OPTION){
+            return ontPanel.getSelectedOntology();
+        }
+        else{
+            return null;
+        }
     }
 
 
