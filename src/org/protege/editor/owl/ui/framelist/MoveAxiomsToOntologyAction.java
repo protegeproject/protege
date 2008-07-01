@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.framelist;
 
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.*;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -36,10 +37,10 @@ import java.util.ArrayList;
  * Bio-Health Informatics Group<br>
  * Date: 18-Dec-2007<br><br>
  */
-public class MoveAxiomsToOntologyAction<R> extends OWLFrameListPopupMenuAction<R> implements OWLOntologyListMenu.OntologySelectedHandler {
+public class MoveAxiomsToOntologyAction<R> extends OWLFrameListPopupMenuAction<R> {
 
     protected String getName() {
-        return "Move axiom to ontology...";
+        return "Move axiom(s) to ontology...";
     }
 
 
@@ -54,29 +55,32 @@ public class MoveAxiomsToOntologyAction<R> extends OWLFrameListPopupMenuAction<R
 
 
     protected void updateState() {
-        for (Object val : getFrameList().getSelectedValues()) {
+        setEnabled(getState());
+    }
+
+
+    private boolean getState() {
+        final Object[] sel = getFrameList().getSelectedValues();
+        boolean isEnabled = sel.length > 0;
+        for (Object val : sel) {
             if (!(val instanceof OWLFrameSectionRow)) {
-                setEnabled(false);
-                return;
+                return false;
             }
             else {
                 if (((OWLFrameSectionRow) val).getOntology() == null) {
-                    setEnabled(false);
-                    return;
+                    return false;
                 }
             }
         }
-        setEnabled(true);
+        return isEnabled;
     }
 
 
     public void actionPerformed(ActionEvent e) {
-        String title = "Select ontology to move to";
-        OWLOntologyListMenu menu = new OWLOntologyListMenu(title,
-                                                           getOWLEditorKit(),
-                                                           getOWLEditorKit().getOWLModelManager().getOntologies(),
-                                                           this);
-        menu.show(getFrameList(), getFrameList().getLastMouseDownPoint().x, getFrameList().getLastMouseDownPoint().y);
+        OWLOntology ont = new UIHelper(getOWLEditorKit()).pickOWLOntology();
+        if (ont != null){
+            moveAxiomsToOntology(ont);
+        }
     }
 
 
