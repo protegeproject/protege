@@ -573,8 +573,8 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension  id="menu.MakeAllIndividualsDistinct"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.MakeAllIndividualsDistinct"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make all individuals distinct..."/>
         <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
         <toolTip value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
@@ -582,21 +582,8 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <!--
-    <extension
-         point="org.protege.editor.core.application.EditorKitMenuAction"
-               id="menu.RemoveAllDisjointAxioms">
-        <name value="Remove all disjoint axioms..."/>
-        <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
-        <toolTip value="Removes all of the disjoint axioms in the active ontology."/>
-        <path value="org.protege.editor.owl.menu.Refactor/SlotD-A"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
-    -->
-
-    <extension
- id="menu.MakePrimitiveSiblingsDisjoint"
-         point="org.protege.editor.core.application.EditorKitMenuAction">
+    <extension id="menu.MakePrimitiveSiblingsDisjoint"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make primitive siblings disjoint"/>
         <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
         <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added             to the current ontology."/>
@@ -605,6 +592,23 @@
         <accelerator value="J"/>
     </extension>
 
+    <extension id="menu.RemoveLocalDisjointAxioms"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Remove disjoints for descendant classes..."/>
+        <class value="org.protege.editor.owl.ui.action.RemoveLocalDisjointAxiomsAction"/>
+        <toolTip value="Removes all of the disjoint axioms that reference descendants of the selected class."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-G"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.RemoveAllDisjointAxioms"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Remove all disjoint axioms..."/>
+        <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
+        <toolTip value="Removes all of the disjoint axioms."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-H"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
 
     <extension id="ui.prefix"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
