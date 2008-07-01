@@ -1,21 +1,7 @@
 package org.protege.editor.owl.ui.tree;
 
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ComponentEvent;
-import java.util.*;
-
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -24,10 +10,18 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
-import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
-import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Enumeration;
+import java.util.Set;
 
 
 /**
@@ -43,17 +37,14 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
     private static final Logger logger = Logger.getLogger(OWLModelManagerTree.class);
 
-
-    private OWLEditorKit owlEditorKit;
-
     private OWLModelManagerListener listener;
 
     private OWLEntityRendererListener rendererListener;
 
+    public OWLModelManagerEntityRenderer currentRenderer = null; // only use to clean up old listeners
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
         super(owlEditorKit, provider);
-        this.owlEditorKit = owlEditorKit;
         setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
         setHighlightKeywords(false);
         setupListener();
@@ -94,7 +85,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects) {
         super(owlEditorKit, provider, rootObjects, new OWLEntityComparator(owlEditorKit.getOWLModelManager()));
-        this.owlEditorKit = owlEditorKit;
         setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
         setHighlightKeywords(false);
         setupListener();
@@ -143,27 +133,41 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         listener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-                    //fireNodeStructureChanged();
-                    invalidate();
-                    getOWLModelManager().getOWLEntityRenderer().addListener(rendererListener);
+                    refreshEntityRenderer();
                 }
             }
         };
         getOWLModelManager().addListener(listener);
         rendererListener = new OWLEntityRendererListener() {
             public void renderingChanged(OWLEntity entity, OWLEntityRenderer renderer) {
-                try {
-                    for (OWLObjectTreeNode<N> node : getNodes(entity)) {
-                        DefaultTreeModel model = (DefaultTreeModel) getModel();
-                        model.nodeStructureChanged(node);
-                    }
-                }
-                catch (ClassCastException e) {
-
-                }
+                handleRenderingChanged(entity);
             }
         };
-        getOWLModelManager().getOWLEntityRenderer().addListener(rendererListener);
+        refreshEntityRenderer();
+    }
+
+
+    private void handleRenderingChanged(OWLEntity entity) {
+        try {
+            for (OWLObjectTreeNode<N> node : getNodes(entity)) {
+                DefaultTreeModel model = (DefaultTreeModel) getModel();
+                model.nodeStructureChanged(node);
+            }
+        }
+        catch (ClassCastException e) {
+
+        }
+    }
+
+
+    private void refreshEntityRenderer() {
+        //fireNodeStructureChanged();
+        invalidate();
+        if (currentRenderer != null){
+            currentRenderer.removeListener(rendererListener);
+        }
+        currentRenderer = getOWLModelManager().getOWLEntityRenderer();
+        currentRenderer.addListener(rendererListener);
     }
 
 
