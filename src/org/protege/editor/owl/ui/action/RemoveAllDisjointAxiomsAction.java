@@ -1,24 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.RemoveAxiom;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
 
 
 /**
@@ -86,6 +77,6 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
 
 
     public void dispose() {
-        getOWLModelManager().addListener(listener);
+        getOWLModelManager().removeListener(listener);
     }
 }
