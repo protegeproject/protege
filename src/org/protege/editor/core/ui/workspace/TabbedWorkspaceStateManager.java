@@ -100,6 +100,7 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
                 tabElement.setAttribute("id", tabId);
                 visibleTabsElement.appendChild(tabElement);
             }
+            // ToDo Can this be done without using jvm internal classes?
             OutputFormat outputFormat = new OutputFormat();
             outputFormat.setIndent(4);
             OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
