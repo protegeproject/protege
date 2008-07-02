@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.hierarchy.roots.Relation;
 import org.protege.editor.owl.model.hierarchy.roots.TerminalElementFinder;
 import org.semanticweb.owl.model.*;
@@ -17,8 +16,6 @@ import java.util.*;
  * Date: 17-Jan-2007<br><br>
  */
 public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyProvider<OWLClass> {
-
-    private static final Logger logger = Logger.getLogger(AssertedClassHierarchyProvider2.class);
 
     private OWLOntologyManager owlOntologyManager;
 
@@ -66,6 +63,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
      */
     public void setOntologies(Set<OWLOntology> ontologies) {
         this.ontologies = new HashSet<OWLOntology>(ontologies);
+        nodesToUpdate.clear();
         if (root == null) {
             root = owlOntologyManager.getOWLDataFactory().getOWLThing();
         }
@@ -108,10 +106,10 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                             registerNodeChanged(root);
                         }
                     }
+                    updateImplicitRoots(change);
                     if (change.getAxiom() instanceof OWLSubClassAxiom
                             || change.getAxiom() instanceof OWLEquivalentClassesAxiom
                             || change.getAxiom() instanceof OWLDeclarationAxiom) {
-                        updateImplicitRoots(change);
                         for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
                             if (entity instanceof OWLClass) {
                                 changedClasses.add((OWLClass) entity);
@@ -152,7 +150,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         if (change.isAxiomChange()) {
             ImplicitUpdatesVisitor visitor = new ImplicitUpdatesVisitor(change instanceof RemoveAxiom);
             Set<OWLClass> oldOrphans = rootFinder.getTerminalElements();
-            change.getAxiom().accept(visitor);
+            visitor.updateImplicitRoots(change.getAxiom());
             if (visitor.isRootChanged()) {
                 registerNodeChanged(root);
                 for (OWLClass orphan : rootFinder.getTerminalElements()) {
@@ -267,30 +265,57 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         return result;
     }
 
-
-    private Set<OWLClass> extractParents(OWLClass cls) {
-        parentClassExtractor.reset();
-        for (OWLOntology ont : ontologies) {
-            for (OWLAxiom ax : ont.getAxioms(cls)) {
-                ax.accept(parentClassExtractor);
-            }
-        }
-        return new HashSet<OWLClass>(parentClassExtractor.getResult());
-    }
+// not used
+//    private Set<OWLClass> extractParents(OWLClass cls) {
+//        parentClassExtractor.reset();
+//        for (OWLOntology ont : ontologies) {
+//            for (OWLAxiom ax : ont.getAxioms(cls)) {
+//                ax.accept(parentClassExtractor);
+//            }
+//        }
+//        return new HashSet<OWLClass>(parentClassExtractor.getResult());
+//    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     private class ImplicitUpdatesVisitor extends OWLAxiomVisitorAdapter {
         private boolean changed = false;
+        private boolean visited = false;
         private boolean remove;
 
         public ImplicitUpdatesVisitor(boolean remove) {
             this.remove = remove;
         }
 
-        @Override
+        public void updateImplicitRoots(OWLAxiom ax){
+            changed = false;
+            visited = false;
+            ax.accept(this);
+            if (!visited){
+                visitOtherAxiom(ax);
+            }
+        }
+
+
+        private void visitOtherAxiom(OWLAxiom ax) {
+            visited = true;
+            if (!remove){
+                for (OWLEntity entity : ax.getReferencedEntities()){
+                    if (entity.isOWLClass() && !rootFinder.getTerminalElements().contains(entity)){
+                        // classes mentioned are candidates - so send them to the rootFinder
+                        rootFinder.appendTerminalElements(Collections.singleton((OWLClass)entity));
+                        if (rootFinder.getTerminalElements().contains(entity)){
+                            changed = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
         public void visit(OWLSubClassAxiom ax) {
+            visited = true;
             if (ax.getSubClass() instanceof OWLClass) {
                 NamedClassExtractor extractor = new NamedClassExtractor();
                 ax.getSuperClass().accept(extractor);
@@ -306,8 +331,9 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             }
         }
 
-        @Override
+
         public void visit(OWLEquivalentClassesAxiom axiom) {
+            visited = true;
             Set<OWLDescription> descriptions = axiom.getDescriptions();
             boolean found = false;
             for (OWLDescription description :  descriptions) {
@@ -328,8 +354,9 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             rootFinder.findTerminalElements(orphanCandidates);
         }
 
-        @Override
+
         public void visit(OWLDeclarationAxiom axiom) {
+            visited = true;
             if (axiom.getEntity() instanceof OWLClass) {
                 OWLClass cls = (OWLClass) axiom.getEntity();
                 if (remove && !containsReference(cls)) {
@@ -361,6 +388,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             }
         }
     }
+
 
 
     private class ParentClassExtractor extends OWLAxiomVisitorAdapter {
