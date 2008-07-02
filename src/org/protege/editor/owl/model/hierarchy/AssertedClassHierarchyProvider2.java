@@ -136,9 +136,6 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
     private void registerNodeChanged(OWLClass node) {
-        if (nodesToUpdate.contains(node)){
-            System.out.println("already updating " + node);
-        }
         nodesToUpdate.add(node);
     }
 
