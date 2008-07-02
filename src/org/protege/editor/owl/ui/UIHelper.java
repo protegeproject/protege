@@ -154,11 +154,12 @@ public class UIHelper {
 
 
     public int showDialog(String title, JComponent component) {
-        return JOptionPane.showConfirmDialog(getParent(),
-                                             component,
+        return JOptionPaneEx.showConfirmDialog(getParent(),
                                              title,
+                                             component,
+                                             JOptionPane.PLAIN_MESSAGE,
                                              JOptionPane.OK_CANCEL_OPTION,
-                                             JOptionPane.PLAIN_MESSAGE);
+                                             null);
     }
 
 
