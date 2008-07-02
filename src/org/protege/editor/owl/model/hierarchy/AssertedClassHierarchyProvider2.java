@@ -34,7 +34,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
     private TerminalElementFinder<OWLClass> rootFinder;
 
-    private boolean rebuild;
+    private Set<OWLClass> nodesToUpdate = new HashSet<OWLClass>();
 
 
     public AssertedClassHierarchyProvider2(OWLOntologyManager owlOntologyManager) {
@@ -105,7 +105,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                             }
                         }
                         if (rootChanged) {
-                            fireNodeChanged(root);
+                            registerNodeChanged(root);
                         }
                     }
                     if (change.getAxiom() instanceof OWLSubClassAxiom
@@ -122,14 +122,32 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             }
         }
         for (OWLClass cls : changedClasses) {
-            fireNodeChanged(cls);
+            registerNodeChanged(cls);
             Set<OWLClass> anc = getAncestors(cls);
             if (anc.contains(cls)) {
                 for (OWLClass an : anc) {
-                    fireNodeChanged(an);
+                    registerNodeChanged(an);
                 }
             }
         }
+
+        notifyNodeChanges();
+    }
+
+
+    private void registerNodeChanged(OWLClass node) {
+        if (nodesToUpdate.contains(node)){
+            System.out.println("already updating " + node);
+        }
+        nodesToUpdate.add(node);
+    }
+
+
+    private void notifyNodeChanges() {
+        for (OWLClass node : nodesToUpdate){
+            fireNodeChanged(node);
+        }
+        nodesToUpdate.clear();
     }
 
 
@@ -139,12 +157,12 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             Set<OWLClass> oldOrphans = rootFinder.getTerminalElements();
             change.getAxiom().accept(visitor);
             if (visitor.isRootChanged()) {
-                fireNodeChanged(root);
+                registerNodeChanged(root);
                 for (OWLClass orphan : rootFinder.getTerminalElements()) {
-                    fireNodeChanged(orphan);
+                    registerNodeChanged(orphan);
                 }
                 for (OWLClass maybeNotOrphan : oldOrphans) {
-                    fireNodeChanged(maybeNotOrphan);
+                    registerNodeChanged(maybeNotOrphan);
                 }
             }
         }
