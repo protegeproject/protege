@@ -96,7 +96,7 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
     }
 
 
-    public Set<OWLAxiom> getFilteredAxioms() {
+    public java.util.List<OWLAxiom> getFilteredAxioms() {
         return list.getFilteredValues();
     }
 
