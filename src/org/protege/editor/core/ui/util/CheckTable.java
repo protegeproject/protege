@@ -117,7 +117,7 @@ public class CheckTable<O> extends JTable {
                 checkSelection();
             }
         });
-        
+
         getDefaultEditor(Boolean.class).addCellEditorListener(checkEditorListener);
     }
 
@@ -213,7 +213,7 @@ public class CheckTable<O> extends JTable {
         notifyCheckSelectionChanged();
     }
 
-    
+
     public void addCheckSelectionListener(ListSelectionListener l) {
         checkSelListeners.add(l);
     }
@@ -242,6 +242,11 @@ public class CheckTable<O> extends JTable {
     }
 
 
+    public List<O> getAllValues() {
+        return ((CheckTableModel)getModel()).getAllValues();
+    }
+
+
     /**
      * Only to be used with the access methods provided
      */
@@ -253,7 +258,7 @@ public class CheckTable<O> extends JTable {
         }
 
 
-        void setData(java.util.List<O> elements, boolean selected){
+        public void setData(java.util.List<O> elements, boolean selected){
             for (int i=getRowCount()-1; i>=0; i--){
                 removeRow(i);
             }
@@ -276,12 +281,21 @@ public class CheckTable<O> extends JTable {
         }
 
 
-        List<O> getFilteredValues() {
+        public List<O> getFilteredValues() {
             List<O> axioms = new ArrayList<O>();
             for (int i=0; i<getRowCount(); i++){
                 if (getValueAt(i, 0).equals(Boolean.TRUE)){
                     axioms.add((O)getValueAt(i, 1));
                 }
+            }
+            return axioms;
+        }
+
+
+        public List<O> getAllValues() {
+            List<O> axioms = new ArrayList<O>();
+            for (int i=0; i<getRowCount(); i++){
+                axioms.add((O)getValueAt(i, 1));
             }
             return axioms;
         }
