@@ -49,6 +49,10 @@ public class VerifyingOptionPane extends JOptionPane {
         super(c, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
     }
 
+    public VerifyingOptionPane(JComponent c, int messageType, int optionType) {
+        super(c, messageType, optionType);
+    }
+
     public void setOKEnabled(boolean enabled){
         if (okButton == null){
             okButton = getButtonComponent(this, JButton.class, (String)UIManager.get("OptionPane.okButtonText"));
