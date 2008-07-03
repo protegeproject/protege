@@ -5,13 +5,15 @@ import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.find.EntityFinderPreferences;
+import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectDuplicator;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -22,14 +24,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
@@ -60,6 +61,10 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private OWLEntityRenderer fragRenderer;
 
+    private Set<OWLEntity> errors = Collections.emptySet();
+
+    private EntityFindAndReplaceURIRenamer renamer;
+
     private ItemListener findListener = new ItemListener(){
         public void itemStateChanged(ItemEvent event) {
             if (event.getStateChange() == ItemEvent.SELECTED){
@@ -71,6 +76,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private ItemListener replaceListener = new ItemListener(){
         public void itemStateChanged(ItemEvent event) {
             if (event.getStateChange() == ItemEvent.SELECTED){
+                updateErrors();
                 handleStateChanged();
             }
         }
@@ -118,29 +124,20 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         final JTextComponent editor = (JTextComponent) combo.getEditor().getEditorComponent();
 
         final ActionListener actionListener = new ActionListener(){
-               public void actionPerformed(ActionEvent actionEvent) {
-                   try {
-                       combo.setSelectedItem(editor.getText());
-                   }
-                   catch (Exception e) {
-                       e.printStackTrace();
-                   }
-               }
-           };
+            public void actionPerformed(ActionEvent actionEvent) {
+                combo.setSelectedItem(editor.getText());
+            }
+        };
 
         final Timer timer = new Timer(SEARCH_PAUSE_MILLIS, actionListener);
 
         editor.getDocument().addDocumentListener(new DocumentListener(){
-            private void handleUpdate() {
+            public void insertUpdate(DocumentEvent event) {
                 timer.restart();
             }
 
-            public void insertUpdate(DocumentEvent event) {
-                handleUpdate();
-            }
-
             public void removeUpdate(DocumentEvent event) {
-                handleUpdate();
+                timer.restart();
             }
 
             public void changedUpdate(DocumentEvent event) {
@@ -169,25 +166,8 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
 
 
-    public List<OWLOntologyChange> performRename(Collection<OWLEntity> entities, String pattern, String newText){
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-
-        // cannot use an OWLEntityRenamer directly because multiple entities may be referenced by the same axiom
-
-        Map<OWLEntity, URI> uriMap = generateNameMap(entities, pattern, newText);
-
-        // perform the rename across all loaded ontologies
-        for(OWLOntology ont : eKit.getOWLModelManager().getOntologies()) {
-            Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-            for (OWLEntity entity : entities){
-                axioms.addAll(getAxioms(ont, entity));
-            }
-
-            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(uriMap, eKit.getOWLModelManager().getOWLDataFactory());
-            fillListWithTransformChanges(changes, axioms, ont, duplicator);
-        }
-
-        return changes;
+    public EntityFindAndReplaceURIRenamer getRenamer(){
+        return renamer;
     }
 
 
@@ -195,6 +175,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         final ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>(getEntities());
         Collections.sort(sortedEntities, new OWLObjectComparator<OWLEntity>(eKit.getOWLModelManager()));
         list.setData(sortedEntities);
+        updateErrors();
         handleStateChanged();
     }
 
@@ -203,10 +184,21 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         Set<OWLEntity> matches = nsMap.get(getFindValue());
         if (matches == null){
             EntityFinderPreferences prefs = EntityFinderPreferences.getInstance();
-            String prefix = prefs.isUseRegularExpressions() ? ".*" : "*";
+            String prefix = prefs.isUseRegularExpressions() ? "" : "*";
             matches = eKit.getOWLModelManager().getEntityFinder().getEntities(prefix + getFindValue());
         }
         return matches;
+    }
+
+
+    private void updateErrors() {
+        final OWLModelManager mngr = eKit.getOWLModelManager();
+        renamer = new EntityFindAndReplaceURIRenamer(mngr.getOWLOntologyManager(),
+                                                     list.getAllValues(),
+                                                     mngr.getActiveOntologies(),
+                                                     getFindValue(), getReplaceWithValue());
+        errors = renamer.getErrors().keySet();
+        list.revalidate();
     }
 
 
@@ -232,39 +224,6 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         }
         matchingEntities.add(entity);
         nsMap.put(ns, matchingEntities);
-    }
-
-
-    private Map<OWLEntity, URI> generateNameMap(Collection<OWLEntity> entities, String pattern, String newText) {
-        Map<OWLEntity, URI> uriMap = new HashMap<OWLEntity, URI>();
-
-        for (OWLEntity entity : entities){
-            String newURIStr = entity.getURI().toString().replaceAll(pattern, newText);
-            try {
-                URI newURI = new URI(newURIStr);
-                uriMap.put(entity, newURI);
-            }
-            catch (URISyntaxException e) {
-                logger.warn("Could not rename entity (" + eKit.getOWLModelManager().getRendering(entity) + "). " + newURIStr + " not a valid URI.");
-            }
-        }
-        return uriMap;
-    }
-
-
-    private static Set<OWLAxiom> getAxioms(OWLOntology ont, OWLEntity entity) {
-        return ont.getReferencingAxioms(entity);
-    }
-
-
-    private static void fillListWithTransformChanges(List<OWLOntologyChange> changes,
-                                                     Set<OWLAxiom> axioms, OWLOntology ont,
-                                                     OWLObjectDuplicator duplicator) {
-        for(OWLAxiom ax : axioms) {
-            changes.add(new RemoveAxiom(ont, ax));
-            OWLAxiom dupAx = duplicator.duplicateObject(ax);
-            changes.add(new AddAxiom(ont, dupAx));
-        }
     }
 
 
@@ -299,7 +258,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private boolean getStatus() {
         return findCombo.getSelectedItem() != null &&!findCombo.getSelectedItem().equals("") &&
                 replaceWithCombo.getSelectedItem() != null && !replaceWithCombo.getSelectedItem().equals("") &&
-                !list.getFilteredValues().isEmpty();
+                !list.getFilteredValues().isEmpty() && errors.isEmpty();
     }
 
 
@@ -317,7 +276,6 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private void reloadEntityListThreaded(){
         if (reloadThread != null && reloadThread.isAlive()){
-            System.out.println("interrupting current reload");
             reloadThread.interrupt();
         }
 
@@ -337,11 +295,26 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
      */
     class ResultCellRenderer extends OWLCellRenderer {
 
-        public Style fadedStyle;
+        private boolean inURI = false;
+
+        private Style fadedStyle = null;
+
+        private Style highlightedStyle = null;
 
 
         public ResultCellRenderer(OWLEditorKit owlEditorKit) {
             super(owlEditorKit);
+        }
+
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (errors.contains(value)){
+                setStrikeThrough(true);
+            }
+            else{
+                setStrikeThrough(false);
+            }
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
 
 
@@ -355,16 +328,38 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         protected void renderToken(String curToken, int tokenStartIndex, StyledDocument doc) {
             super.renderToken(curToken, tokenStartIndex, doc);
-//                System.out.println("curToken = " + curToken);
-//                System.out.println("tokenStartIndex = " + tokenStartIndex);
-//                System.out.println("doc.getLength() = " + doc.getLength());
-//                if (curToken.startsWith("(")){
-//                    if (fadedStyle == null){
-//                        fadedStyle = doc.addStyle("FADED_STYLE", null);
-//                        StyleConstants.setForeground(fadedStyle, Color.GRAY);
-//                    }
-//                    doc.setCharacterAttributes(tokenStartIndex, doc.getLength(), fadedStyle, true);
-//                }
+            //System.out.println("curToken = " + curToken);
+            if (curToken.startsWith("(")){
+                inURI = true;
+            }
+            if (curToken.equals(")")){
+                inURI = false;
+            }
+            else if(inURI){
+                if (fadedStyle == null){
+                    fadedStyle = doc.addStyle("MY_FADED_STYLE", null);
+                    StyleConstants.setForeground(fadedStyle, Color.GRAY);
+                }
+                doc.setCharacterAttributes(tokenStartIndex, doc.getLength()-tokenStartIndex, fadedStyle, false);
+
+                if (highlightedStyle == null){
+                    highlightedStyle = doc.addStyle("MY_HIGHLIGHTED_STYLE", null);
+                    StyleConstants.setForeground(highlightedStyle, Color.darkGray);
+                    StyleConstants.setBold(highlightedStyle, true);
+                }
+                final String s = getFindValue().toLowerCase();
+                curToken = curToken.toLowerCase();
+                int cur = 0;
+                do {
+                    cur = curToken.indexOf(s, cur);
+                    if (cur != -1){
+                        doc.setCharacterAttributes(tokenStartIndex + cur,  s.length(), highlightedStyle, true);
+                        cur++;
+                    }
+                }
+                while (cur != -1);
+
+            }
         }
     }
 }
