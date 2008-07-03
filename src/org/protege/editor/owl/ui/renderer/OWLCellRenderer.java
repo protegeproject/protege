@@ -717,12 +717,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
 
-        OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
-        OWLEntity curEntity = null;
-        boolean linkRendered = false;
-        boolean annotURIRendered = false;
+        curEntity = null;
+        linkRendered = false;
+        annotURIRendered = false;
         int tokenStartIndex = 0;
         while (tokenizer.hasMoreTokens()) {
             curEntity = null;
@@ -738,88 +737,100 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     }
                 }
             }
-            int tokenLength = curToken.length();
-            Color c = owlEditorKit.getOWLWorkspace().getKeyWordColorMap().get(curToken);
-            if (c != null && prefs.isHighlightKeyWords() && highlightKeywords) {
-                Style s = doc.getStyle(curToken);
-                doc.setCharacterAttributes(tokenStartIndex, tokenLength, s, true);
-            }
-            else {
-                // Not a keyword, so might be an entity (or delim)
-                OWLEntity entity = getOWLModelManager().getOWLEntity(curToken);
-                curEntity = entity;
-                if (entity != null) {
-                    boolean styleSet = false;
-                    if (focusedEntity != null) {
-                        if (entity.equals(focusedEntity)) {
-                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
-                        }
-                    }
-                    else if (entity instanceof OWLClass) {
-                        // If it is a class then paint the word red if the class
-                        // is inconsistent
-                        try {
-                            if (highlightUnsatisfiableClasses && !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) entity)) {
-                                // Paint red because of inconsistency
-                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                                styleSet = true;
-                            }
-                        }
-                        catch (OWLReasonerException e) {
-                        }
-                    }
-                    else if(highlightUnsatisfiableProperties && entity instanceof OWLObjectProperty) {
-                        highlightPropertyIfUnsatisfiable(entity, doc, tokenStartIndex, tokenLength);
-                    }
-                    strikeoutEntityIfCrossedOut(entity, doc, tokenStartIndex, tokenLength);
-                }
-                else {
-                    if (highlightUnsatisfiableClasses && unsatisfiableNames.contains(curToken)) {
-                        // Paint red because of inconsistency
-                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                    }
-                    else if (isAnnotationURI(curToken) && !annotURIRendered){ // this could be an annotation URI
-                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, annotationURIStyle, true);
-                        annotURIRendered = true;
-                    }
-                }
-            }
-            try {
-                if (curEntity != null && renderLinks) {
-                    Rectangle startRect = textPane.modelToView(tokenStartIndex);
-                    Rectangle endRect = textPane.modelToView(tokenStartIndex + tokenLength);
-                    if (startRect != null && endRect != null) {
-                        int width = endRect.x - startRect.x;
-                        int heght = startRect.height;
+            renderToken(curToken, tokenStartIndex, doc);
 
-                        Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
-                        tokenRect.grow(0, -2);
-                        if (linkedObjectComponent.getMouseCellLocation() != null) {
-                            Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
-                            if (mouseCellLocation != null) {
-                                mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
-                                        mouseCellLocation,
-                                        textPane);
-                                if (tokenRect.contains(mouseCellLocation)) {
-                                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
-                                    linkedObjectComponent.setLinkedObject(curEntity);
-                                    linkRendered = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (BadLocationException e) {
-                e.printStackTrace();
-            }
-
-            tokenStartIndex += tokenLength;
+            tokenStartIndex += curToken.length();
         }
         if (renderLinks && !linkRendered) {
             linkedObjectComponent.setLinkedObject(null);
         }
     }
+
+    private boolean annotURIRendered = false;
+    private boolean linkRendered = false;
+    private OWLEntity curEntity = null;
+
+    protected void renderToken(final String curToken, final int tokenStartIndex, final StyledDocument doc) {
+
+        OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
+
+        int tokenLength = curToken.length();
+        Color c = owlEditorKit.getOWLWorkspace().getKeyWordColorMap().get(curToken);
+        if (c != null && prefs.isHighlightKeyWords() && highlightKeywords) {
+            Style s = doc.getStyle(curToken);
+            doc.setCharacterAttributes(tokenStartIndex, tokenLength, s, true);
+        }
+        else {
+            // Not a keyword, so might be an entity (or delim)
+            OWLEntity entity = getOWLModelManager().getOWLEntity(curToken);
+            curEntity = entity;
+            if (entity != null) {
+                boolean styleSet = false;
+                if (focusedEntity != null) {
+                    if (entity.equals(focusedEntity)) {
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
+                    }
+                }
+                else if (entity instanceof OWLClass) {
+                    // If it is a class then paint the word red if the class
+                    // is inconsistent
+                    try {
+                        if (highlightUnsatisfiableClasses && !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) entity)) {
+                            // Paint red because of inconsistency
+                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                            styleSet = true;
+                        }
+                    }
+                    catch (OWLReasonerException e) {
+                    }
+                }
+                else if(highlightUnsatisfiableProperties && entity instanceof OWLObjectProperty) {
+                    highlightPropertyIfUnsatisfiable(entity, doc, tokenStartIndex, tokenLength);
+                }
+                strikeoutEntityIfCrossedOut(entity, doc, tokenStartIndex, tokenLength);
+            }
+            else {
+                if (highlightUnsatisfiableClasses && unsatisfiableNames.contains(curToken)) {
+                    // Paint red because of inconsistency
+                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                }
+                else if (isAnnotationURI(curToken) && !annotURIRendered){ // this could be an annotation URI
+                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, annotationURIStyle, true);
+                    annotURIRendered = true;
+                }
+            }
+        }
+        try {
+            if (curEntity != null && renderLinks) {
+                Rectangle startRect = textPane.modelToView(tokenStartIndex);
+                Rectangle endRect = textPane.modelToView(tokenStartIndex + tokenLength);
+                if (startRect != null && endRect != null) {
+                    int width = endRect.x - startRect.x;
+                    int heght = startRect.height;
+
+                    Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
+                    tokenRect.grow(0, -2);
+                    if (linkedObjectComponent.getMouseCellLocation() != null) {
+                        Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
+                        if (mouseCellLocation != null) {
+                            mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
+                                    mouseCellLocation,
+                                    textPane);
+                            if (tokenRect.contains(mouseCellLocation)) {
+                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
+                                linkedObjectComponent.setLinkedObject(curEntity);
+                                linkRendered = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private boolean isAnnotationURI(String token) {
         if (annotationURINames == null){
