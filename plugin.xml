@@ -57,6 +57,7 @@
     </extension>
 
     <!-- Entities Tab -->
+
     <extension id="OWLEntitesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Entities"/>
@@ -65,6 +66,7 @@
         <index value="B"/>
         <defaultViewConfigFileName value="viewconfig-entitiestab.xml"/>
     </extension>
+
     <!-- Classes Tab -->
 
     <extension id="OWLClassesTab"
@@ -748,6 +750,15 @@
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="U"/>
+    </extension>
+
+    <extension id="menu.RenameEntitiesBySearchAndReplace"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Rename entities..."/>
+        <class value="org.protege.editor.owl.ui.action.RenameEntitiesBySearchAndReplaceAction"/>
+        <toolTip value="Change the URI of entities using search and replace"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotA-C"/>
+        <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <extension id="menu.ChangeOntologyURI"
