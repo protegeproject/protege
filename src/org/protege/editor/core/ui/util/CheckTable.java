@@ -1,14 +1,14 @@
 package org.protege.editor.core.ui.util;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: drummond<br>
@@ -35,6 +35,7 @@ public class CheckTable<O> extends JTable {
 
     private boolean refreshRowHeight = true;
 
+    private List<ListSelectionListener> checkSelListeners = new ArrayList<ListSelectionListener>();
 
     private DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
         public Component getTableCellRendererComponent(JTable jTable, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
@@ -77,6 +78,18 @@ public class CheckTable<O> extends JTable {
             for (int i=0; i<getModel().getRowCount(); i++){
                 getModel().setValueAt(checkAllCheckbox.isSelected(), i, 0);
             }
+            notifyCheckSelectionChanged();
+        }
+    };
+
+    private CellEditorListener checkEditorListener = new CellEditorListener(){
+
+        public void editingStopped(ChangeEvent event) {
+            notifyCheckSelectionChanged();
+        }
+
+        public void editingCanceled(ChangeEvent event) {
+            // do nothing
         }
     };
 
@@ -98,6 +111,14 @@ public class CheckTable<O> extends JTable {
         checkCol.setMaxWidth(checkAllCheckbox.getPreferredSize().width + 2);
 
         checkCol.setHeaderRenderer(headerRenderer);
+        getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "checkSelection");
+        getActionMap().put("checkSelection", new AbstractAction(){
+            public void actionPerformed(ActionEvent event) {
+                checkSelection();
+            }
+        });
+        
+        getDefaultEditor(Boolean.class).addCellEditorListener(checkEditorListener);
     }
 
 
@@ -169,11 +190,58 @@ public class CheckTable<O> extends JTable {
     }
 
 
-    public Set<O> getFilteredValues() {
+    public List<O> getFilteredValues() {
         return ((CheckTableModel)getModel()).getFilteredValues();
     }
 
+
+    /**
+     * If all values are checked, uncheck them.
+     * If any of them are not selected, select all.
+     */
+    private void checkSelection() {
+        boolean value = false;
+
+        for (int row : getSelectedRows()){
+            if (getValueAt(row, 0).equals(Boolean.FALSE)){
+                value = true;
+            }
+        }
+        for (int row : getSelectedRows()){
+            setValueAt(value, row, 0);
+        }
+        notifyCheckSelectionChanged();
+    }
+
     
+    public void addCheckSelectionListener(ListSelectionListener l) {
+        checkSelListeners.add(l);
+    }
+
+
+    public void removeCheckSelectionListener(ListSelectionListener l){
+        checkSelListeners.remove(l);
+    }
+
+
+    private void notifyCheckSelectionChanged() {
+        int min = -1;
+        int max = -1;
+        for (int i=0; i<getRowCount(); i++){
+            if (getValueAt(i, 0).equals(Boolean.TRUE)){
+                if (min == -1){
+                    min = i;
+                }
+                max = i;
+            }
+        }
+
+        for (ListSelectionListener l : checkSelListeners){
+            l.valueChanged(new ListSelectionEvent(CheckTable.this, min, max, false));
+        }
+    }
+
+
     /**
      * Only to be used with the access methods provided
      */
@@ -208,8 +276,8 @@ public class CheckTable<O> extends JTable {
         }
 
 
-        Set<O> getFilteredValues() {
-            Set<O> axioms = new HashSet<O>();
+        List<O> getFilteredValues() {
+            List<O> axioms = new ArrayList<O>();
             for (int i=0; i<getRowCount(); i++){
                 if (getValueAt(i, 0).equals(Boolean.TRUE)){
                     axioms.add((O)getValueAt(i, 1));
