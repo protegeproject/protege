@@ -33,6 +33,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Author: drummond<br>
@@ -90,7 +91,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
     public RenameEntitiesPanel(OWLEditorKit eKit) {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(6, 6));
         this.eKit = eKit;
 
         refreshMap();
@@ -183,11 +184,30 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private Set<OWLEntity> getEntities(){
         Set<OWLEntity> matches = nsMap.get(getFindValue());
         if (matches == null){
+            matches = new HashSet<OWLEntity>();
+            Set<OWLEntity> ents = new HashSet<OWLEntity>();
+            for (OWLOntology ont : getOntologies()){
+                ents.addAll(ont.getReferencedEntities());
+            }
             EntityFinderPreferences prefs = EntityFinderPreferences.getInstance();
-            String prefix = prefs.isUseRegularExpressions() ? "" : "*";
-            matches = eKit.getOWLModelManager().getEntityFinder().getEntities(prefix + getFindValue());
+            String matchingVal = getFindValue();
+            if (!prefs.isUseRegularExpressions()){
+                matchingVal = "(?i).*" + matchingVal + ".*";
+            }
+            Pattern p = Pattern.compile(matchingVal);
+            for (OWLEntity ent : ents){
+                if (p.matcher(ent.getURI().toString()).matches()){
+                    matches.add(ent);
+                }
+            }
+//            matches = eKit.getOWLModelManager().getEntityFinder().getEntities(prefix + getFindValue());
         }
         return matches;
+    }
+
+
+    private Set<OWLOntology> getOntologies() {
+        return eKit.getOWLModelManager().getActiveOntologies();
     }
 
 
@@ -195,15 +215,15 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         final OWLModelManager mngr = eKit.getOWLModelManager();
         renamer = new EntityFindAndReplaceURIRenamer(mngr.getOWLOntologyManager(),
                                                      list.getAllValues(),
-                                                     mngr.getActiveOntologies(),
+                                                     getOntologies(),
                                                      getFindValue(), getReplaceWithValue());
         errors = renamer.getErrors().keySet();
-        list.revalidate();
+        list.repaint();
     }
 
 
     private void refreshMap() {
-        for (OWLOntology ont : eKit.getOWLModelManager().getActiveOntologies()){
+        for (OWLOntology ont : getOntologies()){
             for (OWLEntity entity : ont.getReferencedEntities()){
                 extractNSFromEntity(entity);
             }
