@@ -8,6 +8,7 @@ import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -63,7 +64,7 @@ public class MoveAxiomsWizard extends Wizard {
         return sourceOntologiesPage.getOntologies();
     }
 
-    public Set<OWLAxiom> getAxioms() {
+    public List<OWLAxiom> getAxioms() {
         return axiomsPage.getFilteredAxioms();
     }
 
