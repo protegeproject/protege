@@ -66,7 +66,7 @@ public class UIHelper {
 
 
     public URI getURIForActiveOntology(String title, String message, String initialValue) throws URISyntaxException,
-                                                                                                 OWLException {
+            OWLException {
         // Prompt the user for a local name
         String name = (String) JOptionPane.showInputDialog(getParent(),
                                                            message,
@@ -155,11 +155,11 @@ public class UIHelper {
 
     public int showDialog(String title, JComponent component) {
         return JOptionPaneEx.showConfirmDialog(getParent(),
-                                             title,
-                                             component,
-                                             JOptionPane.PLAIN_MESSAGE,
-                                             JOptionPane.OK_CANCEL_OPTION,
-                                             null);
+                                               title,
+                                               component,
+                                               JOptionPane.PLAIN_MESSAGE,
+                                               JOptionPane.OK_CANCEL_OPTION,
+                                               null);
     }
 
 
@@ -170,6 +170,16 @@ public class UIHelper {
                                                JOptionPane.PLAIN_MESSAGE,
                                                JOptionPane.OK_CANCEL_OPTION,
                                                focusedComponent);
+    }
+
+
+    public int showValidatingDialog(String title, JComponent component, JComponent focusedComponent){
+        return JOptionPaneEx.showValidatingConfirmDialog(getParent(),
+                                                         title,
+                                                         component,
+                                                         JOptionPane.PLAIN_MESSAGE,
+                                                         JOptionPane.OK_CANCEL_OPTION,
+                                                         focusedComponent);
     }
 
 
