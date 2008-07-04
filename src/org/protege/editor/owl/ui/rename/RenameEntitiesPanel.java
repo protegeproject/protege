@@ -207,7 +207,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
     private Set<OWLOntology> getOntologies() {
-        return eKit.getOWLModelManager().getActiveOntologies();
+        return eKit.getOWLModelManager().getOntologies();
     }
 
 
