@@ -151,6 +151,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OntologySelectionStrategy activeOntologiesStrategy;
 
+    private OWLAnnotationURIRenderer annotationRenderer;
+
 
     public OWLModelManagerImpl() {
         super();
@@ -801,6 +803,15 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public String getURIRendering(URI uri) {
+        if (getOWLEntityRenderer() instanceof OWLEntityAnnotationValueRenderer){
+            if (annotationRenderer == null){
+                annotationRenderer = new OWLAnnotationURIRenderer(this);
+            }
+            String shortForm = annotationRenderer.getRendering(uri);
+            if (shortForm != null){
+                return shortForm;
+            }
+        }
         return uriShortFormProvider.getShortForm(uri);
     }
 
@@ -1000,6 +1011,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         long t0 = System.currentTimeMillis();
         owlEntityRenderingCache.rebuild();
         owlObjectRenderingCache.clear();
+        annotationRenderer = null;        
         logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
     }
 
