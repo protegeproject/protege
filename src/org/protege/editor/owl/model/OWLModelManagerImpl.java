@@ -41,6 +41,8 @@ import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
+import org.semanticweb.owl.util.URIShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
@@ -80,6 +82,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private OWLModelManagerEntityRenderer entityRenderer;
 
     private OWLObjectRenderer objectRenderer;
+
+    private URIShortFormProvider uriShortFormProvider;
 
     private OWLDescriptionParser owlDescriptionParser;
 
@@ -169,6 +173,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
 
         objectRenderer = new OWLObjectRendererImpl(this);
+        uriShortFormProvider = new SimpleURIShortFormProvider();
         owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
         owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
@@ -792,6 +797,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
 
         return owlObjectRenderingCache.getRendering(object, getOWLObjectRenderer());
+    }
+
+
+    public String getURIRendering(URI uri) {
+        return uriShortFormProvider.getShortForm(uri);
     }
 
 

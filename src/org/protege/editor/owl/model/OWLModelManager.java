@@ -306,4 +306,12 @@ public interface OWLModelManager extends ModelManager {
 
 
     String getRendering(OWLObject object);
+
+
+    /**
+     * Get a human readable version of the URI
+     * @param uri annotation or ontology URI
+     * @return String the short form of the URI
+     */
+    String getURIRendering(URI uri);
 }

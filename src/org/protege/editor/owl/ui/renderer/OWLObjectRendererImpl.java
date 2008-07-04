@@ -6,7 +6,6 @@ import org.protege.editor.owl.ui.OWLDescriptionComparator;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
@@ -41,14 +40,11 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
     private OWLObject focusedObject;
 
-    private SimpleURIShortFormProvider sfp;
-
 
     public OWLObjectRendererImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         buffer = new StringBuilder();
         bracketWriter = new BracketWriter();
-        sfp = new SimpleURIShortFormProvider();
         facetMap = new HashMap<OWLRestrictedDataRangeFacetVocabulary, String>();
         facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MIN_EXCLUSIVE, ">");
         facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MAX_EXCLUSIVE, "<");
@@ -800,7 +796,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLConstantAnnotation annotation) {
-        write(new SimpleURIShortFormProvider().getShortForm(annotation.getAnnotationURI()));
+        write(owlModelManager.getURIRendering(annotation.getAnnotationURI()));
         write(" ");
         write(annotation.getAnnotationValue().toString());
     }
@@ -831,7 +827,7 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     public void visit(OWLObjectAnnotation owlObjectAnnotation) {
-        write(new SimpleURIShortFormProvider().getShortForm(owlObjectAnnotation.getAnnotationURI()));
+        write(owlModelManager.getURIRendering(owlObjectAnnotation.getAnnotationURI()));
         write(" ");
         owlObjectAnnotation.getAnnotationValue().accept(this);
     }
@@ -938,9 +934,12 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
 
 
     private void writeOntologyURI(URI uri) {
-        String shortName = sfp.getShortForm(uri);
+        String shortName = owlModelManager.getURIRendering(uri);
         if (shortName != null) {
-            write(shortName + "  (" + uri + ")");
+            write(shortName);
+            write(" (");
+            write(uri.toString());
+            write(")");
         }
         else {
             write(uri.toString());
