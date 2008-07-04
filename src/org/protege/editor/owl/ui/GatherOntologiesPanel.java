@@ -4,12 +4,12 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owl.io.OWLXMLOntologyFormat;
 import org.semanticweb.owl.io.RDFXMLOntologyFormat;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyFormat;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,11 +68,7 @@ public class GatherOntologiesPanel extends JPanel {
         Collections.sort(orderedOntologies, new OWLObjectComparator<OWLOntology>(owlModelManager));
         for (final OWLOntology ont : orderedOntologies) {
             ontologiesToSave.add(ont);
-            String name = new SimpleURIShortFormProvider().getShortForm(ont.getURI());
-            String label = ont.getURI().toString();
-            if (name != null) {
-                label = "<html><b>" + name + "</b>  <font color=\"gray\">(" + label + "</font></html>";
-            }
+            String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, owlModelManager);
 
             final JCheckBox cb = new JCheckBox(new AbstractAction(label) {
                 public void actionPerformed(ActionEvent e) {

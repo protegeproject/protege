@@ -40,7 +40,6 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
 import org.semanticweb.owl.util.OWLEntityCollectingOntologyChangeListener;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
@@ -391,7 +390,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(mngr));
         orderedOntologies.addAll(mngr.getOntologies());
         for (final OWLOntology ont : orderedOntologies){
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(mngr.getRendering(ont));
+            JMenuItem item = new JRadioButtonMenuItem(mngr.getURIRendering(ont.getURI()));
+            item.setToolTipText(ont.getURI().toString());
             item.setSelected(ont.equals(mngr.getActiveOntology()));
             item.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent event) {
@@ -623,13 +623,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void rebuildList() {
         try {
-            TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(new Comparator<OWLOntology>() {
-
-                SimpleURIShortFormProvider sfp = new SimpleURIShortFormProvider();
-                public int compare(OWLOntology o1, OWLOntology o2) {
-                    return sfp.getShortForm(o1.getURI()).compareToIgnoreCase(sfp.getShortForm(o2.getURI()));
-                }
-            });
+            TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
             ts.addAll(getOWLModelManager().getOntologies());
             ontologiesList.setModel(new DefaultComboBoxModel(ts.toArray()));
             ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());
@@ -656,12 +650,19 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public OWLCellRenderer createOWLCellRenderer(boolean renderExpression, boolean renderIcon) {
-        return createOWLCellRenderer(renderExpression, renderIcon, 0);
+        return new OWLCellRenderer(getOWLEditorKit(), renderExpression, renderIcon);
     }
 
 
+    /**
+     * @deprecated use <code>createOWLCellRenderer(boolean renderExpression, boolean renderIcon)</code>
+     * @param renderExpression see <code>OWLCellRenderer</code>
+     * @param renderIcon see <code>OWLCellRenderer</code>
+     * @param indentation no longer has any effect
+     * @return the renderer
+     */
     public OWLCellRenderer createOWLCellRenderer(boolean renderExpression, boolean renderIcon, int indentation) {
-        return new OWLCellRenderer(getOWLEditorKit(), renderExpression, renderIcon, indentation);
+        return createOWLCellRenderer(renderExpression, renderIcon);
     }
 
 

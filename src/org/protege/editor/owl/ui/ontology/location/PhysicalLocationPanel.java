@@ -8,9 +8,9 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.ShowFileAction;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,14 +85,9 @@ public class PhysicalLocationPanel extends JPanel {
             setOpaque(false);
             setLayout(new BorderLayout(3, 3));
             final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
-            String name = new SimpleURIShortFormProvider().getShortForm(ont.getURI());
-            String label = ont.getURI().toString();
-            if (name != null) {
-                label = "<html><b>" + name + "</b>  <font color=\"gray\">(" + label + "</font></html>";
-            }
+            String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, mngr);
 
             JLabel ontURILabel = new JLabel(label);
-//            ontURILabel.setFont(ontURILabel.getFont().deriveFont(Font.BOLD));
             ontURILabel.setIcon(OWLIcons.getIcon("ontology.png"));
             add(ontURILabel, BorderLayout.NORTH);
             final URI physicalURI = mngr.getOntologyPhysicalURI(ont);

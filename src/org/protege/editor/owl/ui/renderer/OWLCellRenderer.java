@@ -5,8 +5,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
-import org.semanticweb.owl.util.URIShortFormProvider;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -14,6 +12,7 @@ import javax.swing.text.*;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
@@ -104,26 +103,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Set<String> annotationURINames;
 
+
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
     }
 
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon) {
-        this(owlEditorKit, renderExpression, renderIcon, 0);
-    }
-
-
-    /**
-     * @param owlEditorKit     The editor kit
-     * @param renderExpression determines if values are rendered as expressions (i.e. whether key words are
-     *                         highlighted or not)
-     * @param renderIcon       Determines if an icon is shown
-     * @param indentation      Legacy - has no effect
-     * @deprecated Use OWLCellRenderer(OWLEditorKit, renderExpression, renderIcon)
-     *             Creates a cell renderer
-     */
-    public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, int indentation) {
         this.owlEditorKit = owlEditorKit;
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
@@ -155,6 +141,20 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         unsatisfiableNames = new HashSet<String>();
         boxedNames = new HashSet<String>();
         prepareStyles();
+    }
+
+
+    /**
+     * @param owlEditorKit     The editor kit
+     * @param renderExpression determines if values are rendered as expressions (i.e. whether key words are
+     *                         highlighted or not)
+     * @param renderIcon       Determines if an icon is shown
+     * @param indentation      Legacy - has no effect
+     * @deprecated Use OWLCellRenderer(OWLEditorKit, renderExpression, renderIcon)
+     *             Creates a cell renderer
+     */
+    public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, int indentation) {
+        this(owlEditorKit, renderExpression, renderIcon);
     }
 
 
@@ -583,6 +583,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style annotationURIStyle;
 
+    private Style ontologyURIStyle;
+
     private Style commentedOutStyle;
 
     private Style strikeOutStyle;
@@ -634,6 +636,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         annotationURIStyle = doc.addStyle("ANNOTATION_URI_STYLE", null);
         StyleConstants.setForeground(annotationURIStyle, Color.BLUE);
         StyleConstants.setItalic(annotationURIStyle, true);
+
+        ontologyURIStyle = doc.addStyle("ONTOLOGY_URI_STYLE", null);
+        StyleConstants.setForeground(ontologyURIStyle, Color.GRAY);
 
         commentedOutStyle = doc.addStyle("COMMENTED_OUT_STYLE", null);
         StyleConstants.setForeground(commentedOutStyle, Color.GRAY);
@@ -717,14 +722,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
 
+        highlightText(doc);
+    }
+
+
+    private void highlightText(StyledDocument doc) {
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
-        curEntity = null;
         linkRendered = false;
         annotURIRendered = false;
         int tokenStartIndex = 0;
         while (tokenizer.hasMoreTokens()) {
-            curEntity = null;
             // Get the token and determine if it is a keyword or
             // entity (or delimeter)
             String curToken = tokenizer.nextToken();
@@ -746,11 +754,18 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
     }
 
+
     private boolean annotURIRendered = false;
     private boolean linkRendered = false;
-    private OWLEntity curEntity = null;
+    private boolean parenthesisRendered = false;
 
     protected void renderToken(final String curToken, final int tokenStartIndex, final StyledDocument doc) {
+
+        boolean enclosedByBracket = false;
+        if (parenthesisRendered){
+            parenthesisRendered = false;
+            enclosedByBracket = true;
+        }
 
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
 
@@ -762,32 +777,33 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         else {
             // Not a keyword, so might be an entity (or delim)
-            OWLEntity entity = getOWLModelManager().getOWLEntity(curToken);
-            curEntity = entity;
-            if (entity != null) {
-                boolean styleSet = false;
+            OWLEntity curEntity = getOWLModelManager().getOWLEntity(curToken);
+            if (curEntity != null) {
                 if (focusedEntity != null) {
-                    if (entity.equals(focusedEntity)) {
+                    if (curEntity.equals(focusedEntity)) {
                         doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
                     }
                 }
-                else if (entity instanceof OWLClass) {
+                else if (curEntity instanceof OWLClass) {
                     // If it is a class then paint the word red if the class
                     // is inconsistent
                     try {
-                        if (highlightUnsatisfiableClasses && !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) entity)) {
+                        if (highlightUnsatisfiableClasses && !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                             // Paint red because of inconsistency
                             doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                            styleSet = true;
                         }
                     }
                     catch (OWLReasonerException e) {
                     }
                 }
-                else if(highlightUnsatisfiableProperties && entity instanceof OWLObjectProperty) {
-                    highlightPropertyIfUnsatisfiable(entity, doc, tokenStartIndex, tokenLength);
+                else if(highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
+                    highlightPropertyIfUnsatisfiable(curEntity, doc, tokenStartIndex, tokenLength);
                 }
-                strikeoutEntityIfCrossedOut(entity, doc, tokenStartIndex, tokenLength);
+                strikeoutEntityIfCrossedOut(curEntity, doc, tokenStartIndex, tokenLength);
+
+                if (renderLinks) {
+                    renderHyperlink(curEntity, tokenStartIndex, tokenLength, doc);
+                }
             }
             else {
                 if (highlightUnsatisfiableClasses && unsatisfiableNames.contains(curToken)) {
@@ -798,29 +814,37 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, annotationURIStyle, true);
                     annotURIRendered = true;
                 }
+                else if (isOntologyURI(curToken)){
+                    fadeOntologyURI(doc, tokenStartIndex, tokenLength, enclosedByBracket);
+                }
+                else if (curToken.equals("(")){
+                    parenthesisRendered = true;
+                }
             }
         }
-        try {
-            if (curEntity != null && renderLinks) {
-                Rectangle startRect = textPane.modelToView(tokenStartIndex);
-                Rectangle endRect = textPane.modelToView(tokenStartIndex + tokenLength);
-                if (startRect != null && endRect != null) {
-                    int width = endRect.x - startRect.x;
-                    int heght = startRect.height;
+    }
 
-                    Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
-                    tokenRect.grow(0, -2);
-                    if (linkedObjectComponent.getMouseCellLocation() != null) {
-                        Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
-                        if (mouseCellLocation != null) {
-                            mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
-                                    mouseCellLocation,
-                                    textPane);
-                            if (tokenRect.contains(mouseCellLocation)) {
-                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
-                                linkedObjectComponent.setLinkedObject(curEntity);
-                                linkRendered = true;
-                            }
+
+    private void renderHyperlink(OWLEntity curEntity, int tokenStartIndex, int tokenLength, StyledDocument doc) {
+        try {
+            Rectangle startRect = textPane.modelToView(tokenStartIndex);
+            Rectangle endRect = textPane.modelToView(tokenStartIndex + tokenLength);
+            if (startRect != null && endRect != null) {
+                int width = endRect.x - startRect.x;
+                int heght = startRect.height;
+
+                Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
+                tokenRect.grow(0, -2);
+                if (linkedObjectComponent.getMouseCellLocation() != null) {
+                    Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
+                    if (mouseCellLocation != null) {
+                        mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
+                                                                        mouseCellLocation,
+                                                                        textPane);
+                        if (tokenRect.contains(mouseCellLocation)) {
+                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
+                            linkedObjectComponent.setLinkedObject(curEntity);
+                            linkRendered = true;
                         }
                     }
                 }
@@ -832,13 +856,41 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    private boolean isOntologyURI(String token) {
+        try {
+            URI uri = new URI(token);
+            if (uri.isAbsolute()){
+                OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getOntology(uri);
+                if (getOWLModelManager().getActiveOntologies().contains(ont)){
+                    return true;
+                }
+            }
+        }
+        catch (URISyntaxException e) {
+            // just dropthough
+        }
+        return false;
+    }
+
+    
+    private void fadeOntologyURI(StyledDocument doc, int tokenStartIndex, int tokenLength, boolean enclosedByBracket) {
+        // if surrounded by brackets, also render them in grey
+        int start = tokenStartIndex;
+        int length = tokenLength;
+        if (enclosedByBracket){
+            start--;
+            length = length+2;
+        }
+        doc.setCharacterAttributes(start, length, ontologyURIStyle, true);
+    }
+
+
     private boolean isAnnotationURI(String token) {
         if (annotationURINames == null){
             annotationURINames = new HashSet<String>();
-            URIShortFormProvider uriSFP = new SimpleURIShortFormProvider();
             for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
                 for (URI uri : (ont.getAnnotationURIs())){
-                    annotationURINames.add(uriSFP.getShortForm(uri));
+                    annotationURINames.add(getOWLModelManager().getURIRendering(uri));
                 }
             }
         }

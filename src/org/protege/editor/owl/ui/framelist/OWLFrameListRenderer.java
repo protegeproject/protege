@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.renderer.OWLAnnotationRenderer;
+import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAnnotationAxiom;
 import org.semanticweb.owl.model.OWLEntity;
@@ -30,7 +30,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
 
     private ListCellRenderer separatorRenderer;
 
-    private OWLAnnotationRenderer annotationRenderer;
+    private OWLAnnotationCellRenderer annotationRenderer;
 
     private boolean highlightKeywords;
 
@@ -46,7 +46,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
         this.owlEditorKit = owlEditorKit;
         owlCellRenderer = new OWLCellRenderer(owlEditorKit);
         separatorRenderer = new DefaultListCellRenderer();
-        annotationRenderer = new OWLAnnotationRenderer(owlEditorKit);
+        annotationRenderer = new OWLAnnotationCellRenderer(owlEditorKit);
         highlightKeywords = true;
         annotationRendererEnabled = true;
         crossedOutEntities = new HashSet<OWLEntity>();

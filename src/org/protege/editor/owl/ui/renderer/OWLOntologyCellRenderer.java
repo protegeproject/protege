@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,25 +51,27 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
                                                   boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        SimpleURIShortFormProvider sfp = new SimpleURIShortFormProvider();
-        final URI uri = ((OWLOntology) value).getURI();
-        String shortForm = sfp.getShortForm(uri);
-
-        StringBuilder sb = new StringBuilder();
-        if (shortForm != null) {
-            sb.append("<html><body>");
-            sb.append(shortForm);
-            sb.append("    ");
-            sb.append("<font color=\"gray\">");
-            sb.append(uri.toString());
-            sb.append("</font>");
-            sb.append("</body></html>");
-        }
-        else {
-            sb.append(uri.toString());
-        }
-        label.setText(sb.toString());
+        label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getOWLModelManager()));
         label.setIcon(editorKit.getOWLWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
         return label;
+    }
+
+    // @@TODO move this somewhere more appropriate
+    public static String getOntologyLabelText(OWLOntology ont, OWLModelManager mngr){
+        final URI uri = ont.getURI();
+
+        String shortForm = mngr.getURIRendering(uri);
+
+        if (shortForm != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html><body>");
+            sb.append(shortForm);
+            sb.append(" <font color=\"gray\">(");
+            sb.append(uri.toString());
+            sb.append(")</font></body></html>");
+            return sb.toString();
+        }
+
+        return uri.toString();
     }
 }
