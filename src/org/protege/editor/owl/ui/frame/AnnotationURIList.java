@@ -237,17 +237,7 @@ public class AnnotationURIList extends MList {
 
 
         public String toString() {
-            String ren = uri.getFragment();
-            if (ren == null) {
-                int sep = uri.toString().lastIndexOf("/");
-                if (sep != -1) {
-                    ren = uri.toString().substring(sep + 1, uri.toString().length());
-                }
-                else {
-                    return uri.toString();
-                }
-            }
-            return ren;
+            return owlEditorKit.getOWLModelManager().getURIRendering(uri);
         }
 
 
