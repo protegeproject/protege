@@ -67,17 +67,19 @@ public class MList extends JList {
             public int lastIndex = 0;
 
             public void mouseMoved(MouseEvent e) {
-                Point pt = getMousePosition();
-                // more efficient than repainting the whole component every time the mouse moves
-                if (pt != null){
-                    int index = locationToIndex(pt);
-                    // only repaint all the cells the mouse has moved over
-                    repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
-                    lastIndex = index;
-                }
-                else{
-                    repaint();
-                    lastIndex = 0;
+                if (getModel().getSize() > 0){
+                    Point pt = getMousePosition();
+                    // more efficient than repainting the whole component every time the mouse moves
+                    if (pt != null){
+                        int index = locationToIndex(pt);
+                        // only repaint all the cells the mouse has moved over
+                        repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
+                        lastIndex = index;
+                    }
+                    else{
+                        repaint();
+                        lastIndex = 0;
+                    }
                 }
             }
         });
