@@ -21,15 +21,28 @@ public interface EntityFinder {
      */
     Set<OWLEntity> getEntities(String match);
 
+    Set<OWLEntity> getEntities(String match, boolean fullRegExp);
+
 
     Set<OWLClass> getMatchingOWLClasses(String match);
+
+    Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp);
 
 
     Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match);
 
+    Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match, boolean fullRegExp);
+
 
     Set<OWLDataProperty> getMatchingOWLDataProperties(String match);
 
+    Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp);
+
 
     Set<OWLIndividual> getMatchingOWLIndividuals(String match);
+
+    Set<OWLIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp);
+
+
+//    Set<OWLDataType> getMatchingOWLDataTypes(String match, boolean fullRegExp);
 }

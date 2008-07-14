@@ -236,15 +236,33 @@ public interface OWLModelManager extends ModelManager {
     OWLDescriptionParser getOWLDescriptionParser();
 
 
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLClasses()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
     List<OWLClass> getMatchingOWLClasses(String s);
 
 
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLObjectProperties()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
     List<OWLObjectProperty> getMatchingOWLObjectProperties(String s);
 
-
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLDataProperties()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
     List<OWLDataProperty> getMatchingOWLDataProperties(String s);
 
-
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLIndividuals()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
     List<OWLIndividual> getMatchingOWLIndividuals(String s);
 
 
