@@ -36,6 +36,7 @@ import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSele
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -923,67 +924,31 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    // The following matching methods are just junk implementations.  They should
-    // be replaced with a proper matcher
-
-
     public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLClass> entities = new ArrayList<OWLClass>();
-        for (String s : owlEntityRenderingCache.getOWLClassRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLClass(s);
-                if (entity instanceof OWLClass) {
-                    entities.add((OWLClass) entity);
-                }
-            }
-        }
-        return entities;
+        List<OWLClass> orderedResults = new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart + "*", false));
+        Collections.sort(orderedResults, new OWLObjectComparator<OWLClass>(this));
+        return orderedResults;
     }
 
 
     public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLObjectProperty> entities = new ArrayList<OWLObjectProperty>();
-        for (String s : owlEntityRenderingCache.getOWLObjectPropertyRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLObjectProperty(s);
-                if (entity instanceof OWLObjectProperty) {
-                    entities.add((OWLObjectProperty) entity);
-                }
-            }
-        }
-        return entities;
+        List<OWLObjectProperty> orderedResults = new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart + "*", false));
+        Collections.sort(orderedResults, new OWLObjectComparator<OWLObjectProperty>(this));
+        return orderedResults;
     }
 
 
     public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLDataProperty> entities = new ArrayList<OWLDataProperty>();
-        for (String s : owlEntityRenderingCache.getOWLDataPropertyRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLDataProperty(s);
-                if (entity instanceof OWLDataProperty) {
-                    entities.add((OWLDataProperty) entity);
-                }
-            }
-        }
-        return entities;
+        List<OWLDataProperty> orderedResults = new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart + "*", false));
+        Collections.sort(orderedResults, new OWLObjectComparator<OWLDataProperty>(this));
+        return orderedResults;
     }
 
 
     public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
-        renderingStart = renderingStart.toLowerCase();
-        List<OWLIndividual> entities = new ArrayList<OWLIndividual>();
-        for (String s : owlEntityRenderingCache.getOWLIndividualRenderings()) {
-            if (s.toLowerCase().startsWith(renderingStart)) {
-                OWLEntity entity = owlEntityRenderingCache.getOWLIndividual(s);
-                if (entity instanceof OWLIndividual) {
-                    entities.add((OWLIndividual) entity);
-                }
-            }
-        }
-        return entities;
+        List<OWLIndividual> orderedResults = new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart + "*", false));
+        Collections.sort(orderedResults, new OWLObjectComparator<OWLIndividual>(this));
+        return orderedResults;
     }
 
 

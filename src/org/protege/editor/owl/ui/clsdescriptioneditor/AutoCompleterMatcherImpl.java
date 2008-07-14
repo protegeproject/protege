@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.OWLObject;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,28 +29,21 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
 
     public Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
     		                         boolean individuals, boolean datatypes) {
-        TreeSet<OWLObject> set = new TreeSet<OWLObject>(new Comparator<OWLObject>() {
-            public int compare(OWLObject o1, OWLObject o2) {
-                String ren1 = owlModelManager.getRendering(o1);
-                String ren2 = owlModelManager.getRendering(o2);
-                return ren1.compareTo(ren2);
-            }
-        });
+        TreeSet<OWLObject> set = new TreeSet<OWLObject>(new OWLObjectComparator<OWLObject>(owlModelManager));
+
+        fragment = fragment + "*"; // look for strings that start with the given fragment
+
         if (classes) {
-            set.addAll(owlModelManager.getMatchingOWLClasses(fragment));
-            set.addAll(owlModelManager.getMatchingOWLClasses("'" + fragment));
+            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLClasses(fragment, false));
         }
         if (objectProperties) {
-            set.addAll(owlModelManager.getMatchingOWLObjectProperties(fragment));
-            set.addAll(owlModelManager.getMatchingOWLObjectProperties("'" + fragment));
+            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLObjectProperties(fragment, false));
         }
         if (dataProperties) {
-            set.addAll(owlModelManager.getMatchingOWLDataProperties(fragment));
-            set.addAll(owlModelManager.getMatchingOWLDataProperties("'" + fragment));
+            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLDataProperties(fragment, false));
         }
         if (individuals) {
-            set.addAll(owlModelManager.getMatchingOWLIndividuals(fragment));
-            set.addAll(owlModelManager.getMatchingOWLIndividuals("'" + fragment));
+            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLIndividuals(fragment, false));
         }
         if (datatypes) {
             set.addAll(owlModelManager.getMatchingOWLDataTypes(fragment));
