@@ -199,33 +199,39 @@ public class ProtegeApplication implements BundleActivator {
 
     private static void loadPreferences() {
         // Just the look and feel
-        Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
-        // If the OS is a Mac then the Mac L&F is set by default.  I've had too many complaints
-        // from Mac users that the first thing they do is switch the L&F over to OS X - the Protege
-        // L&F might be nicer on other platforms with L&Fs like motif, but the OS X L&F looks much better
-        // than the Protege L&F and, moreover, the keybindings for keys such as copy&paste in the
-        // Protege L&F are hardcoded to be windows key bindings e.g. Copy is CTRL+C (where as on a
-        // Mac it should be CMD+C)
-        // I don't know if Windows users would prefer the Windows L&F to be the default one - although
-        // the Windows L&F keybindings are the same as the Protege L&F keybindings.
-        String defaultLAFClassName;
-        if (System.getProperty("os.name").indexOf("OS X") != -1) {
-            defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
-            defaultLAFClassName = ProtegeProperties.PLASTIC_LAF_NAME;
-        }
-        String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, defaultLAFClassName);
-        try {
-            if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
-                setProtegeDefaultLookAndFeel(lafClsName);
+
+        // command line look and feel overrides the protege-specific one
+        if (System.getProperty("swing.defaultlaf") == null){
+            // If the OS is a Mac then the Mac L&F is set by default.  I've had too many complaints
+            // from Mac users that the first thing they do is switch the L&F over to OS X - the Protege
+            // L&F might be nicer on other platforms with L&Fs like motif, but the OS X L&F looks much better
+            // than the Protege L&F and, moreover, the keybindings for keys such as copy&paste in the
+            // Protege L&F are hardcoded to be windows key bindings e.g. Copy is CTRL+C (where as on a
+            // Mac it should be CMD+C)
+            // I don't know if Windows users would prefer the Windows L&F to be the default one - although
+            // the Windows L&F keybindings are the same as the Protege L&F keybindings.
+            String defaultLAFClassName;
+            if (System.getProperty("os.name").indexOf("OS X") != -1) {
+                defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
             }
             else {
-                UIManager.setLookAndFeel(lafClsName);
+                defaultLAFClassName = ProtegeProperties.PLASTIC_LAF_NAME;
             }
-        }
-        catch (Exception e) {
-            logger.error(e);
+
+            Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
+            String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, defaultLAFClassName);
+
+            try {
+                if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
+                    setProtegeDefaultLookAndFeel(lafClsName);
+                }
+                else {
+                    UIManager.setLookAndFeel(lafClsName);
+                }
+            }
+            catch (Exception e) {
+                logger.error(e);
+            }
         }
     }
 
