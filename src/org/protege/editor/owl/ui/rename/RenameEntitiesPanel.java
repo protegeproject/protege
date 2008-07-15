@@ -8,7 +8,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.find.EntityFinderPreferences;
 import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
@@ -174,7 +173,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private void reloadEntityList() {
         final ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>(getEntities());
-        Collections.sort(sortedEntities, new OWLObjectComparator<OWLEntity>(eKit.getOWLModelManager()));
+        Collections.sort(sortedEntities, eKit.getOWLModelManager().getOWLObjectComparator());
         list.setData(sortedEntities);
         updateErrors();
         handleStateChanged();

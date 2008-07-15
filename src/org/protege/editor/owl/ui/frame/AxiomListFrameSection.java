@@ -1,10 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.inference.OWLReasonerException;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyChange;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,12 +42,13 @@ import java.util.*;
  */
 public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>, OWLAxiom, OWLAxiom> {
 
-    private RowComparator rowComparator = new RowComparator();
+    private RowComparator rowComparator;
 
     private Set<OWLAxiom> added;
 
     public AxiomListFrameSection(OWLEditorKit editorKit, OWLFrame<Set<OWLAxiom>> owlFrame) {
         super(editorKit, "Axioms", owlFrame);
+        rowComparator = new RowComparator();
         added = new HashSet<OWLAxiom>();
     }
 
@@ -99,17 +105,15 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
 
     private class RowComparator implements Comparator<OWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom>> {
 
+        private Comparator<OWLAxiom> objComparator;
+
+        public RowComparator(){
+            this.objComparator = getOWLModelManager().getOWLObjectComparator();
+        }
 
         public int compare(OWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom> o1,
                            OWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom> o2) {
-            String ren1 = getOWLModelManager().getRendering(o1.getAxiom());
-            String ren2 = getOWLModelManager().getRendering(o2.getAxiom());
-            if (ren1.length() != 0) {
-                return ren1.compareTo(ren2);
-            }
-            else {
-                return 1;
-            }
+            return objComparator.compare(o1.getAxiom(), o2.getAxiom());
         }
     }
 }

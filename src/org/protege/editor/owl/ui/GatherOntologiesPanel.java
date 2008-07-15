@@ -65,7 +65,7 @@ public class GatherOntologiesPanel extends JPanel {
         Box box = new Box(BoxLayout.Y_AXIS);
 
         final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(owlModelManager.getOntologies());
-        Collections.sort(orderedOntologies, new OWLObjectComparator<OWLOntology>(owlModelManager));
+        Collections.sort(orderedOntologies, owlModelManager.getOWLObjectComparator());
         for (final OWLOntology ont : orderedOntologies) {
             ontologiesToSave.add(ont);
             String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, owlModelManager);

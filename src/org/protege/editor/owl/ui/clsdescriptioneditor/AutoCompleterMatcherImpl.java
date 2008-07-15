@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.OWLObject;
 
 import java.util.Set;
@@ -29,7 +28,7 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
 
     public Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
     		                         boolean individuals, boolean datatypes) {
-        TreeSet<OWLObject> set = new TreeSet<OWLObject>(new OWLObjectComparator<OWLObject>(owlModelManager));
+        TreeSet<OWLObject> set = new TreeSet<OWLObject>(owlModelManager.getOWLObjectComparator());
 
         fragment = fragment + "*"; // look for strings that start with the given fragment
 

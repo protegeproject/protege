@@ -1,26 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.*;
+
+import java.util.*;
 
 
 /**
@@ -133,8 +119,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription>>() {
 
-            private OWLObjectComparator comparator = new OWLObjectComparator(getOWLModelManager());
-
+            private Comparator<OWLDescription> comparator = getOWLModelManager().getOWLObjectComparator();
 
             public int compare(OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription> o1,
                                OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLDescription> o2) {

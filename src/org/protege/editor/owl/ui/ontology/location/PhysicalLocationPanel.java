@@ -6,7 +6,6 @@ import org.protege.editor.core.ui.view.ViewBanner;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.ShowFileAction;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
@@ -50,7 +49,7 @@ public class PhysicalLocationPanel extends JPanel {
         Box box = new Box(BoxLayout.Y_AXIS);
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
-        Set<OWLOntology> ts = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(mngr));
+        Set<OWLOntology> ts = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
         ts.addAll(mngr.getOntologies());
         for (OWLOntology ont : ts) {
             OntologySourcePanel panel = new OntologySourcePanel(ont);

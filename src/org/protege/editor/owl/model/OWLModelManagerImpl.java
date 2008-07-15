@@ -926,28 +926,28 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
         List<OWLClass> orderedResults = new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart + "*", false));
-        Collections.sort(orderedResults, new OWLObjectComparator<OWLClass>(this));
+        Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
     }
 
 
     public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
         List<OWLObjectProperty> orderedResults = new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, new OWLObjectComparator<OWLObjectProperty>(this));
+        Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
     }
 
 
     public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
         List<OWLDataProperty> orderedResults = new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, new OWLObjectComparator<OWLDataProperty>(this));
+        Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
     }
 
 
     public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
         List<OWLIndividual> orderedResults = new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart + "*", false));
-        Collections.sort(orderedResults, new OWLObjectComparator<OWLIndividual>(this));
+        Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
     }
 
@@ -979,6 +979,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         annotationRenderer = null;        
         logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
     }
+
+
+    public <T extends OWLObject> Comparator<T> getOWLObjectComparator(){
+        return new OWLObjectComparator<T>(this);
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////
     //

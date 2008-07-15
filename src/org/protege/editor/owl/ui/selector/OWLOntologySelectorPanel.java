@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.selector;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -35,10 +34,8 @@ public class OWLOntologySelectorPanel extends JPanel {
         this.owlEditorKit = owlEditorKit;
         list = new OWLObjectList(owlEditorKit);
         final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
-        final List<OWLOntology> orderedOntologies =
-                new ArrayList<OWLOntology>(mngr.getOntologies());
-        Collections.sort(orderedOntologies,
-                         new OWLObjectComparator<OWLOntology>(mngr));
+        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(mngr.getOntologies());
+        Collections.sort(orderedOntologies, mngr.getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

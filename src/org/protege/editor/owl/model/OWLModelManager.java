@@ -17,6 +17,7 @@ import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.*;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -288,6 +289,9 @@ public interface OWLModelManager extends ModelManager {
 
 
     EntityFinder getEntityFinder();
+
+
+    <T extends OWLObject> Comparator<T> getOWLObjectComparator();
 
 
     OWLReasonerManager getOWLReasonerManager();
