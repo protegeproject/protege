@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -112,10 +111,10 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
     private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> {
 
-        private OWLObjectComparator<OWLAnnotationAxiom> owlObjectComparator;
+        private Comparator<OWLAnnotationAxiom> owlObjectComparator;
 
         public OWLAnnotationSectionRowComparator(OWLModelManager owlModelManager) {
-             owlObjectComparator = new OWLObjectComparator<OWLAnnotationAxiom>(owlModelManager);
+             owlObjectComparator = owlModelManager.getOWLObjectComparator();
         }
 
         public int compare(OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o1,

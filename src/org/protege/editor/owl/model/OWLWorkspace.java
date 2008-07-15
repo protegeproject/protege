@@ -23,7 +23,6 @@ import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
@@ -387,7 +386,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         ontologiesMenu.addSeparator();
         ButtonGroup ontButtons = new ButtonGroup();
-        Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(mngr));
+        Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
         orderedOntologies.addAll(mngr.getOntologies());
         for (final OWLOntology ont : orderedOntologies){
             JMenuItem item = new JRadioButtonMenuItem(mngr.getURIRendering(ont.getURI()));
@@ -623,7 +622,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void rebuildList() {
         try {
-            TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
+            TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(getOWLModelManager().getOWLObjectComparator());
             ts.addAll(getOWLModelManager().getOntologies());
             ontologiesList.setModel(new DefaultComboBoxModel(ts.toArray()));
             ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());

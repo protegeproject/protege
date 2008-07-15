@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
@@ -20,10 +20,8 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -47,7 +45,9 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
     final public void initialiseClassView() throws Exception {
         setLayout(new BorderLayout(7, 7));
         tree = new OWLModelManagerTree<OWLClass>(getOWLEditorKit(), getOWLClassHierarchyProvider());
-        tree.setOWLObjectComparator(new OWLObjectComparator<OWLClass>(getOWLModelManager()) {
+        // @@TODO should get the comparator from the OWLModelManager, but needs some extra behaviour
+        final Comparator<OWLClass> comp = getOWLModelManager().getOWLObjectComparator();
+        tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<OWLClass>(comp) {
             public int compare(OWLClass o1, OWLClass o2) {
                 if (isNothing(o1)) {
                     return -1;

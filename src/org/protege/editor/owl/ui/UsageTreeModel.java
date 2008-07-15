@@ -43,7 +43,7 @@ public class UsageTreeModel extends DefaultTreeModel {
         owlModelManager = owlEditorKit.getOWLModelManager();
         axiomSorter = new AxiomSorter();
         nodeMap = new HashMap<OWLEntity, DefaultMutableTreeNode>();
-        axiomsByEntityMap = new TreeMap<OWLEntity, Set<OWLAxiom>>(new OWLObjectComparator<OWLEntity>(owlModelManager));
+        axiomsByEntityMap = new TreeMap<OWLEntity, Set<OWLAxiom>>(owlModelManager.getOWLObjectComparator());
     }
 
     public UsageTreeModel(OWLEditorKit owlEditorKit, OWLEntity entity) {

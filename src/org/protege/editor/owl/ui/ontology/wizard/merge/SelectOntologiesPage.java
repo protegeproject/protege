@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.ontology.wizard.merge;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
@@ -40,7 +39,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
         list.setVisibleRowCount(8);
         list.setCellRenderer(getOWLEditorKit().getOWLWorkspace().createOWLCellRenderer());
         final java.util.List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(getOWLModelManager().getOntologies());
-        Collections.sort(orderedOntologies, new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
+        Collections.sort(orderedOntologies, getOWLModelManager().getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
         parent.add(new JScrollPane(list), BorderLayout.NORTH);
     }

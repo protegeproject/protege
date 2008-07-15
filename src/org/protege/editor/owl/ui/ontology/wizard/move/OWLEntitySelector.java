@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 import org.apache.commons.lang.NotImplementedException;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owl.model.*;
@@ -12,6 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,9 +61,8 @@ public class OWLEntitySelector<O extends OWLEntity> extends JPanel {
 
 
         if (hp != null){
-            OWLObjectTree<T> tree = new OWLObjectTree<T>(eKit,
-                                                         hp,
-                                                         new OWLObjectComparator<T>(eKit.getOWLModelManager()));
+            final Comparator<T> comp = eKit.getOWLModelManager().getOWLObjectComparator();
+            OWLObjectTree<T> tree = new OWLObjectTree<T>(eKit, hp, comp);
             final OWLCellRenderer cellRenderer = new OWLCellRenderer(eKit, false, true);
             cellRenderer.setTransparent();
             tree.setCellRenderer(cellRenderer);

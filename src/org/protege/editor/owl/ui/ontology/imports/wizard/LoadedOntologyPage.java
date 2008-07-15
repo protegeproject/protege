@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.ontology.imports.wizard;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.model.OWLOntology;
@@ -45,7 +44,7 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
         List<OWLOntology> ontologies = new ArrayList<OWLOntology>();
         ontologies.addAll(getOWLModelManager().getOntologies());
         ontologies.removeAll(getOWLModelManager().getActiveOntologies());
-        Collections.sort(ontologies, new OWLObjectComparator<OWLOntology>(getOWLModelManager()));
+        Collections.sort(ontologies, getOWLModelManager().getOWLObjectComparator());
         return ontologies;
     }
 

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.semanticweb.owl.model.OWLProperty;
@@ -14,10 +13,7 @@ import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: nickdrummond
@@ -32,7 +28,8 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         setLayout(new BorderLayout());
 
         tree = new OWLModelManagerTree<O>(getOWLEditorKit(), getHierarchyProvider());
-        tree.setOWLObjectComparator(new OWLObjectComparator<O>(getOWLModelManager()));
+        final Comparator<O> comp = getOWLModelManager().getOWLObjectComparator();
+        tree.setOWLObjectComparator(comp);
         add(new JScrollPane(tree), BorderLayout.CENTER);
 
         tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
