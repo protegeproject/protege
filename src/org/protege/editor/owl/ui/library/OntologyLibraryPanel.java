@@ -1,31 +1,5 @@
 package org.protege.editor.owl.ui.library;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.TreeSet;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.PropertyUtil;
@@ -36,10 +10,26 @@ import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
+
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -50,6 +40,10 @@ import org.protege.editor.owl.ui.UIHelper;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * Panel for showing the available ontology libraries and allowing them to be edited.
+ * Editing of the tree does not automatically cause the available libraries to be updated
+ * <code>updateLibraryManager()</code> must be called for this to happen.
  */
 public class OntologyLibraryPanel extends JPanel {
 
@@ -63,6 +57,10 @@ public class OntologyLibraryPanel extends JPanel {
     private Action removeLibraryAction;
 
     private DefaultMutableTreeNode rootNode;
+
+    private Set<OntologyLibrary> addedLibraries = new HashSet<OntologyLibrary>();
+
+    private Set<OntologyLibrary> removedLibraries = new HashSet<OntologyLibrary>();
 
 
     public OntologyLibraryPanel(OWLEditorKit owlEditorKit) {
@@ -96,13 +94,13 @@ public class OntologyLibraryPanel extends JPanel {
 
         vbc.addAction(new AbstractAction("Add library...", OWLIcons.getIcon("ontology.library.add.png")) {
             public void actionPerformed(ActionEvent e) {
-                addLibrary();
+                handleAddLibrary();
             }
         });
         removeLibraryAction = new AbstractAction("Remove selected library",
                                                  OWLIcons.getIcon("ontology.library.remove.png")) {
             public void actionPerformed(ActionEvent e) {
-                removeLibrary();
+                handleRemoveLibrary();
             }
         };
         tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
@@ -128,7 +126,7 @@ public class OntologyLibraryPanel extends JPanel {
                 }
             }
         });
-        reloadTree();
+        loadTree();
         updateState();
     }
 
@@ -173,16 +171,18 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
 
-    private void addLibrary() {
+    private void handleAddLibrary() {
         File f = UIUtil.chooseFolder(OntologyLibraryPanel.this, "Please select a folder containing ontologies");
         if (f != null) {
-            getOWLModelManager().getOntologyLibraryManager().addLibrary(new FolderOntologyLibrary(f));
-            reloadTree();
+            OntologyLibrary lib = new FolderOntologyLibrary(f);
+            if (!removedLibraries.remove(lib)){ // just in case of re-insertion
+                addedLibraries.add(lib);
+            }
+            insertLibraryIntoTree(lib);
         }
     }
 
-
-    private void removeLibrary() {
+        private void handleRemoveLibrary() {
         TreePath path = tree.getSelectionPath();
         if (path == null) {
             return;
@@ -190,8 +190,11 @@ public class OntologyLibraryPanel extends JPanel {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
         Object o = node.getUserObject();
         if (o instanceof OntologyLibrary) {
-            getOWLModelManager().getOntologyLibraryManager().removeLibraray((OntologyLibrary) o);
-            reloadTree();
+            OntologyLibrary lib = (OntologyLibrary)o;
+            if (!addedLibraries.remove(lib)){
+                removedLibraries.add(lib);
+            }
+            removeLibraryFromTree(lib);
         }
     }
 
@@ -207,31 +210,55 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
 
-    private void reloadTree() {
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        int childCount = rootNode.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            model.removeNodeFromParent((DefaultMutableTreeNode) rootNode.getChildAt(0));
-        }
+    private void loadTree() {
         OntologyLibraryManager ontologyLibrary = getOWLModelManager().getOntologyLibraryManager();
-        int index = 0;
         for (OntologyLibrary lib : ontologyLibrary.getLibraries()) {
-            DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
-            model.insertNodeInto(libNode, rootNode, index);
-            TreeSet<URI> uris = new TreeSet<URI>(lib.getOntologyURIs());
-            int uriIndex = 0;
-            for (URI uri : uris) {
-                model.insertNodeInto(new DefaultMutableTreeNode(uri), libNode, uriIndex);
-                uriIndex++;
+            insertLibraryIntoTree(lib);
+        }
+    }
+
+    private void removeLibraryFromTree(OntologyLibrary lib) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        MutableTreeNode removeNode = null;
+        for (int i=0; i<rootNode.getChildCount(); i++){
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)rootNode.getChildAt(i);
+            if (node.getUserObject().equals(lib)){
+                removeNode = node;
+                break;
             }
-            tree.expandPath(new TreePath(libNode.getPath()));
-            index++;
+        }
+        if (removeNode != null){
+            model.removeNodeFromParent(removeNode);
         }
     }
 
 
+    private void insertLibraryIntoTree(OntologyLibrary lib) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
+        model.insertNodeInto(libNode, rootNode, rootNode.getChildCount());
+        TreeSet<URI> uris = new TreeSet<URI>(lib.getOntologyURIs());
+        int uriIndex = 0;
+        for (URI uri : uris) {
+            model.insertNodeInto(new DefaultMutableTreeNode(uri), libNode, uriIndex);
+            uriIndex++;
+        }
+        tree.expandPath(new TreePath(libNode.getPath()));
+    }
+    
+
     public Dimension getPreferredSize() {
         return new Dimension(800, 600);
+    }
+
+
+    public Set<OntologyLibrary> getAddedLibraries() {
+        return addedLibraries;
+    }
+
+
+    public Set<OntologyLibrary> getRemovedLibraries(){
+        return removedLibraries;
     }
 
 
@@ -267,7 +294,25 @@ public class OntologyLibraryPanel extends JPanel {
     public static void showDialog(OWLEditorKit owlEditorKit) {
         UIHelper helper = new UIHelper(owlEditorKit);
         OntologyLibraryPanel panel = new OntologyLibraryPanel(owlEditorKit);
-        helper.showDialog("Ontology libraries", panel);
+        if (helper.showDialog("Ontology libraries", panel) == JOptionPane.OK_OPTION){
+            panel.updateLibraryManager();
+        }
         panel.dispose();
+    }
+
+
+    /**
+     * Updates the library manager and saves its state
+     */
+    public void updateLibraryManager() {
+        final OntologyLibraryManager libManager = owlEditorKit.getOWLModelManager().getOntologyLibraryManager();
+        for (OntologyLibrary lib : getAddedLibraries()){
+            libManager.addLibrary(lib);
+        }
+        for (OntologyLibrary lib : getRemovedLibraries()){
+            libManager.removeLibraray(lib);
+        }
+        OntologyLibraryLoader loader = new OntologyLibraryLoader(libManager);
+        loader.saveLibraries();
     }
 }
