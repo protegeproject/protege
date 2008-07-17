@@ -61,4 +61,6 @@
                manifest = "${core.dir}/META-INF/MANIFEST.MF"/>
         </target>
 
+        <target name = "junit"/>
+
 </project>
