@@ -147,20 +147,21 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
     private void updateImplicitRoots(OWLOntologyChange change) {
-        if (change.isAxiomChange()) {
-            ImplicitUpdatesVisitor visitor = new ImplicitUpdatesVisitor(change instanceof RemoveAxiom);
-            Set<OWLClass> oldOrphans = rootFinder.getTerminalElements();
-            visitor.updateImplicitRoots(change.getAxiom());
-            if (visitor.isRootChanged()) {
-                registerNodeChanged(root);
-                for (OWLClass orphan : rootFinder.getTerminalElements()) {
-                    registerNodeChanged(orphan);
-                }
-                for (OWLClass maybeNotOrphan : oldOrphans) {
-                    registerNodeChanged(maybeNotOrphan);
-                }
-            }
-        }
+    	boolean remove = change instanceof RemoveAxiom;
+    	OWLAxiom axiom = change.getAxiom();
+    	Set<OWLClass> referencedClasses = new HashSet<OWLClass>();
+    	for (OWLEntity entity : axiom.getReferencedEntities()) {
+    		if (!(entity instanceof OWLClass)) {
+    			continue;
+    		}
+    		OWLClass cls = (OWLClass) entity;
+    		if (remove && !containsReference(cls)) {
+    			rootFinder.removeTerminalElement(cls);
+    			continue;
+    		}
+    		referencedClasses.add(cls);
+    	}
+    	rootFinder.appendTerminalElements(referencedClasses);
     }
 
     public Set<OWLClass> getRoots() {
@@ -279,115 +280,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private class ImplicitUpdatesVisitor extends OWLAxiomVisitorAdapter {
-        private boolean changed = false;
-        private boolean visited = false;
-        private boolean remove;
 
-        public ImplicitUpdatesVisitor(boolean remove) {
-            this.remove = remove;
-        }
-
-        public void updateImplicitRoots(OWLAxiom ax){
-            changed = false;
-            visited = false;
-            ax.accept(this);
-            if (!visited){
-                visitOtherAxiom(ax);
-            }
-        }
-
-
-        private void visitOtherAxiom(OWLAxiom ax) {
-            visited = true;
-            if (!remove){
-                for (OWLEntity entity : ax.getReferencedEntities()){
-                    if (entity.isOWLClass() && !rootFinder.getTerminalElements().contains(entity)){
-                        // classes mentioned are candidates - so send them to the rootFinder
-                        rootFinder.appendTerminalElements(Collections.singleton((OWLClass)entity));
-                        if (rootFinder.getTerminalElements().contains(entity)){
-                            changed = true;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        public void visit(OWLSubClassAxiom ax) {
-            visited = true;
-            if (ax.getSubClass() instanceof OWLClass) {
-                NamedClassExtractor extractor = new NamedClassExtractor();
-                ax.getSuperClass().accept(extractor);
-                if (!extractor.getResult().isEmpty()) {
-                    changed = true;
-                    Set<OWLClass> orphanCandidates = new HashSet<OWLClass>();
-                    orphanCandidates.add((OWLClass) ax.getSubClass());
-                    orphanCandidates.addAll(extractor.getResult());
-                    pruneDeletedClasses(orphanCandidates);
-                    orphanCandidates.addAll(rootFinder.getTerminalElements());
-                    rootFinder.findTerminalElements(orphanCandidates);
-                }
-            }
-        }
-
-
-        public void visit(OWLEquivalentClassesAxiom axiom) {
-            visited = true;
-            Set<OWLDescription> descriptions = axiom.getDescriptions();
-            boolean found = false;
-            for (OWLDescription description :  descriptions) {
-                if (description instanceof OWLClass) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) return;
-            changed = true;
-            NamedClassExtractor extractor = new NamedClassExtractor();
-            for (OWLDescription description : descriptions) {
-                description.accept(extractor);
-            }
-            Set<OWLClass> orphanCandidates = extractor.getResult();
-            pruneDeletedClasses(orphanCandidates);
-            orphanCandidates.addAll(rootFinder.getTerminalElements());
-            rootFinder.findTerminalElements(orphanCandidates);
-        }
-
-
-        public void visit(OWLDeclarationAxiom axiom) {
-            visited = true;
-            if (axiom.getEntity() instanceof OWLClass) {
-                OWLClass cls = (OWLClass) axiom.getEntity();
-                if (remove && !containsReference(cls)) {
-                    return;
-                }
-                rootFinder.appendTerminalElements(Collections.singleton(cls));
-                changed = true;
-            }
-        }
-
-        public boolean isRootChanged() {
-            return changed;
-        }
-
-        private void pruneDeletedClasses(Set<OWLClass> orphanCandidates) {
-            if (remove) {
-                Set<OWLClass> deletedClasses = null;
-                for (OWLClass orphanCandidate : orphanCandidates) {
-                    if (!containsReference(orphanCandidate)) {
-                        if (deletedClasses == null) {
-                            deletedClasses = new HashSet<OWLClass>();
-                        }
-                        deletedClasses.add(orphanCandidate);
-                    }
-                }
-                if (deletedClasses != null) {
-                    orphanCandidates.removeAll(deletedClasses);
-                }
-            }
-        }
-    }
 
 
 
