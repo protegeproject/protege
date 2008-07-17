@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY owl11 "http://www.w3.org/2006/12/owl11#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY twoEq "http://www.tigraworld.com/protege/twoEq.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.tigraworld.com/protege/twoEq.owl#"
+     xml:base="http://www.tigraworld.com/protege/twoEq.owl"
+     xmlns:owl11="http://www.w3.org/2006/12/owl11#"
+     xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:twoEq="http://www.tigraworld.com/protege/twoEq.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.tigraworld.com/protege/twoEq.owl#A -->
+
+    <owl:Class rdf:about="#A"/>
+    
+
+
+    <!-- http://www.tigraworld.com/protege/twoEq.owl#B -->
+
+    <owl:Class rdf:about="#B">
+        <owl:equivalentClass rdf:resource="#A"/>
+    </owl:Class>
+</rdf:RDF>
