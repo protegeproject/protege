@@ -2,20 +2,20 @@
 <project name="common library bundle" default="bundle" basedir="..">
 
   <property name="src" location="${commonlibs.dir}/src"/>
-	
-	
+    
+    
     <!-- =================================================================== -->
     <!-- Classpath declaration - used in the "compile" target -->
     <!-- =================================================================== -->
     <path id = "local.classpath">    
-	  <fileset dir="${commonlibs.dir}/lib" includes="*.jar"/>
+      <fileset dir="${commonlibs.dir}/lib" includes="*.jar"/>
     </path>
-	
+    
   <target name="init"> 
     <echo message="---------------Building the common libs Bundle-------------"/>
     <mkdir dir="${commonlibs.classes}"/>
   </target>
-	
+    
     <!-- =================================================================== -->
     <!-- COMPILE -->
     <!-- =================================================================== -->
@@ -28,7 +28,7 @@
           <classpath refid = "local.classpath"/>
        </javac>
   </target>
-	
+    
 
   <target name="bundle" depends="compile">
     <copy todir="${commonlibs.classes}/lib">
@@ -46,5 +46,8 @@
          jarfile  = "${commonlibs.jar}"
          manifest = "${commonlibs.dir}/META-INF/MANIFEST.MF"/>
   </target> 
+
+
+  <target name = "junit"/>
 
 </project>
