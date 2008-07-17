@@ -1,9 +1,10 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <project name = "owl" default = "compile" basedir = "..">
-    <property name = "lib.dir" value = "${owleditor.dir}/lib"/>
-    <property name = "icons.dir" value = "${owleditor.dir}/icons"/>
-    <property name = "resources.dir" value = "${owleditor.dir}/resources"/>
-    <property name = "src.dir" value = "${owleditor.dir}/src"/>
+    <property name = "lib.dir"       location = "${owleditor.dir}/lib"/>
+    <property name = "icons.dir"     location = "${owleditor.dir}/icons"/>
+    <property name = "resources.dir" location = "${owleditor.dir}/resources"/>
+    <property name = "src.dir"       location = "${owleditor.dir}/src"/>
+    <property name = "junit.src.dir" location = "${owleditor.dir}/junit"/>
     
     <!-- =================================================================== -->
     <!-- Classpath declaration - used in the "compile" target -->
@@ -52,5 +53,46 @@
              destfile = "${owleditor.jar}"
              manifest="${owleditor.dir}/META-INF/MANIFEST.MF"/>
     </target>
-    
+
+    <!-- =================================================================== -->
+    <!-- JUNIT -->
+    <!-- =================================================================== -->
+
+    <target name = "junit.compile">
+        <javac srcdir = "${junit.src.dir}" 
+               destdir = "${owleditor.classes}" 
+               debug="${debug}" 
+               source = "${source}" 
+               includeAntRuntime = "${includeAntRuntime}">
+            <classpath refid = "owleditor.classpath"/>
+            <classpath>
+                <pathelement location = "${junit.lib}"/>
+            </classpath>
+        </javac>
+    </target>
+
+
+    <target name = "junit" depends = "junit.compile">
+        <junit printsummary="withOutAndErr"
+               fork = "yes"
+               dir = "${owleditor.dir}"
+               filtertrace="yes"
+               showoutput="yes"
+               haltonfailure = "${junit.haltonfailure}"
+               haltonerror = "${junit.haltonerror}">
+            <jvmarg value="-Xmx${junit.memory}"/>
+            <jvmarg value = "-Dlog4j.configuration=file:../../log4j-junit.xml"/>
+            <classpath refid = "owleditor.classpath"/>
+            <classpath>
+                <pathelement location = "${junit.lib}"/>
+                <pathelement location = "${owleditor.classes}"/>
+            </classpath>
+            <batchtest>
+                <fileset dir="${owleditor.dir}/junit">
+                    <include name = "**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
 </project>
