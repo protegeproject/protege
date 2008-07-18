@@ -38,17 +38,13 @@
 
     <!-- http://tigraworld.com/protege/twoParents.owl#A -->
 
-    <owl:Class rdf:about="#A">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
+    <owl:Class rdf:about="#A"/>
     
 
 
     <!-- http://tigraworld.com/protege/twoParents.owl#B -->
 
-    <owl:Class rdf:about="#B">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
+    <owl:Class rdf:about="#B"/>
     
 
 
@@ -56,6 +52,7 @@
 
     <owl:Class rdf:about="#C">
         <rdfs:subClassOf rdf:resource="#A"/>
+        <rdfs:subClassOf rdf:resource="#E"/>
     </owl:Class>
     
 
@@ -63,8 +60,7 @@
     <!-- http://tigraworld.com/protege/twoParents.owl#D -->
 
     <owl:Class rdf:about="#D">
-        <owl:equivalentClass rdf:resource="#C"/>
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf rdf:resource="#C"/>
     </owl:Class>
     
 
@@ -72,7 +68,7 @@
     <!-- http://tigraworld.com/protege/twoParents.owl#E -->
 
     <owl:Class rdf:about="#E">
-        <owl:equivalentClass rdf:resource="#D"/>
+        <rdfs:subClassOf rdf:resource="#D"/>
         <rdfs:subClassOf rdf:resource="#B"/>
     </owl:Class>
     
