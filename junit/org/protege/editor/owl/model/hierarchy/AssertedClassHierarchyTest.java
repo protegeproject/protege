@@ -8,7 +8,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.coode.owl.functionalrenderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owl.apibinding.OWLManager;
@@ -23,6 +22,7 @@ import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.model.OWLOntologyChangeException;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
 import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owl.model.RemoveAxiom;
 
 public class AssertedClassHierarchyTest extends TestCase {
     private Logger log = Logger.getLogger(AssertedClassHierarchyTest.class);
@@ -39,9 +39,10 @@ public class AssertedClassHierarchyTest extends TestCase {
         return hierarchy;
     }
     
-    public void testSimpleLoop() throws OWLOntologyCreationException, URISyntaxException {
+    public void testSimpleLoop() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException {
         String namespace = "http://tigraworld.com/protege/simpleLoop.owl#";
         AssertedClassHierarchyProvider2 hierarchy = installOntology("junit/ontologies/tree/simpleLoop.owl");
+        OWLOntology ontology = manager.getOntologies().iterator().next();
         
         OWLClass a = factory.getOWLClass(new URI(namespace + "A"));
         OWLClass b = factory.getOWLClass(new URI(namespace + "B"));
@@ -56,6 +57,20 @@ public class AssertedClassHierarchyTest extends TestCase {
         assertTrue(hierarchy.getChildren(a).isEmpty());
         assertTrue(hierarchy.getChildren(b).isEmpty());
         assertTrue(hierarchy.getChildren(c).isEmpty());
+        
+        OWLAxiom axiom = factory.getOWLSubClassAxiom(a, c);
+        manager.applyChange(new RemoveAxiom(ontology, axiom));
+        
+        assertEquals(1, hierarchy.getChildren(factory.getOWLThing()).size());
+        assertTrue(hierarchy.getChildren(factory.getOWLThing()).contains(a));
+        
+        assertEquals(1, hierarchy.getChildren(a).size());
+        assertTrue(hierarchy.getChildren(a).contains(b));
+        
+        assertEquals(1, hierarchy.getChildren(b).size());
+        assertTrue(hierarchy.getChildren(b).contains(c));
+
+        assertEquals(0, hierarchy.getChildren(c).size());
     }
     
     public void testTwoParents() throws OWLOntologyCreationException, URISyntaxException {
@@ -106,6 +121,11 @@ public class AssertedClassHierarchyTest extends TestCase {
         }
         
         assertEquals(6, hierarchy.getChildren(factory.getOWLThing()).size());
+        
+        change = new RemoveAxiom(ontology, gca);
+        manager.applyChange(change);
+        
+        assertEquals(3, hierarchy.getChildren(factory.getOWLThing()).size());
     }
 
 }

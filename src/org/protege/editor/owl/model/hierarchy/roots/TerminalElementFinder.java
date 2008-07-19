@@ -88,10 +88,15 @@ public class TerminalElementFinder<X> {
     }
     
     public void clear() {
-        terminalElements.clear();
+        terminalElements = new HashSet<X>();
         equivalence.clear();
     }
     
+    /*
+     * don't call this when the order relation has changed.  This only adds
+     * elements to the terminal elements.  Instead form the unison of the current
+     * terminal elements and the new candidates and call findTerminalElements again.
+     */
     public void appendTerminalElements(Set<X> candidates) {
         for (X candidate : candidates) {
             if (log.isDebugEnabled()) {
