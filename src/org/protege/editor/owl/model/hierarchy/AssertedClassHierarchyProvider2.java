@@ -87,33 +87,16 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
+        Set<OWLClass> oldTerminalElements = new HashSet<OWLClass>(rootFinder.getTerminalElements());
         Set<OWLClass> changedClasses = new HashSet<OWLClass>();
         for (OWLOntologyChange change : changes) {
             // only listen for changes on the appropriate ontologies
             if (ontologies.contains(change.getOntology())){
-
                 if (change.isAxiomChange()) {
-                    OWLAxiomChange axiomChange = (OWLAxiomChange) change;
-                    if (axiomChange instanceof RemoveAxiom) {
-                        boolean rootChanged = false;
-                        for (OWLEntity entity : axiomChange.getEntities()) {
-                            if (entity instanceof OWLClass && !containsReference((OWLClass) entity)) {
-                                rootFinder.removeTerminalElement((OWLClass) entity);
-                                rootChanged = true;
-                            }
-                        }
-                        if (rootChanged) {
-                            registerNodeChanged(root);
-                        }
-                    }
                     updateImplicitRoots(change);
-                    if (change.getAxiom() instanceof OWLSubClassAxiom
-                            || change.getAxiom() instanceof OWLEquivalentClassesAxiom
-                            || change.getAxiom() instanceof OWLDeclarationAxiom) {
-                        for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
-                            if (entity instanceof OWLClass) {
-                                changedClasses.add((OWLClass) entity);
-                            }
+                    for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
+                        if (entity instanceof OWLClass && !entity.equals(root)) {
+                            changedClasses.add((OWLClass) entity);
                         }
                     }
                 }
@@ -121,14 +104,23 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         }
         for (OWLClass cls : changedClasses) {
             registerNodeChanged(cls);
-            Set<OWLClass> anc = getAncestors(cls);
-            if (anc.contains(cls)) {
-                for (OWLClass an : anc) {
-                    registerNodeChanged(an);
-                }
+        }
+        boolean rootChanged = false;
+        for (OWLClass cls : rootFinder.getTerminalElements()) {
+            if (!oldTerminalElements.contains(cls)) {
+                rootChanged = true;
+                registerNodeChanged(cls);
             }
         }
-
+        for (OWLClass cls : oldTerminalElements) {
+            if (!rootFinder.getTerminalElements().contains(cls)) {
+                rootChanged = true;
+                registerNodeChanged(cls);
+            }
+        }
+        if (rootChanged) {
+            registerNodeChanged(root);
+        }
         notifyNodeChanges();
     }
 
@@ -151,7 +143,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     	OWLAxiom axiom = change.getAxiom();
     	Set<OWLClass> referencedClasses = new HashSet<OWLClass>();
     	for (OWLEntity entity : axiom.getReferencedEntities()) {
-    		if (!(entity instanceof OWLClass)) {
+    		if (!(entity instanceof OWLClass) || entity.equals(root)) {
     			continue;
     		}
     		OWLClass cls = (OWLClass) entity;
@@ -161,7 +153,9 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     		}
     		referencedClasses.add(cls);
     	}
-    	rootFinder.appendTerminalElements(referencedClasses);
+    	Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>(referencedClasses);
+    	possibleTerminalElements.addAll(rootFinder.getTerminalElements());
+    	rootFinder.findTerminalElements(possibleTerminalElements);
     }
 
     public Set<OWLClass> getRoots() {
