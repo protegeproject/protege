@@ -1,5 +1,27 @@
 package org.protege.editor.core.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
@@ -9,19 +31,6 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -30,6 +39,7 @@ import java.util.TreeSet;
  * Date: 12-May-2007<br><br>
  */
 public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
+    private static Logger log = Logger.getLogger(OpenFromURIPanel.class);
 
     private JTextField uriField;
 
@@ -241,7 +251,7 @@ public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
 
 
         public boolean handleDelete() {
-            System.out.println("DEL!");
+            log.info("DEL!");
             return true;
         }
 
