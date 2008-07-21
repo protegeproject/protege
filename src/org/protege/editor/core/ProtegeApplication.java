@@ -65,7 +65,7 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
  * <p/>
- * The ProtegeApplication is the main entry point to Protge.  The application
+ * The ProtegeApplication is the main entry point to Protege.  The application
  * is actually a plugin to the Java Plugin Framework
  */
 public class ProtegeApplication implements BundleActivator {
@@ -104,6 +104,16 @@ public class ProtegeApplication implements BundleActivator {
         displayPlatform();
         clearRecentOnFirstOSGiRun();
         initApplication(new String[0]);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    ProtegeApplication.context.getBundle().uninstall();
+                }
+                catch (Exception e) {
+                    logger.error("Failed to correctly shutdown Protege:", e);
+                }
+            }
+        });
         ProtegeManager.getInstance().initialise(this);
         startApplication();
     }
@@ -111,10 +121,13 @@ public class ProtegeApplication implements BundleActivator {
 
     /* TODO - this needs work */
     public void stop(BundleContext arg0) throws Exception {
+        // @@TODO close all open workspaces neatly
         BookMarkedURIManager.getInstance().dispose();
+        RecentEditorKitManager.getInstance().save();        
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
+        logger.info("Thankyou for using Protege. Goodbye.");
     }
 
 
@@ -156,16 +169,12 @@ public class ProtegeApplication implements BundleActivator {
         logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
     }
 
+
     protected ProtegeApplication initApplication(String args[]) throws Exception {
         PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
         loadPreferences();
         setupExceptionHandler();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                RecentEditorKitManager.getInstance().save();
-            }
-        });
         processCommandLineURIs(args);
         loadPlugins();
         loadRecentEditorKits();
@@ -180,9 +189,7 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "29A779");
         ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "531852");
         ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");//"5D30A2"); //"E55D1A");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY,
-                                            "C59969");//"719FA0");//"7DA230");//"98BDD8");
-
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "C59969");//"719FA0");//"7DA230");//"98BDD8");
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
         ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY, "Data property");
@@ -271,7 +278,6 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-
     private void processCommandLineURIs(String[] strings) {
         commandLineURIs = new ArrayList<URI>();
         for (String s : strings) {
@@ -284,6 +290,8 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
     }
+
+
     private List<File> getPluginBundles() {
         ArrayList<File> pluginBundles = new ArrayList<File>();
         String dir_name = System.getProperty(BUNDLE_DIR_PROP);
@@ -298,6 +306,7 @@ public class ProtegeApplication implements BundleActivator {
         }
         return pluginBundles;
     }
+
 
     private List<File> getExtraBundles() {
         String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
@@ -371,6 +380,7 @@ public class ProtegeApplication implements BundleActivator {
         bundles_loaded = true;
     }
 
+
     private String getBundleLocation(File source) throws IOException {
         boolean directoryBundlesWork = canReadDirectoryBundles();
         if (source.isFile() || directoryBundlesWork) { // the normal case
@@ -385,6 +395,7 @@ public class ProtegeApplication implements BundleActivator {
             return jar.toURI().toString();
         }
     }
+
 
     private boolean canReadDirectoryBundles() {
         return System.getProperty(OSGI_READS_DIRECTORIES, "true").toLowerCase().equals("true");
@@ -420,6 +431,7 @@ public class ProtegeApplication implements BundleActivator {
         }
         UpdateManager.getInstance().checkForUpdates(false);
     }
+
 
     /////////////////////////////////////////////////////////////////////////////////
     //
