@@ -86,10 +86,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private OWLModelManagerListener owlModelManagerListener;
 
-    private OWLOntologyChangeListener ontologyChangeListener;
-
-    private OWLOntologyChangeVisitor changeFilter;
-
     private Set<EventType> reselectionEventTypes = new HashSet<EventType>();
 
     private ErrorNotificationLabel errorNotificationLabel;
@@ -190,44 +186,61 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
         owlModelManagerListener = new OWLModelManagerListener() {
-
             public void handleChange(OWLModelManagerChangeEvent event) {
-                if (reselectionEventTypes.contains(event.getType())) {
-                    logger.debug("Reselection event..... verifying selections.");
-                    verifySelection();
-                }
-
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    updateTitleBar();
-                    rebuildList();
-                    rebuildOntologiesMenu();
-                    ontologiesList.repaint();
-                }
-
-                if (event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
-                    verifySelection();
-                }
-
-                if (event.isType(EventType.ONTOLOGY_LOADED) || event.isType(EventType.ONTOLOGY_CREATED)) {
-                    if (getTabCount() > 0) {
-                        setSelectedTab(0);
-                    }
-                }
-
-                if(event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-                    refreshComponents();
-                }
+                handleModelManagerEvent(event.getType());
             }
         };
         getOWLModelManager().addListener(owlModelManagerListener);
+
         listener = new OWLEntityCollectingOntologyChangeListener() {
             public void ontologiesChanged() {
                 verifySelection(getEntities());
             }
-        };
 
+            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+                super.ontologiesChanged(changes);
+                handleOntologiesChanged(changes);
+            }
+        };
         getOWLModelManager().addOntologyChangeListener(listener);
+
         getOWLModelManager().getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
+    }
+
+    
+    private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
+        for (OWLOntologyChange chg : changes){
+            if (chg instanceof SetOntologyURI){
+                rebuildOntologiesMenu();
+                break;
+            }
+        }
+    }
+
+
+    private void handleModelManagerEvent(EventType type) {
+        if (reselectionEventTypes.contains(type)) {
+            logger.debug("Reselection event..... verifying selections.");
+            verifySelection();
+        }
+
+        if (type.equals(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+            updateTitleBar();
+            rebuildList();
+            rebuildOntologiesMenu();
+            ontologiesList.repaint();
+        }
+        else if (type.equals(EventType.ONTOLOGY_CLASSIFIED)) {
+            verifySelection();
+        }
+        else if (type.equals(EventType.ONTOLOGY_LOADED) || type.equals(EventType.ONTOLOGY_CREATED)) {
+            if (getTabCount() > 0) {
+                setSelectedTab(0);
+            }
+        }
+        else if(type.equals(EventType.ENTITY_RENDERER_CHANGED)) {
+            refreshComponents();
+        }
     }
 
 
@@ -464,7 +477,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         topBarPanel.add(ontologiesList, gbc);
-        rebuildList();
+
         ontologiesList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
