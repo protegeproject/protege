@@ -74,6 +74,7 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
         protected void updateState() {
             if (list.getSelectedValue() == null) {
                 setEnabled(false);
+                return;
             }
             for (Object selVal : list.getSelectedValues()) {
                 if (!(selVal instanceof OWLSubClassAxiomFrameSectionRow)) {
@@ -92,25 +93,28 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
 
 
     private void convertSelectedRowsToDefinedClass() {
-        Set<OWLDescription> descriptions = new HashSet<OWLDescription>();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        for (Object selVal : list.getSelectedValues()) {
-            if (selVal instanceof OWLSubClassAxiomFrameSectionRow) {
-                OWLSubClassAxiomFrameSectionRow row = (OWLSubClassAxiomFrameSectionRow) selVal;
-                changes.add(new RemoveAxiom(row.getOntology(), row.getAxiom()));
-                descriptions.add(row.getAxiom().getSuperClass());
+        final Object[] selVals = list.getSelectedValues();
+        if (selVals.length > 0){
+            Set<OWLDescription> descriptions = new HashSet<OWLDescription>();
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            for (Object selVal : selVals) {
+                if (selVal instanceof OWLSubClassAxiomFrameSectionRow) {
+                    OWLSubClassAxiomFrameSectionRow row = (OWLSubClassAxiomFrameSectionRow) selVal;
+                    changes.add(new RemoveAxiom(row.getOntology(), row.getAxiom()));
+                    descriptions.add(row.getAxiom().getSuperClass());
+                }
             }
+            OWLDescription equivalentClass;
+            if (descriptions.size() == 1) {
+                equivalentClass = descriptions.iterator().next();
+            }
+            else {
+                equivalentClass = getOWLDataFactory().getOWLObjectIntersectionOf(descriptions);
+            }
+            Set<OWLDescription> axiomOperands = CollectionFactory.createSet(list.getRootObject(), equivalentClass);
+            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
+                                     getOWLDataFactory().getOWLEquivalentClassesAxiom(axiomOperands)));
+            getOWLModelManager().applyChanges(changes);
         }
-        OWLDescription equivalentClass;
-        if (descriptions.size() == 1) {
-            equivalentClass = descriptions.iterator().next();
-        }
-        else {
-            equivalentClass = getOWLDataFactory().getOWLObjectIntersectionOf(descriptions);
-        }
-        Set<OWLDescription> axiomOperands = CollectionFactory.createSet(list.getRootObject(), equivalentClass);
-        changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                 getOWLDataFactory().getOWLEquivalentClassesAxiom(axiomOperands)));
-        getOWLModelManager().applyChanges(changes);
     }
 }
