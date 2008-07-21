@@ -32,13 +32,8 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
 
     private Set<N> equivalentObjects;
 
-    // private static int count = 0;
-
-
     public OWLObjectTreeNode(Object userObject, OWLObjectTree tree) {
         super(userObject);
-        //  count++;
-        //System.out.println("Created: [" + count + "] " + userObject);
         this.tree = tree;
         isLoaded = false;
         equivalentObjects = new HashSet<N>();

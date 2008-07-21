@@ -33,23 +33,5 @@ package org.protege.editor.owl.ui.frame;
 public class Test {
 
     public static void main(String[] args) {
-//        try {
-//            OWLModelManager owlModelManager = new OWLModelManagerImpl();
-//            owlModelManager.loadOntology(URI.create("http://www.co-ode.org/ontologies/pizza/2006/07/18/pizza.owl"));
-//            OWLImportsDeclarationsFrame importsDeclarationsFrame = new OWLImportsDeclarationsFrame(owlModelManager);
-//            importsDeclarationsFrame.setRootObject(owlModelManager.getOntologies().iterator().next());
-//            System.out.println(importsDeclarationsFrame);
-//
-//            OWLClassDescriptionFrame f = new OWLClassDescriptionFrame(owlModelManager);
-//            for(OWLClass cls : owlModelManager.getOntologies().iterator().next().getReferencedClasses()) {
-//                f.setRootObject(cls);
-//                System.out.println(f);
-//                System.out.println("--------------------------------------------------------------------------------");
-//                System.out.println("");
-//            }
-//        }
-//        catch (OWLException e) {
-//            e.printStackTrace();
-//        }
     }
 }

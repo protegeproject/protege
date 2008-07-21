@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
@@ -22,6 +23,7 @@ import org.semanticweb.owl.model.OWLRuntimeException;
  * Date: 29-Jan-2007<br><br>
  */
 public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLObjectSubPropertyAxiom, OWLObjectProperty> {
+    private static Logger log = Logger.getLogger(OWLSubObjectPropertyAxiomSuperPropertyFrameSection.class);
 
     public static final String LABEL = "Super properties";
 
@@ -72,7 +74,7 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
             }
         }
         catch (UnsupportedReasonerOperationException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);

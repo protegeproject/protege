@@ -1,5 +1,39 @@
 package org.protege.editor.owl.ui.rename;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.Timer;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
@@ -13,26 +47,6 @@ import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.Timer;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Author: drummond<br>
@@ -347,7 +361,9 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         protected void renderToken(String curToken, int tokenStartIndex, StyledDocument doc) {
             super.renderToken(curToken, tokenStartIndex, doc);
-            //System.out.println("curToken = " + curToken);
+            if (logger.isDebugEnabled()) {
+                logger.debug("curToken = " + curToken);
+            }
             if (curToken.startsWith("(")){
                 inURI = true;
             }

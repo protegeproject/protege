@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -13,15 +15,10 @@ import java.awt.event.ActionEvent;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class RemoveRedundantImportsAction extends ProtegeOWLAction {
+    private static  Logger log = Logger.getLogger(RemoveRedundantImportsAction.class);
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println("NOT IMPLEMENTED: " + getClass());
-//        try {
-//            RemoveRedundantImports rem = new RemoveRedundantImports(getOWLModelManager().getActiveOntologies());
-//            getOWLModelManager().applyChanges(rem.getChanges());
-//        } catch (OWLException e1) {
-//            e1.printStackTrace();
-//        }
+        log.error("Not implemented " + getClass());
     }
 
 

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
@@ -227,10 +228,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlReasonerManager.dispose();
         // Name and shame plugins that do not (or can't be bothered to) clean up
         // their listeners!
-        modelManagerListenerManager.dumpWarningForAllListeners(System.out,
+        modelManagerListenerManager.dumpWarningForAllListeners(logger, Level.ERROR,
                                                                "(Listeners should be removed in the plugin dispose method!)");
 
-        changeListenerManager.dumpWarningForAllListeners(System.out,
+        changeListenerManager.dumpWarningForAllListeners(logger, Level.ERROR,
                                                          "(Listeners should be removed in the plugin dispose method!)");
     }
 
