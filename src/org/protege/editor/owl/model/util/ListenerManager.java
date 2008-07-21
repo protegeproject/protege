@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.util;
 
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -32,33 +34,33 @@ public class ListenerManager<L extends Object> {
     }
 
 
-    public void dumpWarningForListener(L listener, PrintStream ps, String cleanupMessage) {
+    public void dumpWarningForListener(L listener, Logger log, Level level, String cleanupMessage) {
         if (listenerMap.containsKey(listener)) {
-            ps.println("*** WARNING BADLY BEHAVING LISTENER: " + listener.getClass().getName() + " ***");
+            log.log(level, "*** WARNING BADLY BEHAVING LISTENER: " + listener.getClass().getName() + " ***");
             StackTraceElement [] trace = listenerMap.get(listener);
             if (trace != null) {
-                ps.println("    Possible culprit (trace from when listener was added): ");
+                log.log(level, "    Possible culprit (trace from when listener was added): ");
                 for (int i = 3; i < trace.length; i++) {
                     String s = trace[i].toString();
                     if (i == 0) {
-                        ps.println("        ->" + s);
+                        log.log(level, "        ->" + s);
                     }
                     else {
-                        ps.println("          " + s);
+                        log.log(level, "          " + s);
                     }
                     if (i == 5) {
                         break;
                     }
                 }
             }
-            ps.println("    " + cleanupMessage);
+            log.log(level, "    " + cleanupMessage);
         }
     }
 
 
-    public void dumpWarningForAllListeners(PrintStream ps, String cleanupMessage) {
+    public void dumpWarningForAllListeners(Logger log, Level level, String cleanupMessage) {
         for (L listener : listenerMap.keySet()) {
-            dumpWarningForListener(listener, ps, cleanupMessage);
+            dumpWarningForListener(listener, log, level, cleanupMessage);
         }
     }
 }
