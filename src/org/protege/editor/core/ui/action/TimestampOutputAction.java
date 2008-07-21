@@ -28,20 +28,11 @@ public class TimestampOutputAction extends ProtegeAction {
 
         if (message != null){
 
-            if (logger.isInfoEnabled()){
-                logger.info("\n\n\n\n");
-                logger.info("------------------------------------------");
-                logger.info(timestamp + ": " + message);
-                logger.info("------------------------------------------");
-                logger.info("\n\n");
-            }
-            else{
-                System.out.println("\n\n\n\n");
-                System.out.println("------------------------------------------");
-                System.out.println(timestamp + ": " + message);
-                System.out.println("------------------------------------------");
-                System.out.println("\n\n");                
-            }
+            logger.info("\n\n\n\n");
+            logger.info("------------------------------------------");
+            logger.info(timestamp + ": " + message);
+            logger.info("------------------------------------------");
+            logger.info("\n\n");
         }
     }
 

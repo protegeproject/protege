@@ -104,20 +104,6 @@ public class FileURIPanel extends JPanel {
         for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
-//        try {
-//                File file = new File(textField.getText());
-//                System.out.println("File: " + file);
-//                System.out.println("Exists: " + file.exists());
-//                if(file.exists() == false) {
-//                    URI uri = getURI();
-//                    System.out.println("Is URI: " + uri);
-//                    System.out.println("Abs: " + uri.isAbsolute());
-//                    System.out.println("Op: " + uri.isOpaque());
-//
-//                }
-//        } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
     }
 
 

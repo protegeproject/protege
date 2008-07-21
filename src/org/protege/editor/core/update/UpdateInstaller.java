@@ -58,7 +58,7 @@ public class UpdateInstaller {
                         break;
                     }
                     totalRead += read;
-                    System.out.println("Downloaded " + ((int) (((totalRead * 100.0) / len)) + "%"));
+                    logger.info("Downloaded " + ((int) (((totalRead * 100.0) / len)) + "%"));
                     bos.write(buffer, 0, read);
                 }
                 bis.close();
@@ -105,7 +105,6 @@ public class UpdateInstaller {
             if (entry.getName().indexOf("__MACOSX") != -1) {
                 continue;
             }
-//            System.out.println("Extracting " + entry.getName());
             File curFile = new File(tempDir, entry.getName());
             if (entry.isDirectory()) {
                 curFile.mkdirs();
