@@ -20,7 +20,7 @@ public class OWLIndividualSetEditor extends AbstractOWLFrameSectionRowObjectEdit
 
 
     public OWLIndividualSetEditor(OWLEditorKit owlEditorKit) {
-        panel = new OWLIndividualSelectorPanel(owlEditorKit);
+        panel = new OWLIndividualSelectorPanel(owlEditorKit, ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
 
