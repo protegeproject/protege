@@ -39,28 +39,31 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
     public void actionPerformed(ActionEvent e) {
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        OWLEntityCreationSet<OWLClass> set = getOWLWorkspace().createOWLClass();
+        if (selectedClass != null){
+            OWLEntityCreationSet<OWLClass> set = getOWLWorkspace().createOWLClass();
+            if (set != null){
+                Map<URI, URI> replacementURIMap = new HashMap<URI, URI>();
+                replacementURIMap.put(selectedClass.getURI(), set.getOWLEntity().getURI());
+                OWLModelManager mngr = getOWLModelManager();
+                OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementURIMap);
+                List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
-        Map<URI, URI> replacementURIMap = new HashMap<URI, URI>();
-        replacementURIMap.put(selectedClass.getURI(), set.getOWLEntity().getURI());
-        OWLModelManager mngr = getOWLModelManager();
-        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementURIMap);
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+                changes.addAll(set.getOntologyChanges());
 
-        changes.addAll(set.getOntologyChanges());
+                changes.addAll(duplicateClassAxioms(selectedClass, dup));
 
-        changes.addAll(duplicateClassAxioms(selectedClass, dup));
+                UIHelper uiHelper = new UIHelper(getOWLEditorKit());
+                if (uiHelper.showOptionPane("Duplicate Class",
+                                            "Would you like to duplicate annotations?",
+                                            JOptionPane.YES_NO_OPTION,
+                                            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    changes.addAll(duplicateAnnotations(selectedClass, dup));
+                }
 
-        UIHelper uiHelper = new UIHelper(getOWLEditorKit());
-        if (uiHelper.showOptionPane("Duplicate Class",
-                "Would you like to duplicate annotations?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            changes.addAll(duplicateAnnotations(selectedClass, dup));
+                mngr.applyChanges(changes);
+                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(set.getOWLEntity());
+            }
         }
-
-        mngr.applyChanges(changes);
-        getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(set.getOWLEntity());
     }
 
     private List<OWLOntologyChange> duplicateClassAxioms(OWLClass selectedClass, OWLObjectDuplicator dup) {
@@ -99,8 +102,8 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
             for (OWLAnnotationAxiom ax : selectedClass.getAnnotationAxioms(ont)){
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotURIs == null ||
-                    !annotURIs.contains(annot.getAnnotationURI()) ||
-                    !annot.getAnnotationValueAsConstant().getLiteral().equals(selectedClassName)){
+                        !annotURIs.contains(annot.getAnnotationURI()) ||
+                        !annot.getAnnotationValueAsConstant().getLiteral().equals(selectedClassName)){
                     OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
                     changes.add(new AddAxiom(ont, duplicatedAxiom));
                 }
