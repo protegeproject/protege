@@ -651,6 +651,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         // return a mouse listener that ignores the (bad) default toggle behaviour when Ctrl is pressed.
         // This would prevent mac users from using this very common key combination (right-click)
         // instead, add handling for the context menu and double click editing
+        // Also must implement discontiguous multi-selection
         protected MouseInputListener createMouseInputListener() {
             return new MouseInputHandler(){
 
@@ -658,6 +659,10 @@ public class OWLFrameList2<R extends Object> extends MList implements
                     lastMouseDownPoint = e.getPoint();
                     if (e.isPopupTrigger()) {
                         showPopupMenu(e);
+                    }
+                    else if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0){
+                        int sel = locationToIndex(OWLFrameList2.this, lastMouseDownPoint);
+                        handleModifiedSelectionEvent(sel);
                     }
                     else{
                         super.mousePressed(e);
@@ -677,6 +682,17 @@ public class OWLFrameList2<R extends Object> extends MList implements
                     }
                 }
             };
+        }
+
+
+        private void handleModifiedSelectionEvent(int index) {
+            if (isSelectedIndex(index)){
+                removeSelectionInterval(index, index);
+            }
+            else if (getSelectionMode() == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION ||
+                     getSelectedIndex() == -1){
+                addSelectionInterval(index, index);
+            }
         }
 
 
