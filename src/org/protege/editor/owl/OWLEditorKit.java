@@ -17,6 +17,7 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.VersionInfo;
 
 import javax.swing.*;
 import java.io.File;
@@ -53,6 +54,7 @@ public class OWLEditorKit implements EditorKit {
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
+        logger.info("Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
         this.editorKitFactory = editorKitFactory;
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
