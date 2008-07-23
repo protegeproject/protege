@@ -38,6 +38,8 @@ import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologyS
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
 import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactoryImpl;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -155,6 +157,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLAnnotationURIRenderer annotationRenderer;
 
+    private OWLExpressionCheckerFactory owlExpressionCheckerFactory;
+
 
     public OWLModelManagerImpl() {
         super();
@@ -178,11 +182,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         objectRenderer = new OWLObjectRendererImpl(this);
         uriShortFormProvider = new SimpleURIShortFormProvider();
-        owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
-        owlDescriptionParser.setOWLModelManager(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
         owlObjectRenderingCache = new OWLObjectRenderingCache(this);
+
+        owlExpressionCheckerFactory = new OWLExpressionCheckerFactoryImpl(this);
+
+        // @@TODO remove eventually
+        owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
+        owlDescriptionParser.setOWLModelManager(this);
+
 
         activeOntologies = new HashSet<OWLOntology>();
 
@@ -851,6 +860,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLDescriptionParser getOWLDescriptionParser() {
         return owlDescriptionParser;
+    }
+
+
+    public OWLExpressionCheckerFactory getOWLExpressionCheckerFactory() {
+        return owlExpressionCheckerFactory;
     }
 
 

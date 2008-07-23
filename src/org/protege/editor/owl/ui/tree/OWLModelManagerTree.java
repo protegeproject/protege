@@ -84,7 +84,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects) {
-        super(owlEditorKit, provider, rootObjects, new OWLEntityComparator(owlEditorKit.getOWLModelManager()));
+        super(owlEditorKit, provider, rootObjects, new OWLEntityComparator(owlEditorKit.getModelManager()));
         setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
         setHighlightKeywords(false);
         setupListener();

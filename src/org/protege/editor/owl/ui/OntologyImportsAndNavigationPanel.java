@@ -4,14 +4,12 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLOntologyHierarchyProvider;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
-import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -58,15 +56,15 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
     public OntologyImportsAndNavigationPanel(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
         setLayout(new BorderLayout());
-        tree = new OWLModelManagerTree<OWLOntology>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getOWLModelManager()));
+        tree = new OWLModelManagerTree<OWLOntology>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
         add(new JScrollPane(tree));
         tree.addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
                 OWLOntology ont = tree.getSelectedOWLObject();
                 if (ont != null) {
-                    owlEditorKit.getOWLModelManager().setActiveOntology(ont);
-                    owlEditorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedObject(ont);
+                    owlEditorKit.getModelManager().setActiveOntology(ont);
+                    owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
                 }
             }
         });
@@ -75,8 +73,8 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 OWLOntology ont = tree.getSelectedOWLObject();
                 if (ont != null) {
-                    owlEditorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedObject(null);
-                    owlEditorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedObject(ont);
+                    owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(null);
+                    owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
                 }
             }
         });
@@ -86,7 +84,7 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
                 setShowImports();
             }
         });
-        showImportsCheckBox.setSelected(owlEditorKit.getOWLModelManager().isIncludeImports());
+        showImportsCheckBox.setSelected(owlEditorKit.getModelManager().isIncludeImports());
         showImportsCheckBox.setFont(showImportsCheckBox.getFont().deriveFont(Font.PLAIN, 11.0f));
         add(showImportsCheckBox, BorderLayout.SOUTH);
         tree.setCellRenderer(new OntologyTreeCellRenderer());
@@ -94,7 +92,7 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
 
 
     private void setShowImports() {
-        owlEditorKit.getOWLModelManager().setIncludeImports(showImportsCheckBox.isSelected());
+        owlEditorKit.getModelManager().setIncludeImports(showImportsCheckBox.isSelected());
     }
 
 
@@ -123,7 +121,7 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
                     sb.append(uriString);
                 }
                 label.setText(sb.toString());
-                label.setIcon(owlEditorKit.getOWLWorkspace().getOWLIconProvider().getIcon(ontology));
+                label.setIcon(owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(ontology));
                 return label;
         }
     }

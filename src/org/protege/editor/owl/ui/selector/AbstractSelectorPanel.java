@@ -59,14 +59,14 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
 
     public OWLModelManager getOWLModelManager() {
-        return editorKit.getOWLModelManager();
+        return editorKit.getModelManager();
     }
 
 
     protected void createUI() {
         setLayout(new BorderLayout());
         ViewComponentPlugin plugin = getViewComponentPlugin();
-        view = new View(plugin, editorKit.getOWLWorkspace());
+        view = new View(plugin, editorKit.getWorkspace());
         view.setPinned(true);
         view.setSyncronizing(false);
         view.createUI();

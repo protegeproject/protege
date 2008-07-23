@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.navigation;
 
-import javax.swing.Action;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 /**
@@ -37,18 +37,18 @@ public class OWLEntityNavigationMediator {
                 updateActionState();
             }
         };
-        owlEditorKit.getOWLWorkspace().getOWLSelectionHistoryManager().addChangeListener(listener);
+        owlEditorKit.getWorkspace().getOWLSelectionHistoryManager().addChangeListener(listener);
         updateActionState();
     }
 
 
     public void dispose() {
-        owlEditorKit.getOWLWorkspace().getOWLSelectionHistoryManager().removeChangeListener(listener);
+        owlEditorKit.getWorkspace().getOWLSelectionHistoryManager().removeChangeListener(listener);
     }
 
 
     private void updateActionState() {
-        OWLSelectionHistoryManager historyManager = owlEditorKit.getOWLWorkspace().getOWLSelectionHistoryManager();
+        OWLSelectionHistoryManager historyManager = owlEditorKit.getWorkspace().getOWLSelectionHistoryManager();
         backAction.setEnabled(historyManager.canGoBack());
         forwardAction.setEnabled(historyManager.canGoForward());
     }

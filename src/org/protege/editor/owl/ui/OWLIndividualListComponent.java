@@ -83,11 +83,11 @@ public class OWLIndividualListComponent extends JPanel {
     }
 
     private OWLWorkspace getOWLWorkspace() {
-        return getOWLEditorKit().getOWLWorkspace();
+        return getOWLEditorKit().getWorkspace();
     }
 
     private OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getOWLModelManager();
+        return getOWLEditorKit().getModelManager();
     }
 
 

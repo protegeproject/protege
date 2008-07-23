@@ -40,7 +40,7 @@ public class GatherOntologiesPanel extends JPanel {
 
     public GatherOntologiesPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        this.owlModelManager = owlEditorKit.getOWLModelManager();
+        this.owlModelManager = owlEditorKit.getModelManager();
         ontologiesToSave = new HashSet<OWLOntology>();
         createUI();
     }
@@ -138,7 +138,7 @@ public class GatherOntologiesPanel extends JPanel {
         if (ret != JOptionPane.OK_OPTION) {
             return null;
         }
-        File file = UIUtil.chooseFolder(owlEditorKit.getOWLWorkspace(), "Select folder to save the ontologies to");
+        File file = UIUtil.chooseFolder(owlEditorKit.getWorkspace(), "Select folder to save the ontologies to");
         if (file == null) {
             return null;
         }

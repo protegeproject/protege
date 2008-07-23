@@ -11,6 +11,8 @@ import org.protege.editor.owl.model.description.OWLDescriptionParser;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated use <code>OWLExpressionCheckerFactory</code>
  */
 public interface OWLDescriptionParserFactory {
 

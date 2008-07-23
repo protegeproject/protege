@@ -1,9 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLOntology;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLOntology;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,7 +35,7 @@ import org.protege.editor.owl.OWLEditorKit;
 public class InferredAxiomsFrame extends AbstractOWLFrame<OWLOntology> {
 
     public InferredAxiomsFrame(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
         addSection(new InferredAxiomsFrameSection(owlEditorKit, this));
     }
 }

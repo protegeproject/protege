@@ -1,34 +1,31 @@
 package org.protege.editor.owl.ui.explanation;
 
+import com.clarkparsia.explanation.util.ExplanationProgressMonitor;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.*;
+import org.protege.editor.owl.ui.framelist.ConfigurableFrameListExplanationHandler;
+import org.protege.editor.owl.ui.framelist.ExplanationFrameList;
+import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.view.Copyable;
+import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.inference.OWLReasoner;
+import org.semanticweb.owl.model.*;
+
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URI;
-
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.inference.OWLReasonerAdapter;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
-import org.semanticweb.owl.util.InferredSubClassAxiomGenerator;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.framelist.ExplanationFrameList;
-import org.protege.editor.owl.ui.framelist.ConfigurableFrameListExplanationHandler;
-import org.protege.editor.owl.ui.frame.*;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.list.OWLAxiomList;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
-import com.clarkparsia.explanation.util.ExplanationProgressMonitor;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -242,8 +239,8 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
             for(OWLAxiom ax : axioms) {
                 manager.applyChange(new AddAxiom(ont, ax));
             }
-            OWLReasoner reasoner = owlEditorKit.getOWLModelManager().getOWLReasonerManager().createReasoner(manager);
-//            AtomicEntailmentsCountMetric metric = new AtomicEntailmentsCountMetric(owlEditorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+            OWLReasoner reasoner = owlEditorKit.getModelManager().getOWLReasonerManager().createReasoner(manager);
+//            AtomicEntailmentsCountMetric metric = new AtomicEntailmentsCountMetric(owlEditorKit.getModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
            
             AxiomListFrame listFrame = new AxiomListFrame(owlEditorKit);
             OWLFrameList2<Set<OWLAxiom>> frameList2 = new OWLFrameList2<Set<OWLAxiom>>(owlEditorKit, listFrame);
@@ -362,7 +359,7 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
                 axCount++;
                 sb.append(axCount);
                 sb.append(") ");
-                String ren = owlEditorKit.getOWLModelManager().getRendering(ax);
+                String ren = owlEditorKit.getModelManager().getRendering(ax);
                 ren = ren.replace("\n", " ");
                 ren = ren.replaceAll("\\s+", " ");
                 sb.append(ren);

@@ -36,7 +36,7 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
     }
 
     public OWLIndividualSelectorPanel(OWLEditorKit eKit, boolean editable) {
-        this(eKit, editable, eKit.getOWLModelManager().getActiveOntologies());
+        this(eKit, editable, eKit.getModelManager().getActiveOntologies());
     }
 
     public OWLIndividualSelectorPanel(OWLEditorKit eKit, boolean editable, Set<OWLOntology> ontologies) {
@@ -96,7 +96,7 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
             }
 
             public Workspace getWorkspace() {
-                return getOWLEditorKit().getOWLWorkspace();
+                return getOWLEditorKit().getWorkspace();
             }
 
             public ViewComponent newInstance() throws ClassNotFoundException,

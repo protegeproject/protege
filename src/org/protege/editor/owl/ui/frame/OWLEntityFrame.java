@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
 
 
     public OWLEntityFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         this.editorKit = editorKit;
 
         owlOntologyFrameSections = new ArrayList<OWLFrameSection>();
@@ -104,14 +104,14 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlIndividualSections.add(new OWLSameIndividualsAxiomFrameSection(editorKit, this));
         owlIndividualSections.add(new OWLDifferentIndividualsAxiomFrameSection(editorKit, this));
 
-        setRootObject(editorKit.getOWLModelManager().getOWLDataFactory().getOWLThing());
+        setRootObject(editorKit.getModelManager().getOWLDataFactory().getOWLThing());
 
-        editorKit.getOWLModelManager().addListener(new OWLModelManagerListener() {
+        editorKit.getModelManager().addListener(new OWLModelManagerListener() {
 
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
                     refill();
-                    setRootObject(OWLEntityFrame.this.editorKit.getOWLModelManager().getActiveOntology());
+                    setRootObject(OWLEntityFrame.this.editorKit.getModelManager().getActiveOntology());
                 }
             }
         });

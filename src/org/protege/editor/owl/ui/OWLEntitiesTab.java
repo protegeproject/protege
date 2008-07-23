@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui;
 
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.model.OWLEntityDisplayProvider;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
 
 
 /**
@@ -28,12 +28,12 @@ public class OWLEntitiesTab extends OWLWorkspaceViewsTab {
 
     public void initialise() {
         super.initialise();
-        getOWLEditorKit().getOWLWorkspace().registerOWLEntityDisplayProvider(provider);
+        getOWLEditorKit().getWorkspace().registerOWLEntityDisplayProvider(provider);
     }
 
 
     public void dispose() {
         super.dispose();
-        getOWLEditorKit().getOWLWorkspace().unregisterOWLEntityDisplayProvider(provider);
+        getOWLEditorKit().getWorkspace().unregisterOWLEntityDisplayProvider(provider);
     }
 }

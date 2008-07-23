@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLClassAxiomChecker;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLException;
 
@@ -22,8 +21,6 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
     private OWLEditorKit editorKit;
 
-    private OWLClassAxiomChecker checker;
-
     private ExpressionEditor<OWLClassAxiom> editor;
 
     private JComponent editingComponent;
@@ -32,8 +29,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
     public OWLGeneralAxiomEditor(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
 
-        checker = new OWLClassAxiomChecker(editorKit);
-        editor = new ExpressionEditor<OWLClassAxiom>(editorKit, checker);
+        editor = new ExpressionEditor<OWLClassAxiom>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getClassAxiomChecker());
 
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(editor);
@@ -42,7 +38,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
 
 
     public void setEditedObject(OWLClassAxiom axiom) {
-        editor.setText(editorKit.getOWLModelManager().getRendering(axiom));
+        editor.setText(editorKit.getModelManager().getRendering(axiom));
     }
 
 
@@ -74,8 +70,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLFrameSectionRowObjectEdito
     public OWLClassAxiom getEditedObject() {
         try {
             if (editor.isWellFormed()) {
-                String expression = editor.getText();
-                return editor.getExpressionChecker().createObject(expression);
+                return editor.createObject();
             }
             else {
                 return null;

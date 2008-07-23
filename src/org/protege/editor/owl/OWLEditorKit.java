@@ -98,6 +98,10 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
+    /**
+     * @deprecated use <code>getWorkspace</code>
+     * @return
+     */
     public OWLWorkspace getOWLWorkspace() {
         return getWorkspace();
     }
@@ -126,6 +130,10 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
+    /**
+     * @deprecated use <code>getModelManager()</code>
+     * @return
+     */
     public OWLModelManager getOWLModelManager() {
         return getModelManager();
     }
@@ -137,7 +145,7 @@ public class OWLEditorKit implements EditorKit {
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
         URI uri = descriptor.getURI(URI_KEY);
         if (uri != null) {
-            ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(uri);
+            ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
             addRecent(uri);
             return true;
         }
@@ -158,14 +166,14 @@ public class OWLEditorKit implements EditorKit {
             return false;
         }
         addRecent(f.toURI());
-        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(f.toURI());
+        ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(f.toURI());
         return true;
     }
 
 
     public boolean handleLoadFrom(URI uri) throws Exception {
         addRecent(uri);
-        ((OWLModelManagerImpl) getOWLModelManager()).loadOntologyFromPhysicalURI(uri);
+        ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
         return true;
     }
 
@@ -176,7 +184,7 @@ public class OWLEditorKit implements EditorKit {
         if (result == Wizard.FINISH_RETURN_CODE) {
             URI uri = w.getOntologyURI();
             if (uri != null) {
-                getOWLModelManager().createNewOntology(uri, w.getLocationURI());
+                getModelManager().createNewOntology(uri, w.getLocationURI());
                 newPhysicalURIs.add(w.getLocationURI());
                 return true;
             }
@@ -188,7 +196,7 @@ public class OWLEditorKit implements EditorKit {
     public void handleSave() throws Exception {
         try {
             saveOntologyLibraries();
-            getOWLModelManager().save();
+            getModelManager().save();
             getWorkspace().save();
             for (URI uri : newPhysicalURIs) {
                 addRecent(uri);
@@ -196,8 +204,8 @@ public class OWLEditorKit implements EditorKit {
             newPhysicalURIs.clear();
         }
         catch (OWLOntologyStorerNotFoundException e) {
-            OWLOntology ont = getOWLModelManager().getActiveOntology();
-            OWLOntologyFormat format = getOWLModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+            OWLOntology ont = getModelManager().getActiveOntology();
+            OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
             String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please selected 'Save As' and select another format.";
             logger.warn(message);
             JOptionPane.showMessageDialog(getWorkspace(),
@@ -209,8 +217,8 @@ public class OWLEditorKit implements EditorKit {
 
 
     public void handleSaveAs() throws Exception {
-        OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
-        OWLOntology ont = getOWLModelManager().getActiveOntology();
+        OWLOntologyManager man = getModelManager().getOWLOntologyManager();
+        OWLOntology ont = getModelManager().getActiveOntology();
         OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, man.getOntologyFormat(ont));
         if (format == null) {
             logger.warn("Please select a valid format");
@@ -220,7 +228,7 @@ public class OWLEditorKit implements EditorKit {
         if (file != null){
             man.setOntologyFormat(ont, format);
             man.setPhysicalURIForOntology(ont, file.toURI());
-            getOWLModelManager().setDirty(ont);
+            getModelManager().setDirty(ont);
             handleSave();
         }
         else{
@@ -243,7 +251,7 @@ public class OWLEditorKit implements EditorKit {
 
     private File getSaveAsOWLFile(OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
-        File file = helper.saveOWLFile("Please select a location in which to save: " + getOWLModelManager().getRendering(ont));
+        File file = helper.saveOWLFile("Please select a location in which to save: " + getModelManager().getRendering(ont));
         if (file != null) {
             int extensionIndex = file.toString().lastIndexOf('.');
             if (extensionIndex == -1) {

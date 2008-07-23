@@ -1,16 +1,5 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.Component;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.owl.OWLEditorKit;
@@ -20,6 +9,12 @@ import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
 
 /**
@@ -39,7 +34,7 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
 
 
     public OWLModelManager getOWLModelManager() {
-        return getOWLWorkspace().getOWLEditorKit().getOWLModelManager();
+        return getOWLWorkspace().getOWLEditorKit().getModelManager();
     }
 
 

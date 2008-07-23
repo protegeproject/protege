@@ -324,7 +324,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
                 changes.addAll(row.getDeletionChanges());
             }
         }
-        editorKit.getOWLModelManager().applyChanges(changes);
+        editorKit.getModelManager().applyChanges(changes);
     }
 
 
@@ -438,7 +438,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         }
 
         if (rootObject instanceof OWLObject) {
-            dlg.setTitle(editorKit.getOWLModelManager().getRendering((OWLObject)rootObject));
+            dlg.setTitle(editorKit.getModelManager().getRendering((OWLObject)rootObject));
         }
         else if (rootObject != null) {
             dlg.setTitle(rootObject.toString());
@@ -612,7 +612,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
                 }
             }
         }
-        editorKit.getOWLModelManager().applyChanges(changes);
+        editorKit.getModelManager().applyChanges(changes);
         return manipulatableObjects;
     }
 

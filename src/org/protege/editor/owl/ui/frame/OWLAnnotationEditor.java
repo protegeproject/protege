@@ -1,23 +1,17 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -124,15 +118,15 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
         OWLAnnotationValueEditor editor = getSelectedEditor();
         Object obj = editor.getEditedObject();
         if (obj instanceof OWLConstant) {
-            OWLDataFactory dataFactory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
             return dataFactory.getOWLConstantAnnotation(uri, (OWLConstant) obj);
         }
         else if (obj instanceof OWLIndividual) {
-            OWLDataFactory dataFactory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
             return dataFactory.getOWLObjectAnnotation(uri, (OWLIndividual) obj);
         }
         else {
-            OWLDataFactory dataFactory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
             return dataFactory.getOWLConstantAnnotation(uri, dataFactory.getOWLUntypedConstant(obj.toString()));
         }
     }

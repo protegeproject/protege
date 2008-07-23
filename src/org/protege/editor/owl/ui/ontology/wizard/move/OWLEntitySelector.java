@@ -1,24 +1,18 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.TreeSelectionListener;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionListener;
+import java.awt.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: nickdrummond
@@ -52,13 +46,13 @@ public class OWLEntitySelector<O extends OWLEntity> extends JPanel {
         OWLObjectHierarchyProvider<T> hp = null;
 
         if (type.equals(OWLClass.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getOWLModelManager().getOWLClassHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLClassHierarchyProvider();
         }
         else if (type.equals(OWLObjectProperty.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLObjectPropertyHierarchyProvider();
         }
         else if (type.equals(OWLDataProperty.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getOWLModelManager().getOWLDataPropertyHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLDataPropertyHierarchyProvider();
         }
         else if (type.equals(OWLIndividual.class)){
             throw new UnsupportedOperationException("Cannot create a selector for individuals yet");
@@ -66,7 +60,7 @@ public class OWLEntitySelector<O extends OWLEntity> extends JPanel {
 
 
         if (hp != null){
-            final Comparator<T> comp = eKit.getOWLModelManager().getOWLObjectComparator();
+            final Comparator<T> comp = eKit.getModelManager().getOWLObjectComparator();
             OWLObjectTree<T> tree = new OWLObjectTree<T>(eKit, hp, comp);
             final OWLCellRenderer cellRenderer = new OWLCellRenderer(eKit, false, true);
             cellRenderer.setTransparent();

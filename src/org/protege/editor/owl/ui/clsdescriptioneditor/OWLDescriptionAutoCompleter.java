@@ -93,10 +93,10 @@ public class OWLDescriptionAutoCompleter {
         wordDelimeters.add(")");
         wordDelimeters.add(",");
         wordDelimeters.add("^");
-        matcher = new AutoCompleterMatcherImpl(owlEditorKit.getOWLModelManager());
+        matcher = new AutoCompleterMatcherImpl(owlEditorKit.getModelManager());
         popupList = new JList();
         popupList.setAutoscrolls(true);
-        popupList.setCellRenderer(owlEditorKit.getOWLWorkspace().createOWLCellRenderer());
+        popupList.setCellRenderer(owlEditorKit.getWorkspace().createOWLCellRenderer());
         popupList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -355,7 +355,7 @@ public class OWLDescriptionAutoCompleter {
 
     private String getInsertText(Object o) {
         if (o instanceof OWLObject) {
-            OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+            OWLModelManager mngr = owlEditorKit.getModelManager();
             return mngr.getRendering((OWLObject) o);
         }
         else {

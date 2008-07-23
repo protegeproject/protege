@@ -75,7 +75,7 @@ public class EntityFinderField extends JTextField {
             }
         });
         resultsList = new JList();
-        resultsList.setCellRenderer(editorKit.getOWLWorkspace().createOWLCellRenderer());
+        resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
         resultsList.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -90,8 +90,8 @@ public class EntityFinderField extends JTextField {
         OWLEntity selEntity = (OWLEntity) resultsList.getSelectedValue();
         if (selEntity != null) {
             closeResults();
-            EntityFinderField.this.editorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
-            editorKit.getOWLWorkspace().displayOWLEntity(selEntity);
+            EntityFinderField.this.editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
+            editorKit.getWorkspace().displayOWLEntity(selEntity);
         }
     }
 
@@ -138,7 +138,7 @@ public class EntityFinderField extends JTextField {
 
     private void executeFind() {
         if (getText().trim().length() > 0) {
-            Set<OWLEntity> results = editorKit.getOWLModelManager().getEntityFinder().getEntities(getText());
+            Set<OWLEntity> results = editorKit.getModelManager().getEntityFinder().getEntities(getText());
             showResults(results);
         }
         else {
@@ -184,7 +184,7 @@ public class EntityFinderField extends JTextField {
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
             window.setSize(getWidth(), 200);
-            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(new OWLEntityComparator(editorKit.getOWLModelManager()));
+            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(new OWLEntityComparator(editorKit.getModelManager()));
             ts.addAll(results);
             resultsList.setListData(ts.toArray());
             window.setVisible(true);

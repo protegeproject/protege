@@ -1,9 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.model.SWRLRule;
@@ -49,17 +48,8 @@ public class SWRLRuleEditor extends AbstractOWLFrameSectionRowObjectEditor<SWRLR
 
     public SWRLRuleEditor(final OWLEditorKit editorKit) {
         this.editorKit = editorKit;
-        editor = new ExpressionEditor<SWRLRule>(editorKit, new OWLExpressionChecker<SWRLRule>() {
-
-            public void check(String text) throws OWLExpressionParserException, OWLException {
-                editorKit.getOWLModelManager().getOWLDescriptionParser().isSWRLRuleWellFormed(text);
-            }
-
-
-            public SWRLRule createObject(String text) throws OWLExpressionParserException, OWLException {
-                return editorKit.getOWLModelManager().getOWLDescriptionParser().createSWRLRule(text);
-            }
-        });
+        final OWLExpressionCheckerFactory fac = editorKit.getModelManager().getOWLExpressionCheckerFactory();
+        editor = new ExpressionEditor<SWRLRule>(editorKit, fac.getSWRLChecker());
         editor.setPreferredSize(new Dimension(300, 200));
     }
 
@@ -70,7 +60,7 @@ public class SWRLRuleEditor extends AbstractOWLFrameSectionRowObjectEditor<SWRLR
 
 
     public void setObject(SWRLRule rule) {
-        editor.setText(editorKit.getOWLModelManager().getRendering(rule));
+        editor.setText(editorKit.getModelManager().getRendering(rule));
     }
 
 

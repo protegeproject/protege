@@ -1,11 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLAxiom;
 import org.protege.editor.owl.OWLEditorKit;
-
-import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -40,7 +35,7 @@ public class OWLAxiomAnnotationsFrame extends AbstractOWLFrame<OWLAxiomAnnotatio
 
 
     public OWLAxiomAnnotationsFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLAxiomAnnotationsFrameSection(editorKit, this));
     }
 

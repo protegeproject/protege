@@ -24,7 +24,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
     public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLEntity> frame) {
         super(editorKit, LABEL, frame);
-        comparator = new OWLAnnotationSectionRowComparator(editorKit.getOWLModelManager());
+        comparator = new OWLAnnotationSectionRowComparator(editorKit.getModelManager());
     }
 
 
@@ -39,7 +39,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
     protected void refill(OWLOntology ontology) {
         boolean hidden = false;
         for (OWLEntityAnnotationAxiom ax : ontology.getEntityAnnotationAxioms(getRootObject())) {
-            if (!getOWLEditorKit().getOWLWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
+            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
                 addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
             }
             else {

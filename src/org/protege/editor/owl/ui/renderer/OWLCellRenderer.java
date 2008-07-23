@@ -528,10 +528,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     protected Icon getIcon(Object object) {
         if (iconObject != null) {
-            return owlEditorKit.getOWLWorkspace().getOWLIconProvider().getIcon(iconObject);
+            return owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(iconObject);
         }
         if (object instanceof OWLObject) {
-            return owlEditorKit.getOWLWorkspace().getOWLIconProvider().getIcon((OWLObject) object);
+            return owlEditorKit.getWorkspace().getOWLIconProvider().getIcon((OWLObject) object);
         }
         else {
             return null;
@@ -543,7 +543,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 
@@ -593,7 +593,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void prepareStyles() {
         StyledDocument doc = textPane.getStyledDocument();
-        Map<String, Color> keyWordColorMap = owlEditorKit.getOWLWorkspace().getKeyWordColorMap();
+        Map<String, Color> keyWordColorMap = owlEditorKit.getWorkspace().getKeyWordColorMap();
         for (String keyWord : keyWordColorMap.keySet()) {
             Style s = doc.addStyle(keyWord, null);
             Color color = keyWordColorMap.get(keyWord);
@@ -770,7 +770,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
 
         int tokenLength = curToken.length();
-        Color c = owlEditorKit.getOWLWorkspace().getKeyWordColorMap().get(curToken);
+        Color c = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
         if (c != null && prefs.isHighlightKeyWords() && highlightKeywords) {
             Style s = doc.getStyle(curToken);
             doc.setCharacterAttributes(tokenStartIndex, tokenLength, s, true);

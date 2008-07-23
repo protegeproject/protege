@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.frame.ExplanationFrame;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,13 +64,13 @@ public class ExplanationPanel extends JPanel {
                 }
             }
         };
-        owlEditorKit.getOWLModelManager().addListener(listener);
+        owlEditorKit.getModelManager().addListener(listener);
         explanationFrameList = new OWLFrameList2<OWLAxiom>(owlEditorKit, new ExplanationFrame(owlEditorKit));
         explanationFrameList.setRootObject(null);
     }
 
     private void refresh() {
-        inferredAxiomFrameList.setRootObject(owlEditorKit.getOWLModelManager().getActiveOntology());
+        inferredAxiomFrameList.setRootObject(owlEditorKit.getModelManager().getActiveOntology());
     }
 
     private void createUI() {
@@ -78,12 +78,12 @@ public class ExplanationPanel extends JPanel {
         JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         inferredAxiomFrameList = new OWLFrameList2<OWLOntology>(owlEditorKit, new InferredAxiomsFrame(owlEditorKit));
         sp.setLeftComponent(inferredAxiomFrameList);
-        inferredAxiomFrameList.setRootObject(owlEditorKit.getOWLModelManager().getActiveOntology());
+        inferredAxiomFrameList.setRootObject(owlEditorKit.getModelManager().getActiveOntology());
         add(sp);
     }
 
     public void dispose() {
         inferredAxiomFrameList.dispose();
-        owlEditorKit.getOWLModelManager().removeListener(listener);
+        owlEditorKit.getModelManager().removeListener(listener);
     }
 }

@@ -1,26 +1,13 @@
 package org.protege.editor.owl.model.inference;
 
+import org.semanticweb.owl.inference.MonitorableOWLReasonerAdapter;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.model.*;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.semanticweb.owl.inference.MonitorableOWLReasonerAdapter;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLConstant;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyExpression;
-import org.semanticweb.owl.model.OWLDataRange;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyManager;
 
 
 /**
@@ -51,7 +38,7 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
 
 
     public boolean isClassified() throws OWLReasonerException {
-        return true;
+        return false;
     }
 
 
@@ -62,7 +49,7 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
 
 
     public boolean isRealised() throws OWLReasonerException {
-        return true;
+        return false;
     }
 
 

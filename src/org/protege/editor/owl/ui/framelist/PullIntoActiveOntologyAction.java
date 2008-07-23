@@ -4,8 +4,8 @@ import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.*;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -54,7 +54,7 @@ public class PullIntoActiveOntologyAction<R> extends OWLFrameListPopupMenuAction
 
     protected void updateState() {
         for (OWLFrameSectionRow row : getSelectedRows()) {
-            if (row.getOntology() == null || row.getOntology().equals(getOWLEditorKit().getOWLModelManager().getActiveOntology())) {
+            if (row.getOntology() == null || row.getOntology().equals(getOWLEditorKit().getModelManager().getActiveOntology())) {
                 setEnabled(false);
                 return;
             }
@@ -69,7 +69,7 @@ public class PullIntoActiveOntologyAction<R> extends OWLFrameListPopupMenuAction
             OWLAxiom ax = row.getAxiom();
             OWLOntology currentOnt = row.getOntology();
             changes.add(new RemoveAxiom(currentOnt, ax));
-            changes.add(new AddAxiom(getOWLEditorKit().getOWLModelManager().getActiveOntology(), ax));
+            changes.add(new AddAxiom(getOWLEditorKit().getModelManager().getActiveOntology(), ax));
         }
         getOWLModelManager().applyChanges(changes);
     }

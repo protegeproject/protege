@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.frame;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionChecker;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
@@ -58,8 +57,7 @@ public class OWLClassDescriptionSetEditor extends AbstractOWLFrameSectionRowObje
         else{
             tabbedPane = new JTabbedPane();
             tabbedPane.add("Class hierarchy", classSelectorPanel);
-            OWLDescriptionChecker checker = new OWLDescriptionChecker(owlEditorKit);
-            expressionEditor = new ExpressionEditor<OWLDescription>(owlEditorKit, checker);
+            expressionEditor = new ExpressionEditor<OWLDescription>(owlEditorKit, owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker());
             JPanel holderPanel = new JPanel(new BorderLayout());
             holderPanel.add(expressionEditor);
             holderPanel.setPreferredSize(new Dimension(500, 400));
@@ -74,7 +72,7 @@ public class OWLClassDescriptionSetEditor extends AbstractOWLFrameSectionRowObje
         if (editorComponent == null) {
             createEditor();
         }
-//        classSelectorPanel.setSelection(owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
+//        classSelectorPanel.setSelection(owlEditorKit.getWorkspace().getOWLSelectionModel().getLastSelectedClass());
         return editorComponent;
     }
 

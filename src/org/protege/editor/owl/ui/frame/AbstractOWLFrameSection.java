@@ -42,7 +42,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
                 handleChanges(changes);
             }
         };
-        editorKit.getOWLModelManager().addOntologyChangeListener(listener);
+        editorKit.getModelManager().addOntologyChangeListener(listener);
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = null;
         comparator = getRowComparator();
     }
@@ -146,7 +146,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
 
     public OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 

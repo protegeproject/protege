@@ -13,7 +13,7 @@ import org.semanticweb.owl.model.OWLDataProperty;
 public class OWLDataPropertyDescriptionFrame extends AbstractOWLFrame<OWLDataProperty> {
 
     public OWLDataPropertyDescriptionFrame(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLDataPropertyDomainFrameSection(owlEditorKit, this));
         addSection(new OWLDataPropertyRangeFrameSection(owlEditorKit, this));
         addSection(new OWLEquivalentDataPropertiesFrameSection(owlEditorKit, this));

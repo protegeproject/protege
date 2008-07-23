@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -37,7 +37,7 @@ public class DeleteClassAction extends AbstractDeleteEntityAction<OWLClass> {
 
 
     protected OWLObjectHierarchyProvider<OWLClass> getHierarchyProvider() {
-        return getOWLEditorKit().getOWLModelManager().getOWLClassHierarchyProvider();
+        return getOWLEditorKit().getModelManager().getOWLClassHierarchyProvider();
     }
 
 

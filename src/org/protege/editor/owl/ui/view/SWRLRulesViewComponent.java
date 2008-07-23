@@ -48,7 +48,7 @@ public class SWRLRulesViewComponent extends AbstractActiveOntologyViewComponent 
         list = new OWLFrameList2(getOWLEditorKit(), frame);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        updateView(getOWLEditorKit().getOWLModelManager().getActiveOntology());
+        updateView(getOWLEditorKit().getModelManager().getActiveOntology());
     }
 
 

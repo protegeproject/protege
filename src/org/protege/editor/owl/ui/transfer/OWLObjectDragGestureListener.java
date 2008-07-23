@@ -1,22 +1,16 @@
 package org.protege.editor.owl.ui.transfer;
 
-import java.awt.AlphaComposite;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSourceAdapter;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
-
-import javax.swing.JComponent;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLObject;
 
 
 /**
@@ -51,7 +45,7 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
             return;
         }
         // TODO: !!!
-        TransferableOWLObject transferable = new TransferableOWLObject(owlEditorKit.getOWLModelManager(),
+        TransferableOWLObject transferable = new TransferableOWLObject(owlEditorKit.getModelManager(),
                                                                        getSelectedObjects());
 //        if (DragSource.isDragImageSupported()) {
 //            setupDragOriginator();

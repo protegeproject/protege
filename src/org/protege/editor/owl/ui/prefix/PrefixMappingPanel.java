@@ -1,18 +1,14 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -56,7 +52,7 @@ public class PrefixMappingPanel extends JPanel {
            if(panel.table.getPrefixMapperTableModel().commitPrefixes()) {
                // Reset the renderer to force an update - there should
                // probably be an easier way to do this.
-               owlEditorKit.getOWLModelManager().setOWLEntityRenderer(owlEditorKit.getOWLModelManager().getOWLEntityRenderer());
+               owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());
            }
         }
     }

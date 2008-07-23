@@ -22,6 +22,6 @@ public abstract class OWLPreferencesPanel extends PreferencesPanel {
 
 
     public OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getOWLModelManager();
+        return getOWLEditorKit().getModelManager();
     }
 }

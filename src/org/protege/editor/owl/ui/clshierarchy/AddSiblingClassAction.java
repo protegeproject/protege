@@ -1,11 +1,5 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
@@ -13,11 +7,12 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -53,7 +48,7 @@ public class AddSiblingClassAction extends OWLSelectionViewAction {
             setEnabled(false);
             return;
         }
-        OWLClass thing = owlEditorKit.getOWLModelManager().getOWLDataFactory().getOWLThing();
+        OWLClass thing = owlEditorKit.getModelManager().getOWLDataFactory().getOWLThing();
         setEnabled(!tree.getSelectedOWLObject().equals(thing));
         return;
     }
@@ -75,7 +70,7 @@ public class AddSiblingClassAction extends OWLSelectionViewAction {
             return;
         }
         // We need to apply the changes in the active ontology
-        OWLEntityCreationSet<OWLClass> creationSet = owlEditorKit.getOWLWorkspace().createOWLClass();
+        OWLEntityCreationSet<OWLClass> creationSet = owlEditorKit.getWorkspace().createOWLClass();
         if (creationSet == null) {
             return;
         }
@@ -83,7 +78,7 @@ public class AddSiblingClassAction extends OWLSelectionViewAction {
         // changes that are required to make it a sibling class.
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(creationSet.getOntologyChanges());
-        OWLModelManager owlModelManager = owlEditorKit.getOWLModelManager();
+        OWLModelManager owlModelManager = owlEditorKit.getModelManager();
         for (OWLClass par : owlModelManager.getOWLClassHierarchyProvider().getParents(cls)) {
             OWLDataFactory df = owlModelManager.getOWLDataFactory();
             OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);

@@ -4,6 +4,8 @@ package org.protege.editor.owl.model.description.manchester;
 /**
  * An implementation of interface CharStream, where the stream is assumed to
  * contain only ASCII characters (without unicode processing).
+ *
+ * @deprecated see <code>ManchesterOWLParser</code>
  */
 
 public class SimpleCharStream

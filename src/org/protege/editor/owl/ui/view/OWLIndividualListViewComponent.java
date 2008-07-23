@@ -209,8 +209,7 @@ public class OWLIndividualListViewComponent extends
 	}
 
 	private void addIndividual() {
-		OWLEntityCreationSet<OWLIndividual> set = this.getOWLWorkspace()
-				.createOWLIndividual();
+		OWLEntityCreationSet<OWLIndividual> set = this.getOWLWorkspace().createOWLIndividual();
 		if (set == null) {
 			return;
 		}

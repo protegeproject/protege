@@ -1,13 +1,5 @@
 package org.protege.editor.owl.ui.datarange;
 
-import java.awt.BorderLayout;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
@@ -17,6 +9,12 @@ import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
 import org.semanticweb.owl.vocab.XSDVocabulary;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -51,7 +49,7 @@ public class DataRangeSelectionPanel extends JPanel {
         // Add the built in datatypes
         List<OWLDataType> builtInDataTypes = new ArrayList<OWLDataType>();
         for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            OWLDataFactory factory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+            OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
             builtInDataTypes.add(factory.getOWLDataType(uri));
         }
         list.setListData(builtInDataTypes.toArray());

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
+
+import java.util.Comparator;
 
 
 /**
@@ -44,7 +44,7 @@ public class OWLOntologyAnnotationAxiomFrameSection extends AbstractOWLFrameSect
      */
     protected void refill(OWLOntology ontology) {
         for (OWLOntologyAnnotationAxiom ax : getRootObject().getAnnotations(ontology)) {
-            if (!getOWLEditorKit().getOWLWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
+            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
                 addRow(new OWLOntologyAnnotationAxiomFrameSectionRow(getOWLEditorKit(),
                                                                      this,
                                                                      ontology,

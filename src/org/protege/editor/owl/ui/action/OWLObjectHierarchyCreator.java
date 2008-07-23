@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLOntologyChange;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -40,7 +40,7 @@ public abstract class OWLObjectHierarchyCreator<E extends OWLEntity> {
 
     public void createNewEntity() {
         OWLEntityCreationSet<E> creationSet = createEntity();
-        editorKit.getOWLModelManager().applyChanges(creationSet.getOntologyChanges());
+        editorKit.getModelManager().applyChanges(creationSet.getOntologyChanges());
     }
 
 
@@ -49,7 +49,7 @@ public abstract class OWLObjectHierarchyCreator<E extends OWLEntity> {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(changes);
         changes.addAll(createChild(entitySetProvider.getEntities(), creationSet.getOWLEntity()));
-        editorKit.getOWLModelManager().applyChanges(changes);
+        editorKit.getModelManager().applyChanges(changes);
     }
 
 

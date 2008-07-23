@@ -1,26 +1,19 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.Frame;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportTypePage;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -66,7 +59,7 @@ public class OWLImportsDeclarationEditor extends OntologyImportWizard implements
 
 
     public OWLDataFactory getDataFactory() {
-        return editorKit.getOWLModelManager().getOWLDataFactory();
+        return editorKit.getModelManager().getOWLDataFactory();
     }
 
 
@@ -92,12 +85,12 @@ public class OWLImportsDeclarationEditor extends OntologyImportWizard implements
             params.performImportSetup(editorKit);
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             for (URI uri : params.getOntologiesToBeImported()) {
-                OWLOntology ont = editorKit.getOWLModelManager().getActiveOntology();
+                OWLOntology ont = editorKit.getModelManager().getActiveOntology();
                 OWLImportsDeclaration ax = getDataFactory().getOWLImportsDeclarationAxiom(ont, uri);
                 changes.add(new AddAxiom(ont, ax));
-                editorKit.getOWLModelManager().getOWLOntologyManager().loadOntology(uri);
+                editorKit.getModelManager().getOWLOntologyManager().loadOntology(uri);
             }
-            editorKit.getOWLModelManager().applyChanges(changes);
+            editorKit.getModelManager().applyChanges(changes);
         }
         catch (OWLException e) {
             e.printStackTrace();

@@ -1,8 +1,9 @@
-package org.protege.editor.owl.model.parser;
+package org.protege.editor.owl.ui.clsdescriptioneditor;
 
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.semanticweb.owl.expression.ParserException;
-
+import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
+import org.semanticweb.owl.model.SWRLRule;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,24 +33,25 @@ import org.semanticweb.owl.expression.ParserException;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: May 8, 2008<br><br>
+ * Date: Jul 23, 2008<br><br>
  */
-public class ParserUtil {
+class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
 
-    public static OWLExpressionParserException convertException(ParserException ex) {
-        int endPos = ex.getCurrentToken().length();
-        if (ex.getCurrentToken().equals("<EOF>")){
-            endPos = ex.getStartPos(); // because start + length of <EOF> would push us past the end of the document
-        }
-        return new OWLExpressionParserException(ex.getMessage(),
-                                                ex.getStartPos(),
-                                                endPos,
-                                                ex.isClassNameExpected(),
-                                                ex.isObjectPropertyNameExpected(),
-                                                ex.isDataPropertyNameExpected(),
-                                                ex.isIndividualNameExpected(),
-                                                ex.isDatatypeNameExpected(),
-                                                ex.getExpectedKeywords());
+    private OWLModelManager mngr;
+
+
+    public SWRLRuleChecker(OWLModelManager mngr) {
+        this.mngr = mngr;
     }
 
+
+    public void check(String text) throws OWLExpressionParserException {
+        createObject(text);
+    }
+
+
+    public SWRLRule createObject(String text) throws OWLExpressionParserException {
+        // @@TODO remove dependency on ManchesterOWLSyntaxParser once OWL API editor parser supports SWRL
+        return new ManchesterOWLSyntaxParser(mngr).createSWRLRule(text);
+    }
 }

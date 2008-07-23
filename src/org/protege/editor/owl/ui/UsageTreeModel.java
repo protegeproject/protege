@@ -40,7 +40,7 @@ public class UsageTreeModel extends DefaultTreeModel {
 
     public UsageTreeModel(OWLEditorKit owlEditorKit) {
         super(new DefaultMutableTreeNode("No usage"));
-        owlModelManager = owlEditorKit.getOWLModelManager();
+        owlModelManager = owlEditorKit.getModelManager();
         axiomSorter = new AxiomSorter();
         nodeMap = new HashMap<OWLEntity, DefaultMutableTreeNode>();
         axiomsByEntityMap = new TreeMap<OWLEntity, Set<OWLAxiom>>(owlModelManager.getOWLObjectComparator());

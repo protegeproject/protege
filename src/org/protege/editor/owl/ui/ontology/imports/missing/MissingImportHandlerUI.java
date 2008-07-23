@@ -1,14 +1,13 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
-import java.io.File;
-import java.net.URI;
-
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.ui.UIHelper;
+
+import javax.swing.*;
+import java.io.File;
+import java.net.URI;
 
 
 /**
@@ -52,7 +51,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
         // Add a mapping from the ontology to the file.  If the user wants the ontology
         // to be editable, then they should have the option to copy the file into the
         // base folder.
-//        owlEditorKit.getOWLModelManager().add(ontologyURI, file.toURI());
+//        owlEditorKit.getModelManager().add(ontologyURI, file.toURI());
         return file.toURI();
 
         //"<font color=\"gray\">Cause: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")</font><br><br>"

@@ -1,15 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.BorderLayout;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.TreeSet;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
@@ -17,8 +7,13 @@ import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDataType;
 import org.semanticweb.owl.model.OWLTypedConstant;
 import org.semanticweb.owl.vocab.XSDVocabulary;
-
 import uk.ac.manchester.cs.owl.OWLDataTypeImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.TreeSet;
 
 
 /**
@@ -83,10 +78,10 @@ public class OWLConstantEditorComponent extends JPanel {
     public OWLConstant getOWLConstant() {
         OWLDataType dataType = (OWLDataType) datatypeCombo.getSelectedItem();
         if (dataType == null) {
-            return owlEditorKit.getOWLModelManager().getOWLDataFactory().getOWLUntypedConstant(editorField.getText().trim());
+            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLUntypedConstant(editorField.getText().trim());
         }
         else {
-            return owlEditorKit.getOWLModelManager().getOWLDataFactory().getOWLTypedConstant(editorField.getText().trim(),
+            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLTypedConstant(editorField.getText().trim(),
                                                                                              dataType);
         }
     }

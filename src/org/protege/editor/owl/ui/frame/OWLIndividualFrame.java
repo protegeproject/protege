@@ -13,7 +13,7 @@ import org.semanticweb.owl.model.OWLIndividual;
 public class OWLIndividualFrame extends AbstractOWLFrame<OWLIndividual> {
 
     public OWLIndividualFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLClassAssertionAxiomTypeFrameSection(editorKit, this));
         addSection(new OWLSameIndividualsAxiomFrameSection(editorKit, this));
         addSection(new OWLDifferentIndividualsAxiomFrameSection(editorKit, this));

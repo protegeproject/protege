@@ -5,7 +5,6 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionChecker;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLDataFactory;
@@ -38,8 +37,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private OWLEditorKit editorKit;
 
-    private OWLDescriptionChecker checker;
-
     private ExpressionEditor<OWLDescription> editor;
 
     private JComponent editingComponent;
@@ -63,8 +60,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
         this.editorKit = editorKit;
         this.initialDescription = description;
-        checker = new OWLDescriptionChecker(editorKit);
-        editor = new ExpressionEditor<OWLDescription>(editorKit, checker);
+        editor = new ExpressionEditor<OWLDescription>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker());
         editor.setExpressionObject(description);
 
 
@@ -156,8 +152,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     public OWLDescription getEditedObject() {
         try {
             if (editor.isWellFormed()) {
-                String expression = editor.getText();
-                return editorKit.getOWLModelManager().getOWLDescriptionParser().createOWLDescription(expression);
+                return editor.createObject();
             }
             else {
                 return null;
@@ -180,7 +175,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     private OWLDataFactory getDataFactory() {
-        return editorKit.getOWLModelManager().getOWLDataFactory();
+        return editorKit.getModelManager().getOWLDataFactory();
     }
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {

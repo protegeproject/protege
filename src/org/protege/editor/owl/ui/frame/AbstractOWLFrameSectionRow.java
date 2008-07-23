@@ -109,7 +109,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
 
 
     public OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 

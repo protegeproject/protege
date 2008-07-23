@@ -41,12 +41,12 @@ public class UIHelper {
 
 
     private JComponent getParent() {
-        return owlEditorKit.getOWLWorkspace();
+        return owlEditorKit.getWorkspace();
     }
 
 
     private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 

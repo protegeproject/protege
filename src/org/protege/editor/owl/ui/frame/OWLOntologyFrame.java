@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLOntology;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,7 +36,7 @@ public class OWLOntologyFrame extends AbstractOWLFrame<OWLOntology> {
 
 
     public OWLOntologyFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
         addSection(new OWLImportsDeclarationFrameSection(editorKit, this));
         addSection(new OWLIndirectImportsFrameSection(editorKit, this));

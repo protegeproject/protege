@@ -167,7 +167,7 @@ public class OntologyLibraryPanel extends JPanel {
 
 
     private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 
@@ -305,7 +305,7 @@ public class OntologyLibraryPanel extends JPanel {
      * Updates the library manager and saves its state
      */
     public void updateLibraryManager() {
-        final OntologyLibraryManager libManager = owlEditorKit.getOWLModelManager().getOntologyLibraryManager();
+        final OntologyLibraryManager libManager = owlEditorKit.getModelManager().getOntologyLibraryManager();
         for (OntologyLibrary lib : getAddedLibraries()){
             libManager.addLibrary(lib);
         }

@@ -33,7 +33,7 @@ public class OWLOntologySelectorPanel extends JPanel {
     public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         list = new OWLObjectList(owlEditorKit);
-        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+        final OWLModelManager mngr = owlEditorKit.getModelManager();
         final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(mngr.getOntologies());
         Collections.sort(orderedOntologies, mngr.getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
