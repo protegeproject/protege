@@ -17,8 +17,10 @@ import org.semanticweb.owl.model.OWLClassAxiom;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @@TODO should be package visibility
  */
-class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
+public class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
     private OWLModelManager mngr;
 

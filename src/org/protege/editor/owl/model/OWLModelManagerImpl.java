@@ -38,8 +38,8 @@ import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologyS
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
 import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactoryImpl;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -186,7 +186,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.setOWLModelManager(this);
         owlObjectRenderingCache = new OWLObjectRenderingCache(this);
 
-        owlExpressionCheckerFactory = new OWLExpressionCheckerFactoryImpl(this);
+        owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
 
         // @@TODO remove eventually
         owlDescriptionParser = new ManchesterOWLSyntaxParser(this);

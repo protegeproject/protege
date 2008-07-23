@@ -17,8 +17,10 @@ import org.semanticweb.owl.model.OWLDescription;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @@TODO should be package visibility
  */
-class OWLDescriptionChecker implements OWLExpressionChecker<OWLDescription> {
+public class OWLDescriptionChecker implements OWLExpressionChecker<OWLDescription> {
 
     private OWLModelManager mngr;
 
