@@ -16,8 +16,10 @@ import java.util.List;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 22-Feb-2007<br><br>
+ *
+ * @@TODO should be package visibility
  */
-class OWLPropertyChainChecker implements OWLExpressionChecker<List<OWLObjectPropertyExpression>> {
+public class OWLPropertyChainChecker implements OWLExpressionChecker<List<OWLObjectPropertyExpression>> {
 
     private OWLModelManager mngr;
 

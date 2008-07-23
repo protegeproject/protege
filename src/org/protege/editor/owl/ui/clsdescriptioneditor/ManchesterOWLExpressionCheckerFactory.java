@@ -1,9 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
+import org.semanticweb.owl.model.OWLClassAxiom;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.SWRLRule;
+
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -34,26 +37,33 @@ import org.semanticweb.owl.model.SWRLRule;
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Jul 23, 2008<br><br>
- *
- * @@TODO should be package visibility
  */
-public class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
+public class ManchesterOWLExpressionCheckerFactory implements OWLExpressionCheckerFactory {
 
     private OWLModelManager mngr;
 
 
-    public SWRLRuleChecker(OWLModelManager mngr) {
+    public ManchesterOWLExpressionCheckerFactory(OWLModelManager mngr) {
         this.mngr = mngr;
     }
 
 
-    public void check(String text) throws OWLExpressionParserException {
-        createObject(text);
+    public OWLExpressionChecker<OWLDescription> getOWLDescriptionChecker() {
+        return new OWLDescriptionChecker(mngr);
     }
 
 
-    public SWRLRule createObject(String text) throws OWLExpressionParserException {
-        // @@TODO remove dependency on ManchesterOWLSyntaxParser once OWL API editor parser supports SWRL
-        return new ManchesterOWLSyntaxParser(mngr).createSWRLRule(text);
+    public OWLExpressionChecker<OWLClassAxiom> getClassAxiomChecker() {
+        return new OWLClassAxiomChecker(mngr);
+    }
+
+
+    public OWLExpressionChecker<List<OWLObjectPropertyExpression>> getPropertyChainChecker() {
+        return new OWLPropertyChainChecker(mngr);
+    }
+
+
+    public OWLExpressionChecker<SWRLRule> getSWRLChecker() {
+        return new SWRLRuleChecker(mngr);
     }
 }
