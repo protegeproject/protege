@@ -6,6 +6,7 @@ import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.SWRLRule;
 
 import java.util.List;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -40,6 +41,8 @@ import java.util.List;
 public interface OWLExpressionCheckerFactory {
 
     OWLExpressionChecker<OWLDescription> getOWLDescriptionChecker();
+
+    OWLExpressionChecker<Set<OWLDescription>> getOWLDescriptionSetChecker();    
 
     OWLExpressionChecker<OWLClassAxiom> getClassAxiomChecker();
 
