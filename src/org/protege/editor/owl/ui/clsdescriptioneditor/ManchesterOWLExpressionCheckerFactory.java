@@ -7,6 +7,7 @@ import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.SWRLRule;
 
 import java.util.List;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -50,6 +51,11 @@ public class ManchesterOWLExpressionCheckerFactory implements OWLExpressionCheck
 
     public OWLExpressionChecker<OWLDescription> getOWLDescriptionChecker() {
         return new OWLDescriptionChecker(mngr);
+    }
+
+
+    public OWLExpressionChecker<Set<OWLDescription>> getOWLDescriptionSetChecker() {
+        return new OWLDescriptionSetChecker(mngr);
     }
 
 

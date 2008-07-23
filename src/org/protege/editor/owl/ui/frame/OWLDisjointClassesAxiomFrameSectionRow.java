@@ -29,16 +29,7 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
 
 
     protected OWLFrameSectionRowObjectEditor<Set<OWLDescription>> getObjectEditor() {
-        Set<OWLClass> clses = new HashSet<OWLClass>();
-        for (OWLDescription descr : getManipulatableObjects()){
-            if (descr.isAnonymous()){
-                return null;
-            }
-            else{
-                clses.add(descr.asOWLClass());
-            }
-        }
-        return new OWLClassDescriptionSetEditor(getOWLEditorKit(), clses);
+        return new OWLClassDescriptionSetEditor(getOWLEditorKit(), getManipulatableObjects());
     }
 
 
