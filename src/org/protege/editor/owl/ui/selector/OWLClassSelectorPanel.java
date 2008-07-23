@@ -83,6 +83,12 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
         viewComponent.setSelectedClass(cls);
     }
 
+
+    public void setSelection(Set<OWLClass> clses) {
+        viewComponent.setSelectedClasses(clses);
+    }
+
+
     public OWLClass getSelectedObject() {
         return viewComponent.getSelectedClass();
     }

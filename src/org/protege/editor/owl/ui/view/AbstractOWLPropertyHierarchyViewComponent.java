@@ -65,8 +65,34 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         return new HashSet<O>(tree.getSelectedOWLObjects());
     }
 
-    protected O updateView(O property) {
+    public void setSelectedProperty(O property) {
         tree.setSelectedOWLObject(property);
+    }
+
+    public void setSelectedProperties(Set<O> properties) {
+        tree.setSelectedOWLObjects(properties);
+    }
+
+    /**
+     * @deprecated use <code>setSelectedProperty</code>
+     * @param property
+     */
+    public void show(O property) {
+        setSelectedProperty(property);
+    }
+
+    protected O updateView(O property) {
+        final O currentProperty = getSelectedProperty();
+        if (currentProperty == null){
+            if (property != null){
+                tree.setSelectedOWLObject(property);
+            }
+        }
+        else{
+            if (!currentProperty.equals(property)){
+                tree.setSelectedOWLObject(property);
+            }
+        }
         return property;
     }
 
@@ -100,10 +126,6 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         return Collections.emptyList();
     }
 
-
-    public void show(O property) {
-        tree.setSelectedOWLObject(property);
-    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     //

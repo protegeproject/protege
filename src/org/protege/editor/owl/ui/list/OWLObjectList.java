@@ -7,9 +7,11 @@ import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 
 /**
@@ -41,5 +43,24 @@ public class OWLObjectList<O extends OWLObject> extends JList {
             }
         }
         return null;
+    }
+
+
+    public void setSelectedValues(Set<O> owlObjects, boolean shouldScroll) {
+        getSelectionModel().clearSelection();
+        if (getSelectionMode() == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION){
+            int firstIndex = -1;
+            for (int i=0; i<getModel().getSize(); i++){
+                if (owlObjects.contains((O)getModel().getElementAt(i))){
+                    getSelectionModel().addSelectionInterval(i, i);
+                    if (firstIndex == -1){
+                        firstIndex = i;
+                    }
+                }
+            }
+            if (shouldScroll && firstIndex != -1){
+                scrollRectToVisible(new Rectangle(getCellBounds(firstIndex, firstIndex)));
+            }
+        }
     }
 }
