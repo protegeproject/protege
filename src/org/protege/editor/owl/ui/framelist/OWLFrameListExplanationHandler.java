@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.protege.editor.owl.ui.explanation.ExplanationGeneratorPanel;
-import org.protege.editor.owl.OWLEditorKit;
-import com.clarkparsia.explanation.SatisfiabilityConverter;
 import com.clarkparsia.explanation.BlackBoxExplanation;
-import com.clarkparsia.explanation.HSTExplanationGenerator;
 import com.clarkparsia.explanation.ExplanationGenerator;
+import com.clarkparsia.explanation.HSTExplanationGenerator;
+import com.clarkparsia.explanation.SatisfiabilityConverter;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.explanation.ExplanationGeneratorPanel;
+import org.semanticweb.owl.apibinding.OWLManager;
+import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
+import org.semanticweb.owl.inference.OWLReasoner;
+import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
 /*
@@ -52,15 +52,15 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
     }
 
     protected OWLDataFactory getOWLDataFactory() {
-        return editorKit.getOWLModelManager().getOWLDataFactory();
+        return editorKit.getModelManager().getOWLDataFactory();
     }
 
     protected OWLReasoner getReasoner() {
-        return editorKit.getOWLModelManager().getReasoner();
+        return editorKit.getModelManager().getReasoner();
     }
 
     protected OWLOntology getOntology() {
-        return editorKit.getOWLModelManager().getActiveOntology();
+        return editorKit.getModelManager().getActiveOntology();
     }
 
     public void handleExplain(OWLAxiom ax) {
@@ -76,7 +76,7 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
         bbexp.setOntology(ontology);
         OWLReasoner reasoner = getReasoner();
         bbexp.setReasoner(reasoner);
-        bbexp.setReasonerFactory(editorKit.getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+        bbexp.setReasonerFactory(editorKit.getModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
 
 
         HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);

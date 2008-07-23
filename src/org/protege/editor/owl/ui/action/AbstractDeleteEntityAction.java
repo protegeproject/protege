@@ -48,7 +48,7 @@ public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OW
         Set<E> selents = getSelectedEntities();
         String name;
         if (selents.size() == 1) {
-            name = owlEditorKit.getOWLModelManager().getRendering(selents.iterator().next());
+            name = owlEditorKit.getModelManager().getRendering(selents.iterator().next());
         }
         else {
             name = getPluralDescription();
@@ -63,7 +63,7 @@ public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OW
         bg.add(decendantsRadioButton);
         onlySelectedEntityRadioButton.setSelected(true);
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        int ret = JOptionPane.showConfirmDialog(owlEditorKit.getOWLWorkspace(),
+        int ret = JOptionPane.showConfirmDialog(owlEditorKit.getWorkspace(),
                                                 panel,
                                                 "Delete",
                                                 JOptionPane.OK_CANCEL_OPTION,
@@ -86,12 +86,12 @@ public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OW
 
 
     private void delete(Set<E> ents) {
-        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getOWLModelManager().getOWLOntologyManager(),
-                                                        owlEditorKit.getOWLModelManager().getOntologies());
+        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getModelManager().getOWLOntologyManager(),
+                                                        owlEditorKit.getModelManager().getOntologies());
         for (E ent : ents) {
             ent.accept(remover);
         }
-        owlEditorKit.getOWLModelManager().applyChanges(remover.getChanges());
+        owlEditorKit.getModelManager().applyChanges(remover.getChanges());
     }
 
 

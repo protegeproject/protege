@@ -1,9 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.protege.editor.owl.OWLEditorKit;
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.model.parser.ParserUtil;
+import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
+import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLException;
 
 
 /**
@@ -15,22 +18,30 @@ import org.semanticweb.owl.model.OWLException;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionChecker implements OWLExpressionChecker<OWLDescription> {
+class OWLDescriptionChecker implements OWLExpressionChecker<OWLDescription> {
 
-    private OWLEditorKit owlEditorKit;
+    private OWLModelManager mngr;
 
 
-    public OWLDescriptionChecker(OWLEditorKit owlEditorKit) {
-        this.owlEditorKit = owlEditorKit;
+    public OWLDescriptionChecker(OWLModelManager mngr) {
+        this.mngr = mngr;
     }
 
 
-    public void check(String text) throws OWLExpressionParserException, OWLException {
-        owlEditorKit.getOWLModelManager().getOWLDescriptionParser().isWellFormed(text);
+    public void check(String text) throws OWLExpressionParserException {
+        createObject(text);
     }
 
 
-    public OWLDescription createObject(String text) throws OWLExpressionParserException, OWLException {
-        return owlEditorKit.getOWLModelManager().getOWLDescriptionParser().createOWLDescription(text);
+    public OWLDescription createObject(String text) throws OWLExpressionParserException {
+        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
+        parser.setBase(mngr.getActiveOntology().getURI().toString());
+        try {
+            return parser.parseDescription();
+        }
+        catch (ParserException e) {
+            throw ParserUtil.convertException(e);
+        }
     }
 }

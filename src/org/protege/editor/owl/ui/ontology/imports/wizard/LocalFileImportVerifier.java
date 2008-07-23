@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Collections;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.SimpleURIMapper;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -57,7 +57,7 @@ public class LocalFileImportVerifier implements ImportVerifier {
 
                 public void performImportSetup(OWLEditorKit editorKit) {
                     // We need to copy the file to the root ontology folder
-                    owlEditorKit.getOWLModelManager().getOWLOntologyManager().addURIMapper(new SimpleURIMapper(
+                    owlEditorKit.getModelManager().getOWLOntologyManager().addURIMapper(new SimpleURIMapper(
                             ontologyURI,
                             file.toURI()));
                     // If this fails then we can only add a direct mapping

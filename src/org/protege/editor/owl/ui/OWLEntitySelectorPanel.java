@@ -1,23 +1,23 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
-import java.util.Map;
-import java.util.IdentityHashMap;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -74,13 +74,13 @@ public class OWLEntitySelectorPanel extends JPanel {
 
         tabbedPaneComponentMap = new IdentityHashMap<JComponent, JComponent>();
         createUI();
-        owlEditorKit.getOWLWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
+        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
 
             public void selectionChanged() throws Exception {
                 updateSelectionFromModel();
             }
         });
-        owlEditorKit.getOWLModelManager().addListener(new OWLModelManagerListener() {
+        owlEditorKit.getModelManager().addListener(new OWLModelManagerListener() {
 
             public void handleChange(OWLModelManagerChangeEvent event) {
                if(event.isType(EventType.REASONER_CHANGED)) {
@@ -130,11 +130,11 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
     private void setModelSelection(OWLEntity entity) {
-        owlEditorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(entity);
+        owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(entity);
     }
 
     private void createClassTree() {
@@ -154,7 +154,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private void createObjectPropertyTree() {
-        objectPropertyTree = new OWLModelManagerTree<OWLObjectProperty>(owlEditorKit, owlEditorKit.getOWLModelManager().getOWLObjectPropertyHierarchyProvider());
+        objectPropertyTree = new OWLModelManagerTree<OWLObjectProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLObjectPropertyHierarchyProvider());
         objectPropertyTree.addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
@@ -165,7 +165,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private void createDataPropertyTree() {
-        dataPropertyTree = new OWLModelManagerTree<OWLDataProperty>(owlEditorKit, owlEditorKit.getOWLModelManager().getOWLDataPropertyHierarchyProvider());
+        dataPropertyTree = new OWLModelManagerTree<OWLDataProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLDataPropertyHierarchyProvider());
         dataPropertyTree.addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
@@ -204,7 +204,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void updateSelectionFromModel() {
-        OWLEntity entity = owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
+        OWLEntity entity = owlEditorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity();
         setSelection(entity);
     }
 

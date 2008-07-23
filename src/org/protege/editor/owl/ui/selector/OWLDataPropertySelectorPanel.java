@@ -35,7 +35,7 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
     }
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable) {
-        this(eKit, editable, eKit.getOWLModelManager().getOWLDataPropertyHierarchyProvider());
+        this(eKit, editable, eKit.getModelManager().getOWLDataPropertyHierarchyProvider());
     }
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit, boolean editable, OWLObjectHierarchyProvider<OWLDataProperty> hp) {
@@ -51,7 +51,7 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
 
 
             public Workspace getWorkspace() {
-                return getOWLEditorKit().getOWLWorkspace();
+                return getOWLEditorKit().getWorkspace();
             }
 
 

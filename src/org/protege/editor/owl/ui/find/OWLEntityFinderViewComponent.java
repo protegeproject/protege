@@ -1,15 +1,14 @@
 package org.protege.editor.owl.ui.find;
 
-import java.awt.BorderLayout;
-import java.util.Set;
-
-import javax.swing.JList;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -38,7 +37,7 @@ public class OWLEntityFinderViewComponent extends AbstractOWLViewComponent {
     public void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
         final JList list = new JList(entities.toArray());
-        list.setCellRenderer(getOWLEditorKit().getOWLWorkspace().createOWLCellRenderer());
+        list.setCellRenderer(getOWLEditorKit().getWorkspace().createOWLCellRenderer());
         add(ComponentFactory.createScrollPane(list));
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {

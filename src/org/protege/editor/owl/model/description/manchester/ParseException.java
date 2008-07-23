@@ -9,6 +9,8 @@ package org.protege.editor.owl.model.description.manchester;
  *
  * You can modify this class to customize your error reporting
  * mechanisms so long as you retain the public fields.
+ *
+ * @deprecated see <code>ManchesterOWLParser</code>
  */
 public class ParseException extends Exception {
 

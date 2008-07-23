@@ -56,7 +56,7 @@ public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrame
             buttons.add(new MListRemoveTypeButton(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    OWLModelManager manager = getOWLEditorKit().getOWLModelManager();
+                    OWLModelManager manager = getOWLEditorKit().getModelManager();
                     OWLDataFactory factory = manager.getOWLDataFactory();
                     OWLIndividual individual = getAxiom().getIndividual();
                     

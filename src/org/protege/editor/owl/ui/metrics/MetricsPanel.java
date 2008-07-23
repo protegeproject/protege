@@ -106,11 +106,11 @@ public class MetricsPanel extends JPanel {
         createIndividualAxiomMetrics();
         createAnnotationAxiomMetrics();
         createUI();
-        updateView(owlEditorKit.getOWLModelManager().getActiveOntology());
+        updateView(owlEditorKit.getModelManager().getActiveOntology());
         for(OWLMetricManager man : metricManagerMap.values()) {
             for(OWLMetric m : man.getMetrics()) {
                 m.setImportsClosureUsed(true);
-                m.setOntology(owlEditorKit.getOWLModelManager().getActiveOntology());
+                m.setOntology(owlEditorKit.getModelManager().getActiveOntology());
             }
         }
     }
@@ -314,7 +314,7 @@ public class MetricsPanel extends JPanel {
     }
 
     private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
     private void exportCSV() {

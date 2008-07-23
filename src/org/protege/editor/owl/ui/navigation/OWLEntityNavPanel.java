@@ -1,22 +1,13 @@
 package org.protege.editor.owl.ui.navigation;
 
-import java.awt.BorderLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 
 /**
@@ -63,8 +54,8 @@ public class OWLEntityNavPanel extends JPanel {
 
         backAction = new AbstractAction("Navigate back", OWLIcons.getIcon("nav.back.png")) {
             public void actionPerformed(ActionEvent e) {
-                editorKit.getOWLWorkspace().getOWLSelectionHistoryManager().goBack();
-                editorKit.getOWLWorkspace().displayOWLEntity(editorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity());
+                editorKit.getWorkspace().getOWLSelectionHistoryManager().goBack();
+                editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
             }
         };
         KeyStroke backKS = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
@@ -78,8 +69,8 @@ public class OWLEntityNavPanel extends JPanel {
 
         forwardAction = new AbstractAction("Navigate forward", OWLIcons.getIcon("nav.fwd.png")) {
             public void actionPerformed(ActionEvent e) {
-                editorKit.getOWLWorkspace().getOWLSelectionHistoryManager().goForward();
-                editorKit.getOWLWorkspace().displayOWLEntity(editorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity());
+                editorKit.getWorkspace().getOWLSelectionHistoryManager().goForward();
+                editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
             }
         };
         KeyStroke forwardKS = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
@@ -91,6 +82,6 @@ public class OWLEntityNavPanel extends JPanel {
 
 
     protected OWLModelManager getOWLModelManager() {
-        return editorKit.getOWLModelManager();
+        return editorKit.getModelManager();
     }
 }

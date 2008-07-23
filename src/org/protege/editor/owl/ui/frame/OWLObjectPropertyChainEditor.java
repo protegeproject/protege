@@ -5,7 +5,7 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLPropertyChainChecker;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owl.model.OWLException;
 import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
@@ -37,8 +37,8 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
 
     public OWLObjectPropertyChainEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        editor = new ExpressionEditor<List<OWLObjectPropertyExpression>>(owlEditorKit,
-                                                                         new OWLPropertyChainChecker(owlEditorKit.getOWLModelManager()));
+        final OWLExpressionChecker<List<OWLObjectPropertyExpression>> checker = owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getPropertyChainChecker();
+        editor = new ExpressionEditor<List<OWLObjectPropertyExpression>>(owlEditorKit, checker);
         Dimension prefSize = editor.getPreferredSize();
         editor.setPreferredSize(new Dimension(350, prefSize.height));
         impliesLabel = new JLabel();
@@ -67,7 +67,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
     public void setAxiom(OWLObjectPropertyChainSubPropertyAxiom ax) {
         String rendering = "";
         for (Iterator<OWLObjectPropertyExpression> it = ax.getPropertyChain().iterator(); it.hasNext();) {
-            rendering += owlEditorKit.getOWLModelManager().getRendering(it.next());
+            rendering += owlEditorKit.getModelManager().getRendering(it.next());
             if (it.hasNext()) {
                 rendering += " o ";
             }
@@ -78,7 +78,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLFrameSectionRowObje
 
 
     public void setSuperProperty(OWLObjectPropertyExpression prop) {
-        String rendering = owlEditorKit.getOWLModelManager().getRendering(prop);
+        String rendering = owlEditorKit.getModelManager().getRendering(prop);
         impliesLabel.setText(" \u279E " + rendering);
     }
 

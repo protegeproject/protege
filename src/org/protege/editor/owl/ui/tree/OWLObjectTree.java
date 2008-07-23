@@ -558,7 +558,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 

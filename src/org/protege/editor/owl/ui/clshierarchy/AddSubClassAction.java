@@ -1,21 +1,16 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,16 +51,16 @@ public class AddSubClassAction extends AbstractOWLClassTreeAction {
         if (cls == null) {
             return;
         }
-        OWLEntityCreationSet<OWLClass> creationSet = owlEditorKit.getOWLWorkspace().createOWLClass();
+        OWLEntityCreationSet<OWLClass> creationSet = owlEditorKit.getWorkspace().createOWLClass();
         if (creationSet == null) {
             return;
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(creationSet.getOntologyChanges());
-        OWLDataFactory df = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+        OWLDataFactory df = owlEditorKit.getModelManager().getOWLDataFactory();
         OWLSubClassAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), cls);
-        changes.add(new AddAxiom(owlEditorKit.getOWLModelManager().getActiveOntology(), ax));
-        owlEditorKit.getOWLModelManager().applyChanges(changes);
+        changes.add(new AddAxiom(owlEditorKit.getModelManager().getActiveOntology(), ax));
+        owlEditorKit.getModelManager().applyChanges(changes);
         tree.setSelectedOWLObject(creationSet.getOWLEntity());
     }
 }

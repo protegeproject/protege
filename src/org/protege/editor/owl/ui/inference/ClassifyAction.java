@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.awt.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -72,10 +72,10 @@ public class ClassifyAction extends ProtegeOWLAction {
      * and shows the classification results view.
      */
     private void showClassificationResults() {
-        getOWLEditorKit().getOWLWorkspace().getViewManager().bringViewToFront(
+        getOWLEditorKit().getWorkspace().getViewManager().bringViewToFront(
                 "org.protege.editor.owl.InferredOWLClassHierarchy");
-        getOWLEditorKit().getOWLWorkspace().getViewManager().bringViewToFront(
+        getOWLEditorKit().getWorkspace().getViewManager().bringViewToFront(
                 "org.protege.editor.owl.OWLInferredSuperClassHierarchy");
-        //getOWLEditorKit().getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLReasonerResults", true, Workspace.BOTTOM_RESULTS_VIEW);
+        //getOWLEditorKit().getWorkspace().showResultsView("org.protege.editor.owl.OWLReasonerResults", true, Workspace.BOTTOM_RESULTS_VIEW);
     }
 }

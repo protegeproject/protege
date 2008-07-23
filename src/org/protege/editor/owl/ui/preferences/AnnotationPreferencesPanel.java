@@ -62,7 +62,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
                 presentationText = uri.toString();
             }
             JCheckBox cb = new JCheckBox(presentationText,
-                                         getOWLEditorKit().getOWLWorkspace().isHiddenAnnotationURI(uri));
+                                         getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(uri));
             checkBoxURIMap.put(cb, uri);
             box.add(cb);
             box.add(Box.createVerticalStrut(4));
@@ -82,7 +82,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
                 hiddenURIs.add(checkBoxURIMap.get(cb));
             }
         }
-        getOWLEditorKit().getOWLWorkspace().setHiddenAnnotationURIs(hiddenURIs);
+        getOWLEditorKit().getWorkspace().setHiddenAnnotationURIs(hiddenURIs);
     }
 
 

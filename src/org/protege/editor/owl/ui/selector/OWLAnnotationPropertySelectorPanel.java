@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.selector;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+
+import javax.swing.*;
 
 
 /**
@@ -29,10 +27,10 @@ public class OWLAnnotationPropertySelectorPanel extends JPanel {
 //        setLayout(new BorderLayout(7, 7));
 //        // Encapsulate the message in html tags so that it wraps
 //        add(new JLabel("<html><body>" + message + "</body></html>"));
-//        Set<OWLAnnotationProperty> props = new TreeSet<OWLAnnotationProperty>(new OWLEntityComparator(owlEditorKit.getOWLModelManager()));
-//        for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()) {
+//        Set<OWLAnnotationProperty> props = new TreeSet<OWLAnnotationProperty>(new OWLEntityComparator(owlEditorKit.getModelManager()));
+//        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
 //            if (onlyActiveOntology) {
-//                if (ont.equals(owlEditorKit.getOWLModelManager().getActiveOntology())) {
+//                if (ont.equals(owlEditorKit.getModelManager().getActiveOntology())) {
 //                    props.addAll(ont.getAnnotationProperties());
 //                }
 //            } else {
@@ -40,9 +38,9 @@ public class OWLAnnotationPropertySelectorPanel extends JPanel {
 //            }
 //        }
 //        // Ensure that built in annotation properties are included.
-//        addBuiltInAnnotationProperties(props, owlEditorKit.getOWLModelManager().getOWLDataFactory());
+//        addBuiltInAnnotationProperties(props, owlEditorKit.getModelManager().getOWLDataFactory());
 //        propertyList = new JList(props.toArray());
-//        propertyList.setCellRenderer(owlEditorKit.getOWLWorkspace().createOWLCellRenderer());
+//        propertyList.setCellRenderer(owlEditorKit.getWorkspace().createOWLCellRenderer());
 //        add(ComponentFactory.createScrollPane(propertyList));
     }
 

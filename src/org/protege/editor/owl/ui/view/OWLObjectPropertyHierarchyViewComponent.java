@@ -42,7 +42,7 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
         OWLEntityCreationSet<OWLObjectProperty> set = getOWLWorkspace().createOWLObjectProperty();
         if (set != null) {
             getOWLModelManager().applyChanges(set.getOntologyChanges());
-            show(set.getOWLEntity());
+            setSelectedEntity(set.getOWLEntity());
         }
     }
 
@@ -60,7 +60,7 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
             OWLAxiom ax = df.getOWLSubObjectPropertyAxiom(set.getOWLEntity(), selProp);
             changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             getOWLModelManager().applyChanges(changes);
-            show(set.getOWLEntity());
+            setSelectedEntity(set.getOWLEntity());
         }
     }
 

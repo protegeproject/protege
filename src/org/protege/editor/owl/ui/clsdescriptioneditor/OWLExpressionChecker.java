@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.semanticweb.owl.model.OWLException;
 
 
 /**
@@ -15,8 +14,7 @@ import org.semanticweb.owl.model.OWLException;
  */
 public interface OWLExpressionChecker<O> {
 
-    public void check(String text) throws OWLExpressionParserException, OWLException;
+    public void check(String text) throws OWLExpressionParserException;
 
-
-    O createObject(String text) throws OWLExpressionParserException, OWLException;
+    O createObject(String text) throws OWLExpressionParserException;
 }

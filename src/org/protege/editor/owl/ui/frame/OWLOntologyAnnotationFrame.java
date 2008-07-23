@@ -13,7 +13,7 @@ import org.semanticweb.owl.model.OWLOntology;
 public class OWLOntologyAnnotationFrame extends AbstractOWLFrame<OWLOntology> {
 
     public OWLOntologyAnnotationFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
     }
 }

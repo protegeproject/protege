@@ -59,7 +59,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
     private OWLDataType lastDatatype;
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
-        dataFactory = owlEditorKit.getOWLModelManager().getOWLDataFactory();
+        dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
         annotationContent = new JTextArea(8, 40);
         annotationContent.setWrapStyleWord(true);
         annotationContent.setLineWrap(true);
@@ -194,7 +194,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
     private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
         autoCompleter = new OWLDescriptionAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
-            public void check(String text) throws OWLExpressionParserException, OWLException {
+            public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text,
                                                        0,
                                                        text.length(),
@@ -207,7 +207,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
             }
 
 
-            public Object createObject(String text) throws OWLExpressionParserException, OWLException {
+            public Object createObject(String text) throws OWLExpressionParserException {
                 return null;
             }
         });

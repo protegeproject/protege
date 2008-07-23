@@ -51,8 +51,8 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
                                                   boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getOWLModelManager()));
-        label.setIcon(editorKit.getOWLWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
+        label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getModelManager()));
+        label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
         return label;
     }
 

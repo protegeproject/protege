@@ -101,7 +101,7 @@ public class StrategyEditorFactory {
             public JComponent getComponent() {
                 if (selector == null){
                     Class type = getStrategy().getType();
-                    final OWLOntologyManager mngr = eKit.getOWLModelManager().getOWLOntologyManager();
+                    final OWLOntologyManager mngr = eKit.getModelManager().getOWLOntologyManager();
                     if (type.equals(OWLClass.class)){
                         OWLObjectHierarchyProvider<OWLClass> hp = new AssertedClassHierarchyProvider2(mngr);
                         hp.setOntologies(getStrategy().getOntologies());

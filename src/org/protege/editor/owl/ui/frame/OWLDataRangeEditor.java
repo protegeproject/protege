@@ -49,7 +49,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
         tabbedPane.add("Built in datatypes", datatypeListScrollPane = new JScrollPane(datatypeList));
 //        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLExpressionChecker<OWLDataRange>() {
 //            public void check(String text) throws OWLExpressionParserException, OWLException {
-//                editorKit.getOWLModelManager().getOWLDescriptionParser().
+//                editorKit.getModelManager().getOWLDescriptionParser().
 //            }
 //
 //
@@ -65,7 +65,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
     private void fillDatatypeList() {
         List<OWLDataType> datatypes = new ArrayList<OWLDataType>();
         for (URI uri : new TreeSet<URI>(XSDVocabulary.ALL_DATATYPES)) {
-            datatypes.add(editorKit.getOWLModelManager().getOWLOntologyManager().getOWLDataFactory().getOWLDataType(uri));
+            datatypes.add(editorKit.getModelManager().getOWLOntologyManager().getOWLDataFactory().getOWLDataType(uri));
         }
         datatypeList.setListData(datatypes.toArray());
         datatypeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

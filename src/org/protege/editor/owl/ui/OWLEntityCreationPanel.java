@@ -1,24 +1,17 @@
 package org.protege.editor.owl.ui;
 
-import java.awt.BorderLayout;
-import java.net.URI;
-import java.util.HashSet;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owl.model.OWLException;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.net.URI;
+import java.util.HashSet;
 
 
 /**
@@ -56,7 +49,7 @@ public class OWLEntityCreationPanel extends JPanel {
     public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, int type) {
         this.owlEditorKit = owlEditorKit;
         this.type = type;
-//        owlEditorKit.getOWLModelManager().setOWLEntityFactory(new LabelledOWLEntityFactory(owlEditorKit.getOWLModelManager()));
+//        owlEditorKit.getModelManager().setOWLEntityFactory(new LabelledOWLEntityFactory(owlEditorKit.getModelManager()));
         createUI(message);
     }
 
@@ -67,7 +60,7 @@ public class OWLEntityCreationPanel extends JPanel {
 
 
     public URI getBaseURI() {
-        return owlEditorKit.getOWLModelManager().getActiveOntology().getURI();
+        return owlEditorKit.getModelManager().getActiveOntology().getURI();
     }
 
 
@@ -96,7 +89,7 @@ public class OWLEntityCreationPanel extends JPanel {
         messageLabel.setFont(messageLabel.getFont().deriveFont(10.0f));
         add(messageLabel, BorderLayout.SOUTH);
         completer = new OWLDescriptionAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
-            public void check(String text) throws OWLExpressionParserException, OWLException {
+            public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text,
                                                        0,
                                                        text.length(),
@@ -109,7 +102,7 @@ public class OWLEntityCreationPanel extends JPanel {
             }
 
 
-            public Object createObject(String text) throws OWLExpressionParserException, OWLException {
+            public Object createObject(String text) throws OWLExpressionParserException {
                 return null;
             }
         });

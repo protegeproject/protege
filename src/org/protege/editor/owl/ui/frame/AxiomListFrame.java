@@ -1,11 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLAxiom;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLAxiom;
 
-import java.util.Map;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -41,7 +38,7 @@ public class AxiomListFrame extends AbstractOWLFrame<Set<OWLAxiom>> {
 
 
     public AxiomListFrame(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
         addSection(new AxiomListFrameSection(owlEditorKit, this));
     }
 }

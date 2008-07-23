@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui.framelist;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -62,7 +60,7 @@ public abstract class OWLFrameListPopupMenuAction<R extends Object> extends Abst
 
 
     protected OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getOWLModelManager();
+        return owlEditorKit.getModelManager();
     }
 
 

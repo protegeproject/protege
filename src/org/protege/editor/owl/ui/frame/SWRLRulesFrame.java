@@ -36,7 +36,7 @@ public class SWRLRulesFrame extends AbstractOWLFrame<OWLOntology> {
 
 
     public SWRLRulesFrame(OWLEditorKit editorKit) {
-        super(editorKit.getOWLModelManager().getOWLOntologyManager());
+        super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new SWRLRulesFrameSection(editorKit, this));
     }
 }

@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.frame.OWLEntityFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.OWLOntologyDisplayPanel;
-import org.protege.editor.owl.ui.UsagePanel;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
@@ -93,7 +91,7 @@ public class SelectedObjectPanel extends JPanel {
         entityFrame = new OWLEntityFrame(getOWLEditorKit());
         frameList = new OWLFrameList2(getOWLEditorKit(), entityFrame);
         cardPanel.add("ENTITIES", new JScrollPane(frameList));
-        owlEditorKit.getOWLWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
+        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
 
             public void selectionChanged() throws Exception {
                 OWLObject selObj = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
@@ -148,22 +146,22 @@ public class SelectedObjectPanel extends JPanel {
         object.accept(new OWLObjectVisitorAdapter() {
 
             public void visit(OWLClass owlClass) {
-                objectDisplayLabel.setText("<html><body><b>Class: </b>" + owlEditorKit.getOWLModelManager().getRendering(object) + "</body></html>");
+                objectDisplayLabel.setText("<html><body><b>Class: </b>" + owlEditorKit.getModelManager().getRendering(object) + "</body></html>");
             }
 
 
             public void visit(OWLDataProperty owlDataProperty) {
-                objectDisplayLabel.setText("<html><body><b>Data property: </b>" + owlEditorKit.getOWLModelManager().getRendering(object) + "</body></html>");
+                objectDisplayLabel.setText("<html><body><b>Data property: </b>" + owlEditorKit.getModelManager().getRendering(object) + "</body></html>");
             }
 
 
             public void visit(OWLIndividual owlIndividual) {
-                objectDisplayLabel.setText("<html><body><b>Individual: </b>" + owlEditorKit.getOWLModelManager().getRendering(object) + "</body></html>");
+                objectDisplayLabel.setText("<html><body><b>Individual: </b>" + owlEditorKit.getModelManager().getRendering(object) + "</body></html>");
             }
 
 
             public void visit(OWLObjectProperty owlObjectProperty) {
-                objectDisplayLabel.setText("<html><body><b>Object property: </b>" + owlEditorKit.getOWLModelManager().getRendering(object) + "</body></html>");
+                objectDisplayLabel.setText("<html><body><b>Object property: </b>" + owlEditorKit.getModelManager().getRendering(object) + "</body></html>");
             }
 
 
@@ -178,10 +176,10 @@ public class SelectedObjectPanel extends JPanel {
     }
 
     public OWLWorkspace getOWLWorkspace() {
-        return getOWLEditorKit().getOWLWorkspace();
+        return getOWLEditorKit().getWorkspace();
     }
 
     public OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getOWLModelManager();
+        return getOWLEditorKit().getModelManager();
     }
 }

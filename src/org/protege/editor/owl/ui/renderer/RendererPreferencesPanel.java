@@ -76,7 +76,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
         prefs.setFontSize((Integer) fontSizeSpinner.getValue());
         prefs.setFontName(fontCombo.getSelectedItem().toString());
-        getOWLEditorKit().getOWLWorkspace().refreshComponents();
+        getOWLEditorKit().getWorkspace().refreshComponents();
 
     }
 

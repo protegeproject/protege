@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -39,11 +39,11 @@ public class DeleteIndividualAction extends OWLSelectionViewAction {
 
 
     public void actionPerformed(ActionEvent e) {
-        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getOWLModelManager().getOWLOntologyManager(),
-                                                        owlEditorKit.getOWLModelManager().getOntologies());
+        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getModelManager().getOWLOntologyManager(),
+                                                        owlEditorKit.getModelManager().getOntologies());
         for (OWLIndividual ind : indSetProvider.getEntities()) {
             ind.accept(remover);
         }
-        owlEditorKit.getOWLModelManager().applyChanges(remover.getChanges());
+        owlEditorKit.getModelManager().applyChanges(remover.getChanges());
     }
 }

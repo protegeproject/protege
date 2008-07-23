@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
 
 
 /**
@@ -16,11 +15,6 @@ import org.protege.editor.owl.model.description.OWLExpressionParserException;
 public class OWLClassAxiomEditor extends ExpressionEditor {
 
     public OWLClassAxiomEditor(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit, new OWLClassAxiomChecker(owlEditorKit));
-    }
-
-
-    protected void parse(String text) throws OWLExpressionParserException {
-        getOWLEditorKit().getOWLModelManager().getOWLDescriptionParser().isClassAxiomWellFormed(text);
+        super(owlEditorKit, owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getClassAxiomChecker());
     }
 }

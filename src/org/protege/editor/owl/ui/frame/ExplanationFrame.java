@@ -1,14 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.io.OWLObjectRenderer;
 import org.protege.editor.owl.OWLEditorKit;
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntax;
+import org.semanticweb.owl.io.OWLObjectRenderer;
+import org.semanticweb.owl.model.OWLAxiom;
 
-import java.util.Set;
 import java.util.HashSet;
-
-import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -57,7 +54,7 @@ public class ExplanationFrame extends AbstractOWLFrame<OWLAxiom> {
 
 
     public ExplanationFrame(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit.getOWLModelManager().getOWLOntologyManager());
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
         this.owlEditorKit = owlEditorKit;
         addSection(new ExplanationFrameSection(owlEditorKit, 0, null, new HashSet<OWLAxiom>(), this));
     }

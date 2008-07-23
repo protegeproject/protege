@@ -111,13 +111,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getOWLModelManager();
+        return getOWLEditorKit().getModelManager();
     }
 
 
     public void initialise() {
         entityDisplayProviders = new ArrayList<OWLEntityDisplayProvider>();
-        iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getOWLModelManager());
+        iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getModelManager());
         owlSelectionModel = new OWLSelectionModelImpl();
 
         keyWordColorMap = new HashMap<String, Color>();
@@ -320,7 +320,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
         if (changed) {
             AnnotationPreferences.setHiddenAnnotationURIs(hiddenAnnotationURIs);
-            getOWLEditorKit().getOWLModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
+            getOWLEditorKit().getModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
         }
     }
 
@@ -330,7 +330,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             hiddenAnnotationURIs.clear();
             hiddenAnnotationURIs.addAll(hiddenURIs);
             AnnotationPreferences.setHiddenAnnotationURIs(hiddenAnnotationURIs);
-            getOWLEditorKit().getOWLModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
+            getOWLEditorKit().getModelManager().fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
         }
     }
 

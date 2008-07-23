@@ -1,16 +1,12 @@
 package org.protege.editor.owl.model.description.manchester;
 
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.semanticweb.owl.model.*;
+
+import java.io.StringReader;
+import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -20,6 +16,8 @@ import org.semanticweb.owl.model.*;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated use OWL API <code>ManchesterOWLSyntaxEditorParser</code> directly or <code>OWLExpressionCheckerFactory</code>
  */
 public class ManchesterSyntaxParser implements OWLDescriptionParser {
 

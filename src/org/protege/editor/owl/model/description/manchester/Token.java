@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.description.manchester;
 
 /**
  * Describes the input token stream.
+ * @deprecated see <code>ManchesterOWLParser</code>
  */
 
 public class Token {

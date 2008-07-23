@@ -54,7 +54,7 @@ public class OWLAxiomList extends MList {
 
     public OWLAxiomList(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
-        this.manager = editorKit.getOWLModelManager().getOWLOntologyManager();
+        this.manager = editorKit.getModelManager().getOWLOntologyManager();
         setCellRenderer(new AxiomListItemRenderer());
         commonAxioms = new HashSet<OWLAxiom>();
     }

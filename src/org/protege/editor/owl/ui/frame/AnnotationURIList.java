@@ -99,8 +99,8 @@ public class AnnotationURIList extends MList {
      */
     private Set<URI> getAnnotationURIsViaHack() {
         Set<URI> result = new HashSet<URI>();
-        for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()) {
-            OWLOntologyFormat format = owlEditorKit.getOWLModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
+            OWLOntologyFormat format = owlEditorKit.getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
             if (format instanceof RDFXMLOntologyFormat) {
                 RDFXMLOntologyFormat rdfxmlOntologyFormat = (RDFXMLOntologyFormat) format;
                 result.addAll(rdfxmlOntologyFormat.getAnnotationURIs());
@@ -119,7 +119,7 @@ public class AnnotationURIList extends MList {
 
         java.util.List<URIItem> custom = new ArrayList<URIItem>();
         Set<URI> customURIs = new HashSet<URI>();
-        for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()) {
+        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
             customURIs.addAll(ont.getAnnotationURIs());
         }
         customURIs.addAll(getAnnotationURIsViaHack());
@@ -237,7 +237,7 @@ public class AnnotationURIList extends MList {
 
 
         public String toString() {
-            return owlEditorKit.getOWLModelManager().getURIRendering(uri);
+            return owlEditorKit.getModelManager().getURIRendering(uri);
         }
 
 

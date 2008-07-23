@@ -37,7 +37,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
         parent.setLayout(new BorderLayout());
         list = new JList();
         list.setVisibleRowCount(8);
-        list.setCellRenderer(getOWLEditorKit().getOWLWorkspace().createOWLCellRenderer());
+        list.setCellRenderer(getOWLEditorKit().getWorkspace().createOWLCellRenderer());
         final java.util.List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(getOWLModelManager().getOntologies());
         Collections.sort(orderedOntologies, getOWLModelManager().getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());

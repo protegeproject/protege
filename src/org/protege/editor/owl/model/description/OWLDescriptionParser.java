@@ -39,6 +39,8 @@ import org.semanticweb.owl.model.SWRLRule;
  * www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
  * A parser that can parse class and axiom descriptions.
+ *
+ * @deprecated use <code>OWLExpressionCheckerFactory</code>
  */
 public interface OWLDescriptionParser {
 

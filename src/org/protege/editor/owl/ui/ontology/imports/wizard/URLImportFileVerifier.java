@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.SimpleURIMapper;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -58,7 +58,7 @@ public class URLImportFileVerifier implements ImportVerifier {
                     public void performImportSetup(OWLEditorKit editorKit) {
                         // May be we need to add a mapping?
                         try {
-                            OWLOntologyManager man = editorKit.getOWLModelManager().getOWLOntologyManager();
+                            OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
                             man.addURIMapper(new SimpleURIMapper(ontologyURI, url.toURI()));
                         }
                         catch (URISyntaxException e) {

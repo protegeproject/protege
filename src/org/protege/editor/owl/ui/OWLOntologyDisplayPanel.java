@@ -57,7 +57,7 @@ public class OWLOntologyDisplayPanel extends JPanel {
     public OWLOntologyDisplayPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         createUI();
-        setOntology(owlEditorKit.getOWLModelManager().getActiveOntology());
+        setOntology(owlEditorKit.getModelManager().getActiveOntology());
     }
 
     private void createUI() {

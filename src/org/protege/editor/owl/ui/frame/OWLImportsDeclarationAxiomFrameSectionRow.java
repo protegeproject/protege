@@ -80,7 +80,7 @@ public class OWLImportsDeclarationAxiomFrameSectionRow extends AbstractOWLFrameS
     }
 
     private void handleImportsFix() {
-        int ret = JOptionPane.showConfirmDialog(getOWLEditorKit().getOWLWorkspace(),
+        int ret = JOptionPane.showConfirmDialog(getOWLEditorKit().getWorkspace(),
                                       getMismatchedImportMessage(),
                                       "Mismatched import",
                                       JOptionPane.YES_NO_OPTION,

@@ -138,7 +138,7 @@ public class ExpressionEditor<O> extends JTextPane
             setText("");
         }
         else if (desc instanceof OWLObject) {
-            OWLModelManager mngr = getOWLEditorKit().getOWLModelManager();
+            OWLModelManager mngr = getOWLEditorKit().getModelManager();
             String rendering = mngr.getRendering((OWLObject) desc);
             setText(rendering);
         }
@@ -297,7 +297,7 @@ public class ExpressionEditor<O> extends JTextPane
                             }
                         }
                         if (!inEscapedName) {
-                            Color color = owlEditorKit.getOWLWorkspace().getKeyWordColorMap().get(curToken);
+                            Color color = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
                             if (color == null) {
                                 color = Color.BLACK;
                             }
@@ -329,7 +329,7 @@ public class ExpressionEditor<O> extends JTextPane
 
 
     private void createStyles() {
-        for (Color color : owlEditorKit.getOWLWorkspace().getKeyWordColorMap().values()) {
+        for (Color color : owlEditorKit.getWorkspace().getKeyWordColorMap().values()) {
             Style style = getStyledDocument().addStyle(color.toString(), null);
             StyleConstants.setForeground(style, color);
             StyleConstants.setBold(style, true);

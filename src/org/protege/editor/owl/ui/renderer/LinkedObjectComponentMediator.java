@@ -1,17 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+
+import java.awt.*;
+import java.awt.event.*;
 
 
 /**
@@ -80,8 +74,8 @@ public class LinkedObjectComponentMediator {
         if (!(object instanceof OWLEntity)) {
             return;
         }
-        editorKit.getOWLWorkspace().getOWLSelectionModel().setSelectedEntity((OWLEntity) object);
-        editorKit.getOWLWorkspace().displayOWLEntity((OWLEntity) object);
+        editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity((OWLEntity) object);
+        editorKit.getWorkspace().displayOWLEntity((OWLEntity) object);
     }
 
 

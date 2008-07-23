@@ -11,6 +11,7 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -234,8 +235,14 @@ public interface OWLModelManager extends ModelManager {
     OWLObjectRenderer getOWLObjectRenderer();
 
 
+    /**
+     * @deprecated use <code>getOWLExpressionCheckerFactory()</code> instead
+     * @return a parser capable of parsing OWLDescriptions, Class Axioms and other OWLObjects
+     */
     OWLDescriptionParser getOWLDescriptionParser();
 
+
+    OWLExpressionCheckerFactory getOWLExpressionCheckerFactory();
 
     /**
      * @deprecated use <code>getEntityFinder().getMatchingOWLClasses()

@@ -1,13 +1,7 @@
 package org.protege.editor.owl.model.selection;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -27,7 +21,7 @@ public class FilteringOWLSelectionModelListener implements OWLSelectionModelList
 
 
     public void selectionChanged() {
-        OWLEntity entity = owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
+        OWLEntity entity = owlEditorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity();
         if (entity != null) {
             entity.accept(this);
         }

@@ -3,9 +3,9 @@ package org.protege.editor.owl.ui.renderer;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.*;
 
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -74,7 +74,7 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
     private void setText(Object value, JLabel renderer) {
         if(value instanceof OWLObject) {
             OWLObject obj = (OWLObject) value;
-            String rendering = owlEditorKit.getOWLModelManager().getRendering(obj);
+            String rendering = owlEditorKit.getModelManager().getRendering(obj);
             renderer.setText(rendering);
         }
     }
@@ -82,7 +82,7 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
     private void setIcon(Object value, JLabel renderer) {
         if(value instanceof OWLObject) {
             OWLObject obj = (OWLObject) value;
-            Icon icon = owlEditorKit.getOWLWorkspace().getOWLIconProvider().getIcon(obj);
+            Icon icon = owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(obj);
             renderer.setIcon(icon);
         }
     }
@@ -92,22 +92,22 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         if(value instanceof OWLEntity) {
             OWLEntity ent = (OWLEntity) value;
             if(ent instanceof OWLClass) {
-                if(!owlEditorKit.getOWLModelManager().getActiveOntology().getAxioms((OWLClass) ent).isEmpty()) {
+                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLClass) ent).isEmpty()) {
                     makeBold(renderer);
                 }
             }
             else if(ent instanceof OWLObjectProperty) {
-                if(!owlEditorKit.getOWLModelManager().getActiveOntology().getAxioms((OWLObjectProperty) ent).isEmpty()) {
+                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLObjectProperty) ent).isEmpty()) {
                     makeBold(renderer);
                 }
             }
             else if(ent instanceof OWLDataProperty) {
-                if(!owlEditorKit.getOWLModelManager().getActiveOntology().getAxioms((OWLDataProperty) ent).isEmpty()) {
+                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLDataProperty) ent).isEmpty()) {
                     makeBold(renderer);
                 }
             }
             else if(ent instanceof OWLIndividual) {
-                if(!owlEditorKit.getOWLModelManager().getActiveOntology().getAxioms((OWLIndividual) ent).isEmpty()) {
+                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLIndividual) ent).isEmpty()) {
                     makeBold(renderer);
                 }
             }

@@ -48,7 +48,7 @@ public class PhysicalLocationPanel extends JPanel {
         add(new ViewBanner("Loaded ontology sources", OWLSystemColors.getOWLOntologyColor()), BorderLayout.NORTH);
         Box box = new Box(BoxLayout.Y_AXIS);
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+        final OWLModelManager mngr = owlEditorKit.getModelManager();
         Set<OWLOntology> ts = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
         ts.addAll(mngr.getOntologies());
         for (OWLOntology ont : ts) {
@@ -83,7 +83,7 @@ public class PhysicalLocationPanel extends JPanel {
         public OntologySourcePanel(OWLOntology ont) {
             setOpaque(false);
             setLayout(new BorderLayout(3, 3));
-            final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+            final OWLModelManager mngr = owlEditorKit.getModelManager();
             String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, mngr);
 
             JLabel ontURILabel = new JLabel(label);

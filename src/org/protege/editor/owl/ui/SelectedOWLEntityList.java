@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JList;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,17 +28,17 @@ public class SelectedOWLEntityList extends JList implements OWLSelectionModelLis
     public SelectedOWLEntityList(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         selectionList = new ArrayList<OWLEntity>();
-        owlEditorKit.getOWLWorkspace().getOWLSelectionModel().addListener(this);
+        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(this);
     }
 
 
     public void dispose() {
-        owlEditorKit.getOWLWorkspace().getOWLSelectionModel().removeListener(this);
+        owlEditorKit.getWorkspace().getOWLSelectionModel().removeListener(this);
     }
 
 
     public void selectionChanged() {
-        selectionList.add(0, owlEditorKit.getOWLWorkspace().getOWLSelectionModel().getSelectedEntity());
+        selectionList.add(0, owlEditorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
         if (selectionList.size() > 10) {
             selectionList.remove(selectionList.size() - 1);
         }

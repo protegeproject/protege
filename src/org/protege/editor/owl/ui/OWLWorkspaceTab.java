@@ -22,6 +22,6 @@ public abstract class OWLWorkspaceTab extends WorkspaceTab {
 
 
     public OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getOWLModelManager();
+        return getOWLEditorKit().getModelManager();
     }
 }

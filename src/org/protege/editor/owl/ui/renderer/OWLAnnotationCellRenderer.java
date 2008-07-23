@@ -55,8 +55,8 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
                                                   boolean cellHasFocus) {
         if (value instanceof OWLAnnotation) {
             OWLAnnotation anno = (OWLAnnotation) value;
-            String ren = owlEditorKit.getOWLModelManager().getURIRendering(anno.getAnnotationURI());
-            String val = owlEditorKit.getOWLModelManager().getRendering(anno.getAnnotationValue());
+            String ren = owlEditorKit.getModelManager().getURIRendering(anno.getAnnotationURI());
+            String val = owlEditorKit.getModelManager().getRendering(anno.getAnnotationValue());
 
             annotationURILabel.setText(ren);
             annotationContentArea.setText(val);

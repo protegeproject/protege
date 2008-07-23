@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.list;
 
-import java.awt.Dimension;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.semanticweb.owl.model.OWLEntity;
+
+import java.awt.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -27,7 +27,7 @@ public class OWLEntityListPanel<E extends OWLEntity> extends OWLObjectListPanel<
 
 
     public OWLEntityListPanel(String message, Set<E> objects, OWLEditorKit owlEditorKit) {
-        super(message, getOrderedSet(owlEditorKit.getOWLModelManager(), objects), owlEditorKit);
+        super(message, getOrderedSet(owlEditorKit.getModelManager(), objects), owlEditorKit);
     }
 
 

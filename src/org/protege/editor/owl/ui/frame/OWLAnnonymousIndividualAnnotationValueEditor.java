@@ -85,14 +85,14 @@ public class OWLAnnonymousIndividualAnnotationValueEditor implements OWLAnnotati
 
     public void setEditedObject(Object object) {
         if (object == null) {
-            URI uri = URI.create(editorKit.getOWLModelManager().getActiveOntology().getURI() + "#genid" + System.nanoTime());
-            object = editorKit.getOWLModelManager().getOWLDataFactory().getOWLAnonymousIndividual(uri);
+            URI uri = URI.create(editorKit.getModelManager().getActiveOntology().getURI() + "#genid" + System.nanoTime());
+            object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(uri);
         }
         frameList.setRootObject((OWLIndividual) object);
         if (object != null) {
             mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
-            annotationValueLabel.setText(editorKit.getOWLModelManager().getRendering((OWLIndividual) object));
+            annotationValueLabel.setText(editorKit.getModelManager().getRendering((OWLIndividual) object));
         }
         else {
             annotationValueLabel.setIcon(null);
