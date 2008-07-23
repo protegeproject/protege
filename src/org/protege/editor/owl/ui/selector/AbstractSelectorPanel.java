@@ -79,6 +79,9 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
     public abstract void setSelection(O entity);
 
 
+    public abstract void setSelection(Set<O> entities);
+
+
     public abstract O getSelectedObject();
 
 

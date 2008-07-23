@@ -70,6 +70,12 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         viewComponent.setSelectedIndividual(ind);
     }
 
+
+    public void setSelection(Set<OWLIndividual> entities) {
+        viewComponent.setSelectedIndividuals(entities);
+    }
+
+
     public OWLIndividual getSelectedObject() {
         return viewComponent.getSelectedIndividual();
     }

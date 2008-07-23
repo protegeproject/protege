@@ -38,7 +38,7 @@ public class OWLDataPropertyEditor extends AbstractOWLFrameSectionRowObjectEdito
 
 
     public void clear() {
-        editor.setSelection(null);
+        editor.setSelection((OWLDataProperty)null);
     }
 
 

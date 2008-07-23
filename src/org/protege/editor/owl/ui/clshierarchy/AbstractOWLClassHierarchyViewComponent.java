@@ -65,10 +65,7 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         performExtraInitialisation();
         OWLClass cls = getSelectedOWLClass();
         if (cls != null) {
-            tree.setSelectedOWLObject(cls);
-            if (tree.getSelectionPath() != null) {
-                tree.scrollPathToVisible(tree.getSelectionPath());
-            }
+            setSelectedClass(cls);
         }
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             public void treeNodesChanged(TreeModelEvent e) {
@@ -108,6 +105,9 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         tree.setSelectedOWLObject(cls);
     }
 
+    public void setSelectedClasses(Set<OWLClass> clses) {
+        tree.setSelectedOWLObjects(clses);
+    }
 
     public OWLClass getSelectedClass() {
         return tree.getSelectedOWLObject();

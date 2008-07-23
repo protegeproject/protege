@@ -1,43 +1,5 @@
 package org.protege.editor.owl.ui.tree;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.Toolkit;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DropTarget;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.Timer;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -48,6 +10,24 @@ import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import javax.swing.Timer;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -60,7 +40,7 @@ import org.semanticweb.owl.model.OWLObject;
  */
 public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource {
 
-    private static final Logger logger = Logger.getLogger(OWLObjectTree.class);
+//    private static final Logger logger = Logger.getLogger(OWLObjectTree.class);
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
@@ -389,41 +369,60 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
      * in a collapsed branch then the branch is expanded.
      */
     public void setSelectedOWLObject(N selObject) {
-        if (selObject == null) {
-            clearSelection();
-            return;
-        }
         setSelectedOWLObject(selObject, false);
-        TreePath path = getSelectionPath();
-        if (path != null) {
-            scrollPathToVisible(path);
-        }
     }
 
 
     public void setSelectedOWLObject(N selObject, boolean selectAll) {
-        // If the selected object is null, then clear the
-        // tree selection
-        if (selObject == null) {
-            clearSelection();
+        if (selObject == null){
             return;
         }
+        setSelectedOWLObjects(Collections.singleton(selObject), selectAll);
+    }
+
+
+    public void setSelectedOWLObjects(Set<N> owlObjects) {
+        setSelectedOWLObjects(owlObjects, false);
+    }
+
+
+    public void setSelectedOWLObjects(Set<N> owlObjects, boolean selectAll) {
+        if (!getSelectedOWLObjects().equals(owlObjects)){
+            clearSelection();
+            if (!owlObjects.isEmpty()){
+                final List<TreePath> paths = new ArrayList<TreePath>();
+                for (N obj : owlObjects){
+                    Set<OWLObjectTreeNode<N>> nodes = getNodes(obj);
+                    if (nodes.isEmpty()) {
+                        expandAndSelectPaths(obj, selectAll);
+                    }
+                    paths.addAll(getPaths(obj, selectAll));
+                }
+                if (!paths.isEmpty()){
+                    setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
+                    // without this the selection never quite makes it onto the screen
+                    // probably because the component has not been sized yet
+                    SwingUtilities.invokeLater(new Runnable(){
+                        public void run() {
+                            scrollPathToVisible(paths.get(0));
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+
+    private List<TreePath> getPaths(N selObject, boolean selectAll){
         List<TreePath> paths = new ArrayList<TreePath>();
         Set<OWLObjectTreeNode<N>> nodes = getNodes(selObject);
-        if (nodes.isEmpty()) {
-            expandAndSelectPaths(selObject, selectAll);
-        }
         for (OWLObjectTreeNode<N> node : nodes) {
             paths.add(new TreePath(node.getPath()));
             if (!selectAll) {
                 break;
             }
         }
-        TreePath [] pathArray = new TreePath [paths.size()];
-        for (int i = 0; i < pathArray.length; i++) {
-            pathArray[i] = paths.get(i);
-        }
-        setSelectionPaths(pathArray);
+        return paths;
     }
 
 
@@ -655,5 +654,5 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
         return node.getOWLObject();
-    }    
+    }
 }

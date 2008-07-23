@@ -36,7 +36,7 @@ import java.util.List;
 public class OWLIndividualListViewComponent extends
 		AbstractOWLIndividualViewComponent implements Findable<OWLIndividual>,
 		Deleteable, CreateNewTarget, RefreshableComponent {
-	private OWLObjectList list;
+	private OWLObjectList<OWLIndividual> list;
 	private OWLOntologyChangeListener listener;
 	private ChangeListenerMediator changeListenerMediator;
 	private Set<OWLIndividual> individualsInList;
@@ -45,7 +45,7 @@ public class OWLIndividualListViewComponent extends
 
 	@Override
 	public void initialiseIndividualsView() throws Exception {
-		this.list = new OWLObjectList(this.getOWLEditorKit());
+		this.list = new OWLObjectList<OWLIndividual>(this.getOWLEditorKit());
 		this.list.setSelectionMode(this.selectionMode);
 		this.setLayout(new BorderLayout());
 		this.add(new JScrollPane(this.list));
@@ -232,10 +232,16 @@ public class OWLIndividualListViewComponent extends
 	}
 
 	public void show(OWLIndividual owlEntity) {
-		this.list.setSelectedValue(owlEntity, true);
+		list.setSelectedValue(owlEntity, true);
 	}
 
-	private class AddIndividualAction extends DisposableAction {
+
+    public void setSelectedIndividuals(Set<OWLIndividual> individuals) {
+        list.setSelectedValues(individuals, true);
+    }
+
+
+    private class AddIndividualAction extends DisposableAction {
 		public AddIndividualAction() {
 			super("Add individual", OWLIcons.getIcon("individual.add.png"));
 		}

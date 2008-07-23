@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -29,7 +29,16 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
 
 
     protected OWLFrameSectionRowObjectEditor<Set<OWLDescription>> getObjectEditor() {
-        return null;
+        Set<OWLClass> clses = new HashSet<OWLClass>();
+        for (OWLDescription descr : getManipulatableObjects()){
+            if (descr.isAnonymous()){
+                return null;
+            }
+            else{
+                clses.add(descr.asOWLClass());
+            }
+        }
+        return new OWLClassDescriptionSetEditor(getOWLEditorKit(), clses);
     }
 
 
@@ -42,7 +51,7 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
     /**
      * Gets a list of objects contained in this row.
      */
-    public List getManipulatableObjects() {
+    public List<OWLDescription> getManipulatableObjects() {
         Set<OWLDescription> disjointClasses = new HashSet<OWLDescription>(getAxiom().getDescriptions());
         disjointClasses.remove(getRootObject());
         return new ArrayList<OWLDescription>(disjointClasses);
