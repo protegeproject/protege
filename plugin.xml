@@ -50,7 +50,7 @@
     <extension id="OWLOntologyTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Active Ontology"/>
-        <class value="org.protege.editor.owl.ui.ontology.OWLOntologyTab"/>
+        <class value="org.protege.editor.core.ui.workspace.WorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="A"/>
         <defaultViewConfigFileName value="viewconfig-ontologytab.xml"/>
