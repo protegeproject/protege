@@ -66,6 +66,11 @@ public class LabelledOWLEntityFactory implements OWLEntityFactory {
     }
 
 
+    public boolean isValidNewID(String shortForm, URI baseURI) {
+        return true;
+    }
+
+
     protected List<OWLOntologyChange> getChanges(OWLEntity owlEntity, String shortName) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         // Add the label

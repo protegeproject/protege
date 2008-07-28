@@ -44,6 +44,12 @@
         <class value="org.protege.editor.owl.ui.preferences.AnnotationPreferencesPanel"/>
     </extension>
 
+    <extension id="ui.preferences.newentity"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="New Entities"/>
+        <class value="org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel"/>
+    </extension>
+
 
     <!-- Ontology Tab -->
 

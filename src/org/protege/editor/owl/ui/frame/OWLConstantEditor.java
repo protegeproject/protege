@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owl.model.*;
@@ -63,11 +64,9 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
         annotationContent = new JTextArea(8, 40);
         annotationContent.setWrapStyleWord(true);
         annotationContent.setLineWrap(true);
-        langComboBox = new JComboBox();
-        langComboBox.setEditable(true);
+        langComboBox = new UIHelper(owlEditorKit).getLanguageSelector();
         datatypeComboBox = new JComboBox();
         setupAutoCompleter(owlEditorKit);
-        fillLangComboBox();
         fillDatatypeComboBox();
         layoutComponents();
     }
@@ -171,9 +170,9 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
     }
 
 
-    private void fillLangComboBox() {
-        langComboBox.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
-    }
+//    private void fillLangComboBox() {
+//        langComboBox.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
+//    }
 
 
     private void fillDatatypeComboBox() {

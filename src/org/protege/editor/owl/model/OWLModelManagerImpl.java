@@ -11,9 +11,8 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
-import org.protege.editor.owl.model.entity.LabelledOWLEntityFactory;
+import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.model.entity.OWLEntityFactoryImpl;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -47,7 +46,6 @@ import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.util.URIShortFormProvider;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import java.io.File;
@@ -140,9 +138,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private Map<URI, URI> resolvedMissingImports;
 
-    private OWLEntityFactory defaultOWLEntityFactory;
-
-    private OWLEntityFactory labelOWLEntityFactory;
+    private OWLEntityFactory entityFactory;
 
     /**
      * A cache for the imports closure.  Originally, we just requested this
@@ -842,9 +838,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             entityRenderer.removeListener(this);
             entityRenderer.dispose();
         }
-        if (renderer instanceof OWLEntityAnnotationValueRenderer){
-            labelOWLEntityFactory = null;
-        }
         entityRenderer = renderer;
         entityRenderer.addListener(this);
         entityRenderer.initialise();
@@ -898,44 +891,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    public synchronized OWLEntityFactory getOWLEntityFactory() {
-        if (getOWLEntityRenderer() instanceof OWLEntityAnnotationValueRenderer) {
-            if (labelOWLEntityFactory == null) {
-                labelOWLEntityFactory = new LabelledOWLEntityFactory(this, OWLRDFVocabulary.RDFS_LABEL.getURI(), null){
-                    public URI getLabelURI() {
-                        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-                        if (!uris.isEmpty()){
-                            return uris.get(0);
-                        }
-                        return super.getLabelURI();
-                    }
-
-                    public String getLabelLanguage() {
-                        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-                        if (!uris.isEmpty()){
-                            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(uris.get(0));
-                            if (!langs.isEmpty()){
-                                return langs.get(0);
-                            }
-                        }
-                        return super.getLabelLanguage();
-                    }
-                };
-            }
-            return labelOWLEntityFactory;
+    public OWLEntityFactory getOWLEntityFactory() {
+        if (entityFactory == null){
+            entityFactory = new CustomOWLEntityFactory(this);
         }
-        else {
-            if (defaultOWLEntityFactory == null) {
-                // Return the default factory
-                defaultOWLEntityFactory = new OWLEntityFactoryImpl(this);
-            }
-            return defaultOWLEntityFactory;
-        }
+        return entityFactory;
     }
 
 
     public void setOWLEntityFactory(OWLEntityFactory owlEntityFactory) {
-        this.defaultOWLEntityFactory = owlEntityFactory;
+        this.entityFactory = owlEntityFactory;
     }
 
 

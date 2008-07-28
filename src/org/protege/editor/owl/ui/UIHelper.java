@@ -5,6 +5,7 @@ import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.frame.AnnotationURIList;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
 import org.protege.editor.owl.ui.selector.*;
 import org.semanticweb.owl.model.*;
@@ -216,6 +217,17 @@ public class UIHelper {
     }
 
 
+    public URI pickAnnotationURI() {
+        AnnotationURIList uriList = new AnnotationURIList(owlEditorKit);
+        uriList.rebuildAnnotationURIList();
+
+        if (showDialog("Select an annotation URI", new JScrollPane(uriList)) == JOptionPane.OK_OPTION){
+            return uriList.getSelectedURI();
+        }
+        return null;
+    }
+
+
     public String getHTMLOntologyList(Collection<OWLOntology> ontologies) {
         String result = "";
         for (OWLOntology ont : ontologies) {
@@ -275,5 +287,13 @@ public class UIHelper {
 //            return null;
 //        }
         return null;
+    }
+
+
+    public JComboBox getLanguageSelector() {
+        JComboBox c = new JComboBox();
+        c.setEditable(true);
+        c.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
+        return c;
     }
 }
