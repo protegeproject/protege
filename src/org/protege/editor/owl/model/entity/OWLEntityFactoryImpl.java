@@ -1,16 +1,10 @@
 package org.protege.editor.owl.model.entity;
 
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.*;
+
 import java.net.URI;
 import java.util.Arrays;
-
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
 
 
 /**
@@ -58,6 +52,11 @@ public class OWLEntityFactoryImpl implements OWLEntityFactory {
 
     public OWLEntityCreationSet<OWLIndividual> createOWLIndividual(String shortName, URI baseURI) {
         return getCreationSet(getOWLDataFactory().getOWLIndividual(createURI(shortName, baseURI)));
+    }
+
+
+    public boolean isValidNewID(String shortName, URI baseURI) {
+        return true;
     }
 
 
