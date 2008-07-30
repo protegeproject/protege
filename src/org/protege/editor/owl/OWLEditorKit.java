@@ -266,7 +266,7 @@ public class OWLEditorKit implements EditorKit {
 
         private void addRecent(URI physicalURI) {
         String label = physicalURI.toString();
-        if (physicalURI.getScheme().equals("file")) {
+        if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
             label = new File(physicalURI).getPath();
         }
         EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
