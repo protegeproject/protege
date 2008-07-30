@@ -10,7 +10,13 @@ import org.semanticweb.owl.vocab.XSDVocabulary;
 import uk.ac.manchester.cs.owl.OWLDataTypeImpl;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -26,31 +32,50 @@ public class OWLConstantEditorComponent extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
-    private JTextField editorField;
+    private JTextArea editorField;
 
     private JComboBox datatypeCombo;
 
+    private JSplitPane splitter;
+
+    private java.util.List<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
     public OWLConstantEditorComponent(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         setLayout(new BorderLayout(7, 7));
-        editorField = new JTextField(20);
+        editorField = new JTextArea();
+        editorField.getDocument().addDocumentListener(new DocumentListener(){
+            public void insertUpdate(DocumentEvent event) {
+                notifyChanges();
+            }
+
+            public void removeUpdate(DocumentEvent event) {
+                notifyChanges();
+            }
+
+            public void changedUpdate(DocumentEvent event) {
+                notifyChanges();
+            }
+        });
+        editorField.setColumns(20);
         JPanel editorFieldHolder = new JPanel(new BorderLayout());
-        editorFieldHolder.add(editorField, BorderLayout.NORTH);
-        editorFieldHolder.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        add(editorFieldHolder, BorderLayout.NORTH);
-        JPanel datatypeComboHolder = new JPanel(new BorderLayout());
-        fillDataTypeCombo();
+        editorFieldHolder.add(new JScrollPane(editorField), BorderLayout.CENTER);
+        editorFieldHolder.setBorder(ComponentFactory.createTitledBorder("Value"));
+
+//        JPanel datatypeComboHolder = new JPanel(new BorderLayout());
+        datatypeCombo = createDataTypeCombo();
         JPanel datatypeBorderPanel = new JPanel(new BorderLayout());
         datatypeBorderPanel.add(datatypeCombo, BorderLayout.NORTH);
         datatypeBorderPanel.setBorder(ComponentFactory.createTitledBorder("Datatype"));
-        datatypeComboHolder.add(datatypeBorderPanel, BorderLayout.NORTH);
-        add(datatypeComboHolder);
+//        datatypeComboHolder.add(datatypeBorderPanel, BorderLayout.NORTH);
+
+        splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, editorFieldHolder, datatypeBorderPanel);
+        add(splitter, BorderLayout.CENTER);
     }
 
 
-    private void fillDataTypeCombo() {
+    private JComboBox createDataTypeCombo() {
         TreeSet<URI> ts = new TreeSet<URI>();
         ts.addAll(XSDVocabulary.ALL_DATATYPES);
         ArrayList<OWLDataType> datatypes = new ArrayList<OWLDataType>();
@@ -58,8 +83,21 @@ public class OWLConstantEditorComponent extends JPanel {
         for (URI datatypeURI : ts) {
             datatypes.add(new OWLDataTypeImpl(null, datatypeURI));
         }
-        datatypeCombo = new JComboBox(datatypes.toArray());
-        datatypeCombo.setRenderer(new OWLCellRenderer(owlEditorKit));
+        JComboBox c = new JComboBox(datatypes.toArray());
+        c.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent event) {
+                notifyChanges();
+            }
+        });
+        c.setRenderer(new OWLCellRenderer(owlEditorKit));
+        return c;
+    }
+
+
+    private void notifyChanges() {
+        for (ChangeListener l : listeners){
+            l.stateChanged(new ChangeEvent(this));
+        }
     }
 
 
@@ -76,13 +114,23 @@ public class OWLConstantEditorComponent extends JPanel {
 
 
     public OWLConstant getOWLConstant() {
+        final String valueText = editorField.getText();
         OWLDataType dataType = (OWLDataType) datatypeCombo.getSelectedItem();
         if (dataType == null) {
-            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLUntypedConstant(editorField.getText().trim());
+            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLUntypedConstant(valueText.trim());
         }
         else {
-            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLTypedConstant(editorField.getText().trim(),
+            return owlEditorKit.getModelManager().getOWLDataFactory().getOWLTypedConstant(valueText.trim(),
                                                                                              dataType);
         }
+    }
+
+
+    public void addChangeListener(ChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeChangeListener(ChangeListener listener) {
+        listeners.remove(listener);
     }
 }

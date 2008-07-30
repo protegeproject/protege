@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLConstant;
@@ -8,7 +10,10 @@ import org.semanticweb.owl.model.OWLDataPropertyExpression;
 import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.ArrayList;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -40,9 +45,8 @@ import java.awt.*;
  * Bio-Health Informatics Group<br>
  * Date: 20-May-2007<br><br>
  */
-public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDataPropertyConstantPair> {
+public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDataPropertyConstantPair> implements VerifiedInputEditor {
 
-    private OWLEditorKit owlEditorKit;
 
     private OWLConstantEditorComponent constantEditorComponent;
 
@@ -51,10 +55,24 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
     private JPanel componentHolder;
 
 
+    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+
+    private boolean currentStatus = false;
+
+    private ChangeListener changeListener = new ChangeListener(){
+        public void stateChanged(ChangeEvent event) {
+            checkStatus();
+        }
+    };
+
+
     public OWLDataPropertyRelationshipEditor(OWLEditorKit owlEditorKit) {
-        this.owlEditorKit = owlEditorKit;
-        this.dataPropertySelectorPanel = new OWLDataPropertySelectorPanel(owlEditorKit);
+
+        dataPropertySelectorPanel = new OWLDataPropertySelectorPanel(owlEditorKit);
+        dataPropertySelectorPanel.addSelectionListener(changeListener);
+
         constantEditorComponent = new OWLConstantEditorComponent(owlEditorKit);
+        constantEditorComponent.addChangeListener(changeListener);
         componentHolder = new JPanel(new BorderLayout());
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(dataPropertySelectorPanel);
@@ -101,5 +119,27 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
 
     public void dispose() {
         dataPropertySelectorPanel.dispose();
+        listeners.clear();
+    }
+
+    private void checkStatus(){
+        boolean status = dataPropertySelectorPanel.getSelectedObject() != null &&
+                         constantEditorComponent.getOWLConstant() != null;
+        if (status != currentStatus){
+            currentStatus = status;
+            for (InputVerificationStatusChangedListener l : listeners){
+                l.verifiedStatusChanged(currentStatus);
+            }
+        }
+    }
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.add(listener);
+        listener.verifiedStatusChanged(currentStatus);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        listeners.remove(listener);
     }
 }
