@@ -1,10 +1,20 @@
 package org.protege.editor.core;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -13,6 +23,7 @@ import org.osgi.framework.Constants;
 import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
+import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
@@ -22,15 +33,11 @@ import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.update.UpdateManager;
 import org.protege.editor.core.util.BundleBuilder;
 
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -87,6 +94,8 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
+    
+    private static String[] args;
 
     private static BundleContext context;
 
@@ -98,12 +107,18 @@ public class ProtegeApplication implements BundleActivator {
 
     private ProtegeWelcomeFrame welcomeFrame;
 
+    public static String [] getArgs() {
+        return args;
+    }
+    
+    public static void setArgs(String [] args) {
+        ProtegeApplication.args = args;
+    }
 
     public void start(BundleContext context) throws Exception {
         ProtegeApplication.context = context;
         displayPlatform();
-        clearRecentOnFirstOSGiRun();
-        initApplication(new String[0]);
+        initApplication();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 try {
@@ -131,25 +146,6 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    /**
-     * This method determines if the OSGi version of Protege has been run before.  If it
-     * hasn't then the recent items are cleared.  This is needed because the original recent
-     * items set by the JPF version of Protege don't seem to work in the OSGi version.  Less
-     * than ideal, but this probably saves a lot of time trying to find a solution to a problem
-     * that won't really affect many people!
-     */
-    private static void clearRecentOnFirstOSGiRun() {
-        boolean runOnce = PreferencesManager.getInstance().getApplicationPreferences(RUN_ONCE).getBoolean(RUN_ONCE, false);
-        if(!runOnce) {
-            logger.info("First OSGi Run - Clearing recent items");
-            RecentEditorKitManager.getInstance().load();
-            RecentEditorKitManager.getInstance().clear();
-            RecentEditorKitManager.getInstance().save();
-            PreferencesManager.getInstance().getApplicationPreferences(RUN_ONCE).putBoolean(RUN_ONCE, true);
-        }
-    }
-
-
     /////////////////////////////////////////////////////////////////////////////////
     //
     //  Implementation of ApplicationPlugin
@@ -170,13 +166,13 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    protected ProtegeApplication initApplication(String args[]) throws Exception {
+    protected ProtegeApplication initApplication() throws Exception {
         PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
         loadPreferences();
         setupExceptionHandler();
-        processCommandLineURIs(args);
         loadPlugins();
+        processCommandLineURIs();  // plugins may set arguments
         loadRecentEditorKits();
         return this;
     }
@@ -278,9 +274,17 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    private void processCommandLineURIs(String[] strings) {
+    private void processCommandLineURIs() {
         commandLineURIs = new ArrayList<URI>();
-        for (String s : strings) {
+        if (args == null) {
+            return;
+        }
+        for (String s : args) {
+            File f = new File(s);
+            if (f.exists()) {
+                commandLineURIs.add(f.toURI());
+                continue;
+            }
             try {
                 URI uri = new URI(s);
                 commandLineURIs.add(uri);
@@ -365,9 +369,8 @@ public class ProtegeApplication implements BundleActivator {
                 }
                 logger.info("Installed plugin " + name);
                 if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && b.getResource("/plugin.xml") == null) {
-                    logger.warn("\t" + name + " Plugin has no plugin.xml resource");
-                    logger.info("\t Add a " + BUNDLE_WITHOUT_PLUGIN_XML + " entry in the manifest if this is deliberate.");
-                }
+                    logger.info("\t" + name + " Plugin has no plugin.xml resource");
+               }
 
             }
             catch (Throwable t) {
@@ -413,23 +416,31 @@ public class ProtegeApplication implements BundleActivator {
         try {
             if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
                 // Open any command line URIs
-                EditorKitFactoryPluginLoader loader = new EditorKitFactoryPluginLoader();
-                List<EditorKitFactory> factories = new ArrayList<EditorKitFactory>();
                 for (URI uri : commandLineURIs) {
-                    for (EditorKitFactoryPlugin plugin : loader.getPlugins()) {
-                        EditorKitFactory factory = plugin.newInstance();
-                        if (factory.canLoad(uri)) {
-                            ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri);
-                            break;
-                        }
-                    }
+                    editURI(uri);
+                }
+                if (ProtegeManager.getInstance().getEditorKitManager().getEditorKitCount() != 0) {
+                    welcomeFrame.setVisible(false);
                 }
             }
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("Exception caught loading ontology", e);
         }
         UpdateManager.getInstance().checkForUpdates(false);
+    }
+    
+    private void showWelcomeFrame(){
+        if (welcomeFrame == null){
+            welcomeFrame = new ProtegeWelcomeFrame();
+            welcomeFrame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    handleClose();
+                }
+            });
+            welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        }
+        welcomeFrame.setVisible(true);
     }
 
 
@@ -456,17 +467,16 @@ public class ProtegeApplication implements BundleActivator {
             showWelcomeFrame();
         }
     }
-
-    private void showWelcomeFrame(){
-        if (welcomeFrame == null){
-            welcomeFrame = new ProtegeWelcomeFrame();
-            welcomeFrame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    handleClose();
-                }
-            });
-            welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    
+    public void editURI(URI uri) throws Exception {
+        ProtegeManager pm = ProtegeManager.getInstance();
+        for (EditorKitFactoryPlugin plugin : pm.getEditorKitFactoryPlugins()) {
+            if (plugin.newInstance().canLoad(uri)) {
+                pm.loadAndSetupEditorKitFromURI(plugin, uri);
+                break;
+            }
         }
-        welcomeFrame.setVisible(true);
     }
+
+
 }
