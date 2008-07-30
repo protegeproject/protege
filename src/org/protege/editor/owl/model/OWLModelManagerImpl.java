@@ -338,7 +338,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         else{
             // Set up a mapping from the ontology URI to the physical URI
             manager.addURIMapper(new SimpleURIMapper(ontologyURI, uri));
-            if (uri.getScheme().equals("file")) {
+            if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
                 // Load the URIs of other ontologies that are contained in the
                 // same folder.
                 addRootFolder(uri);
