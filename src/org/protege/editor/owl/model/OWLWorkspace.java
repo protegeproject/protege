@@ -185,12 +185,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         hiddenAnnotationURIs = new HashSet<URI>();
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
+        final OWLModelManager mngr = getOWLModelManager();
+        
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 handleModelManagerEvent(event.getType());
             }
         };
-        getOWLModelManager().addListener(owlModelManagerListener);
+        mngr.addListener(owlModelManagerListener);
 
         listener = new OWLEntityCollectingOntologyChangeListener() {
             public void ontologiesChanged() {
@@ -202,9 +204,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 handleOntologiesChanged(changes);
             }
         };
-        getOWLModelManager().addOntologyChangeListener(listener);
+        mngr.addOntologyChangeListener(listener);
 
-        getOWLModelManager().getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
+        mngr.getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
+        mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
     }
 
     

@@ -1,8 +1,7 @@
 package org.protege.editor.owl.model;
 
-import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
 import org.semanticweb.owl.inference.OWLReasonerException;
 
 import javax.swing.*;
@@ -53,7 +52,7 @@ public class UIReasonerExceptionHandler implements OWLReasonerExceptionHandler {
         while(cause.getCause() != null) {
             cause = cause.getCause();
         }
-        String msg = e.getClass().getSimpleName() + ": " + cause.getMessage();
+        String msg = cause.getClass().getSimpleName() + ": " + cause.getMessage();
         JOptionPane.showMessageDialog(workspace, msg, "Reasoner Error", JOptionPane.ERROR_MESSAGE);
     }
 }

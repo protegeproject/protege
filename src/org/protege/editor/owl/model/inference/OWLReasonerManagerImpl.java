@@ -1,10 +1,5 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -20,6 +15,10 @@ import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
 import org.semanticweb.owl.util.NullProgressMonitor;
 import org.semanticweb.owl.util.ProgressMonitor;
+
+import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -235,6 +234,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     r.classify();
                     currentReasoner = r;
                     fireReclassified();
+                }
+                catch (ReasonerException e) {
+                    exceptionHandler.handle(e);
                 }
                 catch (Exception e) {
                     exceptionHandler.handle(new ReasonerException(e));
