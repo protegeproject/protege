@@ -53,10 +53,10 @@ public class OWLEditorKitFactory implements EditorKitFactory {
 
     public boolean isValidDescriptor(EditorKitDescriptor descriptor) {
         URI uri = descriptor.getURI(OWLEditorKit.URI_KEY);
-        if(uri == null) {
+        if(uri == null || uri.getScheme() == null) {
             return false;
         }
-        if(uri.getScheme().equals("file")) {
+        if (uri.getScheme().equals("file")) {
             File file = new File(uri);
             return file.exists();
         }
