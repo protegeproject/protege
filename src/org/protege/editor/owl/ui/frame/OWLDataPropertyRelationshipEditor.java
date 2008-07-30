@@ -10,6 +10,7 @@ import org.semanticweb.owl.model.OWLDataPropertyExpression;
 import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -54,7 +55,6 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
 
     private JPanel componentHolder;
 
-
     private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
 
     private boolean currentStatus = false;
@@ -68,22 +68,24 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
 
     public OWLDataPropertyRelationshipEditor(OWLEditorKit owlEditorKit) {
 
+        final Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+
         dataPropertySelectorPanel = new OWLDataPropertySelectorPanel(owlEditorKit);
+        dataPropertySelectorPanel.setBorder(BorderFactory.createCompoundBorder(paddingBorder,
+                                                                               BorderFactory.createTitledBorder("Data Property")));
         dataPropertySelectorPanel.addSelectionListener(changeListener);
 
         constantEditorComponent = new OWLConstantEditorComponent(owlEditorKit);
+        constantEditorComponent.setBorder(paddingBorder);
         constantEditorComponent.addChangeListener(changeListener);
+
         componentHolder = new JPanel(new BorderLayout());
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(dataPropertySelectorPanel);
         splitPane.setRightComponent(constantEditorComponent);
         componentHolder.add(splitPane);
-        constantEditorComponent.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-                                                                             BorderFactory.createEmptyBorder(5,
-                                                                                                             5,
-                                                                                                             5,
-                                                                                                             5)));
     }
+
 
     public void setDataPropertyAxiom(OWLPropertyAssertionAxiom<OWLDataPropertyExpression, OWLConstant> ax) {
         OWLDataPropertyExpression p = ax.getProperty();
@@ -122,6 +124,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
         listeners.clear();
     }
 
+
     private void checkStatus(){
         boolean status = dataPropertySelectorPanel.getSelectedObject() != null &&
                          constantEditorComponent.getOWLConstant() != null;
@@ -132,6 +135,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
             }
         }
     }
+
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
         listeners.add(listener);

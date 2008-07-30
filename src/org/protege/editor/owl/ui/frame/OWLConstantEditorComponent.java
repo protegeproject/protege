@@ -63,14 +63,13 @@ public class OWLConstantEditorComponent extends JPanel {
         editorFieldHolder.add(new JScrollPane(editorField), BorderLayout.CENTER);
         editorFieldHolder.setBorder(ComponentFactory.createTitledBorder("Value"));
 
-//        JPanel datatypeComboHolder = new JPanel(new BorderLayout());
         datatypeCombo = createDataTypeCombo();
         JPanel datatypeBorderPanel = new JPanel(new BorderLayout());
         datatypeBorderPanel.add(datatypeCombo, BorderLayout.NORTH);
         datatypeBorderPanel.setBorder(ComponentFactory.createTitledBorder("Datatype"));
-//        datatypeComboHolder.add(datatypeBorderPanel, BorderLayout.NORTH);
 
         splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, editorFieldHolder, datatypeBorderPanel);
+        splitter.setBorder(BorderFactory.createEmptyBorder());
         add(splitter, BorderLayout.CENTER);
     }
 
