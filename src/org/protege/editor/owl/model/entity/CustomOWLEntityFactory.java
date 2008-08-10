@@ -76,7 +76,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
 
     public boolean isValidNewID(String shortName, URI baseURI) {
-        return !isURIAlreadyUsed(createURI(shortName, baseURI));
+        return true;
     }
 
 
@@ -94,10 +94,6 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
             }
             else {
                 uri = createURI(shortName, baseURI);
-                if (isURIAlreadyUsed(uri)){
-                    logger.error("Not a unique entity: " + uri);
-                    return null;
-                }
 
                 if (EntityCreationPreferences.isGenerateIDLabel()){
                     id = getAutoIDGenerator().getNextID(type);
