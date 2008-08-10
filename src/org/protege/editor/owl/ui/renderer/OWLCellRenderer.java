@@ -611,7 +611,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
         nonBoldStyle = doc.addStyle("NON_BOLD_STYLE", null);
-        StyleConstants.setBold(nonBoldStyle, true);
+        StyleConstants.setBold(nonBoldStyle, false);
 
         selectionForeground = doc.addStyle("SEL_FG_STYPE", null);
         StyleConstants.setForeground(selectionForeground, SELECTION_FOREGROUND);
