@@ -1,19 +1,11 @@
 package org.protege.editor.core.ui.preferences;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.*;
-
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
 
 
 /**
@@ -104,9 +96,12 @@ public class PreferencesDialogPanel extends JPanel {
         JDialog dlg = op.createDialog(editorKit.getWorkspace(), "Preferences");
         dlg.setResizable(true);
         dlg.setVisible(true);
-        int ret = (Integer) op.getValue();
-        if (ret == JOptionPane.OK_OPTION) {
-            panel.applyPreferences();
+        Object o = op.getValue();
+        if (o != null){
+            int ret = (Integer)o;
+            if (ret == JOptionPane.OK_OPTION) {
+                panel.applyPreferences();
+            }
         }
         panel.dispose();
     }
