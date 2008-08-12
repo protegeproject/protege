@@ -2,7 +2,8 @@ package org.protege.editor.core.ui.view;
 
 import org.apache.log4j.Logger;
 import org.coode.mdock.*;
-import org.protege.editor.core.FileManager;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.workspace.Workspace;
 
 import javax.swing.*;
@@ -17,13 +18,10 @@ import java.util.Set;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: 15-May-2006<br><br>
+ * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date:
+ * 15-May-2006<br><br>
  * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
  * A panel that contains views.  Each panel has an id.
  */
@@ -46,34 +44,28 @@ public class ViewsPane extends JPanel {
         // a customised one, or we read in the default one.
 
         // See if there is a customised file
-        File file = getCustomConfigFile();
-        URL url = null;
-        if (file == null || !file.exists() || memento.isForceReset()) {
+        String serialisedViews = readViewLayout();
+        Reader reader = null;
+        if (serialisedViews.length() == 0 || memento.isForceReset()) {
             // No file, so default to default one :)
-            url = memento.getInitialCongigFileURL();
-        }
-        else {
             try {
-                url = file.toURI().toURL();
-            }
-            catch (MalformedURLException e) {
-                logger.error(e);
-            }
-        }
-
-        if (url != null) {
-            try {
-                // Got our config file.  Attempt to reannimate the views.
-                NodeReanimator nodeReanimator = new NodeReanimator(new InputStreamReader(new BufferedInputStream(url.openStream())),
-                                                                   new ViewComponentFactory(workspace));
-                SplitterNode node = nodeReanimator.getRootNode();
-                nodePanel = new NodePanel(node);
-                add(nodePanel);
-                dynamicConfigPanel = new DynamicConfigPanel(nodePanel);
+                reader = new InputStreamReader(new BufferedInputStream(memento.getInitialCongigFileURL().openStream()));
             }
             catch (IOException e) {
                 logger.error(e);
             }
+        }
+        else {
+            reader = new StringReader(serialisedViews);
+        }
+
+        if (reader != null) {
+            // Got our config file.  Attempt to reannimate the views.
+            NodeReanimator nodeReanimator = new NodeReanimator(reader, new ViewComponentFactory(workspace));
+            SplitterNode node = nodeReanimator.getRootNode();
+            nodePanel = new NodePanel(node);
+            add(nodePanel);
+            dynamicConfigPanel = new DynamicConfigPanel(nodePanel);
         }
         else {
             // There isn't even a default xml config file.  We don't want the system
@@ -116,38 +108,13 @@ public class ViewsPane extends JPanel {
     }
 
 
-    /**
-     * Gets the file that is used to save view customisations
-     * for this tab.
-     */
-    private File getCustomConfigFile() {
-        URL url = memento.getInitialCongigFileURL();
-        if (url != null) {
-            return new File(FileManager.getViewConfigurationsFolder(), url.getFile());
-        }
-        else if (memento.getViewPaneId() != null){
-            return new File(FileManager.getViewConfigurationsFolder(), "viewconfig-" + memento.getViewPaneId() + ".xml");
-        }
-        return null;
-    }
-
-
-    public void saveViews() {
+    public void saveViews(Writer writer) {
         try {
-            // Need to save a config file, and put a key in the prefs
-            // that points to the config file
-            File tabFile = getCustomConfigFile();
-            if (tabFile == null) {
-                return;
-            }
-            tabFile.getParentFile().mkdirs();
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tabFile)));
             NodeSerialiser nodeSerialiser = new NodeSerialiser(nodePanel.getRootNode(),
                                                                new ViewComponentPropertiesFactory(),
                                                                writer);
             nodeSerialiser.serialise();
             writer.flush();
-            writer.close();
         }
         catch (ParserConfigurationException e) {
             logger.error(e);
@@ -155,6 +122,13 @@ public class ViewsPane extends JPanel {
         catch (IOException e) {
             logger.error(e);
         }
+    }
+
+
+    public void saveViews() {
+        StringWriter writer = new StringWriter();
+        saveViews(writer);
+        storeViewLayout(writer.getBuffer().toString());
     }
 
 
@@ -183,5 +157,50 @@ public class ViewsPane extends JPanel {
                 // view id are in front
             }
         }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+    // We now save view layout information in the preferences.  This means that view layout
+    // don't disappear between installations
+
+    public static final String VIEW_LAYOUT_PREFERENCES_ID = "ViewLayoutPreferences";
+
+
+    /**
+     * Gets the layout preferences set.  This is common amongst all views
+     * @return The preferences.
+     */
+    public static Preferences getViewLayoutPreferences() {
+        PreferencesManager prefsMan = PreferencesManager.getInstance();
+        return prefsMan.getApplicationPreferences(VIEW_LAYOUT_PREFERENCES_ID);
+    }
+
+
+    /**
+     * Gets the layout preferences key for this view panel
+     * @return The key
+     */
+    public String getLayoutPreferencesKey() {
+        return memento.getViewPaneId();
+    }
+
+
+    /**
+     * Stores a serialisation of a view layout in the preferences system
+     * @param serialisation The serialisation to be stored.
+     */
+    private void storeViewLayout(String serialisation) {
+        getViewLayoutPreferences().putString(getLayoutPreferencesKey(), serialisation);
+    }
+
+
+    /**
+     * Reads a serialisation of a view layout from the preferences system
+     * @return The serialisation, or the empty string if no serialisation
+     * was previously stored.
+     */
+    private String readViewLayout() {
+        return getViewLayoutPreferences().getString(getLayoutPreferencesKey(), "");
     }
 }
