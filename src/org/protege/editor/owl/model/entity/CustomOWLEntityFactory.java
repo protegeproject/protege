@@ -75,8 +75,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
-    public boolean isValidNewID(String shortName, URI baseURI) {
-        return true;
+    public <T extends OWLEntity> boolean isValidNewID(String shortName, URI baseURI, Class<T> type) {
+        return !isURIAlreadyUsed(type, createURI(shortName, baseURI));
     }
 
 
@@ -90,10 +90,15 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 do{
                     id = getAutoIDGenerator().getNextID(type);
                     uri = createURI(id, baseURI);
-                } while (isURIAlreadyUsed(uri));
+                } while (isURIAlreadyUsed(type, uri));
             }
             else {
                 uri = createURI(shortName, baseURI);
+
+                if (isURIAlreadyUsed(type, uri)){
+                    logger.error("Entity already exists: " + uri);
+                    return null;
+                }
 
                 if (EntityCreationPreferences.isGenerateIDLabel()){
                     id = getAutoIDGenerator().getNextID(type);
@@ -195,12 +200,12 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
-    private boolean isURIAlreadyUsed(URI uri) {
+    private <T extends OWLEntity> boolean isURIAlreadyUsed(Class<T> type, URI uri) {
         for (OWLOntology ont : mngr.getOntologies()){
-            if (ont.containsClassReference(uri) ||
-                ont.containsObjectPropertyReference(uri) ||
-                ont.containsDataPropertyReference(uri) ||
-                ont.containsIndividualReference(uri)){
+            if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassReference(uri)) ||
+                (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyReference(uri)) ||
+                (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyReference(uri)) ||
+                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualReference(uri))){
                 return true;
             }
         }

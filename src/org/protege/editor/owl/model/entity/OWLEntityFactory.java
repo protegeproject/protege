@@ -1,9 +1,6 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
 
 import java.net.URI;
 
@@ -35,7 +32,8 @@ public interface OWLEntityFactory {
      * Check that the ID that will be generated will be valid for a new entity
      * @param shortName
      * @param baseURI
-     * @return true if the URI that would be generated is valid and unique
+     * @param type
+     * @return true if the URI that would be generated is valid and unique for the given type
      */
-    boolean isValidNewID(String shortName, URI baseURI);
+    <T extends OWLEntity> boolean isValidNewID(String shortName, URI baseURI, Class<T> type);
 }

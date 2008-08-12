@@ -66,7 +66,7 @@ public class LabelledOWLEntityFactory implements OWLEntityFactory {
     }
 
 
-    public boolean isValidNewID(String shortForm, URI baseURI) {
+    public <T extends OWLEntity> boolean isValidNewID(String shortForm, URI baseURI, Class<T> type) {
         return true;
     }
 
