@@ -23,6 +23,8 @@ import org.protege.editor.core.FileManager;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated JavaBackedPreferencesManagerImpl should be used.
  */
 public class PreferencesManagerImpl extends AbstractPreferencesManager {
 

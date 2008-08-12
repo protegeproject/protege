@@ -13,6 +13,8 @@ import java.util.Map;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated JavaBackedPreferences should be used
  */
 public class PreferencesImpl implements Preferences {
 

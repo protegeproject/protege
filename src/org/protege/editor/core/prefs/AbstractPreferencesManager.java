@@ -34,6 +34,8 @@ import java.util.Map;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated JavaBackedPreferencesManagerImpl should be used.
  */
 public abstract class AbstractPreferencesManager extends PreferencesManager {
 
