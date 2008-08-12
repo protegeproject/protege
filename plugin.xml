@@ -857,8 +857,6 @@
     <!--<editorKitId value="OWLEditorKit"/>-->
     <!--</extension>-->
 
-    <!-- Tools Menu -->
-
     <!-- Tools menu -->
 
     <extension id="menu.tools"
@@ -899,6 +897,16 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+
+    <!-- Help menu -->
+
+    <extension id="menu.PluginsMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Protege-OWL plugins"/>
+        <toolTip value="Protege 4.0 OWL plugins"/>
+        <class value="org.protege.editor.owl.ui.action.PluginsMenuAction"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
+        <editorKitId value="any"/>
+    </extension>
 
     <!-- Usage Views -->
 
