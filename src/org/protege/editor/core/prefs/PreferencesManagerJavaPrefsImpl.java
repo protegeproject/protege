@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
  * An implementation of the preferences manager that stores preferences
  * using the Java Preferences API.  This means that preferences are persisted
  * regardless of the current installation of protege.
+ *
+ * @deprecated JavaBackedPreferencesManagerImpl should be used.
  */
 public class PreferencesManagerJavaPrefsImpl extends AbstractPreferencesManager {
 
