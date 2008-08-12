@@ -1,15 +1,13 @@
 package org.protege.editor.core.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.*;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -65,7 +63,17 @@ public class OpenRecentAction extends ProtegeDynamicAction {
 
         public void actionPerformed(ActionEvent e) {
             try {
-                ProtegeManager.getInstance().openAndSetupRecentEditorKit(descriptor);
+                int ret = JOptionPane.showConfirmDialog(getWorkspace(),
+                                                        "Do you want to open the ontology in a new frame?",
+                                                        "Open in new frame",
+                                                        JOptionPane.YES_NO_CANCEL_OPTION,
+                                                        JOptionPane.QUESTION_MESSAGE);
+                if (ret == JOptionPane.NO_OPTION) {
+                    getEditorKit().handleLoadRecentRequest(descriptor);
+                }
+                else if (ret == JOptionPane.YES_OPTION) {
+                    ProtegeManager.getInstance().openAndSetupRecentEditorKit(descriptor);
+                }
             }
             catch (Exception e1) {
                 ErrorLogPanel.showErrorDialog(e1);
