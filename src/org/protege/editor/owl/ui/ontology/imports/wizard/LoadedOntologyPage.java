@@ -11,8 +11,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 
@@ -50,7 +49,11 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
 
 
     public ImportVerifier getImportVerifier() {
-        return new LoadedOntologyImportVerifier(Collections.singleton((OWLOntology) ontologyList.getSelectedValue()));
+        Set<OWLOntology> sel = new HashSet<OWLOntology>();
+        for (Object o : ontologyList.getSelectedValues()){
+            sel.add((OWLOntology)o);
+        }
+        return new LoadedOntologyImportVerifier(sel);
     }
 
 
