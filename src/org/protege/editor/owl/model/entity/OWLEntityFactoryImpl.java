@@ -55,7 +55,7 @@ public class OWLEntityFactoryImpl implements OWLEntityFactory {
     }
 
 
-    public boolean isValidNewID(String shortName, URI baseURI) {
+    public <T extends OWLEntity> boolean isValidNewID(String shortName, URI baseURI, Class<T> type) {
         return true;
     }
 
