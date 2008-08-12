@@ -57,7 +57,7 @@ public abstract class PreferencesManager {
      */
     public static synchronized PreferencesManager getInstance() {
         if (instance == null) {
-            instance = new PreferencesManagerJavaPrefsImpl();
+            instance = new JavaBackedPreferencesManagerImpl();
         }
         return instance;
     }
