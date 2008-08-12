@@ -46,19 +46,23 @@ public class ViewsPane extends JPanel {
         // See if there is a customised file
         String serialisedViews = readViewLayout();
         Reader reader = null;
-        if (serialisedViews.length() == 0 || memento.isForceReset()) {
-            // No file, so default to default one :)
-            try {
-                reader = new InputStreamReader(new BufferedInputStream(memento.getInitialCongigFileURL().openStream()));
-            }
-            catch (IOException e) {
-                logger.error(e);
-            }
-        }
-        else {
+        if (serialisedViews.length() != 0 && !memento.isForceReset()) {
+            // Got a previous config and not trying to reset
             reader = new StringReader(serialisedViews);
         }
-
+        else {
+            // Try and restore
+            if(memento.getInitialCongigFileURL() != null) {
+                // No file, so default to default one :)
+                try {
+                    reader = new InputStreamReader(new BufferedInputStream(memento.getInitialCongigFileURL().openStream()));
+                }
+                catch (IOException e) {
+                    logger.error(e);
+                }
+            }
+        }
+        
         if (reader != null) {
             // Got our config file.  Attempt to reannimate the views.
             NodeReanimator nodeReanimator = new NodeReanimator(reader, new ViewComponentFactory(workspace));
