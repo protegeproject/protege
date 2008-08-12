@@ -1,12 +1,8 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import java.util.*;
+import org.semanticweb.owl.model.*;
 
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import java.util.*;
 
 
 /**
@@ -17,6 +13,8 @@ import org.semanticweb.owl.model.OWLOntologyChange;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated use <code>OWLClassHierarchyCreator2</code>
  */
 public class OWLClassHierarchyCreator extends AbstractOWLObjectHierarchyCreator {
 
