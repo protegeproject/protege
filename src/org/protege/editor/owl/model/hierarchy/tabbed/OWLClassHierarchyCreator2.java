@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.entity.OWLEntityFactory;
+import org.semanticweb.owl.model.*;
 
-import java.util.List;
+import java.util.*;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -36,19 +37,83 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Aug 12, 2008<br><br>
  */
-public class OWLClassHierarchyCreator2 extends AbstractOWLObjectHierarchyCreator {
+public class OWLClassHierarchyCreator2 {
 
-    public OWLClassHierarchyCreator2(OWLDataFactory dataFactory, OWLOntology ontology, List<Edge> edges) {
-        super(dataFactory, ontology, edges);
+    private OWLDataFactory df;
+    private OWLEntityFactory entityFactory;
+
+    private OWLClass root;
+    private List<Edge> edges;
+    private OWLOntology ont;
+    private boolean siblingsDisjoint;
+
+    private Map<String, OWLClass> nameMap = new HashMap<String, OWLClass>();
+    private List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+    private Map<OWLClass, Set<OWLClass>> parent2ChildMap = new HashMap<OWLClass, Set<OWLClass>>();
+
+
+    public OWLClassHierarchyCreator2(OWLDataFactory df, OWLEntityFactory fac, OWLClass rootClass, boolean makeSiblingClassesDisjoint, OWLOntology ontology, List<Edge> edges) {
+        this.df = df;
+        this.entityFactory = fac;
+
+        this.root = rootClass;
+        this.edges = edges;
+        this.ont = ontology;
+        this.siblingsDisjoint = makeSiblingClassesDisjoint;
     }
 
 
-    public OWLOntologyChange getChange(String objName, OWLDataFactory dataFactory) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<OWLOntologyChange> createHierarchy() {
+        changes.clear();
+        for (Edge edge : edges){
+            handleEdge(edge);
+        }
+        if (siblingsDisjoint){
+            handleDisjoints();
+        }
+        return changes;
     }
 
 
-    public OWLOntologyChange getChange(String childName, String parentName, OWLDataFactory dataFactory) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    private void handleDisjoints() {
+        for (Set<OWLClass> clses : parent2ChildMap.values()) {
+            if (clses.size() > 1) {
+                changes.add(new AddAxiom(ont, df.getOWLDisjointClassesAxiom(clses)));
+            }
+        }
+    }
+
+
+    private void handleEdge(Edge edge) {
+        OWLClass child = getOWLClass(edge.getChild());
+        OWLClass parent = root;
+        if (!edge.isRoot()){
+            parent = getOWLClass(edge.getParent());
+        }
+        if (siblingsDisjoint){
+            addToMap(parent, child);
+        }
+        changes.add(new AddAxiom(ont, df.getOWLSubClassAxiom(child, parent)));
+    }
+
+
+    protected OWLClass getOWLClass(String name){
+        OWLClass cls = nameMap.get(name);
+        if (cls == null){
+            OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getURI());
+            changes.addAll(creationSet.getOntologyChanges());
+            cls = creationSet.getOWLEntity();
+            nameMap.put(name, cls);
+        }
+        return cls;
+    }
+
+        private void addToMap(OWLClass parent, OWLClass child) {
+        Set<OWLClass> children = parent2ChildMap.get(parent);
+        if (children == null) {
+            children = new HashSet<OWLClass>();
+            parent2ChildMap.put(parent, children);
+        }
+        children.add(child);
     }
 }

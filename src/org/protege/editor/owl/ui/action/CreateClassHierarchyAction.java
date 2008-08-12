@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.io.StringReader;
-import java.util.List;
-
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.hierarchy.tabbed.Edge;
-import org.protege.editor.owl.model.hierarchy.tabbed.OWLClassHierarchyCreator;
+import org.protege.editor.owl.model.hierarchy.tabbed.OWLClassHierarchyCreator2;
 import org.protege.editor.owl.model.hierarchy.tabbed.TabIndentedHierarchyParser;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateClassHierarchyWizard;
 import org.semanticweb.owl.model.OWLOntologyChange;
+
+import java.awt.event.ActionEvent;
+import java.io.StringReader;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -31,11 +31,12 @@ public class CreateClassHierarchyAction extends ProtegeOWLAction {
                 String suffix = w.getSuffix().trim();
                 TabIndentedHierarchyParser parser = new TabIndentedHierarchyParser(4, prefix, suffix);
                 List<Edge> edges = parser.parse(new StringReader(hierarchy));
-                OWLClassHierarchyCreator creator = new OWLClassHierarchyCreator(getOWLModelManager().getOWLDataFactory(),
-                                                                                w.getRootClass(),
-                                                                                w.isMakeSiblingClassesDisjoint(),
-                                                                                getOWLModelManager().getActiveOntology(),
-                                                                                edges);
+                OWLClassHierarchyCreator2 creator = new OWLClassHierarchyCreator2(getOWLModelManager().getOWLDataFactory(),
+                                                                                  getOWLModelManager().getOWLEntityFactory(),
+                                                                                  w.getRootClass(),
+                                                                                  w.isMakeSiblingClassesDisjoint(),
+                                                                                  getOWLModelManager().getActiveOntology(),
+                                                                                  edges);
                 List<OWLOntologyChange> changes = creator.createHierarchy();
                 w.dispose();
                 getOWLModelManager().applyChanges(changes);
