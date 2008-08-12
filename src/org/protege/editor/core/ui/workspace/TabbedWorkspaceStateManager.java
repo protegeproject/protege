@@ -19,24 +19,20 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: 06-Jun-2006<br><br>
+ * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date:
+ * 06-Jun-2006<br><br>
  * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class TabbedWorkspaceStateManager extends DefaultHandler {
 
-    private static final Logger logger = Logger.getLogger(TabbedWorkspaceStateManager.class);
+    public static final String TABS_PREFERENCES_SET = "tabs";
 
-    public static final String VISIBLE_TABS_PREFERENCE_KEY = "VisibleTabs";
-
-    private TabbedWorkspace workspace;
+    public static final String VISIBLE_TABS_PREFERENCE_KEY = "visible_tabs";
 
     private List<String> tabs;
 
@@ -48,7 +44,6 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
 
 
     public TabbedWorkspaceStateManager(TabbedWorkspace workspace) {
-        this.workspace = workspace;
         tabs = new ArrayList<String>();
         for (WorkspaceTab tab : workspace.getWorkspaceTabs()) {
             tabs.add(tab.getId());
@@ -61,74 +56,18 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
     }
 
 
-    private static File getVisibleTabsFile() {
-        return new File(FileManager.getViewConfigurationsFolder(), "VisibleTabs.xml");
-    }
-
-
-    private void load() {
-        try {
-            File file = getVisibleTabsFile();
-            if (!file.exists()) {
-                return;
-            }
-            InputStream is = new BufferedInputStream(new FileInputStream(file));
-            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            parser.parse(is, this);
-            is.close();
-        }
-        catch (SAXException e) {
-            logger.error(e);
-        }
-        catch (IOException e) {
-            logger.error(e);
-        }
-        catch (ParserConfigurationException e) {
-            logger.error(e);
-        }
+    public void load() {
+        tabs.clear();
+        tabs.addAll(getPreferences().getStringList(VISIBLE_TABS_PREFERENCE_KEY, new ArrayList<String>()));
     }
 
 
     public void save() {
-        try {
-            File file = getVisibleTabsFile();
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element visibleTabsElement = doc.createElement("VisibleTabs");
-            doc.appendChild(visibleTabsElement);
-            for (String tabId : tabs) {
-                Element tabElement = doc.createElement("Tab");
-                tabElement.setAttribute("id", tabId);
-                visibleTabsElement.appendChild(tabElement);
-            }
-            // ToDo Can this be done without using jvm internal classes?
-            OutputFormat outputFormat = new OutputFormat();
-            outputFormat.setIndent(4);
-            OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
-            XMLSerializer serializer = new XMLSerializer(os, outputFormat);
-            serializer.serialize(doc);
-            os.flush();
-            os.close();
-            for (WorkspaceTab tab : workspace.getWorkspaceTabs()) {
-                tab.save();
-            }
-        }
-        catch (ParserConfigurationException e) {
-            logger.error(e);
-        }
-        catch (IOException e) {
-            logger.error(e);
-        }
+        getPreferences().putStringList(VISIBLE_TABS_PREFERENCE_KEY, tabs);
     }
 
 
-    protected Preferences getPreferences() {
-        return PreferencesManager.getInstance().getPreferencesForSet("Tabs", "VisibleTabs");
-    }
-
-
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (qName.equals("Tab")) {
-            tabs.add(attributes.getValue("id"));
-        }
+    protected static Preferences getPreferences() {
+        return PreferencesManager.getInstance().getApplicationPreferences(TABS_PREFERENCES_SET);
     }
 }
