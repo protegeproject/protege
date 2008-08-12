@@ -168,9 +168,15 @@
 
     <extension id="menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Help"/>
-        <toolTip value="Help menu"/>
-        <class value="org.protege.editor.core.ui.menu.NullMenuAction"/>
         <path value="/SlotZZZZ-Z"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Protege Documentation"/>
+        <toolTip value="Online wiki for Protege 4.0 documentation"/>
+        <class value="org.protege.editor.core.ui.menu.DocumentationMenuAction"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
         <editorKitId value="any"/>
     </extension>
 
@@ -178,7 +184,7 @@
         <name value="About..."/>
         <toolTip value="About menu!"/>
         <class value="org.protege.editor.core.ui.about.AboutProtegeAction"/>
-        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotA-A"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotZ-A"/>
         <editorKitId value="any"/>
     </extension>
 
