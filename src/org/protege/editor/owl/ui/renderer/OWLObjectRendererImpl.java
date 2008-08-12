@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLDescriptionComparator;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
@@ -23,8 +22,9 @@ import java.util.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
  * A renderer that renders objects using the Manchester OWL Syntax.
+ * Axiom level OWLObjects are rendered in Manchester "style"
  */
-public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OWLObjectRenderer {
+public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRenderer {
 
     private static final Logger logger = Logger.getLogger(OWLObjectRendererImpl.class);
 
@@ -570,6 +570,13 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     }
 
 
+    public void visit(OWLDataSubPropertyAxiom axiom) {
+        axiom.getSubProperty().accept(this);
+        write(" subPropertyOf ");
+        axiom.getSuperProperty().accept(this);
+    }
+
+
     public void visit(OWLReflexiveObjectPropertyAxiom axiom) {
         write("Reflexive: ");
         axiom.getProperty().accept(this);
@@ -604,6 +611,16 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     }
 
 
+    public void visit(OWLEquivalentObjectPropertiesAxiom node) {
+        for (Iterator<OWLObjectPropertyExpression> it = node.getProperties().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" equivalentTo ");
+            }
+        }
+    }
+
+
     public void visit(OWLObjectPropertyRangeAxiom axiom) {
         axiom.getRange().accept(this);
         write(" rangeOf ");
@@ -621,6 +638,16 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     public void visit(OWLFunctionalDataPropertyAxiom axiom) {
         write("Functional: ");
         axiom.getProperty().accept(this);
+    }
+
+
+    public void visit(OWLEquivalentDataPropertiesAxiom node) {
+        for (Iterator<OWLDataPropertyExpression> it = node.getProperties().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" equivalentTo ");
+            }
+        }
     }
 
 
@@ -645,6 +672,26 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
             }
         }
         write("]");
+    }
+
+
+    public void visit(OWLDisjointDataPropertiesAxiom axiom) {
+        for (Iterator<OWLDataPropertyExpression> it = axiom.getProperties().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" disjointWith ");
+            }
+        }
+    }
+
+
+    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
+        for (Iterator<OWLObjectPropertyExpression> it = axiom.getProperties().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(" disjointWith ");
+            }
+        }
     }
 
 
@@ -738,11 +785,40 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
     }
 
 
+    public void visit(OWLDeclarationAxiom axiom) {
+        OWLEntity entity = axiom.getEntity();
+        if (entity.isOWLClass()){
+            write("Class(");
+        }
+        else if (entity.isOWLObjectProperty()){
+            write("Object property(");
+        }
+        else if (entity.isOWLDataProperty()){
+            write("Data property(");
+        }
+        else if (entity.isOWLIndividual()){
+            write("Individual(");
+        }
+        else{
+            write("(");
+        }
+        entity.accept(this);
+        write(")");
+    }
+
+
     public void visit(OWLImportsDeclaration axiom) {
         writeOntologyURI(axiom.getImportedOntologyURI());
         if (owlModelManager.getOWLOntologyManager().getImportedOntology(axiom) == null) {
             write("      (Not Loaded)");
         }
+    }
+
+
+    public void visit(OWLAxiomAnnotationAxiom axiom) {
+        axiom.getSubject().accept(this);
+        write(" ");
+        axiom.getAnnotation().accept(this);
     }
 
 
@@ -823,6 +899,13 @@ public class OWLObjectRendererImpl extends OWLObjectVisitorAdapter implements OW
         owlEntityAnnotationAxiom.getSubject().accept(this);
         write(" ");
         owlEntityAnnotationAxiom.getAnnotation().accept(this);
+    }
+
+
+    public void visit(OWLOntologyAnnotationAxiom axiom) {
+        axiom.getSubject().accept(this);
+        write(" ");
+        axiom.getAnnotation().accept(this);
     }
 
 
