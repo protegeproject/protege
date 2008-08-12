@@ -36,6 +36,6 @@ import org.semanticweb.owl.model.OWLEntity;
 public class PseudoRandomAutoIDGenerator extends AbstractIDGenerator {
 
     protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
-        return System.currentTimeMillis();
+        return System.nanoTime();
     }
 }
