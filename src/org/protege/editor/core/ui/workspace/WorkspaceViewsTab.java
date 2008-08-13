@@ -19,6 +19,8 @@ import org.protege.editor.core.ui.view.ViewsPaneMemento;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * Represents a workspace tab that hosts a views panel.
  */
 public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
 
@@ -58,6 +60,18 @@ public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
         viewsPane = new ViewsPane(getWorkspace(), memento);
         add(viewsPane, BorderLayout.CENTER);
         getWorkspace().getViewManager().registerViews(this);
+    }
+
+    public void reset(String serialisation) {
+        getWorkspace().getViewManager().unregisterViews(this);
+        viewsPane.storeViewLayout(serialisation);
+        viewsPane.dispose();
+        remove(viewsPane);
+        viewsPane = new ViewsPane(getWorkspace(), new ViewsPaneMemento(this));
+        add(viewsPane, BorderLayout.CENTER);
+        getWorkspace().getViewManager().registerViews(this);
+        validate();
+
     }
 
 
