@@ -194,7 +194,7 @@ public class ViewsPane extends JPanel {
      * Stores a serialisation of a view layout in the preferences system
      * @param serialisation The serialisation to be stored.
      */
-    private void storeViewLayout(String serialisation) {
+    public void storeViewLayout(String serialisation) {
         getViewLayoutPreferences().putString(getLayoutPreferencesKey(), serialisation);
     }
 
@@ -204,7 +204,7 @@ public class ViewsPane extends JPanel {
      * @return The serialisation, or the empty string if no serialisation
      * was previously stored.
      */
-    private String readViewLayout() {
+    public String readViewLayout() {
         return getViewLayoutPreferences().getString(getLayoutPreferencesKey(), "");
     }
 }
