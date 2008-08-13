@@ -18,18 +18,13 @@ import java.util.List;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: Mar 17, 2006<br><br>
+ * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,
+ * 2006<br><br>
  * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
- * A <code>TabbedWorkspace</code> represents a
- * <code>Workspace</code> that contains tabs.  The tabs
- * are loaded automatically depending on the <code>Workspace</code>
- * clsdescriptioneditor kit.
+ * A <code>TabbedWorkspace</code> represents a <code>Workspace</code> that contains tabs.  The tabs are loaded
+ * automatically depending on the <code>Workspace</code> clsdescriptioneditor kit.
  */
 public abstract class TabbedWorkspace extends Workspace {
 
@@ -67,7 +62,7 @@ public abstract class TabbedWorkspace extends Workspace {
 
         Map<String, WorkspaceTabPlugin> map = new HashMap<String, WorkspaceTabPlugin>();
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
-            if(visibleTabs.contains(plugin.getId())) {
+            if (visibleTabs.contains(plugin.getId())) {
                 addTabForPlugin(plugin);
             }
         }
@@ -121,8 +116,10 @@ public abstract class TabbedWorkspace extends Workspace {
                 //rebuildTabMenu(); cannot see any reason to do this every time the menu is selected
             }
 
+
             public void menuDeselected(MenuEvent e) {
             }
+
 
             public void menuCanceled(MenuEvent e) {
             }
@@ -157,18 +154,13 @@ public abstract class TabbedWorkspace extends Workspace {
         }
 
         tabMenu.addSeparator();
-        tabMenu.add(new AbstractAction("Create new tab..."){
+        tabMenu.add(new AbstractAction("Create new tab...") {
             public void actionPerformed(ActionEvent event) {
                 handleCreateNewTab();
             }
         });
 
         tabMenu.addSeparator();
-        tabMenu.add(new AbstractAction("Save current layout") {
-            public void actionPerformed(ActionEvent e) {
-                save();
-            }
-        });
         tabMenu.add(new AbstractAction("Export current tab...") {
 
             public void actionPerformed(ActionEvent e) {
@@ -183,6 +175,11 @@ public abstract class TabbedWorkspace extends Workspace {
         });
 
         tabMenu.addSeparator();
+        tabMenu.add(new AbstractAction("Store current layout") {
+            public void actionPerformed(ActionEvent e) {
+                save();
+            }
+        });
         tabMenu.add(resetTabAction = new AbstractAction("Reset selected tab to default state") {
             public void actionPerformed(ActionEvent e) {
                 handleReset();
@@ -195,9 +192,9 @@ public abstract class TabbedWorkspace extends Workspace {
         resetTabAction.setEnabled(tabbedPane.getSelectedComponent() instanceof Resettable);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private List<WorkspaceTabPlugin> getOrderedPlugins() {
         WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
@@ -213,7 +210,8 @@ public abstract class TabbedWorkspace extends Workspace {
 
         return plugins;
     }
-    
+
+
     private void addMenuItem(final WorkspaceTabPlugin plugin) {
         JCheckBoxMenuItem item = new JCheckBoxMenuItem(new AbstractAction(plugin.getLabel()) {
             public void actionPerformed(ActionEvent e) {
@@ -247,7 +245,7 @@ public abstract class TabbedWorkspace extends Workspace {
 
     private WorkspaceTab handleCreateNewTab() {
         final String name = JOptionPane.showInputDialog(this, "Please enter a name for the new tab");
-        if (name != null){
+        if (name != null) {
             CustomWorkspaceTabsManager customTabsManager = new CustomWorkspaceTabsManager();
             WorkspaceTab tab = addTabForPlugin(customTabsManager.getPluginForTabName(name, this));
             rebuildTabMenu();
@@ -257,14 +255,17 @@ public abstract class TabbedWorkspace extends Workspace {
         return null;
     }
 
+
     private void handleExportLayout() {
         try {
             Set<String> extensions = new HashSet<String>();
             extensions.add("xml");
             String fileName = getSelectedTab().getLabel().replace(' ', '_') + ".layout.xml";
-            File f = UIUtil.saveFile((Window) SwingUtilities.getAncestorOfClass(Window.class, this), "Save layout to", extensions,
+            File f = UIUtil.saveFile((Window) SwingUtilities.getAncestorOfClass(Window.class, this),
+                                     "Save layout to",
+                                     extensions,
                                      fileName);
-            if(f == null) {
+            if (f == null) {
                 return;
             }
             f.getParentFile().mkdirs();
@@ -275,41 +276,49 @@ public abstract class TabbedWorkspace extends Workspace {
         }
         catch (IOException e) {
             logger.error(e);
-            JOptionPane.showMessageDialog(this, "There was a problem saving the layout", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                                          "There was a problem saving the layout",
+                                          "Error",
+                                          JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void handleImportLayout() {
         try {
             Set<String> extensions = new HashSet<String>();
             extensions.add("xml");
-            File f = UIUtil.openFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this), "Save layout to", extensions);
-            if(f == null) {
+            File f = UIUtil.openFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this),
+                                     "Save layout to",
+                                     extensions);
+            if (f == null) {
                 return;
             }
             BufferedReader reader = new BufferedReader(new FileReader(f));
             StringBuilder sb = new StringBuilder();
             String line = null;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 sb.append(line);
                 sb.append("\n");
             }
             WorkspaceViewsTab tab = (WorkspaceViewsTab) handleCreateNewTab();
-            if(tab == null) {
+            if (tab == null) {
                 return;
             }
             tab.reset(sb.toString());
         }
         catch (IOException e) {
             logger.error(e);
-            JOptionPane.showMessageDialog(this, "There was a problem saving the layout", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                                          "There was a problem saving the layout",
+                                          "Error",
+                                          JOptionPane.ERROR_MESSAGE);
         }
     }
 
 
     /**
-     * Convenience method to add a workspace tab.  This
-     * method initialises the tab.
+     * Convenience method to add a workspace tab.  This method initialises the tab.
      */
     public void addTab(WorkspaceTab workspaceTab) {
         tabbedPane.addTab(workspaceTab.getLabel(), workspaceTab.getIcon(), workspaceTab);
@@ -350,9 +359,9 @@ public abstract class TabbedWorkspace extends Workspace {
 
 
     /**
-     * Convenience method to remove a workspace tab.
-     * If the tab is discarded then its <code>dispose()</code>
-     * method must be called.
+     * Convenience method to remove a workspace tab. If the tab is discarded then its <code>dispose()</code> method must
+     * be called.
+     *
      * @param workspaceTab The tab to be removed.
      */
     public void removeTab(WorkspaceTab workspaceTab) {
@@ -390,13 +399,12 @@ public abstract class TabbedWorkspace extends Workspace {
 
 
     /**
-     * Disposes of the tabbed workspace.  This removes any tabs
-     * in the workspace and disposes of them.
+     * Disposes of the tabbed workspace.  This removes any tabs in the workspace and disposes of them.
      */
     public void dispose() {
         save();
         // Remove the tabs and call their dispose method
-        for (WorkspaceTab tab : workspaceTabs){
+        for (WorkspaceTab tab : workspaceTabs) {
             try {
                 tab.dispose();
             }
