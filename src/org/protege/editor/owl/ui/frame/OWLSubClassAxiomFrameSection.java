@@ -146,17 +146,12 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
     public Comparator<OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription>>() {
 
-            private OWLDescriptionComparator comparator = new OWLDescriptionComparator(getOWLModelManager());
-
 
             public int compare(OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o1,
                                OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o2) {
-                int val = comparator.compare(o1.getAxiom().getSuperClass(), o2.getAxiom().getSuperClass());
+                int val = o1.getAxiom().getSuperClass().compareTo(o2.getAxiom().getSuperClass());
                 if (o1.isInferred()) {
-                    if (o2.isInferred()) {
-                        return val;
-                    }
-                    else {
+                    if (!o2.isInferred()) {
                         return 1;
                     }
                 }
@@ -164,10 +159,14 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
                     if (o2.isInferred()) {
                         return -1;
                     }
-                    else {
-                        return val;
-                    }
                 }
+                if(val == 0) {
+                    return o1.getOntology().getURI().compareTo(o2.getOntology().getURI());
+                }
+                else {
+                    return val;
+                }
+
             }
         };
     }
