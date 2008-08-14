@@ -89,6 +89,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
         Set<OWLClass> oldTerminalElements = new HashSet<OWLClass>(rootFinder.getTerminalElements());
         Set<OWLClass> changedClasses = new HashSet<OWLClass>();
+        changedClasses.add(root);
         for (OWLOntologyChange change : changes) {
             // only listen for changes on the appropriate ontologies
             if (ontologies.contains(change.getOntology())){
@@ -105,21 +106,15 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         for (OWLClass cls : changedClasses) {
             registerNodeChanged(cls);
         }
-        boolean rootChanged = false;
         for (OWLClass cls : rootFinder.getTerminalElements()) {
             if (!oldTerminalElements.contains(cls)) {
-                rootChanged = true;
                 registerNodeChanged(cls);
             }
         }
         for (OWLClass cls : oldTerminalElements) {
             if (!rootFinder.getTerminalElements().contains(cls)) {
-                rootChanged = true;
                 registerNodeChanged(cls);
             }
-        }
-        if (rootChanged) {
-            registerNodeChanged(root);
         }
         notifyNodeChanges();
     }
@@ -141,20 +136,21 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     private void updateImplicitRoots(OWLOntologyChange change) {
     	boolean remove = change instanceof RemoveAxiom;
     	OWLAxiom axiom = change.getAxiom();
-    	Set<OWLClass> referencedClasses = new HashSet<OWLClass>();
+    	Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>();
+    	Set<OWLClass> notInOntologies = new HashSet<OWLClass>();
     	for (OWLEntity entity : axiom.getReferencedEntities()) {
     		if (!(entity instanceof OWLClass) || entity.equals(root)) {
     			continue;
     		}
     		OWLClass cls = (OWLClass) entity;
     		if (remove && !containsReference(cls)) {
-    			rootFinder.removeTerminalElement(cls);
+    		    notInOntologies.add(cls);
     			continue;
     		}
-    		referencedClasses.add(cls);
+    		possibleTerminalElements.add(cls);
     	}
-    	Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>(referencedClasses);
     	possibleTerminalElements.addAll(rootFinder.getTerminalElements());
+    	possibleTerminalElements.removeAll(notInOntologies);
     	rootFinder.findTerminalElements(possibleTerminalElements);
     }
 
