@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,10 +22,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
-import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
-import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
@@ -142,7 +141,7 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
-        logger.info("Thankyou for using Protege. Goodbye.");
+        logger.info("Thank you for using Protege. Goodbye.");
     }
 
 
@@ -155,16 +154,21 @@ public class ProtegeApplication implements BundleActivator {
 
     // If this isn't liked info can be replaced with debug.
     // It helps with diagnosing problems with the FaCT++ plugin.
+    @SuppressWarnings("unchecked")
     private void displayPlatform() {
-        logger.info("Starting Protege 4 OWL Editor");
+        Dictionary manifest = context.getBundle().getHeaders();
+        logger.info("Starting Protege 4 OWL Editor (Version "  + manifest.get("Bundle-Version") + ")");
         logger.info("Platform:");
+        logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
+                    " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
+        logger.info("    Language: " + Locale.getDefault().getLanguage() + 
+                    ", Country: " + Locale.getDefault().getCountry());
         logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR)
-                + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
+                    + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
         logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME)
-                + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
+                    + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
         logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
     }
-
 
     protected ProtegeApplication initApplication() throws Exception {
         PluginUtilities.getInstance().initialise(this, context);
