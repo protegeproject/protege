@@ -100,21 +100,25 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
     public void createNewChild() {
         OWLEntityCreationSet<OWLClass> set = getOWLWorkspace().createOWLClass();
-        OWLClass newClass = set.getOWLEntity();
-        OWLClass selectedClass = getSelectedClass();
-        OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(newClass, selectedClass);
-        getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-        getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+        if (set != null){
+            OWLClass newClass = set.getOWLEntity();
+            OWLClass selectedClass = getSelectedClass();
+            OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(newClass, selectedClass);
+            getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+        }
     }
 
 
     public void createNewObject() {
         OWLEntityCreationSet<OWLClass> set = getOWLWorkspace().createOWLClass();
-        OWLClass newClass = set.getOWLEntity();
-        OWLClass selectedClass = getOWLDataFactory().getOWLThing();
-        OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(newClass, selectedClass);
-        getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-        getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+        if (set != null){
+            OWLClass newClass = set.getOWLEntity();
+            OWLClass selectedClass = getOWLDataFactory().getOWLThing();
+            OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(newClass, selectedClass);
+            getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+        }
     }
 
 
@@ -127,21 +131,20 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         }
         // We need to apply the changes in the active ontology
         OWLEntityCreationSet<OWLClass> creationSet = getOWLWorkspace().createOWLClass();
-        if (creationSet == null) {
-            return;
+        if (creationSet != null) {
+            // Combine the changes that are required to create the OWLClass, with the
+            // changes that are required to make it a sibling class.
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            changes.addAll(creationSet.getOntologyChanges());
+            OWLModelManager owlModelManager = getOWLModelManager();
+            for (OWLClass par : owlModelManager.getOWLClassHierarchyProvider().getParents(cls)) {
+                OWLDataFactory df = owlModelManager.getOWLDataFactory();
+                OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
+                changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));
+            }
+            owlModelManager.applyChanges(changes);
+            // Select the new class
+            getTree().setSelectedOWLObject(creationSet.getOWLEntity());
         }
-        // Combine the changes that are required to create the OWLClass, with the
-        // changes that are required to make it a sibling class.
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        changes.addAll(creationSet.getOntologyChanges());
-        OWLModelManager owlModelManager = getOWLModelManager();
-        for (OWLClass par : owlModelManager.getOWLClassHierarchyProvider().getParents(cls)) {
-            OWLDataFactory df = owlModelManager.getOWLDataFactory();
-            OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
-            changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));
-        }
-        owlModelManager.applyChanges(changes);
-        // Select the new class
-        getTree().setSelectedOWLObject(creationSet.getOWLEntity());
     }
 }
