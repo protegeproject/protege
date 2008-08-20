@@ -111,24 +111,27 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
 
     public OWLAnnotation getAnnotation() {
         URI uri = uriList.getSelectedURI();
-        lastSelectedURI = uriList.getSelectedURI();
-        if (lastSelectedURI == null) {
-            lastSelectedURI = OWLRDFVocabulary.RDFS_COMMENT.getURI();
+        if (uri != null){
+            lastSelectedURI = uriList.getSelectedURI();
+            if (lastSelectedURI == null) {
+                lastSelectedURI = OWLRDFVocabulary.RDFS_COMMENT.getURI();
+            }
+            OWLAnnotationValueEditor editor = getSelectedEditor();
+            Object obj = editor.getEditedObject();
+            if (obj instanceof OWLConstant) {
+                OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
+                return dataFactory.getOWLConstantAnnotation(uri, (OWLConstant) obj);
+            }
+            else if (obj instanceof OWLIndividual) {
+                OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
+                return dataFactory.getOWLObjectAnnotation(uri, (OWLIndividual) obj);
+            }
+            else {
+                OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
+                return dataFactory.getOWLConstantAnnotation(uri, dataFactory.getOWLUntypedConstant(obj.toString()));
+            }
         }
-        OWLAnnotationValueEditor editor = getSelectedEditor();
-        Object obj = editor.getEditedObject();
-        if (obj instanceof OWLConstant) {
-            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
-            return dataFactory.getOWLConstantAnnotation(uri, (OWLConstant) obj);
-        }
-        else if (obj instanceof OWLIndividual) {
-            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
-            return dataFactory.getOWLObjectAnnotation(uri, (OWLIndividual) obj);
-        }
-        else {
-            OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
-            return dataFactory.getOWLConstantAnnotation(uri, dataFactory.getOWLUntypedConstant(obj.toString()));
-        }
+        return null;
     }
 
 
