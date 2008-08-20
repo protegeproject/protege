@@ -1,7 +1,7 @@
 package org.protege.editor.core.prefs;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -47,7 +47,12 @@ public class JavaBackedPreferencesImpl implements Preferences {
 
 
     public void putString(String key, String val) {
-        preferences.put(key, val);
+        if (val == null){
+            preferences.remove(key);
+        }
+        else{
+            preferences.put(key, val);
+        }
     }
 
     private java.util.prefs.Preferences getList(String listKey) {
