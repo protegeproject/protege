@@ -477,6 +477,7 @@ public class ProtegeApplication implements BundleActivator {
         for (EditorKitFactoryPlugin plugin : pm.getEditorKitFactoryPlugins()) {
             if (plugin.newInstance().canLoad(uri)) {
                 pm.loadAndSetupEditorKitFromURI(plugin, uri);
+                welcomeFrame.setVisible(false);
                 break;
             }
         }
