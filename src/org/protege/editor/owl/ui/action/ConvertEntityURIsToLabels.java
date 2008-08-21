@@ -1,8 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.owl.model.refactor.ontology.ConvertEntityURIsToIdentifierPattern;
+import org.protege.editor.owl.model.refactor.ontology.OntologyTargetResolver;
+import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLOntology;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.Set;
 
 
 /**
@@ -18,8 +25,31 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
 
     public void actionPerformed(ActionEvent e) {
         ConvertEntityURIsToIdentifierPattern converter = new ConvertEntityURIsToIdentifierPattern(getOWLModelManager(),
-                                                                                                  getOWLModelManager().getActiveOntologies());
+                                                                                                  getOWLModelManager().getOntologies());
+        
+        converter.setOntologyResolver(new OntologyTargetResolver(){
+            public OWLOntology resolve(OWLEntity entity, Set<OWLOntology> ontologies) {
+                return handleResolveTarget(entity, ontologies);
+            }
+        });
+
         converter.performConversion();
+    }
+
+
+    private OWLOntology handleResolveTarget(OWLEntity entity, Set<OWLOntology> ontologies) {
+        OWLOntologySelectorPanel ontPanel = new OWLOntologySelectorPanel(getOWLEditorKit(), ontologies);
+        ontPanel.setSelection(ontologies.iterator().next());
+        ontPanel.setMultipleSelectionEnabled(false);
+        int ret = new UIHelper(getOWLEditorKit()).showDialog("Select an ontology in which to add a label for " +
+                                                             getOWLModelManager().getRendering(entity),
+                                                             ontPanel);
+        if (ret == JOptionPane.OK_OPTION) {
+            return ontPanel.getSelectedOntology();
+        }
+        else {
+            return null;
+        }
     }
 
 

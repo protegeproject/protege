@@ -31,19 +31,34 @@ public class OWLOntologySelectorPanel extends JPanel {
 
 
     public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit) {
+        this(owlEditorKit, owlEditorKit.getModelManager().getOntologies());
+    }
+
+
+    public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit, Set<OWLOntology> ontologies) {
         this.owlEditorKit = owlEditorKit;
         list = new OWLObjectList(owlEditorKit);
         final OWLModelManager mngr = owlEditorKit.getModelManager();
-        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(mngr.getOntologies());
+        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(ontologies);
         Collections.sort(orderedOntologies, mngr.getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
 
-
+    
     public void setMultipleSelectionEnabled(boolean multiselect){
         list.setSelectionMode(multiselect ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
+    }
+
+
+    public void setSelection(Set<OWLOntology> ontologies){
+        list.setSelectedValues(ontologies, true);
+    }
+
+
+    public void setSelection(OWLOntology ontology){
+        list.setSelectedValues(Collections.singleton(ontology), true);
     }
 
 
