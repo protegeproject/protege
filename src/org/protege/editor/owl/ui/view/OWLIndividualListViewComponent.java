@@ -49,8 +49,6 @@ public class OWLIndividualListViewComponent extends
 		this.list.setSelectionMode(this.selectionMode);
 		this.setLayout(new BorderLayout());
 		this.add(new JScrollPane(this.list));
-		this.list.setFixedCellHeight(20);
-		this.list.setFixedCellWidth(300);
 		this.list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {

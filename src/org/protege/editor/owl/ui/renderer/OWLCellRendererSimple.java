@@ -57,19 +57,26 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel label = (JLabel) treeCellRendererDelegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        setText(value, label);
-        setIcon(value, label);
-        boldIfNecessary(value, label);
+        prepareRenderer(label, value);
         return label;
     }
 
+
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) listCellRenderDelegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        prepareRenderer(label, value);
+        return label;
+    }
+
+
+    private void prepareRenderer(JLabel label, Object value) {
+        final Font font = OWLRendererPreferences.getInstance().getFont();
+        label.setFont(font);
         setText(value, label);
         setIcon(value, label);
         boldIfNecessary(value, label);
-        return label;
     }
+
 
     private void setText(Object value, JLabel renderer) {
         if(value instanceof OWLObject) {
@@ -114,11 +121,12 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         }
     }
 
+
     private static void makeBold(JLabel label) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body><b>");
         sb.append(label.getText());
-        sb.append("</body></html>");
+        sb.append("</b></body></html>");
         label.setText(sb.toString());
     }
 }
