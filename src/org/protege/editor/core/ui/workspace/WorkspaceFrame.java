@@ -21,6 +21,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -152,9 +153,7 @@ public class WorkspaceFrame extends JFrame {
         if (title != null) {
             setTitle(title);
         }
-
-        // Tool bar
-        //  createToolBar();
+        setIconImage(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
     }
 
 
@@ -264,18 +263,4 @@ public class WorkspaceFrame extends JFrame {
     }
 
 
-    private void createToolBar() {
-        JPanel toolBarBase = new JPanel(new BorderLayout(7, 7));
-        getContentPane().add(toolBarBase, BorderLayout.NORTH);
-        toolBarBase.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 8));
-        toolBarBase.setBackground(Color.WHITE);
-        JComponent toolBarHolder = new JPanel(new BorderLayout(7, 7));
-        toolBarBase.add(toolBarHolder);
-        toolBarHolder.setOpaque(false);
-        JToolBar toolBar = new MainToolBarBuilder(workspace.getEditorKit()).getToolBar();
-        toolBarHolder.add(toolBar);
-        Icon bannerIcon = Icons.getIcon("logo.banner.gif");
-        JLabel label = new JLabel(bannerIcon);
-        toolBarBase.add(label, BorderLayout.EAST);
-    }
 }
