@@ -100,8 +100,6 @@ public class OWLIndividualListComponent extends JPanel {
         list = new OWLObjectList(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.setFixedCellHeight(20);
-        list.setFixedCellWidth(300);
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
