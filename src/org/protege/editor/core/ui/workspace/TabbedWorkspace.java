@@ -1,7 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.FileManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.util.UIUtil;
@@ -12,7 +11,6 @@ import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -59,10 +57,9 @@ public abstract class TabbedWorkspace extends Workspace {
         // restore a set of tabs
         final List<String> visibleTabs = new TabbedWorkspaceStateManager().getTabs();
 
-
-        Map<String, WorkspaceTabPlugin> map = new HashMap<String, WorkspaceTabPlugin>();
+        // If no tabs are set as visible (ie we have yet to customise, show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
-            if (visibleTabs.contains(plugin.getId())) {
+            if (visibleTabs.isEmpty() || visibleTabs.contains(plugin.getId())) {
                 addTabForPlugin(plugin);
             }
         }
