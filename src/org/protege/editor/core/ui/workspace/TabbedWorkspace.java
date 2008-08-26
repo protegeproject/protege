@@ -90,6 +90,9 @@ public abstract class TabbedWorkspace extends Workspace {
             // Save out tabs
             TabbedWorkspaceStateManager man = new TabbedWorkspaceStateManager(this);
             man.save();
+            for (WorkspaceTab tab : getWorkspaceTabs()){
+                tab.save();
+            }
         }
         catch (Exception e) {
             Logger.getLogger(getClass()).error("Exception caught doing save", e);
