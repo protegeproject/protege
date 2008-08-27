@@ -5,6 +5,7 @@ import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owl.model.OWLIndividual;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -81,5 +82,15 @@ public class OWLIndividualAnnotationValueEditor implements OWLAnnotationValueEdi
 
     public void dispose() {
         individualSelectorPanel.dispose();
+    }
+
+    
+    public void addSelectionListener(ChangeListener listener) {
+        individualSelectorPanel.addSelectionListener(listener);
+    }
+
+
+    public void removeSelectionListener(ChangeListener listener) {
+        individualSelectorPanel.addSelectionListener(listener);
     }
 }

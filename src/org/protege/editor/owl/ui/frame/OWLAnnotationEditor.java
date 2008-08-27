@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLConstant;
@@ -8,6 +10,10 @@ import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.net.URI;
 import java.util.ArrayList;
@@ -19,7 +25,7 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 10-Feb-2007<br><br>
  */
-public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLAnnotation> {
+public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLAnnotation> implements VerifiedInputEditor {
 
 
     private OWLEditorKit owlEditorKit;
@@ -33,6 +39,16 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
     private List<OWLAnnotationValueEditor> editors;
 
     private URI lastSelectedURI;
+
+    private List<InputVerificationStatusChangedListener> verifierListeners = new ArrayList<InputVerificationStatusChangedListener>();
+
+    private boolean status = false;
+
+    private ChangeListener changeListener = new ChangeListener(){
+        public void stateChanged(ChangeEvent event) {
+            verify();
+        }
+    };
 
 
     public OWLAnnotationEditor(OWLEditorKit owlEditorKit) {
@@ -52,13 +68,24 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
         splitPane.setBorder(null);
         loadEditors();
         lastSelectedURI = OWLRDFVocabulary.RDFS_COMMENT.getURI();
+
+        uriList.addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                verify();
+            }
+        });
+
+        tabbedPane.addChangeListener(changeListener);
     }
 
 
     private void loadEditors() {
+        final OWLIndividualAnnotationValueEditor individualValueEditor = new OWLIndividualAnnotationValueEditor(owlEditorKit);
+        individualValueEditor.addSelectionListener(changeListener);
+
         editors = new ArrayList<OWLAnnotationValueEditor>();
         editors.add(new OWLConstantEditor(owlEditorKit));
-        editors.add(new OWLIndividualAnnotationValueEditor(owlEditorKit));
+        editors.add(individualValueEditor);
         editors.add(new OWLAnnonymousIndividualAnnotationValueEditor(owlEditorKit));
         for (OWLAnnotationValueEditor editor : editors) {
             tabbedPane.add(editor.getEditorTypeName(), editor.getComponent());
@@ -158,5 +185,31 @@ public class OWLAnnotationEditor extends AbstractOWLFrameSectionRowObjectEditor<
         for (OWLAnnotationValueEditor editor : editors) {
             editor.dispose();
         }
+    }
+
+
+    private void verify() {
+        if (status != isValid()){
+            status = isValid();
+            for (InputVerificationStatusChangedListener l : verifierListeners){
+                l.verifiedStatusChanged(status);
+            }
+        }
+    }
+
+
+    private boolean isValid() {
+        return uriList.getSelectedURI() != null && getSelectedEditor().getEditedObject() != null;
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        verifierListeners.add(listener);
+        listener.verifiedStatusChanged(isValid());
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        verifierListeners.remove(listener);
     }
 }
