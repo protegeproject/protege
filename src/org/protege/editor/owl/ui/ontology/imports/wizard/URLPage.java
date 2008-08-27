@@ -68,6 +68,7 @@ public class URLPage extends AbstractImportSourcePage {
     public void displayingPanel() {
         getWizard().setNextFinishButtonEnabled(false);
         urlPanel.requestFocus();
+        getWizard().setNextFinishButtonEnabled(urlPanel.isValid());
     }
 
 
@@ -76,6 +77,9 @@ public class URLPage extends AbstractImportSourcePage {
             return new URLImportFileVerifier(urlPanel.getURI().toURL());
         }
         catch (MalformedURLException e) {
+            return null;
+        }
+        catch (IllegalArgumentException e) {
             return null;
         }
     }
