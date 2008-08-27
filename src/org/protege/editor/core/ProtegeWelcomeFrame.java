@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.net.URI;
 import java.util.Map;
 
@@ -30,14 +32,22 @@ public class ProtegeWelcomeFrame extends JFrame {
 
     private static final Logger logger = Logger.getLogger(ProtegeWelcomeFrame.class);
 
+    private ProtegeWelcomeFrame.ProtegeWelcomePanel welcomePanel;
 
-	public ProtegeWelcomeFrame() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setName("ProtegeWelcome");
-		setContentPane(new ProtegeWelcomePanel());
-		pack();
-		centre();
-	}
+
+    public ProtegeWelcomeFrame() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setName("ProtegeWelcome");
+        welcomePanel = new ProtegeWelcomePanel();
+        setContentPane(welcomePanel);
+        pack();
+        centre();
+        addComponentListener(new ComponentAdapter(){
+            public void componentShown(ComponentEvent event) {
+                welcomePanel.refresh();
+            }
+        });
+    }
 
 
     private void centre() {
@@ -51,6 +61,10 @@ public class ProtegeWelcomeFrame extends JFrame {
 
         private Icon background;
 
+        private Box box;
+
+        private Box recentLinkBox;
+
         private Map<String, Action> linkMap;
 
 
@@ -59,11 +73,6 @@ public class ProtegeWelcomeFrame extends JFrame {
             background = Icons.getIcon("logo.wizard.png");
 
             final ProtegeManager manager = ProtegeManager.getInstance();
-
-            Color color = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.PROPERTY_COLOR_KEY),
-                                                Color.GRAY);
-            Color classColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.CLASS_COLOR_KEY),
-                                                     Color.GRAY);
 
             int strutHeight = 10;
 
@@ -77,13 +86,13 @@ public class ProtegeWelcomeFrame extends JFrame {
             label.setForeground(Color.LIGHT_GRAY);
             panel.add(label, BorderLayout.NORTH);
 
-            Box box = new Box(BoxLayout.Y_AXIS);
+            box = new Box(BoxLayout.Y_AXIS);
             box.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
             panel.add(box);
 
             for (final EditorKitFactoryPlugin plugin : manager.getEditorKitFactoryPlugins()) {
 
-            	LinkLabel createLink = new LinkLabel("Create new " + plugin.getLabel(), new ActionListener() {
+                LinkLabel createLink = new LinkLabel("Create new " + plugin.getLabel(), new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
                             if (ProtegeManager.getInstance().createAndSetupNewEditorKit(plugin)) {
@@ -95,7 +104,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                         }
                     }
                 });
-            	createLink.setName("Create new " + plugin.getId());
+                createLink.setName("Create new " + plugin.getId());
                 box.add(createLink);
 
                 box.add(Box.createVerticalStrut(strutHeight));
@@ -134,39 +143,13 @@ public class ProtegeWelcomeFrame extends JFrame {
                 });
                 openFromURILink.setName("OpenfromURI " + plugin.getId());
                 box.add(openFromURILink);
-                
+
                 box.add(Box.createVerticalStrut(strutHeight));
             }
 
             box.add(Box.createVerticalStrut(2 * strutHeight));
 
-            if (RecentEditorKitManager.getInstance().getDescriptors().size() > 0) {
-                Box recentLinkBox = new Box(BoxLayout.Y_AXIS);
-
-                recentLinkBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createMatteBorder(1, 1, 1, 1, classColor),
-                        " Open recent ",
-                        0,
-                        0,
-                        getFont().deriveFont(Font.BOLD),
-                        color), BorderFactory.createEmptyBorder(20, 20, 20, 20)));
-
-
-                for (final EditorKitDescriptor desc : RecentEditorKitManager.getInstance().getDescriptors()) {
-                    recentLinkBox.add(new LinkLabel(desc.getLabel(), new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            try {
-                                manager.openAndSetupRecentEditorKit(desc);
-                                dispose();
-                            }
-                            catch (Exception e1) {
-                                ErrorLogPanel.showErrorDialog(e1);
-                            }
-                        }
-                    }));
-                }
-                box.add(recentLinkBox);
-            }
+            refresh();
         }
 
 
@@ -187,6 +170,49 @@ public class ProtegeWelcomeFrame extends JFrame {
             g2.fillRect(0, 0, background.getIconWidth(), background.getIconHeight());
 
             g2.setColor(oldColor);
+        }
+
+
+        public void refresh() {
+            if (recentLinkBox != null){
+                box.remove(recentLinkBox);
+                recentLinkBox = null;
+            }
+
+            if (RecentEditorKitManager.getInstance().getDescriptors().size() > 0) {
+                recentLinkBox = new Box(BoxLayout.Y_AXIS);
+
+                Color color = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.PROPERTY_COLOR_KEY),
+                                                    Color.GRAY);
+                Color classColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.CLASS_COLOR_KEY),
+                                                         Color.GRAY);
+
+                recentLinkBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createMatteBorder(1, 1, 1, 1, classColor),
+                        " Open recent ",
+                        0,
+                        0,
+                        getFont().deriveFont(Font.BOLD),
+                        color), BorderFactory.createEmptyBorder(20, 20, 20, 20)));
+
+
+                for (final EditorKitDescriptor desc : RecentEditorKitManager.getInstance().getDescriptors()) {
+                    recentLinkBox.add(new LinkLabel(desc.getLabel(), new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc);
+                                dispose();
+                            }
+                            catch (Exception e1) {
+                                ErrorLogPanel.showErrorDialog(e1);
+                            }
+                        }
+                    }));
+                }
+                box.add(recentLinkBox);
+            }
+
+            box.revalidate();
         }
     }
 }
