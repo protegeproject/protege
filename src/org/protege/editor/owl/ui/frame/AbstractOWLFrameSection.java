@@ -31,6 +31,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private OWLFrameSectionRowObjectEditor<E> editor;
 
+    private boolean cacheEditor = true;
+
 
     protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends R> frame) {
         this.owlEditorKit = editorKit;
@@ -43,13 +45,21 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             }
         };
         editorKit.getModelManager().addOntologyChangeListener(listener);
-        Comparator<OWLFrameSectionRow<R, A, E>> comparator = null;
-        comparator = getRowComparator();
+        
+// not used for some reason
+//        Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
     }
+
+    // not the perfect solution, but prevents us from breaking the API
+    protected void setCacheEditor(boolean cacheEditor){
+        this.cacheEditor = cacheEditor;
+    }
+
 
     public List<MListButton> getAdditionalButtons() {
         return Collections.emptyList();
     }
+
 
     protected void handleChanges(List<? extends OWLOntologyChange> changes) {
                 if (getRootObject() == null) {
@@ -93,7 +103,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
 
     final public OWLFrameSectionRowObjectEditor<E> getEditor() {
-        if (editor == null) {
+        if (!cacheEditor || editor == null) {
             OWLFrameSectionRowObjectEditor<E> ed = getObjectEditor();
             if (ed != null) {
                 ed.setHandler(this);

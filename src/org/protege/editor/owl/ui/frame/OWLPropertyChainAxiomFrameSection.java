@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -23,6 +23,7 @@ public class OWLPropertyChainAxiomFrameSection extends AbstractOWLFrameSection<O
 
     public OWLPropertyChainAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
         super(owlEditorKit, LABEL, frame);
+        setCacheEditor(false); // needs to be recreated every time
     }
 
 
@@ -53,7 +54,6 @@ public class OWLPropertyChainAxiomFrameSection extends AbstractOWLFrameSection<O
 
 
     public OWLFrameSectionRowObjectEditor<List<OWLObjectPropertyExpression>> getObjectEditor() {
-
         OWLObjectPropertyChainEditor editor = new OWLObjectPropertyChainEditor(getOWLEditorKit());
         editor.setSuperProperty(getRootObject());
         return editor;
