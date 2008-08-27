@@ -165,15 +165,15 @@ public class OWLEditorKit implements EditorKit {
         if (f == null) {
             return false;
         }
-        addRecent(f.toURI());
         ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(f.toURI());
+        addRecent(f.toURI());
         return true;
     }
 
 
     public boolean handleLoadFrom(URI uri) throws Exception {
-        addRecent(uri);
         ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
+        addRecent(uri);
         return true;
     }
 
@@ -186,6 +186,7 @@ public class OWLEditorKit implements EditorKit {
             if (uri != null) {
                 getModelManager().createNewOntology(uri, w.getLocationURI());
                 newPhysicalURIs.add(w.getLocationURI());
+                addRecent(w.getLocationURI());
                 return true;
             }
         }
@@ -229,6 +230,7 @@ public class OWLEditorKit implements EditorKit {
             man.setOntologyFormat(ont, format);
             man.setPhysicalURIForOntology(ont, file.toURI());
             getModelManager().setDirty(ont);
+            newPhysicalURIs.add(file.toURI());
             handleSave();
         }
         else{
@@ -264,7 +266,7 @@ public class OWLEditorKit implements EditorKit {
         return file;
     }
 
-        private void addRecent(URI physicalURI) {
+    private void addRecent(URI physicalURI) {
         String label = physicalURI.toString();
         if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
             label = new File(physicalURI).getPath();
