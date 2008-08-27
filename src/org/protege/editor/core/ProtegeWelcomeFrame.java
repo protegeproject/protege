@@ -122,7 +122,9 @@ public class ProtegeWelcomeFrame extends JFrame {
                         try {
                             URI uri = OpenFromURIPanel.showDialog();
                             if (uri != null) {
-                                ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri);
+                                if (ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri)){
+                                    dispose();
+                                }
                             }
                         }
                         catch (Exception e1) {
