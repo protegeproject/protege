@@ -1,15 +1,7 @@
 package org.protege.editor.owl.ui;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
+import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
 import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.owl.krssparser.KRSSOntologyFormat;
 import org.coode.owl.latex.LatexOntologyFormat;
 import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
@@ -19,7 +11,11 @@ import org.semanticweb.owl.io.OWLXMLOntologyFormat;
 import org.semanticweb.owl.io.RDFXMLOntologyFormat;
 import org.semanticweb.owl.model.OWLOntologyFormat;
 
-import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -67,6 +63,21 @@ public class OntologyFormatPanel extends JPanel {
     }
 
 
+    public OWLOntologyFormat getSelectedFormat(){
+        return (OWLOntologyFormat)formatComboBox.getSelectedItem();
+    }
+
+
+    public void addItemListener(ItemListener l){
+        formatComboBox.addItemListener(l);
+    }
+
+
+    public void removeItemListener(ItemListener l){
+        formatComboBox.removeItemListener(l);
+    }
+
+
     public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat) {
         OntologyFormatPanel panel = new OntologyFormatPanel();
         panel.setSelectedFormat(defaultFormat);
@@ -79,7 +90,7 @@ public class OntologyFormatPanel extends JPanel {
         if (ret != JOptionPane.OK_OPTION) {
             return null;
         }
-        Object selObj = panel.formatComboBox.getSelectedItem();
-        return (OWLOntologyFormat) selObj;
+
+        return panel.getSelectedFormat();
     }
 }

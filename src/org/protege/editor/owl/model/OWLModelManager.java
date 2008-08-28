@@ -12,6 +12,7 @@ import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
+import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -307,12 +308,6 @@ public interface OWLModelManager extends ModelManager {
     OWLReasoner getReasoner();
 
 
-    void setMissingImportHandler(MissingImportHandler handler);
-
-    
-    void setSaveErrorHandler(SaveErrorHandler handler);
-
-
     URI getOntologyPhysicalURI(OWLOntology ontology);
 
 
@@ -343,4 +338,14 @@ public interface OWLModelManager extends ModelManager {
      * @return String the short form of the URI
      */
     String getURIRendering(URI uri);
+
+
+    void setMissingImportHandler(MissingImportHandler handler);
+
+
+    void setSaveErrorHandler(SaveErrorHandler handler);
+
+
+    void setLoadErrorHandler(OntologyLoadErrorHandler handler);
+    
 }
