@@ -34,6 +34,8 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
         });
 
         converter.performConversion();
+
+        converter.dispose();
     }
 
 

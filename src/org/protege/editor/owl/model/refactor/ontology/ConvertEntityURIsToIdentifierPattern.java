@@ -215,4 +215,16 @@ public class ConvertEntityURIsToIdentifierPattern {
         }
         return null;
     }
+
+
+    public void dispose() {
+        ontologyImportsWalker.dispose();
+        fragmentRenderer.dispose();
+        labelRenderer.dispose();
+
+        uriMap.clear();
+        ontologies.clear();
+
+        mngr = null;
+    }
 }

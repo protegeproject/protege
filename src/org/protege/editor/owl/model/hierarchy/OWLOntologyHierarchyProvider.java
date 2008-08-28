@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.*;
 /*
@@ -46,24 +45,26 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     private Map<OWLOntology, Set<OWLOntology>> child2ParentMap;
 
-    private OWLModelManager owlModelManager;
+    private OWLModelManager mngr;
 
-
-    public OWLOntologyHierarchyProvider(OWLModelManager owlModelManager) {
-        super(owlModelManager.getOWLOntologyManager());
-        this.owlModelManager = owlModelManager;
-        roots = new HashSet<OWLOntology>();
-        parent2ChildMap = new HashMap<OWLOntology, Set<OWLOntology>>();
-        child2ParentMap = new HashMap<OWLOntology, Set<OWLOntology>>();
-        rebuild();
-        owlModelManager.addListener(new OWLModelManagerListener() {
+    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
 
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if(event.isType(EventType.ONTOLOGY_LOADED)) {
                     rebuild();
                 }
             }
-        });
+        };
+
+
+    public OWLOntologyHierarchyProvider(OWLModelManager mngr) {
+        super(mngr.getOWLOntologyManager());
+        this.mngr = mngr;
+        roots = new HashSet<OWLOntology>();
+        parent2ChildMap = new HashMap<OWLOntology, Set<OWLOntology>>();
+        child2ParentMap = new HashMap<OWLOntology, Set<OWLOntology>>();
+        rebuild();
+        mngr.addListener(modelManagerListener);
         
     }
 
@@ -75,12 +76,12 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
         roots.clear();
         parent2ChildMap.clear();
         child2ParentMap.clear();
-        for(OWLOntology ont : owlModelManager.getOntologies()) {
-            for(OWLOntology imp : owlModelManager.getOWLOntologyManager().getImports(ont)) {
+        for(OWLOntology ont : mngr.getOntologies()) {
+            for(OWLOntology imp : mngr.getOWLOntologyManager().getImports(ont)) {
                 add(ont, imp);
             }
         }
-        for(OWLOntology ont : owlModelManager.getOntologies()) {
+        for(OWLOntology ont : mngr.getOntologies()) {
             if(!child2ParentMap.containsKey(ont)) {
                 roots.add(ont);
             }
@@ -139,5 +140,11 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     public boolean containsReference(OWLOntology object) {
         return parent2ChildMap.containsKey(object) ||
                 roots.contains(object);
+    }
+
+
+    public void dispose() {
+        super.dispose();
+        mngr.removeListener(modelManagerListener);
     }
 }
