@@ -1,12 +1,8 @@
 package org.protege.editor.core.ui.error;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -32,9 +28,8 @@ public class ErrorLogPanel extends JPanel {
         textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         JPanel contentPane = new JPanel(new BorderLayout(7, 7));
         contentPane.add(new JScrollPane(textArea));
-        JPanel buttonPanel = null;
         if (handler != null) {
-            buttonPanel = new JPanel(new BorderLayout());
+            JPanel buttonPanel = new JPanel(new BorderLayout());
             buttonPanel.add(new JButton(new AbstractAction("Send bug report") {
                 public void actionPerformed(ActionEvent e) {
                     if (handleSendErrorReport()) {
@@ -44,18 +39,13 @@ public class ErrorLogPanel extends JPanel {
             }), BorderLayout.WEST);
             contentPane.add(buttonPanel, BorderLayout.SOUTH);
         }
-        add(contentPane);
+        add(contentPane, BorderLayout.CENTER);
         fillLog();
     }
 
 
     private boolean handleSendErrorReport() {
-        if (errorReportHandler != null) {
-            return errorReportHandler.sendErrorReport(errorLog);
-        }
-        else {
-            return false;
-        }
+        return errorReportHandler != null && errorReportHandler.sendErrorReport(errorLog);
     }
 
 
@@ -83,6 +73,11 @@ public class ErrorLogPanel extends JPanel {
             textArea.append(
                     "---------------------------------------------------------------------------------------------------\n\n");
         }
+    }
+
+
+    protected ErrorLog getErrorLog(){
+        return errorLog;
     }
 
 

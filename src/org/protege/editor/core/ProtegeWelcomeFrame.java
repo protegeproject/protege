@@ -100,7 +100,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                             }
                         }
                         catch (Throwable e1) {
-                            logger.error("Exception caught initializing editor", e1);
+                            ErrorLogPanel.showErrorDialog(e1);
                         }
                     }
                 });
@@ -117,7 +117,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                             }
                         }
                         catch (Throwable e1) {
-                            logger.error("Exception caught initializing editor", e1);
+                            ErrorLogPanel.showErrorDialog(e1);
                         }
                     }
                 });
@@ -137,7 +137,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                             }
                         }
                         catch (Exception e1) {
-                            logger.error(e1);
+                            ErrorLogPanel.showErrorDialog(e1);
                         }
                     }
                 });
@@ -200,8 +200,9 @@ public class ProtegeWelcomeFrame extends JFrame {
                     recentLinkBox.add(new LinkLabel(desc.getLabel(), new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc);
-                                dispose();
+                                if (ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc)){
+                                    dispose();
+                                }
                             }
                             catch (Exception e1) {
                                 ErrorLogPanel.showErrorDialog(e1);
