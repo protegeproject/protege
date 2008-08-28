@@ -98,4 +98,9 @@ public class OntologyImportsWalker {
         }
         return leaves;
     }
+
+
+    public void dispose() {
+        hp.dispose();
+    }
 }
