@@ -14,6 +14,7 @@ import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.*;
@@ -59,12 +60,14 @@ public class OWLEditorKit implements EditorKit {
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
         loadOntologyLibraries();
+        
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
         modelManager.setSaveErrorHandler(new SaveErrorHandler(){
             public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
                 handleSaveError(ont, physicalURIForOntology, e);
             }
         });
+        modelManager.setLoadErrorHandler(new OntologyLoadErrorHandlerUI(this));
     }
 
 
@@ -144,12 +147,7 @@ public class OWLEditorKit implements EditorKit {
 
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
         URI uri = descriptor.getURI(URI_KEY);
-        if (uri != null) {
-            ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
-            addRecent(uri);
-            return true;
-        }
-        return false;
+        return uri != null && handleLoadFrom(uri);
     }
 
 
@@ -162,19 +160,16 @@ public class OWLEditorKit implements EditorKit {
         ext.add("obo");
         ext.add("turtle");
         File f = UIUtil.openFile(new JFrame(), "Select an OWL file", ext);
-        if (f == null) {
-            return false;
-        }
-        ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(f.toURI());
-        addRecent(f.toURI());
-        return true;
+        return f != null && handleLoadFrom(f.toURI());
     }
 
 
     public boolean handleLoadFrom(URI uri) throws Exception {
-        ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
-        addRecent(uri);
-        return true;
+        if (((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri)){
+            addRecent(uri);
+            return true;
+        }
+        return false;
     }
 
 
@@ -243,13 +238,6 @@ public class OWLEditorKit implements EditorKit {
         saveOntologyLibraries();
     }
 
-    private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
-        // catch the case where the user is trying to save an ontology that has been loaded from the web
-        if (e.getCause() != null && e.getCause() instanceof ProtocolException){
-            handleSaveAs();
-        }
-    }
-
 
     private File getSaveAsOWLFile(OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
@@ -266,6 +254,7 @@ public class OWLEditorKit implements EditorKit {
         return file;
     }
 
+
     private void addRecent(URI physicalURI) {
         String label = physicalURI.toString();
         if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
@@ -274,5 +263,13 @@ public class OWLEditorKit implements EditorKit {
         EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
         descriptor.setURI(URI_KEY, physicalURI);
         RecentEditorKitManager.getInstance().add(descriptor);
+    }
+
+
+    private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
+        // catch the case where the user is trying to save an ontology that has been loaded from the web
+        if (e.getCause() != null && e.getCause() instanceof ProtocolException){
+            handleSaveAs();
+        }
     }
 }

@@ -39,6 +39,7 @@ import org.protege.editor.owl.model.util.ListenerManager;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
+import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
@@ -92,10 +93,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private boolean includeImports = true;
 
     private OWLOntology activeOntology;
-
-    private MissingImportHandler missingImportHandler;
-
-    private SaveErrorHandler saveErrorHandler;
 
     private Set<File> ontologyRootFolders;
 
@@ -154,6 +151,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private OWLAnnotationURIRenderer annotationRenderer;
 
     private OWLExpressionCheckerFactory owlExpressionCheckerFactory;
+
+
+    // error handlers
+    private MissingImportHandler missingImportHandler;
+
+    private SaveErrorHandler saveErrorHandler;
+
+    private OntologyLoadErrorHandler loadErrorHandler;
 
 
     public OWLModelManagerImpl() {
@@ -289,10 +294,21 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      *            mechanism.
      */
     public OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException {
-        OWLOntology ont = manager.loadOntology(uri);
-        setActiveOntology(ont);
-        fireEvent(EventType.ONTOLOGY_LOADED);
-        return ont;
+        try{
+            OWLOntology ont = manager.loadOntology(uri);
+            setActiveOntology(ont);
+            fireEvent(EventType.ONTOLOGY_LOADED);
+            return ont;
+        }
+        catch(OWLOntologyCreationException e){
+            if (loadErrorHandler != null){
+                loadErrorHandler.handleErrorLoadingOntology(uri, e);
+            }
+            else{
+                throw e;
+            }
+        }
+        return null;
     }
 
 
@@ -324,7 +340,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * A convenience method that loads an ontology from a file
      * The location of the file is specified by the URI argument.
      */
-    public void loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
+    public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
+        OWLOntology ontology = null;
+
         // Obtain the actual ontology URI.  This is probably the xml:base
         URI ontologyURI = new OntologyURIExtractor(uri).getOntologyURI();
 
@@ -332,8 +350,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // in this ontology manager (and therefore workspace)
         if (manager.getOntology(ontologyURI) != null){
             throw new OWLOntologyCreationException("Not loaded." +
-                    "\nWorkspace already contains ontology: " + ontologyURI +
-                    ".\nPlease open the ontology in a new frame.");
+                                                   "\nWorkspace already contains ontology: " + ontologyURI +
+                                                   ".\nPlease open the ontology in a new frame.");
         }
         else{
             // Set up a mapping from the ontology URI to the physical URI
@@ -345,10 +363,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 //loadOntologyURIMap(new File(uri).getParentFile());
             }
             // Delegate to the load method using the URI of the ontology
-            loadOntology(ontologyURI);
+            ontology = loadOntology(ontologyURI);
 
             owlModelManagerDescriptor = new OWLModelManagerDescriptor(uri);
         }
+        return ontology != null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -956,7 +975,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         long t0 = System.currentTimeMillis();
         owlEntityRenderingCache.rebuild();
         owlObjectRenderingCache.clear();
-        annotationRenderer = null;        
+        annotationRenderer = null;
         logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
     }
 
@@ -1104,6 +1123,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void setSaveErrorHandler(SaveErrorHandler handler) {
         this.saveErrorHandler = handler;
+    }
+
+
+    public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
+        this.loadErrorHandler = handler;
     }
 
 
