@@ -52,7 +52,7 @@ public class WorkspaceManager {
 
 
     public boolean doClose(Workspace workspace) {
-        boolean close = false;
+        boolean close = true;
         if (workspace.getEditorKit().getModelManager().isDirty()) {
             // Ask user if they want to save?
             int ret = JOptionPane.showConfirmDialog(workspace,
@@ -63,22 +63,17 @@ public class WorkspaceManager {
             if (ret == JOptionPane.YES_OPTION) {
                 try {
                     workspace.getEditorKit().handleSave();
-                    close = true;
                 }
                 catch (Exception e) {
                     logger.error(e);
+                    close = false;
                 }
             }
             else if (ret == JOptionPane.NO_OPTION){
-                close = true;
             }
-        }
-        else{
-            close = (JOptionPane.showConfirmDialog(ProtegeManager.getInstance().getFrame(workspace),
-                                                  "Close the current set of ontologies?",
-                                                  "Close?",
-                                                  JOptionPane.YES_NO_OPTION,
-                                                  JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION);
+            else{
+                close = false;
+            }
         }
 
         if (close) {
