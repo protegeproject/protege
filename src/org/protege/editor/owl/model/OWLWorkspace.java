@@ -186,7 +186,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
         final OWLModelManager mngr = getOWLModelManager();
-        
+
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 handleModelManagerEvent(event.getType());
@@ -210,7 +210,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
     }
 
-    
+
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange chg : changes){
             if (chg instanceof SetOntologyURI){
@@ -383,38 +383,41 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     private void rebuildOntologiesMenu() {
-        final OWLModelManager mngr = getOWLModelManager();
+        if (ontologiesMenu != null){ // make sure the UI has been created before
 
-        ontologiesMenu.removeAll();
-        ButtonGroup selButtons = new ButtonGroup();
-        for (final OntologySelectionStrategy sel : mngr.getActiveOntologiesStrategies()){
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(sel.getName());
-            item.setSelected(mngr.getActiveOntologiesStrategy().equals(sel));
-            item.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    mngr.setActiveOntologiesStrategy(sel);
-                }
-            });
-            selButtons.add(item);
-            ontologiesMenu.add(item);
+            final OWLModelManager mngr = getOWLModelManager();
 
-        }
+            ontologiesMenu.removeAll();
+            ButtonGroup selButtons = new ButtonGroup();
+            for (final OntologySelectionStrategy sel : mngr.getActiveOntologiesStrategies()){
+                JRadioButtonMenuItem item = new JRadioButtonMenuItem(sel.getName());
+                item.setSelected(mngr.getActiveOntologiesStrategy().equals(sel));
+                item.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent event) {
+                        mngr.setActiveOntologiesStrategy(sel);
+                    }
+                });
+                selButtons.add(item);
+                ontologiesMenu.add(item);
 
-        ontologiesMenu.addSeparator();
-        ButtonGroup ontButtons = new ButtonGroup();
-        Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
-        orderedOntologies.addAll(mngr.getOntologies());
-        for (final OWLOntology ont : orderedOntologies){
-            JMenuItem item = new JRadioButtonMenuItem(mngr.getURIRendering(ont.getURI()));
-            item.setToolTipText(ont.getURI().toString());
-            item.setSelected(ont.equals(mngr.getActiveOntology()));
-            item.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    mngr.setActiveOntology(ont);
-                }
-            });
-            ontButtons.add(item);
-            ontologiesMenu.add(item);
+            }
+
+            ontologiesMenu.addSeparator();
+            ButtonGroup ontButtons = new ButtonGroup();
+            Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
+            orderedOntologies.addAll(mngr.getOntologies());
+            for (final OWLOntology ont : orderedOntologies){
+                JMenuItem item = new JRadioButtonMenuItem(mngr.getURIRendering(ont.getURI()));
+                item.setToolTipText(ont.getURI().toString());
+                item.setSelected(ont.equals(mngr.getActiveOntology()));
+                item.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent event) {
+                        mngr.setActiveOntology(ont);
+                    }
+                });
+                ontButtons.add(item);
+                ontologiesMenu.add(item);
+            }
         }
     }
 

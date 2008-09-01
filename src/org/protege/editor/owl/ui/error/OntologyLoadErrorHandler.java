@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.error;
 
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-
 import java.net.URI;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -40,9 +38,10 @@ public interface OntologyLoadErrorHandler {
 
     /**
      *
-     * @param uri the URI of the ontology that failed to load
+     * @param ont the URI of the ontology that failed to load
+     * @param loc the location the ontology failed to load from
      * @param e the exception thrown by the OWL API
      * @throws org.semanticweb.owl.model.OWLOntologyCreationException rethrow if the error needs to be reported further
      */
-    void handleErrorLoadingOntology(URI uri, OWLOntologyCreationException e) throws OWLOntologyCreationException;
+    <T extends Throwable> void handleErrorLoadingOntology(URI ont, URI loc, T e) throws Throwable;
 }

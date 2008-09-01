@@ -41,7 +41,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
                                                 JOptionPane.YES_NO_OPTION,
                                                 JOptionPane.WARNING_MESSAGE);
         if (ret != JOptionPane.YES_OPTION) {
-            return ontologyURI;
+            return null;
         }
         UIHelper helper = new UIHelper(owlEditorKit);
         File file = helper.chooseOWLFile("Please select an ontology file");

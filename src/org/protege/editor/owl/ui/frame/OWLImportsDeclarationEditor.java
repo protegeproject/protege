@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportTypePage;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
@@ -79,21 +80,22 @@ public class OWLImportsDeclarationEditor extends OntologyImportWizard implements
 
 
     public void handleEditingFinished(Set<OWLImportsDeclaration> editedObject) {
-        try {
-            ImportVerifier verifier = getImportVerifier();
-            ImportParameters params = verifier.checkImports();
-            params.performImportSetup(editorKit);
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (URI uri : params.getOntologiesToBeImported()) {
-                OWLOntology ont = editorKit.getModelManager().getActiveOntology();
-                OWLImportsDeclaration ax = getDataFactory().getOWLImportsDeclarationAxiom(ont, uri);
-                changes.add(new AddAxiom(ont, ax));
+        ImportVerifier verifier = getImportVerifier();
+        ImportParameters params = verifier.checkImports();
+        params.performImportSetup(editorKit);
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        for (URI uri : params.getOntologiesToBeImported()) {
+            OWLOntology ont = editorKit.getModelManager().getActiveOntology();
+            OWLImportsDeclaration ax = getDataFactory().getOWLImportsDeclarationAxiom(ont, uri);
+            changes.add(new AddAxiom(ont, ax));
+            try {
                 editorKit.getModelManager().getOWLOntologyManager().loadOntology(uri);
+                editorKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
             }
-            editorKit.getModelManager().applyChanges(changes);
+            catch (OWLException e) {
+                // do nothing - error already reported to user
+            }
         }
-        catch (OWLException e) {
-            e.printStackTrace();
-        }
+        editorKit.getModelManager().applyChanges(changes);
     }
 }
