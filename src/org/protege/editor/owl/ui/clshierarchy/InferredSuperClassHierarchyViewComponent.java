@@ -44,6 +44,7 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
     protected InferredSuperClassHierarchyProvider getOWLClassHierarchyProvider() {
         if (provider == null) {
             provider = new InferredSuperClassHierarchyProvider(getOWLModelManager());
+            provider.setReasoner(getOWLModelManager().getReasoner());
         }
         return provider;
     }
