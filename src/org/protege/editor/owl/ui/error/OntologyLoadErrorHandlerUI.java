@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.error;
 
+import org.protege.editor.core.ui.error.ErrorExplainer;
+import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.io.OWLParser;
 import org.semanticweb.owl.io.UnparsableOntologyException;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -50,47 +51,145 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
     private OWLEditorKit eKit;
 
+    private ErrorExplainer errorFilter;
+
+    private ErrorExplainer.ErrorExplanationFactory<UnparsableOntologyException> myErrorExplanationFactory =
+            new ErrorExplainer.ErrorExplanationFactory<UnparsableOntologyException>(){
+                public <T extends UnparsableOntologyException> ErrorExplainer.ErrorExplanation<T> createExplanation(T e) {
+                    // TODO should report the location from which we tried to load
+                    String message = "<html>Could not parse the ontology." +
+                                     "<p>The following parsers were tried:</html>";
+                    return new ErrorExplainer.ErrorExplanation<T>(e, message);
+                }
+            };
+
 
     public OntologyLoadErrorHandlerUI(OWLEditorKit owlEditorKit) {
         eKit = owlEditorKit;
+        errorFilter = new ErrorExplainer();
+        errorFilter.addExplanationFactory(UnparsableOntologyException.class, myErrorExplanationFactory);
     }
 
 
-    public void handleErrorLoadingOntology(URI ont, OWLOntologyCreationException e) throws OWLOntologyCreationException {
-        if (e instanceof UnparsableOntologyException){
-            UnparsableOntologyException parseException = ((UnparsableOntologyException)e);
-            LoadErrorPanel errorPanel = new LoadErrorPanel(parseException);
+    public <T extends Throwable> void handleErrorLoadingOntology(URI ont, URI loc, T e) throws Throwable {
+        ErrorExplainer.ErrorExplanation explanation = errorFilter.getErrorExplanation(e, true);
 
-            JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                            "Load Error: " + ont,
-                                            errorPanel,
-                                            JOptionPane.ERROR_MESSAGE,
-                                            JOptionPane.DEFAULT_OPTION,
-                                            null);
+        ErrorPanel errorPanel;
+
+        if (e instanceof UnparsableOntologyException){
+            errorPanel = new ParseErrorPanel((ErrorExplainer.ErrorExplanation<UnparsableOntologyException>)explanation, loc);
         }
         else{
-            throw e; // as we don't handle the error
+            errorPanel = new ErrorPanel<T>(explanation, loc);
         }
+
+        JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                        "Load Error: " + ont,
+                                        errorPanel,
+                                        JOptionPane.ERROR_MESSAGE,
+                                        JOptionPane.DEFAULT_OPTION,
+                                        null);
     }
 
 
-    public class LoadErrorPanel extends JPanel{
+    private SendErrorReportHandler getErrorReportHandler() {
+        return null;
+    }
 
-        private JComboBox formatPanel;
 
-        private Map<OWLParser, Exception> exceptionMap;
+    public class ErrorPanel<O extends Throwable> extends JPanel{
 
         private JTextComponent errorConsole;
 
+        private JComponent clientPanel;
 
-        public LoadErrorPanel(UnparsableOntologyException e) {
+        private URI loc;
+
+        private ErrorExplainer.ErrorExplanation<O> explanation;
+
+        private String message;
+
+
+        public ErrorPanel(ErrorExplainer.ErrorExplanation<O> explanation, URI loc) {
+            this.explanation = explanation;
+            this.loc = loc;
+            this.message = explanation.getMessage();
+
+            initialise(explanation, loc);
+
+            updateErrorMessage();
+        }
+
+
+        protected void initialise(ErrorExplainer.ErrorExplanation<O> explanation, URI loc){
             setLayout(new BorderLayout(6, 6));
-            
-            JComponent messageComponent = new JLabel("Could not load the ontology. The following parsers were tried:");
+
+            JComponent messageComponent = new JLabel(getMessage());
 
             add(messageComponent, BorderLayout.NORTH);
 
-            exceptionMap = e.getExceptions();
+            errorConsole = new JTextArea(20, 60);
+
+            clientPanel = new JPanel(new BorderLayout(6, 6));
+            clientPanel.add(new JScrollPane(errorConsole), BorderLayout.CENTER);
+
+            add(clientPanel, BorderLayout.CENTER);
+        }
+
+
+        protected JComponent getClientPanel(){
+            return clientPanel;
+        }
+
+
+        public Throwable getThrowable() {
+            return explanation.getCause();
+        }
+
+
+        protected String getMessage() {
+            return message;//"<html>Could not load the ontology found at <b>" + getLoc() + "</b>.</html>";
+        }
+
+
+        protected URI getLoc() {
+            return loc;
+        }
+
+
+        protected void updateErrorMessage() {
+
+            Throwable exception = getThrowable();
+
+            final StringWriter stringWriter = new StringWriter();
+            final PrintWriter writer = new PrintWriter(stringWriter);
+
+            writer.write(exception.getMessage());
+            writer.write("\n\n\nFull Stack Trace\n-----------------------------------------------------------------------------------------\n\n");
+            exception.printStackTrace(writer);
+            writer.flush();
+            errorConsole.setText(stringWriter.toString());
+            errorConsole.setCaretPosition(0);
+        }
+    }
+
+
+    public class ParseErrorPanel extends ErrorPanel<UnparsableOntologyException>{
+
+        private JComboBox formatPanel;
+
+        private Map<OWLParser, Throwable> exceptionMap;
+
+
+        public ParseErrorPanel(ErrorExplainer.ErrorExplanation<UnparsableOntologyException> e, URI loc) {
+            super(e, loc);
+        }
+
+
+        protected void initialise(ErrorExplainer.ErrorExplanation<UnparsableOntologyException> e, URI loc){
+            super.initialise(e, loc);
+
+            exceptionMap = e.getCause().getExceptions();
             formatPanel = new JComboBox();
             for (OWLParser parser : exceptionMap.keySet()){
                 formatPanel.addItem(parser);
@@ -106,31 +205,13 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
                 }
             });
 
-            errorConsole = new JTextArea(20, 60);
-
-            JComponent exceptionPanel = new JPanel(new BorderLayout(6, 6));
-            exceptionPanel.add(formatPanel, BorderLayout.NORTH);
-            exceptionPanel.add(new JScrollPane(errorConsole), BorderLayout.CENTER);
-
-            add(exceptionPanel, BorderLayout.CENTER);
-
-            updateErrorMessage();
+            getClientPanel().add(formatPanel, BorderLayout.NORTH);
         }
 
-        private void updateErrorMessage() {
+
+        public Throwable getThrowable() {
             OWLParser parser = (OWLParser)formatPanel.getSelectedItem();
-            Throwable exception = exceptionMap.get(parser);
-
-            final StringWriter stringWriter = new StringWriter();
-            final PrintWriter writer = new PrintWriter(stringWriter);
-
-            writer.write(exception.getMessage());
-            writer.write("\n\n\nFull Stack Trace\n-----------------------------------------------------------------------------------------\n\n");
-            exception.printStackTrace(writer);
-            writer.flush();
-            errorConsole.setText(stringWriter.toString());
-            errorConsole.setCaretPosition(0);
+            return exceptionMap.get(parser);
         }
-
     }
 }

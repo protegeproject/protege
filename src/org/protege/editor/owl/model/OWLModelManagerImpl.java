@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
@@ -27,7 +28,10 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
-import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.io.AutoMappedRepositoryURIMapper;
+import org.protege.editor.owl.model.io.UserRepositoryURIMapper;
+import org.protege.editor.owl.model.io.UserResolvedURIMapper;
+import org.protege.editor.owl.model.io.WebConnectionURIMapper;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
@@ -50,10 +54,7 @@ import org.semanticweb.owl.util.URIShortFormProvider;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
 import java.util.*;
 
 
@@ -71,7 +72,9 @@ import java.util.*;
  * related to each other via owl:imports) and the various
  * UI components that are used to access the ontology.
  */
-public class OWLModelManagerImpl extends AbstractModelManager implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener {
+public class OWLModelManagerImpl extends AbstractModelManager
+        implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener, OWLOntologyLoaderListener {
+
     private static final Logger logger = Logger.getLogger(OWLModelManagerImpl.class);
 
     private List<OWLModelManagerListener> modelManagerChangeListeners;
@@ -95,8 +98,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private OWLOntology activeOntology;
 
     private Set<File> ontologyRootFolders;
-
-    private Set<OntologyLibrary> automappedLibraries;
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
@@ -133,8 +134,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private OWLOntologyManager manager;
 
-    private Map<URI, URI> resolvedMissingImports;
-
     private OWLEntityFactory entityFactory;
 
     /**
@@ -154,11 +153,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     // error handlers
-    private MissingImportHandler missingImportHandler;
 
     private SaveErrorHandler saveErrorHandler;
 
     private OntologyLoadErrorHandler loadErrorHandler;
+
+    private AutoMappedRepositoryURIMapper autoMappedRepositoryURIMapper;
+
+    private UserResolvedURIMapper userResolvedURIMapper;
 
 
     public OWLModelManagerImpl() {
@@ -169,15 +171,22 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager = OWLManager.createOWLOntologyManager();
         manager.setSilentMissingImportsHandling(true);
         manager.addOntologyChangeListener(this);
-        manager.addURIMapper(new RepositoryURIMapper());
+        manager.addOntologyLoaderListener(this);
+
+        // URI mappers for loading - added in reverse order
+        autoMappedRepositoryURIMapper = new AutoMappedRepositoryURIMapper(this);
+        userResolvedURIMapper = new UserResolvedURIMapper(new MissingImportHandlerImpl());
+        manager.clearURIMappers();
+        manager.addURIMapper(userResolvedURIMapper);
+        manager.addURIMapper(new WebConnectionURIMapper());
+        manager.addURIMapper(new UserRepositoryURIMapper(this));
+        manager.addURIMapper(autoMappedRepositoryURIMapper);
+
 
         dirtyOntologies = new HashSet<OWLOntology>();
         ontologyRootFolders = new HashSet<File>();
-        automappedLibraries = new HashSet<OntologyLibrary>();
         ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
 
-        missingImportHandler = new MissingImportHandlerImpl();
-        resolvedMissingImports = new HashMap<URI, URI>();
 
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
 
@@ -282,6 +291,28 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     //
     ///////////////////////////////////////////////////////////////////////////////////////
 
+    public void startedLoadingOntology(LoadingStartedEvent event) {
+        System.out.println("loading " + event.getOntologyURI() + " from " + event.getPhysicalURI());
+    }
+
+
+    public void finishedLoadingOntology(LoadingFinishedEvent event) {
+        if (!event.isSuccessful()){
+            Exception e = event.getException();
+            if (loadErrorHandler != null){
+                try {
+                    loadErrorHandler.handleErrorLoadingOntology(event.getOntologyURI(),
+                                                                event.getPhysicalURI(),
+                                                                e);
+                }
+                catch (Throwable e1) {
+                    // if, for any reason, the loadErrorHandler cannot report the error
+                    ErrorLogPanel.showErrorDialog(e1);
+                }
+            }
+        }
+    }
+
 
     /**
      * Loads the ontology that has the specified ontology URI.
@@ -294,21 +325,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      *            mechanism.
      */
     public OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException {
+        OWLOntology ont = null;
         try{
-            OWLOntology ont = manager.loadOntology(uri);
+            ont = manager.loadOntology(uri);
             setActiveOntology(ont);
             fireEvent(EventType.ONTOLOGY_LOADED);
-            return ont;
         }
-        catch(OWLOntologyCreationException e){
-            if (loadErrorHandler != null){
-                loadErrorHandler.handleErrorLoadingOntology(uri, e);
-            }
-            else{
-                throw e;
-            }
+        catch (OWLOntologyCreationException e){
+            // will be handled by the loadErrorHandler, so ignore
         }
-        return null;
+        return ont;
     }
 
 
@@ -386,7 +412,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // Add the parent file which will be the folder
         if (ontologyRootFolders.add(file.getParentFile())) {
             // Add automapped library
-            automappedLibraries.add(new FolderOntologyLibrary(file.getParentFile()));
+            autoMappedRepositoryURIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
         }
     }
 
@@ -1004,120 +1030,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         return getOWLReasonerManager().getCurrentReasoner();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////
     //
-    // Inner helper classes
+    //  Error handling
     //
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * A custom URIMapper.  This is used by the various parsers to
-     * convert ontology URIs into physical URIs that point to concrete
-     * representations of ontologies.
-     * <p/>
-     * The mapper uses the following strategy:
-     * <p/>
-     * 1) It looks in auto-mapped libraries.  These are folder libraries
-     * that correspond to folders where the "root ontologies" have been
-     * loaded from.  If the mapper finds an ontology that has a mapping
-     * to one of these auto-mapped files, then the URI of the
-     * auto-mapped file is returned.
-     * <p/>
-     * 2) It looks in the ontology libraries.  If an ontology library
-     * contains an ontology that has the logical URI then the library
-     * is asked for the physical URI and this URI is returned.
-     * <p/>
-     * 3) The system attemps to resolve the logical URI.  If
-     * this succeeds then the logical URI is returned.
-     * <p/>
-     * 4) The system turns to the "Missing Import Handler", which may
-     * try to obtain the physical URI (usually by adding a library or
-     * by specifying a file etc.)
-     */
-    private class RepositoryURIMapper implements OWLOntologyURIMapper {
-
-
-        public URI getPhysicalURI(URI logicalURI) {
-            URI uri;
-            // Search auto mapped libraries
-            Set<OntologyLibrary> libraries = getAutoMappedOntologyLibraries();
-            for (OntologyLibrary lib : libraries) {
-                if (lib.contains(logicalURI)) {
-                    uri = lib.getPhysicalURI(logicalURI);
-                    // Map the URI
-                    manager.addURIMapper(new SimpleURIMapper(logicalURI, uri));
-                    if (logger.isInfoEnabled()) {
-                        logger.info("Mapping (from automapping): " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
-                    }
-                    return uri;
-                }
-            }
-
-            // Search user defined libraries
-            OntologyLibraryManager manager = getOntologyLibraryManager();
-            OntologyLibrary lib = manager.getLibrary(logicalURI);
-            if (lib != null) {
-                uri = lib.getPhysicalURI(logicalURI);
-                if (logger.isInfoEnabled()) {
-                    logger.info("Mapping (from library: " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
-                }
-                return lib.getPhysicalURI(logicalURI);
-            }
-            if (logger.isInfoEnabled()) {
-                logger.info("No mapping for " + logicalURI + " found.  Using logical URI");
-            }
-            // We can't find a local version of the ontology. Can we resolve the URI?
-            try {
-                // First check that the URI can be resolved.
-                URLConnection conn = logicalURI.toURL().openConnection();
-                conn.setReadTimeout(5000);
-                InputStream is = conn.getInputStream();
-                is.close();
-                // Opened a stream.  Is it an ontology at the URI?
-                OntologyURIExtractor ext = new OntologyURIExtractor(logicalURI);
-                ext.getOntologyURI();
-                if (ext.isStartElementPresent()) {
-                    // There is an ontology at the URI!
-                    return logicalURI;
-                }
-            }
-            catch (IOException e) {
-                // Can't open the stream - problem resolving the URI
-                logger.info(e.getClass().getName() + ": " + e.getMessage());
-                // Delegate to the missing imports handler
-            }
-            // Still haven't managed to resolved the URI
-            if (resolvedMissingImports.containsKey(logicalURI)) {
-                // Already resolved the missing import - don't ask again
-                return resolvedMissingImports.get(logicalURI);
-            }
-            else {
-
-                URI resolvedURI = resolveMissingImport(logicalURI);
-                if (resolvedURI != null) {
-                    resolvedMissingImports.put(logicalURI, resolvedURI);
-                    return resolvedURI;
-                }
-            }
-            // Final failsafe
-            return logicalURI;
-        }
-    }
-
-
-    public Set<OntologyLibrary> getAutoMappedOntologyLibraries() {
-        return Collections.unmodifiableSet(automappedLibraries);
-    }
-
-
-    public Set<File> getSourceFolders() {
-        return Collections.unmodifiableSet(ontologyRootFolders);
-    }
+    //////////////////////////////////////////////////////////////////////////////////////
 
 
     public void setMissingImportHandler(MissingImportHandler missingImportHandler) {
-        this.missingImportHandler = missingImportHandler;
+        userResolvedURIMapper.setMissingImportHandler(missingImportHandler);
     }
 
 
@@ -1128,10 +1050,5 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
-    }
-
-
-    private URI resolveMissingImport(URI logicalURI) {
-        return missingImportHandler.getPhysicalURI(logicalURI);
     }
 }

@@ -6,10 +6,12 @@ import com.clarkparsia.explanation.HSTExplanationGenerator;
 import com.clarkparsia.explanation.SatisfiabilityConverter;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.explanation.ExplanationGeneratorPanel;
-import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 /*
@@ -56,7 +58,8 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
     }
 
     protected OWLReasoner getReasoner() {
-        return editorKit.getModelManager().getReasoner();
+        return editorKit.getModelManager().getOWLReasonerManager().createReasoner(editorKit.getModelManager().getOWLOntologyManager());
+        //return editorKit.getModelManager().getReasoner();
     }
 
     protected OWLOntology getOntology() {
@@ -66,12 +69,12 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
     public void handleExplain(OWLAxiom ax) {
         DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(getOWLDataFactory());
         ax.accept(gen);
-        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+        //OWLOntologyManager man = OWLManager.createOWLOntologyManager();
 
         SatisfiabilityConverter satCon = new SatisfiabilityConverter(getOWLDataFactory());
         final OWLDescription desc = satCon.convert(ax);
 
-        BlackBoxExplanation bbexp = new BlackBoxExplanation(man);
+        BlackBoxExplanation bbexp = new BlackBoxExplanation(editorKit.getModelManager().getOWLOntologyManager());
         OWLOntology ontology = getOntology();
         bbexp.setOntology(ontology);
         OWLReasoner reasoner = getReasoner();
