@@ -1,21 +1,20 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.*;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
+import org.protege.editor.owl.ui.frame.OWLAxiomAnnotationFrameSection;
+import org.protege.editor.owl.ui.frame.OWLAxiomAnnotationsRoot;
+import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntologyManager;
 
-import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -62,47 +61,47 @@ public class OWLFrameListComponent<R extends OWLObject> extends JPanel {
 
 
     public OWLFrameListComponent(OWLEditorKit editorKit, OWLFrame<R> frame) {
-        setLayout(new BorderLayout());
-        mainList = new OWLFrameList2<R>(editorKit, frame);
-        this.editorKit = editorKit;
-        annotationAxiom2AxiomMap = new HashMap<Integer, Integer>();
-        annotationFrameList = new OWLFrameList2<OWLAxiomAnnotationsRoot>(editorKit,
-                                                          new OWLAxiomAnnotationsFrame(editorKit));
-        JSplitPane sp = new ViewSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        sp.setBorder(null);
-        sp.setResizeWeight(0.5);
-        setLayout(new BorderLayout());
-        add(sp);
-        JScrollPane mainListScrollPane = new JScrollPane(mainList);
-        sp.setLeftComponent(mainListScrollPane);
-
-
-        annotationComponent = new JScrollPane(annotationFrameList);
-
-        Border b = annotationComponent.getBorder();
-
-        annotationComponent.setBorder(BorderFactory.createCompoundBorder(b,
-                                                                         BorderFactory.createCompoundBorder(
-                                                                                 leftPointingBorder = new LeftPointingBorder(),
-                                                                                 BorderFactory.createEmptyBorder(1,
-                                                                                                                 2,
-                                                                                                                 1,
-                                                                                                                 1))));
-        sp.setRightComponent(annotationComponent);
-        mainList.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                sync();
-            }
-        });
-        mainList.setMinimumSize(new Dimension(10, 10));
-        annotationFrameList.setMinimumSize(new Dimension(10, 10));
-        mainListScrollPane.getViewport().addChangeListener(new ChangeListener() {
-
-            public void stateChanged(ChangeEvent e) {
-                sync();
-            }
-        });
+//        setLayout(new BorderLayout());
+//        mainList = new OWLFrameList2<R>(editorKit, frame);
+//        this.editorKit = editorKit;
+//        annotationAxiom2AxiomMap = new HashMap<Integer, Integer>();
+//        annotationFrameList = new OWLFrameList2<OWLAxiom>(editorKit,
+//                                                          new OWLAxiomAnnotationsFrame(editorKit));
+//        JSplitPane sp = new ViewSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+//        sp.setBorder(null);
+//        sp.setResizeWeight(0.5);
+//        setLayout(new BorderLayout());
+//        add(sp);
+//        JScrollPane mainListScrollPane = new JScrollPane(mainList);
+//        sp.setLeftComponent(mainListScrollPane);
+//
+//
+//        annotationComponent = new JScrollPane(annotationFrameList);
+//
+//        Border b = annotationComponent.getBorder();
+//
+//        annotationComponent.setBorder(BorderFactory.createCompoundBorder(b,
+//                                                                         BorderFactory.createCompoundBorder(
+//                                                                                 leftPointingBorder = new LeftPointingBorder(),
+//                                                                                 BorderFactory.createEmptyBorder(1,
+//                                                                                                                 2,
+//                                                                                                                 1,
+//                                                                                                                 1))));
+//        sp.setRightComponent(annotationComponent);
+//        mainList.addListSelectionListener(new ListSelectionListener() {
+//
+//            public void valueChanged(ListSelectionEvent e) {
+//                sync();
+//            }
+//        });
+//        mainList.setMinimumSize(new Dimension(10, 10));
+//        annotationFrameList.setMinimumSize(new Dimension(10, 10));
+//        mainListScrollPane.getViewport().addChangeListener(new ChangeListener() {
+//
+//            public void stateChanged(ChangeEvent e) {
+//                sync();
+//            }
+//        });
     }
 
 
@@ -113,40 +112,40 @@ public class OWLFrameListComponent<R extends OWLObject> extends JPanel {
 
 
     private void sync() {
-        Object selVal = mainList.getSelectedValue();
-//        if (selVal instanceof OWLFrameSectionRow) {
-            OWLAxiom ax = null;
-        if(selVal instanceof OWLFrameSectionRow) {
-            ax = ((OWLFrameSectionRow) selVal).getAxiom();
-        }
-            int selIndex = mainList.getSelectedIndex();
-            Rectangle cellBounds = mainList.getCellBounds(selIndex, selIndex);
-            Set<OWLAxiom> rowAxioms = new HashSet<OWLAxiom>();
-            for(int i = 0; i < mainList.getModel().getSize(); i++) {
-                Object listObj = mainList.getModel().getElementAt(i);
-                if(listObj instanceof OWLFrameSectionRow) {
-                    OWLAxiom rowAx = ((OWLFrameSectionRow) listObj).getAxiom();
-                    rowAxioms.add(rowAx);
-                }
-            }
-            annotationFrameList.setRootObject(new OWLAxiomAnnotationsRoot(ax, rowAxioms));
-            cellBounds.y = cellBounds.y + (cellBounds.height / 2);
-            cellBounds = SwingUtilities.convertRectangle(mainList, cellBounds, annotationFrameList);
-            leftPointingBorder.setPointY(cellBounds.y);
-            List<Integer> markers = new ArrayList<Integer>();
-            for(int i = 0; i < mainList.getModel().getSize(); i++) {
-                Rectangle cellBounds2 = mainList.getCellBounds(i, i);
-                cellBounds2.y = cellBounds2.y + (cellBounds2.height / 2);
-                cellBounds2 = SwingUtilities.convertRectangle(mainList, cellBounds2, annotationFrameList);
-                markers.add(cellBounds2.y);
-            }
-            leftPointingBorder.setMarkers(markers);
+//        Object selVal = mainList.getSelectedValue();
+////        if (selVal instanceof OWLFrameSectionRow) {
+//            OWLAxiom ax = null;
+//        if(selVal instanceof OWLFrameSectionRow) {
+//            ax = ((OWLFrameSectionRow) selVal).getAxiom();
 //        }
-//        else {
-//            annotationFrameList.setRootObject(null);
-//            leftPointingBorder.setPointY(-100);
-//        }
-        annotationComponent.repaint();
+//            int selIndex = mainList.getSelectedIndex();
+//            Rectangle cellBounds = mainList.getCellBounds(selIndex, selIndex);
+//            Set<OWLAxiom> rowAxioms = new HashSet<OWLAxiom>();
+//            for(int i = 0; i < mainList.getModel().getSize(); i++) {
+//                Object listObj = mainList.getModel().getElementAt(i);
+//                if(listObj instanceof OWLFrameSectionRow) {
+//                    OWLAxiom rowAx = ((OWLFrameSectionRow) listObj).getAxiom();
+//                    rowAxioms.add(rowAx);
+//                }
+//            }
+//            annotationFrameList.setRootObject(new OWLAxiomAnnotationsRoot(ax, rowAxioms));
+//            cellBounds.y = cellBounds.y + (cellBounds.height / 2);
+//            cellBounds = SwingUtilities.convertRectangle(mainList, cellBounds, annotationFrameList);
+//            leftPointingBorder.setPointY(cellBounds.y);
+//            List<Integer> markers = new ArrayList<Integer>();
+//            for(int i = 0; i < mainList.getModel().getSize(); i++) {
+//                Rectangle cellBounds2 = mainList.getCellBounds(i, i);
+//                cellBounds2.y = cellBounds2.y + (cellBounds2.height / 2);
+//                cellBounds2 = SwingUtilities.convertRectangle(mainList, cellBounds2, annotationFrameList);
+//                markers.add(cellBounds2.y);
+//            }
+//            leftPointingBorder.setMarkers(markers);
+////        }
+////        else {
+////            annotationFrameList.setRootObject(null);
+////            leftPointingBorder.setPointY(-100);
+////        }
+//        annotationComponent.repaint();
     }
 
 

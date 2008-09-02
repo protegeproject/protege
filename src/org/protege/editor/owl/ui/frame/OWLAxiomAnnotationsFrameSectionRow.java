@@ -1,8 +1,9 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.*;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.*;
 
+import java.util.Collections;
 import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -34,30 +35,35 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
  */
-public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiomAnnotationsRoot, OWLAxiomAnnotationAxiom, OWLAnnotation>{
+public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>{
+
+    private OWLAnnotation<? extends OWLObject> annotation;
+
+    private OWLAnnotationEditor editor;
 
 
     public OWLAxiomAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
-                                              OWLAxiomAnnotationsRoot rootObject, OWLAxiomAnnotationAxiom axiom) {
+                                              OWLAxiom rootObject, OWLAxiomAnnotationAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
+        this.annotation = axiom.getAnnotation();
+        editor =  new OWLAnnotationEditor(getOWLEditorKit());
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
-        OWLAnnotationEditor editor =  new OWLAnnotationEditor(getOWLEditorKit());
         editor.setAnnotation(getAxiom().getAnnotation());
         return editor;
     }
 
 
     protected OWLAxiomAnnotationAxiom createAxiom(OWLAnnotation editedObject) {
-        return null;
+        return getOWLDataFactory().getOWLAxiomAnnotationAxiom(getRoot(), editedObject);
     }
 
 
     public List<? extends OWLObject> getManipulatableObjects() {
-        return null;
+        return Collections.singletonList(annotation);
     }
 
-    
+
 }

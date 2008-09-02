@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.selection;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owl.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -37,6 +37,8 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     private OWLObjectProperty lastSelectedObjectProperty;
 
     private OWLIndividual lastSelectedIndividual;
+
+    private OWLAxiom lastSelectedAxiom;
 
 
     public OWLSelectionModelImpl() {
@@ -82,11 +84,8 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
     private void updateSelectedObject(OWLObject selObj) {
         selectedObject = selObj;
-        if (selectedObject instanceof OWLEntity) {
-            lastSelectedEntity = (OWLEntity) selectedObject;
-        }
         updateLastSelection();
-        fireSelectedEntityChanged();
+        fireSelectionChanged();
     }
 
 
@@ -95,7 +94,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
-    private void fireSelectedEntityChanged() {
+    private void fireSelectionChanged() {
         for (OWLSelectionModelListener listener : new ArrayList<OWLSelectionModelListener>(listeners)) {
             try {
                 listener.selectionChanged();
@@ -110,25 +109,11 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
     public void setSelectedEntity(OWLEntity entity) {
         setSelectedObject(entity);
-//        if (entity == null) {
-//            if (lastSelectedEntity != null) {
-//                lastSelectedEntity = null;
-//                updateLastSelection();
-//                fireSelectedEntityChanged();
-//            }
-//        }
-//        else {
-//            if (lastSelectedEntity == null) {
-//                lastSelectedEntity = entity;
-//                updateLastSelection();
-//                fireSelectedEntityChanged();
-//            }
-//            else if (!lastSelectedEntity.equals(entity)) {
-//                lastSelectedEntity = entity;
-//                updateLastSelection();
-//                fireSelectedEntityChanged();
-//            }
-//        }
+    }
+
+
+    public void setSelectedAxiom(OWLAxiom axiom) {
+        setSelectedObject(axiom);
     }
 
 
@@ -141,7 +126,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
                 if (lastSelectedClass != null) {
                     if (lastSelectedClass.equals(entity)) {
                         lastSelectedClass = null;
-                        fireSelectedEntityChanged();
+                        fireSelectionChanged();
                     }
                 }
             }
@@ -151,7 +136,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
                 if (lastSelectedObjectProperty != null) {
                     if (lastSelectedObjectProperty.equals(entity)) {
                         lastSelectedObjectProperty = null;
-                        fireSelectedEntityChanged();
+                        fireSelectionChanged();
                     }
                 }
             }
@@ -161,7 +146,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
                 if (lastSelectedDataProperty != null) {
                     if (lastSelectedDataProperty.equals(entity)) {
                         lastSelectedDataProperty = null;
-                        fireSelectedEntityChanged();
+                        fireSelectionChanged();
                     }
                 }
             }
@@ -171,7 +156,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
                 if (lastSelectedIndividual != null) {
                     if (lastSelectedIndividual.equals(entity)) {
                         lastSelectedIndividual = null;
-                        fireSelectedEntityChanged();
+                        fireSelectionChanged();
                     }
                 }
             }
@@ -182,18 +167,19 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
         });
         if (lastSelectedEntity != null && entity.equals(lastSelectedEntity)) {
             lastSelectedEntity = null;
-            fireSelectedEntityChanged();
+            fireSelectionChanged();
         }
     }
 
 
     private void updateLastSelection() {
+
         if (selectedObject == null) {
             return;
         }
         if (selectedObject instanceof OWLEntity) {
-            OWLEntity selEnt = (OWLEntity) selectedObject;
-            selEnt.accept(new OWLEntityVisitor() {
+            lastSelectedEntity = (OWLEntity)selectedObject;
+            lastSelectedEntity.accept(new OWLEntityVisitor() {
                 public void visit(OWLClass cls) {
                     lastSelectedClass = cls;
                 }
@@ -217,46 +203,35 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
                 public void visit(OWLDataType dataType) {
                 }
             });
+            lastSelectedAxiom = null; // unlikely we will want the axiom selection to still be valid
+        }
+        else if (selectedObject instanceof OWLAxiom){
+            lastSelectedAxiom = (OWLAxiom)selectedObject;
         }
     }
 
 
-    /**
-     * Gets the first selected class.
-     * @return The selected <code>OWLClass</code>, or <code>null</code>
-     *         if a class is not selected.
-     */
     public OWLClass getLastSelectedClass() {
         return lastSelectedClass;
     }
 
 
-    /**
-     * Gets the first selected property
-     * @return The selected <code>OWLProperty</code>, or <code>null</code>
-     *         if there is no selected property.
-     */
     public OWLObjectProperty getLastSelectedObjectProperty() {
         return lastSelectedObjectProperty;
     }
 
 
-    /**
-     * Gets the first selected property
-     * @return The selected <code>OWLProperty</code>, or <code>null</code>
-     *         if there is no selected property.
-     */
     public OWLDataProperty getLastSelectedDataProperty() {
         return lastSelectedDataProperty;
     }
 
 
-    /**
-     * Gets the first selected individual.
-     * @return The selected individual, or <code>null</code> if
-     *         there is no selected individual.
-     */
     public OWLIndividual getLastSelectedIndividual() {
         return lastSelectedIndividual;
+    }
+
+
+    public OWLAxiom getLastSelectedAxiom() {
+        return lastSelectedAxiom;
     }
 }

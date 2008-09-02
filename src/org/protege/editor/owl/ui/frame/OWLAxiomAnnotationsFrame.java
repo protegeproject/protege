@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.OWLAxiom;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -31,13 +32,10 @@ import org.protege.editor.owl.OWLEditorKit;
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
  */
-public class OWLAxiomAnnotationsFrame extends AbstractOWLFrame<OWLAxiomAnnotationsRoot>  {
-
+public class OWLAxiomAnnotationsFrame extends AbstractOWLFrame<OWLAxiom>  {
 
     public OWLAxiomAnnotationsFrame(OWLEditorKit editorKit) {
         super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLAxiomAnnotationsFrameSection(editorKit, this));
     }
-
-
 }

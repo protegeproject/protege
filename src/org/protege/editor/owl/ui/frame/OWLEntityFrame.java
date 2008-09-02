@@ -53,6 +53,16 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
 
     private List<OWLFrameSection> owlIndividualSections;
 
+    private OWLModelManagerListener owlModelManagerListener = new OWLModelManagerListener() {
+
+            public void handleChange(OWLModelManagerChangeEvent event) {
+                if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
+                    refill();
+                    setRootObject(OWLEntityFrame.this.editorKit.getModelManager().getActiveOntology());
+                }
+            }
+        };
+
 
     public OWLEntityFrame(OWLEditorKit editorKit) {
         super(editorKit.getModelManager().getOWLOntologyManager());
@@ -106,15 +116,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
 
         setRootObject(editorKit.getModelManager().getOWLDataFactory().getOWLThing());
 
-        editorKit.getModelManager().addListener(new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
-                    refill();
-                    setRootObject(OWLEntityFrame.this.editorKit.getModelManager().getActiveOntology());
-                }
-            }
-        });
+        editorKit.getModelManager().addListener(owlModelManagerListener);
     }
 
 
@@ -156,6 +158,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         setupSections(owlObjectPropertySections);
     }
 
+    
     private void setupSections(List<OWLFrameSection> sections) {
         for(OWLFrameSection sec : sections) {
             addSection(sec);
@@ -163,9 +166,9 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
     }
 
 
-
     public void dispose() {
         super.dispose();
+        editorKit.getModelManager().removeListener(owlModelManagerListener);
         disposeOfSections(owlClassSections);
         disposeOfSections(owlObjectPropertySections);
         disposeOfSections(owlDataPropertySections);

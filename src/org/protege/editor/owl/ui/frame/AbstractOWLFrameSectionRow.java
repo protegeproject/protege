@@ -84,7 +84,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     protected abstract OWLFrameSectionRowObjectEditor<E> getObjectEditor();
 
 
-    final public void handleEditingFinished(Set<E> editedObjects) {
+    public void handleEditingFinished(Set<E> editedObjects) {
         if (editedObjects.isEmpty()) {
             return;
         }

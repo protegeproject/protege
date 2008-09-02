@@ -21,8 +21,6 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private OWLEditorKit owlEditorKit;
 
-    private OWLOntologyChangeListener listener;
-
     private OWLFrame<? extends R> frame;
 
     private List<OWLFrameSectionRow<R, A, E>> rows;
@@ -33,19 +31,21 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private boolean cacheEditor = true;
 
+    private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+            handleChanges(changes);
+        }
+    };
+
 
     protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends R> frame) {
         this.owlEditorKit = editorKit;
         this.label = label;
         this.frame = frame;
         this.rows = new ArrayList<OWLFrameSectionRow<R, A, E>>();
-        listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                handleChanges(changes);
-            }
-        };
-        editorKit.getModelManager().addOntologyChangeListener(listener);
-        
+
+        getOWLModelManager().addOntologyChangeListener(listener);
+
 // not used for some reason
 //        Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
     }
@@ -62,14 +62,14 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
 
     protected void handleChanges(List<? extends OWLOntologyChange> changes) {
-                if (getRootObject() == null) {
-                    return;
-                }
-                for (OWLOntologyChange change : changes) {
-                    if (change.isAxiomChange()) {
-                        change.getAxiom().accept(AbstractOWLFrameSection.this);
-                    }
-                }
+        if (getRootObject() == null) {
+            return;
+        }
+        for (OWLOntologyChange change : changes) {
+            if (change.isAxiomChange()) {
+                change.getAxiom().accept(AbstractOWLFrameSection.this);
+            }
+        }
     }
 
 
@@ -92,7 +92,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     }
 
 
-    final protected void disposeOfSection() {
+    protected void disposeOfSection() {
 
     }
 

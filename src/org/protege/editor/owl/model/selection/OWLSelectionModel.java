@@ -21,7 +21,7 @@ import org.semanticweb.owl.model.*;
 public interface OWLSelectionModel {
 
     /**
-     * Gets the first selected class.
+     * Gets the most recently selected class.
      * @return The selected <code>OWLClass</code>, or <code>null</code>
      *         if a class is not selected.
      */
@@ -29,7 +29,7 @@ public interface OWLSelectionModel {
 
 
     /**
-     * Gets the first selected property
+     * Gets the most recently selected property
      * @return The selected <code>OWLProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
@@ -37,7 +37,7 @@ public interface OWLSelectionModel {
 
 
     /**
-     * Gets the first selected property
+     * Gets the most recently selected property
      * @return The selected <code>OWLProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
@@ -45,7 +45,7 @@ public interface OWLSelectionModel {
 
 
     /**
-     * Gets the first selected individual.
+     * Gets the most recently selected individual.
      * @return The selected individual, or <code>null</code> if
      *         there is no selected individual.
      */
@@ -72,10 +72,16 @@ public interface OWLSelectionModel {
     public void setSelectedEntity(OWLEntity entity);
 
 
+    public void setSelectedAxiom(OWLAxiom axiom);
+
+
+    public OWLAxiom getLastSelectedAxiom();
+
+
     public void setSelectedObject(OWLObject object);
 
-    public OWLObject getSelectedObject();
 
+    public OWLObject getSelectedObject();
 
 
     /**
