@@ -21,9 +21,9 @@ public class FilteringOWLSelectionModelListener implements OWLSelectionModelList
 
 
     public void selectionChanged() {
-        OWLEntity entity = owlEditorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity();
-        if (entity != null) {
-            entity.accept(this);
+        OWLObject owlObject = owlEditorKit.getWorkspace().getOWLSelectionModel().getSelectedObject();
+        if (owlObject != null && owlObject instanceof OWLEntity) {
+            ((OWLEntity)owlObject).accept(this);
         }
     }
 

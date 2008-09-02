@@ -10,6 +10,7 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.frame.*;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
@@ -69,21 +70,34 @@ public class OWLFrameList2<R extends Object> extends MList implements
                                                            LinkedObjectComponent, DropTargetListener, Copyable, Pasteable,
                                                            Cuttable, Deleteable, RefreshableComponent {
     private static final Logger logger = Logger.getLogger(OWLFrameList2.class);
+
+    private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
+    private static final Color INFERRED_ROW_BG_COLOR = new Color(255, 255, 215);
+
     public static final int BUTTON_DIMENSION = 14;
     public static final int BUTTON_MARGIN = 3;
-    private static Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
+
     private OWLEditorKit editorKit;
     private OWLFrame<R> frame;
     private OWLFrameListener listener;
     private LinkedObjectComponentMediator mediator;
+
     private List<MListButton> inferredRowButtons;
+    private AxiomAnnotationButton axiomAnnotationButton;
+
     private ChangeListenerMediator changeListenerMediator;
     private JPopupMenu popupMenu;
     private Point lastMouseDownPoint;
     private List<OWLFrameListPopupMenuAction<R>> actions;
-    private static final Color INFERRED_ROW_BG_COLOR = new Color(255, 255, 215);
     private OWLFrameListRenderer cellRenderer;
     private ExplanationHandler explanationHandler;
+
+    private ListSelectionListener selListener = new ListSelectionListener(){
+        public void valueChanged(ListSelectionEvent event) {
+            handleSelectionEvent(event);
+        }
+    };
+
 
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
         this.editorKit = editorKit;
@@ -93,7 +107,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         setCellRenderer(cellRenderer);
 
         getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        
+
         mediator = new LinkedObjectComponentMediator(editorKit, this);
 
         setupFrameListener();
@@ -122,19 +136,20 @@ public class OWLFrameList2<R extends Object> extends MList implements
             }
         }));
 
-        changeListenerMediator = new ChangeListenerMediator();
-        addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    changeListenerMediator.fireStateChanged(OWLFrameList2.this);
-                }
+        axiomAnnotationButton = new AxiomAnnotationButton(new ActionListener(){
+            public void actionPerformed(ActionEvent event) {
+                invokeAxiomAnnotationHandler();
             }
         });
+
+        changeListenerMediator = new ChangeListenerMediator();
+        addListSelectionListener(selListener);
 
         setUI(new OWLFrameListUI());
 
         explanationHandler = new OWLFrameListExplanationHandler(editorKit);
     }
+
 
     public void refreshComponent() {
         refillRows();
@@ -185,9 +200,10 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
     protected List<MListButton> getButtons(Object value) {
-        List<MListButton> buttons = new ArrayList<MListButton>(super
-                .getButtons(value));
+        List<MListButton> buttons = new ArrayList<MListButton>(super.getButtons(value));
         if (value instanceof OWLFrameSectionRow) {
+            buttons.add(axiomAnnotationButton);
+            axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent((OWLFrameSectionRow)value));
             if (((OWLFrameSectionRow) value).isInferred()) {
                 buttons.addAll(inferredRowButtons);
             }
@@ -205,6 +221,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         }
         return buttons;
     }
+
 
     protected Color getItemBackgroundColor(MListItem item) {
         if (item instanceof AbstractOWLFrameSectionRow) {
@@ -284,6 +301,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
     public void dispose() {
+        removeListSelectionListener(selListener);
         frame.removeFrameListener(listener);
         for (OWLFrameListPopupMenuAction<R> action : actions) {
             try {
@@ -358,6 +376,21 @@ public class OWLFrameList2<R extends Object> extends MList implements
             });
         }
     }
+
+
+    private void handleSelectionEvent(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            final Object sel = getSelectedValue();
+            if (sel instanceof OWLFrameSectionRow){
+                OWLAxiom ax = ((OWLFrameSectionRow) sel).getAxiom();
+                if (ax != null){
+                    editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(ax);
+                }
+            }
+            changeListenerMediator.fireStateChanged(OWLFrameList2.this);
+        }
+    }
+
 
     private void showEditorDialog(final OWLFrameObject frameObject,
                                   final EditHandler handler) {
@@ -443,9 +476,10 @@ public class OWLFrameList2<R extends Object> extends MList implements
         else if (rootObject != null) {
             dlg.setTitle(rootObject.toString());
         }
-        
+
         dlg.setVisible(true);
     }
+
 
     private void invokeExplanationHandler() {
         Object obj = getSelectedValue();
@@ -456,6 +490,36 @@ public class OWLFrameList2<R extends Object> extends MList implements
         OWLAxiom ax = row.getAxiom();
         explanationHandler.handleExplain(ax);
     }
+
+
+    private void invokeAxiomAnnotationHandler() {
+        Object obj = getSelectedValue();
+        if (!(obj instanceof OWLFrameSectionRow)) {
+            return;
+        }
+        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
+        OWLAxiom ax = row.getAxiom();
+
+        OWLFrameList2<OWLAxiom> axiomAnnotationComponent = new OWLFrameList2<OWLAxiom>(editorKit,
+                                                                                       new OWLAxiomAnnotationsFrame(editorKit));
+        axiomAnnotationComponent.setRootObject(ax);
+
+        new UIHelper(editorKit).showDialog("Annotations for " + editorKit.getModelManager().getRendering(ax),
+                                           new JScrollPane(axiomAnnotationComponent));
+        axiomAnnotationComponent.dispose();
+    }
+
+
+    private boolean isAnnotationPresent(OWLFrameSectionRow row) {
+        OWLAxiom ax = row.getAxiom();
+        for (OWLOntology ont : editorKit.getModelManager().getActiveOntologies()){
+            if (!ax.getAnnotationAxioms(ont).isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public JComponent getComponent() {
@@ -519,7 +583,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
                 OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR)) {
             try {
                 List<OWLObject> object = (List<OWLObject>) dtde.getTransferable().getTransferData(
-                                          OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR);
+                        OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR);
                 OWLFrameObject<R, ? extends OWLAxiom, ? extends Object> frameObject;
                 frameObject = (OWLFrameObject<R, ? extends OWLAxiom, ? extends Object>) getModel().getElementAt(locationToIndex(dtde.getLocation()));
                 dtde.dropComplete(frameObject.dropObjects(object));
@@ -545,7 +609,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
             return false;
         }
         return getSelectedValue() instanceof OWLFrameSection
-                && ((OWLFrameSection) getSelectedValue())
+               && ((OWLFrameSection) getSelectedValue())
                 .canAcceptDrop(objects);
     }
 

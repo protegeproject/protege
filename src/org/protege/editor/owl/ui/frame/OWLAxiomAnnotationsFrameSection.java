@@ -37,21 +37,20 @@ import java.util.Comparator;
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
  */
-public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWLAxiomAnnotationsRoot, OWLAxiomAnnotationAxiom, OWLAnnotation>{
+public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>{
 
     private static final String LABEL = "Annotations";
 
     private OWLAnnotationEditor editor;
 
-    public OWLAxiomAnnotationsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAxiomAnnotationsRoot> owlFrame) {
+    public OWLAxiomAnnotationsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAxiom> owlFrame) {
         super(editorKit, LABEL, owlFrame);
         editor = new OWLAnnotationEditor(editorKit);
     }
 
 
     protected OWLAxiomAnnotationAxiom createAxiom(OWLAnnotation object) {
-        OWLAxiom subject = getRootObject().getSubject();
-        return getOWLDataFactory().getOWLAxiomAnnotationAxiom(subject, object);
+        return getOWLDataFactory().getOWLAxiomAnnotationAxiom(getRootObject(), object);
     }
 
 
@@ -61,21 +60,18 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
 
     public boolean canAdd() {
-        return getRootObject().getSubject() != null;
+        return getRootObject() != null;
     }
 
 
     protected void refill(OWLOntology ontology) {
-        for(OWLAxiom ax : getRootObject().getAxioms()) {
-            for(OWLAxiomAnnotationAxiom annoAx : ax.getAnnotationAxioms(ontology)) {
-                // Add row
+        for(OWLAxiomAnnotationAxiom ax : ontology.getAnnotations(getRootObject())) {
                 addRow(new OWLAxiomAnnotationsFrameSectionRow(getOWLEditorKit(),
                                                              this,
                                                              ontology,
                                                              getRootObject(),
-                                                             annoAx));
+                                                             ax));
             }
-        }
     }
 
 
@@ -83,14 +79,21 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
     }
 
 
-    public Comparator<OWLFrameSectionRow<OWLAxiomAnnotationsRoot, OWLAxiomAnnotationAxiom, OWLAnnotation>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>> getRowComparator() {
         return null;
     }
 
 
     public void visit(OWLAxiomAnnotationAxiom axiom) {
-        if(getRootObject() != null && getRootObject().getAxioms().contains(axiom)) {
+        final OWLAxiom root = getRootObject();
+        if(root != null && root.equals(axiom.getSubject())) {
             reset();
         }
+    }
+
+
+    protected void disposeOfSection() {
+        super.disposeOfSection();
+        editor.dispose();
     }
 }

@@ -1,7 +1,9 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
 
+import java.util.HashSet;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -37,12 +39,12 @@ public class OWLAxiomAnnotationsRoot {
 
     private OWLAxiom subject;
 
-    private Set<OWLAxiom> axioms;
+    private Set<OWLAxiomAnnotationAxiom> axioms = new HashSet<OWLAxiomAnnotationAxiom>();
 
 
-    public OWLAxiomAnnotationsRoot(OWLAxiom subject, Set<OWLAxiom> axioms) {
+    public OWLAxiomAnnotationsRoot(OWLAxiom subject, Set<OWLAxiomAnnotationAxiom> axioms) {
         this.subject = subject;
-        this.axioms = axioms;
+        this.axioms.addAll(axioms);
     }
 
 
@@ -51,7 +53,12 @@ public class OWLAxiomAnnotationsRoot {
     }
 
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<OWLAxiomAnnotationAxiom> getAxioms() {
         return axioms;
+    }
+
+
+    public void addAxiom(OWLAxiomAnnotationAxiom axiom) {
+        axioms.add(axiom);
     }
 }
