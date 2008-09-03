@@ -103,7 +103,11 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
 
     final public OWLFrameSectionRowObjectEditor<E> getEditor() {
-        if (!cacheEditor || editor == null) {
+        if (!cacheEditor && editor != null){
+            editor.dispose();
+            editor = null;
+        }
+        if (editor == null) {
             OWLFrameSectionRowObjectEditor<E> ed = getObjectEditor();
             if (ed != null) {
                 ed.setHandler(this);
