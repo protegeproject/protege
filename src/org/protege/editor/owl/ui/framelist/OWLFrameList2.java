@@ -11,6 +11,7 @@ import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.protege.editor.owl.ui.frame.*;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
@@ -92,11 +93,15 @@ public class OWLFrameList2<R extends Object> extends MList implements
     private OWLFrameListRenderer cellRenderer;
     private ExplanationHandler explanationHandler;
 
+    private AxiomAnnotationPanel axiomAnnotationPanel;
+
     private ListSelectionListener selListener = new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
             handleSelectionEvent(event);
         }
     };
+
+    private boolean axiomSelectionGlobal = true;
 
 
     public OWLFrameList2(OWLEditorKit editorKit, OWLFrame<R> frame) {
@@ -301,6 +306,9 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
     public void dispose() {
+        if (axiomAnnotationPanel != null){
+            axiomAnnotationPanel.dispose();
+        }
         removeListSelectionListener(selListener);
         frame.removeFrameListener(listener);
         for (OWLFrameListPopupMenuAction<R> action : actions) {
@@ -378,17 +386,29 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
 
-    private void handleSelectionEvent(ListSelectionEvent e) {
+    protected void handleSelectionEvent(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            final Object sel = getSelectedValue();
-            if (sel instanceof OWLFrameSectionRow){
-                OWLAxiom ax = ((OWLFrameSectionRow) sel).getAxiom();
-                if (ax != null){
-                    editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(ax);
+            if (isAxiomSelectionSyncronized()){
+                final Object sel = getSelectedValue();
+                if (sel instanceof OWLFrameSectionRow){
+                    OWLAxiom ax = ((OWLFrameSectionRow) sel).getAxiom();
+                    if (ax != null){
+                        editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(ax);
+                    }
                 }
             }
             changeListenerMediator.fireStateChanged(OWLFrameList2.this);
         }
+    }
+
+
+    public boolean isAxiomSelectionSyncronized() {
+        return axiomSelectionGlobal;
+    }
+
+
+    public void setAxiomSelectionSyncronized(boolean sync) {
+        axiomSelectionGlobal = sync;
     }
 
 
@@ -500,13 +520,13 @@ public class OWLFrameList2<R extends Object> extends MList implements
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
 
-        OWLFrameList2<OWLAxiom> axiomAnnotationComponent = new OWLFrameList2<OWLAxiom>(editorKit,
-                                                                                       new OWLAxiomAnnotationsFrame(editorKit));
-        axiomAnnotationComponent.setRootObject(ax);
-
-        new UIHelper(editorKit).showDialog("Annotations for " + editorKit.getModelManager().getRendering(ax),
-                                           new JScrollPane(axiomAnnotationComponent));
-        axiomAnnotationComponent.dispose();
+        if (axiomAnnotationPanel == null){
+            axiomAnnotationPanel = new AxiomAnnotationPanel(editorKit);
+        }
+        axiomAnnotationPanel.setAxiom(ax);
+        new UIHelper(editorKit).showDialog("Annotations for " + ax.getAxiomType().toString(),
+                                           axiomAnnotationPanel,
+                                           JOptionPane.CLOSED_OPTION);
     }
 
 
@@ -594,6 +614,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         }
         dragOver = false;
     }
+
 
     private interface EditHandler {
         void handleEditFinished(OWLFrameSectionRowObjectEditor editor);
