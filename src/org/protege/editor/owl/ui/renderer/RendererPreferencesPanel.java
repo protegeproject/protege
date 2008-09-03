@@ -56,6 +56,13 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     public void applyChanges() {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
+        prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
+        prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
+        prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
+        prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
+        prefs.setFontSize((Integer) fontSizeSpinner.getValue());
+        prefs.setFontName(fontCombo.getSelectedItem().toString());
+
         prefs.setRenderPrefixes(annotationWithPrefixesRadioButton.isSelected());
         if (annotationValueRadioButton.isSelected() ||
             annotationWithPrefixesRadioButton.isSelected()) {
@@ -70,12 +77,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
             setupRenderer(new OWLEntityRendererImpl());
             prefs.setRendererClass(OWLEntityRendererImpl.class.getName());
         }
-        prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
-        prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
-        prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
-        prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
-        prefs.setFontSize((Integer) fontSizeSpinner.getValue());
-        prefs.setFontName(fontCombo.getSelectedItem().toString());
         getOWLEditorKit().getWorkspace().refreshComponents();
 
     }
