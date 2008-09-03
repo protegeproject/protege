@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.selection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.semanticweb.owl.model.OWLEntity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -54,19 +54,18 @@ public class OWLSelectionHistoryManagerImpl implements OWLSelectionHistoryManage
 
 
     private void handleSelection() {
-        OWLEntity entity = selectionModel.getSelectedEntity();
-        if (entity == null) {
-            return;
-        }
-        if (!initiatedSelection) {
-            // Record selection
-            if (curSel != null) {
-                prevSelections.push(curSel);
+        OWLObject obj = selectionModel.getSelectedObject();
+        if (obj instanceof OWLEntity) {
+            if (!initiatedSelection) {
+                // Record selection
+                if (curSel != null) {
+                    prevSelections.push(curSel);
+                }
+                forwardSelections.clear();
             }
-            forwardSelections.clear();
+            curSel = (OWLEntity)obj;
+            fireStateChanged();
         }
-        curSel = entity;
-        fireStateChanged();
     }
 
 
