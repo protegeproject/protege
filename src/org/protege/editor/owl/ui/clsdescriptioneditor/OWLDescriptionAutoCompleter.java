@@ -327,9 +327,6 @@ public class OWLDescriptionAutoCompleter {
 
 
     private void hidePopup() {
-        for (StackTraceElement e : Thread.currentThread().getStackTrace().clone()){
-            System.out.println(e);
-        }
         popupWindow.setVisible(false);
         popupList.setListData(new Object [0]);
     }
