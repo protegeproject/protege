@@ -37,8 +37,6 @@ public class OWLDescriptionAutoCompleter {
 
     private JTextComponent textComponent;
 
-    private KeyListener keyListener;
-
     private Set<String> wordDelimeters;
 
     private AutoCompleterMatcher matcher;
@@ -57,30 +55,73 @@ public class OWLDescriptionAutoCompleter {
 
     private int maxEntries = DEFAULT_MAX_ENTRIES;
 
+    private KeyListener keyListener = new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+            processKeyPressed(e);
+        }
+
+        public void keyReleased(KeyEvent e) {
+
+            if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN) {
+                if (popupWindow.isVisible() && !lastTextUpdate.equals(textComponent.getText())) {
+                    lastTextUpdate = textComponent.getText();
+                    updatePopup(getMatches());
+                }
+            }
+        }
+    };
+
+    private ComponentAdapter componentListener = new ComponentAdapter() {
+        public void componentHidden(ComponentEvent event) {
+            hidePopup();
+        }
+
+        public void componentResized(ComponentEvent event) {
+            hidePopup();
+        }
+
+        public void componentMoved(ComponentEvent event) {
+            hidePopup();
+        }
+    };
+
+    private HierarchyListener hierarchyListener = new HierarchyListener() {
+        /**
+         * Called when the hierarchy has been changed. To discern the actual
+         * type of change, call <code>HierarchyEvent.getChangeFlags()</code>.
+         * @see java.awt.event.HierarchyEvent#getChangeFlags()
+         */
+        public void hierarchyChanged(HierarchyEvent e) {
+            if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
+                createPopupWindow();
+                Container frame = textComponent.getTopLevelAncestor();
+                if (frame != null){
+                    frame.addComponentListener(componentListener);
+                }
+            }
+        }
+    };
+
+    private MouseListener mouseListener = new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                completeWithPopupSelection();
+            }
+        }
+    };
+
+    private FocusListener focusListener = new FocusAdapter(){
+        public void focusLost(FocusEvent event) {
+            hidePopup();
+        }
+    };
+
 
     public OWLDescriptionAutoCompleter(OWLEditorKit owlEditorKit, JTextComponent tc,
                                        OWLExpressionChecker checker) {
         this.owlEditorKit = owlEditorKit;
         this.checker = checker;
         this.textComponent = tc;
-        keyListener = new KeyAdapter() {
-
-            public void keyPressed(KeyEvent e) {
-                processKeyPressed(e);
-            }
-
-
-            public void keyReleased(KeyEvent e) {
-
-                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN) {
-                    if (popupWindow.isVisible() && !lastTextUpdate.equals(textComponent.getText())) {
-                        lastTextUpdate = textComponent.getText();
-                        updatePopup(getMatches());
-                    }
-                }
-            }
-        };
-        textComponent.addKeyListener(keyListener);
 
         wordDelimeters = new HashSet<String>();
         wordDelimeters.add(" ");
@@ -93,31 +134,31 @@ public class OWLDescriptionAutoCompleter {
         wordDelimeters.add(")");
         wordDelimeters.add(",");
         wordDelimeters.add("^");
+
         matcher = new AutoCompleterMatcherImpl(owlEditorKit.getModelManager());
+
         popupList = new JList();
         popupList.setAutoscrolls(true);
         popupList.setCellRenderer(owlEditorKit.getWorkspace().createOWLCellRenderer());
-        popupList.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    completeWithPopupSelection();
-                }
-            }
-        });
+        popupList.addMouseListener(mouseListener);
         popupList.setRequestFocusEnabled(false);
+
+        textComponent.addKeyListener(keyListener);
+
+        textComponent.addHierarchyListener(hierarchyListener);
+
+        // moving or resizing the text component or dialog closes the popup
+        textComponent.addComponentListener(componentListener);
+
+        // switching focus to another component closes the popup
+        textComponent.addFocusListener(focusListener);
+
         createPopupWindow();
-        textComponent.addHierarchyListener(new HierarchyListener() {
-            /**
-             * Called when the hierarchy has been changed. To discern the actual
-             * type of change, call <code>HierarchyEvent.getChangeFlags()</code>.
-             * @see java.awt.event.HierarchyEvent#getChangeFlags()
-             */
-            public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
-                    createPopupWindow();
-                }
-            }
-        });
+    }
+
+
+    public void cancel(){
+        hidePopup();
     }
 
 
@@ -196,11 +237,11 @@ public class OWLDescriptionAutoCompleter {
                 catch (OWLExpressionParserException e) {
                     String word = getWordToComplete();
                     Set<OWLObject> matches = matcher.getMatches(word,
-                                                     e.isOWLClassExpected(),
-                                                     e.isOWLObjectPropertyExpected(),
-                                                     e.isOWLDataPropertyExpected(),
-                                                     e.isOWLIndividualExpected(),
-                                                     e.isDataTypeExpected());
+                                                                e.isOWLClassExpected(),
+                                                                e.isOWLObjectPropertyExpected(),
+                                                                e.isOWLDataPropertyExpected(),
+                                                                e.isOWLIndividualExpected(),
+                                                                e.isDataTypeExpected());
                     List kwMatches = new ArrayList(matches.size() + 10);
                     for (String s : e.getExpectedKeyWords()) {
                         if (s.toLowerCase().startsWith(word.toLowerCase())) {
@@ -286,6 +327,9 @@ public class OWLDescriptionAutoCompleter {
 
 
     private void hidePopup() {
+        for (StackTraceElement e : Thread.currentThread().getStackTrace().clone()){
+            System.out.println(e);
+        }
         popupWindow.setVisible(false);
         popupList.setListData(new Object [0]);
     }
@@ -377,6 +421,10 @@ public class OWLDescriptionAutoCompleter {
 
 
     public void uninstall() {
+        hidePopup();
         textComponent.removeKeyListener(keyListener);
+        textComponent.removeComponentListener(componentListener);
+        textComponent.removeFocusListener(focusListener);
+        textComponent.removeHierarchyListener(hierarchyListener);
     }
 }
