@@ -39,18 +39,15 @@ public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionR
 
     private OWLAnnotation<? extends OWLObject> annotation;
 
-    private OWLAnnotationEditor editor;
-
-
     public OWLAxiomAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                               OWLAxiom rootObject, OWLAxiomAnnotationAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
         this.annotation = axiom.getAnnotation();
-        editor =  new OWLAnnotationEditor(getOWLEditorKit());
     }
 
 
     protected OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
+        OWLAnnotationEditor editor = new OWLAnnotationEditor(getOWLEditorKit());
         editor.setAnnotation(getAxiom().getAnnotation());
         return editor;
     }
@@ -64,6 +61,4 @@ public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionR
     public List<? extends OWLObject> getManipulatableObjects() {
         return Collections.singletonList(annotation);
     }
-
-
 }

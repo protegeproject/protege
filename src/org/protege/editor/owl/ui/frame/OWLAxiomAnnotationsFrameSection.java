@@ -41,11 +41,8 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
     private static final String LABEL = "Annotations";
 
-    private OWLAnnotationEditor editor;
-
     public OWLAxiomAnnotationsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAxiom> owlFrame) {
         super(editorKit, LABEL, owlFrame);
-        editor = new OWLAnnotationEditor(editorKit);
     }
 
 
@@ -55,7 +52,7 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
 
     public OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
-        return editor;
+        return new OWLAnnotationEditor(getOWLEditorKit());
     }
 
 
@@ -89,11 +86,5 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
         if(root != null && root.equals(axiom.getSubject())) {
             reset();
         }
-    }
-
-
-    protected void disposeOfSection() {
-        super.disposeOfSection();
-        editor.dispose();
     }
 }
