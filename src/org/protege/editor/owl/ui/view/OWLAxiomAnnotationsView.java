@@ -3,12 +3,10 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelAdapter;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.ui.frame.OWLAxiomAnnotationsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLObject;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -70,16 +68,14 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
 
     private OWLAxiom lastDisplayedObject;
 
-    private OWLFrameList2<OWLAxiom> axiomAnnotationComponent;
+    private AxiomAnnotationPanel axiomAnnotationPanel;
 
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout(6, 6));
 
-        axiomAnnotationComponent = new OWLFrameList2<OWLAxiom>(getOWLEditorKit(),
-                                                               new OWLAxiomAnnotationsFrame(getOWLEditorKit()));
-
-        add(new JScrollPane(axiomAnnotationComponent), BorderLayout.CENTER);
+        axiomAnnotationPanel = new AxiomAnnotationPanel(getOWLEditorKit());
+        add(axiomAnnotationPanel, BorderLayout.CENTER);
 
         getOWLWorkspace().getOWLSelectionModel().addListener(selListener);
         addHierarchyListener(hierarchyListener);
@@ -106,7 +102,10 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
     private void updateHeader(OWLAxiom axiom) {
         String title = "";
         if (axiom != null){
-            title = getOWLModelManager().getRendering(axiom);
+            title = getOWLModelManager().getRendering(axiom).replace('\n', ' ');
+            if (title.length() > 53){
+                title = title.substring(0, 50) + "...";
+            }
         }
         getView().setHeaderText(title);
     }
@@ -115,7 +114,7 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
     private OWLAxiom updateView() {
         OWLAxiom ax = getOWLWorkspace().getOWLSelectionModel().getLastSelectedAxiom();
 
-        axiomAnnotationComponent.setRootObject(ax);
+        axiomAnnotationPanel.setAxiom(ax);
 
         return ax;
     }
@@ -125,6 +124,6 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
         getOWLWorkspace().getOWLSelectionModel().removeListener(selListener);
         removeHierarchyListener(hierarchyListener);
 
-        axiomAnnotationComponent.dispose();
+        axiomAnnotationPanel.dispose();
     }
 }

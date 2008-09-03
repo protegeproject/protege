@@ -164,6 +164,16 @@ public class UIHelper {
     }
 
 
+    public int showDialog(String title, JComponent component, int options) {
+        return JOptionPaneEx.showConfirmDialog(getParent(),
+                                               title,
+                                               component,
+                                               JOptionPane.PLAIN_MESSAGE,
+                                               options,
+                                               null);
+    }
+
+
     public int showDialog(String title, JComponent component, JComponent focusedComponent) {
         return JOptionPaneEx.showConfirmDialog(getParent(),
                                                title,
