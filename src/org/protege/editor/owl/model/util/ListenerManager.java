@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -16,6 +16,10 @@ import org.apache.log4j.Logger;
 public class ListenerManager<L extends Object> {
 
     private Map<L, StackTraceElement []> listenerMap;
+
+    private static final int TRACE_DEPTH = 3;
+
+    private static final int TRACE_START = 3;
 
 
     public ListenerManager() {
@@ -40,7 +44,7 @@ public class ListenerManager<L extends Object> {
             StackTraceElement [] trace = listenerMap.get(listener);
             if (trace != null) {
                 log.log(level, "    Possible culprit (trace from when listener was added): ");
-                for (int i = 3; i < trace.length; i++) {
+                for (int i = TRACE_START; i < trace.length; i++) {
                     String s = trace[i].toString();
                     if (i == 0) {
                         log.log(level, "        ->" + s);
@@ -48,7 +52,7 @@ public class ListenerManager<L extends Object> {
                     else {
                         log.log(level, "          " + s);
                     }
-                    if (i == 5) {
+                    if (i == TRACE_START + TRACE_DEPTH) {
                         break;
                     }
                 }
