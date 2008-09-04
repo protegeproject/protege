@@ -1,24 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.ListSelectionModel;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -30,7 +17,7 @@ import org.semanticweb.owl.model.OWLRuntimeException;
 public class OWLClassAssertionAxiomIndividualSection
 		extends
 		AbstractOWLFrameSection<OWLClass, OWLClassAssertionAxiom, OWLIndividual> {
-	public static final String LABEL = "Individuals";
+	public static final String LABEL = "Members";
 	private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
 
 	public OWLClassAssertionAxiomIndividualSection(OWLEditorKit editorKit,
