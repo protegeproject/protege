@@ -48,6 +48,8 @@ public class OWLFrameListRenderer implements ListCellRenderer {
         separatorRenderer = new DefaultListCellRenderer();
         annotationRenderer = new OWLAnnotationCellRenderer(owlEditorKit);
         highlightKeywords = true;
+        highlightUnsatisfiableClasses = true;
+        highlightUnsatisfiableProperties = true;
         annotationRendererEnabled = true;
         crossedOutEntities = new HashSet<OWLEntity>();
     }
