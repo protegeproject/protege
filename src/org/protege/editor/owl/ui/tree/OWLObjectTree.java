@@ -15,6 +15,8 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -137,6 +139,12 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
             public void treeCollapsed(TreeExpansionEvent event) {
                 // Do nothing
+            }
+        });
+
+        getSelectionModel().addTreeSelectionListener(new TreeSelectionListener(){
+            public void valueChanged(TreeSelectionEvent event) {
+                scrollPathToVisible(event.getPath());
             }
         });
     }
