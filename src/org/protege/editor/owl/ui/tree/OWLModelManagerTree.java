@@ -14,8 +14,6 @@ import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
 
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -50,15 +48,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         setupListener();
         installPopupMenu();
         setRowHeight(-1);
-        getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-            /**
-             * Called whenever the value of the selection changes.
-             * @param e the event that characterizes the change.
-             */
-            public void valueChanged(TreeSelectionEvent e) {
-
-            }
-        });
         autoExpandTree();
     }
 
