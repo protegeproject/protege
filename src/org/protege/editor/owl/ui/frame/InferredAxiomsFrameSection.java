@@ -43,7 +43,7 @@ import java.util.TreeSet;
 public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntology, OWLAxiom, OWLAxiom>{
 
     public InferredAxiomsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLOntology> frame) {
-        super(editorKit, "Inferred axioms", frame);
+        super(editorKit, "Inferred axioms", "Inferred axiom", frame);
     }
 
     

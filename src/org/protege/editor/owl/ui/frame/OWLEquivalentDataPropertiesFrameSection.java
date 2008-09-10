@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.Comparator;
 
 
 /**
@@ -25,7 +25,7 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
 
     public OWLEquivalentDataPropertiesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Equivalent property", frame);
     }
 
 

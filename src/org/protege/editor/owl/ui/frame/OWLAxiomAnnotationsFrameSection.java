@@ -42,7 +42,7 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
     private static final String LABEL = "Annotations";
 
     public OWLAxiomAnnotationsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAxiom> owlFrame) {
-        super(editorKit, LABEL, owlFrame);
+        super(editorKit, LABEL, "Axiom annotation", owlFrame);
     }
 
 

@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.Comparator;
 
 
 /**
@@ -23,7 +23,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
 
     public OWLEquivalentObjectPropertiesAxiomFrameSection(OWLEditorKit editorKit,
                                                           OWLFrame<? extends OWLObjectProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Equivalent object property", frame);
     }
 
 

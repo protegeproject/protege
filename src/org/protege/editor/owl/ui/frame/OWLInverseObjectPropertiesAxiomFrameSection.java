@@ -1,9 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
@@ -11,6 +7,10 @@ import org.semanticweb.owl.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -28,7 +28,7 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
 
     public OWLInverseObjectPropertiesAxiomFrameSection(OWLEditorKit editorKit,
                                                        OWLFrame<? extends OWLObjectProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Inverse property", frame);
     }
 
 

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
 
 
 /**
@@ -29,7 +29,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
 
 
     public OWLDataPropertyAssertionAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Data property assertion", frame);
     }
 
 

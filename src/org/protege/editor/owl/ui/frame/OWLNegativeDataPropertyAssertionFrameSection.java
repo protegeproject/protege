@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
 
 
 /**
@@ -23,7 +23,7 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
 
     public OWLNegativeDataPropertyAssertionFrameSection(OWLEditorKit editorKit,
                                                         OWLFrame<? extends OWLIndividual> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Negative data property assertion", frame);
     }
 
 

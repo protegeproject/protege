@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
  /**
   * Author: Matthew Horridge<br>
@@ -29,7 +29,7 @@ import org.semanticweb.owl.model.OWLOntology;
 
 
     public OWLDifferentIndividualsAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Different individuals", frame);
     }
 
 

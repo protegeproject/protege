@@ -24,7 +24,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     public InheritedAnonymousClassesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLClass> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Inherited anonymous class", frame);
     }
 
 

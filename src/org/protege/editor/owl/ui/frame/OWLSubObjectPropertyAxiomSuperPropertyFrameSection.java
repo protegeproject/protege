@@ -1,19 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.inference.UnsupportedReasonerOperationException;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-import org.semanticweb.owl.model.OWLObjectSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owl.model.*;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -32,7 +28,7 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
 
     public OWLSubObjectPropertyAxiomSuperPropertyFrameSection(OWLEditorKit editorKit,
                                                               OWLFrame<? extends OWLObjectProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Super property", frame);
     }
 
 

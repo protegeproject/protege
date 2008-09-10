@@ -23,7 +23,7 @@ public class OWLImportsDeclarationFrameSection extends AbstractOWLFrameSection<O
 
 
     public OWLImportsDeclarationFrameSection(OWLEditorKit editorKit, OWLFrame<OWLOntology> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Import", frame);
     }
 
 

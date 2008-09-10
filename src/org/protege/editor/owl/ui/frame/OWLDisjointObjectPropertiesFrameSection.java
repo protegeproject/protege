@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -27,7 +27,7 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
 
     public OWLDisjointObjectPropertiesFrameSection(OWLEditorKit editorKit,
                                                    OWLFrame<? extends OWLObjectProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Disjoint properties", frame);
     }
 
 
