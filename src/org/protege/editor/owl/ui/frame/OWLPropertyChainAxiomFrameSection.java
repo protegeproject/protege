@@ -22,7 +22,7 @@ public class OWLPropertyChainAxiomFrameSection extends AbstractOWLFrameSection<O
 
 
     public OWLPropertyChainAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
-        super(owlEditorKit, LABEL, frame);
+        super(owlEditorKit, LABEL, "Property chain", frame);
         setCacheEditor(false); // needs to be recreated every time
     }
 

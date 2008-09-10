@@ -228,6 +228,14 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
 
+    protected String getRowName(Object rowObject) {
+        if (rowObject instanceof  OWLFrameSectionRow){
+            return ((OWLFrameSectionRow) rowObject).getFrameSection().getRowLabel((OWLFrameSectionRow) rowObject);
+        }
+        return null;
+    }
+
+
     protected Color getItemBackgroundColor(MListItem item) {
         if (item instanceof AbstractOWLFrameSectionRow) {
             if (((AbstractOWLFrameSectionRow) item).isInferred()) {

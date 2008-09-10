@@ -39,7 +39,7 @@ public class SWRLRulesFrameSection extends AbstractOWLFrameSection<OWLOntology, 
 
 
     public SWRLRulesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLOntology> owlFrame) {
-        super(editorKit, "Rules", owlFrame);
+        super(editorKit, "Rules", "Rule", owlFrame);
     }
 
 

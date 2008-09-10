@@ -1,41 +1,23 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityCollector;
-
 import uk.ac.manchester.cs.bhig.util.Tree;
 import uk.ac.manchester.cs.owl.explanation.ordering.DefaultExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -72,7 +54,7 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
     private Map<String, String> nameReplacementMap;
 
     public ExplanationFrameSection(OWLEditorKit editorKit, int explanationNumber, OWLAxiom entailedAxiom, Set<OWLAxiom> axioms,  OWLFrame<? extends OWLAxiom> owlFrame) {
-        super(editorKit, "Explanation " + explanationNumber, owlFrame);
+        super(editorKit, "Explanation " + explanationNumber, "Explanation", owlFrame);
         this.axioms = new HashSet<OWLAxiom>(axioms);
         orderedAxioms = new ArrayList<OWLAxiom>(axioms);
         indentMap = new HashMap<OWLAxiom, Integer>();

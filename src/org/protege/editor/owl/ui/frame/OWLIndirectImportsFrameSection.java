@@ -29,7 +29,7 @@ public class OWLIndirectImportsFrameSection extends AbstractOWLFrameSection<OWLO
 
 
     public OWLIndirectImportsFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLOntology> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Indirect import", frame);
     }
 
 

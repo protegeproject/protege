@@ -25,7 +25,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     public OWLClassAssertionAxiomTypeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Type assertion", frame);
     }
 
 

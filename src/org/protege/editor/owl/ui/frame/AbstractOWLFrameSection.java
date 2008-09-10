@@ -27,6 +27,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private String label;
 
+    private String rowLabel;
+
     private OWLFrameSectionRowObjectEditor<E> editor;
 
     private boolean cacheEditor = true;
@@ -38,17 +40,21 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     };
 
 
-    protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends R> frame) {
+    protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, String rowLabel, OWLFrame<? extends R> frame) {
         this.owlEditorKit = editorKit;
         this.label = label;
+        this.rowLabel = rowLabel;
         this.frame = frame;
         this.rows = new ArrayList<OWLFrameSectionRow<R, A, E>>();
 
         getOWLModelManager().addOntologyChangeListener(listener);
-
-// not used for some reason
-//        Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
     }
+
+    
+    protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends R> frame) {
+        this(editorKit, label, null, frame);
+    }
+
 
     // not the perfect solution, but prevents us from breaking the API
     protected void setCacheEditor(boolean cacheEditor){
@@ -99,6 +105,11 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     public String getLabel() {
         return label;
+    }
+
+
+    public String getRowLabel(OWLFrameSectionRow row) {
+        return rowLabel;
     }
 
 

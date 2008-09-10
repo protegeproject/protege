@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>
@@ -26,7 +26,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     public OWLObjectPropertyAssertionAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<OWLIndividual> frame) {
-        super(owlEditorKit, LABEL, frame);
+        super(owlEditorKit, LABEL, "Object property assertion", frame);
         added = new HashSet<OWLObjectPropertyAssertionAxiom>();
     }
 

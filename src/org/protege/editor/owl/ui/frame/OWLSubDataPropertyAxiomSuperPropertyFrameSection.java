@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLDataSubPropertyAxiom;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
 
 
 /**
@@ -21,7 +21,7 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
 
     public OWLSubDataPropertyAxiomSuperPropertyFrameSection(OWLEditorKit editorKit,
                                                             OWLFrame<? extends OWLDataProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Super property", frame);
     }
 
 

@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLSameIndividualsAxiom;
+
+import java.util.Comparator;
+import java.util.Set;
 
 
 /**
@@ -21,7 +21,7 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
 
 
     public OWLSameIndividualsAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, LABEL, frame);
     }
 
 

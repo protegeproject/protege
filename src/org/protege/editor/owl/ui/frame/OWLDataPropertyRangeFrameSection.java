@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Comparator;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Comparator;
 
 
 /**
@@ -21,7 +21,7 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
 
     public OWLDataPropertyRangeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Range", frame);
     }
 
 

@@ -22,7 +22,7 @@ public class OWLClassAssertionAxiomIndividualSection
 
 	public OWLClassAssertionAxiomIndividualSection(OWLEditorKit editorKit,
 			OWLFrame<? extends OWLClass> frame) {
-		super(editorKit, LABEL, frame);
+		super(editorKit, LABEL, "Type assertion", frame);
 	}
 
 	@Override

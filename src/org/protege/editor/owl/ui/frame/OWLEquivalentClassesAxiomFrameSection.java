@@ -25,7 +25,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSecti
 
 
     public OWLEquivalentClassesAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Equivalent class", frame);
     }
 
 

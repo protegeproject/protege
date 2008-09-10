@@ -1,18 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.*;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
 
 
 /**
@@ -27,7 +20,7 @@ public class OWLDataPropertyDomainFrameSection extends AbstractOWLFrameSection<O
 
 
     public OWLDataPropertyDomainFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Domain", frame);
     }
 
 

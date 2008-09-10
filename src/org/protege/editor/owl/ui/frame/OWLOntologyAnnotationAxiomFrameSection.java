@@ -20,7 +20,7 @@ public class OWLOntologyAnnotationAxiomFrameSection extends AbstractOWLFrameSect
 
 
     public OWLOntologyAnnotationAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLOntology> frame) {
-        super(owlEditorKit, LABEL, frame);
+        super(owlEditorKit, LABEL, "Ontology annotation", frame);
     }
 
 

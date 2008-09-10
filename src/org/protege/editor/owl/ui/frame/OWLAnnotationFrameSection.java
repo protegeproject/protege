@@ -23,7 +23,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
 
     public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLEntity> frame) {
-        super(editorKit, LABEL, frame);
+        super(editorKit, LABEL, "Entity annotation", frame);
         comparator = new OWLAnnotationSectionRowComparator(editorKit.getModelManager());
     }
 

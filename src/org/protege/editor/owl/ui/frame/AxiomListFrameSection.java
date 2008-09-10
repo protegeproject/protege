@@ -47,7 +47,7 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
     private Set<OWLAxiom> added;
 
     public AxiomListFrameSection(OWLEditorKit editorKit, OWLFrame<Set<OWLAxiom>> owlFrame) {
-        super(editorKit, "Axioms", owlFrame);
+        super(editorKit, "Axioms", "Axiom", owlFrame);
         rowComparator = new RowComparator();
         added = new HashSet<OWLAxiom>();
     }

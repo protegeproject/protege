@@ -38,7 +38,7 @@ public class OWLAxiomAnnotationFrameSection extends AbstractOWLFrameSection<OWLA
 
 
     public OWLAxiomAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAxiom> owlFrame) {
-        super(editorKit, "Axiom Annotations", owlFrame);
+        super(editorKit, "Axiom Annotations", "Axiom Annotation", owlFrame);
     }
 
 
