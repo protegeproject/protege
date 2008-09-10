@@ -118,9 +118,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             }
         });
 
-
-        setRowHeight(18);
-
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 // Check to see if the recursively expand key is held down.  This is
