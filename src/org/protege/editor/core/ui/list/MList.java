@@ -42,68 +42,95 @@ public class MList extends JList {
 
     private List<MListButton> deleteButtonOnly;
 
+    private ActionListener deleteActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleDelete();
+            }
+        };
+
+    private ActionListener addActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleAdd();
+            }
+        };
+
+    private ActionListener editActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleEdit();
+            }
+        };
+
+    private MouseMotionListener mouseMovementListener = new MouseMotionAdapter() {
+        public int lastIndex = 0;
+
+        public void mouseMoved(MouseEvent e) {
+            if (getModel().getSize() > 0){
+                Point pt = getMousePosition();
+                // more efficient than repainting the whole component every time the mouse moves
+                if (pt != null){
+                    int index = locationToIndex(pt);
+                    // only repaint all the cells the mouse has moved over
+                    repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
+                    lastIndex = index;
+                }
+                else{
+                    repaint();
+                    lastIndex = 0;
+                }
+            }
+        }
+    };
+
+    private MouseListener mouseButtonListener = new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+            mouseDown = true;
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            handleMouseClick(e);
+            mouseDown = false;
+        }
+
+        public void mouseExited(MouseEvent event) {
+            // leave the component cleanly
+            repaint();
+        }
+    };
+
 
     public MList() {
         ListCellRenderer renderer = getCellRenderer();
         ren = new MListCellRenderer();
         ren.setContentRenderer(renderer);
         super.setCellRenderer(ren);
-        deleteButton = new MListDeleteButton(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handleDelete();
-            }
-        });
-        addButton = new MListAddButton(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handleAdd();
-            }
-        });
-        editButton = new MListEditButton(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handleEdit();
-            }
-        });
-        addMouseMotionListener(new MouseMotionAdapter() {
-            public int lastIndex = 0;
 
-            public void mouseMoved(MouseEvent e) {
-                if (getModel().getSize() > 0){
-                    Point pt = getMousePosition();
-                    // more efficient than repainting the whole component every time the mouse moves
-                    if (pt != null){
-                        int index = locationToIndex(pt);
-                        // only repaint all the cells the mouse has moved over
-                        repaint(getCellBounds(Math.min(index, lastIndex), Math.max(index, lastIndex)));
-                        lastIndex = index;
-                    }
-                    else{
-                        repaint();
-                        lastIndex = 0;
-                    }
+        deleteButton = new MListDeleteButton(deleteActionListener){
+            public String getName() {
+                String name = "<html><body>" + super.getName();
+                String rowName = getRowName(getRowObject());
+                if (rowName != null){
+                    name += " " + rowName.toLowerCase();
                 }
+                return name + "</body></html>";
             }
-        });
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                mouseDown = true;
-            }
+        };
+        addButton = new MListAddButton(addActionListener);
+        editButton = new MListEditButton(editActionListener);
 
-            public void mouseReleased(MouseEvent e) {
-                handleMouseClick(e);
-                mouseDown = false;
-            }
+        addMouseMotionListener(mouseMovementListener);
+        addMouseListener(mouseButtonListener);
 
-            public void mouseExited(MouseEvent event) {
-                // leave the component cleanly
-                repaint();
-            }
-        });
         setFixedCellHeight(-1);
         deleteButtonOnly = new ArrayList<MListButton>();
         deleteButtonOnly.add(deleteButton);
         editAndDeleteButtons = new ArrayList<MListButton>();
         editAndDeleteButtons.add(editButton);
         editAndDeleteButtons.add(deleteButton);
+    }
+
+
+    protected String getRowName(Object rowObject) {
+        return null;
     }
 
 
