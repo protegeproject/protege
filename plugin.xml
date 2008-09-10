@@ -56,7 +56,7 @@
     <extension id="OWLOntologyTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Active Ontology"/>
-        <class value="org.protege.editor.core.ui.workspace.WorkspaceViewsTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="A"/>
         <defaultViewConfigFileName value="viewconfig-ontologytab.xml"/>
@@ -67,7 +67,7 @@
     <extension id="OWLEntitesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Entities"/>
-        <class value="org.protege.editor.owl.ui.OWLEntitiesTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="B"/>
         <defaultViewConfigFileName value="viewconfig-entitiestab.xml"/>
@@ -78,7 +78,7 @@
     <extension id="OWLClassesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Classes"/>
-        <class value="org.protege.editor.owl.ui.OWLClassesTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="C"/>
         <defaultViewConfigFileName value="viewconfig-classestab.xml"/>
@@ -89,7 +89,7 @@
     <extension id="OWLObjectPropertiesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Object Properties"/>
-        <class value="org.protege.editor.owl.ui.OWLObjectPropertiesTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="D"/>
         <defaultViewConfigFileName value="viewconfig-objectpropertiestab.xml"/>
@@ -100,18 +100,18 @@
     <extension id="OWLDataPropertiesTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Data Properties"/>
-        <class value="org.protege.editor.owl.ui.OWLDataPropertiesTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="E"/>
         <defaultViewConfigFileName value="viewconfig-datapropertiestab.xml"/>
     </extension>
 
-    <!-- Individuals view -->
+    <!-- Individuals tab -->
 
     <extension id="OWLIndividualsTab"
                 point="org.protege.editor.core.application.WorkspaceTab">
         <label value="Individuals"/>
-        <class value="org.protege.editor.owl.ui.OWLIndividualsTab"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="F"/>
         <defaultViewConfigFileName value="viewconfig-individualstab.xml"/>

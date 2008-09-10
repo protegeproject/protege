@@ -8,6 +8,7 @@ import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
@@ -579,8 +580,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         OWLEntityDisplayProvider candidate = null;
         for (OWLEntityDisplayProvider provider : entityDisplayProviders) {
             if (provider.canDisplay(owlEntity)) {
-                candidate = provider;
+                if (candidate == null){
+                    candidate = provider;
+                }
                 if (provider.getDisplayComponent().isShowing()) {
+                    candidate = provider;
                     break;
                 }
             }
@@ -591,6 +595,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 bringComponentToFront(component);
             }
         }
+    }
+
+
+    protected CustomWorkspaceTabsManager getCustomTabsManager() {
+        return new OWLCustomWorkspaceTabsManager();
     }
 
 

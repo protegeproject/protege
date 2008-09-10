@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.selection.FilteringOWLSelectionModelListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
@@ -58,36 +57,15 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
      */
     final public void initialiseOWLView() throws Exception {
         registeredActions = new HashSet<OWLSelectionViewAction>();
-        listener = new FilteringOWLSelectionModelListener(getOWLEditorKit()) {
-
-
-            public void visit(OWLClass cls) {
-                if (isOWLClassView()) {
-                    updateViewContentAndHeader();
-                }
-            }
-
-
-            public void visit(OWLObjectProperty property) {
-                if (isOWLObjectPropertyView()) {
-                    updateViewContentAndHeader();
-                }
-            }
-
-
-            public void visit(OWLDataProperty property) {
-                if (isOWLDataPropertyView()) {
-                    updateViewContentAndHeader();
-                }
-            }
-
-
-            public void visit(OWLIndividual individual) {
-                if (isOWLIndividualView()) {
+        listener = new OWLSelectionModelListener() {
+            public void selectionChanged() throws Exception {
+                final OWLEntity owlEntity = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
+                if (canShowEntity(owlEntity)){
                     updateViewContentAndHeader();
                 }
             }
         };
+
         entityRendererListener = new OWLEntityRendererListener() {
             public void renderingChanged(OWLEntity entity, OWLEntityRenderer renderer) {
                 if (lastDisplayedObject != null) {
@@ -97,6 +75,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
                 }
             }
         };
+
         hierarchyListener = new HierarchyListener() {
             public void hierarchyChanged(HierarchyEvent e) {
                 if (needsRefresh && isShowing()) {
@@ -104,16 +83,21 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
                 }
             }
         };
-        addHierarchyListener(hierarchyListener);
-        getOWLModelManager().addListener(modelManagerListener = new OWLModelManagerListener() {
+
+        modelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
                     getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
                 }
             }
-        });
+        };
+
+        addHierarchyListener(hierarchyListener);
+
+        getOWLModelManager().addListener(modelManagerListener);
         getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
+
         initialiseView();
         updateViewContentAndHeader();
     }
@@ -245,5 +229,45 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
 
     protected boolean isOWLIndividualView() {
         return false;
+    }
+
+
+    public final boolean canShowEntity(OWLEntity owlEntity){
+        return new AcceptableEntityVisitor().canShowEntity(owlEntity);
+    }
+
+
+    class AcceptableEntityVisitor implements OWLEntityVisitor {
+        boolean result;
+
+        public boolean canShowEntity(OWLEntity owlEntity){
+            result = false;
+            owlEntity.accept(this);
+            return result;
+        }
+
+        public void visit(OWLClass owlClass) {
+            result = isOWLClassView();
+        }
+
+
+        public void visit(OWLObjectProperty owlObjectProperty) {
+            result = isOWLObjectPropertyView();
+        }
+
+
+        public void visit(OWLDataProperty owlDataProperty) {
+            result = isOWLDataPropertyView();
+        }
+
+
+        public void visit(OWLIndividual owlIndividual) {
+            result = isOWLIndividualView();
+        }
+
+
+        public void visit(OWLDataType owlDataType) {
+            // do nothing
+        }
     }
 }
