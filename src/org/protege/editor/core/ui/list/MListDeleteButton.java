@@ -1,8 +1,6 @@
 package org.protege.editor.core.ui.list;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 
@@ -18,7 +16,7 @@ public class MListDeleteButton extends MListButton {
 
 
     public MListDeleteButton(ActionListener actionListener) {
-        super("Delete", ROLL_OVER_COLOR, actionListener);
+        super("Remove", ROLL_OVER_COLOR, actionListener);
     }
 
 
