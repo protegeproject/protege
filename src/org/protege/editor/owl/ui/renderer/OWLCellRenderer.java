@@ -103,6 +103,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Set<String> annotationURINames;
 
+    private int plainFontHeight;
+
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
@@ -114,14 +116,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<OWLObject>();
-        setupFont();
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
         renderingComponent.setOpaque(false);
         iconLabel = new JLabel("");
-        iconLabel.setVerticalAlignment(JLabel.TOP);
+        iconLabel.setVerticalAlignment(SwingConstants.CENTER);
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
-//        textPane.setFont(new Font("courier", Font.PLAIN, 16));
         iconLabel.setOpaque(false);
         renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -141,6 +141,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         unsatisfiableNames = new HashSet<String>();
         boxedNames = new HashSet<String>();
         prepareStyles();
+        setupFont();        
     }
 
 
@@ -290,7 +291,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void setupFont() {
         plainFont = OWLRendererPreferences.getInstance().getFont();
-//        plainFont = new Font("lucida grande", Font.PLAIN, fontSize);
+        plainFontHeight = iconLabel.getFontMetrics(plainFont).getHeight();
         boldFont = plainFont.deriveFont(Font.BOLD);
         textPane.setFont(plainFont);
     }
@@ -501,6 +502,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             renderingComponent.setBackground(componentBeingRendered.getBackground());
         }
         iconLabel.setIcon(getIcon(value));
+        iconLabel.setPreferredSize(new Dimension(iconLabel.getPreferredSize().width, plainFontHeight));
         renderingComponent.revalidate();
         return renderingComponent;
     }
