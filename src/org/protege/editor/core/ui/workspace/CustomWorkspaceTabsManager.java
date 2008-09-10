@@ -4,10 +4,10 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
 import javax.swing.*;
-import java.util.*;
-import java.util.List;
 import java.net.URL;
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -89,13 +89,17 @@ public class CustomWorkspaceTabsManager {
      * @param workspace The workspace pertaining to the tab
      * @return A WorkspaceTabPlugin that can be used to create a custom tab.
      */
-    public WorkspaceTabPlugin getPluginForTabName(final String name, final TabbedWorkspace workspace) {
+    public final WorkspaceTabPlugin getPluginForTabName(final String name, final TabbedWorkspace workspace) {
         if(!customTabs.contains(name)) {
             customTabs.add(name);
             save();
         }
-        CustomTabPlugin plugin = new CustomTabPlugin(name, workspace);
-        return plugin;
+        return createPlugin(name, workspace);
+    }
+
+
+    protected WorkspaceTabPlugin createPlugin(String name, TabbedWorkspace workspace) {
+        return new CustomTabPlugin(name, workspace);
     }
 
 
@@ -124,7 +128,7 @@ public class CustomWorkspaceTabsManager {
     /**
      * A class that acts as a dynamic plugin
      */
-    private class CustomTabPlugin implements WorkspaceTabPlugin {
+    protected class CustomTabPlugin implements WorkspaceTabPlugin {
 
         private TabbedWorkspace workspace;
 
@@ -175,10 +179,16 @@ public class CustomWorkspaceTabsManager {
 
         public WorkspaceTab newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                  InstantiationException {
-            CustomTab tab = new CustomTab(name);
+            WorkspaceViewsTab tab = createCustomTab(name);
             tab.setup(this);
             return tab;
         }
+
+
+        protected WorkspaceViewsTab createCustomTab(String label) {
+            return new CustomTab(label);
+        }
+
 
         private class CustomTab extends WorkspaceViewsTab{
 
@@ -197,16 +207,6 @@ public class CustomWorkspaceTabsManager {
 
             public String getId() {
                 return label;
-            }
-
-
-            public void dispose() {
-                super.dispose();
-            }
-
-
-            public void initialise() {
-                super.initialise();
             }
         }
     }

@@ -199,7 +199,7 @@ public abstract class TabbedWorkspace extends Workspace {
     private List<WorkspaceTabPlugin> getOrderedPlugins() {
         WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
         List<WorkspaceTabPlugin> plugins = new ArrayList<WorkspaceTabPlugin>(loader.getPlugins());
-        CustomWorkspaceTabsManager customTabsManager = new CustomWorkspaceTabsManager();
+        CustomWorkspaceTabsManager customTabsManager = getCustomTabsManager();
         plugins.addAll(customTabsManager.getCustomTabPlugins(this));
 
         Collections.sort(plugins, new Comparator<WorkspaceTabPlugin>() {
@@ -209,6 +209,11 @@ public abstract class TabbedWorkspace extends Workspace {
         });
 
         return plugins;
+    }
+
+
+    protected CustomWorkspaceTabsManager getCustomTabsManager() {
+        return new CustomWorkspaceTabsManager();
     }
 
 
@@ -246,7 +251,7 @@ public abstract class TabbedWorkspace extends Workspace {
     private WorkspaceTab handleCreateNewTab() {
         final String name = JOptionPane.showInputDialog(this, "Please enter a name for the new tab");
         if (name != null) {
-            CustomWorkspaceTabsManager customTabsManager = new CustomWorkspaceTabsManager();
+            CustomWorkspaceTabsManager customTabsManager = getCustomTabsManager();
             WorkspaceTab tab = addTabForPlugin(customTabsManager.getPluginForTabName(name, this));
             rebuildTabMenu();
             setSelectedTab(tab);
