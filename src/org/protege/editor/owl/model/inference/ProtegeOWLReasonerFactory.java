@@ -2,8 +2,8 @@ package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.semanticweb.owl.inference.OWLReasoner;
+import org.semanticweb.owl.inference.OWLReasonerFactory;
 import org.semanticweb.owl.model.OWLOntologyManager;
-import com.clarkparsia.explanation.ReasonerFactory;
 
 
 /**
@@ -12,7 +12,7 @@ import com.clarkparsia.explanation.ReasonerFactory;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance, ReasonerFactory {
+public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance, OWLReasonerFactory {
 
     void setup(OWLOntologyManager manager, String id, String name);
 
