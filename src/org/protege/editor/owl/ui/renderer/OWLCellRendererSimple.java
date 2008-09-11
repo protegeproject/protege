@@ -75,6 +75,10 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         setText(value, label);
         setIcon(value, label);
         boldIfNecessary(value, label);
+        if (value == null){
+            // so that null does not render with no height
+            label.setPreferredSize(new Dimension(label.getPreferredSize().width, label.getFontMetrics(font).getHeight()));
+        }
     }
 
 

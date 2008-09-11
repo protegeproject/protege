@@ -1,20 +1,19 @@
-package org.protege.editor.owl.ui.datarange;
+package org.protege.editor.owl.ui.selector;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.vocab.XSDVocabulary;
+import org.semanticweb.owl.model.OWLOntologyManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 
 /**
@@ -25,6 +24,8 @@ import java.util.List;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * Should extend AbstractSelectorPanel
  */
 public class DataRangeSelectionPanel extends JPanel {
 
@@ -44,17 +45,29 @@ public class DataRangeSelectionPanel extends JPanel {
 
     private void createUI() {
         setLayout(new BorderLayout());
-        list = new OWLObjectList(owlEditorKit);
-        add(ComponentFactory.createScrollPane(list));
+
         // Add the built in datatypes
-        List<OWLDataType> builtInDataTypes = new ArrayList<OWLDataType>();
-        for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
-            builtInDataTypes.add(factory.getOWLDataType(uri));
-        }
-        list.setListData(builtInDataTypes.toArray());
+        final OWLOntologyManager mngr = owlEditorKit.getModelManager().getOWLOntologyManager();
+        java.util.List<OWLDataType> datatypeList = new ArrayList<OWLDataType>(new OWLDataTypeUtils(mngr).getBuiltinDatatypes());
+        Collections.sort(datatypeList, owlEditorKit.getModelManager().getOWLObjectComparator());
+
+        list = new OWLObjectList(owlEditorKit);
+        list.setListData(datatypeList.toArray());
+        list.setSelectedIndex(0);
+
+        add(ComponentFactory.createScrollPane(list));
     }
 
+
+    public OWLDataType getSelectedObject(){
+        return (OWLDataType)list.getSelectedValue();
+    }
+
+
+    public void setSelectedObject(OWLDataType dt){
+        list.setSelectedValue(dt, true);
+    }
+    
 
     public static OWLDataRange showDialog(OWLEditorKit owlEditorKit) {
         DataRangeSelectionPanel panel = new DataRangeSelectionPanel(owlEditorKit);

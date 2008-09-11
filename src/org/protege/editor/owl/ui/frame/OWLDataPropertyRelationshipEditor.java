@@ -49,7 +49,7 @@ import java.util.ArrayList;
 public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDataPropertyConstantPair> implements VerifiedInputEditor {
 
 
-    private OWLConstantEditorComponent constantEditorComponent;
+    private OWLConstantEditor constantEditorComponent;
 
     private OWLDataPropertySelectorPanel dataPropertySelectorPanel;
 
@@ -75,9 +75,8 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
                                                                                BorderFactory.createTitledBorder("Data Property")));
         dataPropertySelectorPanel.addSelectionListener(changeListener);
 
-        constantEditorComponent = new OWLConstantEditorComponent(owlEditorKit);
+        constantEditorComponent = new OWLConstantEditor(owlEditorKit);
         constantEditorComponent.setBorder(paddingBorder);
-        constantEditorComponent.addChangeListener(changeListener);
 
         componentHolder = new JPanel(new BorderLayout());
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -92,7 +91,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
         if (p instanceof OWLDataProperty){
             dataPropertySelectorPanel.setSelection((OWLDataProperty)p);
         }
-        constantEditorComponent.setOWLConstant(ax.getObject());
+        constantEditorComponent.setEditedObject(ax.getObject());
     }
 
 
@@ -106,7 +105,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
         if (prop == null) {
             return null;
         }
-        OWLConstant con = constantEditorComponent.getOWLConstant();
+        OWLConstant con = constantEditorComponent.getEditedObject();
         if (con == null) {
             return null;
         }
@@ -115,7 +114,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
 
 
     public void clear() {
-        constantEditorComponent.setOWLConstant(null);
+        constantEditorComponent.setEditedObject(null);
     }
 
 
@@ -127,7 +126,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLFrameSectionRo
 
     private void checkStatus(){
         boolean status = dataPropertySelectorPanel.getSelectedObject() != null &&
-                         constantEditorComponent.getOWLConstant() != null;
+                         constantEditorComponent.getEditedObject() != null;
         if (status != currentStatus){
             currentStatus = status;
             for (InputVerificationStatusChangedListener l : listeners){

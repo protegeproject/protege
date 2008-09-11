@@ -40,6 +40,7 @@ import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSele
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
@@ -51,7 +52,6 @@ import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.SimpleURIMapper;
 import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.util.URIShortFormProvider;
-import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import java.io.File;
 import java.net.URI;
@@ -979,9 +979,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public List<OWLDataType> getMatchingOWLDataTypes(String renderingStart) {
         List<OWLDataType> datatypes = new ArrayList<OWLDataType>();
-        for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            if (uri.getFragment().startsWith(renderingStart)) {
-                datatypes.add(manager.getOWLDataFactory().getOWLDataType(uri));
+        for (OWLDataType dt : new OWLDataTypeUtils(getOWLOntologyManager()).getBuiltinDatatypes()) {
+            if (getRendering(dt).startsWith(renderingStart)) {
+                datatypes.add(dt);
             }
         }
         return datatypes;
