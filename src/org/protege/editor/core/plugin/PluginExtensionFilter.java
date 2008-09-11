@@ -2,10 +2,13 @@ package org.protege.editor.core.plugin;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collections;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.protege.editor.core.ProtegeApplication;
 
 
 /**
@@ -22,6 +25,8 @@ import org.eclipse.core.runtime.IExtensionRegistry;
  * of structure.
  */
 public class PluginExtensionFilter {
+
+    private static Logger logger = Logger.getLogger(PluginExtensionFilter.class.getName());
 
     private String pluginId;
 
@@ -55,7 +60,15 @@ public class PluginExtensionFilter {
         Set<IExtension> result = new HashSet<IExtension>();
         IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
         IExtensionPoint extpt = registry.getExtensionPoint(pluginId, extensionPointId);
-        for (IExtension ext : extpt.getExtensions()) {
+        if(extpt == null) {
+            logger.warning("Extension point not defined: " + extensionPointId);
+            return Collections.emptySet();
+        }
+        IExtension [] extensions = extpt.getExtensions();
+        if(extensions == null) {
+            return Collections.emptySet();
+        }
+        for (IExtension ext : extensions) {
             if (extensionMatcher.matches(ext)) {
                 result.add(ext);
             }
