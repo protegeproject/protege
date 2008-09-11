@@ -51,6 +51,11 @@ public class MoveAxiomsWizard extends Wizard {
             public Object getBackPanelDescriptor() {
                 return AxiomSelectionPanel.ID;
             }
+
+
+            public void aboutToHidePanel() {
+                setTargetOntology(targetOntologyPage.getOntology());
+            }
         };
         targetOntologyPage.setInstructions("Please select a target ontology to move the selected axioms into.");
 
