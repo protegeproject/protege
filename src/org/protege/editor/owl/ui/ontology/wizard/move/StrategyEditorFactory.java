@@ -165,10 +165,11 @@ public class StrategyEditorFactory {
     private StrategyEditor<AxiomTypeStrategy> getTypeSelector(AxiomTypeStrategy strategy) {
         return new StrategyEditor<AxiomTypeStrategy>(strategy, eKit){
             private JList axiomTypeSelector;
+
             public JScrollPane scroller;
 
             public JComponent getComponent() {
-                if (axiomTypeSelector != null){
+                if (axiomTypeSelector == null){
                     axiomTypeSelector = new JList(AxiomType.AXIOM_TYPES.toArray());
                     axiomTypeSelector.addListSelectionListener(new ListSelectionListener(){
                         public void valueChanged(ListSelectionEvent event) {

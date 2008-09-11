@@ -15,10 +15,9 @@ import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 /**
- * User: nickdrummond
- * Date: May 20, 2008
+ * User: nickdrummond Date: May 20, 2008
  */
-public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
+public class StrategyConstrainPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static final String ID = "StrategyConstrainPanel";
 
@@ -28,20 +27,12 @@ public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
 
     private static final EmptyBorder EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
 
-    private AxiomSelectionStrategy displayStrategy = null;
+    private PropertyChangeListener pcl = new PropertyChangeListener() {
 
-    private StrategyEditorFactory editorFactory;
-
-    private PropertyChangeListener l = new PropertyChangeListener(){
-        public void propertyChange(PropertyChangeEvent event) {
-            if (event.getPropertyName().equals(AbstractAxiomSelectionStrategy.ONTOLOGIES_CHANGED)){
-                helperPanel.removeAll();
-                helperPanel.add(editorFactory.getEditor(displayStrategy, true).getComponent());
-            }
+        public void propertyChange(PropertyChangeEvent evt) {
             refresh();
         }
     };
-
 
     public StrategyConstrainPanel(OWLEditorKit eKit) {
         super(ID, "Customize you selection stratgy", eKit);
@@ -50,8 +41,6 @@ public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
 
     protected void createUI(JComponent parent) {
         parent.setLayout(new BorderLayout());
-
-        editorFactory = new StrategyEditorFactory(getOWLEditorKit());
 
         helperPanel = new JPanel(new BorderLayout());
         helperPanel.setPreferredSize(new Dimension(300, 200));
@@ -64,8 +53,7 @@ public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
         axiomListPane.setOpaque(false);
         axiomListPane.add(new JLabel("Preview"), BorderLayout.NORTH);
         axiomListPane.add(new JScrollPane(list), BorderLayout.CENTER);
-        JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                              helperPanel, axiomListPane);
+        JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, helperPanel, axiomListPane);
         splitpane.setOpaque(false);
         splitpane.setResizeWeight(0.75);
         splitpane.setBorder(EMPTY_BORDER);
@@ -75,41 +63,26 @@ public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
 
 
     public void aboutToDisplayPanel() {
-        AxiomSelectionStrategy selectedStrategy = getStrategy();
-        if (selectedStrategy != displayStrategy){
 
-            if (displayStrategy != null){
-                displayStrategy.removePropertyChangeListener(l);
-            }
-            displayStrategy = selectedStrategy;
-            displayStrategy.addPropertyChangeListener(l);
-
-            setInstructions(displayStrategy.getName() +
-                    ". This is a coarse grained selection" +
-                    ". You will have control over individual axioms on the next page.");
-
-            helperPanel.removeAll();
-
-            helperPanel.add(getEditor(displayStrategy).getComponent());
-
-            refresh();
-        }
+        MoveAxiomsKit kit = getWizard().getSelectedKit();
+        setInstructions(kit.getAxiomSelectionStrategy().getName() + ". This is a coarse grained selection" + ". You will have control over individual axioms on the next page.");
+        helperPanel.removeAll();
+        helperPanel.add(kit.getStrategyEditor().getComponent());
+        kit.getAxiomSelectionStrategy().addPropertyChangeListener(pcl);
+        refresh();
     }
 
-    public StrategyEditor getEditor(AxiomSelectionStrategy strategy) {
-        return editorFactory.getEditor(strategy, false);
+
+    public void aboutToHidePanel() {
+        super.aboutToHidePanel();
+        getWizard().getSelectedKit().getAxiomSelectionStrategy().removePropertyChangeListener(pcl);
+        getWizard().setAxioms(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms());
     }
 
 
     private void refresh() {
-        list.setListData(getSelectedAxioms().toArray());
+        list.setListData(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms().toArray());
     }
-
-
-    private AxiomSelectionStrategy getStrategy() {
-        return ((AxiomSelectionStrategyPanel)getWizardModel().getPanel(AxiomSelectionStrategyPanel.ID)).getSelectionStrategy();
-    }
-
 
     public Object getBackPanelDescriptor() {
         return AxiomSelectionStrategyPanel.ID;
@@ -118,10 +91,5 @@ public class StrategyConstrainPanel extends AbstractOWLWizardPanel {
 
     public Object getNextPanelDescriptor() {
         return AxiomSelectionPanel.ID;
-    }
-
-
-    public Set<OWLAxiom> getSelectedAxioms() {
-        return getStrategy().getAxioms();
     }
 }
