@@ -42,7 +42,7 @@ import java.util.Set;/*
  * Bio Health Informatics Group<br>
  * Date: May 30, 2008<br><br>
  */
-public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
+public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static String ID = "AxiomSelectionPanel";
 
@@ -58,9 +58,9 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
         parent.setLayout(new BorderLayout());
 
         list = new CheckTable<OWLAxiom>("Axioms");
-        list.setOpaque(true);
         final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getOWLEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
+        owlCellRenderer.setTransparent();
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);
@@ -68,6 +68,7 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
         scroller.getViewport().setOpaque(true);
         scroller.setBackground(Color.WHITE);
         parent.add(scroller);
+        list.setOpaque(true);
     }
 
     
@@ -78,11 +79,7 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
 
 
     public Object getBackPanelDescriptor() {
-        StrategyEditor editor = ((StrategyConstrainPanel)getWizardModel().getPanel(StrategyConstrainPanel.ID)).getEditor(getSelectionStrategy());
-        if (editor != null){
-            return StrategyConstrainPanel.ID;
-        }
-        return AxiomSelectionStrategyPanel.ID;
+        return StrategyConstrainPanel.ID;
     }
 
 
@@ -92,16 +89,11 @@ public class AxiomSelectionPanel extends AbstractOWLWizardPanel {
 
 
     private Set<OWLAxiom> getUnfilteredAxioms() {
-        return getSelectionStrategy().getAxioms();
+        return getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms();
     }
 
 
     public java.util.List<OWLAxiom> getFilteredAxioms() {
         return list.getFilteredValues();
-    }
-
-
-    public AxiomSelectionStrategy getSelectionStrategy() {
-        return ((AxiomSelectionStrategyPanel)getWizardModel().getPanel(AxiomSelectionStrategyPanel.ID)).getSelectionStrategy();
     }
 }

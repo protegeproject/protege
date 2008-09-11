@@ -36,8 +36,8 @@ public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
 
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
-            OWLOntology targetOnt =         wiz.getTargetOntology();
-            List<OWLAxiom> axioms =          wiz.getAxioms();
+            OWLOntology targetOnt = wiz.getTargetOntology();
+            Set<OWLAxiom> axioms = wiz.getAxioms();
             Set<OWLOntology> sourceOnts =   wiz.getSourceOntologies();
 
             long start = System.currentTimeMillis();

@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.axioms.*;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
+import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
@@ -14,67 +15,45 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * User: nickdrummond
- * Date: May 20, 2008
+ * User: nickdrummond Date: May 20, 2008
  */
-public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
+public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static final String ID = "AxiomSelectionStrategyPanel";
 
     private ButtonGroup bGroup;
 
-    private List<AxiomSelectionStrategy> strategies = new ArrayList<AxiomSelectionStrategy>();
-
-    private AxiomSelectionStrategy currentStrategy;
-
     private JPanel holder;
+
+    private boolean createdButtons;
 
 
     public AxiomSelectionStrategyPanel(OWLEditorKit editorKit) {
         super(ID, "Axiom selection strategy", editorKit);
-        setInstructions("Please choose an axiom selection strategy." +
-                " This is a course grained way of describing the way in which you wish to add axioms to the set that will be moved." +
-                " You will get more fine grained control in the following steps.");
-
-        // @@TODO - persist previous strategy (would need to rename it to be useful)
-
-
-        currentStrategy = new ClassReferencingAxiomsStrategy();
-
-        registerStrategy(currentStrategy);
-        registerStrategy(new ObjectPropertyReferencingAxiomStrategy());
-        registerStrategy(new DataPropertyReferencingAxiomStrategy());
-        registerStrategy(new IndividualReferencingAxiomStrategy());
-        registerStrategy(new AnnotationAxiomsStrategy());
-        registerStrategy(new AxiomTypeStrategy());
-        registerStrategy(new AllAxiomsStrategy());
+        setInstructions("Please choose an axiom selection strategy." + " This is a coarse grained way of describing the way in which you wish to add axioms to the set that will be moved." + " You will get more fine grained control in the following steps.");
     }
 
 
     public void aboutToDisplayPanel() {
-        currentStrategy.setOntologies(getSourceOntologies());
+        createStrategyRadioButtons();
     }
 
-
-    private void registerStrategy(final AxiomSelectionStrategy strategy) {
-        strategies.add(strategy);
-
-        JCheckBox cb = new JCheckBox(new AbstractAction(strategy.getName()){
-            public void actionPerformed(ActionEvent actionEvent) {
-                selectStrategy(strategy);
+    private void createStrategyRadioButtons() {
+        if (!createdButtons) {
+            for (final MoveAxiomsKit kit : getWizard().getMoveAxiomsKits()) {
+                final AxiomSelectionStrategy strategy = kit.getAxiomSelectionStrategy();
+                JRadioButton cb = new JRadioButton(new AbstractAction(strategy.getName()) {
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        getWizard().setSelectedKit(kit);
+                    }
+                });
+                cb.setOpaque(false);
+                cb.setSelected(getWizard().getSelectedKit() == kit);
+                bGroup.add(cb);
+                holder.add(cb);
             }
-        });
-
-        cb.setOpaque(false);
-        cb.setSelected(strategy.equals(currentStrategy));
-        bGroup.add(cb);
-        holder.add(cb);
-    }
-
-
-    private void selectStrategy(AxiomSelectionStrategy strategy) {
-        currentStrategy = strategy;
-        currentStrategy.setOntologies(getSourceOntologies());
+            createdButtons = true;
+        }
     }
 
 
@@ -83,29 +62,17 @@ public class AxiomSelectionStrategyPanel extends AbstractOWLWizardPanel {
         holder = new JPanel();
         holder.setOpaque(false);
         holder.setLayout(new BoxLayout(holder, BoxLayout.PAGE_AXIS));
-
         bGroup = new ButtonGroup();
-
         parent.add(holder, BorderLayout.NORTH);
     }
 
+
     public Object getBackPanelDescriptor() {
-        return SelectOntologiesPage.ID;
+        return SelectSourceOntologiesPage.ID;
     }
+
 
     public Object getNextPanelDescriptor() {
-        StrategyEditor editor = ((StrategyConstrainPanel)getWizardModel().getPanel(StrategyConstrainPanel.ID)).getEditor(currentStrategy);
-        if (editor != null){
-            return StrategyConstrainPanel.ID;
-        }
-        return AxiomSelectionPanel.ID;
-    }
-
-    public AxiomSelectionStrategy getSelectionStrategy() {
-        return currentStrategy;
-    }
-
-    protected Set<OWLOntology> getSourceOntologies() {
-        return ((SelectOntologiesPage)getWizardModel().getPanel(SelectOntologiesPage.ID)).getOntologies();
+        return StrategyConstrainPanel.ID;
     }
 }
