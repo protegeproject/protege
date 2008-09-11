@@ -6,13 +6,10 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
-import java.util.*;
-import java.util.List;
+import java.util.HashSet;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -64,10 +61,12 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
         annotationContent = new JTextArea(8, 40);
         annotationContent.setWrapStyleWord(true);
         annotationContent.setLineWrap(true);
-        langComboBox = new UIHelper(owlEditorKit).getLanguageSelector();
-        datatypeComboBox = new JComboBox();
+
+        final UIHelper uiHelper = new UIHelper(owlEditorKit);
+        langComboBox = uiHelper.getLanguageSelector();
+        datatypeComboBox = uiHelper.getDatatypeSelector();
+
         setupAutoCompleter(owlEditorKit);
-        fillDatatypeComboBox();
         layoutComponents();
     }
 
@@ -167,27 +166,6 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
      */
     private OWLDataType getSelectedDataType() {
         return (OWLDataType) datatypeComboBox.getSelectedItem();
-    }
-
-
-//    private void fillLangComboBox() {
-//        langComboBox.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
-//    }
-
-
-    private void fillDatatypeComboBox() {
-        List<OWLDataType> datatypeList = new ArrayList<OWLDataType>();
-        for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            datatypeList.add(dataFactory.getOWLDataType(uri));
-        }
-
-        Collections.sort(datatypeList, new Comparator<OWLDataType>() {
-            public int compare(OWLDataType o1, OWLDataType o2) {
-                return o1.getURI().compareTo(o2.getURI());
-            }
-        });
-        datatypeList.add(0, null);
-        datatypeComboBox.setModel(new DefaultComboBoxModel(datatypeList.toArray()));
     }
 
 

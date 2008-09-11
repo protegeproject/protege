@@ -2,18 +2,13 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.selector.DataRangeSelectionPanel;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
 import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
 
 /**
@@ -24,29 +19,21 @@ import java.util.TreeSet;
  */
 public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDataRange> {
 
-    private OWLEditorKit editorKit;
-
     private JPanel editorPanel;
 
     private JTabbedPane tabbedPane;
 
-    private JList datatypeList;
-
-    private JScrollPane datatypeListScrollPane;
+    private DataRangeSelectionPanel datatypeListScrollPane;
 
     private ExpressionEditor<OWLDataRange> expressionEditor;
 
 
     public OWLDataRangeEditor(OWLEditorKit owlEditorKit) {
         editorPanel = new JPanel(new BorderLayout(7, 7));
-        datatypeList = new JList();
-        this.editorKit = owlEditorKit;
-        fillDatatypeList();
-        datatypeList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
         tabbedPane = new JTabbedPane();
         editorPanel.add(tabbedPane);
-        tabbedPane.add("Built in datatypes", datatypeListScrollPane = new JScrollPane(datatypeList));
+        tabbedPane.add("Built in datatypes", datatypeListScrollPane = new DataRangeSelectionPanel(owlEditorKit));
 //        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLExpressionChecker<OWLDataRange>() {
 //            public void check(String text) throws OWLExpressionParserException, OWLException {
 //                editorKit.getModelManager().getOWLDescriptionParser().
@@ -62,24 +49,12 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
     }
 
 
-    private void fillDatatypeList() {
-        List<OWLDataType> datatypes = new ArrayList<OWLDataType>();
-        for (URI uri : new TreeSet<URI>(XSDVocabulary.ALL_DATATYPES)) {
-            datatypes.add(editorKit.getModelManager().getOWLOntologyManager().getOWLDataFactory().getOWLDataType(uri));
+    public void setEditedObject(OWLDataRange dataRange){
+        if (dataRange.isDataType()){
+            datatypeListScrollPane.setSelectedObject((OWLDataType)dataRange);
         }
-        datatypeList.setListData(datatypes.toArray());
-        datatypeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-    public void setEditedObject(OWLDataRange dataRange){
-        if (dataRange == null){
-            datatypeList.clearSelection();
-        }
-        else if (dataRange.isDataType() &&
-            XSDVocabulary.ALL_DATATYPES.contains(((OWLDataType)dataRange).getURI())){
-            datatypeList.setSelectedValue(dataRange, true);
-        }
-    }
 
     public JComponent getEditorComponent() {
         return editorPanel;
@@ -88,7 +63,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
     public OWLDataRange getEditedObject() {
         if (tabbedPane.getSelectedComponent() == datatypeListScrollPane) {
-            return (OWLDataType) datatypeList.getSelectedValue();
+            return datatypeListScrollPane.getSelectedObject();
         }
         else {
             if (expressionEditor.isWellFormed()) {
@@ -107,7 +82,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
 
     public void clear() {
-        datatypeList.clearSelection();
+        datatypeListScrollPane.setSelectedObject(null);
     }
 
 

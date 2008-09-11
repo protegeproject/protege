@@ -5,19 +5,20 @@ import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.frame.AnnotationURIList;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 import org.protege.editor.owl.ui.selector.*;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -304,6 +305,20 @@ public class UIHelper {
         JComboBox c = new JComboBox();
         c.setEditable(true);
         c.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
+        return c;
+    }
+
+
+    public JComboBox getDatatypeSelector() {
+        final OWLModelManager mngr = getOWLModelManager();
+        List<OWLDataType> datatypeList = new ArrayList<OWLDataType>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes());
+
+        Collections.sort(datatypeList, mngr.getOWLObjectComparator());
+        datatypeList.add(0, null);
+
+        JComboBox c = new JComboBox(new DefaultComboBoxModel(datatypeList.toArray()));
+        c.setPreferredSize(new Dimension(120, c.getPreferredSize().height));
+        c.setRenderer(new OWLCellRendererSimple(owlEditorKit));
         return c;
     }
 }
