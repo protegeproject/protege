@@ -90,7 +90,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         marginLabel.setIcon(icon);
     }
 
-    protected void createUI() {
+    final protected void createUI() {
         backgroundImage = Icons.getIcon("logo.wizard.png");
         setLayout(new BorderLayout(7, 7));
         marginPanel = new JPanel(new BorderLayout());

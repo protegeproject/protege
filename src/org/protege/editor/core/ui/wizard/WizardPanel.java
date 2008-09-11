@@ -100,7 +100,7 @@ public class WizardPanel extends JPanel {
      * Returns a reference to the Wizard component.
      * @return The Wizard class hosting this descriptor.
      */
-    public final Wizard getWizard() {
+    public Wizard getWizard() {
         return wizard;
     }
 
