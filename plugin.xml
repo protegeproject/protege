@@ -1058,4 +1058,9 @@
         <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
     </extension>
 
+
+    <!-- Move axioms kit -->
+    <extension-point id="moveaxiomskit" 
+                     name="Move Axioms Kit"/>
+
 </plugin>
