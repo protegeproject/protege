@@ -1,6 +1,7 @@
 package org.protege.editor.owl;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactory;
@@ -259,6 +260,10 @@ public class OWLEditorKit implements EditorKit {
         String label = physicalURI.toString();
         if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
             label = new File(physicalURI).getPath();
+        }
+        else{
+            // also add to the URI bookmarks
+            BookMarkedURIManager.getInstance().add(physicalURI);
         }
         EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
         descriptor.setURI(URI_KEY, physicalURI);
