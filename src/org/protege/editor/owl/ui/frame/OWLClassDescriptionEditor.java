@@ -1,25 +1,19 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObjectProperty;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -33,9 +27,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private static final String CLASS_EXPRESSION_EDITOR_LABEL = "Class expression editor";
     private static final String CLASS_TREE_LABEL = "Class tree";
-    private static final String RESTRICTION_CREATOR_LABEL = "Restriction creator";
-
-    private OWLEditorKit editorKit;
+    private static final String OBJECT_RESTRICTION_CREATOR_LABEL = "Object restriction creator";
+    private static final String DATA_RESTRICTION_CREATOR_LABEL = "Data restriction creator";
 
     private ExpressionEditor<OWLDescription> editor;
 
@@ -45,9 +38,10 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private OWLClassSelectorPanel classSelectorPanel;
 
-    private ObjectRestrictionCreatorPanel restrictionCreatorPanel;
+    private OWLObjectRestrictionCreatorPanel objectRestrictionCreatorPanel;
+    private OWLDataRestrictionCreatorPanel dataRestrictionCreatorPanel;
 
-    private OWLDescription initialDescription;
+    private boolean currentStatus = false;
 
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
 
@@ -57,21 +51,19 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         }
     };
 
+
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
-        this.editorKit = editorKit;
-        this.initialDescription = description;
+
         editor = new ExpressionEditor<OWLDescription>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker());
         editor.setExpressionObject(description);
 
-
-        tabbedPane = new JTabbedPane();
-        tabbedPane.setFocusable(false);
         editingComponent = new JPanel(new BorderLayout());
-        editingComponent.add(tabbedPane);
-        editingComponent.setPreferredSize(new Dimension(500, 400));
-        tabbedPane.add(CLASS_EXPRESSION_EDITOR_LABEL, new JScrollPane(editor));
 
         if (description == null || !description.isAnonymous()) {
+            tabbedPane = new JTabbedPane();
+            tabbedPane.setFocusable(false);
+            tabbedPane.add(CLASS_EXPRESSION_EDITOR_LABEL, new JScrollPane(editor));
+
             classSelectorPanel = new OWLClassSelectorPanel(editorKit);
             tabbedPane.add(CLASS_TREE_LABEL, classSelectorPanel);
             if (description != null) {
@@ -79,42 +71,49 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
             }
             classSelectorPanel.addSelectionListener(changeListener);
 
-            restrictionCreatorPanel = new ObjectRestrictionCreatorPanel();
-            tabbedPane.add(RESTRICTION_CREATOR_LABEL, restrictionCreatorPanel);
-            restrictionCreatorPanel.classSelectorPanel.addSelectionListener(changeListener);
-            restrictionCreatorPanel.objectPropertySelectorPanel.addSelectionListener(changeListener);
+            objectRestrictionCreatorPanel = new OWLObjectRestrictionCreatorPanel(editorKit);
+            tabbedPane.add(OBJECT_RESTRICTION_CREATOR_LABEL, objectRestrictionCreatorPanel);
+
+            dataRestrictionCreatorPanel = new OWLDataRestrictionCreatorPanel(editorKit);
+            tabbedPane.add(DATA_RESTRICTION_CREATOR_LABEL, dataRestrictionCreatorPanel);
 
             tabbedPane.addChangeListener(changeListener);
+
+            editingComponent.add(tabbedPane);
         }
+        else{
+            editingComponent.add(editor);
+        }
+
+        editingComponent.setPreferredSize(new Dimension(600, 400));
     }
 
+
     private void handleVerifyEditorContents() {
-        for (InputVerificationStatusChangedListener l : listeners){
-            l.verifiedStatusChanged(isValidated());
+        boolean newStatus = isValidated();
+        if (currentStatus != newStatus){
+            currentStatus = newStatus;
+            for (InputVerificationStatusChangedListener l : listeners){
+                l.verifiedStatusChanged(newStatus);
+            }
         }
     }
 
 
     private boolean isValidated() {
-        boolean validated = false;
-        final String selectedTabTitle = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-        if (selectedTabTitle.equals(CLASS_EXPRESSION_EDITOR_LABEL)){
-            validated = editor.isWellFormed();
+        if (tabbedPane != null){
+            Component c = tabbedPane.getSelectedComponent();
+            if (c.equals(classSelectorPanel)){
+                return classSelectorPanel.getSelectedObject() != null;
+            }
+            else if (c.equals(objectRestrictionCreatorPanel)){
+                return objectRestrictionCreatorPanel.isValidInput();
+            }
+            else if (c.equals(dataRestrictionCreatorPanel)){
+                return dataRestrictionCreatorPanel.isValidInput();
+            }
         }
-        else if (selectedTabTitle.equals(CLASS_TREE_LABEL)){
-            validated = classSelectorPanel.getSelectedObject() != null;
-        }
-        else if (selectedTabTitle.equals(RESTRICTION_CREATOR_LABEL)){
-            validated = restrictionCreatorPanel.classSelectorPanel.getSelectedObject() != null &&
-                    restrictionCreatorPanel.objectPropertySelectorPanel.getSelectedObject() != null;
-        }
-        return validated;
-    }
-
-
-    public JComponent getInlineEditorComponent() {
-        // Same as general editor component
-        return editingComponent;
+        return editor.isWellFormed();
     }
 
 
@@ -129,26 +128,27 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     public void clear() {
-        initialDescription = null;
         editor.setText("");
     }
 
 
     public Set<OWLDescription> getEditedObjects() {
-        if (tabbedPane.getSelectedComponent() == classSelectorPanel) {
-            return new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects());
-        }
-        else if (tabbedPane.getSelectedComponent() == restrictionCreatorPanel) {
-            return restrictionCreatorPanel.createRestrictions();
+        if (tabbedPane != null){
+            final Component c = tabbedPane.getSelectedComponent();
+            if (c.equals(classSelectorPanel)) {
+                return new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects());
+            }
+            else if (c.equals(objectRestrictionCreatorPanel)) {
+                return objectRestrictionCreatorPanel.createRestrictions();
+            }
+            else if (c.equals(dataRestrictionCreatorPanel)) {
+                return dataRestrictionCreatorPanel.createRestrictions();
+            }
         }
         return super.getEditedObjects();
     }
 
 
-    /**
-     * Gets the object that has been edited.
-     * @return The edited object
-     */
     public OWLDescription getEditedObject() {
         try {
             if (editor.isWellFormed()) {
@@ -168,184 +168,36 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         if (classSelectorPanel != null) {
             classSelectorPanel.dispose();
         }
-        if (restrictionCreatorPanel != null) {
-            restrictionCreatorPanel.dispose();
+        if (objectRestrictionCreatorPanel != null) {
+            objectRestrictionCreatorPanel.dispose();
+        }
+        if (dataRestrictionCreatorPanel != null){
+            dataRestrictionCreatorPanel.dispose();
         }
     }
 
 
-    private OWLDataFactory getDataFactory() {
-        return editorKit.getModelManager().getOWLDataFactory();
-    }
-
-    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.add(listener);
-        editor.addStatusChangedListener(listener);
-        listener.verifiedStatusChanged(isValidated());
-    }
-
-
-    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.remove(listener);
-        editor.removeStatusChangedListener(listener);
+    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.add(l);
+        editor.addStatusChangedListener(l);
+        if (objectRestrictionCreatorPanel != null){
+            objectRestrictionCreatorPanel.addStatusChangedListener(l);
+        }
+        if (dataRestrictionCreatorPanel != null){
+            dataRestrictionCreatorPanel.addStatusChangedListener(l);
+        }
+        l.verifiedStatusChanged(isValidated());
     }
 
 
-    private class ObjectRestrictionCreatorPanel extends JPanel {
-
-        private OWLObjectPropertySelectorPanel objectPropertySelectorPanel;
-
-        private OWLClassSelectorPanel classSelectorPanel;
-
-        private JSpinner cardinalitySpinner;
-
-        private JComboBox typeCombo;
-
-
-        public ObjectRestrictionCreatorPanel() {
-            objectPropertySelectorPanel = new OWLObjectPropertySelectorPanel(editorKit);
-            objectPropertySelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restricted properties"));
-            cardinalitySpinner = new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
-            JComponent cardinalitySpinnerEditor = cardinalitySpinner.getEditor();
-            Dimension prefSize = cardinalitySpinnerEditor.getPreferredSize();
-            cardinalitySpinnerEditor.setPreferredSize(new Dimension(50, prefSize.height));
-            classSelectorPanel = new OWLClassSelectorPanel(editorKit);
-            classSelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restriction fillers"));
-            setLayout(new BorderLayout());
-            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false);
-            splitPane.setResizeWeight(0.5);
-            splitPane.setLeftComponent(objectPropertySelectorPanel);
-            splitPane.setRightComponent(classSelectorPanel);
-            add(splitPane);
-            splitPane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            List<RestrictionCreator> types = new ArrayList<RestrictionCreator>();
-            types.add(new RestrictionCreator("Some (existential)") {
-                public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLDescription> fillers,
-                                               Set<OWLDescription> result) {
-                    for (OWLObjectProperty prop : properties) {
-                        for (OWLDescription filler : fillers) {
-                            result.add(getDataFactory().getOWLObjectSomeRestriction(prop, filler));
-                        }
-                    }
-                }
-            });
-            types.add(new RestrictionCreator("Only (universal)") {
-                public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLDescription> fillers,
-                                               Set<OWLDescription> result) {
-                    for (OWLObjectProperty prop : properties) {
-                        if (fillers.isEmpty()) {
-                            return;
-                        }
-                        OWLDescription filler;
-                        if (fillers.size() > 1) {
-                            filler = getDataFactory().getOWLObjectUnionOf(fillers);
-                        }
-                        else {
-                            filler = fillers.iterator().next();
-                        }
-                        result.add(getDataFactory().getOWLObjectAllRestriction(prop, filler));
-                    }
-                }
-            });
-            types.add(new CardinalityRestrictionCreator("Min (min cardinality)", cardinalitySpinner) {
-                public OWLDescription createRestriction(OWLObjectProperty prop, OWLDescription filler, int card) {
-                    return getDataFactory().getOWLObjectMinCardinalityRestriction(prop, card, filler);
-                }
-            });
-            types.add(new CardinalityRestrictionCreator("Exactly (exact cardinality)", cardinalitySpinner) {
-                public OWLDescription createRestriction(OWLObjectProperty prop, OWLDescription filler, int card) {
-                    return getDataFactory().getOWLObjectExactCardinalityRestriction(prop, card, filler);
-                }
-            });
-            types.add(new CardinalityRestrictionCreator("Max (max cardinality)", cardinalitySpinner) {
-                public OWLDescription createRestriction(OWLObjectProperty prop, OWLDescription filler, int card) {
-                    return getDataFactory().getOWLObjectMaxCardinalityRestriction(prop, card, filler);
-                }
-            });
-            typeCombo = new JComboBox(types.toArray());
-
-
-            final JPanel typePanel = new JPanel();
-            typePanel.setBorder(ComponentFactory.createTitledBorder("Restriction type"));
-            add(typePanel, BorderLayout.SOUTH);
-            typePanel.add(typeCombo);
-            typeCombo.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
-                }
-            });
-            JPanel spinnerHolder = new JPanel(new BorderLayout(4, 4));
-            spinnerHolder.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-            spinnerHolder.add(new JLabel("Cardinality"), BorderLayout.WEST);
-            spinnerHolder.add(cardinalitySpinner, BorderLayout.EAST);
-            JPanel spinnerAlignmentPanel = new JPanel(new BorderLayout());
-            spinnerAlignmentPanel.add(spinnerHolder, BorderLayout.WEST);
-            typePanel.add(spinnerAlignmentPanel);
-            cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.remove(l);
+        editor.removeStatusChangedListener(l);
+        if (objectRestrictionCreatorPanel != null){
+            objectRestrictionCreatorPanel.removeStatusChangedListener(l);
         }
-
-
-        public Set<OWLDescription> createRestrictions() {
-            Set<OWLDescription> result = new HashSet<OWLDescription>();
-            RestrictionCreator creator = (RestrictionCreator) typeCombo.getSelectedItem();
-            if (creator == null) {
-                return Collections.emptySet();
-            }
-            creator.createRestrictions(objectPropertySelectorPanel.getSelectedObjects(),
-                                       new HashSet<OWLDescription>(classSelectorPanel.getSelectedObjects()),
-                                       result);
-            return result;
+        if (dataRestrictionCreatorPanel != null){
+            dataRestrictionCreatorPanel.removeStatusChangedListener(l);
         }
-
-
-        public void dispose() {
-            objectPropertySelectorPanel.dispose();
-            classSelectorPanel.dispose();
-        }
-    }
-
-
-    private abstract class RestrictionCreator {
-
-        private String name;
-
-
-        protected RestrictionCreator(String name) {
-            this.name = name;
-        }
-
-
-        public String toString() {
-            return name;
-        }
-
-
-        abstract void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLDescription> fillers,
-                                         Set<OWLDescription> result);
-    }
-
-
-    private abstract class CardinalityRestrictionCreator extends RestrictionCreator {
-
-        private JSpinner cardinalitySpinner;
-
-
-        protected CardinalityRestrictionCreator(String name, JSpinner cardinalitySpinner) {
-            super(name);
-            this.cardinalitySpinner = cardinalitySpinner;
-        }
-
-
-        public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLDescription> fillers,
-                                       Set<OWLDescription> result) {
-            for (OWLObjectProperty prop : properties) {
-                for (OWLDescription desc : fillers) {
-                    result.add(createRestriction(prop, desc, (Integer) cardinalitySpinner.getValue()));
-                }
-            }
-        }
-
-
-        public abstract OWLDescription createRestriction(OWLObjectProperty prop, OWLDescription filler, int card);
     }
 }
