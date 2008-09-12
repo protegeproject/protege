@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -62,5 +64,14 @@ public class OWLObjectList<O extends OWLObject> extends JList {
                 scrollRectToVisible(new Rectangle(getCellBounds(firstIndex, firstIndex)));
             }
         }
+    }
+
+
+    public java.util.List<O> getSelectedOWLObjects(){
+        List<O> sel = new ArrayList<O>();
+        for (Object o : getSelectedValues()){
+            sel.add((O)o);
+        }
+        return sel;
     }
 }

@@ -104,4 +104,7 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
 
     
     public abstract void removeSelectionListener(ChangeListener listener);
+
+    
+    public abstract void dispose();
 }

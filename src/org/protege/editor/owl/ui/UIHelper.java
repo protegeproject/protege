@@ -217,6 +217,17 @@ public class UIHelper {
     }
 
 
+    public OWLDataType pickOWLDataType() {
+        OWLDataTypeSelectorPanel panel = new OWLDataTypeSelectorPanel(owlEditorKit);
+        if (showDialog("Select a datatype", panel) == JOptionPane.OK_OPTION) {
+            return panel.getSelectedObject();
+        }
+        else{
+            return null;
+        }
+    }
+
+
     public <E extends OWLEntity> E pickOWLEntity(String message, Set<E> entities, OWLModelManager owlModelManager) {
         OWLEntityListPanel<E> panel = new OWLEntityListPanel<E>(message, entities, owlEditorKit);
         if (showDialog("Select an entity", panel) == JOptionPane.OK_OPTION) {

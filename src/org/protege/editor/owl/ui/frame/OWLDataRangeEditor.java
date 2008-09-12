@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.selector.DataRangeSelectionPanel;
+import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
 import org.semanticweb.owl.model.OWLException;
@@ -23,7 +23,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
     private JTabbedPane tabbedPane;
 
-    private DataRangeSelectionPanel datatypeListScrollPane;
+    private OWLDataTypeSelectorPanel datatypeListScrollPane;
 
     private ExpressionEditor<OWLDataRange> expressionEditor;
 
@@ -33,7 +33,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
         tabbedPane = new JTabbedPane();
         editorPanel.add(tabbedPane);
-        tabbedPane.add("Built in datatypes", datatypeListScrollPane = new DataRangeSelectionPanel(owlEditorKit));
+        tabbedPane.add("Built in datatypes", datatypeListScrollPane = new OWLDataTypeSelectorPanel(owlEditorKit));
 //        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLExpressionChecker<OWLDataRange>() {
 //            public void check(String text) throws OWLExpressionParserException, OWLException {
 //                editorKit.getModelManager().getOWLDescriptionParser().
@@ -51,7 +51,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
     public void setEditedObject(OWLDataRange dataRange){
         if (dataRange.isDataType()){
-            datatypeListScrollPane.setSelectedObject((OWLDataType)dataRange);
+            datatypeListScrollPane.setSelection((OWLDataType)dataRange);
         }
     }
 
@@ -82,7 +82,7 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
 
     public void clear() {
-        datatypeListScrollPane.setSelectedObject(null);
+        datatypeListScrollPane.setSelection((OWLDataType)null);
     }
 
 
