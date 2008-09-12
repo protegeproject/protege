@@ -143,9 +143,6 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    public static final String KEY_PHYSICAL_URI = "KEY_PHYSICAL_URI";
-
-
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
         URI uri = descriptor.getURI(URI_KEY);
         return uri != null && handleLoadFrom(uri);
