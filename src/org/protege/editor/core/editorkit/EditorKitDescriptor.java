@@ -77,4 +77,9 @@ public final class EditorKitDescriptor implements Serializable {
             return false;
         }
     }
+
+
+    public String toString() {
+        return getLabel();
+    }
 }
