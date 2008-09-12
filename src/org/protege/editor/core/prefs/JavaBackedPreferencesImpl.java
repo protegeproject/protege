@@ -2,6 +2,7 @@ package org.protege.editor.core.prefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -55,12 +56,23 @@ public class JavaBackedPreferencesImpl implements Preferences {
         }
     }
 
-    private java.util.prefs.Preferences getList(String listKey) {
-        return preferences.node(listKey);
+    private java.util.prefs.Preferences getList(String listKey, boolean create) {
+        try {
+            if (create || preferences.nodeExists(listKey)){
+                return preferences.node(listKey);
+            }
+        }
+        catch (BackingStoreException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     public List<String> getStringList(String key, List<String> def) {
-        java.util.prefs.Preferences listPrefs = getList(key);
+        java.util.prefs.Preferences listPrefs = getList(key, false);
+        if (listPrefs == null){
+            return def;
+        }
         int size = listPrefs.getInt("listSize", 0);
         List<String> list = new ArrayList<String>();
         for(int i = 0; i < size; i++) {
@@ -71,7 +83,7 @@ public class JavaBackedPreferencesImpl implements Preferences {
 
 
     public void putStringList(String key, List<String> val) {
-        java.util.prefs.Preferences listPrefs = getList(key);
+        java.util.prefs.Preferences listPrefs = getList(key, true);
         listPrefs.putInt("listSize", val.size());
         for(int i = 0; i < val.size(); i++) {
             listPrefs.put(Integer.toString(i), val.get(i));
@@ -140,7 +152,10 @@ public class JavaBackedPreferencesImpl implements Preferences {
 
 
     public List<byte []> getByteArrayList(String key, List<byte []> def) {
-        java.util.prefs.Preferences listPrefs = getList(key);
+        java.util.prefs.Preferences listPrefs = getList(key, false);
+        if (listPrefs == null){
+            return def;
+        }
         int size = listPrefs.getInt("listSize", 0);
         List<byte []> list = new ArrayList<byte []>();
         for(int i = 0; i < size; i++) {
@@ -151,7 +166,7 @@ public class JavaBackedPreferencesImpl implements Preferences {
 
 
     public void putByteArrayList(String key, List<byte []> val) {
-        java.util.prefs.Preferences listPrefs = getList(key);
+        java.util.prefs.Preferences listPrefs = getList(key, true);
         listPrefs.putInt("listSize", val.size());
         for(int i = 0; i < val.size(); i++) {
             listPrefs.putByteArray(Integer.toString(i), val.get(i));
