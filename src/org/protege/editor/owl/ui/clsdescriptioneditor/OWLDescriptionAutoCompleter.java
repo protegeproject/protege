@@ -291,6 +291,16 @@ public class OWLDescriptionAutoCompleter {
 
     private void insertWord(String word) {
         try {
+            // remove any currently selected text - this is the default behaviour
+            // of the editor when typing manually
+            int selStart = textComponent.getSelectionStart();
+            int selEnd = textComponent.getSelectionEnd();
+            int selLen = selEnd - selStart;
+            if (selLen > 0){
+                System.out.println("removing selection: " + selLen);
+                textComponent.getDocument().remove(selStart, selLen);
+            }
+
             int index = getWordIndex();
             int caretIndex = textComponent.getCaretPosition();
             textComponent.getDocument().remove(index, caretIndex - index);
@@ -377,7 +387,7 @@ public class OWLDescriptionAutoCompleter {
 
     private int getWordIndex() {
         try {
-            int caretPos = textComponent.getCaretPosition() - 1;
+            int caretPos = getEffectiveCaretPosition() - 1;
             for (int index = caretPos; index > -1; index--) {
                 if (wordDelimeters.contains(textComponent.getDocument().getText(index, 1))) {
                     return index + 1;
@@ -408,12 +418,21 @@ public class OWLDescriptionAutoCompleter {
     private String getWordToComplete() {
         try {
             int index = getWordIndex();
-            int caretIndex = textComponent.getCaretPosition();
+            int caretIndex = getEffectiveCaretPosition();
             return textComponent.getDocument().getText(index, caretIndex - index);
         }
         catch (BadLocationException e) {
             return "";
         }
+    }
+
+    // the caret pos should be read as the start of the selection if there is one
+    private int getEffectiveCaretPosition(){
+        int startSel = textComponent.getSelectionStart();
+        if (startSel >= 0){
+            return startSel;
+        }
+        return textComponent.getCaretPosition();
     }
 
 

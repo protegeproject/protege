@@ -88,43 +88,37 @@ public class ExpressionEditor<O> extends JTextPane
         setStateBorder(defaultBorder);
         errorBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED);
         errorStroke = new BasicStroke(3.0f,
-                BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_ROUND,
-                3.0f,
-                new float []{4.0f, 2.0f},
-                0.0f);
+                                      BasicStroke.CAP_BUTT,
+                                      BasicStroke.JOIN_ROUND,
+                                      3.0f,
+                                      new float []{4.0f, 2.0f},
+                                      0.0f);
+        
         docListener = new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
-                timer.restart();
-                clearError();
-                performHighlighting();
-                notifyValidationChanged(false); // updates always disable until parsed
+                handleDocumentUpdated();
             }
-
 
             public void removeUpdate(DocumentEvent e) {
-                timer.restart();
-                clearError();
-                performHighlighting();
-                notifyValidationChanged(false); // updates always disable until parsed
+                handleDocumentUpdated();
             }
-
 
             public void changedUpdate(DocumentEvent e) {
             }
         };
         getDocument().addDocumentListener(docListener);
+
         timer = new Timer(errorCheckDelay, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Timer fired");
-                timer.stop();
-                checkExpression();
+                handleTimer();
             }
         });
-        refreshComponent();
-        OWLDescriptionAutoCompleter completer = new OWLDescriptionAutoCompleter(owlEditorKit, this, checker);
-        createStyles();
 
+        refreshComponent();
+
+        new OWLDescriptionAutoCompleter(owlEditorKit, this, checker);
+
+        createStyles();
     }
 
 
@@ -212,18 +206,19 @@ public class ExpressionEditor<O> extends JTextPane
         }
     }
 
-//    /**
-//     * Called by the editor to check that the specified text is valid.  Override
-//     * this method to alter the parse behaviour.
-//     * @param text The text to check
-//     * @throws OWLException If there was a problem parsing the text
-//     * @throws OWLDescriptionParserException If the text did not parse correctly.  The
-//     * description should contain details of why the text didn't parse correctly
-//     */
-//    protected void parse(String text), OWLDescriptionParserException {
-//        OWLDescriptionParser parser = parserFactory.getParser();
-//        parser.isWellFormed(text);
-//    }
+
+    private void handleTimer() {
+        timer.stop();
+        checkExpression();
+    }
+
+
+    private void handleDocumentUpdated() {
+        timer.restart();
+        clearError();
+        performHighlighting();
+        notifyValidationChanged(false); // updates always disable until parsed
+    }
 
 
     private void setError(OWLExpressionParserException e) {
@@ -281,9 +276,9 @@ public class ExpressionEditor<O> extends JTextPane
                         return;
                     }
                     StringTokenizer tokenizer = new StringTokenizer(getDocument().getText(lineStartIndex,
-                            lineEndIndex - lineStartIndex),
-                            " ()[]{},\n\t.'",
-                            true);
+                                                                                          lineEndIndex - lineStartIndex),
+                                                                    " ()[]{},\n\t.'",
+                                                                    true);
                     int index = lineStartIndex;
                     boolean inEscapedName = false;
                     while (tokenizer.hasMoreTokens()) {
@@ -302,9 +297,9 @@ public class ExpressionEditor<O> extends JTextPane
                                 color = Color.BLACK;
                             }
                             getStyledDocument().setCharacterAttributes(index,
-                                    curToken.length(),
-                                    getStyledDocument().getStyle(color.toString()),
-                                    true);
+                                                                       curToken.length(),
+                                                                       getStyledDocument().getStyle(color.toString()),
+                                                                       true);
                         }
                         index += curToken.length();
                     }
