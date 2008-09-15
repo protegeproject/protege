@@ -218,6 +218,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public void dispose() {
+        super.dispose();
+        
         if (assertedClassHierarchyProvider != null) {
             assertedClassHierarchyProvider.dispose();
         }
@@ -252,8 +254,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
         changeListenerManager.dumpWarningForAllListeners(logger, Level.ERROR,
                                                          "(Listeners should be removed in the plugin dispose method!)");
-
-        super.dispose();
     }
 
 
