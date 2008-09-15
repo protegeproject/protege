@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.find;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.semanticweb.owl.model.*;
 
@@ -26,8 +27,13 @@ public class EntityFinderImpl implements EntityFinder {
 
     private OWLEntityRenderingCache renderingCache;
 
+    private OWLModelManagerImpl mngr;
 
-    public EntityFinderImpl(OWLEntityRenderingCache renderingCache) {
+    private static final String WILDCARD = "*";
+
+
+    public EntityFinderImpl(OWLModelManagerImpl mngr, OWLEntityRenderingCache renderingCache) {
+        this.mngr = mngr;
         this.renderingCache = renderingCache;
     }
 
@@ -126,59 +132,87 @@ public class EntityFinderImpl implements EntityFinder {
      */
     private <T extends OWLEntity> Set<T> doWildcardSearch(String match, Class<T> type) {
         Set<T> results = new HashSet<T>();
-        SimpleWildCardMatcher matcher;
-        if (match.startsWith("*")) {
-            if (match.length() > 1 && match.endsWith("*")) {
-                // Contains
-                matcher = new SimpleWildCardMatcher() {
-                    public boolean matches(String rendering, String s) {
-                        return rendering.indexOf(s) != -1;
-                    }
-                };
-                match = match.substring(1, match.length() - 1);
-            }
-            else {
-                // Ends with
-                matcher = new SimpleWildCardMatcher() {
-                    public boolean matches(String rendering, String s) {
-                        return rendering.indexOf(s) != -1;
-                    }
-                };
-                match = match.substring(1, match.length());
-            }
-        }
-        else {
-            // Starts with
-            if (match.endsWith("*") && match.length() > 1) {
-                match = match.substring(0, match.length() - 1);
-            }
-            // @@TODO handle matches exactly?
-            matcher = new SimpleWildCardMatcher() {
-                public boolean matches(String rendering, String s) {
-                    return rendering.startsWith(s) || rendering.startsWith("'" + s);
-                }
-            };
-        }
 
-        if (match.trim().length() == 0) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Attempt to match the empty string (no results)");
-            }
+        if (match.equals(WILDCARD)){
+            results = getAllEntities(type);
         }
         else{
-            match = match.toLowerCase();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Match: " + match);
+            SimpleWildCardMatcher matcher;
+            if (match.startsWith(WILDCARD)) {
+                if (match.length() > 1 && match.endsWith(WILDCARD)) {
+                    // Contains
+                    matcher = new SimpleWildCardMatcher() {
+                        public boolean matches(String rendering, String s) {
+                            return rendering.indexOf(s) != -1;
+                        }
+                    };
+                    match = match.substring(1, match.length() - 1);
+                }
+                else {
+                    // Ends with
+                    matcher = new SimpleWildCardMatcher() {
+                        public boolean matches(String rendering, String s) {
+                            return rendering.indexOf(s) != -1;
+                        }
+                    };
+                    match = match.substring(1, match.length());
+                }
             }
-            for (String rendering : getRenderings(type)) {
-                if (rendering.length() > 0){
-                    if (matcher.matches(rendering.toLowerCase(), match)) {
-                        results.add(getEntity(rendering, type));
+            else {
+                // Starts with
+                if (match.endsWith(WILDCARD) && match.length() > 1) {
+                    match = match.substring(0, match.length() - 1);
+                }
+                // @@TODO handle matches exactly?
+                matcher = new SimpleWildCardMatcher() {
+                    public boolean matches(String rendering, String s) {
+                        return rendering.startsWith(s) || rendering.startsWith("'" + s);
+                    }
+                };
+            }
+
+            if (match.trim().length() == 0) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Attempt to match the empty string (no results)");
+                }
+            }
+            else{
+                match = match.toLowerCase();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Match: " + match);
+                }
+                for (String rendering : getRenderings(type)) {
+                    if (rendering.length() > 0){
+                        if (matcher.matches(rendering.toLowerCase(), match)) {
+                            results.add(getEntity(rendering, type));
+                        }
                     }
                 }
             }
+
         }
+
         return results;
+    }
+
+
+    private <T extends OWLEntity> Set<T> getAllEntities(Class<T> type) {
+        Set<T> entities = new HashSet<T>();
+        for (OWLOntology ont: mngr.getActiveOntologies()){
+            if (type.equals(OWLClass.class)){
+                entities.addAll((Set<T>)ont.getReferencedClasses());
+            }
+            else if (type.equals(OWLObjectProperty.class)){
+                entities.addAll((Set<T>)ont.getReferencedObjectProperties());
+            }
+            else if (type.equals((OWLDataProperty.class))){
+                entities.addAll((Set<T>)ont.getReferencedDataProperties());
+            }
+            else if (type.equals(OWLIndividual.class)){
+                entities.addAll((Set<T>)ont.getReferencedIndividuals());
+            }
+        }
+        return entities;
     }
 
 

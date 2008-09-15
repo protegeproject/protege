@@ -990,7 +990,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public EntityFinder getEntityFinder() {
         if (entityFinder == null){
-            entityFinder = new EntityFinderImpl(owlEntityRenderingCache);
+            entityFinder = new EntityFinderImpl(this, owlEntityRenderingCache);
         }
         return entityFinder;
     }
