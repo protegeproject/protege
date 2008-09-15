@@ -4,10 +4,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owl.model.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -74,10 +71,20 @@ public class OWLObjectRenderingCache {
 
 
     public String getRendering(OWLObject object, OWLObjectRenderer owlObjectRenderer) {
-        String s = cache.get(object);
+        String s = null;
+        if (object instanceof OWLDescription){
+            final List<String> userRenderings = OWLExpressionUserCache.getInstance(mngr).getRenderings((OWLDescription) object);
+            if (!userRenderings.isEmpty()){
+                s = userRenderings.iterator().next(); // get the last rendering the user entered
+                cache.put(object, s);
+            }
+        }
         if (s == null){
-            s = owlObjectRenderer.render(object, null);
-            cache.put(object, s);
+            s = cache.get(object);
+            if (s == null){
+                s = owlObjectRenderer.render(object, null);
+                cache.put(object, s);
+            }
         }
         return s;
     }
