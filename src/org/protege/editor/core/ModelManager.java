@@ -32,16 +32,7 @@ package org.protege.editor.core;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface ModelManager {
-
-    // Comment out getId for now, because I'm not
-    // sure if its actually useful!
-    //public String getId();
-
-//    public EditorKit getEditorKit();
-
-
-    public void dispose();
+public interface ModelManager extends Disposable {
 
 
     public void addModelManagerListener(ModelManagerListener listener);
@@ -54,4 +45,10 @@ public interface ModelManager {
 
 
     public boolean isDirty();
+
+
+    public <T extends Disposable> void put(Object key, T object);
+
+
+    public <T extends Disposable> T get(Object key);
 }

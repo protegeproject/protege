@@ -1,7 +1,9 @@
 package org.protege.editor.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -23,6 +25,8 @@ public abstract class AbstractModelManager implements ModelManager {
 
     private List<ModelManagerListener> listeners;
 
+    private Map<Object, Disposable> objects = new HashMap<Object, Disposable>();
+
 
     protected AbstractModelManager() {
         listeners = new ArrayList<ModelManagerListener>();
@@ -43,5 +47,23 @@ public abstract class AbstractModelManager implements ModelManager {
         for (ModelManagerListener listener : new ArrayList<ModelManagerListener>(listeners)) {
             listener.handleEvent(event);
         }
+    }
+
+
+    public <T extends Disposable> void put(Object key, T object) {
+        objects.put(key, object);
+    }
+
+
+    public <T extends Disposable> T get(Object key) {
+        return (T) objects.get(key);
+    }
+
+
+    public void dispose() {
+        for (Disposable object : objects.values()){
+            object.dispose();
+        }
+        objects.clear();
     }
 }
