@@ -1,7 +1,11 @@
 package org.protege.editor.owl.model.cache;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -44,11 +48,13 @@ import java.util.*;
  */
 public class OWLExpressionUserCache implements Disposable {
 
+    private Logger logger = Logger.getLogger(OWLExpressionUserCache.class);
+
+
     private static final String ID = OWLExpressionUserCache.class.getName();
 
 
-    private Map<OWLDescription, List<String>> renderingsCache =
-            new HashMap<OWLDescription, List<String>>();
+    private Map<OWLDescription, String> renderingsCache = new HashMap<OWLDescription, String>();
 
     private List<String> cacheInternalForm = new ArrayList<String>();
     private List<String> cacheExternalForm = null;
@@ -81,6 +87,7 @@ public class OWLExpressionUserCache implements Disposable {
     private OWLExpressionUserCache(OWLModelManager mngr){
         this.mngr = mngr;
         mngr.addListener(modelManagerListener);
+        load();
     }
 
 
@@ -94,14 +101,8 @@ public class OWLExpressionUserCache implements Disposable {
             cacheInternalForm.add(0, internalRendering); // add them backwards
         }
 
-        List<String> renderings = renderingsCache.get(owlDescription);
-        if (renderings == null){
-            renderings = new ArrayList<String>();
-            renderingsCache.put(owlDescription, renderings);
-        }
-        if (!renderings.contains(internalRendering)){
-            renderings.add(0, internalRendering);
-        }
+
+        renderingsCache.put(owlDescription, internalRendering);
     }
 
 
@@ -116,30 +117,56 @@ public class OWLExpressionUserCache implements Disposable {
     }
 
 
-    public List<String> getRenderings(OWLDescription descr) {
-        List<String> renderings = new ArrayList<String>();
-        final List<String> cache = renderingsCache.get(descr);
-        if (cache != null){
-            for (String rendering : cache){
-                renderings.add(fromInternalForm(rendering));
-            }
-        }
-        return renderings;
+    public String getRendering(OWLDescription descr) {
+        return fromInternalForm(renderingsCache.get(descr));
     }
 
 
     public void refresh(){
-        System.out.println("refreshing expression history");
         cacheExternalForm = null;
     }
 
 
     public void dispose() {
+        save();
         renderingsCache.clear();
         renderingsCache = null;
         cacheExternalForm = null;
         cacheInternalForm = null;
+        mngr.removeListener(modelManagerListener);
         mngr = null;
+    }
+
+
+    private void save() {
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
+        prefs.putStringList(getPrefsID(), cacheInternalForm);
+    }
+
+
+    private void load() {
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
+        if (prefs != null){
+            cacheExternalForm = new ArrayList<String>();
+            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
+                String external = fromInternalForm(internal);
+                try {
+                    OWLDescription descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
+                    renderingsCache.put(descr, internal);
+                    cacheInternalForm.add(internal);
+                    cacheExternalForm.add(external);
+                }
+                catch (OWLExpressionParserException e) {
+                    logger.warn("Could not reload expression from history files: " + internal);
+                }
+            }
+        }
+    }
+
+
+    private String getPrefsID() {
+        final String fragment = mngr.getURIRendering(mngr.getActiveOntology().getURI());
+        return fragment + "-" + mngr.getActiveOntology().hashCode();
     }
 
 
@@ -162,6 +189,10 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     private String toInternalForm(String input) {
+        if (input == null){
+            return null;
+        }
+        
         InternalFormEntityRenderer ren = new InternalFormEntityRenderer();
 
         StringBuilder sb = new StringBuilder();
@@ -195,6 +226,10 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     private String fromInternalForm(String input) {
+        if (input == null){
+            return null;
+        }
+
         StringBuilder sb = new StringBuilder();
 
         StringTokenizer tokenizer = new StringTokenizer(input, WHITESPACE, true);

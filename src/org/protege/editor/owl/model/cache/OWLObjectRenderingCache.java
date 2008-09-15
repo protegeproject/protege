@@ -73,9 +73,9 @@ public class OWLObjectRenderingCache {
     public String getRendering(OWLObject object, OWLObjectRenderer owlObjectRenderer) {
         String s = null;
         if (object instanceof OWLDescription){
-            final List<String> userRenderings = OWLExpressionUserCache.getInstance(mngr).getRenderings((OWLDescription) object);
-            if (!userRenderings.isEmpty()){
-                s = userRenderings.iterator().next(); // get the last rendering the user entered
+            String userRendering = OWLExpressionUserCache.getInstance(mngr).getRendering((OWLDescription) object);
+            if (userRendering != null){
+                s = userRendering;
                 cache.put(object, s);
             }
         }
