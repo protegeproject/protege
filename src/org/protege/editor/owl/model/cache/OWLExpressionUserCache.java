@@ -5,12 +5,8 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLDescription;
 
-import java.net.URI;
 import java.util.*;
 
 /*
@@ -68,10 +64,6 @@ public class OWLExpressionUserCache implements Disposable {
         }
     };
 
-    private OWLObjectRenderer objectRenderer;
-
-    private InternalFormEntityRenderer entityRenderer;
-
 
     // Implemented as its own factory for now
     public static OWLExpressionUserCache getInstance(OWLModelManager mngr){
@@ -87,52 +79,50 @@ public class OWLExpressionUserCache implements Disposable {
     private OWLExpressionUserCache(OWLModelManager mngr){
         this.mngr = mngr;
         mngr.addListener(modelManagerListener);
-        entityRenderer = new InternalFormEntityRenderer();
-        objectRenderer = new OWLObjectRendererImpl(mngr){
-            protected String getRendering(OWLEntity entity) {
-                return entityRenderer.render(entity);
-            }
-        };
     }
 
 
     public void add(OWLDescription owlDescription, String rendering) {
-        if (!getRenderings().contains(rendering)){
-            getRenderings().add(0, rendering); // add them backwards
-        }
-
-        String internalRendering = objectRenderer.render(owlDescription, null);
-        if (!cacheInternalForm.contains(internalRendering)){
-            cacheInternalForm.add(0, internalRendering); // add them backwards
-        }
-
-        List<String> renderings = renderingsCache.get(owlDescription);
-        if (renderings == null){
-            renderings = new ArrayList<String>();
-            renderingsCache.put(owlDescription, renderings);
-        }
-        if (!renderings.contains(internalRendering)){
-            renderings.add(internalRendering);
-        }
+//        if (!getRenderings().contains(rendering)){
+//            getRenderings().add(0, rendering); // add them backwards
+//        }
+//
+//        String internalRendering = toInternalForm(rendering);
+//        if (!cacheInternalForm.contains(internalRendering)){
+//            cacheInternalForm.add(0, internalRendering); // add them backwards
+//        }
+//
+//        List<String> renderings = renderingsCache.get(owlDescription);
+//        if (renderings == null){
+//            renderings = new ArrayList<String>();
+//            renderingsCache.put(owlDescription, renderings);
+//        }
+//        if (!renderings.contains(internalRendering)){
+//            renderings.add(0, internalRendering);
+//        }
     }
 
 
     public List<String> getRenderings() {
-        if (cacheExternalForm == null){
-            cacheExternalForm = new ArrayList<String>();
-            for (String s : cacheInternalForm){
-                cacheExternalForm.add(fromInternalForm(s));
-            }
-        }
-        return cacheExternalForm;
+        return Collections.EMPTY_LIST;
+//        if (cacheExternalForm == null){
+//            cacheExternalForm = new ArrayList<String>();
+//            for (String s : cacheInternalForm){
+//                cacheExternalForm.add(fromInternalForm(s));
+//            }
+//        }
+//        return cacheExternalForm;
     }
 
 
     public List<String> getRenderings(OWLDescription descr) {
         List<String> renderings = new ArrayList<String>();
-        for (String rendering : renderingsCache.get(descr)){
-            renderings.add(fromInternalForm(rendering));
-        }
+//        final List<String> cache = renderingsCache.get(descr);
+//        if (cache != null){
+//            for (String rendering : cache){
+//                renderings.add(fromInternalForm(rendering));
+//            }
+//        }
         return renderings;
     }
 
@@ -140,59 +130,6 @@ public class OWLExpressionUserCache implements Disposable {
     public void refresh(){
         System.out.println("refreshing expression history");
         cacheExternalForm = null;
-    }
-
-
-////////////////////////////////
-
-    // handle rendering to and from a canonical form that captures all
-    // of the required information - the type and the URI of entities
-    // replaces the entity names with typed URIs to be more robust against renderer changes
-    // typed URIs are of the form OWLClass::http://etc etc
-
-    private static final String OWLCLASS = "OWLClass";
-    private static final String OWLOBJECTPROPERTY = "OWLObjectProperty";
-    private static final String OWLDATAPROPERTY = "OWLDataProperty";
-    private static final String OWLINDIVIDUAL = "OWLIndividual";
-    private static final String OWLDATATYPE = "OWLDataType";
-    private static final String DELIMITER = "::";
-
-    private static final String WHITESPACE = " \n\t";
-
-
-    private String fromInternalForm(String rendererNeutralExpression) {
-        String expression = rendererNeutralExpression;
-        StringTokenizer tokenizer = new StringTokenizer(rendererNeutralExpression, WHITESPACE);
-        while (tokenizer.hasMoreTokens()){
-            String token = tokenizer.nextToken();
-
-            OWLEntity entity = parseOWLEntity(token);
-            if (entity != null){
-                expression = expression.replaceAll(token, mngr.getRendering(entity));
-            }
-        }
-        return expression;
-    }
-
-
-    private OWLEntity parseOWLEntity(String name) {
-        String[] s = name.split(DELIMITER);
-        if (s[0].equals(OWLCLASS)){
-            return mngr.getOWLDataFactory().getOWLClass(URI.create(s[1]));
-        }
-        else if (s[0].equals(OWLOBJECTPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLObjectProperty(URI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATAPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLDataProperty(URI.create(s[1]));
-        }
-        else if (s[0].equals(OWLINDIVIDUAL)){
-            return mngr.getOWLDataFactory().getOWLIndividual(URI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATATYPE)){
-            return mngr.getOWLDataFactory().getOWLDataType(URI.create(s[1]));
-        }
-        return null;
     }
 
 
@@ -205,39 +142,138 @@ public class OWLExpressionUserCache implements Disposable {
     }
 
 
-    class InternalFormEntityRenderer implements OWLEntityRenderer, OWLEntityVisitor {
+////////////////////////////////
 
-        private String cf;
+    // handle rendering to and from a canonical form that captures all
+    // of the required information - the type and the URI of entities
+    // replaces the entity names with typed URIs to be more robust against renderer changes
+    // typed URIs are of the form OWLClass::http://etc etc
 
-        public String render(OWLEntity entity){
-            cf = null;
-            entity.accept(this);
-            return cf;
-        }
-
-
-        public void visit(OWLClass entity) {
-            cf = OWLCLASS + DELIMITER + entity.getURI();
-        }
-
-
-        public void visit(OWLObjectProperty entity) {
-            cf = OWLOBJECTPROPERTY + DELIMITER + entity.getURI();
-        }
-
-
-        public void visit(OWLDataProperty entity) {
-            cf = OWLDATAPROPERTY + DELIMITER + entity.getURI();
-        }
-
-
-        public void visit(OWLIndividual entity) {
-            cf = OWLINDIVIDUAL + DELIMITER + entity.getURI();
-        }
-
-
-        public void visit(OWLDataType entity) {
-            cf = OWLDATATYPE + DELIMITER + entity.getURI();
-        }
-    }
+//    private static final String OWLCLASS = "OWLClass";
+//    private static final String OWLOBJECTPROPERTY = "OWLObjectProperty";
+//    private static final String OWLDATAPROPERTY = "OWLDataProperty";
+//    private static final String OWLINDIVIDUAL = "OWLIndividual";
+//    private static final String OWLDATATYPE = "OWLDataType";
+//    private static final String DELIMITER = "::";
+//
+//    private static final String WHITESPACE = " \n\t{}()[],";
+//
+//
+//
+//    private String toInternalForm(String input) {
+//        StringBuilder sb = new StringBuilder();
+//
+//        StringTokenizer tokenizer = new StringTokenizer(input, WHITESPACE);
+//        int endIndex = 0;
+//
+//        while (tokenizer.hasMoreTokens()){
+//            String token = tokenizer.nextToken();
+//            if (token.startsWith("\"") || token.startsWith("'")){
+//                while(tokenizer.hasMoreTokens() && !token.endsWith("\"") && !token.endsWith("'")){
+//                    token += token;
+//                }
+//            }
+//
+//            int startIndex = input.indexOf(token, endIndex);
+//
+//            sb.append(input.substring(endIndex, startIndex)); // all whitespace preceeding this token
+//
+//            OWLEntity entity = parseOWLEntity(token);
+//            if (entity != null){
+//                sb.append(mngr.getRendering(entity));
+//            }
+//            else{
+//                sb.append(token);
+//            }
+//
+//            endIndex = startIndex + token.length();
+//        }
+//        return sb.toString();
+//    }
+//
+//
+//
+//    private String fromInternalForm(String input) {
+//        StringBuilder sb = new StringBuilder();
+//
+//        StringTokenizer tokenizer = new StringTokenizer(input, WHITESPACE);
+//        int endIndex = 0;
+//
+//        while (tokenizer.hasMoreTokens()){
+//            String token = tokenizer.nextToken();
+//
+//            int startIndex = input.indexOf(token, endIndex);
+//
+//            sb.append(input.substring(endIndex, startIndex)); // all whitespace preceeding this token
+//
+//            OWLEntity entity = parseOWLEntity(token);
+//            if (entity != null){
+//                sb.append(mngr.getRendering(entity));
+//            }
+//            else{
+//                sb.append(token);
+//            }
+//
+//            endIndex = startIndex + token.length();
+//        }
+//        return sb.toString();
+//    }
+//
+//
+//    private OWLEntity parseOWLEntity(String name) {
+//        String[] s = name.split(DELIMITER);
+//        if (s[0].equals(OWLCLASS)){
+//            return mngr.getOWLDataFactory().getOWLClass(URI.create(s[1]));
+//        }
+//        else if (s[0].equals(OWLOBJECTPROPERTY)){
+//            return mngr.getOWLDataFactory().getOWLObjectProperty(URI.create(s[1]));
+//        }
+//        else if (s[0].equals(OWLDATAPROPERTY)){
+//            return mngr.getOWLDataFactory().getOWLDataProperty(URI.create(s[1]));
+//        }
+//        else if (s[0].equals(OWLINDIVIDUAL)){
+//            return mngr.getOWLDataFactory().getOWLIndividual(URI.create(s[1]));
+//        }
+//        else if (s[0].equals(OWLDATATYPE)){
+//            return mngr.getOWLDataFactory().getOWLDataType(URI.create(s[1]));
+//        }
+//        return null;
+//    }
+//
+//
+//    class InternalFormEntityRenderer implements OWLEntityRenderer, OWLEntityVisitor {
+//
+//        private String cf;
+//
+//        public String render(OWLEntity entity){
+//            cf = null;
+//            entity.accept(this);
+//            return cf;
+//        }
+//
+//
+//        public void visit(OWLClass entity) {
+//            cf = OWLCLASS + DELIMITER + entity.getURI();
+//        }
+//
+//
+//        public void visit(OWLObjectProperty entity) {
+//            cf = OWLOBJECTPROPERTY + DELIMITER + entity.getURI();
+//        }
+//
+//
+//        public void visit(OWLDataProperty entity) {
+//            cf = OWLDATAPROPERTY + DELIMITER + entity.getURI();
+//        }
+//
+//
+//        public void visit(OWLIndividual entity) {
+//            cf = OWLINDIVIDUAL + DELIMITER + entity.getURI();
+//        }
+//
+//
+//        public void visit(OWLDataType entity) {
+//            cf = OWLDATATYPE + DELIMITER + entity.getURI();
+//        }
+//    }
 }
