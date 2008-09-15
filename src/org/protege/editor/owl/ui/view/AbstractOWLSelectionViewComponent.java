@@ -59,9 +59,11 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         registeredActions = new HashSet<OWLSelectionViewAction>();
         listener = new OWLSelectionModelListener() {
             public void selectionChanged() throws Exception {
-                final OWLEntity owlEntity = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
-                if (canShowEntity(owlEntity)){
-                    updateViewContentAndHeader();
+                final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+                if (owlObject instanceof OWLEntity){
+                    if (canShowEntity((OWLEntity)owlObject)){
+                        updateViewContentAndHeader();
+                    }
                 }
             }
         };
