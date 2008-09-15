@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.frame;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owl.model.OWLDescription;
@@ -30,6 +31,9 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     private static final String OBJECT_RESTRICTION_CREATOR_LABEL = "Object restriction creator";
     private static final String DATA_RESTRICTION_CREATOR_LABEL = "Data restriction creator";
 
+
+    private OWLEditorKit editorKit;
+
     private ExpressionEditor<OWLDescription> editor;
 
     private JComponent editingComponent;
@@ -53,6 +57,8 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
+
+        this.editorKit = editorKit;
 
         editor = new ExpressionEditor<OWLDescription>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker());
         editor.setExpressionObject(description);
@@ -152,7 +158,9 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     public OWLDescription getEditedObject() {
         try {
             if (editor.isWellFormed()) {
-                return editor.createObject();
+                OWLDescription owlDescription = editor.createObject();
+                OWLExpressionUserCache.getInstance(editorKit.getModelManager()).add(owlDescription, editor.getText());
+                return owlDescription;
             }
             else {
                 return null;

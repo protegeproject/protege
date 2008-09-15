@@ -118,6 +118,8 @@ public class ExpressionEditor<O> extends JTextPane
 
         new OWLDescriptionAutoCompleter(owlEditorKit, this, checker);
 
+        new OWLExpressionHistoryCompleter(owlEditorKit, this);
+
         createStyles();
     }
 
