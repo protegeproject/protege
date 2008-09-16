@@ -140,6 +140,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         nonTransparentComponents.add(JTextComponent.class);
         nonTransparentComponents.add(JList.class);
         nonTransparentComponents.add(JTree.class);
+        nonTransparentComponents.add(JTable.class);
+        nonTransparentComponents.add(JScrollPane.class);
     }
 
 
