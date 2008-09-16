@@ -31,7 +31,7 @@ public class MoveAxiomsWizard extends Wizard {
 
     private List<MoveAxiomsKit> moveAxiomsKits;
 
-    private Set<OWLAxiom> axioms;
+    private Set<? extends OWLAxiom> axioms;
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
         setTitle("Move axioms to ontology");
@@ -142,12 +142,12 @@ public class MoveAxiomsWizard extends Wizard {
     }
 
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<? extends OWLAxiom> getAxioms() {
         return axioms;
     }
 
 
-    public void setAxioms(Set<OWLAxiom> axioms) {
+    public void setAxioms(Set<? extends OWLAxiom> axioms) {
         this.axioms = axioms;
     }
 }

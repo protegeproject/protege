@@ -88,7 +88,7 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
     }
 
 
-    private Set<OWLAxiom> getUnfilteredAxioms() {
+    private Set<? extends OWLAxiom> getUnfilteredAxioms() {
         return getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms();
     }
 
