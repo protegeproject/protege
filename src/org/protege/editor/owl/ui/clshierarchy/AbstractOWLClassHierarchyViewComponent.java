@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
@@ -162,16 +163,21 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
     protected void transmitSelection() {
         deletableChangeListenerMediator.fireStateChanged(this);
-        if (!isPinned()) {
-            OWLClass selCls = tree.getSelectedOWLObject();
-            if (selCls != null) {
+
+        OWLClass selCls = getSelectedClass();
+        if (selCls != null) {
+            final View view = getView();
+            if (view != null && !view.isPinned()){
+                view.setPinned(true); // so that we don't follow the selection
+                setSelectedEntity(selCls);
+                view.setPinned(false);
+            }
+            else{
                 setSelectedEntity(selCls);
             }
-            else {
-                // Update from OWL selection model
-                updateViewContentAndHeader();
-            }
         }
+
+        updateHeader(selCls);
     }
 
 
