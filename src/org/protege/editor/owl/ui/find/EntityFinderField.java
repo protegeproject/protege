@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.find;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.EntityFinderPreferences;
-import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.*;
@@ -184,7 +183,7 @@ public class EntityFinderField extends JTextField {
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
             window.setSize(getWidth(), 200);
-            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(new OWLEntityComparator(editorKit.getModelManager()));
+            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(editorKit.getModelManager().getOWLObjectComparator());
             ts.addAll(results);
             resultsList.setListData(ts.toArray());
             window.setVisible(true);

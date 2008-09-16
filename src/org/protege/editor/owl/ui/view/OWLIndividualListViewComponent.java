@@ -6,7 +6,6 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.semanticweb.owl.model.*;
@@ -81,9 +80,7 @@ public class OWLIndividualListViewComponent extends
 
         setupActions();
 		this.changeListenerMediator = new ChangeListenerMediator();
-		this.individualsInList = new TreeSet<OWLIndividual>(
-				new OWLEntityComparator<OWLIndividual>(this
-						.getOWLModelManager()));
+		this.individualsInList = new TreeSet<OWLIndividual>(getOWLModelManager().getOWLObjectComparator());
 		this.refill();
 		this.modelManagerListener = new OWLModelManagerListener() {
 			public void handleChange(OWLModelManagerChangeEvent event) {

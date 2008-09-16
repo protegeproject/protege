@@ -7,7 +7,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
@@ -43,6 +42,17 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
         super(owlEditorKit, provider);
+        initialise(owlEditorKit);
+    }
+
+
+    public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects) {
+        super(owlEditorKit, provider, rootObjects, owlEditorKit.getModelManager().getOWLObjectComparator());
+        initialise(owlEditorKit);
+    }
+
+
+    private void initialise(OWLEditorKit owlEditorKit) {
         setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
         setHighlightKeywords(false);
         setupListener();
@@ -70,18 +80,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         }
 
     }
-
-
-    public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects) {
-        super(owlEditorKit, provider, rootObjects, new OWLEntityComparator(owlEditorKit.getModelManager()));
-        setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
-        setHighlightKeywords(false);
-        setupListener();
-        installPopupMenu();
-        setRowHeight(-1);
-        autoExpandTree();
-    }
-
 
 
     private void autoExpandTree() {
