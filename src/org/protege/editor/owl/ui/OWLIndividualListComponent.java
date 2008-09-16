@@ -118,7 +118,7 @@ public class OWLIndividualListComponent extends JPanel {
         };
         getOWLModelManager().addOntologyChangeListener(listener);
         changeListenerMediator = new ChangeListenerMediator();
-        individualsInList = new TreeSet<OWLIndividual>(new OWLEntityComparator<OWLIndividual>(getOWLModelManager()));
+        individualsInList = new TreeSet<OWLIndividual>(getOWLModelManager().getOWLObjectComparator());
 
         modelManagerListener = new OWLModelManagerListener() {
 

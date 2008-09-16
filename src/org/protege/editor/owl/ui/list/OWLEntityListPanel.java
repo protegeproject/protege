@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.list;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.OWLEntityComparator;
 import org.semanticweb.owl.model.OWLEntity;
 
 import java.awt.*;
@@ -32,7 +31,7 @@ public class OWLEntityListPanel<E extends OWLEntity> extends OWLObjectListPanel<
 
 
     private static <E extends OWLEntity> Set<E> getOrderedSet(OWLModelManager owlModelManager, Set<E> objects) {
-        TreeSet<E> ts = new TreeSet<E>(new OWLEntityComparator<E>(owlModelManager));
+        TreeSet<E> ts = new TreeSet<E>(owlModelManager.getOWLObjectComparator());
         ts.addAll(objects);
         return ts;
     }

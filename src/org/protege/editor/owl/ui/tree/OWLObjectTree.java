@@ -52,7 +52,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private OWLObjectHierarchyProviderListener listener;
 
-    private Comparator<N> comparator;
+    private Comparator<? super N> comparator;
 
     private OWLTreeDragAndDropHandler<N> dragAndDropHandler;
 
@@ -64,21 +64,13 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider,
-                         Comparator<N> objectComparator) {
+                         Comparator<? super N> objectComparator) {
         this(owlEditorKit, provider, provider.getRoots(), objectComparator);
     }
 
 
-    public String getToolTipText(MouseEvent event) {
-        N obj = getOWLObjectAtMousePosition(event);
-        if (obj instanceof OWLEntity) {
-            return ((OWLEntity) obj).getURI().toString();
-        }
-        return null;
-    }
-
     public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
-                         Comparator<N> owlObjectComparator) {
+                         Comparator<? super N> owlObjectComparator) {
         this.owlEditorKit = owlEditorKit;
 
         ToolTipManager.sharedInstance().registerComponent(this);
@@ -144,6 +136,15 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 scrollPathToVisible(event.getPath());
             }
         });
+    }
+
+
+    public String getToolTipText(MouseEvent event) {
+        N obj = getOWLObjectAtMousePosition(event);
+        if (obj instanceof OWLEntity) {
+            return ((OWLEntity) obj).getURI().toString();
+        }
+        return null;
     }
 
 
@@ -282,7 +283,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     /**
      * Gets the comparator used to order sibling tree nodes.
      */
-    public Comparator<N> getOWLObjectComparator() {
+    public Comparator<? super N> getOWLObjectComparator() {
         return comparator;
     }
 
