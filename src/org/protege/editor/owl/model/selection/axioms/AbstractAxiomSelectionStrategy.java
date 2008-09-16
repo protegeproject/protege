@@ -40,30 +40,16 @@ import java.util.Set;/*
  */
 public abstract class AbstractAxiomSelectionStrategy implements AxiomSelectionStrategy {
 
-    private Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 
     private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
     public static final String ONTOLOGIES_CHANGED = "change.ontologies";
-
-
-    public final void setOntologies(Set<OWLOntology> ontologies){
-        this.ontologies = ontologies;
-        notifyPropertyChange(ONTOLOGIES_CHANGED);
-    }
-
 
     protected void notifyPropertyChange(String property) {
         for (PropertyChangeListener l : listeners){
         l.propertyChange(new PropertyChangeEvent(this, property, null, null));
         }
     }
-
-
-    public final Set<OWLOntology> getOntologies() {
-        return ontologies;
-    }
-
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
         listeners.add(l);

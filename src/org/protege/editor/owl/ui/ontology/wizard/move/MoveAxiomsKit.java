@@ -5,6 +5,9 @@ import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
+import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -55,7 +58,7 @@ public abstract class MoveAxiomsKit<S extends AxiomSelectionStrategy> implements
      * Can be used to customise the strategy editor.
      * @return The strategy editor or <code>null</code> if an editor isn't required.
      */
-    public abstract StrategyEditor<S> getStrategyEditor();
+    public abstract StrategyEditor<S> getStrategyEditor(Set<OWLOntology> ontologies);
 
 
     /**
@@ -63,4 +66,11 @@ public abstract class MoveAxiomsKit<S extends AxiomSelectionStrategy> implements
      * @return The strategy
      */
     public abstract S getAxiomSelectionStrategy();
+
+
+    /**
+     * Determines if the kit has a strategy editor
+     * @return  <code>true</code> if the kit has an editor, otherwise <code>false</code>.
+     */
+    public abstract boolean hasEditor();
 }

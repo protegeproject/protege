@@ -64,11 +64,7 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);
-        scroller.setOpaque(true);
-        scroller.getViewport().setOpaque(true);
-        scroller.setBackground(Color.WHITE);
         parent.add(scroller);
-        list.setOpaque(true);
     }
 
     
@@ -79,7 +75,12 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getBackPanelDescriptor() {
-        return StrategyConstrainPanel.ID;
+        if (getWizard().getSelectedKit().hasEditor()) {
+            return StrategyConstrainPanel.ID;
+        }
+        else {
+            return AxiomSelectionStrategyPanel.ID;
+        }
     }
 
 
@@ -89,7 +90,7 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     private Set<? extends OWLAxiom> getUnfilteredAxioms() {
-        return getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms();
+        return getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies());
     }
 
 

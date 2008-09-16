@@ -29,9 +29,9 @@ public class AnnotationAxiomsStrategy extends AbstractAxiomSelectionStrategy {
         notifyPropertyChange(CHANGED_ANNOTATION_URIS);
     }
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : getOntologies()){
+        for (OWLOntology ont : ontologies){
             for (OWLEntityAnnotationAxiom ax : ont.getAxioms(AxiomType.ENTITY_ANNOTATION)){
                 if (uris.contains(ax.getAnnotation().getAnnotationURI())){
                     axioms.add(ax);

@@ -16,9 +16,9 @@ public class AllAxiomsStrategy extends AbstractAxiomSelectionStrategy {
         return "All axioms in the specified ontologies";
     }
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : getOntologies()){
+        for (OWLOntology ont : ontologies){
             axioms.addAll(ont.getAxioms());
         }
         return axioms;

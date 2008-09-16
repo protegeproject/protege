@@ -17,10 +17,10 @@ public class IndividualReferencingAxiomStrategy extends EntityReferencingAxiomsS
         return "Axioms referencing a given individual (or individuals)";
     }
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLIndividual individual : getEntities()){
-            for (OWLOntology ont : getOntologies()){
+            for (OWLOntology ont : ontologies){
                 axioms.addAll(ont.getReferencingAxioms(individual));
             }
         }

@@ -115,7 +115,7 @@ public class MoveAxiomsWizard extends Wizard {
 
     public void setSelectedKit(MoveAxiomsKit selectedKit) {
         this.selectedKit = selectedKit;
-        selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
+//        selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
     }
 
 
@@ -126,9 +126,9 @@ public class MoveAxiomsWizard extends Wizard {
 
     public void setSourceOntologies(Set<OWLOntology> sourceOntologies) {
         this.sourceOntologies = sourceOntologies;
-        if(selectedKit != null) {
-            selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
-        }
+//        if(selectedKit != null) {
+//            selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
+//        }
     }
 
 

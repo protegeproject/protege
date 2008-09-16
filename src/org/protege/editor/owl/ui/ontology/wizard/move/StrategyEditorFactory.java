@@ -64,14 +64,14 @@ public class StrategyEditorFactory {
         this.eKit = eKit;
     }
 
-    public StrategyEditor getEditor(AxiomSelectionStrategy strategy, boolean fresh){
+    public StrategyEditor getEditor(AxiomSelectionStrategy strategy, Set<OWLOntology> ontologies, boolean fresh){
         if (fresh){
             editorMap.remove(strategy);
         }
         StrategyEditor editor = editorMap.get(strategy);
         if (editor == null){
             if (strategy instanceof EntityReferencingAxiomsStrategy){
-                editor = getEntitySelector((EntityReferencingAxiomsStrategy)strategy);
+                editor = getEntitySelector(ontologies, (EntityReferencingAxiomsStrategy)strategy);
             }
             else if (strategy instanceof AnnotationAxiomsStrategy){
                 editor = getAnnotationSelector((AnnotationAxiomsStrategy)strategy);
@@ -95,7 +95,7 @@ public class StrategyEditorFactory {
         return editor;
     }
 
-    private <O extends EntityReferencingAxiomsStrategy> StrategyEditor<O> getEntitySelector(O strategy) {
+    private <O extends EntityReferencingAxiomsStrategy> StrategyEditor<O> getEntitySelector(final Set<OWLOntology> ontologies, O strategy) {
         return new StrategyEditor<O>(strategy, eKit){
             private AbstractSelectorPanel<? extends OWLEntity> selector;
             public JComponent getComponent() {
@@ -104,21 +104,21 @@ public class StrategyEditorFactory {
                     final OWLOntologyManager mngr = eKit.getModelManager().getOWLOntologyManager();
                     if (type.equals(OWLClass.class)){
                         OWLObjectHierarchyProvider<OWLClass> hp = new AssertedClassHierarchyProvider2(mngr);
-                        hp.setOntologies(getStrategy().getOntologies());
+                        hp.setOntologies(ontologies);
                         selector = new OWLClassSelectorPanel(eKit, false, hp);
                     }
                     else if (type.equals(OWLObjectProperty.class)){
                         OWLObjectHierarchyProvider<OWLObjectProperty> hp = new OWLObjectPropertyHierarchyProvider(mngr);
-                        hp.setOntologies(getStrategy().getOntologies());
+                        hp.setOntologies(ontologies);
                         selector = new OWLObjectPropertySelectorPanel(eKit, false, hp);
                     }
                     else if (type.equals(OWLDataProperty.class)){
                         OWLObjectHierarchyProvider<OWLDataProperty> hp = new OWLDataPropertyHierarchyProvider(mngr);
-                        hp.setOntologies(getStrategy().getOntologies());
+                        hp.setOntologies(ontologies);
                         selector = new OWLDataPropertySelectorPanel(eKit, false, hp);
                     }
                     else if (type.equals(OWLIndividual.class)){
-                        selector = new OWLIndividualSelectorPanel(eKit, false, getStrategy().getOntologies(),
+                        selector = new OWLIndividualSelectorPanel(eKit, false, ontologies,
                                                                   ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
                     }
 
