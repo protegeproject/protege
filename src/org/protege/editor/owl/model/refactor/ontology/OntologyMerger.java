@@ -1,17 +1,12 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeException;
-import org.semanticweb.owl.model.OWLOntologyManager;
 
 
 /**
@@ -46,7 +41,14 @@ public class OntologyMerger {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLOntology ont : ontologies) {
             for (OWLAxiom ax : ont.getAxioms()) {
-                changes.add(new AddAxiom(ontology, ax));
+                if (ax instanceof OWLImportsDeclaration &&
+                    ((OWLImportsDeclaration)ax).getImportedOntologyURI().equals(ontology.getURI())){
+                    logger.warn("Merge: ignoring import declaration for URI " + ontology.getURI() +
+                                " (would result in ontology importing itself).");
+                }
+                else{
+                    changes.add(new AddAxiom(ontology, ax));
+                }
             }
         }
         try {
