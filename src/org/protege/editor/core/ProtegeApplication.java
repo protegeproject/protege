@@ -351,18 +351,20 @@ public class ProtegeApplication implements BundleActivator {
                 plugins.add(b);
             }
             catch (Throwable t) {
-                logger.error("Could not install plugin in file/directory named " + plugin + ": " + t);
-                if (plugin.isDirectory() && canReadDirectoryBundles()) warnAboutDirectories = true;
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Exception caught", t);
+                if (isTrivialBundleLoadException(plugin, t)) {
+                    logger.error("Could not install plugin in file/directory named " + plugin + ".  See the logs for more info.");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Exception caught", t);
+                    }
                 }
+                else {
+                    logger.error("Could not install plugin in file/directory named " + plugin, t);
+                }
+                if (plugin.isDirectory() && canReadDirectoryBundles()) warnAboutDirectories = true;
             }
         }
         if (warnAboutDirectories) {
-            logger.warn("\nDetected directory-style plugins (recommended for debugging use only)");
-            logger.warn("Consider bundling your plugins or using -D" + OSGI_READS_DIRECTORIES + "=false");
-            logger.warn("in case OSGi cannot read directory-style plugins in this configuration\n");
-            logger.warn("If you are using an equinox distribution consider -Dosgi.clean=true\n");
+            logger.warn("Consider using -D" + OSGI_READS_DIRECTORIES + "=false");
         }
         for (Bundle b  : plugins) {
             try {
@@ -378,10 +380,7 @@ public class ProtegeApplication implements BundleActivator {
 
             }
             catch (Throwable t) {
-                logger.error("Could not start bundle " + b.getSymbolicName() + ": " + t);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Exception caught", t);
-                }
+                logger.error("Could not start bundle " + b.getSymbolicName(), t);
             }
         }
         bundles_loaded = true;
@@ -401,6 +400,10 @@ public class ProtegeApplication implements BundleActivator {
             logger.warn("Converted directory (" + source + ") to plugin (" + (System.currentTimeMillis() - start) + " ms)");
             return jar.toURI().toString();
         }
+    }
+    
+    private boolean isTrivialBundleLoadException(File plugin, Throwable t) {
+        return plugin.getName().equals(".DS_Store");
     }
 
 
