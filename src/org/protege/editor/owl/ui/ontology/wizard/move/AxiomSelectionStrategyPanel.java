@@ -73,6 +73,11 @@ public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return StrategyConstrainPanel.ID;
+        if (getWizard().getSelectedKit().hasEditor()) {
+            return StrategyConstrainPanel.ID;
+        }
+        else {
+            return AxiomSelectionPanel.ID;
+        }
     }
 }

@@ -14,11 +14,11 @@ public interface AxiomSelectionStrategy {
 
     String getName();
 
-    Set<? extends OWLAxiom> getAxioms();
+    Set<? extends OWLAxiom> getAxioms(Set<OWLOntology> ontologies);
 
-    void setOntologies(Set<OWLOntology> ontologies);
-
-    Set<OWLOntology> getOntologies();
+//    void setOntologies(Set<OWLOntology> ontologies);
+//
+//    Set<OWLOntology> getOntologies();
 
     void addPropertyChangeListener(PropertyChangeListener l);
 

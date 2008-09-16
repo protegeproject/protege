@@ -67,7 +67,10 @@ public class StrategyConstrainPanel extends AbstractMoveAxiomsWizardPanel {
         MoveAxiomsKit kit = getWizard().getSelectedKit();
         setInstructions(kit.getAxiomSelectionStrategy().getName() + ". This is a coarse grained selection" + ". You will have control over individual axioms on the next page.");
         helperPanel.removeAll();
-        helperPanel.add(kit.getStrategyEditor().getComponent());
+        StrategyEditor strategyEditor = kit.getStrategyEditor(getWizard().getSourceOntologies());
+        if (strategyEditor != null) {
+            helperPanel.add(strategyEditor.getComponent());
+        }
         kit.getAxiomSelectionStrategy().addPropertyChangeListener(pcl);
         refresh();
     }
@@ -76,12 +79,12 @@ public class StrategyConstrainPanel extends AbstractMoveAxiomsWizardPanel {
     public void aboutToHidePanel() {
         super.aboutToHidePanel();
         getWizard().getSelectedKit().getAxiomSelectionStrategy().removePropertyChangeListener(pcl);
-        getWizard().setAxioms(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms());
+        getWizard().setAxioms(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()));
     }
 
 
     private void refresh() {
-        list.setListData(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms().toArray());
+        list.setListData(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()).toArray());
     }
 
     public Object getBackPanelDescriptor() {
@@ -90,6 +93,6 @@ public class StrategyConstrainPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return AxiomSelectionPanel.ID;
+            return AxiomSelectionPanel.ID;
     }
 }

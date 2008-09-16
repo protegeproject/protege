@@ -27,9 +27,9 @@ public class AxiomTypeStrategy extends AbstractAxiomSelectionStrategy {
         notifyPropertyChange(CHANGED_AXIOM_TYPE);
     }
 
-    public Set<OWLAxiom> getAxioms() {
+    public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : getOntologies()){
+        for (OWLOntology ont : ontologies){
             for (AxiomType<? extends OWLAxiom> type : types){
                 axioms.addAll(ont.getAxioms(type));
             }

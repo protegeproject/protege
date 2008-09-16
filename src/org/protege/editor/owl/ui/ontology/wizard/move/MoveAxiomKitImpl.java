@@ -1,6 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
+import org.protege.editor.owl.model.selection.axioms.AllAxiomsStrategy;
+import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -29,23 +33,22 @@ import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
  * 11-Sep-2008<br><br>
  */
-public class MoveAxiomKitImpl extends MoveAxiomsKit {
+public class MoveAxiomKitImpl<S extends AxiomSelectionStrategy> extends MoveAxiomsKit<S> {
 
-    private AxiomSelectionStrategy strategy;
+    private S strategy;
 
     private StrategyEditorFactory editorFactory;
 
-    public MoveAxiomKitImpl(AxiomSelectionStrategy strategy) {
+    public MoveAxiomKitImpl(S strategy) {
         this.strategy = strategy;
     }
 
-
-    public StrategyEditor getStrategyEditor() {
-        return editorFactory.getEditor(strategy, true);
+    public StrategyEditor<S> getStrategyEditor(Set<OWLOntology> ontologies) {
+        return editorFactory.getEditor(strategy, ontologies, true);
     }
 
 
-    public AxiomSelectionStrategy getAxiomSelectionStrategy() {
+    public S getAxiomSelectionStrategy() {
         return strategy;
     }
 
@@ -56,5 +59,10 @@ public class MoveAxiomKitImpl extends MoveAxiomsKit {
 
 
     public void dispose() throws Exception {
+    }
+
+
+    public boolean hasEditor() {
+        return !(strategy instanceof AllAxiomsStrategy);
     }
 }
