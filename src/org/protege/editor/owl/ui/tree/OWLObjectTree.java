@@ -63,6 +63,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     private Point mouseDownPos;
 
 
+    public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
+        this(owlEditorKit, provider, null);
+    }
+
+
     public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider,
                          Comparator<? super N> objectComparator) {
         this(owlEditorKit, provider, provider.getRoots(), objectComparator);
@@ -133,7 +138,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
         getSelectionModel().addTreeSelectionListener(new TreeSelectionListener(){
             public void valueChanged(TreeSelectionEvent event) {
-                scrollPathToVisible(event.getPath());
+                scrollPathToVisible(event.getNewLeadSelectionPath());
             }
         });
     }
@@ -249,6 +254,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
     }
 
+
     private void handleExpansionEvent(TreeExpansionEvent event) {
         if (menuShortCutKeyDown) {
             // Recursively expand
@@ -258,11 +264,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 expandPath(path);
             }
         }
-    }
-
-
-    public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
-        this(owlEditorKit, provider, null);
     }
 
 
