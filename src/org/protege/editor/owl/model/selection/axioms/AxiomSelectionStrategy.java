@@ -14,7 +14,7 @@ public interface AxiomSelectionStrategy {
 
     String getName();
 
-    Set<OWLAxiom> getAxioms();
+    Set<? extends OWLAxiom> getAxioms();
 
     void setOntologies(Set<OWLOntology> ontologies);
 
