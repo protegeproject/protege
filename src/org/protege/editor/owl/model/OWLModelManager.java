@@ -11,6 +11,7 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
+import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
@@ -42,6 +43,10 @@ public interface OWLModelManager extends ModelManager {
 
 
     void fireEvent(EventType event);
+
+    void addIOListener(IOListener listener);
+
+    void removeIOListener(IOListener listener);
 
 
     /**

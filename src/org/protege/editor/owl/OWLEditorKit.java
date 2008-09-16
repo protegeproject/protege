@@ -2,6 +2,7 @@ package org.protege.editor.owl;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactory;
@@ -12,6 +13,9 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.SaveErrorHandler;
+import org.protege.editor.owl.model.io.IOListenerPluginLoader;
+import org.protege.editor.owl.model.io.IOListenerPlugin;
+import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
@@ -69,6 +73,7 @@ public class OWLEditorKit implements EditorKit {
             }
         });
         modelManager.setLoadErrorHandler(new OntologyLoadErrorHandlerUI(this));
+        loadIOListenerPlugins();
     }
 
 
@@ -272,6 +277,19 @@ public class OWLEditorKit implements EditorKit {
         // catch the case where the user is trying to save an ontology that has been loaded from the web
         if (e.getCause() != null && e.getCause() instanceof ProtocolException){
             handleSaveAs();
+        }
+    }
+
+    private void loadIOListenerPlugins() {
+        IOListenerPluginLoader loader = new IOListenerPluginLoader(this);
+        for(IOListenerPlugin pl : loader.getPlugins()) {
+            try {
+                IOListenerPluginInstance instance = pl.newInstance();
+                getModelManager().addIOListener(instance);
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
         }
     }
 }

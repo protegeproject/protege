@@ -28,10 +28,7 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
-import org.protege.editor.owl.model.io.AutoMappedRepositoryURIMapper;
-import org.protege.editor.owl.model.io.UserRepositoryURIMapper;
-import org.protege.editor.owl.model.io.UserResolvedURIMapper;
-import org.protege.editor.owl.model.io.WebConnectionURIMapper;
+import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.repository.OntologyURIExtractor;
@@ -82,6 +79,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
     private ListenerManager<OWLModelManagerListener> modelManagerListenerManager;
 
     private ListenerManager<OWLOntologyChangeListener> changeListenerManager;
+
+    private List<IOListener> ioListeners;
 
     private HistoryManager historyManager;
 
@@ -189,6 +188,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
+        ioListeners = new ArrayList<IOListener>();
 
         objectRenderer = new OWLObjectRendererImpl(this);
         uriShortFormProvider = new SimpleURIShortFormProvider();
@@ -295,6 +295,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void startedLoadingOntology(LoadingStartedEvent event) {
         System.out.println("loading " + event.getOntologyURI() + " from " + event.getPhysicalURI());
+        fireBeforeLoadEvent(event.getOntologyURI(), event.getPhysicalURI());
     }
 
 
@@ -313,6 +314,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 }
             }
         }
+        fireAfterLoadEvent(event.getOntologyURI(), event.getPhysicalURI());
     }
 
 
@@ -475,7 +477,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private void saveOntology(OWLOntology ont) throws OWLOntologyStorageException {
         try{
+            fireBeforeSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
             manager.saveOntology(ont, manager.getOntologyFormat(ont), manager.getPhysicalURIForOntology(ont));
+            fireAfterSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
         }
         catch(OWLOntologyStorageException e){
             if (saveErrorHandler != null){
@@ -796,10 +800,65 @@ public class OWLModelManagerImpl extends AbstractModelManager
             try {
                 listener.handleChange(event);
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 logger.warn("Exception thrown by listener: " + listener.getClass().getName() + ".  Detatching bad listener!");
                 ProtegeApplication.getErrorLog().logError(e);
                 modelManagerChangeListeners.remove(listener);
+            }
+        }
+    }
+
+    public void addIOListener(IOListener listener) {
+        ioListeners.add(listener);
+    }
+
+
+    public void removeIOListener(IOListener listener) {
+        ioListeners.remove(listener);
+    }
+
+    private void fireBeforeLoadEvent(URI ontologyURI, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.beforeLoad(new IOListenerEvent(ontologyURI, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+    private void fireAfterLoadEvent(URI ontologyURI, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.afterLoad(new IOListenerEvent(ontologyURI, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    private void fireBeforeSaveEvent(URI ontologyURI, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.beforeSave(new IOListenerEvent(ontologyURI, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    private void fireAfterSaveEvent(URI ontologyURI, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.afterSave(new IOListenerEvent(ontologyURI, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
             }
         }
     }
