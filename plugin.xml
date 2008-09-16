@@ -18,6 +18,9 @@
     <extension-point id="moveaxiomskit"
                      name="Move Axioms Kit"/>
 
+    <extension-point id="io.listener"
+                     name="IO Listener"/>
+
     <extension id="FolderLibrary" 
                point="org.protege.editor.owl.model.libraryfactory">
         <class value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
