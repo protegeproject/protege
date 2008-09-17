@@ -231,7 +231,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     if (reload) {
                         loadOntologies(r);
                     }
+                    long start = System.currentTimeMillis();
                     r.classify();
+                    String s = "Classified in " + (System.currentTimeMillis()-start) + "ms";
+                    reasonerProgressMonitor.setMessage(s);
+                    logger.info(s);
                     currentReasoner = r;
                     fireReclassified();
                 }
