@@ -1,6 +1,4 @@
 package org.protege.editor.owl.model.entity;
-
-import org.semanticweb.owl.model.OWLEntity;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -30,9 +28,11 @@ import org.semanticweb.owl.model.OWLEntity;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Jul 25, 2008<br><br>
+ * Date: Sep 18, 2008<br><br>
  */
-public interface AutoIDGenerator {
-    
-    String getNextID(Class<? extends OWLEntity> type) throws AutoIDException;
+public interface Revertable {
+
+    void checkpoint();
+
+    void revert();
 }

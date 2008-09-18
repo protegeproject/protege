@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.semanticweb.owl.model.*;
@@ -100,10 +102,15 @@ public class OWLClassHierarchyCreator2 {
     protected OWLClass getOWLClass(String name){
         OWLClass cls = nameMap.get(name);
         if (cls == null){
-            OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getURI());
-            changes.addAll(creationSet.getOntologyChanges());
-            cls = creationSet.getOWLEntity();
-            nameMap.put(name, cls);
+            try {
+                OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getURI());
+                changes.addAll(creationSet.getOntologyChanges());
+                cls = creationSet.getOWLEntity();
+                nameMap.put(name, cls);
+            }
+            catch (OWLEntityCreationException e) {
+                ErrorLogPanel.showErrorDialog(e);
+            }
         }
         return cls;
     }
