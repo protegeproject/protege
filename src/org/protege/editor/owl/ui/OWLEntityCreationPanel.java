@@ -149,7 +149,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(OWLEditorKit owlEditorKit, String message, Class<T> type) {
         OWLEntityCreationPanel panel = new OWLEntityCreationPanel<T>(owlEditorKit, message, type);
 
-        int ret = new UIHelper(owlEditorKit).showValidatingDialog("Specify name", panel, panel.textField);
+        int ret = new UIHelper(owlEditorKit).showValidatingDialog("Create a new " + type.getSimpleName(), panel, panel.textField);
 
         if (ret == JOptionPane.OK_OPTION) {
             return panel.getOWLEntityCreationSet();
