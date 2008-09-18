@@ -1,7 +1,10 @@
 package org.protege.editor.core.ui.preferences;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +20,7 @@ import java.util.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class PreferencesDialogPanel extends JPanel {
+public class PreferencesDialogPanel extends JPanel implements Disposable {
 
 
     private EditorKit editorKit;
@@ -25,6 +28,8 @@ public class PreferencesDialogPanel extends JPanel {
     private Map<String, PreferencesPanel> map;
 
     private JTabbedPane tabbedPane;
+
+    private static final String PREFS_HISTORY_PANEL_KEY = "prefs.history.panel";
 
 
     public PreferencesDialogPanel(EditorKit editorKit) {
@@ -81,6 +86,17 @@ public class PreferencesDialogPanel extends JPanel {
     }
 
 
+    protected String getSelectedPanel() {
+        final Component c = tabbedPane.getSelectedComponent();
+        for (String tabName : map.keySet()){
+            if (c.equals(map.get(tabName))){
+                return tabName;
+            }
+        }
+        return null;
+    }
+
+
     public Dimension getPreferredSize() {
         return new Dimension(600, 600);
     }
@@ -88,6 +104,10 @@ public class PreferencesDialogPanel extends JPanel {
 
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
         PreferencesDialogPanel panel = new PreferencesDialogPanel(editorKit);
+        final Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(PreferencesDialogPanel.class);
+        if (selectedPanel == null){
+            selectedPanel = prefs.getString(PREFS_HISTORY_PANEL_KEY, null);
+        }
         Component c = panel.map.get(selectedPanel);
         if (c != null) {
             panel.tabbedPane.setSelectedComponent(c);
@@ -103,6 +123,8 @@ public class PreferencesDialogPanel extends JPanel {
                 panel.applyPreferences();
             }
         }
+
+        prefs.putString(PREFS_HISTORY_PANEL_KEY, panel.getSelectedPanel());
         panel.dispose();
     }
 }
