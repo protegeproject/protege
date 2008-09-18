@@ -1,10 +1,12 @@
 package org.protege.editor.owl.ui;
 
+import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.protege.editor.owl.model.entity.EntityCreationPreferences;
+import org.protege.editor.owl.model.entity.OWLEntityCreationException;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owl.model.*;
@@ -13,7 +15,10 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -27,86 +32,79 @@ import java.util.HashSet;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLEntityCreationPanel extends JPanel implements VerifiedInputEditor {
+public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implements VerifiedInputEditor {
 
-    public static final int TYPE_CLASS = 0;
-
-    public static final int TYPE_OBJECT_PROPERTY = 1;
-
-    public static final int TYPE_DATA_PROPERTY = 2;
-
-    public static final int TYPE_INDIVIDUAL = 3;
+    private final int INTERNAL_PADDING = 10;
 
     private OWLEditorKit owlEditorKit;
 
     private JTextField textField;
 
-    private JLabel messageLabel;
+    private JLabel errorLabel;
 
-    private Icon warningIcon = OWLIcons.getIcon("warning.small.png");
+    private final Icon warningIcon = Icons.getIcon("error.png");
 
-    private OWLDescriptionAutoCompleter completer;
-
-    private int type;
+    private Class<T> type;
 
     private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
 
     private boolean currentlyValid = true;
 
+    private Timer timer = new Timer(500, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            performCheck();
+            timer.stop();
+        }
+    });
 
-    public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, int type) {
+
+    public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, Class<T> type) {
         this.owlEditorKit = owlEditorKit;
         this.type = type;
         createUI(message);
     }
 
 
-    public String getEntityName() {
-        return textField.getText();
-    }
-
-
-    public URI getBaseURI() {
-        if (EntityCreationPreferences.useDefaultBaseURI()){
-            return EntityCreationPreferences.getDefaultBaseURI();
-        }
-        return owlEditorKit.getModelManager().getActiveOntology().getURI();
-    }
-
-
     private void createUI(String message) {
         setLayout(new BorderLayout());
-        JPanel entryPanel = new JPanel(new BorderLayout(7, 7));
-        add(entryPanel, BorderLayout.NORTH);
-        entryPanel.add(new JLabel(message));
+
+        JPanel entryPanel = new JPanel(new BorderLayout());
+        entryPanel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
         textField = new JTextField(30);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
-                performCheck();
+                update();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                performCheck();
+                update();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                performCheck();
+                update();
             }
         });
+        entryPanel.add(new JLabel(message), BorderLayout.NORTH);
         entryPanel.add(textField, BorderLayout.SOUTH);
-        entryPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        messageLabel = new JLabel("");
-        messageLabel.setFont(messageLabel.getFont().deriveFont(10.0f));
-        add(messageLabel, BorderLayout.SOUTH);
-        completer = new OWLDescriptionAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
+
+
+        errorLabel = new JLabel("");
+        errorLabel.setFont(errorLabel.getFont().deriveFont(10.0f));
+        errorLabel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
+        errorLabel.setPreferredSize(new Dimension(errorLabel.getPreferredSize().width, 40));
+
+        add(entryPanel, BorderLayout.NORTH);
+        add(errorLabel, BorderLayout.SOUTH);
+
+        OWLDescriptionAutoCompleter completer = new OWLDescriptionAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
             public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text,
                                                        0,
                                                        text.length(),
-                                                       type == TYPE_CLASS,
-                                                       type == TYPE_OBJECT_PROPERTY,
-                                                       type == TYPE_DATA_PROPERTY,
-                                                       type == TYPE_INDIVIDUAL,
+                                                       OWLClass.class.isAssignableFrom(type),
+                                                       OWLObjectProperty.class.isAssignableFrom(type),
+                                                       OWLDataProperty.class.isAssignableFrom(type),
+                                                       OWLIndividual.class.isAssignableFrom(type),
                                                        false,
                                                        new HashSet<String>());
             }
@@ -119,40 +117,18 @@ public class OWLEntityCreationPanel extends JPanel implements VerifiedInputEdito
     }
 
 
-    private void performCheck() {
-        if (!EntityCreationPreferences.isFragmentAutoGenerated()){ // ie this name will end up being in the URI and should be unique
-            boolean wasValid = currentlyValid;
-            currentlyValid = owlEditorKit.getModelManager().getOWLEntityFactory().isValidNewID(getEntityName(),
-                                                                                               getBaseURI(),
-                                                                                               getEntityClass());
-            if (wasValid != currentlyValid){
-                for (InputVerificationStatusChangedListener l : listeners){
-                    l.verifiedStatusChanged(currentlyValid);
-                }
-            }
+    public String getEntityName() {
+        return textField.getText();
+    }
+
+
+    public OWLEntityCreationSet<T> getOWLEntityCreationSet() {
+        try {
+            return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type,
+                                                                                        getEntityName(),
+                                                                                        getBaseURI());
         }
-    }
-
-
-    private void displayWarningMessage(String message) {
-        messageLabel.setIcon(warningIcon);
-        messageLabel.setText(message);
-        messageLabel.validate();
-    }
-
-
-    private void clearMessage() {
-        messageLabel.setIcon(null);
-        messageLabel.setText("");
-        messageLabel.validate();
-    }
-
-
-    public URIShortNamePair getUriShortNamePair() {
-        if (getEntityName().trim().length() > 0) {
-            return new URIShortNamePair(getBaseURI(), getEntityName());
-        }
-        else {
+        catch (OWLEntityCreationException e) {
             return null;
         }
     }
@@ -170,60 +146,101 @@ public class OWLEntityCreationPanel extends JPanel implements VerifiedInputEdito
     }
 
 
-    public Class<? extends OWLEntity> getEntityClass() {
-        switch(type){
-            case TYPE_CLASS:
-                return OWLClass.class;
-            case TYPE_OBJECT_PROPERTY:
-                return OWLObjectProperty.class;
-            case TYPE_DATA_PROPERTY:
-                return OWLDataProperty.class;
-            case TYPE_INDIVIDUAL:
-                return OWLIndividual.class;
-        }
-        return null;
-    }
-
-
-    public class URIShortNamePair {
-
-        private URI uri;
-
-        private String shortName;
-
-
-        public URIShortNamePair(URI uri, String shortName) {
-            this.uri = uri;
-            this.shortName = shortName;
-        }
-
-
-        public URI getUri() {
-            return uri;
-        }
-
-
-        public String getShortName() {
-            return shortName;
-        }
-    }
-
-
-    public static URIShortNamePair showDialog(OWLEditorKit owlEditorKit, String message, int type) {
-        OWLEntityCreationPanel panel = new OWLEntityCreationPanel(owlEditorKit, message, type);
+    public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(OWLEditorKit owlEditorKit, String message, Class<T> type) {
+        OWLEntityCreationPanel panel = new OWLEntityCreationPanel<T>(owlEditorKit, message, type);
 
         int ret = new UIHelper(owlEditorKit).showValidatingDialog("Specify name", panel, panel.textField);
-//        int ret = JOptionPaneEx.showConfirmDialog(owlEditorKit.getWorkspace(),
-//                                                  "Specify name",
-//                                                  panel,
-//                                                  JOptionPane.PLAIN_MESSAGE,
-//                                                  JOptionPane.OK_CANCEL_OPTION,
-//                                                  panel.textField);
+
         if (ret == JOptionPane.OK_OPTION) {
-            return panel.getUriShortNamePair();
+            return panel.getOWLEntityCreationSet();
         }
         else {
             return null;
         }
+    }
+
+
+    public URI getBaseURI() {
+        return null; // let this be managed by the EntityFactory for now - we could add a selector later
+    }
+
+
+    private void update() {
+        currentlyValid = false;
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(currentlyValid);
+        }
+        timer.restart();
+    }
+
+
+    private void performCheck() {
+        boolean wasValid = currentlyValid;
+        try{
+            owlEditorKit.getModelManager().getOWLEntityFactory().tryCreate(type,
+                                                                           getEntityName(),
+                                                                           getBaseURI());
+            currentlyValid = true;
+            OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(getEntityName());
+            if(entity != null){
+                displayWarningMessage("Warning: an entity with that name already exists.");
+            }
+            else{
+                clearMessage();
+            }
+        }
+        catch(OWLEntityCreationException e){
+            currentlyValid = false;
+            handleException(e);
+
+        }
+        finally{
+            if (wasValid != currentlyValid){
+                for (InputVerificationStatusChangedListener l : listeners){
+                    l.verifiedStatusChanged(currentlyValid);
+                }
+            }
+        }
+    }
+
+
+    private void handleException(OWLEntityCreationException e) {
+        boolean handled = false;
+        final Throwable cause = e.getCause();
+        if (cause != null){
+            if (cause instanceof URISyntaxException){
+                handleURISyntaxException((URISyntaxException)cause);
+                handled = true;
+            }
+        }
+        if (!handled){
+            displayWarningMessage("Error: " + e.getMessage());
+        }
+    }
+
+
+    // selects the text where the URI is incorrect
+    private void handleURISyntaxException(URISyntaxException e) {
+        int actualIndex = e.getIndex();
+        String fullURI = e.getInput();
+        int indexFromRHS = fullURI.length()-actualIndex;
+        int relativeIndex = getEntityName().length() - indexFromRHS;
+        textField.setSelectionStart(relativeIndex);
+        textField.setSelectionEnd(getEntityName().length());
+        displayWarningMessage("Invalid name: " + e.getReason());
+    }
+
+
+    private void displayWarningMessage(String message) {
+        errorLabel.setIcon(warningIcon);
+        errorLabel.setText("<html>" + message + "</html>");
+        errorLabel.validate();
+    }
+
+
+    private void clearMessage() {
+        errorLabel.setIcon(null);
+        errorLabel.setText("");
+        errorLabel.validate();
     }
 }

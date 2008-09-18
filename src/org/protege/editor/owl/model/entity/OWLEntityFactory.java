@@ -16,24 +16,28 @@ import java.net.URI;
  */
 public interface OWLEntityFactory {
 
-    public OWLEntityCreationSet<OWLClass> createOWLClass(String shortName, URI baseURI);
+    public OWLEntityCreationSet<OWLClass> createOWLClass(String shortName, URI baseURI) throws OWLEntityCreationException;
 
 
-    public OWLEntityCreationSet<OWLObjectProperty> createOWLObjectProperty(String shortName, URI baseURI);
+    public OWLEntityCreationSet<OWLObjectProperty> createOWLObjectProperty(String shortName, URI baseURI) throws OWLEntityCreationException;
 
 
-    public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty(String shortName, URI baseURI);
+    public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty(String shortName, URI baseURI) throws OWLEntityCreationException;
 
 
-    public OWLEntityCreationSet<OWLIndividual> createOWLIndividual(String shortName, URI baseURI);
+    public OWLEntityCreationSet<OWLIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException;
+
+
+    public <T extends OWLEntity> OWLEntityCreationSet<T> createOWLEntity(Class<T> type, String shortName, URI baseURI) throws OWLEntityCreationException;
 
 
     /**
-     * Check that the ID that will be generated will be valid for a new entity
+     * Use this to check if the entity can be created without affecting any generated IDs
+     * @param type
      * @param shortName
      * @param baseURI
-     * @param type
-     * @return true if the URI that would be generated is valid and unique for the given type
+     * @throws OWLEntityCreationException if the entity could not be created because of bad input/name clashes/auto ID etc
      */
-    <T extends OWLEntity> boolean isValidNewID(String shortName, URI baseURI, Class<T> type);
+    public void tryCreate(Class<? extends OWLEntity> type, String shortName, URI baseURI) throws OWLEntityCreationException;
+
 }

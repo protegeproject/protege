@@ -2,6 +2,8 @@ package org.protege.editor.owl.model.entity;
 
 import org.semanticweb.owl.model.OWLEntity;
 
+import java.util.Stack;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,11 +35,13 @@ import org.semanticweb.owl.model.OWLEntity;
  * Bio Health Informatics Group<br>
  * Date: Jul 25, 2008<br><br>
  */
-public class IterativeAutoIDGenerator extends AbstractIDGenerator {
+public class IterativeAutoIDGenerator extends AbstractIDGenerator implements Revertable {
 
     private long id;
 
     private long end;
+
+    private Stack<Long> checkpoints = new Stack<Long>();
 
 
     public IterativeAutoIDGenerator() {
@@ -48,8 +52,18 @@ public class IterativeAutoIDGenerator extends AbstractIDGenerator {
 
     protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException{
         if (end != -1 && id > end){
-            throw new AutoIDException("You have run out of IDs for creating new entities.");
+            throw new AutoIDException("You have run out of IDs for creating new entities - max = " + end);
         }
         return id++;
+    }
+
+
+    public void checkpoint() {
+        checkpoints.push(id);
+    }
+
+
+    public void revert() {
+        id = checkpoints.pop();
     }
 }

@@ -711,48 +711,23 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    private OWLEntityCreationPanel.URIShortNamePair showDialog(String message, int type) {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), message, type);
-    }
-
-
     public OWLEntityCreationSet<OWLClass> createOWLClass() {
-        OWLEntityCreationPanel.URIShortNamePair pair = showDialog("Please enter a class name",
-                                                                  OWLEntityCreationPanel.TYPE_CLASS);
-        if (pair == null) {
-            return null;
-        }
-        return getOWLModelManager().getOWLEntityFactory().createOWLClass(pair.getShortName(), pair.getUri());
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a class name", OWLClass.class);
     }
 
 
     public OWLEntityCreationSet<OWLObjectProperty> createOWLObjectProperty() {
-        OWLEntityCreationPanel.URIShortNamePair pair = showDialog("Please enter an object property name",
-                                                                  OWLEntityCreationPanel.TYPE_OBJECT_PROPERTY);
-        if (pair == null) {
-            return null;
-        }
-        return getOWLModelManager().getOWLEntityFactory().createOWLObjectProperty(pair.getShortName(), pair.getUri());
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an object property name", OWLObjectProperty.class);
     }
 
 
     public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty() {
-        OWLEntityCreationPanel.URIShortNamePair pair = showDialog("Please enter a data property name",
-                                                                  OWLEntityCreationPanel.TYPE_DATA_PROPERTY);
-        if (pair == null) {
-            return null;
-        }
-        return getOWLModelManager().getOWLEntityFactory().createOWLDataProperty(pair.getShortName(), pair.getUri());
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a data property name", OWLDataProperty.class);
     }
 
 
     public OWLEntityCreationSet<OWLIndividual> createOWLIndividual() {
-        OWLEntityCreationPanel.URIShortNamePair pair = showDialog("Please enter an individual name",
-                                                                  OWLEntityCreationPanel.TYPE_INDIVIDUAL);
-        if (pair == null) {
-            return null;
-        }
-        return getOWLModelManager().getOWLEntityFactory().createOWLIndividual(pair.getShortName(), pair.getUri());
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an individual name", OWLIndividual.class);
     }
 
 
