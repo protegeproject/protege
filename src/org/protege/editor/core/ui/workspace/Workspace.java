@@ -11,6 +11,8 @@ import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.about.AboutPanel;
+import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
@@ -67,11 +69,12 @@ public abstract class Workspace extends JComponent {
 
     private static final Logger logger = Logger.getLogger(Workspace.class);
 
-    public static final String WINDOW_MENU_NAME = "Window";
     public static final String FILE_MENU_NAME = "File";
+    public static final String WINDOW_MENU_NAME = "Window";
+    private static final String HELP_MENU_NAME = "Help";
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
-            	
+
     private EditorKit editorKit;
 
     private WorkspaceViewManager viewManager;
@@ -146,10 +149,29 @@ public abstract class Workspace extends JComponent {
             }
             else if (menu.getText().equals(FILE_MENU_NAME)){
                 if (!OSUtils.isOSX()){
+                    final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences..."){
+                        public void actionPerformed(ActionEvent event) {
+                            PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
+                        }
+                    });
+                    KeyStroke ks = KeyStroke.getKeyStroke(",");
+                    menuItem.setAccelerator(ks);
+                    menu.addSeparator();
+                    menu.add(menuItem);
                     menu.addSeparator();
                     menu.add(new AbstractAction("Exit"){
                         public void actionPerformed(ActionEvent event) {
                             ProtegeApplication.handleQuit();
+                        }
+                    });
+                }
+            }
+            else if (menu.getText().equals(HELP_MENU_NAME)){
+                if (!OSUtils.isOSX()){
+                    menu.addSeparator();
+                    menu.add(new AbstractAction("About"){
+                        public void actionPerformed(ActionEvent event) {
+                            AboutPanel.showDialog();
                         }
                     });
                 }
@@ -162,73 +184,73 @@ public abstract class Workspace extends JComponent {
         windowMenu.addSeparator();
         JMenu menu = new JMenu("Look & Feel");
         ButtonGroup lafMenuItemGroup = new ButtonGroup();
-        
+
         windowMenu.add(menu);
-        
+
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
         String lafName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
-        
+
         JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
-			public void actionPerformed(ActionEvent arg0) {
-				setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
-			}        	
+            public void actionPerformed(ActionEvent arg0) {
+                setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
+            }
         });
         lafMenuItemGroup.add(protegeDefaultMenuItem);
         protegeDefaultMenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_LAF_NAME));
-        menu.add(protegeDefaultMenuItem);    
-        
+        menu.add(protegeDefaultMenuItem);
+
         for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        	final String className = info.getClassName();
-        	JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem( 
-        			new AbstractAction(info.getName()) {
-        				public void actionPerformed(ActionEvent e) {
-        					setLookAndFeel(className);
-        				}
-        	});
-        	lafMenuItemGroup.add(menuItem);
-        	menuItem.setSelected(lafName.equals(className));
-        	menu.add(menuItem);
+            final String className = info.getClassName();
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(
+                    new AbstractAction(info.getName()) {
+                        public void actionPerformed(ActionEvent e) {
+                            setLookAndFeel(className);
+                        }
+                    });
+            lafMenuItemGroup.add(menuItem);
+            menuItem.setSelected(lafName.equals(className));
+            menu.add(menuItem);
         }
-        
+
         JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
             public void actionPerformed(ActionEvent e) {
                 setLookAndFeel(ProtegeProperties.PLASTIC_3D_LAF);
             }
         });
         lafMenuItemGroup.add(plastic3DmenuItem);
-        plastic3DmenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_3D_LAF));        
+        plastic3DmenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_3D_LAF));
         menu.add(plastic3DmenuItem);
     }
 
-    
-    private void setProtegeDefaultLookAndFeel(String lafName) {		 
-		try {
-			LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
 
-			PopupFactory.setSharedInstance(new PopupFactory());
-			PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-			PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
+    private void setProtegeDefaultLookAndFeel(String lafName) {
+        try {
+            LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
 
-			FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
-			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
-			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+            PopupFactory.setSharedInstance(new PopupFactory());
+            PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
 
-			UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
-			UIManager.setLookAndFeel(lookAndFeel);
-			
-			//copied from below
+            FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
+            FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+            PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+            UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+            UIManager.setLookAndFeel(lookAndFeel);
+
+//copied from below
             SwingUtilities.updateComponentTreeUI(Workspace.this);
-            
+
             Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
-			
-		} catch (ClassNotFoundException e) {
-			logger.warn("Look and feel not found: " + lafName);
-		} catch (Exception e) {
-			logger.warn(e.toString());
-		}
-	}
-    
+
+        } catch (ClassNotFoundException e) {
+            logger.warn("Look and feel not found: " + lafName);
+        } catch (Exception e) {
+            logger.warn(e.toString());
+        }
+    }
+
 
     private void setLookAndFeel(String clsName) {
         try {
@@ -327,8 +349,8 @@ public abstract class Workspace extends JComponent {
         return "";
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
-    //
+//////////////////////////////////////////////////////////////////////////////////
+//
 
 
     private class ResultsViewComponentPlugin implements ViewComponentPlugin {
@@ -414,7 +436,7 @@ public abstract class Workspace extends JComponent {
 
 
         public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
-                                                  InstantiationException {
+                InstantiationException {
             return viewComponent;
         }
 

@@ -7,7 +7,7 @@ import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.osgi.framework.*;
-import org.protege.editor.core.apple.AppleApplicationWrapper;
+import org.protege.editor.core.apple.ProtegeAppleApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
@@ -119,11 +119,7 @@ public class ProtegeApplication implements BundleActivator {
         initApplication();
 
         if (OSUtils.isOSX()){
-            new AppleApplicationWrapper(){
-                protected boolean handleQuitRequest() {
-                    return handleQuit();
-                }
-            };
+            ProtegeAppleApplication.getInstance();
         }
 
         ProtegeManager.getInstance().initialise(this);

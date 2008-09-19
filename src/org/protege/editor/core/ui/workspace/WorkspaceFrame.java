@@ -1,44 +1,24 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
+import org.protege.editor.core.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
-import org.protege.editor.core.ui.toolbar.MainToolBarBuilder;
 import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
+
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -75,8 +55,17 @@ public class WorkspaceFrame extends JFrame {
         restoreMetrics();
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                if (OSUtils.isOSX()){
+                    ProtegeAppleApplication.getInstance().setEditorKit(null);
+                }
                 saveMetrics();
                 removeWindowListener(this);
+            }
+
+            public void windowActivated(WindowEvent event) {
+                if (OSUtils.isOSX()){
+                    ProtegeAppleApplication.getInstance().setEditorKit(WorkspaceFrame.this.workspace.getEditorKit());
+                }
             }
         });
     }
