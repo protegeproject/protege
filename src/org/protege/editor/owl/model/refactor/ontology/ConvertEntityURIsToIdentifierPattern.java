@@ -2,13 +2,13 @@ package org.protege.editor.owl.model.refactor.ontology;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owl.util.OWLEntityURIConverter;
 import org.semanticweb.owl.util.OWLEntityURIConverterStrategy;
+import org.semanticweb.owl.util.ShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import java.net.URI;
@@ -32,10 +32,6 @@ public class ConvertEntityURIsToIdentifierPattern {
     public Set<OWLOntology> ontologies;
 
     private OWLModelManager mngr;
-
-    private OWLModelManagerEntityRenderer fragmentRenderer;
-
-    private OWLModelManagerEntityRenderer labelRenderer;
 
     private Map<OWLEntity, URI> uriMap = new HashMap<OWLEntity, URI>();
 
@@ -88,24 +84,29 @@ public class ConvertEntityURIsToIdentifierPattern {
 
 
     private void setupRenderers() {
-        fragmentRenderer = new OWLEntityRendererImpl(); // basic fragment renderer
-        fragmentRenderer.setup(mngr);
-        fragmentRenderer.initialise();
-
-        labelRenderer = new OWLEntityAnnotationValueRenderer(); // label renderer
-        labelRenderer.setup(mngr);
-        labelRenderer.initialise();
     }
 
 
     private void buildNewURIMap() {
         uriMap.clear();
 
-        final Set<OWLEntity> allEntities = getAllReferencedEntities();
-        for(OWLEntity entity : allEntities) {
-            String labelRendering = labelRenderer.render(entity);
-            String uriRendering = fragmentRenderer.render(entity);
-            if (labelRendering.equals(uriRendering)){ // will also be true for labels that match the URI fragment!
+        // The label renderer drops through to a specified backup renderer if a label cannot be found
+        // So, hook it up with one that returns null so we can check if the label rendering failed.
+        AnnotationValueShortFormProvider sfp = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
+                                                    OWLRendererPreferences.getInstance().getAnnotationLangs(),
+                                                    mngr.getOWLOntologyManager(), new ShortFormProvider(){
+            public String getShortForm(OWLEntity owlEntity) {
+                return null;
+            }
+
+            public void dispose() {
+                // do nothing
+            }
+        });
+
+        for(OWLEntity entity : getAllReferencedEntities()) {
+            String labelRendering = sfp.getShortForm(entity);
+            if (labelRendering == null){
                 final URI newURI = getNextURI(entity);
                 uriMap.put(entity, newURI);
             }
@@ -117,6 +118,10 @@ public class ConvertEntityURIsToIdentifierPattern {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
         OWLDataFactory df = mngr.getOWLDataFactory();
+
+        OWLEntityRendererImpl fragmentRenderer = new OWLEntityRendererImpl(); // basic fragment renderer
+        fragmentRenderer.setup(mngr);
+        fragmentRenderer.initialise();
 
         for (OWLEntity entity : uriMap.keySet()){
             final OWLOntology ont = getOntologyForEntityLabel(entity);
@@ -219,8 +224,6 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     public void dispose() {
         ontologyImportsWalker.dispose();
-        fragmentRenderer.dispose();
-        labelRenderer.dispose();
 
         uriMap.clear();
         ontologies.clear();

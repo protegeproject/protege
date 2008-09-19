@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.semanticweb.owl.model.OWLEntity;
 
 import java.net.URI;
@@ -46,8 +47,13 @@ public class OWLEntityURIRegenerator {
 
     private OWLEntityFactory fac;
 
+    private OWLEntityRendererImpl fragmentRenderer;
 
     public OWLEntityURIRegenerator(OWLModelManager mngr) {
+
+        fragmentRenderer = new OWLEntityRendererImpl(); // basic fragment renderer
+        fragmentRenderer.setup(mngr);
+        fragmentRenderer.initialise();
 
         // regardless of how prefs are set up, we always want to generate an auto ID URI
         this.fac = new CustomOWLEntityFactory(mngr){
@@ -59,7 +65,7 @@ public class OWLEntityURIRegenerator {
 
 
     public URI generateNewURI(OWLEntity entity) {
-        URI base = getBaseURI(entity.getURI());
+        URI base = getBaseURI(entity);
 
         String id = ""; // this is the "user given name" which will not be used
 
@@ -83,14 +89,9 @@ public class OWLEntityURIRegenerator {
     }
 
 
-    private URI getBaseURI(URI uri) {
-        String fragment = uri.getFragment();
-        if (fragment == null) {
-            String path = uri.getPath();
-            if (path != null) {
-                fragment = path.substring(path.lastIndexOf("/") + 1);
-            }
-        }
+    private URI getBaseURI(OWLEntity entity) {
+        String fragment = fragmentRenderer.render(entity);
+        URI uri = entity.getURI();
 
         if (fragment != null){
             return URI.create(uri.toString().substring(0, uri.toString().lastIndexOf(fragment)));
