@@ -71,10 +71,6 @@ public class OWLEntityURIRegenerator {
 
         OWLEntity newEntity = getEntity(entity, id, base);
 
-        if (newEntity == null){
-            System.out.println("entity: " + entity);
-        }
-
         return newEntity.getURI();
     }
 
