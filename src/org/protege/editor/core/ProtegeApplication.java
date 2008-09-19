@@ -1,5 +1,31 @@
 package org.protege.editor.core;
 
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.protege.editor.core.apple.AppleApplicationWrapper;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.editorkit.EditorKitManager;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.plugin.PluginUtilities;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.util.OSUtils;
+import org.protege.editor.core.ui.util.ProtegePlasticTheme;
+import org.protege.editor.core.ui.workspace.Workspace;
+import org.protege.editor.core.update.UpdateManager;
+import org.protege.editor.core.util.BundleBuilder;
+
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -10,33 +36,6 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Locale;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.UIManager;
-
-import org.apache.log4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
-import org.protege.editor.core.plugin.PluginUtilities;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.error.ErrorLog;
-import org.protege.editor.core.ui.util.ProtegePlasticTheme;
-import org.protege.editor.core.update.UpdateManager;
-import org.protege.editor.core.util.BundleBuilder;
-
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -93,7 +92,7 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
-    
+
     private static String[] args;
 
     private static BundleContext context;
@@ -106,10 +105,11 @@ public class ProtegeApplication implements BundleActivator {
 
     private ProtegeWelcomeFrame welcomeFrame;
 
+
     public static String [] getArgs() {
         return args;
     }
-    
+
     public static void setArgs(String [] args) {
         ProtegeApplication.args = args;
     }
@@ -118,6 +118,15 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeApplication.context = context;
         displayPlatform();
         initApplication();
+
+        if (OSUtils.isOSX()){
+            new AppleApplicationWrapper(){
+                protected boolean handleQuitRequest() {
+                    return handleQuit();
+                }
+            };
+        }
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 try {
@@ -133,11 +142,10 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    /* TODO - this needs work */
+    // Called when the application is finally completely shutting down
     public void stop(BundleContext arg0) throws Exception {
-        // @@TODO close all open workspaces neatly
         BookMarkedURIManager.getInstance().dispose();
-        RecentEditorKitManager.getInstance().save();        
+        RecentEditorKitManager.getInstance().save();
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
@@ -161,7 +169,7 @@ public class ProtegeApplication implements BundleActivator {
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
                     " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
-        logger.info("    Language: " + Locale.getDefault().getLanguage() + 
+        logger.info("    Language: " + Locale.getDefault().getLanguage() +
                     ", Country: " + Locale.getDefault().getCountry());
         logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR)
                     + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
@@ -218,7 +226,7 @@ public class ProtegeApplication implements BundleActivator {
             // I don't know if Windows users would prefer the Windows L&F to be the default one - although
             // the Windows L&F keybindings are the same as the Protege L&F keybindings.
             String defaultLAFClassName;
-            if (System.getProperty("os.name").indexOf("OS X") != -1) {
+            if (OSUtils.isOSX()) {
                 defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
             }
             else {
@@ -376,7 +384,7 @@ public class ProtegeApplication implements BundleActivator {
                 logger.info("Installed plugin " + name);
                 if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && b.getResource("/plugin.xml") == null) {
                     logger.info("\t" + name + " Plugin has no plugin.xml resource");
-               }
+                }
 
             }
             catch (Throwable t) {
@@ -401,7 +409,7 @@ public class ProtegeApplication implements BundleActivator {
             return jar.toURI().toString();
         }
     }
-    
+
     private boolean isTrivialBundleLoadException(File plugin, Throwable t) {
         return plugin.getName().equals(".DS_Store");
     }
@@ -436,13 +444,13 @@ public class ProtegeApplication implements BundleActivator {
         }
         UpdateManager.getInstance().checkForUpdates(false);
     }
-    
+
     private void showWelcomeFrame(){
         if (welcomeFrame == null){
             welcomeFrame = new ProtegeWelcomeFrame();
             welcomeFrame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
-                    handleClose();
+                    System.exit(0);
                 }
             });
             welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -461,20 +469,37 @@ public class ProtegeApplication implements BundleActivator {
         return context;
     }
 
+
     public static ErrorLog getErrorLog() {
         return errorLog;
     }
 
 
-    public void handleClose() {
-        if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            System.exit(0);
+    public static boolean handleQuit() {
+        final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
+        for (EditorKit eKit : eKitMngr.getEditorKits()){
+            Workspace wSpace = eKit.getWorkspace();
+            if (!eKitMngr.getWorkspaceManager().doClose(wSpace)){
+                return false;
+            }
         }
-        else{
-            showWelcomeFrame();
+        return true;
+    }
+
+
+    public void handleClose() {
+        final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
+        if (eKitMngr.getEditorKitCount() == 0){
+            if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+            else{
+                showWelcomeFrame();
+            }
         }
     }
-    
+
+
     public void editURI(URI uri) throws Exception {
         ProtegeManager pm = ProtegeManager.getInstance();
         for (EditorKitFactoryPlugin plugin : pm.getEditorKitFactoryPlugins()) {

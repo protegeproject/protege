@@ -1,21 +1,15 @@
 package org.protege.editor.core.editorkit;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.apache.log4j.Logger;
+import org.protege.editor.core.FileManager;
+import org.protege.editor.core.ProtegeManager;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.core.FileManager;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ProtegeManager;
 
 
 /**

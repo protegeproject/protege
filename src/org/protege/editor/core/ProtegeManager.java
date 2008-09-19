@@ -202,9 +202,7 @@ public class ProtegeManager {
         // Dispose of the model
         editorKit.getModelManager().dispose();
         System.gc();
-        if (editorKitManager.getEditorKitCount() == 0) {
-            application.handleClose();
-        }
+        application.handleClose();
     }
 
 
