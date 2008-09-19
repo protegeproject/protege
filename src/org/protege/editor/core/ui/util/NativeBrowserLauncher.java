@@ -38,14 +38,13 @@ public class NativeBrowserLauncher {
     private static final String errMsg = "Sorry, could not launch web browser";
 
     public static void openURL(String url) {
-        String osName = System.getProperty("os.name");
         try {
-            if (osName.startsWith("Mac OS")) {
+            if (OSUtils.isOSX()) {
                 Class fileMgr = Class.forName("com.apple.eio.FileManager");
                 Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
                 openURL.invoke(null, url);
             }
-            else if (osName.startsWith("Windows")){
+            else if (OSUtils.isWindows()){
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
             }
             else { //assume Unix or Linux

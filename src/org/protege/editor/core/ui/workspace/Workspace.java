@@ -1,14 +1,10 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
@@ -16,18 +12,16 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
-import org.protege.editor.core.ui.view.View;
-import org.protege.editor.core.ui.view.ViewComponent;
-import org.protege.editor.core.ui.view.ViewComponentPlugin;
-import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
-import org.protege.editor.core.ui.view.ViewHolder;
+import org.protege.editor.core.ui.view.*;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.Set;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -74,6 +68,7 @@ public abstract class Workspace extends JComponent {
     private static final Logger logger = Logger.getLogger(Workspace.class);
 
     public static final String WINDOW_MENU_NAME = "Window";
+    public static final String FILE_MENU_NAME = "File";
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
             	
@@ -148,7 +143,18 @@ public abstract class Workspace extends JComponent {
             JMenu menu = menuBar.getMenu(i);
             if (menu.getText().equals(WINDOW_MENU_NAME)) {
                 installLookAndFeelMenu(menu);
-                break;
+            }
+            else if (menu.getText().equals(FILE_MENU_NAME)){
+                if (!OSUtils.isOSX()){
+                    menu.addSeparator();
+                    menu.add(new AbstractAction("Exit"){
+                        public void actionPerformed(ActionEvent event) {
+                            if (ProtegeApplication.handleQuit()){
+                                System.exit(0);
+                            }
+                        }
+                    });
+                }
             }
         }
     }
