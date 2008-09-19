@@ -2,7 +2,6 @@ package org.protege.editor.core.ui.menu;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
-
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
@@ -11,6 +10,7 @@ import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
+import org.protege.editor.core.ui.util.OSUtils;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -158,7 +158,7 @@ public class MenuBuilder {
                     // decided to swap this here (MH).
                     if (ks != null) {
                         if (ks.getKeyCode() == KeyEvent.VK_DELETE) {
-                            if (System.getProperty("os.name").indexOf("OS X") != -1) {
+                            if (OSUtils.isOSX()) {
                                 ks = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ks.getModifiers());
                             }
                         }
