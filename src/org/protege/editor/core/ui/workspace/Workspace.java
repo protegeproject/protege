@@ -149,9 +149,7 @@ public abstract class Workspace extends JComponent {
                     menu.addSeparator();
                     menu.add(new AbstractAction("Exit"){
                         public void actionPerformed(ActionEvent event) {
-                            if (ProtegeApplication.handleQuit()){
-                                System.exit(0);
-                            }
+                            ProtegeApplication.handleQuit();
                         }
                     });
                 }

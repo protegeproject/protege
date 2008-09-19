@@ -6,10 +6,7 @@ import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
+import org.osgi.framework.*;
 import org.protege.editor.core.apple.AppleApplicationWrapper;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
@@ -105,6 +102,8 @@ public class ProtegeApplication implements BundleActivator {
 
     private ProtegeWelcomeFrame welcomeFrame;
 
+    private static boolean quitting = false;
+
 
     public static String [] getArgs() {
         return args;
@@ -127,16 +126,6 @@ public class ProtegeApplication implements BundleActivator {
             };
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                try {
-                    ProtegeApplication.context.getBundle().uninstall();
-                }
-                catch (Exception e) {
-                    logger.error("Failed to correctly shutdown Protege:", e);
-                }
-            }
-        });
         ProtegeManager.getInstance().initialise(this);
         startApplication();
     }
@@ -450,7 +439,7 @@ public class ProtegeApplication implements BundleActivator {
             welcomeFrame = new ProtegeWelcomeFrame();
             welcomeFrame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
-                    System.exit(0);
+                    handleQuit();
                 }
             });
             welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -476,25 +465,36 @@ public class ProtegeApplication implements BundleActivator {
 
 
     public static boolean handleQuit() {
+        quitting = true;
         final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
         for (EditorKit eKit : eKitMngr.getEditorKits()){
             Workspace wSpace = eKit.getWorkspace();
             if (!eKitMngr.getWorkspaceManager().doClose(wSpace)){
-                return false;
+                quitting = false;
+                return quitting;
             }
+        }
+        try {
+            ProtegeApplication.context.getBundle().uninstall();
+            System.exit(0);
+        }
+        catch (BundleException e) {
+            logger.error("Failed to correctly shutdown Protege:", e);
         }
         return true;
     }
 
 
     public void handleClose() {
-        final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
-        if (eKitMngr.getEditorKitCount() == 0){
-            if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                System.exit(0);
-            }
-            else{
-                showWelcomeFrame();
+        if (!quitting){
+            final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
+            if (eKitMngr.getEditorKitCount() == 0){
+                if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    handleQuit();
+                }
+                else{
+                    showWelcomeFrame();
+                }
             }
         }
     }
