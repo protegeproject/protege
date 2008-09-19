@@ -64,10 +64,8 @@ public class AppleApplicationWrapper {
             InvocationHandler invocationHandler = new InvocationHandler(){
                 public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
                     if (method.equals(handleQuit)){
-                        if (handleQuitRequest()){
-                            Object applicationEvent = objects[0];
-                            setHandled.invoke(applicationEvent, true);
-                        }
+                        Object applicationEvent = objects[0];
+                        setHandled.invoke(applicationEvent, handleQuitRequest());
                     }
 
                     // add further listener methods here
