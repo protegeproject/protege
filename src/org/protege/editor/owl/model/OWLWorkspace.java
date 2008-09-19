@@ -216,6 +216,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         for (OWLOntologyChange chg : changes){
             if (chg instanceof SetOntologyURI){
                 rebuildOntologiesMenu();
+                updateTitleBar();                
                 break;
             }
         }
