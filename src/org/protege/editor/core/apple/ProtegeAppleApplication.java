@@ -1,6 +1,9 @@
 package org.protege.editor.core.apple;
 
+import java.io.File;
+
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
@@ -57,6 +60,11 @@ public class ProtegeAppleApplication extends AbstractAppleApplicationWrapper {
     public void setEditorKit(EditorKit eKit){
         this.eKit = eKit;
         setEnabledPreferencesMenu(eKit != null);
+    }
+    
+    @Override
+    protected void editFile(String fileName) throws Exception {
+        ProtegeManager.getInstance().getApplication().editURI(new File(fileName).toURI());
     }
 
 
