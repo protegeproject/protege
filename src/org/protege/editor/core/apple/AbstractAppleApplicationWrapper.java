@@ -1,5 +1,6 @@
 package org.protege.editor.core.apple;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -26,6 +27,9 @@ import java.lang.reflect.Proxy;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeManager;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -39,66 +43,138 @@ import java.lang.reflect.Proxy;
  *
  */
 public abstract class AbstractAppleApplicationWrapper {
+    private static Logger log = Logger.getLogger(AbstractAppleApplicationWrapper.class);
 
     private Object application;
+    private Object listener;
+    
+    /*
+     * OS X specific classes
+     */
+    private Class<?> applicationClass;
+    private Class<?> applicationListenerClass;
+    private Class<?> applicationEventClass;
+    
+    /*
+     * Application Methods
+     */
+    
+    private Method getApplicationMethod;
+    private Method addApplicationListenerMethod;
+    private Method removeApplicationListenerMethod;
+    
+    /*
+     * Application Listener Methods
+     */
 
-// all this equivalent to this code:
-//        Application application = new Application();
-//        application.addApplicationListener(new ApplicationAdapter(){
-//            public void handleQuit(ApplicationEvent event) {
-//                if (handleQuitRequest()){
-//                    event.setHandled(true);
-//                }
-//            }
-//        });
+    private Method handleAboutMethod;
+    private Method handleOpenFileMethod;
+    private Method handlePreferencesMethod;
+    private Method handleQuitMethod;
+    /*
+     * Application Event Methods
+     */
+
+    private Method getFileNameMethod;
+    private Method setHandledMethod;
+
+
 
     public AbstractAppleApplicationWrapper() {
         try {
-            Class applicationClass = Class.forName("com.apple.eawt.Application");
-            Class applicationListenerClass = Class.forName("com.apple.eawt.ApplicationListener");
-            Class applicationEventClass = Class.forName("com.apple.eawt.ApplicationEvent");
+            getClassesAndInterfaces();
+            
+            application = getApplicationMethod.invoke(null, new Object [] { });
 
-            final Method setHandled = applicationEventClass.getMethod("setHandled", boolean.class);
-            final Method addApplicationListener = applicationClass.getMethod("addApplicationListener", applicationListenerClass);
-
-            final Method handleQuit = applicationListenerClass.getMethod("handleQuit", applicationEventClass);
-            final Method handleAbout = applicationListenerClass.getMethod("handleAbout", applicationEventClass);
-            final Method handlePreferences = applicationListenerClass.getMethod("handlePreferences", applicationEventClass);
-
-            application = applicationClass.newInstance();
-
-            InvocationHandler invocationHandler = new InvocationHandler(){
-                public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-                    if (method.equals(handleQuit)){
-                        Object applicationEvent = objects[0];
-                        setHandled.invoke(applicationEvent, handleQuitRequest());
-                    }
-                    else if (method.equals(handleAbout)){
-                        Object applicationEvent = objects[0];
-                        setHandled.invoke(applicationEvent, handleAboutRequest());
-                    }
-                    else if (method.equals(handlePreferences)){
-                        Object applicationEvent = objects[0];
-                        setHandled.invoke(applicationEvent, handlePreferencesRequest());
-                    }
-
-                    // add further listener methods here
-
-                    return null;
-                }
-            };
-
-            Object applicationAdapter = Proxy.newProxyInstance(getClass().getClassLoader(),
-                                                               new Class[]{applicationListenerClass},
-                                                               invocationHandler);
-
-
-            addApplicationListener.invoke(application, applicationAdapter);
+            addApplicationListenerMethod.invoke(application, getListener());
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Could not initialize OS X specific settings");
         }
     }
+    
+    private void getClassesAndInterfaces() throws ClassNotFoundException, SecurityException, NoSuchMethodException {
+        /*
+         * OS X specific classes
+         */
+        applicationClass = Class.forName("com.apple.eawt.Application");
+        applicationListenerClass = Class.forName("com.apple.eawt.ApplicationListener");
+        applicationEventClass = Class.forName("com.apple.eawt.ApplicationEvent");
+        
+        /*
+         * Application Methods
+         */
+        
+        getApplicationMethod = applicationClass.getMethod("getApplication", new Class[] { });
+        addApplicationListenerMethod = applicationClass.getMethod("addApplicationListener", applicationListenerClass);
+        addApplicationListenerMethod = applicationClass.getMethod("addApplicationListener", new Class[] { applicationListenerClass });
+        removeApplicationListenerMethod = applicationClass.getMethod("removeApplicationListener", new Class[] { applicationListenerClass });
+
+        /*
+         * Application Listener Methods
+         */
+
+
+        handleAboutMethod = applicationListenerClass.getMethod("handleAbout", applicationEventClass);
+        handleOpenFileMethod = applicationListenerClass.getMethod("handleOpenFile", new Class[] { applicationEventClass });
+        handlePreferencesMethod = applicationListenerClass.getMethod("handlePreferences", applicationEventClass);
+        handleQuitMethod = applicationListenerClass.getMethod("handleQuit", applicationEventClass);
+        
+
+        /*
+         * Application Event Methods
+         */
+        getFileNameMethod = applicationEventClass.getMethod("getFilename", new Class[] { });
+        setHandledMethod = applicationEventClass.getMethod("setHandled", boolean.class);
+    }
+    
+    
+    
+    private Object getListener() {
+        if (listener != null) {
+            return listener;
+        }
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args)
+            throws Throwable {
+                if (method.equals(handleAboutMethod)){
+                    Object applicationEvent = args[0];
+                    setHandledMethod.invoke(applicationEvent, handleAboutRequest());
+                }
+                if (method.equals(handleOpenFileMethod)) {
+                    Object event = args[0];
+                    String fileName = (String) getFileNameMethod.invoke(event, new Object[] { });
+                    editFile(fileName);
+                }
+                else if (method.equals(handlePreferencesMethod)){
+                    Object applicationEvent = args[0];
+                    setHandledMethod.invoke(applicationEvent, handlePreferencesRequest());
+                }
+                else if (method.equals(handleQuitMethod)){
+                    Object applicationEvent = args[0];
+                    setHandledMethod.invoke(applicationEvent, handleQuitRequest());
+                }
+                // behave like a good java object
+                else if (method.getName().equals("equals")) {
+                    return proxy == args[0];
+                }
+                else if (method.getName().equals("hashCode")) {
+                    return 42;
+                }
+                else if (method.getName().equals("toString")) {
+                    return "OSX Application Listener";
+                }
+                return null;
+            }
+        };
+        listener = Proxy.newProxyInstance(getClass().getClassLoader(), 
+                                          new Class[] { applicationListenerClass }, handler);
+        return listener;
+    }
+    
+    /*
+     * Protege Interfaces
+     */
 
     protected final void setEnabledPreferencesMenu(boolean enabled) {
         try {
@@ -110,6 +186,12 @@ public abstract class AbstractAppleApplicationWrapper {
             throw new RuntimeException(e);
         }
     }
+    
+    /*
+     * Abstract methods for interaction with Protege
+     */
+    
+    protected abstract void editFile(String fileName) throws Exception;
 
     protected abstract boolean handlePreferencesRequest();
 
