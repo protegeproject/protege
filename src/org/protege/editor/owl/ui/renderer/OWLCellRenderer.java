@@ -117,7 +117,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<OWLObject>();
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
-        renderingComponent.setOpaque(false);
+        renderingComponent.setOpaque(true);
         iconLabel = new JLabel("");
         iconLabel.setVerticalAlignment(SwingConstants.CENTER);
         renderingComponent.add(iconLabel);
@@ -387,7 +387,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private void adjustTransparency() {
-        textPane.setOpaque(true);
+        textPane.setOpaque(false);
         renderingComponent.setOpaque(true);
         if (trasparent) {
             textPane.setOpaque(false);
@@ -1035,6 +1035,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             iconWidth = iconLabel.getPreferredSize().width;
             iconHeight = iconLabel.getPreferredSize().height;
             Insets insets = parent.getInsets();
+            Insets rcInsets = renderingComponent.getInsets();
+
             if (preferredWidth != -1) {
                 textWidth = preferredWidth - iconWidth;
                 View v = textPane.getUI().getRootView(textPane);
@@ -1057,9 +1059,42 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             if (height < minHeight) {
                 height = minHeight;
             }
-            return new Dimension(width + insets.left + insets.right, height + insets.top + insets.bottom);
+            int totalWidth = width + rcInsets.left + rcInsets.right;
+            int totalHeight = height + rcInsets.top + rcInsets.bottom;
+            return new Dimension(totalWidth, totalHeight);
         }
 
+        /**
+         * Lays out the specified container.
+         * @param parent the container to be laid out
+         */
+        public void layoutContainer(Container parent) {
+            int iconWidth;
+            int iconHeight;
+            int textWidth;
+            int textHeight;
+            Insets rcInsets = renderingComponent.getInsets();
+
+            iconWidth = iconLabel.getPreferredSize().width;
+            iconHeight = iconLabel.getPreferredSize().height;
+            if (preferredWidth != -1) {
+                textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
+                View v = textPane.getUI().getRootView(textPane);
+                v.setSize(textWidth, Integer.MAX_VALUE);
+                textHeight = (int) v.getMinimumSpan(View.Y_AXIS);
+            }
+            else {
+                textWidth = textPane.getPreferredSize().width;
+                textHeight = textPane.getPreferredSize().height;
+                if (textHeight < minTextHeight) {
+                    textHeight = minTextHeight;
+                }
+            }
+            int leftOffset = rcInsets.left;
+            int topOffset = rcInsets.top;
+            iconLabel.setBounds(leftOffset, topOffset, iconWidth, iconHeight);
+            textPane.setBounds(leftOffset + iconWidth, topOffset, textWidth, textHeight);
+        }
 
         /**
          * Calculates the minimum size dimensions for the specified
@@ -1072,33 +1107,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
-        /**
-         * Lays out the specified container.
-         * @param parent the container to be laid out
-         */
-        public void layoutContainer(Container parent) {
-            int iconWidth;
-            int iconHeight;
-            int textWidth;
-            int textHeight;
-            Insets insets = parent.getInsets();
-            iconWidth = iconLabel.getPreferredSize().width;
-            iconHeight = iconLabel.getPreferredSize().height;
-            if (preferredWidth != -1) {
-                textWidth = preferredWidth - iconWidth;
-                View v = textPane.getUI().getRootView(textPane);
-                v.setSize(textWidth, Integer.MAX_VALUE);
-                textHeight = (int) v.getMinimumSpan(View.Y_AXIS);
-            }
-            else {
-                textWidth = textPane.getPreferredSize().width;
-                textHeight = textPane.getPreferredSize().height;
-                if (textHeight < minTextHeight) {
-                    textHeight = minTextHeight;
-                }
-            }
-            iconLabel.setBounds(insets.left, insets.top, iconWidth, iconHeight);
-            textPane.setBounds(insets.left + iconWidth, insets.top, textWidth, textHeight);
-        }
+
     }
 }
