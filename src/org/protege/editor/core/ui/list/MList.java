@@ -225,7 +225,7 @@ public class MList extends JList {
     }
 
 
-    private class MListCellRenderer implements ListCellRenderer {
+    public class MListCellRenderer implements ListCellRenderer {
 
 
         private ListCellRenderer contentRenderer;
