@@ -1,12 +1,13 @@
 package org.protege.editor.core.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JOptionPane;
-
-import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.util.OpenRequestHandler;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.workspace.Workspace;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -18,32 +19,14 @@ import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class NewAction extends ProtegeAction {
-
-    private static final Logger logger = Logger.getLogger(NewAction.class);
-
+public class NewAction extends ProtegeAction implements OpenRequestHandler {
 
     public void actionPerformed(ActionEvent e) {
         try {
-            int ret = JOptionPane.showConfirmDialog(getWorkspace(),
-                                                    "Do you want to create the ontology in a new frame?",
-                                                    "Create in new frame",
-                                                    JOptionPane.YES_NO_CANCEL_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE);
-            if (ret == JOptionPane.NO_OPTION) {
-                getEditorKit().handleNewRequest();
-            }
-            else if (ret == JOptionPane.YES_OPTION) {
-                for (EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
-                    if (plugin.getId().equals(getEditorKit().getEditorKitFactory().getId())) {
-                        ProtegeManager.getInstance().createAndSetupNewEditorKit(plugin);
-                        break;
-                    }
-                }
-            }
+            UIUtil.openRequest(this);
         }
         catch (Exception e1) {
-            logger.error(e1);
+            ErrorLogPanel.showErrorDialog(e1);
         }
     }
 
@@ -53,5 +36,25 @@ public class NewAction extends ProtegeAction {
 
 
     public void dispose() {
+    }
+
+
+    public Workspace getCurrentWorkspace() {
+        return getWorkspace();
+    }
+
+
+    public void openInNewWorkspace() throws Exception {
+        for (EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
+            if (plugin.getId().equals(getEditorKit().getEditorKitFactory().getId())) {
+                ProtegeManager.getInstance().createAndSetupNewEditorKit(plugin);
+                break;
+            }
+        }
+    }
+
+
+    public void openInCurrentWorkspace() throws Exception {
+        getEditorKit().handleNewRequest();
     }
 }
