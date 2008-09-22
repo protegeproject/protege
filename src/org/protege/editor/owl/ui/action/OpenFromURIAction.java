@@ -4,8 +4,10 @@ import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.ui.OpenFromURIPanel;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.util.OpenRequestHandler;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.workspace.Workspace;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 
@@ -16,33 +18,11 @@ import java.net.URI;
  * Bio-Health Informatics Group<br>
  * Date: 20-Dec-2006<br><br>
  */
-public class OpenFromURIAction extends ProtegeOWLAction {
+public class OpenFromURIAction extends ProtegeOWLAction implements OpenRequestHandler {
 
     public void actionPerformed(ActionEvent e) {
         try {
-            int ret = JOptionPane.showConfirmDialog(getWorkspace(),
-                                                    "Do you want to open the ontology in a new frame?",
-                                                    "Open in new frame",
-                                                    JOptionPane.YES_NO_CANCEL_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE);
-
-            if (ret == JOptionPane.NO_OPTION) {
-                URI uri = getURI();
-                if (uri != null) {
-                    getOWLEditorKit().handleLoadFrom(uri);
-                }
-            }
-            else if (ret == JOptionPane.YES_OPTION) {
-                URI uri = getURI();
-                if (uri != null) {
-                    for (EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
-                        if (plugin.getId().equals(getEditorKit().getEditorKitFactory().getId())) {
-                            ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri);
-                            break;
-                        }
-                    }
-                }
-            }
+            UIUtil.openRequest(this);
         }
         catch (Exception e1) {
             ErrorLogPanel.showErrorDialog(e1);
@@ -60,5 +40,31 @@ public class OpenFromURIAction extends ProtegeOWLAction {
 
 
     public void initialise() throws Exception {
+    }
+
+
+    public Workspace getCurrentWorkspace() {
+        return getWorkspace();
+    }
+
+
+    public void openInNewWorkspace() throws Exception {
+        URI uri = getURI();
+        if (uri != null) {
+            for (EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
+                if (plugin.getId().equals(getEditorKit().getEditorKitFactory().getId())) {
+                    ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    public void openInCurrentWorkspace() throws Exception {
+        URI uri = getURI();
+        if (uri != null) {
+            getOWLEditorKit().handleLoadFrom(uri);
+        }
     }
 }
