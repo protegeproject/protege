@@ -554,7 +554,7 @@
 
     <extension id="edit.duplicate"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Duplicate selected class"/>
+        <name value="Duplicate selected class..."/>
         <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
         <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-A"/>
