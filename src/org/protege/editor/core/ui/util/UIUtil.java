@@ -157,8 +157,8 @@ public class UIUtil {
     public static void openRequest(OpenRequestHandler handler) throws Exception {
 
         int ret = JOptionPane.showConfirmDialog(handler.getCurrentWorkspace(),
-                                      "Do you want to open the ontology in the current workspace?",
-                                      "Open in current workspace",
+                                      "Do you want to open the ontology in the current window?",
+                                      "Open in current window",
                                       JOptionPane.YES_NO_CANCEL_OPTION,
                                       JOptionPane.QUESTION_MESSAGE);
 
