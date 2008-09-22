@@ -9,6 +9,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.frame.OWLEntityFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
