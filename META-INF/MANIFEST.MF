@@ -91,6 +91,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.table,
  org.protege.editor.owl.ui.transfer,
  org.protege.editor.owl.ui.tree,
+ org.protege.editor.owl.ui.usage,
  org.protege.editor.owl.ui.view,
  org.protege.editor.owl.ui.explanation
 Bundle-Version: 4.0.101
