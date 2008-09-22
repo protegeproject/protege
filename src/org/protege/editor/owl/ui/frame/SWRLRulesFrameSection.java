@@ -49,7 +49,13 @@ public class SWRLRulesFrameSection extends AbstractOWLFrameSection<OWLOntology, 
 
 
     public OWLFrameSectionRowObjectEditor<SWRLRule> getObjectEditor() {
-        return new SWRLRuleEditor(getOWLEditorKit());
+        return null;
+//        return new SWRLRuleEditor(getOWLEditorKit());
+    }
+
+
+    public boolean canAdd() {
+        return false;
     }
 
 

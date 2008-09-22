@@ -47,9 +47,20 @@ public class SWRLRuleFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntol
 
 
     protected OWLFrameSectionRowObjectEditor<SWRLRule> getObjectEditor() {
-        SWRLRuleEditor editor = new SWRLRuleEditor(getOWLEditorKit());
-        editor.setObject(getAxiom());
-        return editor;
+        return null;
+//        SWRLRuleEditor editor = new SWRLRuleEditor(getOWLEditorKit());
+//        editor.setObject(getAxiom());
+//        return editor;
+    }
+
+
+    public boolean isDeleteable() {
+        return true;
+    }
+
+
+    public boolean isEditable() {
+        return false;
     }
 
 
