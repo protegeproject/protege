@@ -243,4 +243,9 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         errorLabel.setText("");
         errorLabel.validate();
     }
+
+
+    public JComponent getFocusComponent() {
+        return textField;
+    }
 }
