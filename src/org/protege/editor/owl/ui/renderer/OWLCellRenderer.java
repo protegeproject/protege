@@ -791,7 +791,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // is inconsistent
                     try {
                         if (highlightUnsatisfiableClasses &&
-                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) || 
+//                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
                             !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                             // Paint red because of inconsistency
                             doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
