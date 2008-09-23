@@ -138,7 +138,7 @@ public class WizardModel {
         //  false.
 
         if (nextPanel == null)
-            throw new WizardPanelNotFoundException();
+            throw new WizardPanelNotFoundException(id);
 
         WizardPanel oldPanel = currentPanel;
         currentPanel = nextPanel;

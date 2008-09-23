@@ -201,6 +201,12 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
         wizardDialog.pack();
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension wizardDimension = wizardDialog.getSize();
+        if(wizardDimension.width > screenDimension.width) {
+            wizardDimension.width = screenDimension.width - 10;
+        }
+        if(wizardDimension.height > screenDimension.height) {
+            wizardDimension.height = screenDimension.height - 10;
+        }
         wizardDialog.setLocation((screenDimension.width - wizardDimension.width) / 2,
                                  (screenDimension.height - wizardDimension.height) / 2);
         wizardDialog.setVisible(true);
