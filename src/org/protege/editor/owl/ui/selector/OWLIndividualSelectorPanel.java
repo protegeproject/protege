@@ -125,6 +125,10 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         };
     }
 
+    public void setOntologies(Set<OWLOntology> ontologies) {
+
+    }
+
     public void addSelectionListener(ChangeListener listener) {
         viewComponent.addChangeListener(listener);
     }
