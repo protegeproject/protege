@@ -5,7 +5,6 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -139,8 +138,8 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     private void save() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
-        prefs.putStringList(getPrefsID(), cacheInternalForm);
+//        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
+//        prefs.putStringList(getPrefsID(), cacheInternalForm);
     }
 
 
@@ -148,24 +147,25 @@ public class OWLExpressionUserCache implements Disposable {
         Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
         if (prefs != null){
             cacheExternalForm = new ArrayList<String>();
-            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
-                String external = fromInternalForm(internal);
-                try {
-                    OWLDescription descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
-                    renderingsCache.put(descr, internal);
-                    cacheInternalForm.add(internal);
-                    cacheExternalForm.add(external);
-                }
-                catch (OWLExpressionParserException e) {
-                    logger.warn("Could not reload expression from history files: " + internal);
-                }
-            }
+//            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
+//                String external = fromInternalForm(internal);
+//                try {
+//                    OWLDescription descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
+//                    renderingsCache.put(descr, internal);
+//                    cacheInternalForm.add(internal);
+//                    cacheExternalForm.add(external);
+//                }
+//                catch (OWLExpressionParserException e) {
+//                    logger.warn("Could not reload expression from history files: " + internal);
+//                }
+//            }
         }
     }
 
 
     private String getPrefsID() {
-        final String fragment = mngr.getURIRendering(mngr.getActiveOntology().getURI());
+        final String fragment = mngr.getRendering(mngr.getActiveOntology());
+
         return fragment + "-" + mngr.getActiveOntology().hashCode();
     }
 
