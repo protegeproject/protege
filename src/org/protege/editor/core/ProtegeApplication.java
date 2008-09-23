@@ -485,12 +485,7 @@ public class ProtegeApplication implements BundleActivator {
         if (!quitting){
             final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
             if (eKitMngr.getEditorKitCount() == 0){
-                if (JOptionPane.showConfirmDialog(null, "Do you want to quit Protege?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                    handleQuit();
-                }
-                else{
-                    showWelcomeFrame();
-                }
+                showWelcomeFrame();
             }
         }
     }
