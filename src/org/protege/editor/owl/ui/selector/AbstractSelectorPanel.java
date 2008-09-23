@@ -24,7 +24,7 @@ import java.util.Set;
  * A common base class for selector panels, so that they
  * all have the same preferred size etc.
  */
-public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel {
+public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel implements OWLObjectSelector<O> {
 
     private OWLEditorKit editorKit;
 
