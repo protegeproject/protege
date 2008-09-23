@@ -2,8 +2,6 @@ package org.protege.editor.owl.model.cache;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -144,9 +142,9 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     private void load() {
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
-        if (prefs != null){
-            cacheExternalForm = new ArrayList<String>();
+//        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
+//        if (prefs != null){
+//            cacheExternalForm = new ArrayList<String>();
 //            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
 //                String external = fromInternalForm(internal);
 //                try {
@@ -159,7 +157,7 @@ public class OWLExpressionUserCache implements Disposable {
 //                    logger.warn("Could not reload expression from history files: " + internal);
 //                }
 //            }
-        }
+//        }
     }
 
 
