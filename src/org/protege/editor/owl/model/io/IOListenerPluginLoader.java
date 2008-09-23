@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.io;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitPlugin;
 import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
