@@ -48,6 +48,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private EditorKit editorKit;
 
+    private boolean setTransparency;
 
     public AbstractWizardPanel(Object id, String title, EditorKit editorKit) {
         super(id);
@@ -70,6 +71,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
             }
         });
         createUI();
+        setTransparency = false;
     }
 
 
@@ -142,17 +144,11 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         nonTransparentComponents.add(JTree.class);
         nonTransparentComponents.add(JTable.class);
         nonTransparentComponents.add(JScrollPane.class);
+        nonTransparentComponents.add(JComboBox.class);
     }
 
 
     protected void setComponentTransparency(Component component) {
-        if (component instanceof Container) {
-            Container container = (Container) component;
-            Component [] components = container.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                setComponentTransparency(components[i]);
-            }
-        }
         if (component instanceof JComponent) {
             for (Class c : nonTransparentComponents) {
                 if (c.isInstance(component)) {
@@ -160,6 +156,13 @@ public abstract class AbstractWizardPanel extends WizardPanel {
                 }
             }
             ((JComponent) component).setOpaque(false);
+        }
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            Component [] components = container.getComponents();
+            for (int i = 0; i < components.length; i++) {
+                setComponentTransparency(components[i]);
+            }
         }
     }
 
