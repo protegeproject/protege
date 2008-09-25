@@ -97,6 +97,8 @@ public class CheckTable<O> extends JTable {
     public CheckTable(String name) {
         super(new CheckTableModel<O>(name));
 
+        setShowGrid(false);
+        setIntercellSpacing(new Dimension(0, 3));
         setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         final JTableHeader header = getTableHeader();
