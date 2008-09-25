@@ -190,6 +190,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
         ioListeners = new ArrayList<IOListener>();
 
+
         objectRenderer = new OWLObjectRendererImpl(this);
         uriShortFormProvider = new SimpleURIShortFormProvider();
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
@@ -214,12 +215,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
         registerOntologySelectionStrategy(activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this));
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
+
+        put(OntologySourcesManager.ID, new OntologySourcesManager(this));
     }
 
 
     public void dispose() {
         super.dispose();
-        
+
+        OntologySourcesManager sourcesMngr = get(OntologySourcesManager.ID);
+        removeIOListener(sourcesMngr);
+
         if (assertedClassHierarchyProvider != null) {
             assertedClassHierarchyProvider.dispose();
         }
@@ -455,6 +461,15 @@ public class OWLModelManagerImpl extends AbstractModelManager
         dirtyOntologies.add(ont);
         setActiveOntology(ont);
         fireEvent(EventType.ONTOLOGY_CREATED);
+        return ont;
+    }
+
+
+    public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
+        ont = manager.reloadOntology(getOntologyPhysicalURI(ont));
+
+        fireEvent(EventType.ONTOLOGY_LOADED);
+        setActiveOntology(ont, true);
         return ont;
     }
 

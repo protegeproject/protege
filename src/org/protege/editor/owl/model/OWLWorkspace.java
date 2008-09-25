@@ -28,11 +28,9 @@ import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
+import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLIconProvider;
-import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
-import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
@@ -121,65 +119,18 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getModelManager());
         owlSelectionModel = new OWLSelectionModelImpl();
 
-        keyWordColorMap = new HashMap<String, Color>();
-        Color restrictionColor = new Color(178, 0, 178);
-        Color logicalOpColor = new Color(0, 178, 178);
-        Color axiomColor = new Color(10, 94, 168);
-        Color queryColor = new Color(100, 15, 120);
-        keyWordColorMap.put("some", restrictionColor);
-        keyWordColorMap.put("only", restrictionColor);
-        keyWordColorMap.put("value", restrictionColor);
-        keyWordColorMap.put("exactly", restrictionColor);
-        keyWordColorMap.put("min", restrictionColor);
-        keyWordColorMap.put("max", restrictionColor);
-        keyWordColorMap.put("inv", logicalOpColor);
-        keyWordColorMap.put("and", logicalOpColor);
-        keyWordColorMap.put("that", logicalOpColor);
-        keyWordColorMap.put("or", logicalOpColor);
-        keyWordColorMap.put("not", logicalOpColor);
-        keyWordColorMap.put("subClassOf", axiomColor);
-        keyWordColorMap.put("SubClassOf", axiomColor);
-        keyWordColorMap.put("disjointWith", axiomColor);
-        keyWordColorMap.put("DisjointWith", axiomColor);
-        keyWordColorMap.put("equivalentTo", axiomColor);
-        keyWordColorMap.put("EquivalentTo", axiomColor);
-        keyWordColorMap.put("domainOf", axiomColor);
-        keyWordColorMap.put("DomainOf", axiomColor);
-        keyWordColorMap.put("rangeOf", axiomColor);
-        keyWordColorMap.put("RangeOf", axiomColor);
-        keyWordColorMap.put("instanceOf", axiomColor);
-        keyWordColorMap.put("InstanceOf", axiomColor);
-        keyWordColorMap.put("minus", queryColor);
-        keyWordColorMap.put("plus", queryColor);
-        keyWordColorMap.put("possibly", queryColor);
-        keyWordColorMap.put("inverseOf", axiomColor);
-        keyWordColorMap.put("DifferentIndividuals:", axiomColor);
-        keyWordColorMap.put("SameIndividuals:", axiomColor);
-        keyWordColorMap.put("Functional:", axiomColor);
-        keyWordColorMap.put("InverseFunctional:", axiomColor);
-        keyWordColorMap.put("Symmetric:", axiomColor);
-        keyWordColorMap.put("AntiSymmetric:", axiomColor);
-        keyWordColorMap.put("Reflexive:", axiomColor);
-        keyWordColorMap.put("Irreflexive:", axiomColor);
-        keyWordColorMap.put("Transitive:", axiomColor);
-        keyWordColorMap.put("subPropertyOf", axiomColor);
-        keyWordColorMap.put("disjointUnionOf", axiomColor);
-        keyWordColorMap.put("o", axiomColor);
-        keyWordColorMap.put("\u279E", axiomColor);
-        keyWordColorMap.put("\u2192", axiomColor);
-        keyWordColorMap.put("\u2227", axiomColor);
+        keyWordColorMap = new KeywordColourMap();
 
         defaultAnnotationProperties = new ArrayList<URI>();
         defaultAnnotationProperties.add(OWLRDFVocabulary.RDFS_COMMENT.getURI());
+
         super.initialise();
 
         errorNotificationLabel = new ErrorNotificationLabel(ProtegeApplication.getErrorLog(), this);
 
-
         createActiveOntologyPanel();
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
         reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
-//        reselectionEventTypes.add(EventType.ENTITY_RENDERING_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
 
@@ -209,14 +160,17 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         mngr.getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
         mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
+
+
+        new OntologySourcesChangedHandlerUI(this);
     }
 
-
+    
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange chg : changes){
             if (chg instanceof SetOntologyURI){
                 rebuildOntologiesMenu();
-                updateTitleBar();                
+                updateTitleBar();
                 break;
             }
         }
@@ -469,7 +423,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         final OWLModelManager mngr = getOWLModelManager();
 
-        // Install the active ontology combo box
+// Install the active ontology combo box
         ontologiesList = new JComboBox();
         ontologiesList.setToolTipText("Active ontology");
         ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
@@ -495,7 +449,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-        // Global find field
+// Global find field
         JPanel finderHolder = new JPanel();
         finderHolder.setLayout(new BoxLayout(finderHolder, BoxLayout.LINE_AXIS));
         finderHolder.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,
@@ -536,7 +490,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         add(topBarPanel, BorderLayout.NORTH);
 
-        // Find focus accelerator
+// Find focus accelerator
         KeyStroke findKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F,
                                                          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "FOCUS_FIND");
