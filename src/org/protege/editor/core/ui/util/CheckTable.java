@@ -95,7 +95,7 @@ public class CheckTable<O> extends JTable {
 
 
     public CheckTable(String name) {
-        setModel(new CheckTableModel<O>(name));
+        super(new CheckTableModel<O>(name));
 
         setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
@@ -107,10 +107,6 @@ public class CheckTable<O> extends JTable {
         checkAllCheckbox.setSelected(defaultSelected);
         checkAllCheckbox.addChangeListener(checkAllActionListener);
 
-        final TableColumn checkCol = getColumnModel().getColumn(0);
-        checkCol.setMaxWidth(checkAllCheckbox.getPreferredSize().width + 2);
-
-        checkCol.setHeaderRenderer(headerRenderer);
         getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "checkSelection");
         getActionMap().put("checkSelection", new AbstractAction(){
             public void actionPerformed(ActionEvent event) {
@@ -119,6 +115,31 @@ public class CheckTable<O> extends JTable {
         });
 
         getDefaultEditor(Boolean.class).addCellEditorListener(checkEditorListener);
+
+        setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+    }
+
+
+    public Component prepareRenderer(TableCellRenderer tableCellRenderer, int i, int i1) {
+        Component c = super.prepareRenderer(tableCellRenderer, i, i1);
+        if (c instanceof AbstractButton){
+            ((AbstractButton)c).setVerticalAlignment(SwingConstants.TOP);
+        }
+        return c;
+    }
+
+
+    public Component prepareEditor(TableCellEditor tableCellEditor, int i, int i1) {
+        Component c = super.prepareEditor(tableCellEditor, i, i1);
+        if (c instanceof AbstractButton){
+            ((AbstractButton)c).setVerticalAlignment(SwingConstants.TOP);
+        }
+        return c;
+    }
+
+
+    public CheckTableModel<O> getModel() {
+        return (CheckTableModel<O>)super.getModel();
     }
 
 
@@ -130,7 +151,7 @@ public class CheckTable<O> extends JTable {
 
     public void validate() {
         if (refreshRowHeight){
-            packRows();
+            pack();
             refreshRowHeight = false;
         }
         super.validate();
@@ -143,31 +164,22 @@ public class CheckTable<O> extends JTable {
     }
 
 
-    public void packRows() {
-        for (int r=0; r<getRowCount(); r++) {
-            // Get the preferred height
-            int h = getPreferredRowHeight(r);
-
-            // Now set the row height using the preferred height
-            if (getRowHeight(r) != h) {
-                setRowHeight(r, h);
-            }
-        }
+    public void createDefaultColumnsFromModel() {
+        super.createDefaultColumnsFromModel();
+        revalidate();
     }
 
 
-    private int getPreferredRowHeight(int r) {
-        // Get the current default height for all rows
-        int height = getRowHeight();
-
-        // Determine highest cell in the row
-        for (int c=0; c<getColumnCount(); c++) {
-            TableCellRenderer renderer = getCellRenderer(r, c);
-            Component comp = prepareRenderer(renderer, r, c);
-            int h = comp.getPreferredSize().height + 2*MARGIN_SIZE;
-            height = Math.max(height, h);
+    private void pack() {
+        final TableColumn checkCol = getColumnModel().getColumn(0);
+        if (checkAllCheckbox != null){
+            checkCol.setMaxWidth(checkAllCheckbox.getPreferredSize().width + 2);
         }
-        return height;
+        if (headerRenderer != null){
+            checkCol.setHeaderRenderer(headerRenderer);
+        }
+
+        TableUtils.pack(this, true, true);
     }
 
 
@@ -185,13 +197,13 @@ public class CheckTable<O> extends JTable {
 
 
     public void setData(java.util.List<O> elements) {
-        ((CheckTableModel)getModel()).setData(elements, checkAllCheckbox.isSelected());
-        packRows();
+        getModel().setData(elements, checkAllCheckbox.isSelected());
+        pack();
     }
 
 
     public List<O> getFilteredValues() {
-        return ((CheckTableModel)getModel()).getFilteredValues();
+        return getModel().getFilteredValues();
     }
 
 
@@ -243,61 +255,6 @@ public class CheckTable<O> extends JTable {
 
 
     public List<O> getAllValues() {
-        return ((CheckTableModel)getModel()).getAllValues();
-    }
-
-
-    /**
-     * Only to be used with the access methods provided
-     */
-    class CheckTableModel<O> extends DefaultTableModel{
-
-        CheckTableModel(String name) {
-            addColumn(CheckTable.defaultSelected, new Object[]{});
-            addColumn(name, new Object[]{});
-        }
-
-
-        public void setData(java.util.List<O> elements, boolean selected){
-            for (int i=getRowCount()-1; i>=0; i--){
-                removeRow(i);
-            }
-            for (O element : elements){
-                addRow(new Object[]{selected, element});
-            }
-        }
-
-
-        public Class<?> getColumnClass(int col) {
-            if (col == 0){
-                return Boolean.class;
-            }
-            return super.getColumnClass(col);
-        }
-
-
-        public boolean isCellEditable(int row, int col) {
-            return col == 0;
-        }
-
-
-        public List<O> getFilteredValues() {
-            List<O> axioms = new ArrayList<O>();
-            for (int i=0; i<getRowCount(); i++){
-                if (getValueAt(i, 0).equals(Boolean.TRUE)){
-                    axioms.add((O)getValueAt(i, 1));
-                }
-            }
-            return axioms;
-        }
-
-
-        public List<O> getAllValues() {
-            List<O> axioms = new ArrayList<O>();
-            for (int i=0; i<getRowCount(); i++){
-                axioms.add((O)getValueAt(i, 1));
-            }
-            return axioms;
-        }
+        return getModel().getAllValues();
     }
 }
