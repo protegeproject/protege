@@ -42,6 +42,16 @@ public class JavaBackedPreferencesImpl implements Preferences {
     }
 
 
+    public void clear() {
+        try {
+            preferences.clear();
+        }
+        catch (BackingStoreException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public String getString(String key, String def) {
         return preferences.get(key, def);
     }

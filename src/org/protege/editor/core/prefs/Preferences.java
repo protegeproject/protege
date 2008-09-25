@@ -15,6 +15,9 @@ import java.util.List;
  */
 public interface Preferences extends Serializable {
 
+
+    void clear();
+
     // String
 
 
