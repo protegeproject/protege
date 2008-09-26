@@ -486,7 +486,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         for (OWLOntology ont : dirtyOntologies) {
             saveOntology(ont);
         }
-        dirtyOntologies.clear();
     }
 
 
@@ -494,6 +493,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
         try{
             fireBeforeSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
             manager.saveOntology(ont, manager.getOntologyFormat(ont), manager.getPhysicalURIForOntology(ont));
+            logger.info("Saved " + getRendering(ont) + " to " + getOntologyPhysicalURI(ont));
+            dirtyOntologies.remove(ont);
+            fireEvent(EventType.ONTOLOGY_SAVED);
             fireAfterSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
         }
         catch(OWLOntologyStorageException e){
