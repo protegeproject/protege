@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.find;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owl.model.*;
 
 import java.util.Collections;
@@ -77,9 +78,14 @@ public class EntityFinderImpl implements EntityFinder {
     }
 
 
-//    public Set<OWLDataType> getMatchingOWLDataTypes(String match, boolean fullRegExp) {
-//        return getEntities(match, OWLDataType.class, fullRegExp);
-//    }
+    public Set<OWLDataType> getMatchingOWLDataTypes(String match) {
+        return getEntities(match, OWLDataType.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
+    }
+
+
+    public Set<OWLDataType> getMatchingOWLDataTypes(String match, boolean fullRegExp) {
+        return getEntities(match, OWLDataType.class, fullRegExp);
+    }
 
 
     public Set<OWLEntity> getEntities(String match) {
@@ -197,22 +203,27 @@ public class EntityFinderImpl implements EntityFinder {
 
 
     private <T extends OWLEntity> Set<T> getAllEntities(Class<T> type) {
-        Set<T> entities = new HashSet<T>();
-        for (OWLOntology ont: mngr.getActiveOntologies()){
-            if (type.equals(OWLClass.class)){
-                entities.addAll((Set<T>)ont.getReferencedClasses());
-            }
-            else if (type.equals(OWLObjectProperty.class)){
-                entities.addAll((Set<T>)ont.getReferencedObjectProperties());
-            }
-            else if (type.equals((OWLDataProperty.class))){
-                entities.addAll((Set<T>)ont.getReferencedDataProperties());
-            }
-            else if (type.equals(OWLIndividual.class)){
-                entities.addAll((Set<T>)ont.getReferencedIndividuals());
-            }
+        if (type.equals(OWLDataType.class)){
+            return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes();
         }
-        return entities;
+        else{
+            Set<T> entities = new HashSet<T>();
+            for (OWLOntology ont: mngr.getActiveOntologies()){
+                if (type.equals(OWLClass.class)){
+                    entities.addAll((Set<T>)ont.getReferencedClasses());
+                }
+                else if (type.equals(OWLObjectProperty.class)){
+                    entities.addAll((Set<T>)ont.getReferencedObjectProperties());
+                }
+                else if (type.equals((OWLDataProperty.class))){
+                    entities.addAll((Set<T>)ont.getReferencedDataProperties());
+                }
+                else if (type.equals(OWLIndividual.class)){
+                    entities.addAll((Set<T>)ont.getReferencedIndividuals());
+                }
+            }
+            return entities;
+        }
     }
 
 
@@ -229,9 +240,9 @@ public class EntityFinderImpl implements EntityFinder {
         else if (type.equals(OWLIndividual.class)){
             return (T)renderingCache.getOWLIndividual(rendering);
         }
-//        else if (type.equals(OWLDataType.class)){
-//            return (T)renderingCache.getOWLDatatype(rendering);
-//        }
+        else if (type.equals(OWLDataType.class)){
+            return (T)renderingCache.getOWLDataType(rendering);
+        }
         else{
             return (T)renderingCache.getOWLEntity(rendering);
         }
@@ -251,9 +262,9 @@ public class EntityFinderImpl implements EntityFinder {
         else if (type.equals(OWLIndividual.class)){
             return renderingCache.getOWLIndividualRenderings();
         }
-//        else if (type.equals(OWLDataType.class)){
-//            return renderingCache.getOWLDatatypeRenderings();
-//        }
+        else if (type.equals(OWLDataType.class)){
+            return renderingCache.getOWLDatatypeRenderings();
+        }
         else{
             return renderingCache.getOWLEntityRenderings();
         }

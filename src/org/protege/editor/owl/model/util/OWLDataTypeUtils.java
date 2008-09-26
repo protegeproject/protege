@@ -53,6 +53,8 @@ public class OWLDataTypeUtils {
     public Set<OWLDataType> getBuiltinDatatypes(){
         Set<OWLDataType> datatypes = new HashSet<OWLDataType>();
         final OWLDataFactory df = mngr.getOWLDataFactory();
+
+        datatypes.add(df.getTopDataType());
         for (URI uri : XSDVocabulary.ALL_DATATYPES) {
             datatypes.add(df.getOWLDataType(uri));
         }
