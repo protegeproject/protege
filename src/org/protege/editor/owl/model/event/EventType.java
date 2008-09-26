@@ -49,6 +49,7 @@ public enum EventType {
 
     ONTOLOGY_CREATED,
 
-    ONTOLOGY_LOADED;
+    ONTOLOGY_LOADED,
 
+    ONTOLOGY_SAVED
 }

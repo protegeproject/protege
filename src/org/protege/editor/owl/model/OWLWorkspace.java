@@ -8,6 +8,7 @@ import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
@@ -66,6 +67,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private Logger logger = Logger.getLogger(OWLWorkspace.class);
 
+    private static final String WINDOW_MODIFIED = "windowModified";
     private static final int FINDER_BORDER = 2;
     private static final int FINDER_MIN_WIDTH = 250;
 
@@ -165,7 +167,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         new OntologySourcesChangedHandlerUI(this);
     }
 
-    
+
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange chg : changes){
             if (chg instanceof SetOntologyURI){
@@ -173,6 +175,16 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 updateTitleBar();
                 break;
             }
+        }
+
+        updateDirtyFlag();
+    }
+
+
+    private void updateDirtyFlag() {
+        if (OSUtils.isOSX()){ // only currently implemented for OSX because it has a standard mechanism
+            // set the modified indicator on the frame
+            getRootPane().putClientProperty(WINDOW_MODIFIED, !getOWLModelManager().getDirtyOntologies().isEmpty());
         }
     }
 
@@ -199,6 +211,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
         else if(type.equals(EventType.ENTITY_RENDERER_CHANGED)) {
             refreshComponents();
+        }
+        else if(type.equals(EventType.ONTOLOGY_SAVED)) {
+            updateDirtyFlag();
         }
     }
 
