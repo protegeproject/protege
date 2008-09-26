@@ -37,7 +37,6 @@ import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSele
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
-import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
@@ -1056,13 +1055,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public List<OWLDataType> getMatchingOWLDataTypes(String renderingStart) {
-        List<OWLDataType> datatypes = new ArrayList<OWLDataType>();
-        for (OWLDataType dt : new OWLDataTypeUtils(getOWLOntologyManager()).getBuiltinDatatypes()) {
-            if (getRendering(dt).startsWith(renderingStart)) {
-                datatypes.add(dt);
-            }
-        }
-        return datatypes;
+        List<OWLDataType> orderedResults = new ArrayList<OWLDataType>(getEntityFinder().getMatchingOWLDataTypes(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
     }
 
 

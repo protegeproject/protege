@@ -50,6 +50,9 @@ public interface OWLEntityRenderingCache {
     public OWLIndividual getOWLIndividual(String rendering);
 
 
+    public OWLDataType getOWLDataType(String rendering);
+
+
     public Set<String> getOWLClassRenderings();
 
 
@@ -62,9 +65,11 @@ public interface OWLEntityRenderingCache {
     public Set<String> getOWLIndividualRenderings();
 
 
+    public Set<String> getOWLDatatypeRenderings();
+
+
     public Set<String> getOWLEntityRenderings();
 
 
     String getRendering(OWLEntity owlEntity);
-
 }
