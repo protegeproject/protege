@@ -79,7 +79,8 @@ public class ProtegeApplication implements BundleActivator {
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
     public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
-
+    public static final String PROTEGE4_ARGS_PROPERTY="lax.command.line.args";
+    
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
     public final static char BUNDLE_EXTRA_SEPARATOR = ':';
@@ -89,8 +90,7 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
-
-    private static String[] args;
+    
 
     private static BundleContext context;
 
@@ -103,15 +103,6 @@ public class ProtegeApplication implements BundleActivator {
     private ProtegeWelcomeFrame welcomeFrame;
 
     private static boolean quitting = false;
-
-
-    public static String [] getArgs() {
-        return args;
-    }
-
-    public static void setArgs(String [] args) {
-        ProtegeApplication.args = args;
-    }
 
     public void start(BundleContext context) throws Exception {
         ProtegeApplication.context = context;
@@ -273,21 +264,23 @@ public class ProtegeApplication implements BundleActivator {
 
     private void processCommandLineURIs() {
         commandLineURIs = new ArrayList<URI>();
-        if (args == null) {
+        String argString = System.getProperty(PROTEGE4_ARGS_PROPERTY);
+        if (argString == null) {
             return;
         }
-        for (String s : args) {
-            File f = new File(s);
+        for (String arg : argString.split("\\s")){
+            File f = new File(arg);
             if (f.exists()) {
                 commandLineURIs.add(f.toURI());
-                continue;
             }
-            try {
-                URI uri = new URI(s);
-                commandLineURIs.add(uri);
-            }
-            catch (URISyntaxException e) {
-                logger.error(e);
+            else {
+                try {
+                    URI uri = new URI(arg);
+                    commandLineURIs.add(uri);
+                }
+                catch (URISyntaxException e) {
+                    logger.error(e);
+                }
             }
         }
     }
