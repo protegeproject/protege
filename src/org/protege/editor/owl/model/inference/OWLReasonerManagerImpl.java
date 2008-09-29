@@ -233,7 +233,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     }
                     long start = System.currentTimeMillis();
                     r.classify();
-                    String s = "Classified in " + (System.currentTimeMillis()-start) + "ms";
+                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
                     reasonerProgressMonitor.setMessage(s);
                     logger.info(s);
                     currentReasoner = r;
