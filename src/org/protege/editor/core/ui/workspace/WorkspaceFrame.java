@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.protege.editor.core.apple.ProtegeAppleApplication;
+import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
