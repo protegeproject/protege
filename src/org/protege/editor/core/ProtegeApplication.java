@@ -7,11 +7,12 @@ import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.osgi.framework.*;
-import org.protege.editor.core.apple.ProtegeAppleApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.platform.PlatformArguments;
+import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -79,7 +80,6 @@ public class ProtegeApplication implements BundleActivator {
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
     public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
-    public static final String PROTEGE4_ARGS_PROPERTY="lax.command.line.args";
     
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
@@ -263,25 +263,26 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private void processCommandLineURIs() {
-        commandLineURIs = new ArrayList<URI>();
-        String argString = System.getProperty(PROTEGE4_ARGS_PROPERTY);
-        if (argString == null) {
-            return;
+        try {
+            commandLineURIs = new ArrayList<URI>();
+            for (String arg : PlatformArguments.getArguments(context)) {
+                File f = new File(arg);
+                if (f.exists()) {
+                    commandLineURIs.add(f.toURI());
+                }
+                else {
+                    try {
+                        URI uri = new URI(arg);
+                        commandLineURIs.add(uri);
+                    }
+                    catch (URISyntaxException e) {
+                        logger.error(e);
+                    }
+                }
+            }
         }
-        for (String arg : argString.split("\\s")){
-            File f = new File(arg);
-            if (f.exists()) {
-                commandLineURIs.add(f.toURI());
-            }
-            else {
-                try {
-                    URI uri = new URI(arg);
-                    commandLineURIs.add(uri);
-                }
-                catch (URISyntaxException e) {
-                    logger.error(e);
-                }
-            }
+        catch (Throwable t) { // it is not important enough to stop anything.
+            logger.warn("Error processing command line arguments " + t);
         }
     }
 
