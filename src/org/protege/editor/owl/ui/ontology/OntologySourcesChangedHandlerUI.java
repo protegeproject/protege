@@ -219,7 +219,10 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
 
     protected void handleWindowActivated() {
         if (!handlingChange){ // don't bother when we are already performing a check
-            getSourcesManager().checkSources();
+            OntologySourcesManager sourcesMngr = getSourcesManager();
+            if (sourcesMngr != null){
+                sourcesMngr.checkSources();
+            }
         }
     }
 
