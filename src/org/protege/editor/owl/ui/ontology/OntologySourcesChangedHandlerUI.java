@@ -192,7 +192,7 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
 
             protected Icon getIcon(Object object) {
                 if (object instanceof Boolean && (Boolean)object){
-                    return Icons.getIcon("error.png");
+                    return Icons.getIcon("warning.png");
                 }
                 return super.getIcon(object);
             }

@@ -42,7 +42,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     private JLabel errorLabel;
 
-    private final Icon warningIcon = Icons.getIcon("error.png");
+    private final Icon warningIcon = Icons.getIcon("warning.png");
 
     private Class<T> type;
 
