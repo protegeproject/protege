@@ -223,6 +223,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
      * Classifies the current active ontologies.
      */
     public void classifyAsynchronously() {
+        owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         final OWLReasoner r = currentReasoner;
         currentReasoner = new NoOpReasoner(owlModelManager.getOWLOntologyManager());
         Thread t = new Thread(new Runnable() {
