@@ -1,16 +1,12 @@
 package org.protege.editor.owl.model.library;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.apache.log4j.Logger;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -26,7 +22,9 @@ public class OntologyLibraryLoader {
 
     private static final Logger logger = Logger.getLogger(OntologyLibraryLoader.class);
 
-    public static final String PREFERENCES_KEY = "org.protege.editor.owl.ontologylibraries";
+    private static final String PREFERENCES_ID = "org.protege.editor.owl.ontologylibraries";
+
+    private static final String PREFS_KEY = "data";
 
     private List<OntologyLibraryFactory> factories;
 
@@ -58,16 +56,18 @@ public class OntologyLibraryLoader {
 
     public void loadOntologyLibraries() {
         try {
-            byte [] buf = Preferences.userRoot().getByteArray(PREFERENCES_KEY, null);
+            byte [] buf = PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_ID).getByteArray(PREFS_KEY, null);
             if (buf == null) {
-                return;
+                buf = java.util.prefs.Preferences.userRoot().getByteArray(PREFERENCES_ID, null);
             }
-            ByteArrayInputStream is = new ByteArrayInputStream(buf);
-            // We load the mementos from the input stream
-            ObjectInputStream ois = new ObjectInputStream(is);
-            List<OntologyLibraryMemento> mementos = (List<OntologyLibraryMemento>) ois.readObject();
-            ois.close();
-            loadOntologyLibraries(mementos);
+            if (buf != null){
+                ByteArrayInputStream is = new ByteArrayInputStream(buf);
+                // We load the mementos from the input stream
+                ObjectInputStream ois = new ObjectInputStream(is);
+                List<OntologyLibraryMemento> mementos = (List<OntologyLibraryMemento>) ois.readObject();
+                ois.close();
+                loadOntologyLibraries(mementos);
+            }
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -87,15 +87,11 @@ public class OntologyLibraryLoader {
             oos.writeObject(mementos);
             oos.flush();
             oos.close();
-            // Store in Java prefs
-            Preferences prefs = Preferences.userRoot();
-            prefs.putByteArray(PREFERENCES_KEY, bos.toByteArray());
-            prefs.flush();
+
+            Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_ID);
+            prefs.putByteArray(PREFS_KEY, bos.toByteArray());
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        catch (BackingStoreException e) {
             throw new RuntimeException(e);
         }
     }

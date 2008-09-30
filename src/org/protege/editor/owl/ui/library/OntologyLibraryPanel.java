@@ -10,7 +10,6 @@ import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.protege.editor.owl.model.library.OntologyLibraryLoader;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.OWLIcons;
@@ -312,7 +311,5 @@ public class OntologyLibraryPanel extends JPanel {
         for (OntologyLibrary lib : getRemovedLibraries()){
             libManager.removeLibraray(lib);
         }
-        OntologyLibraryLoader loader = new OntologyLibraryLoader(libManager);
-        loader.saveLibraries();
     }
 }

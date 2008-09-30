@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.library;
 
+import org.apache.log4j.Logger;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -22,28 +22,43 @@ public class OntologyLibraryManager {
 
     private List<OntologyLibrary> libraries;
 
+    private OntologyLibraryLoader loader;
+
 
     public OntologyLibraryManager() {
-        libraries = new ArrayList<OntologyLibrary>();
     }
 
 
+    private void ensureLoaded(){
+        if (libraries == null){
+            libraries = new ArrayList<OntologyLibrary>();
+            loader = new OntologyLibraryLoader(this);
+            loader.loadOntologyLibraries();
+        }
+    }
+
     public void addLibrary(OntologyLibrary library) {
+        ensureLoaded();
         libraries.add(library);
+        loader.saveLibraries();
     }
 
 
     public List<OntologyLibrary> getLibraries() {
+        ensureLoaded();
         return new ArrayList<OntologyLibrary>(libraries);
     }
 
 
     public void removeLibraray(OntologyLibrary library) {
+        ensureLoaded();
         libraries.remove(library);
+        loader.saveLibraries();
     }
 
 
     public OntologyLibrary getLibrary(URI ontologyURI) {
+        ensureLoaded();
         for (OntologyLibrary library : libraries) {
             if (library.contains(ontologyURI)) {
                 return library;

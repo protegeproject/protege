@@ -1,15 +1,10 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Map;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-
 import org.apache.log4j.Logger;
+import org.protege.editor.core.prefs.PreferencesManager;
+
+import java.io.*;
+import java.util.Map;
 
 
 /**
@@ -25,7 +20,8 @@ public class PrefixMapperManager {
 
     private static final Logger logger = Logger.getLogger(PrefixMapperManager.class);
 
-    public static final String PREFERENCES_KEY = "org.protege.editor.owl.prefixmanager";
+    private static final String PREFERENCES_ID = "org.protege.editor.owl.prefixmanager";
+    private static final String PREF_KEY = "data";
 
     private static PrefixMapperManager instance;
 
@@ -35,25 +31,21 @@ public class PrefixMapperManager {
     private PrefixMapperManager() {
         mapper = new PrefixMapperImpl();
         reload();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                save();
-            }
-        });
     }
 
 
     public void reload() {
         try {
-            Preferences userRoot = Preferences.userRoot();
-            byte [] bytes = userRoot.getByteArray(PREFERENCES_KEY, null);
+            byte [] bytes = PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_ID).getByteArray(PREF_KEY, null);
             if (bytes == null) {
-                return;
+                bytes = java.util.prefs.Preferences.userRoot().getByteArray(PREFERENCES_ID, null);
             }
+            if (bytes != null){
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
             ObjectInputStream oos = new ObjectInputStream(bis);
             Map<String, String> prefixMap = (Map<String, String>) oos.readObject();
             mapper = new PrefixMapperImpl(prefixMap);
+            }
         }
         catch (IOException e) {
             logger.error(e);
@@ -69,14 +61,10 @@ public class PrefixMapperManager {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(mapper.getPrefixMap());
-            Preferences userRoot = Preferences.userRoot();
-            userRoot.putByteArray(PREFERENCES_KEY, bos.toByteArray());
-            userRoot.flush();
+
+            PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_ID).putByteArray(PREF_KEY, bos.toByteArray());
         }
         catch (IOException e) {
-            logger.error(e);
-        }
-        catch (BackingStoreException e) {
             logger.error(e);
         }
     }

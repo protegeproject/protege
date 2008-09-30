@@ -50,6 +50,7 @@ public class PrefixMappingPanel extends JPanel {
                                         panel);
         if(ret == JOptionPane.OK_OPTION) {
            if(panel.table.getPrefixMapperTableModel().commitPrefixes()) {
+               
                // Reset the renderer to force an update - there should
                // probably be an easier way to do this.
                owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());

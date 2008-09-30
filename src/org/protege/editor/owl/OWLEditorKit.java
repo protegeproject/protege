@@ -13,10 +13,9 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.SaveErrorHandler;
-import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
-import org.protege.editor.owl.model.library.OntologyLibraryLoader;
+import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -64,8 +63,7 @@ public class OWLEditorKit implements EditorKit {
         this.editorKitFactory = editorKitFactory;
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
-        loadOntologyLibraries();
-        
+
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
         modelManager.setSaveErrorHandler(new SaveErrorHandler(){
             public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
@@ -125,20 +123,6 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    private void loadOntologyLibraries() {
-        // Attempt to restore any libraries.
-        OntologyLibraryLoader loader = new OntologyLibraryLoader(modelManager.getOntologyLibraryManager());
-        loader.loadOntologyLibraries();
-    }
-
-
-    private void saveOntologyLibraries() {
-        // Attempt to restore any libraries.
-        OntologyLibraryLoader loader = new OntologyLibraryLoader(modelManager.getOntologyLibraryManager());
-        loader.saveLibraries();
-    }
-
-
     /**
      * @deprecated use <code>getModelManager()</code>
      * @return
@@ -194,7 +178,6 @@ public class OWLEditorKit implements EditorKit {
 
     public void handleSave() throws Exception {
         try {
-            saveOntologyLibraries();
             getModelManager().save();
             getWorkspace().save();
             for (URI uri : newPhysicalURIs) {
@@ -238,7 +221,6 @@ public class OWLEditorKit implements EditorKit {
 
 
     public void close() {
-        saveOntologyLibraries();
     }
 
 

@@ -1,13 +1,9 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.semanticweb.owl.vocab.Namespaces;
+
+import java.net.URI;
+import java.util.*;
 
 
 /**
@@ -34,7 +30,7 @@ public class PrefixMapperImpl implements PrefixMapper {
     }
 
 
-    public void loadStandardPrefixes() {
+    private void loadStandardPrefixes() {
         addPrefixMapping("owl", Namespaces.OWL.toString());
         addPrefixMapping("rdfs", Namespaces.RDFS.toString());
         addPrefixMapping("rdf", Namespaces.RDF.toString());
