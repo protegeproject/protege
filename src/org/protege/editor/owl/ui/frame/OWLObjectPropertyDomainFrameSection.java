@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -39,30 +40,32 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractOWLFrameSection
             addRow(new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
             addedDomains.add(ax.getDomain());
         }
-//        // Inferred stuff
-//        try {
-//            Set<OWLDescription> domains = new HashSet<OWLDescription>();
-//            for(Set<OWLDescription> domainsSet : getOWLModelManager().getReasoner().getDomains(
-//                    getRootObject())) {
-//                domains.addAll(domainsSet);
-//            }
-//            for (OWLDescription desc : domains) {
-//                if (!addedDomains.contains(desc)) {
-//                    addRow(new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(),
-//                                                                      this,
-//                                                                      null,
-//                                                                      getRootObject(),
-//                                                                      getOWLDataFactory().getOWLObjectPropertyDomainAxiom(
-//                                                                              getRootObject(),
-//                                                                              desc)));
-//                    addedDomains.add(desc);
-//                }
-//            }
-//        }
-//        catch (OWLReasonerException e) {
-//            throw new OWLRuntimeException(e);
-//        }
+
     }
+
+    protected void refillInferred() {
+        try {
+            Set<OWLDescription> domains = new HashSet<OWLDescription>();
+            for(Set<OWLDescription> domainsSet : getOWLModelManager().getReasoner().getDomains(getRootObject())) {
+                domains.addAll(domainsSet);
+            }
+            for (OWLDescription desc : domains) {
+                if (!addedDomains.contains(desc)) {
+                    addRow(new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(),
+                                                                      this,
+                                                                      null,
+                                                                      getRootObject(),
+                                                                      getOWLDataFactory().getOWLObjectPropertyDomainAxiom(
+                                                                              getRootObject(),
+                                                                              desc)));
+                    addedDomains.add(desc);
+                }
+            }
+        }
+        catch (OWLReasonerException e) {
+            throw new OWLRuntimeException(e);
+        }
+     }
 
 
     protected OWLObjectPropertyDomainAxiom createAxiom(OWLDescription object) {

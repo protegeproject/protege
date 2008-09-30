@@ -1,11 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.inference.OWLReasonerAdapter;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.model.*;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -17,6 +19,8 @@ import java.util.Comparator;
 public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLDataSubPropertyAxiom, OWLDataProperty> {
 
     public static final String LABEL = "Super properties";
+
+    private Set<OWLDataSubPropertyAxiom> added = new HashSet<OWLDataSubPropertyAxiom>();
 
 
     public OWLSubDataPropertyAxiomSuperPropertyFrameSection(OWLEditorKit editorKit,
@@ -40,12 +44,35 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
 
 
     protected void refill(OWLOntology ontology) {
+        added.clear();
         for (OWLDataSubPropertyAxiom ax : ontology.getDataSubPropertyAxiomsForLHS(getRootObject())) {
             addRow(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
                                                                            this,
                                                                            ontology,
                                                                            getRootObject(),
                                                                            ax));
+            added.add(ax);
+        }
+    }
+
+
+    protected void refillInferred() {
+        try {
+            for (OWLDataPropertyExpression infSup : OWLReasonerAdapter.flattenSetOfSets(getOWLModelManager().getReasoner().getSuperProperties(getRootObject()))) {
+                if (!added.contains(infSup)) {
+                    final OWLDataSubPropertyAxiom ax = getOWLDataFactory().getOWLSubDataPropertyAxiom(
+                            getRootObject(),
+                            infSup);
+                    addRow(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                                                                                   this,
+                                                                                   null,
+                                                                                   getRootObject(),
+                                                                                   ax));
+                }
+            }
+        }
+        catch (OWLReasonerException e) {
+            throw new OWLRuntimeException(e);
         }
     }
 

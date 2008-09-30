@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
@@ -8,6 +9,8 @@ import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -19,6 +22,8 @@ import java.util.Comparator;
 public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectProperty> {
 
     public static final String LABEL = "Equivalent object properties";
+
+    private Set<OWLEquivalentObjectPropertiesAxiom> added = new HashSet<OWLEquivalentObjectPropertiesAxiom>();
 
 
     public OWLEquivalentObjectPropertiesAxiomFrameSection(OWLEditorKit editorKit,
@@ -36,12 +41,29 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
+        added.clear();
         for (OWLEquivalentObjectPropertiesAxiom ax : ontology.getEquivalentObjectPropertiesAxioms(getRootObject())) {
             addRow(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                          this,
                                                                          ontology,
                                                                          getRootObject(),
                                                                          ax));
+            added.add(ax);
+        }
+    }
+
+    protected void refillInferred() throws OWLReasonerException {
+        Set<OWLObjectProperty> equivs = new HashSet<OWLObjectProperty>(getReasoner().getEquivalentProperties(getRootObject()));
+        equivs.remove(getRootObject());
+        if (!equivs.isEmpty()){
+            OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
+            if (!added.contains(ax)) {
+                addRow(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                             this,
+                                                                             null,
+                                                                             getRootObject(),
+                                                                             ax));
+            }
         }
     }
 
