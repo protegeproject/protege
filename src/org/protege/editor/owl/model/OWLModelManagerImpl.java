@@ -482,7 +482,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public void save() throws OWLOntologyStorageException {
         // Save all of the ontologies that are editable and that
         // have been modified.
-        for (OWLOntology ont : dirtyOntologies) {
+        for (OWLOntology ont : new HashSet<OWLOntology>(dirtyOntologies)) {
             saveOntology(ont);
         }
     }
