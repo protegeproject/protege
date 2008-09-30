@@ -1,13 +1,7 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.table.AbstractTableModel;
+import java.util.*;
 
 
 /**
@@ -82,6 +76,9 @@ public class PrefixMapperTableModel extends AbstractTableModel {
             if (mapper.addPrefixMapping(prefix, prefixValueMap.get(prefix))) {
                 changed = true;
             }
+        }
+        if (changed){
+            PrefixMapperManager.getInstance().save();            
         }
         return changed;
     }
