@@ -68,7 +68,7 @@
         <name value="Close"/>
         <toolTip value="Close the current set of ontologies"/>
         <class value="org.protege.editor.core.ui.action.CloseAction"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotE-M"/>
         <editorKitId value="any"/>
         <accelerator value="W"/>
     </extension>
