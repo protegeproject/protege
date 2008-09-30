@@ -1,11 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.model.*;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -19,6 +21,8 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
     public static final String LABEL = "Data property assertions";
 
     private OWLDataPropertyRelationshipEditor editor;
+
+    private Set<OWLDataPropertyAssertionAxiom> added = new HashSet<OWLDataPropertyAssertionAxiom>();
 
 
     protected void clear() {
@@ -38,12 +42,34 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
+        added.clear();
         for (OWLDataPropertyAssertionAxiom ax : ontology.getDataPropertyAssertionAxioms(getRootObject())) {
             addRow(new OWLDataPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
                                                                     this,
                                                                     ontology,
                                                                     getRootObject(),
                                                                     ax));
+            added.add(ax);
+        }
+    }
+
+
+    protected void refillInferred() throws OWLReasonerException {
+        Map<OWLDataProperty, Set<OWLConstant>> rels = getReasoner().getDataPropertyRelationships(getRootObject());
+        for (OWLDataProperty prop : rels.keySet()) {
+            for (OWLConstant constant : rels.get(prop)) {
+                OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(
+                        getRootObject(),
+                        prop,
+                        constant);
+                if (!added.contains(ax)) {
+                    addRow(new OWLDataPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                            this,
+                                                                            null,
+                                                                            getRootObject(),
+                                                                            ax));
+                }
+            }
         }
     }
 

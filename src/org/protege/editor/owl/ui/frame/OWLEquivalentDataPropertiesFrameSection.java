@@ -1,12 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -18,6 +21,8 @@ import java.util.Comparator;
 public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLEquivalentDataPropertiesAxiom, OWLDataProperty> {
 
     public static final String LABEL = "Equivalent properties";
+
+    private Set<OWLEquivalentDataPropertiesAxiom> added = new HashSet<OWLEquivalentDataPropertiesAxiom>();
 
 
     protected void clear() {
@@ -41,12 +46,30 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
 
     protected void refill(OWLOntology ontology) {
+        added.clear();
         for (OWLEquivalentDataPropertiesAxiom ax : ontology.getEquivalentDataPropertiesAxiom(getRootObject())) {
             addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
                                                                   this,
                                                                   ontology,
                                                                   getRootObject(),
                                                                   ax));
+            added.add(ax);
+        }
+    }
+
+
+    protected void refillInferred() throws OWLReasonerException {
+        Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentProperties(getRootObject()));
+        equivs.remove(getRootObject());
+        if (!equivs.isEmpty()){
+            OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
+            if (!added.contains(ax)) {
+                addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
+                                                                      this,
+                                                                      null,
+                                                                      getRootObject(),
+                                                                      ax));
+            }
         }
     }
 

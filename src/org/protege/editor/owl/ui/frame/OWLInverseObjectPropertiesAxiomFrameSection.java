@@ -41,6 +41,7 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
+        added.clear();
         for (OWLInverseObjectPropertiesAxiom ax : ontology.getInverseObjectPropertyAxioms(getRootObject())) {
             addRow(new OWLInverseObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                       this,
@@ -53,15 +54,17 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
 
 
     protected void refillInferred() throws OWLReasonerException {
-        for (OWLObjectProperty invProp : OWLReasonerAdapter.flattenSetOfSets(getReasoner().getInverseProperties(
-                getRootObject()))) {
-            addRow(new OWLInverseObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                      this,
-                                                                      null,
-                                                                      getRootObject(),
-                                                                      getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(
-                                                                              getRootObject(),
-                                                                              invProp)));
+        final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(OWLReasonerAdapter.flattenSetOfSets(getReasoner().getInverseProperties(getRootObject())));
+        infInverses.removeAll(added);
+        for (OWLObjectProperty invProp : infInverses) {
+            final OWLInverseObjectPropertiesAxiom ax = getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(
+                    getRootObject(),
+                    invProp);
+                addRow(new OWLInverseObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                          this,
+                                                                          null,
+                                                                          getRootObject(),
+                                                                          ax));
         }
     }
 
