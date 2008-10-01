@@ -27,13 +27,9 @@ public class CheckTable<O> extends JTable {
 
     public static Boolean defaultSelected = false;
 
-    private static final int MARGIN_SIZE = 2;
-
     private JCheckBox checkAllCheckbox;
 
     private TableCellRenderer renderer;
-
-    private boolean refreshRowHeight = true;
 
     private List<ListSelectionListener> checkSelListeners = new ArrayList<ListSelectionListener>();
 
@@ -47,28 +43,18 @@ public class CheckTable<O> extends JTable {
     };
 
     private MouseAdapter checkAllMouseListener = new MouseAdapter(){
-        public boolean mousePressed = false;
-
 
         public void mouseClicked(MouseEvent e) {
-            if (mousePressed){
-                mousePressed = false;
-                JTableHeader header = (JTableHeader)(e.getSource());
-                JTable tableView = header.getTable();
-                TableColumnModel columnModel = tableView.getColumnModel();
-                int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-                int column = tableView.convertColumnIndexToModel(viewColumn);
+            JTableHeader header = (JTableHeader)(e.getSource());
+            JTable tableView = header.getTable();
+            TableColumnModel columnModel = tableView.getColumnModel();
+            int viewColumn = columnModel.getColumnIndexAtX(e.getX());
+            int column = tableView.convertColumnIndexToModel(viewColumn);
 
-                if (viewColumn == column && e.getClickCount() == 1 && column == 0) {
-                    checkAllCheckbox.doClick();
-                }
-                header.repaint();
+            if (column == 0 && viewColumn == column && e.getClickCount() == 1) {
+                checkAllCheckbox.doClick();
             }
-        }
-
-
-        public void mousePressed(MouseEvent event) {
-            mousePressed = true;
+            header.repaint();
         }
     };
 
@@ -93,13 +79,14 @@ public class CheckTable<O> extends JTable {
         }
     };
 
+    private boolean requiresPack = true;
+
 
     public CheckTable(String name) {
         super(new CheckTableModel<O>(name));
-
-        setShowGrid(false);
+        
+        setShowGrid(true);
         setIntercellSpacing(new Dimension(0, 3));
-        setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         final JTableHeader header = getTableHeader();
         header.setReorderingAllowed(false);
@@ -117,8 +104,6 @@ public class CheckTable<O> extends JTable {
         });
 
         getDefaultEditor(Boolean.class).addCellEditorListener(checkEditorListener);
-
-        setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
     }
 
 
@@ -151,37 +136,41 @@ public class CheckTable<O> extends JTable {
     }
 
 
-    public void validate() {
-        if (refreshRowHeight){
-            pack();
-            refreshRowHeight = false;
-        }
-        super.validate();
-    }
-
-
-    public void revalidate() {
-        refreshRowHeight = true;
-        super.revalidate();
-    }
-
-
     public void createDefaultColumnsFromModel() {
         super.createDefaultColumnsFromModel();
-        revalidate();
+        requiresPack = true;
+    }
+
+
+    public void tableChanged(TableModelEvent event) {
+        super.tableChanged(event);
+        if (event.getType() == TableModelEvent.INSERT){
+            requiresPack = true;
+        }
+    }
+
+
+    public void doLayout() {
+        if (requiresPack){
+            requiresPack = false;
+            pack();
+        }
+        super.doLayout();
     }
 
 
     private void pack() {
         final TableColumn checkCol = getColumnModel().getColumn(0);
-        if (checkAllCheckbox != null){
-            checkCol.setMaxWidth(checkAllCheckbox.getPreferredSize().width + 2);
-        }
         if (headerRenderer != null){
             checkCol.setHeaderRenderer(headerRenderer);
         }
 
-        TableUtils.pack(this, true, true);
+        TableUtils.pack(this, true, true, 2);
+
+        if (checkCol != null){
+            checkCol.setMaxWidth(checkCol.getPreferredWidth());
+            checkCol.setResizable(false);
+        }
     }
 
 
@@ -195,12 +184,6 @@ public class CheckTable<O> extends JTable {
             return super.getDefaultRenderer(aClass);
         }
         return renderer;
-    }
-
-
-    public void setData(java.util.List<O> elements) {
-        getModel().setData(elements, checkAllCheckbox.isSelected());
-        pack();
     }
 
 
@@ -258,5 +241,38 @@ public class CheckTable<O> extends JTable {
 
     public List<O> getAllValues() {
         return getModel().getAllValues();
+    }
+
+
+    public static void main(String[] args) {
+        CheckTable<String> table = new CheckTable<String>("things"); // @@TODO ensure empty table still works
+        CheckTableModel<String> model = table.getModel(); // @@TODO ensure changes to the model directly affect the view
+        List<String> data = new ArrayList<String>();
+        data.add("one");
+        data.add("two");
+        data.add("three");
+        data.add("long long long line of text that should still fit in the box");
+        data.add("<html>some hmtl with <br><br>linebreaks and <p>paragraphs etc</p></html>");
+
+        model.setData(data, false);
+        model.addColumn("more", new String[]{"a", "nother column full of stuff", "fffrrr"});
+
+        final JScrollPane scroller = new JScrollPane(table);
+        JComponent holder = new JPanel(new BorderLayout());
+        holder.add(scroller, BorderLayout.CENTER);
+        holder.add(new JCheckBox("check"), BorderLayout.NORTH);
+        JOptionPane optionPane = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dlg = createDialog(null, "test CheckTable", optionPane);
+        dlg.setVisible(true);
+
+        System.exit(0);
+    }
+
+    private static JDialog createDialog(JComponent parent, String title, JOptionPane optionPane) {
+        JDialog dlg = optionPane.createDialog(parent, title);
+        dlg.setLocationRelativeTo(parent);
+        dlg.setResizable(true);
+        dlg.pack();
+        return dlg;
     }
 }
