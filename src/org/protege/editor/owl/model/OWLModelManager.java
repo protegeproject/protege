@@ -73,6 +73,17 @@ public interface OWLModelManager extends ModelManager {
 
 
     /**
+     * Remove the given ontology from the model manager.
+     * Cannot remove the last ontology from the model manager.
+     *
+     * @param ont the ontology to remove
+     * @return false if the ontology cannot be removed
+     * (eg if it does not exist or is the last open ontology)
+     */
+    boolean removeOntology(OWLOntology ont);
+
+
+    /**
      * Performs a save operation.  The behaviour of this is implementation
      * specific.  For example, some implementations may choose to save the
      * active ontology, other implementations may choose to save all open

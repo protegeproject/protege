@@ -472,6 +472,34 @@ public class OWLModelManagerImpl extends AbstractModelManager
         return ont;
     }
 
+
+    public boolean removeOntology(OWLOntology ont) {
+        if (manager.contains(ont.getURI()) && manager.getOntologies().size() > 1){
+            
+            boolean resetActiveOntologyRequired = ont.equals(activeOntology);
+            activeOntologies.remove(ont);
+            dirtyOntologies.remove(ont);
+            manager.removeOntology(ont.getURI());
+
+            if (resetActiveOntologyRequired){
+                OWLOntology newActiveOnt = null;
+                if (!activeOntologies.isEmpty()){
+                    newActiveOnt = activeOntologies.iterator().next();
+                }
+                if (newActiveOnt == null && !manager.getOntologies().isEmpty()){
+                    newActiveOnt = manager.getOntologies().iterator().next();
+                }
+
+                setActiveOntology(newActiveOnt, true);
+            }
+            else{
+                setActiveOntology(activeOntology, true);
+            }
+           return true;
+        }
+        return false;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////
     //
     // Saving

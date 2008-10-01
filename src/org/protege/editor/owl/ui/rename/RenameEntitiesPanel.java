@@ -174,7 +174,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private void reloadEntityList() {
         final ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>(getEntities());
         Collections.sort(sortedEntities, eKit.getModelManager().getOWLObjectComparator());
-        list.setData(sortedEntities);
+        list.getModel().setData(sortedEntities, true);
         updateErrors();
         handleStateChanged();
     }
@@ -236,6 +236,9 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         }
         String frag = fragRenderer.render(entity);
         final String uriStr = entity.getURI().toString();
+        if (frag.startsWith("'")){
+            frag = frag.substring(1, frag.length()-1);
+        }
         String ns = uriStr.substring(0, uriStr.lastIndexOf(frag));
         Set<OWLEntity> matchingEntities = nsMap.get(ns);
         if (matchingEntities == null){

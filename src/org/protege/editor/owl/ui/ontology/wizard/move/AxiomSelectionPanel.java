@@ -2,8 +2,6 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAxiom;
@@ -69,8 +67,8 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
     
     public void aboutToDisplayPanel() {
-        list.setData(new ArrayList<OWLAxiom>(getUnfilteredAxioms()));
-        list.checkAll(true);        
+        list.getModel().setData(new ArrayList<OWLAxiom>(getUnfilteredAxioms()), true);
+        list.checkAll(true);
     }
 
 

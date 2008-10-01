@@ -1,15 +1,12 @@
 package org.protege.editor.owl.ui.ontology;
 
 import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.ui.util.CheckTable;
-import org.protege.editor.core.ui.util.CheckTableModel;
-import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.io.OntologySourcesListener;
 import org.protege.editor.owl.model.io.OntologySourcesManager;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
 
@@ -19,9 +16,9 @@ import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URI;
-import java.util.*;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -61,7 +58,7 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
 
     private boolean handlingChange = false;
 
-    private CheckTable<OWLOntology> list;
+    private OWLOntologySelectorPanel2 ontologiesPanel;
 
 
     public OntologySourcesChangedHandlerUI(final OWLWorkspace workspace) {
@@ -123,7 +120,9 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
             }
         }
         else{
-            JComponent ontologiesPanel = createOntologiesPanel(onts);
+            ontologiesPanel = new OWLOntologySelectorPanel2(eKit, onts);
+            ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
+
 
             final Set<OWLOntology> ignoreOnts = new HashSet<OWLOntology>(onts);
 
@@ -134,7 +133,7 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
                                                 JOptionPane.YES_NO_OPTION,
                                                 null) == JOptionPane.OK_OPTION){
 
-                final List<OWLOntology> reloadOnts = getFilteredValues();
+                final Set<OWLOntology> reloadOnts = getFilteredValues();
                 ignoreOnts.removeAll(reloadOnts);
                 for (OWLOntology ont : reloadOnts){
                     try {
@@ -154,58 +153,9 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
     }
 
 
-    private List<OWLOntology> getFilteredValues() {
-        return list.getFilteredValues();
+    private Set<OWLOntology> getFilteredValues() {
+        return ontologiesPanel.getSelectedOntologies();
     }
-
-
-    private JComponent createOntologiesPanel(Set<OWLOntology> onts) {
-        final ArrayList<OWLOntology> ontologies = new ArrayList<OWLOntology>(onts);
-        final List<URI> files = new ArrayList<URI>(ontologies.size());
-        final List<Boolean> dirty = new ArrayList<Boolean>(ontologies.size());
-        for (OWLOntology ont : ontologies){
-            files.add(eKit.getModelManager().getOntologyPhysicalURI(ont));
-            dirty.add(eKit.getModelManager().getDirtyOntologies().contains(ont));
-        }
-        list = new CheckTable<OWLOntology>("Changed ontologies");
-        list.setData(ontologies);
-        list.checkAll(true);
-        CheckTableModel model = list.getModel();
-        model.addColumn("File changed", files.toArray());
-        model.addColumn("", dirty.toArray());
-
-        list.setDefaultRenderer(new OWLCellRenderer(eKit){
-            protected String getRendering(Object object) {
-                if (object instanceof OWLOntology){
-                    OWLOntology ont = (OWLOntology) object;
-                    return eKit.getModelManager().getURIRendering(ont.getURI());
-                }
-                else if (object instanceof Boolean){
-                    if ((Boolean)object){
-                        return "This will overwrite local changes";
-                    }
-                    return "";
-                }
-                return super.getRendering(object);
-            }
-
-
-            protected Icon getIcon(Object object) {
-                if (object instanceof Boolean && (Boolean)object){
-                    return Icons.getIcon("warning.png");
-                }
-                return super.getIcon(object);
-            }
-        });
-        JComponent ontologiesPanel = new JPanel(new BorderLayout(6, 12));
-        JScrollPane scroller = new JScrollPane(list);
-        scroller.setPreferredSize(new Dimension(600, 200));
-
-        ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
-        ontologiesPanel.add(scroller, BorderLayout.CENTER);
-        return ontologiesPanel;
-    }
-
 
 
     private void handleFailedToReload(OWLOntology ont) {
