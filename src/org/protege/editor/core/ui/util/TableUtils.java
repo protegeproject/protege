@@ -40,14 +40,14 @@ import java.util.Enumeration;
 public class TableUtils {
 
 
-    public static void pack(JTable table, boolean packColumns, boolean packRows){
+    public static void pack(JTable table, boolean packColumns, boolean packRows, int padding){
         final Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
 
         int[] rowHeights = new int[table.getRowCount()];
 
         while (cols.hasMoreElements()){
             TableColumn tc = cols.nextElement();
-            final int index = tc.getModelIndex(); // not sure about this
+            final int colIndex = tc.getModelIndex(); // not sure about this
 
             int width = 0;
 
@@ -70,9 +70,9 @@ public class TableUtils {
 
             // Check data
             for (int row=0; row<table.getRowCount(); row++) {
-                TableCellRenderer renderer = table.getCellRenderer(row, index);
+                TableCellRenderer renderer = table.getCellRenderer(row, colIndex);
                 Component comp = renderer.getTableCellRendererComponent(
-                        table, table.getValueAt(row, index), false, false, row, index);
+                        table, table.getValueAt(row, colIndex), false, false, row, colIndex);
                 final Dimension prefSize = comp.getPreferredSize();
                 if (packRows){
                     rowHeights[row] = Math.max(rowHeights[row], prefSize.height);
@@ -83,13 +83,13 @@ public class TableUtils {
             }
 
             if (packColumns){
-                tc.setWidth(width);
+                tc.setPreferredWidth(width);
             }
         }
 
         if (packRows){
             for (int row=0; row<rowHeights.length; row++){
-                table.setRowHeight(row, rowHeights[row]);
+                table.setRowHeight(row, rowHeights[row] + (2*padding));
             }
         }
     }
