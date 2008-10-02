@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.swing.Icon;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+
+import javax.swing.*;
 
 
 /**
@@ -21,15 +21,24 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     private Icon icon;
 
-    private Icon primitiveClassIcon = OWLIcons.getIcon("class.primitive.png");
+    private final Icon primitiveClassIcon = OWLIcons.getIcon("class.primitive.png");
 
-    private Icon objectPropertyIcon = OWLIcons.getIcon("property.object.png");
+    private final Icon definedClassIcon = OWLIcons.getIcon("class.defined.png");
+
+    private final Icon objectPropertyIcon = OWLIcons.getIcon("property.object.png");
+
+    private final Icon dataPropertyIcon = OWLIcons.getIcon("property.data.png");
+
+    private final Icon individualIcon = OWLIcons.getIcon("individual.png");
+
+    private final Icon dataTypeIcon = OWLIcons.getIcon("datarange.png");
+
+    private final Icon ontologyIcon = OWLIcons.getIcon("ontology.png");
+
+    private final Icon ontologyMissing = OWLIcons.getIcon("ontology.missing.png");
+
 
     private OWLModelManager owlModelManager;
-
-    private int size = 16;
-
-    private Icon individualIcon = OWLIcons.getIcon("individual.png");;
 
 
     public OWLIconProviderImpl(OWLModelManager owlModelManager) {
@@ -60,12 +69,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLDataType owlDataType) {
-        icon = OWLIcons.getIcon("datarange.png");
+        icon = dataTypeIcon;
     }
 
 
     public void visit(OWLDataOneOf owlDataEnumeration) {
-        icon = OWLIcons.getIcon("datarange.png");
+        icon = dataTypeIcon;
     }
 
 
@@ -75,7 +84,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLDataProperty owlDataProperty) {
-        icon = OWLIcons.getIcon("property.data.png");
+        icon = dataPropertyIcon;
     }
 
 
@@ -90,6 +99,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLDifferentIndividualsAxiom owlDifferentIndividualsAxiom) {
+        icon = individualIcon;
     }
 
 
@@ -179,7 +189,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLObjectProperty owlObjectProperty) {
-        icon = OWLIcons.getIcon("property.object.png");
+        icon = objectPropertyIcon;
     }
 
 
@@ -199,7 +209,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLOntology owlOntology) {
-        icon = OWLIcons.getIcon("ontology.png");
+        icon = ontologyIcon;
     }
 
 
@@ -210,10 +220,10 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     public void visit(OWLImportsDeclaration axiom) {
         if (owlModelManager.getOWLOntologyManager().contains(axiom.getImportedOntologyURI())) {
-            icon = OWLIcons.getIcon("ontology.png");
+            icon = ontologyIcon;
         }
         else {
-            icon = OWLIcons.getIcon("ontology.missing.png");
+            icon = ontologyMissing;
         }
     }
 
@@ -249,14 +259,14 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLObjectPropertyChainSubPropertyAxiom axiom) {
-        icon = OWLIcons.getIcon("property.object.png");
+        icon = objectPropertyIcon;
     }
 
 
     public void visit(OWLClass owlClass) {
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             if (owlClass.isDefined(ont)) {
-                icon = OWLIcons.getIcon("class.defined.png");
+                icon = definedClassIcon;
                 return;
             }
         }
