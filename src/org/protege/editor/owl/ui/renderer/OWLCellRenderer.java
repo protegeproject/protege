@@ -127,7 +127,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         textPane.setOpaque(false);
 
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
-        renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
 
@@ -478,7 +477,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private Component prepareRenderer(Object value, boolean isSelected, boolean hasFocus) {
-        renderingComponent.setBorder(null);
         renderingComponent.setOpaque(isSelected || opaque);
 
         if (value instanceof OWLEntity) {
@@ -501,8 +499,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             renderingComponent.setBackground(componentBeingRendered.getBackground());
             textPane.setForeground(componentBeingRendered.getForeground());
         }
-        iconLabel.setIcon(getIcon(value));
-        iconLabel.setPreferredSize(new Dimension(iconLabel.getPreferredSize().width, plainFontHeight));
+
+        final Icon icon = getIcon(value);
+        iconLabel.setIcon(icon);
+        if (icon != null){
+            iconLabel.setPreferredSize(new Dimension(icon.getIconWidth(), plainFontHeight));
+        }
         renderingComponent.revalidate();
         return renderingComponent;
     }
