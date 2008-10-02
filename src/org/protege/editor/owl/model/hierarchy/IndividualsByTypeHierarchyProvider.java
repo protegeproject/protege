@@ -1,15 +1,12 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
+
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
 
 
 /**
@@ -24,11 +21,33 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     private Set<OWLOntology> ontologies;
 
+    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
+
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+            final Set<OWLClass> changedNodes = new HashSet<OWLClass>();
+            for (OWLOntologyChange chg : changes){
+                if (chg.isAxiomChange()){
+                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                        public void visit(OWLClassAssertionAxiom ax) {
+                            if (!ax.getDescription().isAnonymous()){
+                                changedNodes.add(ax.getDescription().asOWLClass());
+                            }
+                        }
+                    });
+                }
+            }
+            for (OWLClass cls : changedNodes){
+                fireNodeChanged(cls);
+            }
+        }
+    };
 
     public IndividualsByTypeHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.roots = new HashSet<OWLObject>();
         this.ontologies = new HashSet<OWLOntology>();
+
+        owlOntologyManager.addOntologyChangeListener(ontChangeListener);
     }
 
 
@@ -101,5 +120,11 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     public boolean containsReference(OWLObject object) {
         return true;
+    }
+
+
+    public void dispose() {
+        getManager().removeOntologyChangeListener(ontChangeListener);
+        super.dispose();
     }
 }
