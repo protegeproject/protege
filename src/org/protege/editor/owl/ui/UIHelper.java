@@ -314,6 +314,7 @@ public class UIHelper {
 
     public JComboBox getLanguageSelector() {
         JComboBox c = new JComboBox();
+        c.setSelectedItem(null);
         c.setEditable(true);
         c.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
         return c;

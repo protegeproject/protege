@@ -209,8 +209,14 @@ import java.net.URISyntaxException;
          }
          
          EntityCreationPreferences.setNameLabelURI(URI.create(annotationURILabel.getText()));
-         EntityCreationPreferences.setNameLabelLang((String)annotationLangSelector.getSelectedItem());
-
+         Object lang = annotationLangSelector.getSelectedItem();
+         if (lang != null && !lang.equals("")){
+            EntityCreationPreferences.setNameLabelLang((String)lang);
+         }
+         else{
+             EntityCreationPreferences.setNameLabelLang(null);
+         }
+         
          if (pseudoRandomButton.isSelected()){
              EntityCreationPreferences.setAutoIDGeneratorClass(PseudoRandomAutoIDGenerator.class);
          }
