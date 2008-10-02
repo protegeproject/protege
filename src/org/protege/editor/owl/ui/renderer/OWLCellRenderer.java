@@ -56,7 +56,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public static final Color FOREGROUND = UIManager.getDefaults().getColor("List.foreground");
 
-    private boolean trasparent;
+    private boolean gettingCellBounds;
 
     private List<OWLEntityColorProvider> entityColorProviders;
 
@@ -73,7 +73,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JLabel iconLabel;
 
-    private JTextPane textPane = new JTextPane();
+    private JTextPane textPane;
 
     private int preferredWidth;
 
@@ -105,6 +105,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private int plainFontHeight;
 
+    private boolean opaque = false;
+
 
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
@@ -116,14 +118,18 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<OWLObject>();
-        renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
-        renderingComponent.setOpaque(true);
+
         iconLabel = new JLabel("");
+        iconLabel.setOpaque(false);
         iconLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        textPane = new JTextPane();
+        textPane.setOpaque(false);
+
+        renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
+        renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
-        iconLabel.setOpaque(false);
-        renderingComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         entityColorProviders = new ArrayList<OWLEntityColorProvider>();
         OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
@@ -164,8 +170,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    /**
+     * @deprecated use <code>setOpaque</code>
+     */
     public void setTransparent() {
-        trasparent = true;
+        renderingComponent.setOpaque(false);
+    }
+
+
+    public void setOpaque(boolean opaque){
+        this.opaque = opaque;
     }
 
 
@@ -219,7 +233,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public void reset() {
         iconObject = null;
-        trasparent = false;
         rightMargin = 0;
         ontology = null;
         focusedEntity = null;
@@ -380,21 +393,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         tree.setToolTipText(value != null ? value.toString() : "");
         Component c = prepareRenderer(value, selected, hasFocus);
-        adjustTransparency();
         reset();
         return c;
     }
-
-
-    private void adjustTransparency() {
-        textPane.setOpaque(false);
-        renderingComponent.setOpaque(true);
-        if (trasparent) {
-            textPane.setOpaque(false);
-        }
-    }
-
-    private boolean gettingCellBounds;
 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
@@ -415,7 +416,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         setupLinkedObjectComponent(list, cellBounds);
         Component c = prepareRenderer(value, isSelected, cellHasFocus);
-        adjustTransparency();
         reset();
         return c;
     }
@@ -479,6 +479,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Component prepareRenderer(Object value, boolean isSelected, boolean hasFocus) {
         renderingComponent.setBorder(null);
+        renderingComponent.setOpaque(isSelected || opaque);
+
         if (value instanceof OWLEntity) {
             OWLEntity entity = (OWLEntity) value;
             OWLDeclarationAxiom declAx = getOWLModelManager().getOWLDataFactory().getOWLDeclarationAxiom(entity);
@@ -492,14 +494,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         prepareTextPane(getRendering(value), isSelected);
 
         if (isSelected) {
-            textPane.setBackground(SELECTION_BACKGROUND);
-            textPane.setForeground(SELECTION_FOREGROUND);
             renderingComponent.setBackground(SELECTION_BACKGROUND);
+            textPane.setForeground(SELECTION_FOREGROUND);
         }
         else {
-            textPane.setBackground(componentBeingRendered.getBackground());
-            textPane.setForeground(componentBeingRendered.getForeground());
             renderingComponent.setBackground(componentBeingRendered.getBackground());
+            textPane.setForeground(componentBeingRendered.getForeground());
         }
         iconLabel.setIcon(getIcon(value));
         iconLabel.setPreferredSize(new Dimension(iconLabel.getPreferredSize().width, plainFontHeight));
