@@ -18,12 +18,9 @@ import java.awt.*;
  */
 public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
 
-//    private OWLCellRenderer delegate;
-
 
     public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
-//        delegate = new OWLCellRenderer(owlEditorKit);
     }
 
 
