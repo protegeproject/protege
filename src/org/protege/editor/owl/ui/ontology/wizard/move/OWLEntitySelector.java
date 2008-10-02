@@ -63,7 +63,6 @@ public class OWLEntitySelector<O extends OWLEntity> extends JPanel {
             final Comparator<T> comp = eKit.getModelManager().getOWLObjectComparator();
             OWLObjectTree<T> tree = new OWLObjectTree<T>(eKit, hp, comp);
             final OWLCellRenderer cellRenderer = new OWLCellRenderer(eKit, false, true);
-            cellRenderer.setTransparent();
             tree.setCellRenderer(cellRenderer);
             tree.setOpaque(false);
             tree.setBorder(new EmptyBorder(0, 0, 0, 0));

@@ -58,7 +58,6 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
         list = new CheckTable<OWLAxiom>("Axioms");
         final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getOWLEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
-        owlCellRenderer.setTransparent();
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);

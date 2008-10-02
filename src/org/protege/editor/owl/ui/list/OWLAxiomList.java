@@ -109,7 +109,6 @@ public class OWLAxiomList extends MList {
                                                       boolean cellHasFocus) {
             if (value instanceof AxiomListItem) {
                 AxiomListItem item = ((AxiomListItem) value);
-                ren.setTransparent();
                 ren.setOntology(item.ontology);
                 ren.setHighlightKeywords(true);
 //                if (!item.ontology.containsAxiom(item.axiom)) {

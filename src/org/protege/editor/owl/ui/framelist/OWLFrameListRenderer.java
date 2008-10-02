@@ -147,7 +147,6 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             Object valueToRender = getValueToRender(list, value, index, isSelected, cellHasFocus);
             owlCellRenderer.setIconObject(getIconObject(list, value, index, isSelected, cellHasFocus));
             owlCellRenderer.setOntology(((OWLFrameSectionRow) value).getOntology());
-            owlCellRenderer.setTransparent();
             owlCellRenderer.setInferred(((OWLFrameSectionRow) value).isInferred());
             owlCellRenderer.setHighlightKeywords(highlightKeywords);
             owlCellRenderer.setHighlightUnsatisfiableClasses(highlightUnsatisfiableClasses);
