@@ -145,7 +145,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
 
     private boolean isLangSelected() {
-        return langComboBox.getSelectedItem() != null;
+        return langComboBox.getSelectedItem() != null && !langComboBox.getSelectedItem().equals("");
     }
 
 
