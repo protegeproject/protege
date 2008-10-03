@@ -1,33 +1,17 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAntiSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLInverseFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLIrreflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLReflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLTransitiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.RemoveAxiom;
-import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
 
 
 /**
@@ -85,6 +69,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
 
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
+        box.setOpaque(false);
         box.add(functionalCB);
         box.add(Box.createVerticalStrut(7));
         box.add(inverseFunctionalCB);
@@ -98,7 +83,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         box.add(reflexiveCB);
         box.add(Box.createVerticalStrut(7));
         box.add(irreflexiveCB);
-        add(box);
+        add(new JScrollPane(box));
 
         map = new HashMap<JCheckBox, PropertyCharacteristicSetter>();
         setupSetters();
