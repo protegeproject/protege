@@ -1,24 +1,11 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerProgressMonitor;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -117,7 +104,9 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
 
     private void setCancelled(boolean b) {
-        cancelledAction.setEnabled(!b);
+        if (b){
+            hideWindow();
+        }
         cancelled = b;
         if (currentClass != null) {
             JOptionPane.showMessageDialog(window,
