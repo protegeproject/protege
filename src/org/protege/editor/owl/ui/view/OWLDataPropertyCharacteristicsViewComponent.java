@@ -1,24 +1,15 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JCheckBox;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLFunctionalDataPropertyAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.RemoveAxiom;
-import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
 
 
 /**
@@ -61,7 +52,11 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
         checkBox = new JCheckBox("Functional");
-        add(checkBox, BorderLayout.NORTH);
+        Box box = new Box(BoxLayout.PAGE_AXIS);
+        box.setOpaque(false);
+        box.add(checkBox);
+        add(new JScrollPane(box));
+
         listener = new FilteringOWLOntologyChangeListener() {
             public void visit(OWLFunctionalDataPropertyAxiom axiom) {
                 updateView(prop);
