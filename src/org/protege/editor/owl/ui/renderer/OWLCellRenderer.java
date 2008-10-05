@@ -146,7 +146,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         unsatisfiableNames = new HashSet<String>();
         boxedNames = new HashSet<String>();
         prepareStyles();
-        setupFont();        
+        setupFont();
     }
 
 
@@ -531,6 +531,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     protected Icon getIcon(Object object) {
+        if(!renderIcon) {
+            return null;
+        }
         if (iconObject != null) {
             return owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(iconObject);
         }
@@ -1040,7 +1043,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             Insets rcInsets = renderingComponent.getInsets();
 
             if (preferredWidth != -1) {
-                textWidth = preferredWidth - iconWidth;
+                textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
                 View v = textPane.getUI().getRootView(textPane);
                 v.setSize(textWidth, Integer.MAX_VALUE);
                 textHeight = (int) v.getMinimumSpan(View.Y_AXIS);
