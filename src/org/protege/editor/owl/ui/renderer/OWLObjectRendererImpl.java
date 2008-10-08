@@ -597,9 +597,9 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     public void visit(OWLObjectPropertyDomainAxiom axiom) {
         if (!OWLRendererPreferences.getInstance().isRenderDomainAxiomsAsGCIs()) {
-            axiom.getDomain().accept(this);
-            write(" domainOf ");
             axiom.getProperty().accept(this);
+            write(" domain ");
+            axiom.getDomain().accept(this);
         }
         else {
             axiom.getProperty().accept(this);
@@ -622,15 +622,15 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
 
     public void visit(OWLObjectPropertyRangeAxiom axiom) {
-        axiom.getRange().accept(this);
-        write(" rangeOf ");
         axiom.getProperty().accept(this);
+        write(" range ");
+        axiom.getRange().accept(this);
     }
 
 
     public void visit(OWLClassAssertionAxiom axiom) {
         axiom.getIndividual().accept(this);
-        write(" instanceOf ");
+        write(" types ");
         axiom.getDescription().accept(this);
     }
 
@@ -750,14 +750,14 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     public void visit(OWLDataPropertyDomainAxiom axiom) {
         axiom.getProperty().accept(this);
-        write(" hasDomain ");
+        write(" domain ");
         axiom.getDomain().accept(this);
     }
 
 
     public void visit(OWLDataPropertyRangeAxiom axiom) {
         axiom.getProperty().accept(this);
-        write(" hasRange ");
+        write(" range ");
         axiom.getRange().accept(this);
     }
 
