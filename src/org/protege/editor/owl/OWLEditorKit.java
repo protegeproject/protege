@@ -3,6 +3,7 @@ package org.protege.editor.owl;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactory;
@@ -18,6 +19,8 @@ import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.framelist.OWLFrameListExplanationHandler;
+import org.protege.editor.owl.ui.framelist.ExplanationHandler;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
@@ -30,6 +33,8 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 
 
 /**
@@ -57,6 +62,8 @@ public class OWLEditorKit implements EditorKit {
 
     private Set<URI> newPhysicalURIs;
 
+    private Map<Object, Disposable> objects;
+
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
         logger.info("Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
@@ -70,8 +77,26 @@ public class OWLEditorKit implements EditorKit {
                 handleSaveError(ont, physicalURIForOntology, e);
             }
         });
+        objects = new HashMap<Object, Disposable>();
         modelManager.setLoadErrorHandler(new OntologyLoadErrorHandlerUI(this));
         loadIOListenerPlugins();
+        setupDefaults();
+    }
+
+    private void setupDefaults() {
+        // Register the default explanation handler
+        ExplanationHandler explanationHandler = new OWLFrameListExplanationHandler(this);
+        put(ExplanationHandler.KEY, explanationHandler);
+    }
+
+
+    public <T extends Disposable> void put(Object key, T object) {
+        objects.put(key, object);
+    }
+
+
+    public <T extends Disposable> T get(Object key) {
+        return (T) objects.get(key);
     }
 
 
@@ -273,5 +298,13 @@ public class OWLEditorKit implements EditorKit {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
+    }
+
+
+    public void dispose() {
+        for (Disposable object : objects.values()){
+            object.dispose();
+        }
+        objects.clear();
     }
 }
