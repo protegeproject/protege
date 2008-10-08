@@ -117,6 +117,18 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
 
 
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>> getRowComparator() {
-        return null;
+        return new Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>>() {
+
+            public int compare(OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o1,
+                               OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o2) {
+
+                int diff = o1.getAxiom().compareTo(o2.getAxiom());
+                if(diff != 0) {
+                    return diff;
+                }
+                return o1.getOntology().compareTo(o2.getOntology());
+                
+            }
+        };
     }
 }
