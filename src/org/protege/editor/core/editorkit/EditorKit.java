@@ -3,6 +3,7 @@ package org.protege.editor.core.editorkit;
 import java.net.URI;
 
 import org.protege.editor.core.ModelManager;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.workspace.Workspace;
 
 
@@ -33,7 +34,7 @@ import org.protege.editor.core.ui.workspace.Workspace;
  * For example, an <code>OWLReasoner</code> can only work with an
  * <code>OWLEditorKit</code>.
  */
-public interface EditorKit {
+public interface EditorKit extends Disposable {
 
     /**
      * Gets the <code>EditorKit</code> Id.  This can be used to identify
@@ -93,4 +94,9 @@ public interface EditorKit {
 
 
     public void close();
+
+    public <T extends Disposable> void put(Object key, T object);
+
+
+    public <T extends Disposable> T get(Object key);
 }
