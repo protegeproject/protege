@@ -4,13 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -45,11 +42,19 @@ public class OWLEntityFindPanel extends JPanel {
 
     private JList resultsList;
 
+    Timer findTimer;
+
 
     public OWLEntityFindPanel(OWLEditorKit owlEditorKit, Findable findable) {
         this.owlEditorKit = owlEditorKit;
         this.findable = findable;
         createUI();
+        findTimer = new Timer(300, new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                doUpdate();
+            }
+        });
+        findTimer.setRepeats(false);
     }
 
 
@@ -129,6 +134,11 @@ public class OWLEntityFindPanel extends JPanel {
 
 
     private void update() {
+        findTimer.restart();
+    }
+
+
+    private void doUpdate() {
         String text = textField.getText().trim();
         if (text.length() == 0) {
             resultsList.setListData(new Object [0]);
