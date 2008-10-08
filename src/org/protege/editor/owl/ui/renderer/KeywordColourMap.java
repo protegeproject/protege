@@ -57,11 +57,10 @@ public class KeywordColourMap extends HashMap<String, Color> {
         put("DisjointWith", axiomColor);
         put("equivalentTo", axiomColor);
         put("EquivalentTo", axiomColor);
-        put("domainOf", axiomColor);
-        put("DomainOf", axiomColor);
-        put("rangeOf", axiomColor);
-        put("RangeOf", axiomColor);
+        put("domain", axiomColor);
+        put("range", axiomColor);
         put("instanceOf", axiomColor);
+        put("types", axiomColor);
         put("InstanceOf", axiomColor);
         put("minus", queryColor);
         put("plus", queryColor);
