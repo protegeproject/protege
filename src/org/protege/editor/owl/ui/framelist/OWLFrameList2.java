@@ -91,7 +91,6 @@ public class OWLFrameList2<R extends Object> extends MList implements
     private Point lastMouseDownPoint;
     private List<OWLFrameListPopupMenuAction<R>> actions;
     private OWLFrameListRenderer cellRenderer;
-    private ExplanationHandler explanationHandler;
 
     private AxiomAnnotationPanel axiomAnnotationPanel;
 
@@ -152,7 +151,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
 
         setUI(new OWLFrameListUI());
 
-        explanationHandler = new OWLFrameListExplanationHandler(editorKit);
+//        explanationHandler = new OWLFrameListExplanationHandler(editorKit);
     }
 
 
@@ -185,9 +184,9 @@ public class OWLFrameList2<R extends Object> extends MList implements
         cellRenderer.setCrossedOutEntities(entities);
     }
 
-    public void setExplanationHandler(ExplanationHandler handler) {
-        explanationHandler = handler;
-    }
+//    public void setExplanationHandler(ExplanationHandler handler) {
+//        explanationHandler = handler;
+//    }
 
     public void updateUI() {
     }
@@ -516,6 +515,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         }
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
+        ExplanationHandler explanationHandler = editorKit.get(ExplanationHandler.KEY);
         explanationHandler.handleExplain(ax);
     }
 

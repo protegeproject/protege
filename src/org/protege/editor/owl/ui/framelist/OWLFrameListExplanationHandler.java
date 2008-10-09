@@ -102,4 +102,8 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
         dlg.pack();
         dlg.setVisible(true);
     }
+
+
+    public void dispose() {
+    }
 }

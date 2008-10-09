@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.semanticweb.owl.model.OWLAxiom;
+import org.protege.editor.core.Disposable;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -31,7 +32,9 @@ import org.semanticweb.owl.model.OWLAxiom;
  * Bio-Health Informatics Group<br>
  * Date: 17-Oct-2007<br><br>
  */
-public interface ExplanationHandler {
+public interface ExplanationHandler extends Disposable {
+
+    public static final String KEY = "org.protege.editor.owl.explanation.handler";
 
     void handleExplain(OWLAxiom axiom);
 }
