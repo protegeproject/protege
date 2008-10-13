@@ -426,10 +426,12 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
         public void visit(OWLEquivalentClassesAxiom axiom) {
             // EquivalentClasses(A  And(B...))
-            Set<OWLDescription> equivalentClasses = axiom.getDescriptions();
+            if (!namedClassInEquivalentAxiom(axiom)){
+                return;
+            }
             Set<OWLDescription> candidateDescriptions = new HashSet<OWLDescription>();
             boolean found = false;
-            for (OWLDescription equivalentClass : equivalentClasses) {
+            for (OWLDescription equivalentClass : axiom.getDescriptions()) {
                 if (!checker.containsConjunct(currentParentClass, equivalentClass)) {
                     // Potential operand
                     candidateDescriptions.add(equivalentClass);
@@ -449,6 +451,16 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                 desc.accept(namedClassExtractor);
             }
             results.addAll(namedClassExtractor.getResult());
+        }
+
+
+        private boolean namedClassInEquivalentAxiom(OWLEquivalentClassesAxiom axiom) {
+            for (OWLDescription equiv : axiom.getDescriptions()){
+                if (!equiv.isAnonymous()){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
