@@ -624,6 +624,11 @@ public class OWLFrameList2<R extends Object> extends MList implements
     }
 
 
+    public void setExplanationHandler(ExplanationHandler handler) {
+        // @@TODO implement
+    }
+
+
     private interface EditHandler {
         void handleEditFinished(OWLFrameSectionRowObjectEditor editor);
     }
