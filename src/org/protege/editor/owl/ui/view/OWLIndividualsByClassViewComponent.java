@@ -45,9 +45,11 @@ public class OWLIndividualsByClassViewComponent extends AbstractOWLIndividualVie
 
 
     private void transmitSelection() {
-        OWLObject obj = tree.getSelectedOWLObject();
-        if (obj instanceof OWLEntity) {
-            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity((OWLEntity) obj);
+        if (isSynchronizing()){
+            OWLObject obj = tree.getSelectedOWLObject();
+            if (obj instanceof OWLEntity) {
+                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity((OWLEntity) obj);
+            }
         }
     }
 
