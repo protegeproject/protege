@@ -228,6 +228,16 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
+
+        <extension id="OWLMembersList"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Members List"/>
+        <class value="org.protege.editor.owl.ui.view.OWLMembersListViewComponent"/>
+        <headerColor value="@org.protege.individualcolor"/>
+        <category value="@org.protege.individualcategory"/>
+    </extension>
+
+
     <extension id="OWLClassAnnotations"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Class Annotations"/>

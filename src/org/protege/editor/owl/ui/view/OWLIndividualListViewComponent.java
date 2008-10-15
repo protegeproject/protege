@@ -35,14 +35,16 @@ import java.util.List;
 public class OWLIndividualListViewComponent extends
 		AbstractOWLIndividualViewComponent implements Findable<OWLIndividual>,
 		Deleteable, CreateNewTarget, RefreshableComponent {
-	private OWLObjectList<OWLIndividual> list;
+
+    private OWLObjectList<OWLIndividual> list;
 	private OWLOntologyChangeListener listener;
 	private ChangeListenerMediator changeListenerMediator;
-	private Set<OWLIndividual> individualsInList;
 	private OWLModelManagerListener modelManagerListener;
 	private int selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 
-	@Override
+    protected Set<OWLIndividual> individualsInList;
+
+    @Override
 	public void initialiseIndividualsView() throws Exception {
 		this.list = new OWLObjectList<OWLIndividual>(this.getOWLEditorKit());
 		this.list.setSelectionMode(this.selectionMode);
@@ -110,7 +112,7 @@ public class OWLIndividualListViewComponent extends
 		this.refill();
 	}
 
-	private void refill() {
+	protected void refill() {
 		// Initial fill
 		this.individualsInList.clear();
 		for (OWLOntology ont : getOntologies()) {
@@ -127,7 +129,7 @@ public class OWLIndividualListViewComponent extends
 		this.list.setSelectedValue(individual, true);
 	}
 
-	private void reset() {
+	protected void reset() {
 		this.list.setListData(this.individualsInList.toArray());
 		OWLEntity entity = this.getSelectedOWLIndividual();
 		if (entity instanceof OWLIndividual) {
@@ -203,25 +205,31 @@ public class OWLIndividualListViewComponent extends
 		}
 	}
 
-	private void addIndividual() {
+	protected void addIndividual() {
 		OWLEntityCreationSet<OWLIndividual> set = this.getOWLWorkspace().createOWLIndividual();
 		if (set == null) {
 			return;
 		}
 		List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 		changes.addAll(set.getOntologyChanges());
-		this.getOWLModelManager().applyChanges(changes);
+        changes.addAll(dofurtherCreateSteps(set.getOWLEntity()));
+        this.getOWLModelManager().applyChanges(changes);
 		OWLIndividual ind = set.getOWLEntity();
 		if (ind != null) {
 			this.list.setSelectedValue(ind, true);
 			if (!this.isPinned()) {
-				this.getOWLWorkspace().getOWLSelectionModel()
-						.setSelectedEntity(ind);
+				this.getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(ind);
 			}
 		}
 	}
 
-	public List<OWLIndividual> find(String match) {
+
+    protected List<OWLOntologyChange> dofurtherCreateSteps(OWLIndividual newIndividual) {
+        return Collections.EMPTY_LIST;
+    }
+
+
+    public List<OWLIndividual> find(String match) {
         return new ArrayList<OWLIndividual>(getOWLModelManager().getEntityFinder().getMatchingOWLIndividuals(match));
 	}
 
