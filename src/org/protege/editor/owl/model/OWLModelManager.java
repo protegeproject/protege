@@ -36,6 +36,8 @@ import java.util.Set;
  */
 public interface OWLModelManager extends ModelManager {
 
+    public static final String OWL_OBJECT_COMPARATOR_KEY = "OWL_OBJECT_COMPARATOR_KEY";
+    
     void addListener(OWLModelManagerListener listener);
 
 
