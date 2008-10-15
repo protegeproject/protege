@@ -58,17 +58,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
                 for (OWLEntity ent : chg.getEntities()) {
-                    boolean updateRendering = false;
-                    for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
-                        if (ont.containsEntityReference(ent)) {
-                            updateRendering = true;
-                            break;
-                        }
-                    }
-                    removeRendering(ent); // always remove the old rendering
-                    if (updateRendering) {
-                        addRendering(ent);
-                    }
+                    updateRendering(ent);
                 }
             }
         }
@@ -240,9 +230,18 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     }
 
 
-    public void updateRendering(final OWLEntity owlEntity) {
-        removeRendering(owlEntity);
-        addRendering(owlEntity);
+    public void updateRendering(final OWLEntity ent) {
+        boolean updateRendering = false;
+        for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
+            if (ont.containsEntityReference(ent)) {
+                updateRendering = true;
+                break;
+            }
+        }
+        removeRendering(ent); // always remove the old rendering
+        if (updateRendering) {
+            addRendering(ent);
+        }
     }
 
 
