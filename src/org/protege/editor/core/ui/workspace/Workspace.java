@@ -6,6 +6,7 @@ import com.jgoodies.looks.FontSet;
 import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -61,7 +62,7 @@ import java.util.Set;
  * A <code>Workspace</code> is a UI component that
  * presents a view on an <code>EditorKit</code>.
  */
-public abstract class Workspace extends JComponent {
+public abstract class Workspace extends JComponent implements Disposable {
 
     public static final int BOTTOM_RESULTS_VIEW = 0;
 
@@ -342,7 +343,7 @@ public abstract class Workspace extends JComponent {
     }
 
 
-    public abstract void dispose();
+    public abstract void dispose() throws Exception;
 
 
     protected String getTitle() {

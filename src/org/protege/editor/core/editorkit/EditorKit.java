@@ -1,10 +1,10 @@
 package org.protege.editor.core.editorkit;
 
-import java.net.URI;
-
-import org.protege.editor.core.ModelManager;
 import org.protege.editor.core.Disposable;
+import org.protege.editor.core.ModelManager;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import java.net.URI;
 
 
 /**
@@ -92,8 +92,6 @@ public interface EditorKit extends Disposable {
 
     public void handleSaveAs() throws Exception;
 
-
-    public void close();
 
     public <T extends Disposable> void put(Object key, T object);
 

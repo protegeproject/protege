@@ -1,4 +1,7 @@
-package org.protege.editor.core;
+package org.protege.editor.core.editorkit.plugin;
+
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.plugin.ProtegePluginInstance;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -28,9 +31,22 @@ package org.protege.editor.core;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 15, 2008<br><br>
+ * Date: Oct 15, 2008<br><br>
+ *
+ * A plugin that gets initialised when the editor kit has been created.
+ * Can be used to customise the editor kit, workspace or model manager
+ * without having to add a UI component.
+ *
  */
-public interface Disposable {
+public abstract class EditorKitHook implements ProtegePluginInstance {
 
-    public void dispose() throws Exception;
+    private EditorKit editorKit;
+
+    protected void setup(EditorKit editorKit) {
+        this.editorKit = editorKit;
+    }
+
+    protected EditorKit getEditorKit() {
+        return editorKit;
+    }
 }

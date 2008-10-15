@@ -1,4 +1,10 @@
-package org.protege.editor.core;
+package org.protege.editor.core.editorkit.plugin;
+
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionMatcher;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -28,9 +34,25 @@ package org.protege.editor.core;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 15, 2008<br><br>
+ * Date: Oct 15, 2008<br><br>
  */
-public interface Disposable {
+public class EditorKitHookPluginLoader extends AbstractApplicationPluginLoader<EditorKitHookPlugin> {
 
-    public void dispose() throws Exception;
+    private EditorKit editorKit;
+
+
+    public EditorKitHookPluginLoader(EditorKit editorKit) {
+        super(EditorKitHookPlugin.EXTENSION_POINT_ID);
+        this.editorKit = editorKit;
+    }
+
+
+    protected PluginExtensionMatcher getExtensionMatcher() {
+        return new DefaultPluginExtensionMatcher();
+    }
+
+
+    protected EditorKitHookPlugin createInstance(IExtension extension) {
+        return new EditorKitHookPluginImpl(extension, editorKit);
+    }
 }
