@@ -195,12 +195,17 @@ public class ProtegeManager {
      * the clsdescriptioneditor kit's model manager.
      */
     public void disposeOfEditorKit(EditorKit editorKit) {
-        editorKit.close();
         ProtegeManager.getInstance().getEditorKitManager().removeEditorKit(editorKit);
-        // Dispose of the workspace
-        editorKit.getWorkspace().dispose();
-        // Dispose of the model
-        editorKit.getModelManager().dispose();
+        try {
+            // Dispose of the workspace
+            editorKit.getWorkspace().dispose();
+            // Dispose of the model
+            editorKit.getModelManager().dispose();
+            editorKit.dispose();
+        }
+        catch (Exception e) {
+            ProtegeApplication.getErrorLog().logError(e);
+        }
         System.gc();
         application.handleClose();
     }

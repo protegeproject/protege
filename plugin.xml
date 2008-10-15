@@ -17,6 +17,8 @@
    <extension-point id="preferencespanel" 
                     name="preferencespanel"
                     schema="schema/preferencespanel.exsd"/>
+   <extension-point id="EditorKitHook"
+                     name="EditorKit Hook"/>
 
     <!-- Set up standard menus -->
 

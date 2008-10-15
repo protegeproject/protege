@@ -1,5 +1,7 @@
 package org.protege.editor.core;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 public abstract class AbstractModelManager implements ModelManager {
 
+    private static final Logger logger = Logger.getLogger(AbstractModelManager.class);
 
     private List<ModelManagerListener> listeners;
 
@@ -62,7 +65,12 @@ public abstract class AbstractModelManager implements ModelManager {
 
     public void dispose() {
         for (Disposable object : objects.values()){
-            object.dispose();
+            try {
+                object.dispose();
+            }
+            catch (Exception e) {
+                logger.error(e);
+            }
         }
         objects.clear();
     }

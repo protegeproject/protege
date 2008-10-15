@@ -1,4 +1,6 @@
-package org.protege.editor.core;
+package org.protege.editor.core.editorkit.plugin;
+
+import org.protege.editor.core.plugin.ProtegePlugin;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -28,9 +30,9 @@ package org.protege.editor.core;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 15, 2008<br><br>
+ * Date: Oct 15, 2008<br><br>
  */
-public interface Disposable {
+public interface EditorKitHookPlugin extends ProtegePlugin<EditorKitHook> {
 
-    public void dispose() throws Exception;
+    public static final String EXTENSION_POINT_ID = "EditorKitHook";
 }
