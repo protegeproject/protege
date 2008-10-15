@@ -136,7 +136,6 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
 
             public int compare(OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o1,
                                OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o2) {
-                int val = o1.getAxiom().getSuperClass().compareTo(o2.getAxiom().getSuperClass());
                 if (o1.isInferred()) {
                     if (!o2.isInferred()) {
                         return 1;
@@ -147,6 +146,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
                         return -1;
                     }
                 }
+                int val = o1.getAxiom().getSuperClass().compareTo(o2.getAxiom().getSuperClass());
                 if(val == 0) {
                     return o1.getOntology().getURI().compareTo(o2.getOntology().getURI());
                 }

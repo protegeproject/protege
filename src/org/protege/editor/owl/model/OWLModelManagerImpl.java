@@ -1108,7 +1108,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public <T extends OWLObject> Comparator<T> getOWLObjectComparator(){
-        return new OWLObjectComparator<T>(this);
+        OWLObjectComparator<T> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
+        if (comparator == null){
+            comparator = new OWLObjectComparator<T>(this);
+            put(OWL_OBJECT_COMPARATOR_KEY, comparator);
+        }
+        return comparator;
     }
 
 

@@ -3,10 +3,8 @@ package org.protege.editor.owl;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.AbstractEditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.Wizard;
@@ -19,9 +17,9 @@ import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.framelist.OWLFrameListExplanationHandler;
-import org.protege.editor.owl.ui.framelist.ExplanationHandler;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
+import org.protege.editor.owl.ui.framelist.ExplanationHandler;
+import org.protege.editor.owl.ui.framelist.OWLFrameListExplanationHandler;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.*;
@@ -33,8 +31,6 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
 
 
 /**
@@ -46,7 +42,7 @@ import java.util.HashMap;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLEditorKit implements EditorKit {
+public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private static final Logger logger = Logger.getLogger(OWLEditorKit.class);
 
@@ -58,16 +54,16 @@ public class OWLEditorKit implements EditorKit {
 
     private OWLModelManager modelManager;
 
-    private OWLEditorKitFactory editorKitFactory;
-
     private Set<URI> newPhysicalURIs;
-
-    private Map<Object, Disposable> objects;
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
+        super(editorKitFactory);
+    }
+
+
+    protected void initialise(){
         logger.info("Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
-        this.editorKitFactory = editorKitFactory;
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
 
@@ -77,26 +73,16 @@ public class OWLEditorKit implements EditorKit {
                 handleSaveError(ont, physicalURIForOntology, e);
             }
         });
-        objects = new HashMap<Object, Disposable>();
         modelManager.setLoadErrorHandler(new OntologyLoadErrorHandlerUI(this));
         loadIOListenerPlugins();
-        setupDefaults();
     }
 
-    private void setupDefaults() {
+
+    protected void initialiseCompleted() {
+        super.initialiseCompleted();
         // Register the default explanation handler
         ExplanationHandler explanationHandler = new OWLFrameListExplanationHandler(this);
         put(ExplanationHandler.KEY, explanationHandler);
-    }
-
-
-    public <T extends Disposable> void put(Object key, T object) {
-        objects.put(key, object);
-    }
-
-
-    public <T extends Disposable> T get(Object key) {
-        return (T) objects.get(key);
     }
 
 
@@ -108,11 +94,6 @@ public class OWLEditorKit implements EditorKit {
      */
     public String getId() {
         return ID;
-    }
-
-
-    public EditorKitFactory getEditorKitFactory() {
-        return editorKitFactory;
     }
 
 
@@ -130,10 +111,6 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    /**
-     * @deprecated use <code>getWorkspace</code>
-     * @return
-     */
     public OWLWorkspace getOWLWorkspace() {
         return getWorkspace();
     }
@@ -148,10 +125,6 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    /**
-     * @deprecated use <code>getModelManager()</code>
-     * @return
-     */
     public OWLModelManager getOWLModelManager() {
         return getModelManager();
     }
@@ -245,10 +218,6 @@ public class OWLEditorKit implements EditorKit {
     }
 
 
-    public void close() {
-    }
-
-
     private File getSaveAsOWLFile(OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
         File file = helper.saveOWLFile("Please select a location in which to save: " + getModelManager().getRendering(ont));
@@ -298,13 +267,5 @@ public class OWLEditorKit implements EditorKit {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
-    }
-
-
-    public void dispose() {
-        for (Disposable object : objects.values()){
-            object.dispose();
-        }
-        objects.clear();
     }
 }
