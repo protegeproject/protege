@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.Set;
-
+import org.protege.editor.core.Disposable;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.util.ProgressMonitor;
+
+import java.util.Set;
 
 
 /**
@@ -20,9 +21,7 @@ import org.semanticweb.owl.util.ProgressMonitor;
  * also provides the ability to create new instances of the currently
  * selected reasoner.
  */
-public interface OWLReasonerManager {
-
-    public void dispose();
+public interface OWLReasonerManager extends Disposable {
 
 
     public void setReasonerProgressMonitor(ProgressMonitor progressMonitor);
