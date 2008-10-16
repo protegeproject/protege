@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
 
 
@@ -17,7 +14,7 @@ import org.semanticweb.owl.model.OWLOntology;
  * Bio-Health Informatics Group<br>
  * Date: 16-Feb-2007<br><br>
  */
-public class OWLDataPropertyDomainFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDataPropertyDomainAxiom, OWLDescription> {
+public class OWLDataPropertyDomainFrameSectionRow extends AbstractPropertyDomainFrameSectionRow<OWLDataProperty, OWLDataPropertyDomainAxiom> {
 
     public OWLDataPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                 OWLOntology ontology, OWLDataProperty rootObject,
@@ -28,15 +25,5 @@ public class OWLDataPropertyDomainFrameSectionRow extends AbstractOWLFrameSectio
 
     protected OWLDataPropertyDomainAxiom createAxiom(OWLDescription editedObject) {
         return getOWLDataFactory().getOWLDataPropertyDomainAxiom(getRootObject(), editedObject);
-    }
-
-
-    protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), getAxiom().getDomain());
-    }
-
-
-    public List<? extends OWLObject> getManipulatableObjects() {
-        return Arrays.asList(getAxiom().getDomain());
     }
 }

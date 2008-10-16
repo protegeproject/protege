@@ -1,10 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSection;
+import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
-import java.util.*;
+import java.util.Set;
 
 
 /**
@@ -13,59 +18,11 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLObjectPropertyDomainFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLObjectPropertyDomainAxiom, OWLDescription> {
+public class OWLObjectPropertyDomainFrameSection extends AbstractPropertyDomainFrameSection<OWLObjectProperty, OWLObjectPropertyDomainAxiom> {
 
-    public static final String LABEL = "Domains (intersection)";
-
-    Set<OWLDescription> addedDomains = new HashSet<OWLDescription>();
-
-
-    public OWLObjectPropertyDomainFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
-        super(owlEditorKit, LABEL, "Domain", frame);
+    public OWLObjectPropertyDomainFrameSection(OWLEditorKit editorKit, OWLFrame<OWLObjectProperty> owlObjectPropertyOWLFrame) {
+        super(editorKit, owlObjectPropertyOWLFrame);
     }
-
-
-    protected void clear() {
-        addedDomains.clear();
-    }
-
-
-    /**
-     * Refills the section with rows.  This method will be called
-     * by the system and should be directly called.
-     */
-    protected void refill(OWLOntology ontology) {
-
-        for (OWLObjectPropertyDomainAxiom ax : ontology.getObjectPropertyDomainAxioms(getRootObject())) {
-            addRow(new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
-            addedDomains.add(ax.getDomain());
-        }
-
-    }
-
-    protected void refillInferred() {
-        try {
-            Set<OWLDescription> domains = new HashSet<OWLDescription>();
-            for(Set<OWLDescription> domainsSet : getOWLModelManager().getReasoner().getDomains(getRootObject())) {
-                domains.addAll(domainsSet);
-            }
-            for (OWLDescription desc : domains) {
-                if (!addedDomains.contains(desc)) {
-                    addRow(new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(),
-                                                                      this,
-                                                                      null,
-                                                                      getRootObject(),
-                                                                      getOWLDataFactory().getOWLObjectPropertyDomainAxiom(
-                                                                              getRootObject(),
-                                                                              desc)));
-                    addedDomains.add(desc);
-                }
-            }
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
-     }
 
 
     protected OWLObjectPropertyDomainAxiom createAxiom(OWLDescription object) {
@@ -73,46 +30,18 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractOWLFrameSection
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), null);
+    protected AbstractPropertyDomainFrameSectionRow<OWLObjectProperty, OWLObjectPropertyDomainAxiom> createFrameSectionRow(OWLObjectPropertyDomainAxiom domainAxiom, OWLOntology ontology) {
+        return new OWLObjectPropertyDomainFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), domainAxiom);
     }
 
 
-    public boolean canAcceptDrop(List<OWLObject> objects) {
-        for (OWLObject obj : objects) {
-            if (!(obj instanceof OWLDescription)) {
-                return false;
-            }
-        }
-        return true;
+    protected Set<OWLObjectPropertyDomainAxiom> getAxioms(OWLOntology ontology) {
+        return ontology.getObjectPropertyDomainAxioms(getRootObject());
     }
 
 
-    public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        for (OWLObject obj : objects) {
-            if (obj instanceof OWLDescription) {
-                OWLDescription desc = (OWLDescription) obj;
-                OWLAxiom ax = getOWLDataFactory().getOWLObjectPropertyDomainAxiom(getRootObject(), desc);
-                changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-            }
-            else {
-                return false;
-            }
-        }
-        getOWLModelManager().applyChanges(changes);
-        return true;
-    }
-
-
-    /**
-     * Obtains a comparator which can be used to sort the rows
-     * in this section.
-     * @return A comparator if to sort the rows in this section,
-     *         or <code>null</code> if the rows shouldn't be sorted.
-     */
-    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLObjectPropertyDomainAxiom, OWLDescription>> getRowComparator() {
-        return null;
+    protected Set<Set<OWLDescription>> getInferredDomains() throws OWLReasonerException {
+        return getOWLModelManager().getReasoner().getDomains(getRootObject());
     }
 
 
