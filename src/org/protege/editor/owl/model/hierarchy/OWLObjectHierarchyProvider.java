@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.util.List;
-import java.util.Set;
-
+import org.protege.editor.core.Disposable;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -19,7 +20,7 @@ import org.semanticweb.owl.model.OWLOntology;
  * An interface to an object that can provide a hierarchy of objects, for
  * example a class, property or individual hierarchy.
  */
-public interface OWLObjectHierarchyProvider<N extends OWLObject> {
+public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposable {
 
 
     /**
@@ -27,14 +28,6 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> {
      * in order to determine the hierarchy.
      */
     public void setOntologies(Set<OWLOntology> ontologies);
-
-
-    /**
-     * Disposes of the provider.  This should be called when the
-     * provider is no longer required in order to remove listeners
-     * etc.
-     */
-    public void dispose();
 
 
     /**
@@ -68,4 +61,7 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> {
 
 
     public void removeListener(OWLObjectHierarchyProviderListener<N> listener);
+
+
+    void dispose(); // override as previous implementations did not implement Disposable and did not throw an exception
 }

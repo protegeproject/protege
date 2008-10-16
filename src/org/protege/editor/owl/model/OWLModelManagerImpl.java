@@ -225,33 +225,35 @@ public class OWLModelManagerImpl extends AbstractModelManager
         OntologySourcesManager sourcesMngr = get(OntologySourcesManager.ID);
         removeIOListener(sourcesMngr);
 
-        if (assertedClassHierarchyProvider != null) {
-            assertedClassHierarchyProvider.dispose();
-        }
-        if (inferredClassHierarchyProvider != null) {
-            inferredClassHierarchyProvider.dispose();
-        }
-        if (toldDataPropertyHierarchyProvider != null) {
-            toldDataPropertyHierarchyProvider.dispose();
-        }
-        if (toldObjectPropertyHierarchyProvider != null) {
-            toldObjectPropertyHierarchyProvider.dispose();
-        }
         try {
+            if (assertedClassHierarchyProvider != null) {
+                assertedClassHierarchyProvider.dispose();
+            }
+            if (inferredClassHierarchyProvider != null) {
+                inferredClassHierarchyProvider.dispose();
+            }
+            if (toldDataPropertyHierarchyProvider != null) {
+                toldDataPropertyHierarchyProvider.dispose();
+            }
+            if (toldObjectPropertyHierarchyProvider != null) {
+                toldObjectPropertyHierarchyProvider.dispose();
+            }
             getReasoner().dispose();
+
+            // Empty caches
+            owlEntityRenderingCache.dispose();
+            owlObjectRenderingCache.dispose();
+
+            if (entityRenderer != null){
+                entityRenderer.dispose();
+            }
+
+            owlReasonerManager.dispose();
         }
         catch (Exception e) {
             logger.error(e.getMessage() + "\n", e);
         }
-        // Empty caches
-        owlEntityRenderingCache.dispose();
-        owlObjectRenderingCache.dispose();
 
-        if (entityRenderer != null){
-            entityRenderer.dispose();
-        }
-
-        owlReasonerManager.dispose();
         // Name and shame plugins that do not (or can't be bothered to) clean up
         // their listeners!
         modelManagerListenerManager.dumpWarningForAllListeners(logger, Level.ERROR,
@@ -986,7 +988,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public void setOWLEntityRenderer(OWLModelManagerEntityRenderer renderer) {
         if (entityRenderer != null) {
             entityRenderer.removeListener(this);
-            entityRenderer.dispose();
+            try {
+                entityRenderer.dispose();
+            }
+            catch (Exception e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
         }
         entityRenderer = renderer;
         entityRenderer.addListener(this);

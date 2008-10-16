@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.cache;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.*;
 
@@ -15,15 +16,12 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface OWLEntityRenderingCache {
+public interface OWLEntityRenderingCache extends Disposable {
 
     public void setOWLModelManager(OWLModelManager owlModelManager);
 
 
     public void rebuild();
-
-
-    public void dispose();
 
 
     public void addRendering(OWLEntity owlEntity);

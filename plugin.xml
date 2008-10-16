@@ -263,6 +263,14 @@
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
 
+    <extension id="InferredObjectPropertyTree"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Inferred Object Property Hierarchy"/>
+        <class value="org.protege.editor.owl.ui.view.InferredObjectPropertyHierarchyViewComponent"/>
+        <headerColor value="@org.protege.objectpropertycolor"/>
+        <category value="@org.protege.objectpropertycategory"/>
+    </extension>
+
     <extension id="OWLDataPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Data Properties"/>

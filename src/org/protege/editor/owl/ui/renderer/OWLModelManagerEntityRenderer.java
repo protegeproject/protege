@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLEntity;
 
@@ -13,7 +14,7 @@ import org.semanticweb.owl.model.OWLEntity;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface OWLModelManagerEntityRenderer extends OWLEntityRenderer {
+public interface OWLModelManagerEntityRenderer extends OWLEntityRenderer, Disposable {
 
     public void setup(OWLModelManager owlModelManager);
 
@@ -28,7 +29,4 @@ public interface OWLModelManagerEntityRenderer extends OWLEntityRenderer {
 
 
     public void removeListener(OWLEntityRendererListener listener);
-
-
-    public void dispose();
 }

@@ -5,6 +5,8 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
 
+import java.awt.*;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -32,6 +34,7 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
     protected void performExtraInitialisation() throws Exception {
         super.performExtraInitialisation();
         getOWLModelManager().addListener(l);
+        getTree().setBackground(new Color(255, 255, 215));
     }
 
 

@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import java.awt.Color;
-
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.OWLClass;
+
+import java.awt.*;
 
 
 /**
@@ -18,8 +18,6 @@ import org.semanticweb.owl.model.OWLClass;
 public class InferredOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent {
 
     protected void performExtraInitialisation() throws Exception {
-//        addAction(new AddSubClassAction(getOWLEditorKit(), getTree()), "A", "A");
-//        addAction(new AddSiblingClassAction(getOWLEditorKit(), getTree()), "A", "B");
         getTree().setBackground(new Color(255, 255, 215));
     }
 

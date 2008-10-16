@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.cache;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -39,7 +40,7 @@ import java.util.Map;/*
  * Bio Health Informatics Group<br>
  * Date: Jun 27, 2008<br><br>
  */
-public class OWLObjectRenderingCache {
+public class OWLObjectRenderingCache implements Disposable {
 
     Map<OWLObject, String> cache = new MyLRUMap<OWLObject, String>(50, 1, 50);
 
