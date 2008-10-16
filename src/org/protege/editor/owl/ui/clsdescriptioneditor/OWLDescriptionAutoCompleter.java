@@ -297,7 +297,6 @@ public class OWLDescriptionAutoCompleter {
             int selEnd = textComponent.getSelectionEnd();
             int selLen = selEnd - selStart;
             if (selLen > 0){
-                System.out.println("removing selection: " + selLen);
                 textComponent.getDocument().remove(selStart, selLen);
             }
 
