@@ -139,7 +139,7 @@ public class ProtegeWelcomeFrame extends JFrame {
             OntologyRepositoryManager repMan = OntologyRepositoryManager.getManager();
 
             for (final OntologyRepository repository : repMan.getOntologyRepositories()) {
-                box.add(new LinkLabel("Open from " + repository.getName() + " repository", new ActionListener() {
+                box.add(new LinkLabel("Open from the " + repository.getName() + " repository", new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         handleOpenFromRepository(repository);
                     }
