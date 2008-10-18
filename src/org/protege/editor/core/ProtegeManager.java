@@ -41,8 +41,8 @@ public class ProtegeManager {
         for (EditorKitFactoryPlugin plugin : loader.getPlugins()) {
             editorKitFactoriesMap.put(plugin, null);
         }
+        setupRepositories();
     }
-
 
     /**
      * Gets hold of the one and only <code>ProtegeManager</code>
@@ -56,6 +56,14 @@ public class ProtegeManager {
 
 
     public void dispose() {
+        for(OntologyRepository repository : OntologyRepositoryManager.getManager().getOntologyRepositories()) {
+            try {
+                repository.dispose();
+            }
+            catch (Exception e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
         instance = null;
     }
 
@@ -254,5 +262,19 @@ public class ProtegeManager {
         EditorKitFactory editorKitFactory1 = plugin.newInstance();
         editorKitFactoriesMap.put(plugin, editorKitFactory1);
         return editorKitFactory1;
+    }
+
+    private void setupRepositories() {
+            OntologyRepositoryFactoryPluginLoader loader = new OntologyRepositoryFactoryPluginLoader();
+            for(OntologyRepositoryFactoryPlugin plugin : loader.getPlugins()) {
+                try {
+                    OntologyRepositoryFactory factory = plugin.newInstance();
+                    OntologyRepositoryManager.getManager().addRepository(factory.createRepository());
+                }
+                // CATCH EVERYTHING!  We don't want to bring down P4 even before it has appeared to start!
+                catch (Throwable e) {
+                    ProtegeApplication.getErrorLog().logError(e);
+                }
+            }
     }
 }

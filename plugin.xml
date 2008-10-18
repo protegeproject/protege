@@ -19,6 +19,7 @@
                     schema="schema/preferencespanel.exsd"/>
    <extension-point id="EditorKitHook"
                      name="EditorKit Hook"/>
+   <extension-point id="OntologyRepositoryFactory" name="Ontology Repository Factory"/>
 
     <!-- Set up standard menus -->
 
