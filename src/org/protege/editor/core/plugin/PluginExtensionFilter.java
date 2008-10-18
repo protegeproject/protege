@@ -61,7 +61,7 @@ public class PluginExtensionFilter {
         IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
         IExtensionPoint extpt = registry.getExtensionPoint(pluginId, extensionPointId);
         if(extpt == null) {
-            logger.warning("Extension point not defined: " + extensionPointId);
+            logger.warning("Extension point not defined: " + extensionPointId + "@" + pluginId);
             return Collections.emptySet();
         }
         IExtension [] extensions = extpt.getExtensions();
