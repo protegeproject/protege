@@ -887,9 +887,9 @@
 
     <extension id="menu.MoveAxiomsToOntologyAction"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Move axioms to ontology..."/>
+        <name value="Extract/move axioms ..."/>
         <class value="org.protege.editor.owl.ui.action.MoveAxiomsToOntologyAction"/>
-        <toolTip value="Select and move axioms to the ontology specified."/>
+        <toolTip value="Extract or move axioms from an ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -1090,6 +1090,9 @@
         <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
     </extension>
 
+    <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
+        <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
+    </extension>
 
 
 </plugin>
