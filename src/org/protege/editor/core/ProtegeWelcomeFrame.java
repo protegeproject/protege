@@ -1,10 +1,9 @@
 package org.protege.editor.core;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.OpenFromRepositoryPanel;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -20,13 +19,10 @@ import java.util.Map;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: Mar 27, 2006<br><br>
+ * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 27,
+ * 2006<br><br>
  * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeWelcomeFrame extends JFrame {
 
@@ -42,7 +38,7 @@ public class ProtegeWelcomeFrame extends JFrame {
         setContentPane(welcomePanel);
         pack();
         centre();
-        addComponentListener(new ComponentAdapter(){
+        addComponentListener(new ComponentAdapter() {
             public void componentShown(ComponentEvent event) {
                 welcomePanel.refresh();
             }
@@ -126,30 +122,64 @@ public class ProtegeWelcomeFrame extends JFrame {
 
                 box.add(Box.createVerticalStrut(strutHeight));
 
-                LinkLabel openFromURILink = new LinkLabel("Open " + plugin.getLabel() + " from URI", new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            URI uri = OpenFromURIPanel.showDialog();
-                            if (uri != null) {
-                                if (ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri)){
-                                    dispose();
-                                }
-                            }
-                        }
-                        catch (Exception e1) {
-                            ErrorLogPanel.showErrorDialog(e1);
-                        }
-                    }
-                });
+                LinkLabel openFromURILink = new LinkLabel("Open " + plugin.getLabel() + " from URI",
+                                                          new ActionListener() {
+                                                              public void actionPerformed(ActionEvent e) {
+                                                                  handleOpenFromURI(plugin);
+                                                              }
+                                                          });
                 openFromURILink.setName("OpenfromURI " + plugin.getId());
                 box.add(openFromURILink);
 
                 box.add(Box.createVerticalStrut(strutHeight));
             }
 
-            box.add(Box.createVerticalStrut(2 * strutHeight));
+            // Repositories
 
+            OntologyRepositoryManager repMan = OntologyRepositoryManager.getManager();
+
+            for (final OntologyRepository repository : repMan.getOntologyRepositories()) {
+                box.add(new LinkLabel("Open from " + repository.getName() + " repository", new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        handleOpenFromRepository(repository);
+                    }
+                }));
+            }
+
+
+            box.add(Box.createVerticalStrut(2 * strutHeight));
             refresh();
+        }
+
+
+        private void handleOpenFromURI(EditorKitFactoryPlugin plugin) {
+            try {
+                URI uri = OpenFromURIPanel.showDialog();
+                if (uri != null) {
+                    if (ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri)) {
+                        dispose();
+                    }
+                }
+            }
+            catch (Exception e1) {
+                ErrorLogPanel.showErrorDialog(e1);
+            }
+        }
+
+
+        private void handleOpenFromRepository(OntologyRepository repository) {
+            try {
+                OntologyRepositoryEntry entry = OpenFromRepositoryPanel.showDialog(repository);
+                if(entry == null) {
+                    return;
+                }
+                if (ProtegeManager.getInstance().loadAndSetupEditorKitFromRepository(repository, entry)) {
+                    dispose();
+                }
+            }
+            catch (Exception e) {
+                ErrorLogPanel.showErrorDialog(e);
+            }
         }
 
 
@@ -174,7 +204,7 @@ public class ProtegeWelcomeFrame extends JFrame {
 
 
         public void refresh() {
-            if (recentLinkBox != null){
+            if (recentLinkBox != null) {
                 box.remove(recentLinkBox);
                 recentLinkBox = null;
             }
@@ -200,7 +230,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                     recentLinkBox.add(new LinkLabel(desc.getLabel(), new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                if (ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc)){
+                                if (ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc)) {
                                     dispose();
                                 }
                             }

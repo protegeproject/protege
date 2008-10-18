@@ -13,17 +13,13 @@ import java.util.Map;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: Mar 15, 2006<br><br>
+ * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 15,
+ * 2006<br><br>
  * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
- * ProtegeManager is a singleton that manages the Protege application.
- * This means that the <code>ProtegeManager</code> manages the creation
- * and deletion of <code>EditorKit</code>s.  A list of the installed
+ * ProtegeManager is a singleton that manages the Protege application. This means that the <code>ProtegeManager</code>
+ * manages the creation and deletion of <code>EditorKit</code>s.  A list of the installed
  * <code>EditorKitFactoryPlugin</code>s
  */
 public class ProtegeManager {
@@ -35,7 +31,7 @@ public class ProtegeManager {
     private EditorKitManager editorKitManager;
 
     private Map<EditorKitFactoryPlugin, EditorKitFactory> editorKitFactoriesMap;
-    
+
     private ProtegeApplication application;
 
 
@@ -57,23 +53,25 @@ public class ProtegeManager {
         }
         return instance;
     }
-    
+
+
     public void dispose() {
         instance = null;
     }
-    
+
+
     protected void initialise(ProtegeApplication application) {
         this.application = application;
     }
-    
+
+
     public ProtegeApplication getApplication() {
         return application;
     }
 
 
     /**
-     * Gets the <code>EditorKitManager</code>, which controls
-     * the selected <code>EditorKit</code> etc. for the
+     * Gets the <code>EditorKitManager</code>, which controls the selected <code>EditorKit</code> etc. for the
      * application.
      */
     public EditorKitManager getEditorKitManager() {
@@ -85,14 +83,13 @@ public class ProtegeManager {
 
 
     /**
-     * This is a convenience method that can be used to obtain the
-     * top level frame for a <code>Workspace</code>. This method actually
-     * delegates to the <code>WorkspaceManager</code>
-     * @param workspace The <code>Workspace</code> for which the top level
-     *                  frame is to be retrieved.
-     * @return The top level frame for a <code>Workspace</code> or
-     *         <code>null</code> if there is no such <code>Workspace</code> or
-     *         no frame exists.
+     * This is a convenience method that can be used to obtain the top level frame for a <code>Workspace</code>. This
+     * method actually delegates to the <code>WorkspaceManager</code>
+     *
+     * @param workspace The <code>Workspace</code> for which the top level frame is to be retrieved.
+     *
+     * @return The top level frame for a <code>Workspace</code> or <code>null</code> if there is no such
+     *         <code>Workspace</code> or no frame exists.
      */
     public WorkspaceFrame getFrame(Workspace workspace) {
         return getEditorKitManager().getWorkspaceManager().getFrame(workspace);
@@ -100,9 +97,8 @@ public class ProtegeManager {
 
 
     /**
-     * Obtains a list of the installed <code>EditorKitFactory</code> plugins.
-     * These plugins can be passed to the createAndSetupNewEditorKit and
-     * openAndSetupNewEditorKit methods.
+     * Obtains a list of the installed <code>EditorKitFactory</code> plugins. These plugins can be passed to the
+     * createAndSetupNewEditorKit and openAndSetupNewEditorKit methods.
      */
     public List<EditorKitFactoryPlugin> getEditorKitFactoryPlugins() {
         return new ArrayList<EditorKitFactoryPlugin>(editorKitFactoriesMap.keySet());
@@ -110,12 +106,11 @@ public class ProtegeManager {
 
 
     /**
-     * Creates and sets up a new (probably empty) .
-     * The new <code>EditorKit</code> will be passed to the
+     * Creates and sets up a new (probably empty) . The new <code>EditorKit</code> will be passed to the
      * <code>EditorKitManager</code> for installation.
-     * @param plugin The <code>EditorKitFactoryPlugin</code> that describes
-     *               the <code>EditorKitFactory</code> which will be used to create the
-     *               <code>EditorKit</code>.
+     *
+     * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
+     *               be used to create the <code>EditorKit</code>.
      */
     public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
@@ -131,11 +126,10 @@ public class ProtegeManager {
 
 
     /**
-     * Opens an <code>EditorKit</code> using the <code>EditorKitFactory</code>
-     * specified by the given Id.
-     * @param plugin The <code>EditorKitFactoryPlugin</code> that describes
-     *               the <code>EditorKitFactory</code> which will be used to create the
-     *               <code>EditorKit</code>.
+     * Opens an <code>EditorKit</code> using the <code>EditorKitFactory</code> specified by the given Id.
+     *
+     * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
+     *               be used to create the <code>EditorKit</code>.
      */
     public boolean openAndSetupEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
@@ -178,6 +172,40 @@ public class ProtegeManager {
     }
 
 
+    /**
+     * Loads an ontology from an ontology repository.  The appropriate editorkit is selected as dictated by the
+     * repository.
+     *
+     * @param entry The repository entry that describes the ontology to be loaded.
+     *
+     * @return <code>true</code> if the ontology was loaded, returns <code>false</code> if an editor kit
+     * could not be found to load the ontology.
+     */
+    public boolean loadAndSetupEditorKitFromRepository(OntologyRepository repository,
+                                                       OntologyRepositoryEntry entry) throws Exception {
+        for (EditorKitFactoryPlugin plugin : getEditorKitFactoryPlugins()) {
+            String id = plugin.getId();
+            if (id.equals(entry.getEditorKitId())) {
+                EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
+                if (editorKitFactory != null) {
+                    EditorKit editorKit = editorKitFactory.createEditorKit();
+                    try {
+                        entry.configureEditorKit(editorKit);
+                        if (editorKit.handleLoadFrom(entry.getPhysicalURI())) {
+                            getEditorKitManager().addEditorKit(editorKit);
+                        }
+                    }
+                    finally {
+                        entry.restoreEditorKit(editorKit);
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public void saveEditorKit(EditorKit editorKit) throws Exception {
         editorKit.handleSave();
     }
@@ -190,9 +218,8 @@ public class ProtegeManager {
 
 
     /**
-     * Closes an <code>EditorKit</code>.  This disposes of
-     * the clsdescriptioneditor kit's <code>Workspace</code>, and closes
-     * the clsdescriptioneditor kit's model manager.
+     * Closes an <code>EditorKit</code>.  This disposes of the clsdescriptioneditor kit's <code>Workspace</code>, and
+     * closes the clsdescriptioneditor kit's model manager.
      */
     public void disposeOfEditorKit(EditorKit editorKit) {
         ProtegeManager.getInstance().getEditorKitManager().removeEditorKit(editorKit);
@@ -213,13 +240,13 @@ public class ProtegeManager {
 
     /**
      * Gets an <code>EditorKitFactory</code> by its corresponding plugin.
-     * @param plugin The plugin that describes the clsdescriptioneditor kit that will be
-     *               returned.
-     * @return An <code>EditorKitFactory</code> or <code>null</code>
-     *         if there is no installed <code>EditorKitFactory</code> with the
-     *         specified Id.
+     *
+     * @param plugin The plugin that describes the clsdescriptioneditor kit that will be returned.
+     *
+     * @return An <code>EditorKitFactory</code> or <code>null</code> if there is no installed
+     *         <code>EditorKitFactory</code> with the specified Id.
      */
-    private EditorKitFactory getEditorKitFactory(EditorKitFactoryPlugin plugin) {
+    public EditorKitFactory getEditorKitFactory(EditorKitFactoryPlugin plugin) {
         EditorKitFactory editorKitFactory = editorKitFactoriesMap.get(plugin);
         if (editorKitFactory != null) {
             return editorKitFactory;
