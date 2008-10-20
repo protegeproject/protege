@@ -5,10 +5,13 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLEntitySetProvider;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -27,7 +30,11 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
     protected void performExtraInitialisation() throws Exception {
         addAction(new AddPropertyAction(), "A", "A");
         addAction(new AddSubPropertyAction(), "A", "B");
-        addAction(new DeleteObjectPropertyAction(getOWLEditorKit(), getTree()), "B", "A");
+        addAction(new DeleteObjectPropertyAction(getOWLEditorKit(), new OWLEntitySetProvider<OWLObjectProperty>() {
+            public Set<OWLObjectProperty> getEntities() {
+                return new HashSet<OWLObjectProperty>(getTree().getSelectedOWLObjects());
+            }
+        }), "B", "A");
 
         getTree().setDragAndDropHandler(new OWLObjectPropertyTreeDropHandler(getOWLModelManager()));
     }
