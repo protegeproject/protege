@@ -1,18 +1,12 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLPropertyExpression;
-import org.semanticweb.owl.model.OWLPropertyRange;
-import org.semanticweb.owl.model.OWLSubPropertyAxiom;
 
 
 /**
@@ -87,23 +81,8 @@ public abstract class AbstractOWLPropertyHierarchyProvider<E extends OWLProperty
 
 
     private boolean isRoot(P prop) {
-        // We deem a property to be a root property if it doesn't have
-        // any explicitly asserted super properties (i.e. it is not on
-        // the LHS of a subproperty axiom
-        // Assume the property is a root property to begin with
-        boolean isRoot = true;
-        boolean isReferenced = false;
-        for (OWLOntology ont : ontologies) {
-            if (!prop.getSuperProperties(ont).isEmpty()) {
-                // We have proved that it isn't a root
-                isRoot = false;
-                break;
-            }
-            if (containsReference(ont, prop)) {
-                isReferenced = true;
-            }
-        }
-        if (isRoot && isReferenced) {
+
+        if (getParents(prop).isEmpty()) {
             return true;
         }
         else {
