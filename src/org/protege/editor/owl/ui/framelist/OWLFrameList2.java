@@ -150,10 +150,11 @@ public class OWLFrameList2<R extends Object> extends MList implements
         addListSelectionListener(selListener);
 
         setUI(new OWLFrameListUI());
-
-//        explanationHandler = new OWLFrameListExplanationHandler(editorKit);
     }
 
+    protected ExplanationHandler getExplanationHandler() {
+        return editorKit.get(ExplanationHandler.KEY);
+    }
 
     public void refreshComponent() {
         refillRows();
@@ -184,10 +185,6 @@ public class OWLFrameList2<R extends Object> extends MList implements
         cellRenderer.setCrossedOutEntities(entities);
     }
 
-//    public void setExplanationHandler(ExplanationHandler handler) {
-//        explanationHandler = handler;
-//    }
-
     public void updateUI() {
     }
 
@@ -208,7 +205,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         if (value instanceof OWLFrameSectionRow) {
             buttons.add(axiomAnnotationButton);
             axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent((OWLFrameSectionRow)value));
-            if (((OWLFrameSectionRow) value).isInferred()) {
+            if (((OWLFrameSectionRow) value).isInferred()  && getExplanationHandler() != null) {
                 buttons.addAll(inferredRowButtons);
             }
         }
@@ -515,8 +512,11 @@ public class OWLFrameList2<R extends Object> extends MList implements
         }
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
-        ExplanationHandler explanationHandler = editorKit.get(ExplanationHandler.KEY);
-        explanationHandler.handleExplain(ax);
+        ExplanationHandler explanationHandler = getExplanationHandler();
+        if(explanationHandler != null) {
+            explanationHandler.handleExplain(ax);    
+        }
+
     }
 
 
@@ -621,11 +621,6 @@ public class OWLFrameList2<R extends Object> extends MList implements
             }
         }
         dragOver = false;
-    }
-
-
-    public void setExplanationHandler(ExplanationHandler handler) {
-        // @@TODO implement
     }
 
 
