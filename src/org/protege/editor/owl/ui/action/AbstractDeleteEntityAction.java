@@ -4,13 +4,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.util.OWLEntityRemover;
+import org.semanticweb.owl.util.OWLEntitySetProvider;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -21,84 +18,37 @@ import java.util.Set;
  */
 public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OWLSelectionViewAction {
 
-    private OWLEditorKit owlEditorKit;
+    private OWLObjectHierarchyDeleter<E> deleter;
+
+    private OWLEntitySetProvider<E> entitySetProvider;
 
 
-    protected AbstractDeleteEntityAction(String name, Icon icon, OWLEditorKit owlEditorKit) {
+    protected AbstractDeleteEntityAction(String name, Icon icon, OWLEditorKit owlEditorKit,
+                                         OWLObjectHierarchyProvider<E> hp,
+                                         OWLEntitySetProvider<E> entitySetProvider) {
         super(name, icon);
-        this.owlEditorKit = owlEditorKit;
+        this.entitySetProvider = entitySetProvider;
+        this.deleter = new OWLObjectHierarchyDeleter<E>(owlEditorKit,
+                                                        hp,
+                                                        entitySetProvider,
+                                                        getPluralDescription());
     }
 
 
     public void updateState() {
-        setEnabled(!getSelectedEntities().isEmpty());
+        setEnabled(!entitySetProvider.getEntities().isEmpty());
     }
 
 
     public void dispose() {
-    }
-
-
-    public OWLEditorKit getOWLEditorKit() {
-        return owlEditorKit;
+        deleter.dispose();
+        deleter = null;
     }
 
 
     public void actionPerformed(ActionEvent e) {
-        Set<E> selents = getSelectedEntities();
-        String name;
-        if (selents.size() == 1) {
-            name = owlEditorKit.getModelManager().getRendering(selents.iterator().next());
-        }
-        else {
-            name = getPluralDescription();
-        }
-        JRadioButton onlySelectedEntityRadioButton = new JRadioButton("Delete " + name + " only");
-        JRadioButton decendantsRadioButton = new JRadioButton("Delete " + name + " and asserted descendant " + getPluralDescription());
-        JPanel panel = new JPanel(new BorderLayout(2, 2));
-        panel.add(onlySelectedEntityRadioButton, BorderLayout.NORTH);
-        panel.add(decendantsRadioButton, BorderLayout.SOUTH);
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(onlySelectedEntityRadioButton);
-        bg.add(decendantsRadioButton);
-        onlySelectedEntityRadioButton.setSelected(true);
-        panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        int ret = JOptionPane.showConfirmDialog(owlEditorKit.getWorkspace(),
-                                                panel,
-                                                "Delete",
-                                                JOptionPane.OK_CANCEL_OPTION,
-                                                JOptionPane.PLAIN_MESSAGE);
-        if (ret != JOptionPane.OK_OPTION) {
-            return;
-        }
-        if (onlySelectedEntityRadioButton.isSelected()) {
-            delete(selents);
-        }
-        else {
-            Set<E> ents = new HashSet<E>();
-            for (E ent : selents) {
-                ents.add(ent);
-                ents.addAll(getHierarchyProvider().getDescendants(ent));
-            }
-            delete(ents);
-        }
+        deleter.performDeletion();
     }
-
-
-    private void delete(Set<E> ents) {
-        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getModelManager().getOWLOntologyManager(),
-                                                        owlEditorKit.getModelManager().getOntologies());
-        for (E ent : ents) {
-            ent.accept(remover);
-        }
-        owlEditorKit.getModelManager().applyChanges(remover.getChanges());
-    }
-
-
-    protected abstract Set<E> getSelectedEntities();
-
-
-    protected abstract OWLObjectHierarchyProvider<E> getHierarchyProvider();
 
 
     protected void notifySelectionChange() {

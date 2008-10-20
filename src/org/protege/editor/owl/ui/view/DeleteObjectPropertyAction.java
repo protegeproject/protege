@@ -1,14 +1,10 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.semanticweb.owl.model.OWLObjectProperty;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owl.util.OWLEntitySetProvider;
 
 
 /**
@@ -19,22 +15,13 @@ import java.util.Set;
  */
 public class DeleteObjectPropertyAction extends AbstractDeleteEntityAction<OWLObjectProperty> {
 
-    private OWLModelManagerTree<OWLObjectProperty> tree;
 
-
-    public DeleteObjectPropertyAction(OWLEditorKit owlEditorKit, OWLModelManagerTree<OWLObjectProperty> tree) {
-        super("Delete selected properties", OWLIcons.getIcon("property.object.delete.png"), owlEditorKit);
-        this.tree = tree;
-    }
-
-
-    protected Set<OWLObjectProperty> getSelectedEntities() {
-        return new HashSet<OWLObjectProperty>(tree.getSelectedOWLObjects());
-    }
-
-
-    protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-        return getOWLEditorKit().getModelManager().getOWLObjectPropertyHierarchyProvider();
+    public DeleteObjectPropertyAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLObjectProperty> propSetProvider) {
+        super("Delete selected properties",
+              OWLIcons.getIcon("property.object.delete.png"),
+              owlEditorKit,
+              owlEditorKit.getModelManager().getOWLObjectPropertyHierarchyProvider(),
+              propSetProvider);
     }
 
 
