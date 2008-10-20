@@ -73,7 +73,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
             setupRenderer(new OWLEntityQNameRenderer());
             prefs.setRendererClass(OWLEntityQNameRenderer.class.getName());
         }
-        else {
+        else if (uriFragmentRadioButton.isSelected()) {
             setupRenderer(new OWLEntityRendererImpl());
             prefs.setRendererClass(OWLEntityRendererImpl.class.getName());
         }
