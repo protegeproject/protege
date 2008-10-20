@@ -80,11 +80,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     protected void initialiseCompleted() {
         super.initialiseCompleted();
-        // Register the default explanation handler
-        ExplanationHandler explanationHandler = new OWLFrameListExplanationHandler(this);
-        put(ExplanationHandler.KEY, explanationHandler);
     }
-
+    
 
     /**
      * Gets the <code>EditorKit</code> Id.  This can be used to identify
