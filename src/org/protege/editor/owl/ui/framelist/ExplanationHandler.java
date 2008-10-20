@@ -37,4 +37,6 @@ public interface ExplanationHandler extends Disposable {
     public static final String KEY = "org.protege.editor.owl.explanation.handler";
 
     void handleExplain(OWLAxiom axiom);
+
+    void dispose();
 }
