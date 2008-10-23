@@ -1,9 +1,4 @@
 package org.protege.editor.owl.ui.usage;
-
-import org.semanticweb.owl.model.OWLEntity;
-
-import javax.swing.tree.TreeModel;
-import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -35,15 +30,22 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Oct 23, 2008<br><br>
  */
-public interface UsageTreeModel extends TreeModel {
+public enum UsageFilter {
 
-    void setOWLEntity(OWLEntity owlEntity);
+    filterSelf("filter.self"),
+    filterNamedSubsSupers("filter.class.subs"),
+    filterDisjoints("filter.class.disjoints");
 
-    void addFilter(UsageFilter filter);
 
-    void addFilters(Set<UsageFilter> filters);
+    private String key;
 
-    void removeFilter(UsageFilter filter);
 
-    void refresh();
+    UsageFilter(String key) {
+        this.key = key;
+    }
+
+
+    public String getKey() {
+        return key;
+    }
 }

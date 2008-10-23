@@ -1,7 +1,10 @@
 package org.protege.editor.owl.ui.usage;
 
 import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;/*
+import org.protege.editor.core.prefs.PreferencesManager;
+
+import java.util.HashSet;
+import java.util.Set;/*
 * Copyright (C) 2007, University of Manchester
 *
 * Modifications to the initial code base are copyright of their
@@ -34,17 +37,7 @@ import org.protege.editor.core.prefs.PreferencesManager;/*
  */
 public class UsagePreferences {
 
-    private String FILTER_SUBS = "filter.class.subs";
-    private String FILTER_DISJOINTS = "filter.class.disjoints";
-
-    private boolean filterSimpleSubclassAxioms;
-    private boolean filterDisjointAxioms;
-
     private static UsagePreferences instance;
-
-    public UsagePreferences() {
-        load();
-    }
 
     public static UsagePreferences getInstance(){
         if (instance == null){
@@ -57,28 +50,22 @@ public class UsagePreferences {
         return PreferencesManager.getInstance().getApplicationPreferences(getClass());
     }
 
-
-    private void load() {
-        Preferences p = getPreferences();
-        filterSimpleSubclassAxioms = p.getBoolean(FILTER_SUBS, false);
-        filterDisjointAxioms = p.getBoolean(FILTER_DISJOINTS, false);
+    public boolean isFilterActive(UsageFilter filter){
+        return getPreferences().getBoolean(filter.getKey(), false);
     }
 
-    public boolean getFilterSimpleSubclassAxioms(){
-        return filterSimpleSubclassAxioms;
+    public void setFilterActive(UsageFilter filter, boolean active){
+        getPreferences().putBoolean(filter.getKey(), active);
     }
 
-    public boolean getFilterDisjointAxioms(){
-        return filterDisjointAxioms;
-    }
 
-    public void setFilterSimpleSubclassAxioms(boolean filter){
-        filterSimpleSubclassAxioms = filter;
-        getPreferences().putBoolean(FILTER_SUBS, filter);
-    }
-
-    public void setFilterDisjointAxioms(boolean filter){
-        filterDisjointAxioms = filter;
-        getPreferences().putBoolean(FILTER_DISJOINTS, filter);
+    public Set<UsageFilter> getActiveFilters() {
+        Set<UsageFilter> activeFilters = new HashSet<UsageFilter>();
+        for (UsageFilter filter : UsageFilter.values()){
+            if (isFilterActive(filter)){
+                activeFilters.add(filter);
+            }
+        }
+        return activeFilters;
     }
 }

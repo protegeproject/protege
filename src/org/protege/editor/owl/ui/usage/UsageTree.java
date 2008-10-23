@@ -35,9 +35,8 @@ public class UsageTree extends OWLLinkedObjectTree {
         this.entity = entity;
 
         final UsagePreferences p = UsagePreferences.getInstance();
-        final UsageTreeModel model = new UsageTreeModel(owlEditorKit);
-        model.setFilterSimpleSubclassAxioms(p.getFilterSimpleSubclassAxioms());
-        model.setFilterDisjointAxioms(p.getFilterDisjointAxioms());
+        final UsageTreeModel model = new UsageByEntityTreeModel(owlEditorKit);
+        model.addFilters(p.getActiveFilters());
         model.setOWLEntity(entity);
         setModel(model);
 

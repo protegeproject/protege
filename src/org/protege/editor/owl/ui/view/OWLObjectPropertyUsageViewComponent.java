@@ -1,9 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.ui.usage.UsageTree;
+import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
-import javax.swing.*;
 import java.awt.*;
 
 
@@ -15,19 +14,19 @@ import java.awt.*;
  */
 public class OWLObjectPropertyUsageViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
-    private UsageTree tree;
+    private UsagePanel usagePanel;
 
 
     protected OWLObjectProperty updateView(OWLObjectProperty property) {
-        tree.setOWLEntity(property);
+        usagePanel.setOWLEntity(property);
         return property;
     }
 
 
     public void initialiseView() throws Exception {
-        tree = new UsageTree(getOWLEditorKit());
         setLayout(new BorderLayout());
-        add(new JScrollPane(tree));
+        usagePanel = new UsagePanel(getOWLEditorKit());
+        add(usagePanel, BorderLayout.CENTER);
     }
 
 
