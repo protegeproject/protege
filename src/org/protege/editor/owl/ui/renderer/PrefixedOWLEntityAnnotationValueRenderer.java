@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.owl.ui.prefix.PrefixMapper;
+import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
 import org.semanticweb.owl.model.OWLOntologyChange;
@@ -18,7 +20,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer {
+public class PrefixedOWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer {
 
 
     private AnnotationValueShortFormProvider provider;
@@ -33,6 +35,16 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
 
     public String render(OWLEntity entity) {
         String shortForm = provider.getShortForm(entity);
+        if (OWLRendererPreferences.getInstance().isRenderPrefixes()){
+            final String uriStr = entity.getURI().toString();
+
+            PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
+            for (String base : mapper.getValues()){
+                if (uriStr.startsWith(base)){
+                    return escape(mapper.getPrefix(base) + ":" + shortForm);
+                }
+            }
+        }
         return escape(shortForm);
     }
 

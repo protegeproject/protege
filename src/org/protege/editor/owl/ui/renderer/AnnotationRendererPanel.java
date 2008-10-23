@@ -128,7 +128,7 @@ public class AnnotationRendererPanel extends JPanel {
         return new Dimension(800, 500);
     }
 
-    public static void showDialog(OWLEditorKit owlEditorKit) {
+    public static boolean showDialog(OWLEditorKit owlEditorKit) {
         AnnotationRendererPanel panel = new AnnotationRendererPanel(owlEditorKit);
         int ret = JOptionPaneEx.showConfirmDialog(owlEditorKit.getWorkspace(),
                                                   "Annotation Renderer",
@@ -138,8 +138,9 @@ public class AnnotationRendererPanel extends JPanel {
                                                   panel);
         if(ret == JOptionPane.OK_OPTION) {
             panel.applyChanges();
+            return true;
         }
-
+        return false;
     }
 
     protected void load(){

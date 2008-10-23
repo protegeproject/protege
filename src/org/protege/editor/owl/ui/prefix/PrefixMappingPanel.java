@@ -40,7 +40,7 @@ public class PrefixMappingPanel extends JPanel {
         return new Dimension(800, 500);
     }
 
-    public static void showDialog(OWLEditorKit owlEditorKit) {
+    public static boolean showDialog(OWLEditorKit owlEditorKit) {
         PrefixMappingPanel panel = new PrefixMappingPanel(owlEditorKit);
         int ret = JOptionPaneEx.showConfirmDialog(owlEditorKit.getWorkspace(),
                                         "Prefix mappings",
@@ -55,7 +55,9 @@ public class PrefixMappingPanel extends JPanel {
                // probably be an easier way to do this.
                owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());
            }
+            return true;
         }
+        return false;
     }
 
 
