@@ -223,7 +223,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
 
     public boolean isDirty() {
-        return dirty || !getSelectedRendererClass().getName().equals(originalClassName);
+        return dirty || (getSelectedRendererClass() != null && !getSelectedRendererClass().getName().equals(originalClassName));
     }
 
 
