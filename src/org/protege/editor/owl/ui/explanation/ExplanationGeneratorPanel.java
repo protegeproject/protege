@@ -4,7 +4,6 @@ import com.clarkparsia.explanation.util.ExplanationProgressMonitor;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.*;
-import org.protege.editor.owl.ui.framelist.ConfigurableFrameListExplanationHandler;
 import org.protege.editor.owl.ui.framelist.ExplanationFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.view.Copyable;
@@ -248,7 +247,7 @@ public class ExplanationGeneratorPanel extends JPanel implements Copyable {
 
 //            entailedAxioms.remove(axiom);
 //            frameList2.setRootObject(entailedAxioms);
-            frameList2.setExplanationHandler(new ConfigurableFrameListExplanationHandler(owlEditorKit, reasoner, ont));
+//            frameList2.setExplanationHandler(new ConfigurableFrameListExplanationHandler(owlEditorKit, reasoner, ont));
             JScrollPane sp = new JScrollPane(frameList2);
             sp.setPreferredSize(new Dimension(600, 400));
             JOptionPane op = new JOptionPane(sp, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
