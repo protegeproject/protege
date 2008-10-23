@@ -1,9 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.ui.usage.UsageTree;
+import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owl.model.OWLClass;
 
-import javax.swing.*;
 import java.awt.*;
 
 
@@ -15,18 +14,18 @@ import java.awt.*;
  */
 public class OWLClassUsageViewComponent extends AbstractOWLClassViewComponent {
 
-    private UsageTree tree;
+    private UsagePanel usagePanel;
 
 
     public void initialiseClassView() throws Exception {
-        tree = new UsageTree(getOWLEditorKit());
         setLayout(new BorderLayout());
-        add(new JScrollPane(tree));
+        usagePanel = new UsagePanel(getOWLEditorKit());
+        add(usagePanel, BorderLayout.CENTER);
     }
 
 
     protected OWLClass updateView(OWLClass selectedClass) {
-        tree.setOWLEntity(selectedClass);
+        usagePanel.setOWLEntity(selectedClass);
         return selectedClass;
     }
 
