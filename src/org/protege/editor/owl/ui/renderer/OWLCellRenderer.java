@@ -199,7 +199,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     public void setHighlightUnsatisfiableProperties(boolean highlightUnsatisfiableProperties) {
-//        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
+        this.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
     }
 
 
