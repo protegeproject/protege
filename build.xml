@@ -49,9 +49,14 @@
             <fileset dir="${icons.dir}"/>
         </copy>
         <copy todir="${owleditor.classes}" file="${owleditor.dir}/plugin.xml"/>
-        <jar basedir = "${owleditor.classes}"
-             destfile = "${owleditor.jar}"
-             manifest="${owleditor.dir}/META-INF/MANIFEST.MF"/>
+        <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
+        <bnd classpath  = "${owleditor.classes}"
+             files      = "${owleditor.dir}/META-INF/manifest.bnd"
+             eclipse    = "false"
+             failok     = "false"
+             exceptions = "true"
+             output     = "${owleditor.jar}"/>
+        <echo message="OSGi owl editor bundle built"/>
     </target>
 
     <!-- =================================================================== -->
