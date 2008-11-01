@@ -51,14 +51,18 @@
               <fileset dir="${core.dir}/lib"/>
           </copy>
           <!--
-          <unjar src="${lib.dir}/mdock.jar"               
-                 dest="${core.classes}"/>
-          <unjar src="${lib.dir}/swing-worker.jar"        
-                 dest="${core.classes}"/>
-          -->
           <jar basedir = "${core.classes}"
                destfile = "${core.jar}"
                manifest = "${core.dir}/META-INF/MANIFEST.MF"/>
+          -->
+          <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
+          <bnd classpath  = "${core.classes}"
+               files      = "${core.dir}/META-INF/manifest.bnd"
+               eclipse    = "false"
+               failok     = "false"
+               exceptions = "true"
+               output     = "${core.jar}"/>
+          <echo message="Core editor bundle built"/>
         </target>
 
         <target name = "junit"/>
