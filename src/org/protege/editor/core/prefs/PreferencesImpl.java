@@ -1,7 +1,5 @@
 package org.protege.editor.core.prefs;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +37,7 @@ public class PreferencesImpl implements Preferences {
 
 
     public void clear() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 
