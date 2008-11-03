@@ -32,7 +32,7 @@ public class PlatformArguments {
         } catch (Throwable t) { // it is not worth throwing an exception here continue processing.
             log.warn("Error retrieving command line arguments" + t);
         }
-        return null;
+        return new String[0];
     }
 
 }
