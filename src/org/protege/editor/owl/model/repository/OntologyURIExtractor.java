@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.protege.editor.owl.model.util.URIUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -66,7 +67,7 @@ public class OntologyURIExtractor {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             URL url = physicalURI.toURL();
-            final InputStream is = url.openStream();
+            final InputStream is = URIUtilities.getInputStream(physicalURI);
             parser.parse(is, new DefaultHandler() {
 
                 private boolean extract = true;
