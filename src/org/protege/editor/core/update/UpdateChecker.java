@@ -1,13 +1,10 @@
 package org.protege.editor.core.update;
 
-import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 import org.protege.editor.core.plugin.PluginUtilities;
 
-
-
-import java.net.URI;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Author: Matthew Horridge<br>
@@ -20,39 +17,26 @@ import java.net.URI;
  */
 public class UpdateChecker {
 
-    private static final Logger logger = Logger.getLogger(UpdateChecker.class);
-
-    private URI uri;
+    private URL url;
 
     private Bundle b;
 
 
-    public UpdateChecker(URI updateFileURL, Bundle pluginDescriptor) {
-        this.uri = updateFileURL;
+    public UpdateChecker(URL updateFileURL, Bundle pluginDescriptor) {
+        this.url = updateFileURL;
         this.b = pluginDescriptor;
     }
 
 
-    public UpdateInfo run() {
-        try {
-            Version pluginVersion = PluginUtilities.getBundleVersion(b);
-            final UpdateDocument updateDocument = new UpdateDocument(uri.toURL());
-            if (updateDocument.isValid()) {
-                final Version version = updateDocument.getVersion();
-                if (version.compareTo(pluginVersion) > 0) {
-                    // New version available!
-                    return new UpdateInfo(b,
-                                          version,
-                                          updateDocument.getDownloadLocation(),
-                                          updateDocument.getReadmeLocation());
-                }
+    public PluginInfo run() throws IOException, UpdateException {
+        final PluginInfoDocument pluginInfoDocument = new PluginInfoDocument(url);
+        if (pluginInfoDocument.isValid(b)) {
+            PluginInfo info = pluginInfoDocument.getPluginInfo();
+            if (b == null || info.getAvailableVersion().compareTo(PluginUtilities.getBundleVersion(b)) > 0) {
+                // New version available!
+                info.setPluginDescriptor(b);
+                return info;
             }
-            else {
-                logger.debug("Invalid plugin update file (" + uri + ")");
-            }
-        }
-        catch (Exception e) {
-            logger.debug(e.getMessage());
         }
         return null;
     }
