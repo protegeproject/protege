@@ -20,7 +20,7 @@ import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
-import org.protege.editor.core.update.UpdateManager;
+import org.protege.editor.core.update.PluginManager;
 import org.protege.editor.core.util.BundleBuilder;
 
 import javax.swing.*;
@@ -421,7 +421,7 @@ public class ProtegeApplication implements BundleActivator {
         catch (Exception e) {
             logger.error("Exception caught loading ontology", e);
         }
-        UpdateManager.getInstance().checkForUpdates(false);
+        PluginManager.getInstance().checkForUpdates(false);
     }
 
     private void showWelcomeFrame(){
@@ -497,4 +497,7 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
+    public static void handleRestart() {
+        
+    }
 }

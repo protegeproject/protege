@@ -95,6 +95,15 @@
     </extension>
 
 
+
+    <extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Download/update plugins"/>
+        <toolTip value="Search for plugin downloads and updates"/>
+        <class value="org.protege.editor.core.ui.action.CheckPluginsAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotG-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
     <!-- Edit menu -->
 
     <extension id="menu.EditMenu"
@@ -167,12 +176,22 @@
         <editorKitId value="any"/>
     </extension>
 
+
     <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Protege Documentation"/>
         <toolTip value="Online wiki for Protege 4.0 documentation"/>
         <class value="org.protege.editor.core.ui.menu.DocumentationMenuAction"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
         <editorKitId value="any"/>
+    </extension>
+
+
+    <!-- Autoupdate preferences -->
+
+    <extension id="ui.preferences.update"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Plugins"/>
+        <class value="org.protege.editor.core.update.PluginPreferencesPanel"/>
     </extension>
 
 
