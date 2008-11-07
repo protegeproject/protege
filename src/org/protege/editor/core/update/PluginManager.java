@@ -30,7 +30,7 @@ public class PluginManager {
 
     public static final String PLUGIN_REGISTRY_KEY = "plugin.registry.url";
 
-    private static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/svn/*checkout*/protege4/protege-standalone/trunk/plugins.repository";
+    public static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/svn/*checkout*/protege4/protege-standalone/trunk/plugins.repository";
 
 
     private DownloadsProvider pluginRegistry;
@@ -100,8 +100,34 @@ public class PluginManager {
     }
 
 
-    public void checkForUpdates(boolean overridePreferences) {
-        if (!overridePreferences && !isAutoUpdateEnabled()) {
+    public void checkForUpdates(){
+        UpdatesProvider updatesProvider = new UpdatesProvider();
+        java.util.List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
+        if (!updates.isEmpty()) {
+            Map<String, DownloadsProvider> map = new LinkedHashMap<String, DownloadsProvider>();
+            map.put("Updates", updatesProvider);
+            showUpdatesDialog(map);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No updates available at this time.");
+        }
+    }
+
+    public void checkForDownloads() {
+        DownloadsProvider registry = getPluginRegistry();
+        if (!registry.getAvailableDownloads().isEmpty()){
+        Map<String, DownloadsProvider> map = new LinkedHashMap<String, DownloadsProvider>();
+        map.put("Downloads", getPluginRegistry());
+        showUpdatesDialog(map);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No downloads available at this time.");            
+        }
+    }
+
+
+    public void checkForUpdatesInBackground() {
+        if (!isAutoUpdateEnabled()) {
             return;
         }
         Runnable runnable = new Runnable() {
