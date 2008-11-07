@@ -42,36 +42,72 @@ public class PluginPreferencesPanel extends PreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
 
-        boolean checkOnStartUp = PluginManager.getInstance().isAutoUpdateEnabled();
+        Box settingsHolder = new Box(BoxLayout.PAGE_AXIS);
+        settingsHolder.add(createAutoUpdatePanel());
+        settingsHolder.add(Box.createVerticalStrut(12));
+        settingsHolder.add(createRegistryPanel());
+
+        add(settingsHolder, BorderLayout.NORTH);
+    }
+
+
+    private Component createAutoUpdatePanel() {
+        Box box = new Box(BoxLayout.Y_AXIS);
+        box.setAlignmentX(0.0f);
+        box.setBorder(ComponentFactory.createTitledBorder("Auto update"));
+
         checkForUpdatesAtStartupCheckBox = new JCheckBox("Automatically check for plugin updates at start up",
-                                                         checkOnStartUp);
+                                                         PluginManager.getInstance().isAutoUpdateEnabled());
         checkForUpdatesAtStartupCheckBox.setAlignmentX(0.0f);
 
         JButton checkForUpdatesNow = new JButton(new AbstractAction("Check for updates now") {
             public void actionPerformed(ActionEvent e) {
-                PluginManager.getInstance().checkForUpdates(true);
+                PluginManager.getInstance().checkForUpdates();
             }
         });
         checkForUpdatesNow.setAlignmentX(0.0f);
 
-        Box box = new Box(BoxLayout.Y_AXIS);
-        box.setBorder(ComponentFactory.createTitledBorder("Auto update"));
         box.add(checkForUpdatesAtStartupCheckBox);
         box.add(Box.createVerticalStrut(12));
         box.add(checkForUpdatesNow);
 
-        pluginRegistryEditor = new JTextField(PluginManager.getInstance().getPluginRegistryLocation().toString());
+        return box;
+    }
+
+
+    private Component createRegistryPanel() {
         Box registryHolder = new Box(BoxLayout.PAGE_AXIS);
+        registryHolder.setAlignmentX(0.0f);
         registryHolder.setBorder(ComponentFactory.createTitledBorder("Plugin registry"));
+
+        pluginRegistryEditor = new JTextField(PluginManager.getInstance().getPluginRegistryLocation().toString());
+
+        JButton resetToDefaultRegistry = new JButton(new AbstractAction("Reset to default"){
+            public void actionPerformed(ActionEvent event) {
+                pluginRegistryEditor.setText(PluginManager.DEFAULT_REGISTRY);
+            }
+        });
+
+        JButton checkForDownloadsNow = new JButton(new AbstractAction("Check for downloads now"){
+
+            public void actionPerformed(ActionEvent event) {
+                PluginManager.getInstance().checkForDownloads();
+            }
+        });
+        checkForDownloadsNow.setAlignmentX(0.0f);
+
+        Box registryLocHolder = new Box(BoxLayout.LINE_AXIS);
+        registryLocHolder.setAlignmentX(0.0f);
+        registryLocHolder.add(pluginRegistryEditor);
+        registryLocHolder.add(resetToDefaultRegistry);
+
         registryHolder.add(Box.createVerticalStrut(12));
         registryHolder.add(new JLabel("This is the location P4 will check to see which plugins are available."));
-        registryHolder.add(pluginRegistryEditor);
+        registryHolder.add(Box.createVerticalStrut(12));
+        registryHolder.add(registryLocHolder);
+        registryHolder.add(Box.createVerticalStrut(12));
+        registryHolder.add(checkForDownloadsNow);
 
-        Box settingsHolder = new Box(BoxLayout.PAGE_AXIS);
-        settingsHolder.add(box);
-        settingsHolder.add(Box.createVerticalStrut(12));
-        settingsHolder.add(registryHolder);
-
-        add(settingsHolder, BorderLayout.NORTH);
+        return registryHolder;
     }
 }

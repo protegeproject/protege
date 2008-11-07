@@ -96,13 +96,13 @@
 
 
 
-    <extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
+    <!--extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Download/update plugins"/>
         <toolTip value="Search for plugin downloads and updates"/>
         <class value="org.protege.editor.core.ui.action.CheckPluginsAction"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotG-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
         <editorKitId value="any"/>
-    </extension>
+    </extension-->
 
     <!-- Edit menu -->
 

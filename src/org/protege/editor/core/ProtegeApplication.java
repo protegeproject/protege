@@ -421,7 +421,7 @@ public class ProtegeApplication implements BundleActivator {
         catch (Exception e) {
             logger.error("Exception caught loading ontology", e);
         }
-        PluginManager.getInstance().checkForUpdates(false);
+        PluginManager.getInstance().checkForUpdatesInBackground();
     }
 
     private void showWelcomeFrame(){
