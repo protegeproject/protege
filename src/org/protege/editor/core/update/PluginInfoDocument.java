@@ -20,7 +20,7 @@ import java.util.Properties;
 public class PluginInfoDocument {
 
     public static final String ID_PROPERTY_NAME = "id";
-    private static final String LABEL_PROPERTY_NAME = "label";
+    private static final String LABEL_PROPERTY_NAME = "name";
     public static final String VERSION_PROPERTY_NAME = "version";
     public static final String DOWNLOAD_PROPERTY_NAME = "download";
     public static final String DOC_PROPERTY_NAME = "readme";

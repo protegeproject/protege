@@ -113,7 +113,7 @@ public class PluginTable extends JPanel {
 
 
     public PluginInfo getCurrentUpdateInfo() {
-        if (table != null){
+        if (table != null && table.getSelectedRow() >= 0){
             return tableModel.getUpdateInfoAt(table.getSelectedRow());
         }
         return null;
