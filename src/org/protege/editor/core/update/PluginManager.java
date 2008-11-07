@@ -22,16 +22,15 @@ import java.util.Map;
  */
 public class PluginManager {
 
-    private static PluginManager instance;
-
     private static final Logger logger = Logger.getLogger(PluginManager.class);
+
+    private static PluginManager instance;
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
     public static final String PLUGIN_REGISTRY_KEY = "plugin.registry.url";
 
-//    private static final String DEFAULT_REGISTRY = "http://www.co-ode.org/downloads/protege-x/plugins/registry.txt";
-    private static final String DEFAULT_REGISTRY = "http://localhost/~drummond/registry.txt";
+    private static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/svn/*checkout*/protege4/protege-standalone/trunk/plugins.repository";
 
 
     private DownloadsProvider pluginRegistry;
