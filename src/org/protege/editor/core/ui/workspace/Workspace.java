@@ -445,5 +445,10 @@ public abstract class Workspace extends JComponent implements Disposable {
         public Set<String> getCategorisations() {
             return Collections.singleton("Results");
         }
+
+
+        public Set<String> getNavigates() {
+            return Collections.EMPTY_SET;
+        }
     }
 }

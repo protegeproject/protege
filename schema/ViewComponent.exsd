@@ -150,6 +150,32 @@ how they should be displayed in the Views menu.
       </complexType>
    </element>
 
+       <element name="navigates">
+      <annotation>
+         <documentation>
+            The categories of thing that this view can display. This is used by global selection
+             to determine the suitability of a given view (on a given tab).
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The traditional values for this field are
+
+@org.protege.classcategory
+@org.protege.objectpropertycategory
+@org.protege.datapropertycategory
+@org.protege.annotationpropertycategory
+@org.protege.individualcategory
+
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+
    <element name="document">
       <complexType>
          <attribute name="value" type="string">

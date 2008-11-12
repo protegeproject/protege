@@ -59,11 +59,14 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
 
     public static final String CATEGORY = "category";
 
+    public static final String NAVIGATES = "navigates";
+
     private IExtension extension;
 
     private Workspace workspace;
 
     private static final Color DEFAULT_COLOR = Color.LIGHT_GRAY;
+
 
 
     public ViewComponentPluginJPFImpl(Workspace workspace, IExtension extension) {
@@ -108,6 +111,11 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
 
     public Set<String> getCategorisations() {
         return PluginProperties.getParameterValues(extension, CATEGORY);
+    }
+
+
+    public Set<String> getNavigates() {
+        return PluginProperties.getParameterValues(extension, NAVIGATES);
     }
 
 
