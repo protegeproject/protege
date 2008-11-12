@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +30,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private static final Logger logger = Logger.getLogger(RendererPreferencesPanel.class);
 
-    private Map<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>> buttonToRendererMap = new HashMap<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>>();
+    private Map<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>> buttonToRendererMap = new LinkedHashMap<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>>();
 
     private Map<Class<? extends OWLModelManagerEntityRenderer>, Boolean> rendererToPrefixesMap = new HashMap<Class<? extends OWLModelManagerEntityRenderer>, Boolean>();
 
@@ -146,7 +147,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         addRenderer("Render entities using qnames", OWLEntityQNameRenderer.class, true, false);
         addRenderer("Render entities using annotation values", OWLEntityAnnotationValueRenderer.class, false, true);
         addRenderer("Render entities using annotation values with prefixes", PrefixedOWLEntityAnnotationValueRenderer.class, true, true);
-
 
         Box box = new Box(BoxLayout.Y_AXIS);
         box.setBorder(ComponentFactory.createTitledBorder("Entity rendering"));
