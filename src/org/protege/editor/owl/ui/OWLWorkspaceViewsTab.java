@@ -60,7 +60,6 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
                 ViewComponentPlugin plugin = getWorkspace().getViewManager().getViewComponentPlugin(view.getId());
                 if (plugin != null){
                     for (String nav : plugin.getNavigates()){
-                        System.out.println(getLabel() + " : " + view.getId()  + ":" + nav);
                         if (entityCat.equals(nav)){
                             return true;
                         }
