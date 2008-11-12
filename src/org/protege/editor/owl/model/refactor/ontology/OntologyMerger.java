@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.refactor.ontology;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,28 +27,26 @@ public class OntologyMerger {
 
     private Set<OWLOntology> ontologies;
 
-    private OWLOntology ontology;
+    private OWLOntology targetOntology;
 
 
-    public OntologyMerger(OWLOntologyManager owlOntologyManager, Set<OWLOntology> ontologies, OWLOntology ontology) {
+    public OntologyMerger(OWLOntologyManager owlOntologyManager, Set<OWLOntology> ontologies, OWLOntology targetOntology) {
         this.ontologies = new HashSet<OWLOntology>(ontologies);
         this.owlOntologyManager = owlOntologyManager;
-        this.ontology = ontology;
+        this.targetOntology = targetOntology;
     }
 
 
     public void mergeOntologies() {
-        // Such a breeze with the new API! :)
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        MoveAxiomFilter filter = new MoveAxiomFilter();
         for (OWLOntology ont : ontologies) {
-            for (OWLAxiom ax : ont.getAxioms()) {
-                if (ax instanceof OWLImportsDeclaration &&
-                    ((OWLImportsDeclaration)ax).getImportedOntologyURI().equals(ontology.getURI())){
-                    logger.warn("Merge: ignoring import declaration for URI " + ontology.getURI() +
-                                " (would result in ontology importing itself).");
-                }
-                else{
-                    changes.add(new AddAxiom(ontology, ax));
+            if (!ont.equals(targetOntology)){
+                for (OWLAxiom ax : ont.getAxioms()) {
+                    ax = filter.moveAxiom(ax);
+                    if (ax != null){
+                        changes.add(new AddAxiom(targetOntology, ax));
+                    }
                 }
             }
         }
@@ -56,6 +55,35 @@ public class OntologyMerger {
         }
         catch (OWLOntologyChangeException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    class MoveAxiomFilter extends OWLAxiomVisitorAdapter {
+
+        private OWLAxiom ax;
+
+        public OWLAxiom moveAxiom(OWLAxiom visitedAxiom) {
+            this.ax = visitedAxiom;
+            visitedAxiom.accept(this);
+            return ax;
+        }
+
+
+        public void visit(OWLImportsDeclaration owlImportsDeclaration) {
+            if (owlImportsDeclaration.getImportedOntologyURI().equals(targetOntology.getURI())){
+                ax = null;
+                logger.warn("Merge: ignoring import declaration for URI " + targetOntology.getURI() +
+                            " (would result in targetOntology importing itself).");
+            }
+        }
+
+
+        // all targetOntology annotations should be asserted on the target
+        public void visit(OWLOntologyAnnotationAxiom owlOntologyAnnotationAxiom) {
+            if (!owlOntologyAnnotationAxiom.getSubject().equals(targetOntology)){
+                ax = owlOntologyManager.getOWLDataFactory().getOWLOntologyAnnotationAxiom(targetOntology, owlOntologyAnnotationAxiom.getAnnotation());
+            }
         }
     }
 }
