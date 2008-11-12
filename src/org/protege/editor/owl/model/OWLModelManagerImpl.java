@@ -922,8 +922,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 String clsName = OWLRendererPreferences.getInstance().getRendererClass();
                 Class c = Class.forName(clsName);
                 OWLModelManagerEntityRenderer ren = (OWLModelManagerEntityRenderer) c.newInstance();
-                ren.setup(this);
-                ren.initialise();
                 // Force an update by using the setter method.
                 setOWLEntityRenderer(ren);
             }
@@ -997,6 +995,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         }
         entityRenderer = renderer;
         entityRenderer.addListener(this);
+        entityRenderer.setup(this);
         entityRenderer.initialise();
         rebuildEntityIndices();
         fireEvent(EventType.ENTITY_RENDERER_CHANGED);
