@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Collections;
 import java.util.Set;
 
@@ -44,4 +44,9 @@ public abstract class ViewComponentPluginAdapter implements ViewComponentPlugin 
     public Set<String> getCategorisations() {
         return Collections.EMPTY_SET;
     }
+
+    public Set<String> getNavigates() {
+        return Collections.EMPTY_SET;
+    }
+
 }

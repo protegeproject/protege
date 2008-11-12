@@ -1,10 +1,10 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.Color;
-import java.util.Set;
-
 import org.protege.editor.core.plugin.ProtegePlugin;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -36,4 +36,7 @@ public interface ViewComponentPlugin extends ProtegePlugin<ViewComponent> {
 
 
     public Set<String> getCategorisations();
+
+
+    public Set<String> getNavigates();
 }

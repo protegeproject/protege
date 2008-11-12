@@ -1,16 +1,11 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.coode.mdock.DynamicConfigPanel;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
+
+import java.util.*;
 
 
 /**
@@ -27,15 +22,9 @@ import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
  */
 public class WorkspaceViewManager {
 
-    private Set<WorkspaceViewsTab> registeredTabs;
+    private Set<WorkspaceViewsTab> registeredTabs = new HashSet<WorkspaceViewsTab>();
 
-    private Map<String, ViewComponentPlugin> pluginMap;
-
-
-    public WorkspaceViewManager() {
-        pluginMap = new HashMap<String, ViewComponentPlugin>();
-        registeredTabs = new HashSet<WorkspaceViewsTab>();
-    }
+    private Map<String, ViewComponentPlugin> pluginMap = new HashMap<String, ViewComponentPlugin>();
 
 
     public void registerViews(WorkspaceViewsTab tab) {
@@ -59,6 +48,11 @@ public class WorkspaceViewManager {
 //        registeredTabs.remove(tab);
     }
 
+
+    public ViewComponentPlugin getViewComponentPlugin(String id){
+        return pluginMap.get(id);
+    }
+    
 
     public List<ViewComponentPlugin> getViewComponentPlugins() {
         List<ViewComponentPlugin> list = new ArrayList<ViewComponentPlugin>();
