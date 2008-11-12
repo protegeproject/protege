@@ -40,6 +40,8 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     private OWLObject focusedObject;
 
+    private OWLEntityRenderer entityRenderer;
+
 
     public OWLObjectRendererImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -128,11 +130,10 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         return "exactly";
     }
 
-    /* @@TODO tidy this up - entity renderer is never used in favour of the
-     * model manager rendering (as this uses the cache).
-     */
+
     public String render(OWLObject object, OWLEntityRenderer entityRenderer) {
         reset();
+        this.entityRenderer = entityRenderer;
         try {
             object.accept(this);
             return buffer.toString();
@@ -144,8 +145,10 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
 
     protected String getRendering(OWLEntity entity) {
+        if (entityRenderer != null){
+            return entityRenderer.render(entity);
+        }
         return owlModelManager.getRendering(entity);
-//        return RenderingEscapeUtils.getEscapedRendering(rendering);
     }
 
 
