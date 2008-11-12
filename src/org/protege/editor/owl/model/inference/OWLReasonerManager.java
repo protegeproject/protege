@@ -66,5 +66,7 @@ public interface OWLReasonerManager extends Disposable {
     public void classifyAsynchronously();
 
     public void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
-    
+
+
+    void killCurrentClassification();
 }

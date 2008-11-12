@@ -53,6 +53,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
     private OWLReasonerExceptionHandler exceptionHandler;
 
+    private Thread currentReasonerThread;
+
+    private OWLReasoner runningReasoner;
+
+
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         reasonerFactories = new HashSet<ProtegeOWLReasonerFactory>();
@@ -175,25 +180,30 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
 
     public void setCurrentReasonerFactoryId(String id) {
-        try {
-            for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
-                if (reasonerFactory.getReasonerId().equals(id)) {
-                    currentReasonerFactory = reasonerFactory;
-                    if (currentReasoner != null) {
-                        currentReasoner.dispose();
-                    }
-                    currentReasoner = currentReasonerFactory.createReasoner(owlModelManager.getOWLOntologyManager());
-                    if (currentReasoner instanceof MonitorableOWLReasoner) {
-                        MonitorableOWLReasoner monReasoner = (MonitorableOWLReasoner) currentReasoner;
-                        monReasoner.setProgressMonitor(reasonerProgressMonitor);
-                    }
-                    reload = true;
-                    owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                    classifyAsynchronously();
-                    return;
-                }
+        for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
+            if (reasonerFactory.getReasonerId().equals(id)) {
+                currentReasonerFactory = reasonerFactory;
+                createCurrentReasoner();
+                owlModelManager.fireEvent(EventType.REASONER_CHANGED);
+                classifyAsynchronously();
+                return;
             }
-            throw new RuntimeException("Unknown reasoner ID");
+        }
+        throw new RuntimeException("Unknown reasoner ID");
+    }
+
+
+    private void createCurrentReasoner() {
+        try {
+            if (currentReasoner != null) {
+                currentReasoner.dispose();
+            }
+            currentReasoner = currentReasonerFactory.createReasoner(owlModelManager.getOWLOntologyManager());
+            if (currentReasoner instanceof MonitorableOWLReasoner) {
+                MonitorableOWLReasoner monReasoner = (MonitorableOWLReasoner) currentReasoner;
+                monReasoner.setProgressMonitor(reasonerProgressMonitor);
+            }
+            reload = true;
         }
         catch (OWLException e) {
             throw new OWLRuntimeException(e);
@@ -224,21 +234,24 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
      */
     public void classifyAsynchronously() {
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
-        final OWLReasoner r = currentReasoner;
+        runningReasoner = currentReasoner;
         currentReasoner = new NoOpReasoner(owlModelManager.getOWLOntologyManager());
-        Thread t = new Thread(new Runnable() {
+        currentReasonerThread = new Thread(new Runnable() {
             public void run() {
                 try {
                     if (reload) {
-                        loadOntologies(r);
+                        loadOntologies(runningReasoner);
                     }
                     long start = System.currentTimeMillis();
-                    r.classify();
-                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                    reasonerProgressMonitor.setMessage(s);
-                    logger.info(s);
-                    currentReasoner = r;
-                    fireReclassified();
+                    runningReasoner.classify();
+                    if (runningReasoner.isClassified()){
+                        String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
+                        reasonerProgressMonitor.setMessage(s);
+                        logger.info(s);
+                        currentReasoner = runningReasoner;
+                        runningReasoner = null;
+                        fireReclassified();
+                    }
                 }
                 catch (ReasonerException e) {
                     exceptionHandler.handle(e);
@@ -247,8 +260,30 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     exceptionHandler.handle(new ReasonerException(e));
                 }
             }
+        }, "Classify Thread");
+        currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                logger.info("Classification interrupted");
+            }
         });
-        t.start();
+        currentReasonerThread.start();
+    }
+
+
+    public void killCurrentClassification() {
+        currentReasonerThread.stop();
+        currentReasonerThread = null;
+        if (runningReasoner != null){
+            try {
+                runningReasoner.dispose();
+                runningReasoner = null;
+            }
+            catch (OWLReasonerException e) {
+                exceptionHandler.handle(new ReasonerException(e));
+            }
+        }
+        createCurrentReasoner();
+        reasonerProgressMonitor.setFinished();
     }
 
 

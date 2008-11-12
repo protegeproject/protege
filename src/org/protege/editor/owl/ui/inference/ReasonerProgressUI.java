@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.inference.ReasonerProgressMonitor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -33,8 +34,12 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
     private String currentClass;
 
+    private static final int CANCEL_TIMEOUT_MS = 5000;
 
-    public ReasonerProgressUI(OWLEditorKit owlEditorKit) {
+    private Timer cancelTimeout;
+
+
+    public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         JPanel panel = new JPanel(new BorderLayout(7, 7));
         progressBar = new JProgressBar();
@@ -64,6 +69,13 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         Dimension windowSize = window.getSize();
         window.setSize(400, windowSize.height);
         window.setResizable(false);
+
+        cancelTimeout = new Timer(CANCEL_TIMEOUT_MS, new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
+            }
+        });
+        cancelTimeout.setRepeats(false);
     }
 
 
@@ -104,15 +116,19 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
 
     private void setCancelled(boolean b) {
-        if (b){
-            hideWindow();
-        }
         cancelled = b;
         if (currentClass != null) {
             JOptionPane.showMessageDialog(window,
                                           "Cancelled while classifying " + currentClass,
                                           "Cancelled classification",
                                           JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (b){
+            label.setText("Cancelling...");
+            cancelTimeout.start();
+        }
+        else{
+            cancelTimeout.stop();
         }
     }
 
@@ -132,6 +148,7 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
 
     public void setFinished() {
+        cancelTimeout.stop();
         hideWindow();
         currentClass = null;
     }
