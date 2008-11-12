@@ -14,6 +14,11 @@ import org.semanticweb.owl.model.OWLObject;
  */
 public interface OWLObjectRenderer {
 
+    /**
+     * @param object - the object to render
+     * @param entityRenderer optional - most implementations will be able to get the default entity rendering from the OWLModelManager
+     * @return a string rendering of the given object
+     */
     public String render(OWLObject object, OWLEntityRenderer entityRenderer);
 
     public void setFocusedObject(OWLObject object);
