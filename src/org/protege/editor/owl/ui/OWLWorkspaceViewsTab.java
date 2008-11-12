@@ -1,15 +1,19 @@
 package org.protege.editor.owl.ui;
 
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponent;
+import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.workspace.WorkspaceViewsTab;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEntityDisplayProvider;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -22,6 +26,9 @@ import javax.swing.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
+
+    private Set<ViewComponentPlugin> viewPlugins = new HashSet<ViewComponentPlugin>();
+
 
     private OWLEntityDisplayProvider provider = new OWLEntityDisplayProvider() {
         public boolean canDisplay(OWLEntity owlEntity) {
@@ -36,19 +43,34 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
     private boolean canDisplay(OWLEntity owlEntity) {
         // search the contained views to see if there is one that can show the entity
-        
+
+        String entityCat = new NavFinder().getNav(owlEntity);
+
         for (View view : getViewsPane().getViews()){
             ViewComponent vc = view.getViewComponent();
-            if (vc instanceof AbstractOWLSelectionViewComponent){
-                final AbstractOWLSelectionViewComponent owlEntityViewComponent = (AbstractOWLSelectionViewComponent)vc;
-                if (owlEntityViewComponent.canShowEntity(owlEntity)){
-                    return true;
+            if (vc != null){
+                if (vc instanceof AbstractOWLSelectionViewComponent){
+                    final AbstractOWLSelectionViewComponent owlEntityViewComponent = (AbstractOWLSelectionViewComponent)vc;
+                    if (owlEntityViewComponent.canShowEntity(owlEntity)){
+                        return true;
+                    }
+                }
+            }
+            else{
+                ViewComponentPlugin plugin = getWorkspace().getViewManager().getViewComponentPlugin(view.getId());
+                if (plugin != null){
+                    for (String nav : plugin.getNavigates()){
+                        System.out.println(getLabel() + " : " + view.getId()  + ":" + nav);
+                        if (entityCat.equals(nav)){
+                            return true;
+                        }
+                    }
                 }
             }
         }
+
         return false;
     }
-
 
     public void initialise() {
         super.initialise();
@@ -69,5 +91,43 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getWorkspace().getEditorKit();
+    }
+
+
+    class NavFinder implements OWLEntityVisitor{
+
+        private String nav;
+
+
+        public String getNav(OWLEntity owlEntity) {
+            nav = null;
+            owlEntity.accept(this);
+            return nav;
+        }
+
+
+        public void visit(OWLClass owlClass) {
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.CLASS_VIEW_CATEGORY);
+        }
+
+
+        public void visit(OWLObjectProperty owlObjectProperty) {
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY);
+        }
+
+
+        public void visit(OWLDataProperty owlDataProperty) {
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY);
+        }
+
+
+        public void visit(OWLIndividual owlIndividual) {
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.INDIVIDUAL_VIEW_CATEGORY);
+        }
+
+
+        public void visit(OWLDataType owlDataType) {
+            nav = null;
+        }
     }
 }

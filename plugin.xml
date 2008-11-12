@@ -199,6 +199,7 @@
         <class value="org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.classcategory"/>
     </extension>
 
     <extension
@@ -208,6 +209,7 @@
         <class value="org.protege.editor.owl.ui.clshierarchy.ToldSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.classcategory"/>
     </extension>
 
     <extension
@@ -217,6 +219,7 @@
         <class value="org.protege.editor.owl.ui.clshierarchy.InferredSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.classcategory"/>
     </extension>
 
 
@@ -226,6 +229,8 @@
         <class value="org.protege.editor.owl.ui.view.OWLIndividualsByClassViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
+        <navigates value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.individualcategory"/>        
     </extension>
 
 
@@ -235,6 +240,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLMembersListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
+        <navigates value="@org.protege.individualcategory"/>
     </extension>
 
 
@@ -253,6 +259,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLClassDescriptionViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.classcategory"/>
     </extension>
 
     <extension id="OWLObjectPropertyTree"
@@ -261,6 +268,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
+        <navigates value="@org.protege.objectpropertycategory"/>
     </extension>
 
     <extension id="InferredObjectPropertyTree"
@@ -269,6 +277,7 @@
         <class value="org.protege.editor.owl.ui.view.InferredObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
+        <navigates value="@org.protege.objectpropertycategory"/>
     </extension>
 
     <extension id="OWLDataPropertyTree"
@@ -277,6 +286,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
+        <navigates value="@org.protege.datapropertycategory"/>
     </extension>
 
     <extension
@@ -295,6 +305,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyDescriptionViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
+        <navigates value="@org.protege.objectpropertycategory"/>
     </extension>
 
 
@@ -356,6 +367,7 @@
         <class value="org.protege.editor.owl.ui.view.OWLIndividualListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
+        <navigates value="@org.protege.individualcategory"/>        
     </extension>
 
 
