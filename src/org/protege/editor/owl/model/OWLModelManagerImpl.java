@@ -937,7 +937,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 logger.error(e.getMessage());
             }
             if (entityRenderer == null) {
-                entityRenderer = new OWLEntityRendererImpl();
+                setOWLEntityRenderer(new OWLEntityRendererImpl());
             }
         }
         return entityRenderer;
