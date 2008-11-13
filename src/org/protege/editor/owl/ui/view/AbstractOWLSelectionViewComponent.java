@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -215,22 +217,28 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
 
 
     protected boolean isOWLClassView() {
-        return false;
+        return canNavigate(ProtegeProperties.CLASS_VIEW_CATEGORY);
     }
 
 
     protected boolean isOWLObjectPropertyView() {
-        return false;
+        return canNavigate(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY);
     }
 
 
     protected boolean isOWLDataPropertyView() {
-        return false;
+        return canNavigate(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY);
     }
 
 
     protected boolean isOWLIndividualView() {
-        return false;
+        return canNavigate(ProtegeProperties.INDIVIDUAL_VIEW_CATEGORY);
+    }
+
+    // by default, asks the plugin whether the entity can be displayed
+    private boolean canNavigate(String type){
+        ViewComponentPlugin plugin = getWorkspace().getViewManager().getViewComponentPlugin(getView().getId());
+        return plugin != null && plugin.getNavigates().contains(ProtegeProperties.getInstance().getProperty(type));
     }
 
 
