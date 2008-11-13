@@ -69,7 +69,8 @@ public interface OWLEntityFactory {
      * @param shortName user supplied name
      * @param baseURI specify a base or leave as null to let the factory decide
      * @throws OWLEntityCreationException if the entity could not be created because of bad input/name clashes/auto ID etc
+     * @return an entity creation set - this should never be applied to the ontology
      */
-    public void tryCreate(Class<? extends OWLEntity> type, String shortName, URI baseURI) throws OWLEntityCreationException;
+    public <T extends OWLEntity> OWLEntityCreationSet<T> preview(Class<T> type, String shortName, URI baseURI) throws OWLEntityCreationException;
 
 }

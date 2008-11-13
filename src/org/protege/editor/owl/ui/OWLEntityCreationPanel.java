@@ -177,7 +177,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
-            owlEditorKit.getModelManager().getOWLEntityFactory().tryCreate(type,
+            owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
                                                                            getEntityName(),
                                                                            getBaseURI());
             currentlyValid = true;
