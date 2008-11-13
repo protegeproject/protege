@@ -42,13 +42,13 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
 
     private boolean canDisplay(OWLEntity owlEntity) {
-        // search the contained views to see if there is one that can show the entity
 
         String entityCat = new NavFinder().getNav(owlEntity);
 
+        // search the contained views to see if there is one that can show the entity
         for (View view : getViewsPane().getViews()){
             ViewComponent vc = view.getViewComponent();
-            if (vc != null){
+            if (vc != null){ // if the view is on a tab that has been initialised ask it directly
                 if (vc instanceof AbstractOWLSelectionViewComponent){
                     final AbstractOWLSelectionViewComponent owlEntityViewComponent = (AbstractOWLSelectionViewComponent)vc;
                     if (owlEntityViewComponent.canShowEntity(owlEntity)){
@@ -56,9 +56,9 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
                     }
                 }
             }
-            else{
+            else { // otherwise, ask its plugin
                 ViewComponentPlugin plugin = getWorkspace().getViewManager().getViewComponentPlugin(view.getId());
-                if (plugin != null){
+                if (plugin != null) {
                     for (String nav : plugin.getNavigates()){
                         if (entityCat.equals(nav)){
                             return true;
