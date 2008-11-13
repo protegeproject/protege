@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.preferences;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.entity.*;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -40,444 +41,477 @@ import java.net.URISyntaxException;
 
 /**
  * Author: drummond<br>
-  * http://www.cs.man.ac.uk/~drummond/<br><br>
-  * <p/>
-  * The University Of Manchester<br>
-  * Bio Health Informatics Group<br>
-  * Date: Jul 24, 2008<br><br>
+ * http://www.cs.man.ac.uk/~drummond/<br><br>
+ * <p/>
+ * The University Of Manchester<br>
+ * Bio Health Informatics Group<br>
+ * Date: Jul 24, 2008<br><br>
  *
  * see http://protegewiki.stanford.edu/index.php/Protege4NamingAndRendering
-  */
- public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
+ */
+public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
     private Logger logger = Logger.getLogger(NewEntitiesPreferencesPanel.class);
 
-     // URI panel
-     private JRadioButton uriBaseActiveOntology;
-     private JRadioButton uriBaseSpecifiedURI;
-     private JTextField uriDefaultBaseField;
+    // URI panel
+    private JRadioButton uriBaseActiveOntology;
+    private JRadioButton uriBaseSpecifiedURI;
+    private JTextField uriDefaultBaseField;
+    private JRadioButton nameAsURIFragment;
+    private JRadioButton autoIDURIFragment;
+    private JRadioButton hashButton;
+    private JRadioButton slashButton;
 
-     // name panel
-     private JRadioButton nameAsURIFragment;
-     private JCheckBox nameAsLabel;
-     private JRadioButton autoIDURIFragment;
-     private JCheckBox autoIDLabel;
-     private JTextField annotationURILabel;
-     private JButton annotationSelectButton;
-     private JComboBox annotationLangSelector;
+    // label panel
+    private JCheckBox nameAsLabel;
+    private JCheckBox autoIDLabel;
+    private JTextField annotationURILabel;
+    private JButton annotationSelectButton;
+    private JComboBox annotationLangSelector;
+    private URI labelAnnotation = null;
+    private JComponent customLabelPane;
+    private JRadioButton sameAsRendererLabelButton;
+    private JRadioButton customLabelButton;
 
-     // auto ID panel
-     private JRadioButton pseudoRandomButton;
-     private JRadioButton iterativeButton;
-     private JSpinner autoIDStart;
-     private JSpinner autoIDEnd;
-     private JSpinner autoIDDigitCount;
-     private JTextField autoIDPrefix;
-     private JTextField autoIDSuffix;
+    // auto ID panel
+    private JRadioButton pseudoRandomButton;
+    private JRadioButton iterativeButton;
+    private JSpinner autoIDStart;
+    private JSpinner autoIDEnd;
+    private JSpinner autoIDDigitCount;
+    private JTextField autoIDPrefix;
+    private JTextField autoIDSuffix;
 
-     private JComponent autoIDPane;
+    private JComponent autoIDPane;
 
+    private ChangeListener updateListener = new ChangeListener(){
+        public void stateChanged(ChangeEvent event) {
+            refreshState();
+        }
+    };
 
-     private URI labelAnnotation = null;
+    private JComponent labelOptionsPane;
+    private JComponent rangePanel;
 
-     private ChangeListener updateListener = new ChangeListener(){
-         public void stateChanged(ChangeEvent event) {
-             refreshState();
-         }
-     };
+    private static final int VERTICAL_SPACE = 20;
 
-     private JComponent labelPane;
-     private JComponent rangePanel;
+    private static final int HORIZONTAL_SPACE = 25;
 
-     private static final Dimension VERTICAL_SPACER = new Dimension(0, 20);
-
-     private static final Dimension HORIZONTAL_SPACER = new Dimension(25, 0);
-
-     private JRadioButton sameAsRendererLabelButton;
-     private JRadioButton customLabelButton;
-
-     private JComponent customLabelPane;
-
-
-     public void initialise() throws Exception {
-         setLayout(new BorderLayout());
-
-         JComponent basePane = createBasePanel();
-         JComponent namePane = createNamePanel();
-         labelPane = createLabelPanel();
-         autoIDPane = createAutoIDPanel();
-
-         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-         add(basePane);
-         add(Box.createRigidArea(VERTICAL_SPACER));
-         add(namePane);
-         add(Box.createRigidArea(VERTICAL_SPACER));
-         add(Box.createVerticalGlue());
-         add(labelPane);
-         add(Box.createRigidArea(VERTICAL_SPACER));
-         add(autoIDPane);
-
-         loadUIWithPrefs();
-
-         setupChangeListeners();
-     }
-
-     private void loadUIWithPrefs() {
-         uriBaseActiveOntology.setSelected(!EntityCreationPreferences.useDefaultBaseURI());
-         uriBaseSpecifiedURI.setSelected(EntityCreationPreferences.useDefaultBaseURI());
-         uriDefaultBaseField.setText(EntityCreationPreferences.getDefaultBaseURI().toString());
-         uriDefaultBaseField.setEnabled(EntityCreationPreferences.useDefaultBaseURI());
-
-         nameAsURIFragment.setSelected(!EntityCreationPreferences.isFragmentAutoGenerated());
-         nameAsLabel.setSelected(EntityCreationPreferences.isGenerateNameLabel());
-         autoIDURIFragment.setSelected(EntityCreationPreferences.isFragmentAutoGenerated());
-         autoIDLabel.setSelected(EntityCreationPreferences.isGenerateIDLabel());
-
-         final Class<? extends LabelDescriptor> labelDescrCls = EntityCreationPreferences.getLabelDescriptorClass();
-         sameAsRendererLabelButton.setSelected(labelDescrCls.equals(MatchRendererLabelDescriptor.class));
-         customLabelButton.setSelected(labelDescrCls.equals(CustomLabelDescriptor.class));
-
-         labelAnnotation = EntityCreationPreferences.getNameLabelURI();
-         if (labelAnnotation == null){
-             labelAnnotation = OWLRDFVocabulary.RDFS_LABEL.getURI();
-         }
-         annotationURILabel.setText(labelAnnotation.toString());
-         annotationLangSelector.setSelectedItem(EntityCreationPreferences.getNameLabelLang());
-
-         final Class<? extends AutoIDGenerator> autoIDGenCls = EntityCreationPreferences.getAutoIDGeneratorClass();
-         pseudoRandomButton.setSelected(autoIDGenCls.equals(PseudoRandomAutoIDGenerator.class));
-         iterativeButton.setSelected(autoIDGenCls.equals(IterativeAutoIDGenerator.class));
-         autoIDStart.setValue(EntityCreationPreferences.getAutoIDStart());
-         autoIDEnd.setValue(EntityCreationPreferences.getAutoIDEnd());
-
-         autoIDDigitCount.setValue(EntityCreationPreferences.getAutoIDDigitCount());
-         autoIDPrefix.setText(EntityCreationPreferences.getPrefix());
-         autoIDSuffix.setText(EntityCreationPreferences.getSuffix());
-
-         refreshState();
-     }
-
-     private void setupChangeListeners(){
-         uriBaseSpecifiedURI.addChangeListener(updateListener);
-         autoIDURIFragment.addChangeListener(updateListener);
-         autoIDLabel.addChangeListener(updateListener);
-         nameAsLabel.addChangeListener(updateListener);
-         iterativeButton.addChangeListener(updateListener);
-         customLabelButton.addChangeListener(updateListener);
-     }
-
-     private void refreshState() {
-         uriDefaultBaseField.setEnabled(uriBaseSpecifiedURI.isSelected());
-
-         nameAsLabel.setEnabled(!autoIDURIFragment.isSelected());
-
-         performRecursiveEnable(labelPane, autoIDLabel.isSelected() || nameAsLabel.isSelected());
-
-         final boolean enableAutoIDPane = autoIDLabel.isSelected() || autoIDURIFragment.isSelected();
-
-         performRecursiveEnable(autoIDPane, enableAutoIDPane);
-         if (autoIDURIFragment.isSelected()){
-             nameAsLabel.setSelected(true); // user name always used for something
-         }
-
-         performRecursiveEnable(customLabelPane, customLabelButton.isSelected());
-
-         performRecursiveEnable(rangePanel, enableAutoIDPane && iterativeButton.isSelected());
-     }
+//    private JLabel exampleURILabel;
 
 
-     public void applyChanges() {
-         EntityCreationPreferences.setUseDefaultBaseURI(uriBaseSpecifiedURI.isSelected());
-         try {
-             URI defaultBase = new URI(uriDefaultBaseField.getText());
-             EntityCreationPreferences.setDefaultBaseURI(defaultBase);
-         }
-         catch (URISyntaxException e) {
-             logger.error("Ignoring invalid base URI (" + uriDefaultBaseField.getText() + ")");
-         }
+    public void initialise() throws Exception {
+        JComponent uriPanel = createURIPanel();
+        JComponent labelPane = createLabelPanel();
+        autoIDPane = createAutoIDPanel();
 
-         EntityCreationPreferences.setFragmentAutoGenerated(autoIDURIFragment.isSelected());
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        add(uriPanel);
+        add(Box.createVerticalStrut(VERTICAL_SPACE));
+        add(Box.createVerticalGlue());
+        add(labelPane);
+        add(Box.createVerticalStrut(VERTICAL_SPACE));
+        add(autoIDPane);
 
-         EntityCreationPreferences.setGenerateNameLabel(nameAsLabel.isSelected());
-         EntityCreationPreferences.setGenerateIDLabel(autoIDLabel.isSelected());
+        loadUIWithPrefs();
 
-         if (sameAsRendererLabelButton.isSelected()){
-             EntityCreationPreferences.setLabelDescriptorClass(MatchRendererLabelDescriptor.class);
-         }
-         if (customLabelButton.isSelected()){
-             EntityCreationPreferences.setLabelDescriptorClass(CustomLabelDescriptor.class);
-         }
-         
-         EntityCreationPreferences.setNameLabelURI(URI.create(annotationURILabel.getText()));
-         Object lang = annotationLangSelector.getSelectedItem();
-         if (lang != null && !lang.equals("")){
+        setupChangeListeners();
+    }
+
+
+    private void loadUIWithPrefs() {
+        uriBaseActiveOntology.setSelected(!EntityCreationPreferences.useDefaultBaseURI());
+        uriBaseSpecifiedURI.setSelected(EntityCreationPreferences.useDefaultBaseURI());
+        uriDefaultBaseField.setText(EntityCreationPreferences.getDefaultBaseURI().toString());
+        uriDefaultBaseField.setEnabled(EntityCreationPreferences.useDefaultBaseURI());
+
+        hashButton.setSelected(EntityCreationPreferences.getDefaultSeparator().equals("#"));
+        slashButton.setSelected(EntityCreationPreferences.getDefaultSeparator().equals("/"));
+
+        nameAsURIFragment.setSelected(!EntityCreationPreferences.isFragmentAutoGenerated());
+        nameAsLabel.setSelected(EntityCreationPreferences.isGenerateNameLabel());
+        autoIDURIFragment.setSelected(EntityCreationPreferences.isFragmentAutoGenerated());
+        autoIDLabel.setSelected(EntityCreationPreferences.isGenerateIDLabel());
+
+        final Class<? extends LabelDescriptor> labelDescrCls = EntityCreationPreferences.getLabelDescriptorClass();
+        sameAsRendererLabelButton.setSelected(labelDescrCls.equals(MatchRendererLabelDescriptor.class));
+        customLabelButton.setSelected(labelDescrCls.equals(CustomLabelDescriptor.class));
+
+        labelAnnotation = EntityCreationPreferences.getNameLabelURI();
+        if (labelAnnotation == null){
+            labelAnnotation = OWLRDFVocabulary.RDFS_LABEL.getURI();
+        }
+        annotationURILabel.setText(labelAnnotation.toString());
+        annotationLangSelector.setSelectedItem(EntityCreationPreferences.getNameLabelLang());
+
+        final Class<? extends AutoIDGenerator> autoIDGenCls = EntityCreationPreferences.getAutoIDGeneratorClass();
+        pseudoRandomButton.setSelected(autoIDGenCls.equals(PseudoRandomAutoIDGenerator.class));
+        iterativeButton.setSelected(autoIDGenCls.equals(IterativeAutoIDGenerator.class));
+        autoIDStart.setValue(EntityCreationPreferences.getAutoIDStart());
+        autoIDEnd.setValue(EntityCreationPreferences.getAutoIDEnd());
+
+        autoIDDigitCount.setValue(EntityCreationPreferences.getAutoIDDigitCount());
+        autoIDPrefix.setText(EntityCreationPreferences.getPrefix());
+        autoIDSuffix.setText(EntityCreationPreferences.getSuffix());
+
+        refreshState();
+    }
+
+    private void setupChangeListeners(){
+        uriBaseSpecifiedURI.addChangeListener(updateListener);
+        autoIDURIFragment.addChangeListener(updateListener);
+        hashButton.addChangeListener(updateListener);
+        slashButton.addChangeListener(updateListener);
+        autoIDLabel.addChangeListener(updateListener);
+        nameAsLabel.addChangeListener(updateListener);
+        iterativeButton.addChangeListener(updateListener);
+        customLabelButton.addChangeListener(updateListener);
+    }
+
+    private void refreshState() {
+        uriDefaultBaseField.setEnabled(uriBaseSpecifiedURI.isSelected());
+
+        nameAsLabel.setEnabled(!autoIDURIFragment.isSelected());
+
+//        exampleURILabel.setText(generateExampleURI());
+
+        performRecursiveEnable(labelOptionsPane, autoIDLabel.isSelected() || nameAsLabel.isSelected());
+
+        final boolean enableAutoIDPane = autoIDLabel.isSelected() || autoIDURIFragment.isSelected();
+
+        performRecursiveEnable(autoIDPane, enableAutoIDPane);
+        if (autoIDURIFragment.isSelected()){
+            nameAsLabel.setSelected(true); // user name always used for something
+        }
+
+        performRecursiveEnable(customLabelPane, customLabelButton.isSelected());
+
+        performRecursiveEnable(rangePanel, enableAutoIDPane && iterativeButton.isSelected());
+    }
+
+
+    private String generateExampleURI() {
+        try {
+            OWLEntityCreationSet<OWLClass> entityCreationSet = getOWLModelManager().getOWLEntityFactory().preview(OWLClass.class, "TestName", null);
+            return entityCreationSet.getOWLEntity().getURI().toString();
+        }
+        catch (OWLEntityCreationException e) {
+            return "No URI could be created: " + e.getMessage();
+        }
+    }
+
+
+    public void applyChanges() {
+        EntityCreationPreferences.setUseDefaultBaseURI(uriBaseSpecifiedURI.isSelected());
+        try {
+            URI defaultBase = new URI(uriDefaultBaseField.getText());
+            EntityCreationPreferences.setDefaultBaseURI(defaultBase);
+        }
+        catch (URISyntaxException e) {
+            logger.error("Ignoring invalid base URI (" + uriDefaultBaseField.getText() + ")");
+        }
+
+        if (hashButton.isSelected()){
+            EntityCreationPreferences.setDefaultSeparator("#");
+        }
+        if (slashButton.isSelected()){
+            EntityCreationPreferences.setDefaultSeparator("/");
+        }
+
+        EntityCreationPreferences.setFragmentAutoGenerated(autoIDURIFragment.isSelected());
+
+        EntityCreationPreferences.setGenerateNameLabel(nameAsLabel.isSelected());
+        EntityCreationPreferences.setGenerateIDLabel(autoIDLabel.isSelected());
+
+        if (sameAsRendererLabelButton.isSelected()){
+            EntityCreationPreferences.setLabelDescriptorClass(MatchRendererLabelDescriptor.class);
+        }
+        if (customLabelButton.isSelected()){
+            EntityCreationPreferences.setLabelDescriptorClass(CustomLabelDescriptor.class);
+        }
+
+        EntityCreationPreferences.setNameLabelURI(URI.create(annotationURILabel.getText()));
+        Object lang = annotationLangSelector.getSelectedItem();
+        if (lang != null && !lang.equals("")){
             EntityCreationPreferences.setNameLabelLang((String)lang);
-         }
-         else{
-             EntityCreationPreferences.setNameLabelLang(null);
-         }
-         
-         if (pseudoRandomButton.isSelected()){
-             EntityCreationPreferences.setAutoIDGeneratorClass(PseudoRandomAutoIDGenerator.class);
-         }
-         if (iterativeButton.isSelected()){
-             EntityCreationPreferences.setAutoIDGeneratorClass(IterativeAutoIDGenerator.class);
-         }
+        }
+        else{
+            EntityCreationPreferences.setNameLabelLang(null);
+        }
 
-         EntityCreationPreferences.setAutoIDStart((Integer)autoIDStart.getValue());
-         EntityCreationPreferences.setAutoIDEnd((Integer)autoIDEnd.getValue());
+        if (pseudoRandomButton.isSelected()){
+            EntityCreationPreferences.setAutoIDGeneratorClass(PseudoRandomAutoIDGenerator.class);
+        }
+        if (iterativeButton.isSelected()){
+            EntityCreationPreferences.setAutoIDGeneratorClass(IterativeAutoIDGenerator.class);
+        }
 
-         EntityCreationPreferences.setAutoIDDigitCount((Integer)autoIDDigitCount.getValue());
-         EntityCreationPreferences.setPrefix(autoIDPrefix.getText());
-         EntityCreationPreferences.setSuffix(autoIDSuffix.getText());
-     }
+        EntityCreationPreferences.setAutoIDStart((Integer)autoIDStart.getValue());
+        EntityCreationPreferences.setAutoIDEnd((Integer)autoIDEnd.getValue());
 
-
-     private JComponent createBasePanel() {
-         JComponent c = createPane("Default base URI");
-
-         uriBaseActiveOntology = new JRadioButton("Active ontology");
-         uriBaseSpecifiedURI = new JRadioButton("Specified URI");
-         uriBaseSpecifiedURI.setAlignmentX(0.0f);
-         uriDefaultBaseField = new JTextField(){
-             public Dimension getPreferredSize() {
-                 return new Dimension(0, super.getPreferredSize().height);
-             }
-         };
-
-         JComponent specifiedPanel = new JPanel();
-         specifiedPanel.setLayout(new BoxLayout(specifiedPanel, BoxLayout.LINE_AXIS));
-         specifiedPanel.setAlignmentX(0.0f);
-         specifiedPanel.add(uriBaseSpecifiedURI);
-         specifiedPanel.add(Box.createRigidArea(HORIZONTAL_SPACER));
-         specifiedPanel.add(uriDefaultBaseField);
-
-         ButtonGroup bg = new ButtonGroup();
-         bg.add(uriBaseActiveOntology);
-         bg.add(uriBaseSpecifiedURI);
-
-         c.add(uriBaseActiveOntology);
-         c.add(specifiedPanel);
-         return c;
-     }
+        EntityCreationPreferences.setAutoIDDigitCount((Integer)autoIDDigitCount.getValue());
+        EntityCreationPreferences.setPrefix(autoIDPrefix.getText());
+        EntityCreationPreferences.setSuffix(autoIDSuffix.getText());
+    }
 
 
-     private JComponent createNamePanel() {
-         JComponent c = createPane("Entity name");
+    private JComponent createURIPanel() {
+        JComponent c = createPane("Entity URI", BoxLayout.PAGE_AXIS);
+        JComponent basePane = createBasePanel();
+        JComponent separatorPane = createSeparatorPanel();
+        JComponent namePane = createNamePanel();
 
-         nameAsURIFragment = new JRadioButton();
-         autoIDURIFragment = new JRadioButton();
-         nameAsLabel = new JCheckBox();
-         autoIDLabel = new JCheckBox();
+//        exampleURILabel = new JLabel();
+//        exampleURILabel.setForeground(Color.GRAY);
 
-         JPanel optionTable = new JPanel(new GridBagLayout()){
-             public Dimension getMaximumSize() {
-                 return new Dimension(getPreferredSize().width, super.getMaximumSize().height);
-             }
-         };
-         optionTable.setAlignmentX(0.0f);
-         GridBagConstraints constr = new GridBagConstraints();
-         constr.insets = new Insets(2, 2, 2, 18);
-
-         constr.gridx = 0; constr.anchor = GridBagConstraints.LINE_START;
-         constr.gridy = 1;
-         optionTable.add(new JLabel("User supplied name"), constr);
-
-         constr.gridy = 2;
-         optionTable.add(new JLabel("Auto ID"), constr);
+        c.add(basePane);
+        c.add(separatorPane);
+        c.add(namePane);
+//        c.add(Box.createVerticalStrut(VERTICAL_SPACE));
+//        c.add(exampleURILabel);
+        return c;
+    }
 
 
-         constr.gridx = 1; constr.anchor = GridBagConstraints.CENTER;
-         constr.gridy = 0;
-         optionTable.add(new JLabel("URI fragment"), constr);
-         constr.gridy = 1;
-         optionTable.add(nameAsURIFragment, constr);
-         constr.gridy = 2;
-         optionTable.add(autoIDURIFragment, constr);
+    private JComponent createBasePanel() {
+        JComponent c = createPane(null, BoxLayout.LINE_AXIS);
 
-         constr.gridx = 2;
-         constr.gridy = 0;
-         optionTable.add(new JLabel("Create label"), constr);
-         constr.gridy = 1;
-         optionTable.add(nameAsLabel, constr);
-         constr.gridy = 2;
-         optionTable.add(autoIDLabel, constr);
-
-         ButtonGroup fragButtonGroup = new ButtonGroup();
-         fragButtonGroup.add(nameAsURIFragment);
-         fragButtonGroup.add(autoIDURIFragment);
-
-         c.add(optionTable);
-
-         return c;
-     }
+        uriBaseActiveOntology = new JRadioButton("active ontology URI");
+        uriBaseSpecifiedURI = new JRadioButton("specified URI");
+        uriDefaultBaseField = new JTextField(){
+            public Dimension getPreferredSize() {
+                return new Dimension(0, super.getPreferredSize().height);
+            }
+        };
 
 
-     private JComponent createLabelPanel(){
-         JComponent c = createPane("Entity label");
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(uriBaseActiveOntology);
+        bg.add(uriBaseSpecifiedURI);
 
-         sameAsRendererLabelButton = new JRadioButton("Same as label renderer (currently " +
-                                                      getOWLModelManager().getURIRendering(getFirstRendererLabel()) + ")");
-         customLabelButton = new JRadioButton("Custom label");
-
-         ButtonGroup bg = new ButtonGroup();
-         bg.add(sameAsRendererLabelButton);
-         bg.add(customLabelButton);
-
-         c.add(sameAsRendererLabelButton);
-         c.add(customLabelButton);
-
-         annotationURILabel = new JTextField(){
-             public Dimension getPreferredSize() {
-                 return new Dimension(0, super.getPreferredSize().height);
-             }
-         };
-         annotationURILabel.setEditable(false);
-         annotationSelectButton = new JButton(new AbstractAction("..."){
-             public void actionPerformed(ActionEvent event) {
-                 handleSelectAnnotation();
-             }
-         });
-         annotationLangSelector = new UIHelper(getOWLEditorKit()).getLanguageSelector();
-
-         JComponent labelAnnotationPane = new JPanel();
-         labelAnnotationPane.setLayout(new BoxLayout(labelAnnotationPane, BoxLayout.LINE_AXIS));
-         labelAnnotationPane.setAlignmentX(0.0f);
-         labelAnnotationPane.add(Box.createRigidArea(HORIZONTAL_SPACER));
-         labelAnnotationPane.add(new JLabel("URI "));
-         labelAnnotationPane.add(annotationURILabel);
-         labelAnnotationPane.add(annotationSelectButton);
-
-         JComponent labelLanguagePane = new JPanel();
-         labelLanguagePane.setLayout(new BoxLayout(labelLanguagePane, BoxLayout.LINE_AXIS));
-         labelLanguagePane.setAlignmentX(0.0f);
-         labelLanguagePane.add(Box.createRigidArea(HORIZONTAL_SPACER));
-         labelLanguagePane.add(new JLabel("Lang"));
-         labelLanguagePane.add(annotationLangSelector);
-         labelLanguagePane.add(Box.createHorizontalGlue());
-
-         customLabelPane = new JPanel();
-         customLabelPane.setLayout(new BoxLayout(customLabelPane, BoxLayout.PAGE_AXIS));
-         customLabelPane.setAlignmentX(0.0f);
-         customLabelPane.add(labelAnnotationPane);
-         customLabelPane.add(labelLanguagePane);
-
-         c.add(customLabelPane);
-
-         return c;
-     }
+        c.add(new JLabel("Start with: "));
+        c.add(uriBaseActiveOntology);
+        c.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        c.add(uriBaseSpecifiedURI);
+        c.add(uriDefaultBaseField);
+        return c;
+    }
 
 
-     private JComponent createAutoIDPanel() {
-         JComponent c = createPane("Auto ID");
+    private JComponent createSeparatorPanel() {
+        JComponent c = createPane(null, BoxLayout.LINE_AXIS);
+        hashButton = new JRadioButton("#");
+        slashButton = new JRadioButton("/");
 
-         pseudoRandomButton = new JRadioButton("Numeric (pseudo random)");
-         pseudoRandomButton.setAlignmentX(0.0f);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(hashButton);
+        bg.add(slashButton);
 
-         iterativeButton = new JRadioButton("Numeric (iterative)");
-         iterativeButton.setAlignmentX(0.0f);
+        c.add(new JLabel("Followed by: "));
+        c.add(hashButton);
+        c.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        c.add(slashButton);
+        return c;
+    }
 
-         autoIDStart = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-         autoIDStart.setPreferredSize(new Dimension(60, 0));
-         autoIDStart.addChangeListener(new ChangeListener(){
-             public void stateChanged(ChangeEvent event) {
-                 if ((Integer)autoIDEnd.getValue() != -1 &&
-                         (Integer)autoIDEnd.getValue() <= (Integer)autoIDStart.getValue()){
-                     autoIDEnd.setValue(autoIDStart.getValue());
-                 }
-             }
-         });
-         autoIDEnd = new JSpinner(new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1));
-         autoIDEnd.setPreferredSize(new Dimension(60, 0));
-         autoIDEnd.addChangeListener(new ChangeListener(){
-             public void stateChanged(ChangeEvent event) {
-                 if ((Integer)autoIDEnd.getValue() != -1 &&
-                         (Integer)autoIDEnd.getValue() <= (Integer)autoIDStart.getValue()){
-                     autoIDStart.setValue(autoIDEnd.getValue());
-                 }
-             }
-         });
+    private JComponent createNamePanel() {
+        JComponent c = createPane(null, BoxLayout.LINE_AXIS);
+        nameAsURIFragment = new JRadioButton("user supplied name");
+        autoIDURIFragment = new JRadioButton("auto ID");
 
-         rangePanel = new JPanel();
-         rangePanel.setLayout(new BoxLayout(rangePanel, BoxLayout.LINE_AXIS));
-         rangePanel.setAlignmentX(0.0f);
-         rangePanel.setBorder(new EmptyBorder(2, 20, 2, 2));
-         rangePanel.add(new JLabel("Start"));
-         rangePanel.add(autoIDStart);
-         rangePanel.add(Box.createHorizontalGlue());
-         rangePanel.add(new JLabel("End"));
-         rangePanel.add(autoIDEnd);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(nameAsURIFragment);
+        bg.add(autoIDURIFragment);
 
-         JComponent iterativePanel = new JPanel();
-         iterativePanel.setLayout(new BoxLayout(iterativePanel, BoxLayout.LINE_AXIS));
-         iterativePanel.add(iterativeButton);
-         iterativePanel.add(Box.createRigidArea(HORIZONTAL_SPACER));
-         iterativePanel.add(rangePanel);
-         iterativePanel.setAlignmentX(0.0f);
-
-         autoIDDigitCount = new JSpinner(new SpinnerNumberModel(6, 0, 255, 1));
-         JComponent paddingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-         paddingPanel.setAlignmentX(0.0f);
-         paddingPanel.add(new JLabel("Digit count"));
-         paddingPanel.add(autoIDDigitCount);
-
-         autoIDPrefix = new JTextField();
-         autoIDSuffix = new JTextField();
-         JComponent xFixPanel = new JPanel();
-         xFixPanel.setLayout(new BoxLayout(xFixPanel, BoxLayout.LINE_AXIS));
-         xFixPanel.setAlignmentX(0.0f);
-         xFixPanel.add(new JLabel("Prefix"));
-         xFixPanel.add(autoIDPrefix);
-         xFixPanel.add(Box.createRigidArea(HORIZONTAL_SPACER));
-         xFixPanel.add(new JLabel("Suffix"));
-         xFixPanel.add(autoIDSuffix);
-
-         ButtonGroup bg = new ButtonGroup();
-         bg.add(pseudoRandomButton);
-         bg.add(iterativeButton);
-
-         c.add(pseudoRandomButton);
-         c.add(iterativePanel);
-         c.add(Box.createRigidArea(VERTICAL_SPACER));
-         c.add(paddingPanel);
-         c.add(xFixPanel);
-
-         return c;
-     }
+        c.add(new JLabel("End with: "));
+        c.add(nameAsURIFragment);
+        c.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        c.add(autoIDURIFragment);
+        return c;
+    }
 
 
-     private JComponent createPane(String title) {
-         JComponent c = new JPanel(){
-             public Dimension getMaximumSize() {
-                 return new Dimension(super.getMaximumSize().width, getPreferredSize().height);
-             }
-         };
-         c.setBorder(new TitledBorder(title));
-         c.setLayout(new BoxLayout(c, BoxLayout.PAGE_AXIS));
-         return c;
-     }
+    private JComponent createLabelPanel() {
+        JComponent c = createPane("Entity label", BoxLayout.PAGE_AXIS);
+        nameAsLabel = new JCheckBox("create label using user supplied name");
+        autoIDLabel = new JCheckBox("create label using auto ID");
+        labelOptionsPane = createLabelOptionsPanel();
+
+        c.add(nameAsLabel);
+        c.add(autoIDLabel);
+        c.add(Box.createVerticalStrut(12));
+        c.add(labelOptionsPane);
+        return c;
+    }
 
 
-     protected void handleSelectAnnotation() {
-         URI uri = new UIHelper(getOWLEditorKit()).pickAnnotationURI();
-         if (uri != null){
-             labelAnnotation = uri;
-             annotationURILabel.setText(uri.toString());
-         }
-     }
+    private JComponent createLabelOptionsPanel(){
+        JComponent c = createPane(null, BoxLayout.PAGE_AXIS);
 
-     private void performRecursiveEnable(Component c, boolean enabled){
-         c.setEnabled(enabled);
-         if (c instanceof Container){
-             for (Component child : ((Container)c).getComponents()){
-                 performRecursiveEnable(child, enabled);
-             }
-         }
-     }
+        sameAsRendererLabelButton = new JRadioButton("Same as label renderer (currently " +
+                                                     getOWLModelManager().getURIRendering(getFirstRendererLabel()) + ")");
+        customLabelButton = new JRadioButton("Custom label");
 
-     public void dispose() throws Exception {
-         //To change body of implemented methods use File | Settings | File Templates.
-     }
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(sameAsRendererLabelButton);
+        bg.add(customLabelButton);
+
+        c.add(sameAsRendererLabelButton);
+        c.add(customLabelButton);
+
+        annotationURILabel = new JTextField(){
+            public Dimension getPreferredSize() {
+                return new Dimension(0, super.getPreferredSize().height);
+            }
+        };
+        annotationURILabel.setEditable(false);
+        annotationSelectButton = new JButton(new AbstractAction("..."){
+            public void actionPerformed(ActionEvent event) {
+                handleSelectAnnotation();
+            }
+        });
+        annotationLangSelector = new UIHelper(getOWLEditorKit()).getLanguageSelector();
+
+        JComponent labelAnnotationPane = new JPanel();
+        labelAnnotationPane.setLayout(new BoxLayout(labelAnnotationPane, BoxLayout.LINE_AXIS));
+        labelAnnotationPane.setAlignmentX(0.0f);
+        labelAnnotationPane.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        labelAnnotationPane.add(new JLabel("URI "));
+        labelAnnotationPane.add(annotationURILabel);
+        labelAnnotationPane.add(annotationSelectButton);
+
+        JComponent labelLanguagePane = new JPanel();
+        labelLanguagePane.setLayout(new BoxLayout(labelLanguagePane, BoxLayout.LINE_AXIS));
+        labelLanguagePane.setAlignmentX(0.0f);
+        labelLanguagePane.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        labelLanguagePane.add(new JLabel("Lang"));
+        labelLanguagePane.add(annotationLangSelector);
+        labelLanguagePane.add(Box.createHorizontalGlue());
+
+        customLabelPane = new JPanel();
+        customLabelPane.setLayout(new BoxLayout(customLabelPane, BoxLayout.PAGE_AXIS));
+        customLabelPane.setAlignmentX(0.0f);
+        customLabelPane.add(labelAnnotationPane);
+        customLabelPane.add(labelLanguagePane);
+
+        c.add(customLabelPane);
+
+        return c;
+    }
+
+
+    private JComponent createAutoIDPanel() {
+        JComponent c = createPane("Auto ID", BoxLayout.PAGE_AXIS);
+
+        pseudoRandomButton = new JRadioButton("Numeric (pseudo random)");
+        pseudoRandomButton.setAlignmentX(0.0f);
+
+        iterativeButton = new JRadioButton("Numeric (iterative)");
+        iterativeButton.setAlignmentX(0.0f);
+
+        autoIDStart = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        autoIDStart.setPreferredSize(new Dimension(60, 0));
+        autoIDStart.addChangeListener(new ChangeListener(){
+            public void stateChanged(ChangeEvent event) {
+                if ((Integer)autoIDEnd.getValue() != -1 &&
+                    (Integer)autoIDEnd.getValue() <= (Integer)autoIDStart.getValue()){
+                    autoIDEnd.setValue(autoIDStart.getValue());
+                }
+            }
+        });
+        autoIDEnd = new JSpinner(new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1));
+        autoIDEnd.setPreferredSize(new Dimension(60, 0));
+        autoIDEnd.addChangeListener(new ChangeListener(){
+            public void stateChanged(ChangeEvent event) {
+                if ((Integer)autoIDEnd.getValue() != -1 &&
+                    (Integer)autoIDEnd.getValue() <= (Integer)autoIDStart.getValue()){
+                    autoIDStart.setValue(autoIDEnd.getValue());
+                }
+            }
+        });
+
+        rangePanel = new JPanel();
+        rangePanel.setLayout(new BoxLayout(rangePanel, BoxLayout.LINE_AXIS));
+        rangePanel.setAlignmentX(0.0f);
+        rangePanel.setBorder(new EmptyBorder(2, 20, 2, 2));
+        rangePanel.add(new JLabel("Start"));
+        rangePanel.add(autoIDStart);
+        rangePanel.add(Box.createHorizontalGlue());
+        rangePanel.add(new JLabel("End"));
+        rangePanel.add(autoIDEnd);
+
+        JComponent iterativePanel = new JPanel();
+        iterativePanel.setLayout(new BoxLayout(iterativePanel, BoxLayout.LINE_AXIS));
+        iterativePanel.add(iterativeButton);
+        iterativePanel.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        iterativePanel.add(rangePanel);
+        iterativePanel.setAlignmentX(0.0f);
+
+        autoIDDigitCount = new JSpinner(new SpinnerNumberModel(6, 0, 255, 1));
+        JComponent paddingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        paddingPanel.setAlignmentX(0.0f);
+        paddingPanel.add(new JLabel("Digit count"));
+        paddingPanel.add(autoIDDigitCount);
+
+        autoIDPrefix = new JTextField();
+        autoIDSuffix = new JTextField();
+        JComponent xFixPanel = new JPanel();
+        xFixPanel.setLayout(new BoxLayout(xFixPanel, BoxLayout.LINE_AXIS));
+        xFixPanel.setAlignmentX(0.0f);
+        xFixPanel.add(new JLabel("Prefix"));
+        xFixPanel.add(autoIDPrefix);
+        xFixPanel.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
+        xFixPanel.add(new JLabel("Suffix"));
+        xFixPanel.add(autoIDSuffix);
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(pseudoRandomButton);
+        bg.add(iterativeButton);
+
+        c.add(pseudoRandomButton);
+        c.add(iterativePanel);
+        c.add(Box.createVerticalStrut(VERTICAL_SPACE));
+        c.add(paddingPanel);
+        c.add(xFixPanel);
+
+        return c;
+    }
+
+
+    private JComponent createPane(String title, int orientation) {
+        JComponent c = new Box(orientation){
+            public Dimension getMaximumSize() {
+                return new Dimension(super.getMaximumSize().width, getPreferredSize().height);
+            }
+        };
+        c.setAlignmentX(0.0f);
+        if (title != null){
+            c.setBorder(ComponentFactory.createTitledBorder(title));
+        }
+        return c;
+    }
+
+
+    protected void handleSelectAnnotation() {
+        URI uri = new UIHelper(getOWLEditorKit()).pickAnnotationURI();
+        if (uri != null){
+            labelAnnotation = uri;
+            annotationURILabel.setText(uri.toString());
+        }
+    }
+
+    private void performRecursiveEnable(Component c, boolean enabled){
+        c.setEnabled(enabled);
+        if (c instanceof Container){
+            for (Component child : ((Container)c).getComponents()){
+                performRecursiveEnable(child, enabled);
+            }
+        }
+    }
+
+    public void dispose() throws Exception {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 
     public URI getFirstRendererLabel() {
@@ -510,4 +544,4 @@ import java.net.URISyntaxException;
 //         }
 //         System.exit(0);
 //     }
- }
+}

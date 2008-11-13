@@ -46,6 +46,8 @@ public class EntityCreationPreferences {
     private static final String DEFAULT_BASE_URI = "DEFAULT_BASE_URI";
     private static final String USE_DEFAULT_BASE_URI = "USE_DEFAULT_BASE_URI";
 
+    private static final String DEFAULT_URI_SEPARATOR = "DEFAULT_URI_SEPARATOR";
+
     private static final String USE_AUTO_ID_FOR_FRAGMENT = "USE_AUTO_ID_FOR_FRAGMENT";
 
     private static final String NAME_LABEL_GENERATE = "NAME_LABEL_GENERATE";
@@ -96,6 +98,18 @@ public class EntityCreationPreferences {
     public static void setDefaultBaseURI(URI defaultBase) {
         Preferences prefs = getPrefs();
         prefs.putString(DEFAULT_BASE_URI, defaultBase.toString());
+    }
+
+
+    public static String getDefaultSeparator() {
+        Preferences prefs = getPrefs();
+        return prefs.getString(DEFAULT_URI_SEPARATOR, "#");
+    }
+
+
+    public static void setDefaultSeparator(String sep) {
+        Preferences prefs = getPrefs();
+        prefs.putString(DEFAULT_URI_SEPARATOR, sep);
     }
 
 
