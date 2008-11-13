@@ -180,10 +180,20 @@
     <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Protege Documentation"/>
         <toolTip value="Online wiki for Protege 4.0 documentation"/>
-        <class value="org.protege.editor.core.ui.menu.DocumentationMenuAction"/>
+        <url value="http://protegewiki.stanford.edu/index.php/Protege4UserDocs"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
         <editorKitId value="any"/>
     </extension>
+
+
+    <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Release Notes"/>
+        <toolTip value="Updates for each release"/>
+        <url value="http://protege.stanford.edu/download/protege4/release-notes.html"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
+        <editorKitId value="any"/>
+    </extension>
+    
 
 
     <!-- Autoupdate preferences -->

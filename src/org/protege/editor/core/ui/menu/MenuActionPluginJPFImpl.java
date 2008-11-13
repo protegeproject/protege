@@ -2,7 +2,6 @@ package org.protege.editor.core.ui.menu;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
-
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginProperties;
@@ -11,6 +10,8 @@ import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.StringTokenizer;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -53,6 +54,8 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     public static final String EXTENSION_POINT_ID = "EditorKitMenuAction";
 
     private static final String ACCELERATOR_PARAM = "accelerator";
+
+    private static final String URL_PARAM = "url";
 
     private static final String PATH_PARAM = "path";
 
@@ -104,6 +107,25 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
             }
         }
         return null;
+    }
+
+
+    public URL getURL() {
+        String urlStr = PluginProperties.getParameterValue(getExtension(), URL_PARAM, null);
+        if (urlStr != null){
+            try {
+                return new URL(urlStr);
+            }
+            catch (MalformedURLException e) {
+                Logger.getLogger(MenuActionPluginJPFImpl.class).warn("Invalid URL for action " + getId(), e);
+            }
+        }
+        return null;
+    }
+
+
+    private boolean isClassSpecified(){
+        return PluginProperties.getParameterValue(getExtension(), PluginProperties.CLASS_PARAM_NAME, null) != null;
     }
 
 
@@ -178,10 +200,19 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
      * process.
      */
     public ProtegeAction newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ExtensionInstantiator<ProtegeAction> instantiator = new ExtensionInstantiator<ProtegeAction>(getExtension());
-        ProtegeAction menuAction = instantiator.instantiate();
+        ProtegeAction menuAction = null;
+        if (isClassSpecified()){
+            ExtensionInstantiator<ProtegeAction> instantiator = new ExtensionInstantiator<ProtegeAction>(getExtension());
+            menuAction = instantiator.instantiate();
+        }
         if (menuAction == null) {
-            menuAction = new NullMenuAction();
+            URL url = getURL();
+            if (url != null){
+                menuAction = new OpenURLMenuAction(url);
+            }
+            else{
+                menuAction = new NullMenuAction();
+            }
         }
         menuAction.putValue(AbstractAction.NAME, getName());
         String toolTip = getToolTipText();

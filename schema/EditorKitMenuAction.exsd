@@ -17,6 +17,7 @@
             <element ref="icon" minOccurs="0" maxOccurs="1"/>
             <element ref="toolTip" minOccurs="0" maxOccurs="1"/>
             <element ref="class" minOccurs="0" maxOccurs="1"/>
+            <element ref="url" minOccurs="0" maxOccurs="1"/>
             <element ref="path"/>
             <element ref="accelerator" minOccurs="0" maxOccurs="1"/>
             <element ref="editorKitId"/>
@@ -103,6 +104,20 @@
                   <meta.attribute kind="java"/>
                </appInfo>
             </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+    <element name="url">
+        <annotation>
+         <documentation>
+            If the url is set and no class is specified then this action will
+            open a browser at the specified location.
+             If the class is specified, this parameter is ignored.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="value" type="string" use="required">
          </attribute>
       </complexType>
    </element>
