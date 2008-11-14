@@ -2,6 +2,7 @@ package org.protege.editor.core.update;
 
 
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 
@@ -100,7 +101,7 @@ public class PluginPanel extends JPanel {
                 PluginTable table = (PluginTable)tabbedPane.getSelectedComponent();
                 updateInfoPanel(table.getCurrentUpdateInfo());
             }
-        });        
+        });
 
         alwaysShow = new JCheckBox("Always check for updates on startup.", true);
         alwaysShow.addActionListener(new ActionListener(){
@@ -267,14 +268,15 @@ public class PluginPanel extends JPanel {
     public static List<PluginInfo> showDialog(Map<String, DownloadsProvider> downloadsProviders) {
         PluginPanel panel = new PluginPanel(downloadsProviders);
         Object [] options = new String []{"Install", "Not now"};
-        int ret = JOptionPane.showOptionDialog(null,
-                                               panel,
-                                               "Automatic Update",
-                                               JOptionPane.OK_CANCEL_OPTION,
-                                               JOptionPane.PLAIN_MESSAGE,
-                                               null,
-                                               options,
-                                               options[0]);
+        int ret = JOptionPaneEx.showConfirmDialog(null,
+                                                  "Automatic Update",
+                                                  panel,
+                                                  JOptionPane.PLAIN_MESSAGE,
+                                                  JOptionPane.OK_CANCEL_OPTION,
+                                                  null,
+                                                  options,
+                                                  options[0]);
+
         if (ret == 0) {
             return panel.getPluginsToInstall();
         }
