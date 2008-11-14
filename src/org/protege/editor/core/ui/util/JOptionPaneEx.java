@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
 
 /**
@@ -16,7 +17,7 @@ import java.awt.event.WindowEvent;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class JOptionPaneEx extends JOptionPane {
+public class JOptionPaneEx {
 
     private static Logger logger = Logger.getLogger(JOptionPaneEx.class);
 
@@ -25,6 +26,16 @@ public class JOptionPaneEx extends JOptionPane {
                                         int optionType, final JComponent defaultFocusedComponent) {
 
         JOptionPane optionPane = new JOptionPane(content, messageType, optionType);
+        JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
+        dlg.setVisible(true);
+        return getReturnValue(optionPane);
+    }
+
+    public static int showConfirmDialog(JComponent parent, String title, JComponent content, int messageType,
+                                        int optionType, final JComponent defaultFocusedComponent,
+                                        Object[] options, Object defaultOption) {
+
+        JOptionPane optionPane = new JOptionPane(content, messageType, optionType, null, options, defaultOption);
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
         dlg.setVisible(true);
         return getReturnValue(optionPane);
@@ -78,6 +89,9 @@ public class JOptionPaneEx extends JOptionPane {
 
     private static int getReturnValue(JOptionPane optionPane) {
         Object value = optionPane.getValue();
+        if (value != null && optionPane.getOptions() != null){
+            value = Arrays.binarySearch(optionPane.getOptions(), value);
+        }
         return (value != null) ? (Integer) value : JOptionPane.CLOSED_OPTION;
     }
 
