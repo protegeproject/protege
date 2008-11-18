@@ -100,7 +100,7 @@ public class ProtegeApplication implements BundleActivator {
 
     private static ErrorLog errorLog = new ErrorLog();
 
-    private ProtegeWelcomeFrame welcomeFrame;
+    private JFrame welcomeFrame;
 
     private static boolean quitting = false;
 
