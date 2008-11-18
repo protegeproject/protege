@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame.property;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.OWLReasonerUtils;
 import org.protege.editor.owl.ui.frame.*;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -106,7 +107,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     protected final void refillInferred() {
         try {
             // filter the domains to get the most specific
-            Set<Set<OWLDescription>> mostSpecificDomains = getMostSpecific(getInferredDomains());
+            Set<Set<OWLDescription>> mostSpecificDomains = new OWLReasonerUtils(getReasoner()).getMostSpecificSets(getInferredDomains());
 
             for (Set<OWLDescription> domains : mostSpecificDomains) {
                 for (OWLDescription domain : domains){
@@ -120,30 +121,6 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);
         }
-    }
-
-
-    private Set<Set<OWLDescription>> getMostSpecific(Set<Set<OWLDescription>> setOfSets) throws OWLReasonerException {
-        Set<Set<OWLDescription>> results = new HashSet<Set<OWLDescription>>();
-        for(Set<OWLDescription> descrs : setOfSets) {
-            if (results.isEmpty()){
-                results.add(descrs);
-            }
-            else{
-                for (Set<OWLDescription> result : results){
-                    if (getReasoner().isSubClassOf(descrs.iterator().next(), result.iterator().next())){
-                        // if the new set is more specific than an existing one, replace the existing one
-                        results.remove(result);
-                        results.add(descrs);
-                    }
-                    else if (!getReasoner().isSubClassOf(result.iterator().next(), descrs.iterator().next())){
-                        // if the new set is not more general than an existing one, add to the set
-                        results.add(descrs);
-                    }
-                }
-            }
-        }
-        return results;
     }
 
 

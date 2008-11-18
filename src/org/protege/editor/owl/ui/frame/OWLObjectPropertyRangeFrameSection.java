@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.OWLReasonerUtils;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -46,7 +47,8 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
     protected void refillInferred() {
         try {
             // Inferred stuff
-            for (OWLDescription inferredRange : getOWLModelManager().getReasoner().getRanges(getRootObject())) {
+            Set<OWLDescription> inferredRanges = new OWLReasonerUtils(getReasoner()).getMostSpecific(getInferredRanges());
+            for (OWLDescription inferredRange : inferredRanges) {
                 if (!addedRanges.contains(inferredRange)) {
                     OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(
                             getRootObject(),
@@ -63,6 +65,11 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
         catch (OWLReasonerException e) {
             throw new OWLRuntimeException(e);
         }
+    }
+
+
+    private Set<OWLDescription> getInferredRanges() throws OWLReasonerException {
+        return getOWLModelManager().getReasoner().getRanges(getRootObject());
     }
 
 
