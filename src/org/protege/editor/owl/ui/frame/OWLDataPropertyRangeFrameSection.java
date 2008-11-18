@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLDataRange;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owl.model.*;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -18,6 +18,8 @@ import java.util.Comparator;
 public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLDataPropertyRangeAxiom, OWLDataRange> {
 
     public static final String LABEL = "Ranges";
+
+    private Set<OWLDataRange> addedRanges = new HashSet<OWLDataRange>();
 
 
     public OWLDataPropertyRangeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {
@@ -36,13 +38,43 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
 
     protected void clear() {
+        addedRanges.clear();
     }
 
 
     protected void refill(OWLOntology ontology) {
         for (OWLDataPropertyRangeAxiom ax : ontology.getDataPropertyRangeAxiom(getRootObject())) {
             addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+            addedRanges.add(ax.getRange());
         }
+    }
+
+
+    protected void refillInferred() {
+        try {
+            // Inferred stuff
+            for (OWLDataRange inferredRange : getInferredRanges()) {
+                if (!addedRanges.contains(inferredRange)) {
+                    OWLDataPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLDataPropertyRangeAxiom(
+                            getRootObject(),
+                            inferredRange);
+                    addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(),
+                                                                     this,
+                                                                     null,
+                                                                     getRootObject(),
+                                                                     inferredAxiom));
+                }
+                addedRanges.add(inferredRange);
+            }
+        }
+        catch (OWLReasonerException e) {
+            throw new OWLRuntimeException(e);
+        }
+    }
+
+
+    private Set<OWLDataRange> getInferredRanges() throws OWLReasonerException {
+        return getOWLModelManager().getReasoner().getRanges(getRootObject());
     }
 
 
