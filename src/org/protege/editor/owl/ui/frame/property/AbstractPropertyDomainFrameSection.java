@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame.property;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.inference.OWLReasonerUtils;
 import org.protege.editor.owl.ui.frame.*;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -106,10 +105,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
     protected final void refillInferred() {
         try {
-            // filter the domains to get the most specific
-            Set<Set<OWLDescription>> mostSpecificDomains = new OWLReasonerUtils(getReasoner()).getMostSpecificSets(getInferredDomains());
-
-            for (Set<OWLDescription> domains : mostSpecificDomains) {
+            for (Set<OWLDescription> domains : getInferredDomains()) {
                 for (OWLDescription domain : domains){
                     if (!addedDomains.contains(domain)) {
                         addRow(createFrameSectionRow(createAxiom(domain), null));
@@ -119,7 +115,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
             }
         }
         catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+            e.printStackTrace();
         }
     }
 
