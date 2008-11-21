@@ -9,7 +9,7 @@ Bundle-Description: An OWL plugin for the Protege Editor Framework
 Bundle-Vendor: Protege Development Team (First working version written\
                at the University of Manchester by Matthew Horridge)
 Bundle-ClassPath: .
-Bundle-Version: 4.0.103
+Bundle-Version: 4.0.104
 Require-Bundle: org.eclipse.equinox.registry, \
                 org.eclipse.equinox.common, \
                 org.protege.editor.core.application, \
