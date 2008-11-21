@@ -84,6 +84,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private ListSelectionListener listSelListener = new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
+            updateErrors();
             handleStateChanged();
         }
     };
@@ -213,7 +214,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private void updateErrors() {
         final OWLModelManager mngr = eKit.getModelManager();
         renamer = new EntityFindAndReplaceURIRenamer(mngr.getOWLOntologyManager(),
-                                                     list.getAllValues(),
+                                                     list.getFilteredValues(),
                                                      getOntologies(),
                                                      getFindValue(), getReplaceWithValue());
         errors = renamer.getErrors().keySet();
