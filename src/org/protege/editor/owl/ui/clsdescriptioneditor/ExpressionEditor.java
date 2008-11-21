@@ -64,8 +64,6 @@ public class ExpressionEditor<O> extends JTextPane
 
     private int errorEndIndex;
 
-    private int errorCheckDelay = 1000;
-
     private Timer timer;
 
 
@@ -108,7 +106,7 @@ public class ExpressionEditor<O> extends JTextPane
         };
         getDocument().addDocumentListener(docListener);
 
-        timer = new Timer(errorCheckDelay, new ActionListener() {
+        timer = new Timer(ExpressionEditorPreferences.getInstance().getCheckDelay(), new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 handleTimer();
             }

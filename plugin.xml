@@ -1039,27 +1039,25 @@
 
     <!-- Ontology prefs -->
 
-    <extension
-            id="ui.ontology.OntologyPreferencesPanel"
-            point="org.protege.editor.core.application.preferencespanel">
+    <extension id="ui.ontology.OntologyPreferencesPanel"
+               point="org.protege.editor.core.application.preferencespanel">
         <label value="New Ontologies"/>
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
 
-    <extension
-            id="io.rdfxmlwriter.XMLWriterPreferences"
-            point="org.protege.editor.core.application.preferencespanel">
+    <extension id="io.rdfxmlwriter.XMLWriterPreferences"
+               point="org.protege.editor.core.application.preferencespanel">
         <label value="XML Writer"/>
         <class value="org.protege.editor.owl.ui.preferences.XMLWriterPreferencesPanel"/>
     </extension>
 
     <!-- Finder prefs -->
 
-    <extension id="ui.find.prefs"
+    <extension id="ui.general.prefs"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="Find/Search"/>
-        <class value="org.protege.editor.owl.ui.find.FinderPreferencesPanel"/>
+        <label value="General"/>
+        <class value="org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel"/>
     </extension>
 
     <!-- Reasoner prefs -->

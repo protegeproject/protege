@@ -7,6 +7,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owl.model.*;
@@ -50,7 +51,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     private boolean currentlyValid = true;
 
-    private Timer timer = new Timer(500, new ActionListener() {
+    private Timer timer = new Timer(ExpressionEditorPreferences.getInstance().getCheckDelay(), new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             performCheck();
             timer.stop();
