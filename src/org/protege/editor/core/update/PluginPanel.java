@@ -185,6 +185,7 @@ public class PluginPanel extends JPanel {
         pane.setBorder(new EmptyBorder(12, 12, 12, 12));
         pane.setPreferredSize(new Dimension(300, 200));
         pane.setEditable(false);
+        pane.setFont(new Font("SansSerif", Font.PLAIN, 9));
         pane.addHyperlinkListener(new HyperlinkListener(){
             public void hyperlinkUpdate(HyperlinkEvent event) {
                 if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED &&
