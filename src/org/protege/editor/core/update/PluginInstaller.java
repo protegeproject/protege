@@ -1,15 +1,21 @@
 package org.protege.editor.core.update;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.core.BundleManager;
 
 
 /**
@@ -92,7 +98,7 @@ public class PluginInstaller {
         }
 
         if (doCopy){
-            File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
+            File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
             final File newPluginFile = new File(pluginsFolder, pluginFile.getName());
             if (pluginFile.renameTo(newPluginFile)){
                 if (oldPluginFile != null && oldPluginFile.exists()){
