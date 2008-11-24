@@ -139,7 +139,8 @@ own.
 @org.protege.objectpropertycategory
 @org.protege.datapropertycategory
 @org.protege.annotationpropertycategory
-@org.protege.individualcatetory
+@org.protege.individualcategory
+@org.protege.datatypecategory
 @org.protege.ontologycategory
 
 Other values can be used but if you want them to display something needs to be put into the ProtegeProperties showing
@@ -168,6 +169,7 @@ how they should be displayed in the Views menu.
 @org.protege.datapropertycategory
 @org.protege.annotationpropertycategory
 @org.protege.individualcategory
+@org.protege.datatypecategory
 
                </documentation>
             </annotation>
