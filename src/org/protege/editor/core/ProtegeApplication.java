@@ -1,12 +1,25 @@
 package org.protege.editor.core;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JFrame;
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
-import org.osgi.framework.*;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
@@ -21,19 +34,12 @@ import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
-import org.protege.editor.core.util.BundleBuilder;
 
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.List;
-import java.util.Locale;
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -75,15 +81,7 @@ public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
 
-    public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
-
-    public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
-    public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
-    public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
-    
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
-
-    public final static char BUNDLE_EXTRA_SEPARATOR = ':';
 
     public static final String ID = "org.protege.editor.core.application";
 
@@ -91,10 +89,9 @@ public class ProtegeApplication implements BundleActivator {
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
     
-
     private static BundleContext context;
-
-    private boolean bundles_loaded = false;
+    
+    private static BundleManager bundleManager;
 
     private List<URI> commandLineURIs;
 
@@ -125,6 +122,7 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
+        bundleManager.disposePlugins();
         logger.info("Thank you for using Protege. Goodbye.");
     }
 
@@ -261,6 +259,11 @@ public class ProtegeApplication implements BundleActivator {
             }
         });
     }
+    
+    private void loadPlugins() {
+        bundleManager = new BundleManager(context);
+        bundleManager.loadPlugins();
+    }
 
 
     private void processCommandLineURIs() {
@@ -285,118 +288,6 @@ public class ProtegeApplication implements BundleActivator {
         catch (Throwable t) { // it is not important enough to stop anything.
             logger.warn("Error processing command line arguments " + t);
         }
-    }
-
-
-    private List<File> getPluginBundles() {
-        ArrayList<File> pluginBundles = new ArrayList<File>();
-        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
-        if  (dir_name != null) {
-            File dir = new File(dir_name);
-            if (dir.exists() && dir.isDirectory()) {
-                for (File f : dir.listFiles()) pluginBundles.add(f);
-            }
-            else {
-                logger.error("Plugin directory " + dir_name + " is invalid");
-            }
-        }
-        return pluginBundles;
-    }
-
-
-    private List<File> getExtraBundles() {
-        String remaining = System.getProperty(BUNDLE_EXTRA_PROP);
-        List<File> extra_bundles = new ArrayList<File>();
-        while (remaining != null && remaining.length() != 0) {
-            int index = remaining.indexOf(File.pathSeparator);
-            if (index < 0) {
-                extra_bundles.add(new File(remaining));
-                return extra_bundles;
-            }
-            else {
-                extra_bundles.add(new File(remaining.substring(0, index)));
-                remaining = remaining.substring(index+1);
-            }
-        }
-        return extra_bundles;
-    }
-
-
-    private void loadPlugins() {
-        if (bundles_loaded) return;
-        List<File> locations = new ArrayList<File>();
-        locations.addAll(getPluginBundles());
-        locations.addAll(getExtraBundles());
-        if (locations.isEmpty()) {
-            logger.warn("No plugins found");
-        }
-        List<Bundle> plugins = new ArrayList<Bundle>();
-        boolean warnAboutDirectories = false;
-        for (File plugin : locations) {
-            Bundle b = null;
-            try {
-                b = context.installBundle(getBundleLocation(plugin));
-                plugins.add(b);
-            }
-            catch (Throwable t) {
-                if (isTrivialBundleLoadException(plugin, t)) {
-                    logger.error("Could not install plugin in file/directory named " + plugin + ".  See the logs for more info.");
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Exception caught", t);
-                    }
-                }
-                else {
-                    logger.error("Could not install plugin in file/directory named " + plugin, t);
-                }
-                if (plugin.isDirectory() && canReadDirectoryBundles()) warnAboutDirectories = true;
-            }
-        }
-        if (warnAboutDirectories) {
-            logger.warn("Consider using -D" + OSGI_READS_DIRECTORIES + "=false");
-        }
-        for (Bundle b  : plugins) {
-            try {
-                b.start();
-                String name = (String) b.getHeaders().get(Constants.BUNDLE_NAME);
-                if (name == null) {
-                    name = b.getSymbolicName();
-                }
-                logger.info("Installed plugin " + name);
-                if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && b.getResource("/plugin.xml") == null) {
-                    logger.info("\t" + name + " Plugin has no plugin.xml resource");
-                }
-
-            }
-            catch (Throwable t) {
-                logger.error("Could not start bundle " + b.getSymbolicName(), t);
-            }
-        }
-        bundles_loaded = true;
-    }
-
-
-    private String getBundleLocation(File source) throws IOException {
-        boolean directoryBundlesWork = canReadDirectoryBundles();
-        if (source.isFile() || directoryBundlesWork) { // the normal case
-            return "file:" + source.getPath();
-        }
-        else { // this is a hack for IDE developers
-            long start = System.currentTimeMillis();
-            BundleBuilder builder = new BundleBuilder(source);
-            File jar = File.createTempFile("ProtegeBundle", ".jar");
-            builder.createJarFile(jar);
-            logger.warn("Converted directory (" + source + ") to plugin (" + (System.currentTimeMillis() - start) + " ms)");
-            return jar.toURI().toString();
-        }
-    }
-
-    private boolean isTrivialBundleLoadException(File plugin, Throwable t) {
-        return plugin.getName().equals(".DS_Store");
-    }
-
-
-    private boolean canReadDirectoryBundles() {
-        return System.getProperty(OSGI_READS_DIRECTORIES, "true").toLowerCase().equals("true");
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -454,6 +345,9 @@ public class ProtegeApplication implements BundleActivator {
         return errorLog;
     }
 
+    public static BundleManager getBundleManager() {
+        return bundleManager;
+    }
 
     public static boolean handleQuit() {
         quitting = true;
