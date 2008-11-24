@@ -3,13 +3,11 @@ package org.protege.editor.core.ui.about;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 import org.protege.editor.core.ProtegeApplication;
@@ -26,7 +24,7 @@ import org.protege.editor.core.ProtegeApplication;
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
-    private List<Bundle> bundles = new ArrayList<Bundle>();
+    private List<Bundle> bundles;
     
     public enum Columns  {
         NAME("Name/ID"), VERSION("Version"), BUILD("Build");
@@ -44,10 +42,7 @@ public class PluginInfoTableModel extends AbstractTableModel {
 
 
     public PluginInfoTableModel() {
-        BundleContext context = ProtegeApplication.getContext();
-        for (Bundle b : context.getBundles()) {
-            bundles.add(b);
-        }
+        bundles = ProtegeApplication.getBundleManager().getPlugins();
     }
 
 
