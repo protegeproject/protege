@@ -40,6 +40,8 @@ public class ProtegeProperties extends Properties {
 
     public static final String INDIVIDUAL_VIEW_CATEGORY = PROTEGE_PREFIX + "individualcategory";
 
+    public static final String DATATYPE_VIEW_CATEGORY = PROTEGE_PREFIX + "datatypecategory";
+
     public static final String ONTOLOGY_VIEW_CATEGORY = PROTEGE_PREFIX + "ontologycategory";
 
 
