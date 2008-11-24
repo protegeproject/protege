@@ -126,7 +126,7 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
 
         public void visit(OWLDataType owlDataType) {
-            nav = null;
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.DATATYPE_VIEW_CATEGORY);
         }
     }
 }
