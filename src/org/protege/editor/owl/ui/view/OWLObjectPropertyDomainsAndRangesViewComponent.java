@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JScrollPane;
-
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyDomainsAndRangesFrame;
+import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.semanticweb.owl.model.OWLObjectProperty;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -25,6 +25,7 @@ public class OWLObjectPropertyDomainsAndRangesViewComponent extends AbstractOWLO
                                                     new OWLObjectPropertyDomainsAndRangesFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
+        list.addToPopupMenu(new CreateNewEquivalentClassAction());
     }
 
 

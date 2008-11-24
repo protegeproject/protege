@@ -262,6 +262,17 @@
         <navigates value="@org.protege.classcategory"/>
     </extension>
 
+
+    <extension id="AnonymousClassesView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Anonymous Classes"/>
+        <class value="org.protege.editor.owl.ui.view.AnonymousClassesView"/>
+        <headerColor value="@org.protege.classcolor"/>
+        <category value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.classcategory"/>
+    </extension>
+
+
     <extension id="OWLObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Object Properties"/>

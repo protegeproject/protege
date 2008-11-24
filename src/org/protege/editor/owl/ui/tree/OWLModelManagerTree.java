@@ -53,7 +53,9 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
 
     private void initialise(OWLEditorKit owlEditorKit) {
-        setCellRenderer(new OWLObjectTreeCellRenderer(owlEditorKit));
+        final OWLObjectTreeCellRenderer renderer = new OWLObjectTreeCellRenderer(owlEditorKit);
+        renderer.setWrap(false);
+        setCellRenderer(renderer);
         setHighlightKeywords(false);
         setupListener();
         installPopupMenu();

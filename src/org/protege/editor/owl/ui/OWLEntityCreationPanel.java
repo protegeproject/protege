@@ -35,7 +35,7 @@ import java.util.HashSet;
  */
 public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implements VerifiedInputEditor {
 
-    private final int INTERNAL_PADDING = 10;
+    private final int INTERNAL_PADDING = 5;
 
     private OWLEditorKit owlEditorKit;
 
@@ -66,11 +66,16 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
 
+    public void setEnabled(boolean b) {
+        textField.setEnabled(b);
+        super.setEnabled(b);
+    }
+
+
     private void createUI(String message) {
         setLayout(new BorderLayout());
 
         JPanel entryPanel = new JPanel(new BorderLayout());
-        entryPanel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
         textField = new JTextField(30);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -85,7 +90,13 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 update();
             }
         });
-        entryPanel.add(new JLabel(message), BorderLayout.NORTH);
+
+        if (message != null){
+            final JLabel label = new JLabel(message);
+            label.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
+            entryPanel.add(label, BorderLayout.NORTH);
+                    }
+
         entryPanel.add(textField, BorderLayout.SOUTH);
 
 

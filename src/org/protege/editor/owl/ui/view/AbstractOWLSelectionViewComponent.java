@@ -235,6 +235,12 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         return canNavigate(ProtegeProperties.INDIVIDUAL_VIEW_CATEGORY);
     }
 
+
+    protected boolean isOWLDatatypeView() {
+        return canNavigate(ProtegeProperties.DATATYPE_VIEW_CATEGORY);
+    }
+
+
     // by default, asks the plugin whether the entity can be displayed
     private boolean canNavigate(String type){
         ViewComponentPlugin plugin = getWorkspace().getViewManager().getViewComponentPlugin(getView().getId());
@@ -277,7 +283,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
 
 
         public void visit(OWLDataType owlDataType) {
-            // do nothing
+            result = isOWLDatatypeView();
         }
     }
 }

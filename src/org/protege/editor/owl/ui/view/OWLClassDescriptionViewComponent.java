@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.ui.frame.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.frame.OWLSubClassAxiomFrameSectionRow;
+import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.framelist.OWLFrameListPopupMenuAction;
 import org.semanticweb.owl.model.*;
@@ -33,6 +34,7 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(sp);
         list.addToPopupMenu(new ConvertSelectionToEquivalentClassAction());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction());
     }
 
 

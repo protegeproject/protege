@@ -11,6 +11,7 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousClassManager;
 import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
@@ -214,6 +215,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
         registerOntologySelectionStrategy(activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this));
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
+
+        put(AnonymousClassManager.ID, new AnonymousClassManager(this));
 
         put(OntologySourcesManager.ID, new OntologySourcesManager(this));
     }
@@ -477,7 +480,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public boolean removeOntology(OWLOntology ont) {
         if (manager.contains(ont.getURI()) && manager.getOntologies().size() > 1){
-            
+
             boolean resetActiveOntologyRequired = ont.equals(activeOntology);
             activeOntologies.remove(ont);
             dirtyOntologies.remove(ont);
@@ -497,7 +500,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             else{
                 setActiveOntology(activeOntology, true);
             }
-           return true;
+            return true;
         }
         return false;
     }
@@ -945,13 +948,19 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public String getRendering(OWLObject object) {
         // Look for a cached version of the rending first!
         if (object instanceof OWLEntity) {
-            getOWLEntityRenderer();
-            String rendering = owlEntityRenderingCache.getRendering((OWLEntity) object);
-            if(rendering != null) {
-                return rendering;
+            AnonymousClassManager anonymousClassManager = get(AnonymousClassManager.ID);
+            if (object instanceof OWLClass && anonymousClassManager.isAnonymous((OWLClass)object)){
+                return owlObjectRenderingCache.getRendering(anonymousClassManager.getExpression((OWLClass)object), getOWLObjectRenderer());
             }
-            else {
-                return getOWLEntityRenderer().render((OWLEntity) object);
+            else{
+                getOWLEntityRenderer();
+                String rendering = owlEntityRenderingCache.getRendering((OWLEntity) object);
+                if(rendering != null) {
+                    return rendering;
+                }
+                else {
+                    return getOWLEntityRenderer().render((OWLEntity) object);
+                }
             }
         }
 
