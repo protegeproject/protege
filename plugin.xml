@@ -265,7 +265,7 @@
 
     <extension id="AnonymousClassesView"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Anonymous Classes"/>
+        <label value="Anonymous Defined Classes"/>
         <class value="org.protege.editor.owl.ui.view.AnonymousClassesView"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>

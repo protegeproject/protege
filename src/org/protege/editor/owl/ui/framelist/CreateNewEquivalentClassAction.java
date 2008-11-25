@@ -42,7 +42,7 @@ import java.util.List;
 public class CreateNewEquivalentClassAction extends OWLFrameListPopupMenuAction {
 
     protected String getName() {
-        return "Create new equivalent class";
+        return "Create new defined class";
     }
 
 
