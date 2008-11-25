@@ -2,7 +2,9 @@ package org.protege.editor.owl.model.description.anonymouscls;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.AutoIDException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.entity.PseudoRandomAutoIDGenerator;
 import org.semanticweb.owl.model.*;
 
 import java.net.URI;
@@ -43,15 +45,16 @@ public class AnonymousClassManager implements Disposable {
 
     public static final String ID = AnonymousClassManager.class.getName();
 
-    private static final String DEFAULT_ANON_CLASS_URI_PREFIX = "http://www.co-ode.org/ontologies/meta/anon#";
+    private static final String DEFAULT_ANON_CLASS_URI_PREFIX = "http://www.co-ode.org/ontologies/owlx/anon#";
 
     private OWLModelManager mngr;
 
-    private int i = 0;
+    private PseudoRandomAutoIDGenerator idGen;
 
 
     public AnonymousClassManager(OWLModelManager mngr) {
         this.mngr = mngr;
+        idGen = new PseudoRandomAutoIDGenerator();
     }
 
 
@@ -74,7 +77,12 @@ public class AnonymousClassManager implements Disposable {
     private URI getNextID() {
         URI uri;
         do{
-            uri = URI.create(DEFAULT_ANON_CLASS_URI_PREFIX + "anon" + i++);
+            try {
+                uri = URI.create(DEFAULT_ANON_CLASS_URI_PREFIX + idGen.getNextID(OWLClass.class));
+            }
+            catch (AutoIDException e) {
+                throw new RuntimeException(e);
+            }
         }
         while (entityExists(uri));
         return uri;
