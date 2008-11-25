@@ -5,6 +5,7 @@ import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.model.description.anonymouscls.AnonymousClassManager;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.OWLEntityRemover;
 
@@ -16,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -48,7 +50,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Nov 24, 2008<br><br>
  */
-public class AnonymousClassesView extends AbstractActiveOntologyViewComponent implements Deleteable {
+public class AnonymousClassesView extends AbstractActiveOntologyViewComponent implements Deleteable, Copyable {
 
     private MList list;
 
@@ -75,7 +77,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
         list.addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                for (ChangeListener l : listeners){
+                for (ChangeListener l : new ArrayList<ChangeListener>(listeners)){
                     l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
                 }
                 Object item = list.getSelectedValue();
@@ -121,6 +123,20 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
             ((AnonymousClassItem)clsItem).getOWLClass().accept(remover);
         }
         getOWLModelManager().applyChanges(remover.getChanges());
+    }
+
+
+    public boolean canCopy() {
+        return list.getSelectedIndex() >= 0;
+    }
+
+
+    public java.util.List<OWLObject> getObjectsToCopy() {
+        List<OWLObject> sel = new ArrayList<OWLObject>();
+for (Object clsItem : list.getSelectedValues()){
+            sel.add(((AnonymousClassItem)clsItem).getOWLClass());
+        }
+        return sel;
     }
 
 

@@ -78,7 +78,7 @@ public class CreateEquivalentClassPanel extends JPanel implements VerifiedInputE
     public CreateEquivalentClassPanel(OWLEditorKit eKit) {
         setLayout(new BorderLayout());
 
-        anonymousButton = new JRadioButton("Anonymous", true);
+        anonymousButton = new JRadioButton("Anonymous class", true);
         anonymousButton.setAlignmentX(0.0f);
         namedButton = new JRadioButton("Named class", !anonymousButton.isSelected());
         namedButton.setAlignmentY(0.0f);
@@ -139,7 +139,7 @@ public class CreateEquivalentClassPanel extends JPanel implements VerifiedInputE
         AnonymousClassManager anonClassManager = eKit.getOWLModelManager().get(AnonymousClassManager.ID);
         if (anonClassManager != null){
             CreateEquivalentClassPanel panel = new CreateEquivalentClassPanel(eKit);
-            int ret = JOptionPaneEx.showValidatingConfirmDialog(eKit.getOWLWorkspace().getRootPane(), "Create equivalent class", panel,
+            int ret = JOptionPaneEx.showValidatingConfirmDialog(eKit.getOWLWorkspace().getRootPane(), "Create defined class", panel,
                                                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION,
                                                                 panel.getDefaultFocusedComponent());
 
@@ -154,7 +154,7 @@ public class CreateEquivalentClassPanel extends JPanel implements VerifiedInputE
             }
         }
         else{
-            creationSet = OWLEntityCreationPanel.showDialog(eKit, "Create equivalent class", OWLClass.class);
+            creationSet = OWLEntityCreationPanel.showDialog(eKit, "Create defined class", OWLClass.class);
             appendDefinitionToCreationSet(creationSet, desc, eKit);
         }
         return creationSet;
