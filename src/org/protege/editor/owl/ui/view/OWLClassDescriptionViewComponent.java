@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.ui.frame.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.frame.OWLSubClassAxiomFrameSectionRow;
+import org.protege.editor.owl.ui.framelist.CreateClosureAxiomAction;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.framelist.OWLFrameListPopupMenuAction;
@@ -34,7 +35,8 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(sp);
         list.addToPopupMenu(new ConvertSelectionToEquivalentClassAction());
-        list.addToPopupMenu(new CreateNewEquivalentClassAction());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLClass>());
+        list.addToPopupMenu(new CreateClosureAxiomAction());
     }
 
 
@@ -58,7 +60,7 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
     }
 
 
-    private class ConvertSelectionToEquivalentClassAction extends OWLFrameListPopupMenuAction {
+    private class ConvertSelectionToEquivalentClassAction extends OWLFrameListPopupMenuAction<OWLClass> {
 
         protected void initialise() throws Exception {
         }

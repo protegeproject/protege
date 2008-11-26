@@ -746,11 +746,16 @@ public class OWLFrameList2<R extends Object> extends MList implements
         // instead, add handling for the context menu and double click editing
         // Also must implement discontiguous multi-selection
         protected MouseInputListener createMouseInputListener() {
+
             return new MouseInputHandler(){
 
+                boolean showingPopup = false;
+
                 public void mousePressed(MouseEvent e) {
+                    showingPopup = false;
                     lastMouseDownPoint = e.getPoint();
                     if (e.isPopupTrigger()) {
+                        showingPopup = true;
                         showPopupMenu(e);
                     }
                     else if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0){
@@ -763,12 +768,14 @@ public class OWLFrameList2<R extends Object> extends MList implements
                 }
 
                 public void mouseReleased(MouseEvent e) {
-
                     if (e.isPopupTrigger()) {
+                        showingPopup = true;
                         showPopupMenu(e);
                     }
                     else if (e.getClickCount() == 2) {
-                        handleEdit();
+                        if (!showingPopup){
+                            handleEdit();
+                        }
                     }
                     else {
                         super.mouseReleased(e);
