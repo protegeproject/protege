@@ -25,7 +25,7 @@ public class OWLDataPropertyDomainsAndRangesViewComponent extends AbstractOWLDat
                                                   new OWLDataPropertyDomainsAndRangesFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addToPopupMenu(new CreateNewEquivalentClassAction());        
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLDataProperty>());
     }
 
 

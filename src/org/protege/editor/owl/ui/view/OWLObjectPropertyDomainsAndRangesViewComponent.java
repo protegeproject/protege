@@ -25,7 +25,7 @@ public class OWLObjectPropertyDomainsAndRangesViewComponent extends AbstractOWLO
                                                     new OWLObjectPropertyDomainsAndRangesFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addToPopupMenu(new CreateNewEquivalentClassAction());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLObjectProperty>());
     }
 
 

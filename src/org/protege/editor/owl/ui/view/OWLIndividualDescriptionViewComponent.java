@@ -24,7 +24,7 @@ public class OWLIndividualDescriptionViewComponent extends AbstractOWLIndividual
         list = new OWLFrameList2<OWLIndividual>(getOWLEditorKit(), new OWLIndividualFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addToPopupMenu(new CreateNewEquivalentClassAction());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLIndividual>());
     }
 
 

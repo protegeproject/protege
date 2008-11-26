@@ -5,6 +5,7 @@ import org.protege.editor.owl.ui.CreateEquivalentClassPanel;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLObject;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -39,7 +40,7 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Nov 24, 2008<br><br>
  */
-public class CreateNewEquivalentClassAction extends OWLFrameListPopupMenuAction {
+public class CreateNewEquivalentClassAction<C extends OWLObject> extends OWLFrameListPopupMenuAction<C> {
 
     protected String getName() {
         return "Create new defined class";
