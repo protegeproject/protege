@@ -102,12 +102,10 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
     }
 
     public void setSelectedClass(OWLClass cls) {
-        System.out.println("AbstractOWLClassHierarchyViewComponent.setSelectedClass");
         tree.setSelectedOWLObject(cls);
     }
 
     public void setSelectedClasses(Set<OWLClass> clses) {
-        System.out.println("AbstractOWLClassHierarchyViewComponent.setSelectedClasses");
         tree.setSelectedOWLObjects(clses);
     }
 
@@ -127,7 +125,6 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
     private void ensureSelection() {
         OWLClass cls = getSelectedOWLClass();
-        System.out.println("AbstractOWLClassHierarchyViewComponent.ensureSelection: " + cls);
         if (cls != null) {
             OWLClass treeSel = tree.getSelectedOWLObject();
             if (treeSel == null || !treeSel.equals(cls)) {
@@ -167,7 +164,6 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         deletableChangeListenerMediator.fireStateChanged(this);
 
         OWLClass selCls = getSelectedClass();
-        System.out.println("AbstractOWLClassHierarchyViewComponent.transmitSelection: " + selCls);
         if (selCls != null) {
             final View view = getView();
             if (view != null && !view.isPinned()){
@@ -185,7 +181,6 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
 
     protected OWLClass updateView(OWLClass selectedClass) {
-        System.out.println("AbstractOWLClassHierarchyViewComponent.updateView");
         if (tree.getSelectedOWLObject() == null) {
             if (selectedClass != null) {
                 tree.setSelectedOWLObject(selectedClass);
