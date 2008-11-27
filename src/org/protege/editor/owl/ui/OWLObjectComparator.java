@@ -28,11 +28,11 @@ public class OWLObjectComparator<E extends OWLObject> implements Comparator<E>, 
     }
 
     public int compare(E o1, E o2) {
-        int result = owlModelManager.getRendering(o1).compareToIgnoreCase(owlModelManager.getRendering(o2));
-        if (result == 0){
-            result = o1.compareTo(o2);
-        }
-        return result;
+//        int result = owlModelManager.getRendering(o1).compareToIgnoreCase(owlModelManager.getRendering(o2));
+//        if (result == 0){
+            return o1.compareTo(o2);
+//        }
+//        return result;
     }
 
     protected OWLModelManager getOWLModelManager() {

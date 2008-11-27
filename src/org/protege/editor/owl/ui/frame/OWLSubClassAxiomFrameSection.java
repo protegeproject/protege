@@ -146,7 +146,9 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
                         return -1;
                     }
                 }
-                int val = o1.getAxiom().getSuperClass().compareTo(o2.getAxiom().getSuperClass());
+//                int val = o1.getAxiom().getSuperClass().compareTo(o2.getAxiom().getSuperClass());
+                int val = getOWLModelManager().getOWLObjectComparator().compare(o1.getAxiom(), o2.getAxiom());
+
                 if(val == 0) {
                     return o1.getOntology().getURI().compareTo(o2.getOntology().getURI());
                 }
