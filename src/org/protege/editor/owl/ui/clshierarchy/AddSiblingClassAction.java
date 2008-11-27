@@ -79,7 +79,7 @@ public class AddSiblingClassAction extends OWLSelectionViewAction {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(creationSet.getOntologyChanges());
         OWLModelManager owlModelManager = owlEditorKit.getModelManager();
-        for (OWLClass par : owlModelManager.getOWLClassHierarchyProvider().getParents(cls)) {
+        for (OWLClass par : owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
             OWLDataFactory df = owlModelManager.getOWLDataFactory();
             OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
             changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));

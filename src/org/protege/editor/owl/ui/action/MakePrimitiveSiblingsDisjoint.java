@@ -38,7 +38,7 @@ public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
             return;
         }
         // TODO: Extract this and make less dependent on hierarchy provider
-        OWLObjectHierarchyProvider<OWLClass> provider = getOWLModelManager().getOWLClassHierarchyProvider();
+        OWLObjectHierarchyProvider<OWLClass> provider = getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
         Set<OWLClass> clses = new HashSet<OWLClass>();
         for (OWLClass par : provider.getParents(selCls)) {
             clses.addAll(provider.getChildren(par));

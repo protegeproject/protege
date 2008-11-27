@@ -35,7 +35,7 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
     }
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        this(editorKit, editable, editorKit.getModelManager().getOWLClassHierarchyProvider());
+        this(editorKit, editable, editorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider());
     }
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLClass> hp) {

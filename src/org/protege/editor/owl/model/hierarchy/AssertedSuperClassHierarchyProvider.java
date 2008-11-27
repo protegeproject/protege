@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -29,7 +29,7 @@ public class AssertedSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-        return owlModelManager.getOWLClassHierarchyProvider().getParents(object);
+        return owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(object);
     }
 
 
@@ -39,7 +39,7 @@ public class AssertedSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     public Set<OWLClass> getParents(OWLClass object) {
-        return owlModelManager.getOWLClassHierarchyProvider().getChildren(object);
+        return owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(object);
     }
 
 

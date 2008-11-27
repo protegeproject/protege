@@ -40,7 +40,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
             }
 
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (OWLClass desc : getOWLModelManager().getOWLClassHierarchyProvider().getChildren(getOWLClass())){
+            for (OWLClass desc : getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(getOWLClass())){
                 changes.addAll(removeDisjointsForClass(desc, ontologies));
             }
             

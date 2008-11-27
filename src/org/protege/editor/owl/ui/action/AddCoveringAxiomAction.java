@@ -34,14 +34,14 @@ public class AddCoveringAxiomAction extends SelectedOWLClassAction {
     protected void updateState() {
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         setEnabled(selectedClass != null &&
-                   getOWLModelManager().getOWLClassHierarchyProvider().getChildren(selectedClass).size() > 1);
+                   getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(selectedClass).size() > 1);
     }
 
 
     public void actionPerformed(ActionEvent e) {
         OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         // TODO: Push into OWLAPI
-        Set<OWLClass> subClses = getOWLModelManager().getOWLClassHierarchyProvider().getChildren(cls);
+        Set<OWLClass> subClses = getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(cls);
         OWLDescription coveringDesc = getOWLDataFactory().getOWLObjectUnionOf(subClses);
         OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(cls, coveringDesc);
         getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));

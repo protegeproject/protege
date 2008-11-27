@@ -73,7 +73,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
 
     protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-        return getOWLModelManager().getOWLClassHierarchyProvider();
+        return getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager owlModelManager = getOWLModelManager();
-            for (OWLClass par : owlModelManager.getOWLClassHierarchyProvider().getParents(cls)) {
+            for (OWLClass par : owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
                 OWLDataFactory df = owlModelManager.getOWLDataFactory();
                 OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
                 changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));
