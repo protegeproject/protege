@@ -39,7 +39,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     protected void refill(OWLOntology ontology) {
-        Set<OWLClass> clses = getOWLModelManager().getOWLClassHierarchyProvider().getAncestors(getRootObject());
+        Set<OWLClass> clses = getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getAncestors(getRootObject());
         clses.remove(getRootObject());
         for (OWLClass cls : clses) {
             for (OWLSubClassAxiom ax : ontology.getSubClassAxiomsForLHS(cls)) {

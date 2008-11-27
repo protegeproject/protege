@@ -22,7 +22,7 @@ public class DeleteClassAction extends AbstractDeleteEntityAction<OWLClass> {
         super("Delete selected classes",
               OWLIcons.getIcon("class.delete.png"),
               owlEditorKit,
-              owlEditorKit.getModelManager().getOWLClassHierarchyProvider(),
+              owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider(),
               clsSetProvider);
     }
 

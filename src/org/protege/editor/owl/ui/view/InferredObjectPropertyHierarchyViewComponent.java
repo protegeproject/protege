@@ -4,7 +4,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.property.InferredObjectPropertyHierarchyProvider;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
 import java.awt.*;
@@ -66,12 +65,6 @@ public class InferredObjectPropertyHierarchyViewComponent extends OWLObjectPrope
 
 
     protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-        OWLObjectHierarchyProvider<OWLObjectProperty> hp = getOWLModelManager().get(InferredObjectPropertyHierarchyProvider.ID);
-        if (hp == null){
-            hp = new InferredObjectPropertyHierarchyProvider(getOWLModelManager());
-            hp.setOntologies(getOWLModelManager().getActiveOntologies());
-            getOWLModelManager().put(InferredObjectPropertyHierarchyProvider.ID, hp);
-        }
-        return hp;
+        return getOWLModelManager().getOWLHierarchyManager().getInferredOWLObjectPropertyHierarchyProvider();
     }
 }

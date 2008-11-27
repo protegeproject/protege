@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
+import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
@@ -37,7 +38,8 @@ import java.util.Set;
 public interface OWLModelManager extends ModelManager {
 
     public static final String OWL_OBJECT_COMPARATOR_KEY = "OWL_OBJECT_COMPARATOR_KEY";
-    
+
+
     void addListener(OWLModelManagerListener listener);
 
 
@@ -169,29 +171,7 @@ public interface OWLModelManager extends ModelManager {
     public OntologyLibraryManager getOntologyLibraryManager();
 
 
-    /**
-     * This returns the class hierarchy provider whose hierarchy is
-     * generated from told information about the active ontologies.
-     */
-    OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider();
-
-
-    void rebuildOWLClassHierarchy();
-
-
-    void rebuildOWLObjectPropertyHierarchy();
-
-
-    void rebuildOWLDataPropertyHierarchy();
+    OWLHierarchyManager getOWLHierarchyManager();
 
 
     void setActiveOntology(OWLOntology activeOntology);
@@ -257,46 +237,7 @@ public interface OWLModelManager extends ModelManager {
     OWLObjectRenderer getOWLObjectRenderer();
 
 
-    /**
-     * @deprecated use <code>getOWLExpressionCheckerFactory()</code> instead
-     * @return a parser capable of parsing OWLDescriptions, Class Axioms and other OWLObjects
-     */
-    OWLDescriptionParser getOWLDescriptionParser();
-
-
     OWLExpressionCheckerFactory getOWLExpressionCheckerFactory();
-
-    /**
-     * @deprecated use <code>getEntityFinder().getMatchingOWLClasses()
-     * @param s pattern to match against
-     * @return entities matching the given string
-     */
-    List<OWLClass> getMatchingOWLClasses(String s);
-
-
-    /**
-     * @deprecated use <code>getEntityFinder().getMatchingOWLObjectProperties()
-     * @param s pattern to match against
-     * @return entities matching the given string
-     */
-    List<OWLObjectProperty> getMatchingOWLObjectProperties(String s);
-
-    /**
-     * @deprecated use <code>getEntityFinder().getMatchingOWLDataProperties()
-     * @param s pattern to match against
-     * @return entities matching the given string
-     */
-    List<OWLDataProperty> getMatchingOWLDataProperties(String s);
-
-    /**
-     * @deprecated use <code>getEntityFinder().getMatchingOWLIndividuals()
-     * @param s pattern to match against
-     * @return entities matching the given string
-     */
-    List<OWLIndividual> getMatchingOWLIndividuals(String s);
-
-
-    List<OWLDataType> getMatchingOWLDataTypes(String s);
 
 
     public OWLClass getOWLClass(String rendering);
@@ -368,4 +309,96 @@ public interface OWLModelManager extends ModelManager {
 
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Deprecated
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider();
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider();
+
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider();
+
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider();
+
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    void rebuildOWLClassHierarchy();
+
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    void rebuildOWLObjectPropertyHierarchy();
+
+
+    /**
+     * @deprecated use <code>getOWLHierarchyManager()</code> instead
+     */
+    void rebuildOWLDataPropertyHierarchy();
+
+
+    /**
+     * @deprecated use <code>getOWLExpressionCheckerFactory()</code> instead
+     * @return a parser capable of parsing OWLDescriptions, Class Axioms and other OWLObjects
+     */
+    OWLDescriptionParser getOWLDescriptionParser();
+
+
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLClasses()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
+    List<OWLClass> getMatchingOWLClasses(String s);
+
+
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLObjectProperties()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
+    List<OWLObjectProperty> getMatchingOWLObjectProperties(String s);
+
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLDataProperties()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
+    List<OWLDataProperty> getMatchingOWLDataProperties(String s);
+
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLIndividuals()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
+    List<OWLIndividual> getMatchingOWLIndividuals(String s);
+
+    /**
+     * @deprecated use <code>getEntityFinder().getMatchingOWLDataTypes()
+     * @param s pattern to match against
+     * @return entities matching the given string
+     */
+    List<OWLDataType> getMatchingOWLDataTypes(String s);
 }

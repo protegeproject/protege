@@ -46,13 +46,13 @@ public class OWLEntitySelector<O extends OWLEntity> extends JPanel {
         OWLObjectHierarchyProvider<T> hp = null;
 
         if (type.equals(OWLClass.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLClassHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
         }
         else if (type.equals(OWLObjectProperty.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLObjectPropertyHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider();
         }
         else if (type.equals(OWLDataProperty.class)){
-            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLDataPropertyHierarchyProvider();
+            hp = (OWLObjectHierarchyProvider<T>)eKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider();
         }
         else if (type.equals(OWLIndividual.class)){
             throw new UnsupportedOperationException("Cannot create a selector for individuals yet");

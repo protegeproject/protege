@@ -20,11 +20,9 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
-import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider2;
-import org.protege.editor.owl.model.hierarchy.OWLDataPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
+import org.protege.editor.owl.model.hierarchy.OWLHierarchyManagerImpl;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.cls.InferredOWLClassHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
@@ -90,8 +88,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private URIShortFormProvider uriShortFormProvider;
 
-    private OWLDescriptionParser owlDescriptionParser;
-
     private boolean includeImports = true;
 
     private OWLOntology activeOntology;
@@ -108,14 +104,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     private OWLObjectRenderingCache owlObjectRenderingCache;
 
     private EntityFinder entityFinder;
-
-    private OWLObjectHierarchyProvider<OWLClass> assertedClassHierarchyProvider;
-
-    private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
-
-    private OWLObjectHierarchyProvider<OWLObjectProperty> toldObjectPropertyHierarchyProvider;
-
-    private OWLObjectHierarchyProvider<OWLDataProperty> toldDataPropertyHierarchyProvider;
 
     private OWLReasonerManager owlReasonerManager;
 
@@ -229,18 +217,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         removeIOListener(sourcesMngr);
 
         try {
-            if (assertedClassHierarchyProvider != null) {
-                assertedClassHierarchyProvider.dispose();
-            }
-            if (inferredClassHierarchyProvider != null) {
-                inferredClassHierarchyProvider.dispose();
-            }
-            if (toldDataPropertyHierarchyProvider != null) {
-                toldDataPropertyHierarchyProvider.dispose();
-            }
-            if (toldObjectPropertyHierarchyProvider != null) {
-                toldObjectPropertyHierarchyProvider.dispose();
-            }
             getReasoner().dispose();
 
             // Empty caches
@@ -295,6 +271,16 @@ public class OWLModelManagerImpl extends AbstractModelManager
             ontologyLibraryManager = new OntologyLibraryManager();
         }
         return ontologyLibraryManager;
+    }
+
+
+    public OWLHierarchyManager getOWLHierarchyManager() {
+        OWLHierarchyManager hm = get(OWLHierarchyManager.ID);
+        if (hm == null){
+            hm = new OWLHierarchyManagerImpl(this);
+            put(OWLHierarchyManager.ID, hm);
+        }
+        return hm;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -608,74 +594,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     //////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-        if (assertedClassHierarchyProvider == null) {
-            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider2(manager);
-            assertedClassHierarchyProvider.setOntologies(getActiveOntologies());
-        }
-        return assertedClassHierarchyProvider;
-    }
 
-
-    public OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider() {
-        if (inferredClassHierarchyProvider == null) {
-            inferredClassHierarchyProvider = new InferredOWLClassHierarchyProvider(this, manager);
-        }
-        return inferredClassHierarchyProvider;
-    }
-
-
-    public OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider() {
-        if (toldObjectPropertyHierarchyProvider == null) {
-            toldObjectPropertyHierarchyProvider = new OWLObjectPropertyHierarchyProvider(manager);
-            toldObjectPropertyHierarchyProvider.setOntologies(getActiveOntologies());
-        }
-        return toldObjectPropertyHierarchyProvider;
-    }
-
-
-    public OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider() {
-        if (toldDataPropertyHierarchyProvider == null) {
-            toldDataPropertyHierarchyProvider = new OWLDataPropertyHierarchyProvider(manager);
-            toldDataPropertyHierarchyProvider.setOntologies(getActiveOntologies());
-        }
-        return toldDataPropertyHierarchyProvider;
-    }
-
-
-    public void rebuildOWLClassHierarchy() {
-        // Use the accessor methods, as we create the hierarchy lazily
-        if (assertedClassHierarchyProvider == null) {
-            // Just getting the class hierarchy provider will cause it to be rebuilt
-            getOWLClassHierarchyProvider();
-        }
-        else {
-            // Need to get an reset the active ontologies to force a rebuild
-            getOWLClassHierarchyProvider().setOntologies(getActiveOntologies());
-        }
-    }
-
-
-    public void rebuildOWLObjectPropertyHierarchy() {
-        if (toldObjectPropertyHierarchyProvider == null) {
-            // Just getting hold of the hierarchy will force a rebuild
-            getOWLObjectPropertyHierarchyProvider();
-        }
-        else {
-            getOWLObjectPropertyHierarchyProvider().setOntologies(getActiveOntologies());
-        }
-    }
-
-
-    public void rebuildOWLDataPropertyHierarchy() {
-        if (toldDataPropertyHierarchyProvider == null) {
-            // Just getting hold of the hierarchy will force a rebuild
-            getOWLDataPropertyHierarchyProvider();
-        }
-        else {
-            getOWLDataPropertyHierarchyProvider().setOntologies(getActiveOntologies());
-        }
-    }
 
 
     /**
@@ -699,16 +618,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         rebuildActiveOntologiesCache();
         // Rebuild entity indices
         rebuildEntityIndices();
-        // Rebuild the various hierarchies
-        if (assertedClassHierarchyProvider != null) {
-            rebuildOWLClassHierarchy();
-        }
-        if (toldObjectPropertyHierarchyProvider != null) {
-            rebuildOWLObjectPropertyHierarchy();
-        }
-        if (toldDataPropertyHierarchyProvider != null) {
-            rebuildOWLDataPropertyHierarchy();
-        }
         // Inform our listeners
         fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
         logger.info("... active ontology changed");
@@ -1016,11 +925,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OWLDescriptionParser getOWLDescriptionParser() {
-        return owlDescriptionParser;
-    }
-
-
     public OWLExpressionCheckerFactory getOWLExpressionCheckerFactory() {
         return owlExpressionCheckerFactory;
     }
@@ -1066,41 +970,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void setOWLEntityFactory(OWLEntityFactory owlEntityFactory) {
         this.entityFactory = owlEntityFactory;
-    }
-
-
-    public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
-        List<OWLClass> orderedResults = new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
-        List<OWLObjectProperty> orderedResults = new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
-        List<OWLDataProperty> orderedResults = new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
-        List<OWLIndividual> orderedResults = new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLDataType> getMatchingOWLDataTypes(String renderingStart) {
-        List<OWLDataType> orderedResults = new ArrayList<OWLDataType>(getEntityFinder().getMatchingOWLDataTypes(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
     }
 
 
@@ -1171,5 +1040,93 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
+    }
+
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Deprecated
+    //
+    //////////////////////////////////////////////////////////////////////////////////////
+
+
+    public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
+        return getOWLHierarchyManager().getOWLClassHierarchyProvider();
+    }
+
+
+    public OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider() {
+        return getOWLHierarchyManager().getInferredOWLClassHierarchyProvider();
+    }
+
+
+    public OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider() {
+        return getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider();
+    }
+
+
+    public OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider() {
+        return getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider();
+    }
+
+
+    public void rebuildOWLClassHierarchy() {
+        throw new RuntimeException("mngr.rebuildOWLClassHierarchy not implemented");
+    }
+
+
+    public void rebuildOWLObjectPropertyHierarchy() {
+        throw new RuntimeException("mngr.rebuildOWLObjectPropertyHierarchy not implemented");
+    }
+
+
+    public void rebuildOWLDataPropertyHierarchy() {
+        throw new RuntimeException("mngr.rebuildOWLDataPropertyHierarchy not implemented");
+    }
+
+
+    public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
+        List<OWLClass> orderedResults = new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
+    }
+
+
+    public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
+        List<OWLObjectProperty> orderedResults = new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
+    }
+
+
+    public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
+        List<OWLDataProperty> orderedResults = new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
+    }
+
+
+    public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
+        List<OWLIndividual> orderedResults = new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
+    }
+
+
+    public List<OWLDataType> getMatchingOWLDataTypes(String renderingStart) {
+        List<OWLDataType> orderedResults = new ArrayList<OWLDataType>(getEntityFinder().getMatchingOWLDataTypes(renderingStart + "*", false));
+        Collections.sort(orderedResults, getOWLObjectComparator());
+        return orderedResults;
+    }
+
+
+    private OWLDescriptionParser owlDescriptionParser;
+    
+
+    public OWLDescriptionParser getOWLDescriptionParser() {
+        return owlDescriptionParser;
     }
 }
