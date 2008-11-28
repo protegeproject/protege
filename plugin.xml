@@ -35,6 +35,11 @@
     </extension>
 
 
+    <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
+        <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
+    </extension>
+
+
     <!-- Renderer prefs -->
 
     <extension id="ui.preferences.renderer"
@@ -1093,6 +1098,9 @@
     </extension>
 
 
+
+
+
     <!-- Preferences -->
 
     <!-- Ontology prefs -->
@@ -1127,9 +1135,16 @@
         <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
     </extension>
 
-    <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
-        <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
-    </extension>
 
+
+
+
+    <!-- Move axioms kits -->
+
+    <extension id="MoveAxiomsByReference"
+               point="org.protege.editor.owl.moveaxiomskit">
+        <name value="Move axioms by reference" />
+        <class value="org.protege.editor.owl.ui.ontology.wizard.move.byreference.MoveAxiomsByReferenceKit" />
+    </extension>
 
 </plugin>

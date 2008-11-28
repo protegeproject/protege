@@ -2,15 +2,16 @@ package org.protege.editor.owl.ui.ontology.wizard.move.byreference;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureDependentSelectionPreviewPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureSelection;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLOntology;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -45,9 +46,13 @@ public class MoveAxiomsByReferenceKit extends MoveAxiomsKit implements Signature
 
     private SelectSignaturePanel selectSignaturePanel;
 
+    private SignatureDependentSelectionPreviewPanel selectPreviewPanel;
+
+
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
         List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
         panels.add(selectSignaturePanel);
+        panels.add(selectPreviewPanel);
         return panels;
     }
 
@@ -71,6 +76,8 @@ public class MoveAxiomsByReferenceKit extends MoveAxiomsKit implements Signature
     public void initialise() throws Exception {
         selectedEntities = new HashSet<OWLEntity>();
         selectSignaturePanel = new SelectSignaturePanel(this);
+
+        selectPreviewPanel = new SignatureDependentSelectionPreviewPanel(this);
     }
 
 
