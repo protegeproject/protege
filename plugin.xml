@@ -504,6 +504,50 @@
     </extension>
 
 
+    <!-- Usage Views -->
+
+    <extension id="OWLClassUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.OWLClassUsageViewComponent"/>
+        <headerColor value="@org.protege.classcolor"/>
+        <category value="@org.protege.classcategory"/>
+    </extension>
+
+    <extension id="OWLObjectPropertyUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyUsageViewComponent"/>
+        <headerColor value="@org.protege.objectpropertycolor"/>
+        <category value="@org.protege.objectpropertycategory"/>
+    </extension>
+
+    <extension id="OWLDataPropertyUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyUsageViewComponent"/>
+        <headerColor value="@org.protege.datapropertycolor"/>
+        <category value="@org.protege.datapropertycategory"/>
+    </extension>
+
+    <extension id="OWLIndividualUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.OWLIndividualUsageViewComponent"/>
+        <headerColor value="@org.protege.individualcolor"/>
+        <category value="@org.protege.individualcategory"/>
+    </extension>
+
+    <extension id="ExplanationResultsView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Explanation"/>
+        <class value="org.protege.editor.owl.ui.view.ExplanationResultsViewComponent"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
+
+
+
     <!-- Menu items -->
     <!-- File menu -->
 
@@ -1024,49 +1068,6 @@
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
         <editorKitId value="any"/>
     </extension>
-
-    <!-- Usage Views -->
-
-    <extension id="OWLClassUsageView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Class Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLClassUsageViewComponent"/>
-        <headerColor value="@org.protege.classcolor"/>
-        <category value="@org.protege.classcategory"/>
-    </extension>
-
-    <extension id="OWLObjectPropertyUsageView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Object Property Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyUsageViewComponent"/>
-        <headerColor value="@org.protege.objectpropertycolor"/>
-        <category value="@org.protege.objectpropertycategory"/>
-    </extension>
-
-    <extension id="OWLDataPropertyUsageView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Data Property Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyUsageViewComponent"/>
-        <headerColor value="@org.protege.datapropertycolor"/>
-        <category value="@org.protege.datapropertycategory"/>
-    </extension>
-
-    <extension id="OWLIndividualUsageView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Individual Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualUsageViewComponent"/>
-        <headerColor value="@org.protege.individualcolor"/>
-        <category value="@org.protege.individualcategory"/>
-    </extension>
-
-    <extension id="ExplanationResultsView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Explanation"/>
-        <class value="org.protege.editor.owl.ui.view.ExplanationResultsViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.ontologycategory"/>
-    </extension>
-
 
     <!--
 
