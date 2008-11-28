@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.cache;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousClassManager;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owl.model.*;
@@ -70,7 +70,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         clear();
         OWLEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
 
-        AnonymousClassManager anonymousClassManager = owlModelManager.get(AnonymousClassManager.ID);
+        AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
 
         OWLClass thing = owlModelManager.getOWLDataFactory().getOWLThing();
         owlClassMap.put(entityRenderer.render(thing), thing);
@@ -188,7 +188,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
             }
 
             public void visit(OWLClass entity) {
-                AnonymousClassManager anonymousClassManager = owlModelManager.get(AnonymousClassManager.ID);
+                AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
                 if (anonymousClassManager != null && !anonymousClassManager.isAnonymous(entity)){
                     addRendering(entity, owlClassMap);
                 }
@@ -217,7 +217,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         owlEntity.accept(new OWLEntityVisitor() {
 
             public void visit(OWLClass entity) {
-                AnonymousClassManager anonymousClassManager = owlModelManager.get(AnonymousClassManager.ID);
+                AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
                 if (anonymousClassManager != null && !anonymousClassManager.isAnonymous(entity)){
                     owlClassMap.remove(oldRendering);
                 }
