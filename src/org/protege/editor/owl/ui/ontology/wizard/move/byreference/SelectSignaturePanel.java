@@ -62,7 +62,12 @@ public class SelectSignaturePanel extends MoveAxiomsKitConfigurationPanel {
 
 
     public String getTitle() {
-        return "Select entities";
+        return "Select a signature";
+    }
+
+
+    public String getInstructions() {
+        return "Select a signature for your extraction";
     }
 
 

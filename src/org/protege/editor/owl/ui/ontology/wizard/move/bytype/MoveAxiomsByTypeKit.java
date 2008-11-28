@@ -2,9 +2,12 @@ package org.protege.editor.owl.ui.ontology.wizard.move.bytype;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 /*
@@ -40,22 +43,47 @@ import java.util.Set;
  */
 public class MoveAxiomsByTypeKit extends MoveAxiomsKit {
 
+    private Set<AxiomType> types;
+
+    private AxiomTypeSelectorPanel axiomTypeSelectorPanel;
+
+
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
+        panels.add(axiomTypeSelectorPanel);
+        return panels;
     }
 
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        for (OWLOntology ont : sourceOntologies){
+            for (AxiomType type : types){
+                axioms.addAll(ont.getAxioms(type));
+            }
+        }
+        return axioms;
     }
 
 
     public void initialise() throws Exception {
-        //To change body of implemented methods use File | Settings | File Templates.
+        types = new HashSet<AxiomType>();
+        axiomTypeSelectorPanel = new AxiomTypeSelectorPanel(this);
     }
 
 
     public void dispose() throws Exception {
-        //To change body of implemented methods use File | Settings | File Templates.
+        axiomTypeSelectorPanel.dispose();
+    }
+
+
+    public void setTypes(Set<AxiomType<? extends OWLAxiom>> types) {
+        this.types.clear();
+        this.types.addAll(types);
+    }
+
+
+    public Set<AxiomType> getTypes() {
+        return types;
     }
 }
