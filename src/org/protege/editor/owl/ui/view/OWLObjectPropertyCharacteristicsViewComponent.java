@@ -33,7 +33,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
 
     private JCheckBox symmetricCB;
 
-    private JCheckBox antiSymmetricCB;
+    private JCheckBox aSymmetricCB;
 
     private JCheckBox reflexiveCB;
 
@@ -53,7 +53,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         inverseFunctionalCB = new JCheckBox("Inverse functional");
         transitiveCB = new JCheckBox("Transitive");
         symmetricCB = new JCheckBox("Symmetric");
-        antiSymmetricCB = new JCheckBox("Asymmetric");
+        aSymmetricCB = new JCheckBox("Asymmetric");
         reflexiveCB = new JCheckBox("Reflexive");
         irreflexiveCB = new JCheckBox("Irreflexive");
 
@@ -62,7 +62,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         checkBoxes.add(inverseFunctionalCB);
         checkBoxes.add(transitiveCB);
         checkBoxes.add(symmetricCB);
-        checkBoxes.add(antiSymmetricCB);
+        checkBoxes.add(aSymmetricCB);
         checkBoxes.add(reflexiveCB);
         checkBoxes.add(irreflexiveCB);
 
@@ -78,7 +78,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         box.add(Box.createVerticalStrut(7));
         box.add(symmetricCB);
         box.add(Box.createVerticalStrut(7));
-        box.add(antiSymmetricCB);
+        box.add(aSymmetricCB);
         box.add(Box.createVerticalStrut(7));
         box.add(reflexiveCB);
         box.add(Box.createVerticalStrut(7));
@@ -152,7 +152,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
             }
         });
 
-        addSetter(antiSymmetricCB, new PropertyCharacteristicSetter() {
+        addSetter(aSymmetricCB, new PropertyCharacteristicSetter() {
             public OWLAxiom getAxiom() {
                 return getOWLDataFactory().getOWLAntiSymmetricObjectPropertyAxiom(getProperty());
             }
@@ -248,10 +248,10 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
                     symmetricCB.setEnabled(false);
                 }
             }
-            if (ont.getAntiSymmetricObjectPropertyAxiom(property) != null) {
-                antiSymmetricCB.setSelected(true);
+            if (ont.getAsymmetricObjectPropertyAxiom(property) != null) {
+                aSymmetricCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
-                    antiSymmetricCB.setEnabled(false);
+                    aSymmetricCB.setEnabled(false);
                 }
             }
             if (ont.getReflexiveObjectPropertyAxiom(property) != null) {

@@ -6,12 +6,9 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsWizard;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLOntologyCreationException;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * User: nickdrummond
@@ -34,36 +31,41 @@ public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
 
         if (wiz.showModalDialog() == Wizard.FINISH_RETURN_CODE){
 
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+//            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
-            OWLOntology targetOnt = wiz.getTargetOntology();
-            Set<? extends OWLAxiom> axioms = wiz.getAxioms();
-            Set<OWLOntology> sourceOnts =   wiz.getSourceOntologies();
+//            OWLOntology targetOnt = wiz.getTargetOntology();
+//            Set<? extends OWLAxiom> axioms = wiz.getAxioms();
+//            Set<OWLOntology> sourceOnts =   wiz.getSourceOntologies();
 
-            long start = System.currentTimeMillis();
-            logger.info("Moving " + axioms.size() + " axioms to " + targetOnt.getURI() + "...");
-
-            int c = 0;
-            for (OWLAxiom ax : axioms){
-                c++;
-                if (c % 1000 == 0){
-                    logger.info(c + " axioms");
-                }
-                changes.add(new AddAxiom(targetOnt, ax));
-                for (OWLOntology ont : sourceOnts){
-                    if (ont.containsAxiom(ax)){
-                        changes.add(new RemoveAxiom(ont, ax));
-                    }
-                }
+//            long start = System.currentTimeMillis();
+//            logger.info("Moving " + axioms.size() + " axioms to " + targetOnt.getURI() + "...");
+//
+//            int c = 0;
+//            for (OWLAxiom ax : axioms){
+//                c++;
+//                if (c % 1000 == 0){
+//                    logger.info(c + " axioms");
+//                }
+//                changes.add(new AddAxiom(targetOnt, ax));
+//                for (OWLOntology ont : sourceOnts){
+//                    if (ont.containsAxiom(ax)){
+//                        changes.add(new RemoveAxiom(ont, ax));
+//                    }
+//                }
+//            }
+//
+//            logger.info("...generated changes in " + (System.currentTimeMillis()-start) + "ms");
+//
+//            start = System.currentTimeMillis();
+//            logger.info("Applying changes...");
+            try {
+                getOWLModelManager().applyChanges(wiz.getChanges());
+            }
+            catch (OWLOntologyCreationException e) {
+                logger.error(e);
             }
 
-            logger.info("...generated changes in " + (System.currentTimeMillis()-start) + "ms");
-
-            start = System.currentTimeMillis();
-            logger.info("Applying changes...");
-            getOWLModelManager().applyChanges(changes);
-
-            logger.info("...move axioms done! (applied changes in "+ (System.currentTimeMillis()-start) + "ms)");
+//            logger.info("...move axioms done! (applied changes in "+ (System.currentTimeMillis()-start) + "ms)");
         }
     }
 

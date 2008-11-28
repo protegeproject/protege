@@ -40,7 +40,7 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHi
 
 
     protected OWLObjectHierarchyProvider<OWLDataProperty> getHierarchyProvider() {
-        return getOWLModelManager().getOWLDataPropertyHierarchyProvider();
+        return getOWLModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider();
     }
 
 

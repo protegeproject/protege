@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model;
 
 import org.protege.editor.core.ModelManager;
-import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -357,13 +356,6 @@ public interface OWLModelManager extends ModelManager {
      * @deprecated use <code>getOWLHierarchyManager()</code> instead
      */
     void rebuildOWLDataPropertyHierarchy();
-
-
-    /**
-     * @deprecated use <code>getOWLExpressionCheckerFactory()</code> instead
-     * @return a parser capable of parsing OWLDescriptions, Class Axioms and other OWLObjects
-     */
-    OWLDescriptionParser getOWLDescriptionParser();
 
 
     /**
