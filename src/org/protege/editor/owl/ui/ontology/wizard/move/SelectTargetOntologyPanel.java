@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
-import org.protege.editor.owl.model.selection.axioms.AllAxiomsStrategy;
-import org.semanticweb.owl.model.OWLOntology;
-
-import java.util.Set;
+import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
+import org.protege.editor.owl.OWLEditorKit;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -31,38 +28,29 @@ import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
+ * 19-Sep-2008<br><br>
  */
-public class MoveAxiomKitImpl<S extends AxiomSelectionStrategy> extends MoveAxiomsKit<S> {
+public class SelectTargetOntologyPanel extends AbstractSelectOntologiesPage {
 
-    private S strategy;
+    public static final String ID = "SelectTargetOntologyPanel";
 
-    private StrategyEditorFactory editorFactory;
-
-    public MoveAxiomKitImpl(S strategy) {
-        this.strategy = strategy;
-    }
-
-    public StrategyEditor<S> getStrategyEditor(Set<OWLOntology> ontologies) {
-        return editorFactory.getEditor(strategy, ontologies, true);
+    public SelectTargetOntologyPanel(OWLEditorKit owlEditorKit) {
+        super(ID, owlEditorKit, "Select target ontology");
     }
 
 
-    public S getAxiomSelectionStrategy() {
-        return strategy;
+    public void aboutToHidePanel() {
+        super.aboutToHidePanel();
+        ((MoveAxiomsWizard) getWizard()).setTargetOntologyURI(getOntologies().iterator().next().getURI());
     }
 
 
-    public void initialise() throws Exception {
-        editorFactory = new StrategyEditorFactory(getOWLEditorKit());
+    public Object getBackPanelDescriptor() {
+        return SelectTargetOntologyTypePanel.ID;
     }
 
 
-    public void dispose() throws Exception {
-    }
-
-
-    public boolean hasEditor() {
-        return !(strategy instanceof AllAxiomsStrategy);
+    public Object getNextPanelDescriptor() {
+        return SelectMoveOrCopyPanel.ID;
     }
 }

@@ -1,14 +1,7 @@
-package org.protege.editor.owl.ui.ontology.wizard.move;
+package org.protege.editor.owl.ui.ontology.wizard.move.byreference;
 
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-
-import java.util.List;
-import java.util.Set;
+import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -35,45 +28,44 @@ import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
- *
- * Provides a kit to select axioms to be moved from some source ontologies to
- * a target ontology.
+ * 23-Sep-2008<br><br>
  */
-public abstract class MoveAxiomsKit implements ProtegePluginInstance {
+public class SelectSignaturePanel extends MoveAxiomsKitConfigurationPanel {
 
-    private OWLEditorKit owlEditorKit;
+    private OWLEntitySelectorPanel selector;
 
-    private String name;
+    private MoveAxiomsByReferenceKit kit;
 
-    private String id;
 
-    // Package
-    void setup(String id, String name, OWLEditorKit editorKit) {
-        this.id = id;
-        this.name = name;
-        this.owlEditorKit = editorKit;
+    public SelectSignaturePanel(MoveAxiomsByReferenceKit kit) {
+        this.kit = kit;
     }
 
-    final public String getID() {
-        return id;
+
+    public void initialise() {
+        selector = new OWLEntitySelectorPanel(getEditorKit());
     }
 
-    public String getName() {
-        return name;
+
+    public void dispose() {
     }
 
-    protected OWLEditorKit getOWLEditorKit() {
-        return owlEditorKit;
+
+    public String getID() {
+        return null;
     }
 
-    protected OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getModelManager();
+
+    public String getTitle() {
+        return "Select entities";
     }
 
-    public abstract List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels();
 
-    public abstract Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies);
+    public void update() {
+    }
 
 
+    public void commit() {
+        kit.setSignature(selector.getSelectedObjects());
+    }
 }

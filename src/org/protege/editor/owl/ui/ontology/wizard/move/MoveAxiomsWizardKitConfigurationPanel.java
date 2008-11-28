@@ -1,11 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 
 import javax.swing.*;
-import java.util.Set;
+import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -32,34 +31,54 @@ import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
+ * 19-Sep-2008<br><br>
  */
-public class SelectSourceOntologiesPage extends SelectOntologiesPage {
+public class MoveAxiomsWizardKitConfigurationPanel extends AbstractMoveAxiomsWizardPanel {
 
+    private MoveAxiomsKitConfigurationPanel content;
 
-    public SelectSourceOntologiesPage(OWLEditorKit owlEditorKit) {
-        super(owlEditorKit, "Select source ontologies");
+    private Object prevId;
+
+    private Object nextId;
+
+    private JPanel holder;
+
+    
+    public MoveAxiomsWizardKitConfigurationPanel(Object prevId, Object nextId, MoveAxiomsKitConfigurationPanel content, OWLEditorKit owlEditorKit) {
+        super(content.getID(), content.getTitle(), owlEditorKit);
+        this.content = content;
+        this.prevId = prevId;
+        this.nextId = nextId;
+        holder.add(content);
+        setInstructions(content.getInstructions());
+    }
+
+    protected void createUI(JComponent parent) {
+        parent.setLayout(new BorderLayout());
+        parent.add(holder = new JPanel(new BorderLayout()));
     }
 
 
-    public Object getNextPanelDescriptor() {
-        return AxiomSelectionStrategyPanel.ID;
-    }
+    public void aboutToDisplayPanel() {
+        super.aboutToDisplayPanel();
+        content.update();
+        setComponentTransparency(content);
 
-
-    protected Set<OWLOntology> getDefaultOntologies() {
-        return getOWLModelManager().getActiveOntologies();
     }
 
 
     public void aboutToHidePanel() {
         super.aboutToHidePanel();
-        ((MoveAxiomsWizard) getWizard()).setSourceOntologies(getOntologies());
+        content.commit();
     }
 
 
-    protected void createUI(JComponent parent) {
-        super.createUI(parent);
-        setInstructions("Please select the ontologies you wish to move axioms from.");
+    public Object getBackPanelDescriptor() {
+        return prevId;
+    }
+
+
+    public Object getNextPanelDescriptor() {
+        return nextId;
     }
 }

@@ -3,65 +3,120 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.axioms.*;
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
+import java.net.URI;
 
 /**
  * User: nickdrummond Date: May 20, 2008
  */
-public class MoveAxiomsWizard extends Wizard {
+public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private OWLEditorKit editorKit;
-
-    private SelectTargetOntologyPage targetOntologyPage;
 
     private MoveAxiomsKit selectedKit;
 
     private Set<OWLOntology> sourceOntologies;
 
-    private OWLOntology targetOntology;
+    private URI targetOntologyURI;
 
     private List<MoveAxiomsKit> moveAxiomsKits;
 
-    private Set<? extends OWLAxiom> axioms;
+    private Map<String, Object> kitId2FirstPanelId;
+
+    private Map<String, Object> kitId2LastPanelId;
+
+    private Set<OWLAxiom> axioms;
+
+    private List<MoveAxiomsKitConfigurationPanel> panels;
+
+    private boolean copyAxioms;
+
+    private URI physicalURI;
+
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
         setTitle("Move axioms to ontology");
         this.editorKit = eKit;
 
+        sourceOntologies = new HashSet<OWLOntology>();
         axioms = new HashSet<OWLAxiom>();
+        panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
         selectedKit = null;
-        setupStrategies();
+        kitId2FirstPanelId = new HashMap<String, Object>();
+        kitId2LastPanelId = new HashMap<String, Object>();
+        setupKits();
 
+        // We select the type of move/copy
 
-        registerWizardPanel(SelectOntologiesPage.ID, new SelectSourceOntologiesPage(eKit));
-        registerWizardPanel(AxiomSelectionStrategyPanel.ID, new AxiomSelectionStrategyPanel(eKit));
-        registerWizardPanel(StrategyConstrainPanel.ID, new StrategyConstrainPanel(eKit));
-        registerWizardPanel(AxiomSelectionPanel.ID, new AxiomSelectionPanel(eKit));
+        // We select the ontologies
 
-        targetOntologyPage = new SelectTargetOntologyPage(eKit, "Select target ontology") {
-            public Object getBackPanelDescriptor() {
-                return AxiomSelectionPanel.ID;
+        // We configure the move/copy
+
+        // we confirm the move/copy
+
+        // We specify whether we want to create a new ontology or move to an existing ontology
+
+        // We finish or cancel
+
+        registerWizardPanel(SelectKitPanel.ID, new SelectKitPanel(editorKit));
+
+        registerWizardPanel(SelectSourceOntologiesPanel.ID, new SelectSourceOntologiesPanel(editorKit));
+
+        registerWizardPanel(SelectTargetOntologyTypePanel.ID, new SelectTargetOntologyTypePanel(editorKit));
+
+        registerWizardPanel(SelectTargetOntologyPanel.ID, new SelectTargetOntologyPanel(editorKit));
+
+        registerWizardPanel(CreateNewOntologyPanel.ID, new CreateNewOntologyPanel(editorKit));
+
+        registerWizardPanel(NewOntologyPhysicalLocationPanel.ID, new NewOntologyPhysicalLocationPanel(editorKit));
+
+        registerWizardPanel(SelectMoveOrCopyPanel.ID, new SelectMoveOrCopyPanel(editorKit));
+        
+
+        // Setup and init all of the plugin wizard pages - any of them could be used
+        for (MoveAxiomsKit kit : moveAxiomsKits) {
+            List<MoveAxiomsKitConfigurationPanel> panels = kit.getConfigurationPanels();
+            for (int i = 0; i < panels.size(); i++) {
+                MoveAxiomsKitConfigurationPanel panel = panels.get(i);
+                this.panels.add(panel);
+                panel.setup(editorKit, this);
+                panel.initialise();
+                Object prevId = SelectSourceOntologiesPanel.ID;
+                Object nextId = SelectTargetOntologyTypePanel.ID;
+                if (i == 0) {
+                    kitId2FirstPanelId.put(kit.getID(), panel.getID());
+                    prevId = SelectSourceOntologiesPanel.ID;
+                }
+                if (i > 0) {
+                    prevId = panels.get(i - 1).getID();
+                }
+                if (i < panels.size() - 1) {
+                    nextId = panels.get(i + 1).getID();
+                }
+                if (i == panels.size() - 1) {
+                    kitId2LastPanelId.put(kit.getID(), panel.getID());
+                    nextId = SelectTargetOntologyTypePanel.ID;
+                }
+                MoveAxiomsWizardKitConfigurationPanel configPanel = new MoveAxiomsWizardKitConfigurationPanel(prevId,
+                                                                                                              nextId,
+                                                                                                              panel,
+                                                                                                              editorKit);
+                registerWizardPanel(panel.getID(), configPanel);
             }
+        }
+        setCurrentPanel(SelectKitPanel.ID);
+    }
 
 
-            public void aboutToHidePanel() {
-                setTargetOntology(targetOntologyPage.getOntology());
-            }
-        };
-        targetOntologyPage.setInstructions("Please select a target ontology to move the selected axioms into.");
+    public Object getFirstPanelIDForKit() {
+        return kitId2FirstPanelId.get(selectedKit.getID());
+    }
 
-        registerWizardPanel(SelectTargetOntologyPage.ID, targetOntologyPage);
 
-        setCurrentPanel(SelectOntologiesPage.ID);
+    public Object getLastPanelIDForKit() {
+        return kitId2LastPanelId.get(selectedKit.getID());
     }
 
 
@@ -70,23 +125,19 @@ public class MoveAxiomsWizard extends Wizard {
     }
 
 
-    private void setupStrategies() {
+    private void setupKits() {
         moveAxiomsKits = new ArrayList<MoveAxiomsKit>();
-
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new ClassReferencingAxiomsStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new ObjectPropertyReferencingAxiomStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new DataPropertyReferencingAxiomStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new IndividualReferencingAxiomStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new AnnotationAxiomsStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new AxiomTypeStrategy()));
-        moveAxiomsKits.add(new MoveAxiomKitImpl(new AllAxiomsStrategy()));
-
-        for(MoveAxiomsKit kit : moveAxiomsKits) {
-            kit.setup(editorKit);
-        }
+//
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new ClassReferencingAxiomsStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new ObjectPropertyReferencingAxiomStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new DataPropertyReferencingAxiomStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new IndividualReferencingAxiomStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AnnotationAxiomsStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AxiomTypeStrategy()));
+//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AllAxiomsStrategy()));
 
         MoveAxiomsKitPluginLoader loader = new MoveAxiomsKitPluginLoader(editorKit);
-        for(MoveAxiomsKitPlugin plugin : loader.getPlugins()) {
+        for (MoveAxiomsKitPlugin plugin : loader.getPlugins()) {
             try {
                 MoveAxiomsKit moveAxiomsKit = plugin.newInstance();
                 moveAxiomsKits.add(moveAxiomsKit);
@@ -96,7 +147,7 @@ public class MoveAxiomsWizard extends Wizard {
             }
         }
 
-        for(MoveAxiomsKit kit : moveAxiomsKits) {
+        for (MoveAxiomsKit kit : moveAxiomsKits) {
             try {
                 kit.initialise();
             }
@@ -104,7 +155,9 @@ public class MoveAxiomsWizard extends Wizard {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
-        selectedKit = moveAxiomsKits.get(0);
+        if (!moveAxiomsKits.isEmpty()) {
+            selectedKit = moveAxiomsKits.get(0);
+        }
     }
 
 
@@ -115,7 +168,50 @@ public class MoveAxiomsWizard extends Wizard {
 
     public void setSelectedKit(MoveAxiomsKit selectedKit) {
         this.selectedKit = selectedKit;
-//        selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
+    }
+
+
+    public void dispose() {
+        super.dispose();
+        for (MoveAxiomsKitConfigurationPanel panel : panels) {
+            panel.dispose();
+        }
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Implementation of the model
+
+    public List<OWLOntologyChange> getChanges() throws OWLOntologyCreationException {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        Set<OWLAxiom> axiomsToBeMoved = getAxiomsToBeMoved();
+        OWLOntology targetOntology;
+        OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
+        if(man.contains(getTargetOntologyURI())) {
+            targetOntology = man.getOntology(getTargetOntologyURI());
+        }
+        else {
+            targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), getTargetOntologyPhysicalURI());
+        }
+
+        for(OWLAxiom ax : axiomsToBeMoved) {
+            for (OWLOntology ont : getSourceOntologies()) {
+                if (ont.containsAxiom(ax)) {
+                    if(!isCopyAxioms()) {
+                        changes.add(new RemoveAxiom(ont, ax));
+                    }
+                    changes.add(new AddAxiom(targetOntology, ax));
+                }
+            }
+        }
+        return changes;
+    }
+
+
+    public Set<OWLAxiom> getAxiomsToBeMoved() {
+        return selectedKit.getAxioms(sourceOntologies);
     }
 
 
@@ -126,28 +222,35 @@ public class MoveAxiomsWizard extends Wizard {
 
     public void setSourceOntologies(Set<OWLOntology> sourceOntologies) {
         this.sourceOntologies = sourceOntologies;
-//        if(selectedKit != null) {
-//            selectedKit.getAxiomSelectionStrategy().setOntologies(sourceOntologies);
-//        }
     }
 
 
-    public OWLOntology getTargetOntology() {
-        return targetOntology;
+    public URI getTargetOntologyURI() {
+        return targetOntologyURI;
     }
 
 
-    public void setTargetOntology(OWLOntology targetOntology) {
-        this.targetOntology = targetOntology;
+    public void setTargetOntologyURI(URI targetOntologyURI) {
+        this.targetOntologyURI = targetOntologyURI;
     }
 
 
-    public Set<? extends OWLAxiom> getAxioms() {
-        return axioms;
+    public void setTargetOntologyPhysicalURI(URI uri) {
+        this.physicalURI = uri;
     }
 
 
-    public void setAxioms(Set<? extends OWLAxiom> axioms) {
-        this.axioms = axioms;
+    public URI getTargetOntologyPhysicalURI() {
+        return physicalURI;
+    }
+
+
+    public void setCopyAxioms(boolean b) {
+        this.copyAxioms = b;
+    }
+
+
+    public boolean isCopyAxioms() {
+        return copyAxioms;
     }
 }

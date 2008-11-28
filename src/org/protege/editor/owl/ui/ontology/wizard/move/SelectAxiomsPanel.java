@@ -40,14 +40,14 @@ import java.util.Set;/*
  * Bio Health Informatics Group<br>
  * Date: May 30, 2008<br><br>
  */
-public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
+public class SelectAxiomsPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static String ID = "AxiomSelectionPanel";
 
     private CheckTable<OWLAxiom> list;
 
 
-    public AxiomSelectionPanel(OWLEditorKit eKit) {
+    public SelectAxiomsPanel(OWLEditorKit eKit) {
         super(ID, "Confirm axioms to move", eKit);
     }
 
@@ -58,6 +58,7 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
         list = new CheckTable<OWLAxiom>("Axioms");
         final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getOWLEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
+        owlCellRenderer.setTransparent();
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);
@@ -66,18 +67,13 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
     
     public void aboutToDisplayPanel() {
-        list.getModel().setData(new ArrayList<OWLAxiom>(getUnfilteredAxioms()), true);
-        list.checkAll(true);
+//        list.setData(new ArrayList<OWLAxiom>(getUnfilteredAxioms()));
+        list.checkAll(true);        
     }
 
 
     public Object getBackPanelDescriptor() {
-        if (getWizard().getSelectedKit().hasEditor()) {
-            return StrategyConstrainPanel.ID;
-        }
-        else {
-            return AxiomSelectionStrategyPanel.ID;
-        }
+        return getWizard().getLastPanelIDForKit();
     }
 
 
@@ -87,7 +83,7 @@ public class AxiomSelectionPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     private Set<? extends OWLAxiom> getUnfilteredAxioms() {
-        return getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies());
+        return getWizard().getAxiomsToBeMoved();
     }
 
 

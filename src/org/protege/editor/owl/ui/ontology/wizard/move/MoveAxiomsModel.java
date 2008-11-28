@@ -1,14 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLAxiom;
 
-import java.util.List;
 import java.util.Set;
+import java.net.URI;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -35,45 +31,23 @@ import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
- *
- * Provides a kit to select axioms to be moved from some source ontologies to
- * a target ontology.
+ * 19-Sep-2008<br><br>
  */
-public abstract class MoveAxiomsKit implements ProtegePluginInstance {
+public interface MoveAxiomsModel {
 
-    private OWLEditorKit owlEditorKit;
+    Set<OWLOntology> getSourceOntologies();
 
-    private String name;
+    void setSourceOntologies(Set<OWLOntology> ontologies);
 
-    private String id;
+    URI getTargetOntologyURI();
 
-    // Package
-    void setup(String id, String name, OWLEditorKit editorKit) {
-        this.id = id;
-        this.name = name;
-        this.owlEditorKit = editorKit;
-    }
+    void setTargetOntologyURI(URI ontology);
 
-    final public String getID() {
-        return id;
-    }
+    void setTargetOntologyPhysicalURI(URI ontologyURI);
 
-    public String getName() {
-        return name;
-    }
+    Set<OWLAxiom> getAxiomsToBeMoved();
 
-    protected OWLEditorKit getOWLEditorKit() {
-        return owlEditorKit;
-    }
+    public void setCopyAxioms(boolean b);
 
-    protected OWLModelManager getOWLModelManager() {
-        return getOWLEditorKit().getModelManager();
-    }
-
-    public abstract List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels();
-
-    public abstract Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies);
-
-
+    public boolean isCopyAxioms();
 }

@@ -1,6 +1,10 @@
-package org.protege.editor.owl.ui.ontology.wizard.move;
+package org.protege.editor.owl.ui.ontology.wizard.move.common;
 
-import org.protege.editor.core.plugin.ProtegePlugin;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -27,12 +31,15 @@ import org.protege.editor.core.plugin.ProtegePlugin;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
+ * 23-Sep-2008<br><br>
  */
-public interface MoveAxiomsKitPlugin extends ProtegePlugin<MoveAxiomsKit> {
+public interface SignatureSelection {
 
-    public static final String ID = "moveaxiomskit";
+    void setSignature(Set<OWLEntity> entities);
 
-    
+    Set<OWLEntity> getSignature();
 
+    Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies);
+
+    Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies, Set<OWLEntity> entities);
 }

@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.plugin.AbstractPluginLoader;
-import org.protege.editor.core.plugin.PluginExtensionMatcher;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.OWLEditorKit;
-import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsWizard;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsModel;
+import org.semanticweb.owl.model.OWLOntology;
+
+import javax.swing.*;
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -32,24 +33,52 @@ import org.eclipse.core.runtime.IExtension;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
+ * 19-Sep-2008<br><br>
  */
-public class MoveAxiomsKitPluginLoader extends AbstractPluginLoader<MoveAxiomsKitPlugin> {
+public abstract class MoveAxiomsKitConfigurationPanel extends JComponent {
+
 
     private OWLEditorKit editorKit;
 
-    public MoveAxiomsKitPluginLoader(OWLEditorKit editorKit) {
-        super(ProtegeOWL.ID, MoveAxiomsKitPlugin.ID);
+    private MoveAxiomsWizard wizard;
+
+
+    public MoveAxiomsKitConfigurationPanel() {
+        
+    }
+
+
+    public void setup(OWLEditorKit editorKit, MoveAxiomsWizard wizard) {
         this.editorKit = editorKit;
+        this.wizard = wizard;
+    }
+
+    public abstract void initialise();
+
+    public abstract void dispose();
+
+    public OWLEditorKit getEditorKit() {
+        return editorKit;
+    }
+
+    public String getInstructions() {
+        return "";
+    }
+
+    public MoveAxiomsWizard getWizard() {
+        return wizard;
     }
 
 
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
+    public MoveAxiomsModel getModel() {
+        return wizard;
     }
 
+    public abstract String getID();
 
-    protected MoveAxiomsKitPlugin createInstance(IExtension extension) {
-        return new MoveAxiomsKitPluginImpl(editorKit, extension);
-    }
+    public abstract String getTitle();
+
+    public abstract void update();
+
+    public abstract void commit();
 }
