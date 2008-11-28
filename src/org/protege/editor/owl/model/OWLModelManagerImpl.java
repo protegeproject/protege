@@ -10,9 +10,7 @@ import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
-import org.protege.editor.owl.model.description.OWLDescriptionParser;
 import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
-import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
@@ -186,11 +184,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         owlObjectRenderingCache = new OWLObjectRenderingCache(this);
 
         owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
-
-        // @@TODO remove eventually
-        owlDescriptionParser = new ManchesterOWLSyntaxParser(this);
-        owlDescriptionParser.setOWLModelManager(this);
-
 
         activeOntologies = new HashSet<OWLOntology>();
 
@@ -1120,13 +1113,5 @@ public class OWLModelManagerImpl extends AbstractModelManager
         List<OWLDataType> orderedResults = new ArrayList<OWLDataType>(getEntityFinder().getMatchingOWLDataTypes(renderingStart + "*", false));
         Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
-    }
-
-
-    private OWLDescriptionParser owlDescriptionParser;
-
-
-    public OWLDescriptionParser getOWLDescriptionParser() {
-        return owlDescriptionParser;
     }
 }

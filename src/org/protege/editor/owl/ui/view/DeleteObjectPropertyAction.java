@@ -20,7 +20,7 @@ public class DeleteObjectPropertyAction extends AbstractDeleteEntityAction<OWLOb
         super("Delete selected properties",
               OWLIcons.getIcon("property.object.delete.png"),
               owlEditorKit,
-              owlEditorKit.getModelManager().getOWLObjectPropertyHierarchyProvider(),
+              owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider(),
               propSetProvider);
     }
 

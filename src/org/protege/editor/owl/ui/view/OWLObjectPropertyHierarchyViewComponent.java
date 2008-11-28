@@ -41,7 +41,7 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
 
 
     protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
-        return getOWLModelManager().getOWLObjectPropertyHierarchyProvider();
+        return getOWLModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider();
     }
 
 

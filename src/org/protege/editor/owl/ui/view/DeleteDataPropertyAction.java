@@ -20,7 +20,7 @@ public class DeleteDataPropertyAction extends AbstractDeleteEntityAction<OWLData
         super("Delete selected properties",
               OWLIcons.getIcon("property.Data.delete.png"),
               owlEditorKit,
-              owlEditorKit.getModelManager().getOWLDataPropertyHierarchyProvider(),
+              owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider(),
               propSetProvider);
     }
 

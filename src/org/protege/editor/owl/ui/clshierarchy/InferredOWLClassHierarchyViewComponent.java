@@ -23,6 +23,6 @@ public class InferredOWLClassHierarchyViewComponent extends AbstractOWLClassHier
 
 
     protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-        return getOWLModelManager().getInferredOWLClassHierarchyProvider();
+        return getOWLModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider();
     }
 }

@@ -8,7 +8,6 @@ import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Set;/*
 * Copyright (C) 2007, University of Manchester
 *
@@ -58,7 +57,7 @@ public class SelectAxiomsPanel extends AbstractMoveAxiomsWizardPanel {
         list = new CheckTable<OWLAxiom>("Axioms");
         final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getOWLEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
-        owlCellRenderer.setTransparent();
+        owlCellRenderer.setOpaque(true);
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);
