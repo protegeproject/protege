@@ -1,18 +1,13 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.axioms.AbstractAxiomSelectionStrategy;
-import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Set;
 
 /**
  * User: nickdrummond Date: May 20, 2008
@@ -63,36 +58,36 @@ public class StrategyConstrainPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public void aboutToDisplayPanel() {
-
-        MoveAxiomsKit kit = getWizard().getSelectedKit();
-        setInstructions(kit.getAxiomSelectionStrategy().getName() + ". This is a coarse grained selection" + ". You will have control over individual axioms on the next page.");
-        helperPanel.removeAll();
-        StrategyEditor strategyEditor = kit.getStrategyEditor(getWizard().getSourceOntologies());
-        if (strategyEditor != null) {
-            helperPanel.add(strategyEditor.getComponent());
-        }
-        kit.getAxiomSelectionStrategy().addPropertyChangeListener(pcl);
-        refresh();
+//
+//        MoveAxiomsKit kit = getWizard().getSelectedKit();
+//        setInstructions(kit.getAxiomSelectionStrategy().getName() + ". This is a coarse grained selection" + ". You will have control over individual axioms on the next page.");
+//        helperPanel.removeAll();
+//        StrategyEditor strategyEditor = kit.getStrategyEditor(getWizard().getSourceOntologies());
+//        if (strategyEditor != null) {
+//            helperPanel.add(strategyEditor.getComponent());
+//        }
+//        kit.getAxiomSelectionStrategy().addPropertyChangeListener(pcl);
+//        refresh();
     }
 
 
     public void aboutToHidePanel() {
-        super.aboutToHidePanel();
-        getWizard().getSelectedKit().getAxiomSelectionStrategy().removePropertyChangeListener(pcl);
-        getWizard().setAxioms(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()));
+//        super.aboutToHidePanel();
+//        getWizard().getSelectedKit().getAxiomSelectionStrategy().removePropertyChangeListener(pcl);
+//        getWizard().setAxioms(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()));
     }
 
 
     private void refresh() {
-        list.setListData(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()).toArray());
+//        list.setListData(getWizard().getSelectedKit().getAxiomSelectionStrategy().getAxioms(getWizard().getSourceOntologies()).toArray());
     }
 
     public Object getBackPanelDescriptor() {
-        return AxiomSelectionStrategyPanel.ID;
+        return SelectKitPanel.ID;
     }
 
 
     public Object getNextPanelDescriptor() {
-            return AxiomSelectionPanel.ID;
+            return SelectAxiomsPanel.ID;
     }
 }

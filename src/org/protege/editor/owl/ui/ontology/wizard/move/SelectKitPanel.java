@@ -2,22 +2,15 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.axioms.*;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectOntologiesPage;
-import org.protege.editor.core.ProtegeApplication;
-import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * User: nickdrummond Date: May 20, 2008
  */
-public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
+public class SelectKitPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static final String ID = "AxiomSelectionStrategyPanel";
 
@@ -28,9 +21,9 @@ public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
     private boolean createdButtons;
 
 
-    public AxiomSelectionStrategyPanel(OWLEditorKit editorKit) {
-        super(ID, "Axiom selection strategy", editorKit);
-        setInstructions("Please choose an axiom selection strategy." + " This is a coarse grained way of describing the way in which you wish to add axioms to the set that will be moved." + " You will get more fine grained control in the following steps.");
+    public SelectKitPanel(OWLEditorKit editorKit) {
+        super(ID, "Select method", editorKit);
+        setInstructions("Select the method of moving or copying axioms.");
     }
 
 
@@ -41,8 +34,7 @@ public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
     private void createStrategyRadioButtons() {
         if (!createdButtons) {
             for (final MoveAxiomsKit kit : getWizard().getMoveAxiomsKits()) {
-                final AxiomSelectionStrategy strategy = kit.getAxiomSelectionStrategy();
-                JRadioButton cb = new JRadioButton(new AbstractAction(strategy.getName()) {
+                JRadioButton cb = new JRadioButton(new AbstractAction(kit.getName()) {
                     public void actionPerformed(ActionEvent actionEvent) {
                         getWizard().setSelectedKit(kit);
                     }
@@ -68,16 +60,11 @@ public class AxiomSelectionStrategyPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getBackPanelDescriptor() {
-        return SelectSourceOntologiesPage.ID;
+        return null;
     }
 
 
     public Object getNextPanelDescriptor() {
-        if (getWizard().getSelectedKit().hasEditor()) {
-            return StrategyConstrainPanel.ID;
-        }
-        else {
-            return AxiomSelectionPanel.ID;
-        }
+        return SelectSourceOntologiesPanel.ID;
     }
 }

@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
-import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
-import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
+import org.protege.editor.core.editorkit.EditorKit;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -31,34 +28,22 @@ import org.protege.editor.owl.OWLEditorKit;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
- * 11-Sep-2008<br><br>
+ * 23-Sep-2008<br><br>
  */
-public class MoveAxiomsKitPluginImpl implements MoveAxiomsKitPlugin {
+public class NewOntologyPhysicalLocationPanel extends PhysicalLocationPanel {
 
-    private IExtension extension;
 
-    private OWLEditorKit editorKit;
-
-    public MoveAxiomsKitPluginImpl(OWLEditorKit editorKit, IExtension extension) {
-        this.extension = extension;
-        this.editorKit = editorKit;
+    public NewOntologyPhysicalLocationPanel(EditorKit editorKit) {
+        super(editorKit);
     }
 
 
-    public String getId() {
-        return extension.getUniqueIdentifier();
+    public Object getNextPanelDescriptor() {
+        return SelectMoveOrCopyPanel.ID;
     }
 
 
-    public String getDocumentation() {
-        return JPFUtil.getDocumentation(extension);
-    }
-
-
-    public MoveAxiomsKit newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        ExtensionInstantiator<MoveAxiomsKit> instantiator = new ExtensionInstantiator<MoveAxiomsKit>(extension);
-        MoveAxiomsKit kit =  instantiator.instantiate();
-        kit.setup(editorKit);
-        return kit;
+    public void aboutToHidePanel() {
+        ((MoveAxiomsWizard) getWizard()).setTargetOntologyPhysicalURI(getLocationURI());
     }
 }

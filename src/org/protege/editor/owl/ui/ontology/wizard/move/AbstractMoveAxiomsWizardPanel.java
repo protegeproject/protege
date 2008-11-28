@@ -39,6 +39,10 @@ public abstract class AbstractMoveAxiomsWizardPanel extends AbstractOWLWizardPan
     }
 
 
+    /**
+     * Gets the MoveAxiomsWizard
+     * @return
+     */
     public MoveAxiomsWizard getWizard() {
         return (MoveAxiomsWizard) super.getWizard();
     }
