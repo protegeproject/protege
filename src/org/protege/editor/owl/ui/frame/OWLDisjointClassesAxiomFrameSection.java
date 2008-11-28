@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLFrameSection<OWLClass, OWLDisjointClassesAxiom, Set<OWLDescription>> {
+public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLDisjointClassesAxiom, Set<OWLDescription>> {
 
     public static final String LABEL = "Disjoint classes";
 
@@ -26,13 +27,23 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLFrameSection
     }
 
 
-    /**
-     * Refills the section with rows.  This method will be called
-     * by the system and should not be directly called.
-     */
-    protected void refill(OWLOntology ontology) {
-        for (OWLDisjointClassesAxiom ax : ontology.getDisjointClassesAxioms(getRootObject())) {
-            addRow(new OWLDisjointClassesAxiomFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+    protected void addAxiom(OWLDisjointClassesAxiom ax, OWLOntology ont) {
+        addRow(new OWLDisjointClassesAxiomFrameSectionRow(getOWLEditorKit(), this, ont, getRootObject(), ax));
+    }
+
+
+    protected Set<OWLDisjointClassesAxiom> getClassAxioms(OWLDescription descr, OWLOntology ont) {
+        if (!descr.isAnonymous()){
+            return ont.getDisjointClassesAxioms(descr.asOWLClass());
+        }
+        else{
+            Set<OWLDisjointClassesAxiom> axioms = new HashSet<OWLDisjointClassesAxiom>();
+            for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)){
+                if (ax.getDescriptions().contains(descr)){
+                    axioms.add(ax);
+                }
+            }
+            return axioms;
         }
     }
 
@@ -93,7 +104,7 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLFrameSection
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLClass, OWLDisjointClassesAxiom, Set<OWLDescription>>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLDescription, OWLDisjointClassesAxiom, Set<OWLDescription>>> getRowComparator() {
         return null;
     }
 }

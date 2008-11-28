@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.ui.CreateEquivalentClassPanel;
+import org.protege.editor.owl.ui.CreateDefinedClassPanel;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
@@ -78,7 +78,7 @@ public class CreateNewEquivalentClassAction<C extends OWLObject> extends OWLFram
     public void actionPerformed(ActionEvent e) {
         OWLDescription descr = getSelectedRowDescription();
         if (descr != null) {
-            OWLEntityCreationSet<OWLClass> creationSet = CreateEquivalentClassPanel.showDialog(descr, getOWLEditorKit());
+            OWLEntityCreationSet<OWLClass> creationSet = CreateDefinedClassPanel.showDialog(descr, getOWLEditorKit());
             if (creationSet != null){
                 getOWLModelManager().applyChanges(creationSet.getOntologyChanges());
                 getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(creationSet.getOWLEntity());

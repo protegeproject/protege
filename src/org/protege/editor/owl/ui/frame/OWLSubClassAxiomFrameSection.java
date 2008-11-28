@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -13,7 +15,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLClass, OWLSubClassAxiom, OWLDescription> {
+public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLSubClassAxiom, OWLDescription> {
 
     private static final String LABEL = "Superclasses";
 
@@ -30,14 +32,24 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
     }
 
 
-    /**
-     * Refills the section with rows.  This method will be called
-     * by the system and should be directly called.
-     */
-    protected void refill(OWLOntology ontology) {
-        for (OWLSubClassAxiom ax : ontology.getSubClassAxiomsForLHS(getRootObject())) {
-            addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
-            added.add(ax.getSuperClass());
+    protected void addAxiom(OWLSubClassAxiom ax, OWLOntology ont) {
+        addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(), this, ont, getRootObject(), ax));
+        added.add(ax.getSuperClass());
+    }
+
+
+    protected Set<OWLSubClassAxiom> getClassAxioms(OWLDescription descr, OWLOntology ont) {
+        if (!descr.isAnonymous()){
+            return ont.getSubClassAxiomsForLHS(descr.asOWLClass());
+        }
+        else{
+            Set<OWLSubClassAxiom> axioms = new HashSet<OWLSubClassAxiom>();
+            for (OWLAxiom ax : ont.getGeneralClassAxioms()){
+                if (ax instanceof OWLSubClassAxiom && ((OWLSubClassAxiom)ax).getSubClass().equals(descr)){
+                    axioms.add((OWLSubClassAxiom)ax);
+                }
+            }
+            return axioms;
         }
     }
 
@@ -45,9 +57,14 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
     protected void refillInferred() {
         try {
             if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
+                final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+
                 for (Set<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject())) {
-                    for (OWLClass desc : descs) {
-                        if (!added.contains(desc)) {
+                    for (OWLDescription desc : descs) {
+                        if (!ADCManager.isAnonymous(desc.asOWLClass())){
+                            desc = ADCManager.getExpression(desc.asOWLClass());
+                        }
+                        if (!added.contains(desc) && !getRootObject().equals(desc)) {
                             addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
                                                                        this,
                                                                        null,
@@ -68,7 +85,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
 
 
     protected OWLSubClassAxiom createAxiom(OWLDescription object) {
-        return getOWLDataFactory().getOWLSubClassAxiom(getRootObject(), object);
+            return getOWLDataFactory().getOWLSubClassAxiom(getRootObject(), object);
     }
 
 
@@ -130,12 +147,12 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLFrameSection<OWLCla
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription>> getRowComparator() {
-        return new Comparator<OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription>>() {
+    public Comparator<OWLFrameSectionRow<OWLDescription, OWLSubClassAxiom, OWLDescription>> getRowComparator() {
+        return new Comparator<OWLFrameSectionRow<OWLDescription, OWLSubClassAxiom, OWLDescription>>() {
 
 
-            public int compare(OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o1,
-                               OWLFrameSectionRow<OWLClass, OWLSubClassAxiom, OWLDescription> o2) {
+            public int compare(OWLFrameSectionRow<OWLDescription, OWLSubClassAxiom, OWLDescription> o1,
+                               OWLFrameSectionRow<OWLDescription, OWLSubClassAxiom, OWLDescription> o2) {
                 if (o1.isInferred()) {
                     if (!o2.isInferred()) {
                         return 1;

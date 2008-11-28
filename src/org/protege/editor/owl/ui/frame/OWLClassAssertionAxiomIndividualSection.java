@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -14,10 +15,9 @@ import java.util.*;
  * Date: 27-Jan-2007<br>
  * <br>
  */
-public class OWLClassAssertionAxiomIndividualSection
-		extends
-		AbstractOWLFrameSection<OWLClass, OWLClassAssertionAxiom, OWLIndividual> {
-	public static final String LABEL = "Members";
+public class OWLClassAssertionAxiomIndividualSection extends AbstractOWLClassAxiomFrameSection<OWLClassAssertionAxiom, OWLIndividual> {
+
+    public static final String LABEL = "Members";
 	private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
 
 	public OWLClassAssertionAxiomIndividualSection(OWLEditorKit editorKit,
@@ -30,22 +30,30 @@ public class OWLClassAssertionAxiomIndividualSection
 		this.added.clear();
 	}
 
-	/**
-	 * Refills the section with rows. This method will be called by the system
-	 * and should be directly called.
-	 */
-	@Override
-	protected void refill(OWLOntology ontology) {
-		for (OWLClassAssertionAxiom ax : ontology.getClassAssertionAxioms(this
-				.getRootObject())) {
-			this.addRow(new OWLClassAssertionAxiomIndividualSectionRow(this
-					.getOWLEditorKit(), this, ontology, this.getRootObject(),
-					ax));
-			this.added.add(ax.getIndividual());
-		}
-	}
 
-	@Override
+    protected void addAxiom(OWLClassAssertionAxiom ax, OWLOntology ont) {
+        addRow(new OWLClassAssertionAxiomIndividualSectionRow(this.getOWLEditorKit(), this, ont, this.getRootObject(), ax));
+        added.add(ax.getIndividual());
+    }
+
+
+    protected Set<OWLClassAssertionAxiom> getClassAxioms(OWLDescription descr, OWLOntology ont) {
+        if (!descr.isAnonymous()){
+            return ont.getClassAssertionAxioms(descr.asOWLClass());
+        }
+        else{
+            Set<OWLClassAssertionAxiom> axioms = new HashSet<OWLClassAssertionAxiom>();
+            for (OWLClassAssertionAxiom ax : ont.getAxioms(AxiomType.CLASS_ASSERTION)){
+                if (ax.getDescription().equals(descr)){
+                    axioms.add(ax);
+                }
+            }
+            return axioms;
+        }
+    }
+
+
+    @Override
 	protected void refillInferred() {
 		try {
 			for (OWLIndividual ind : this.getOWLModelManager().getReasoner()
@@ -109,11 +117,11 @@ public class OWLClassAssertionAxiomIndividualSection
 	 * @return A comparator if to sort the rows in this section, or
 	 *         <code>null</code> if the rows shouldn't be sorted.
 	 */
-	public Comparator<OWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual>> getRowComparator() {
-		return new Comparator<OWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual>>() {
+	public Comparator<OWLFrameSectionRow<OWLDescription, OWLClassAssertionAxiom, OWLIndividual>> getRowComparator() {
+		return new Comparator<OWLFrameSectionRow<OWLDescription, OWLClassAssertionAxiom, OWLIndividual>>() {
 			public int compare(
-					OWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual> o1,
-					OWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual> o2) {
+					OWLFrameSectionRow<OWLDescription, OWLClassAssertionAxiom, OWLIndividual> o1,
+					OWLFrameSectionRow<OWLDescription, OWLClassAssertionAxiom, OWLIndividual> o2) {
 				return OWLClassAssertionAxiomIndividualSection.this
 						.getOWLModelManager().getRendering(
 								o1.getAxiom().getIndividual())

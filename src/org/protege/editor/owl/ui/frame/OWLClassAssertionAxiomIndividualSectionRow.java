@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLClassAssertionAxiom;
+import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -16,10 +16,10 @@ import org.semanticweb.owl.model.OWLOntology;
  * Bio-Health Informatics Group<br>
  * Date: 27-Jan-2007<br><br>
  */
-public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLClassAssertionAxiom, OWLIndividual> {
+public class OWLClassAssertionAxiomIndividualSectionRow extends AbstractOWLFrameSectionRow<OWLDescription, OWLClassAssertionAxiom, OWLIndividual> {
 
-    public OWLClassAssertionAxiomIndividualSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClass, OWLClassAssertionAxiom, OWLIndividual> section,
-                                                      OWLOntology ontology, OWLClass rootObject,
+    public OWLClassAssertionAxiomIndividualSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLDescription, OWLClassAssertionAxiom, OWLIndividual> section,
+                                                      OWLOntology ontology, OWLDescription rootObject,
                                                       OWLClassAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
