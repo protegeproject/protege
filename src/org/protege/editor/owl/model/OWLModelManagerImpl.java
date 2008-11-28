@@ -11,7 +11,7 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
 import org.protege.editor.owl.model.description.OWLDescriptionParser;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousClassManager;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.description.manchester.ManchesterOWLSyntaxParser;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
@@ -204,7 +204,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
 
-        put(AnonymousClassManager.ID, new AnonymousClassManager(this));
+        put(AnonymousDefinedClassManager.ID, new AnonymousDefinedClassManager(this));
 
         put(OntologySourcesManager.ID, new OntologySourcesManager(this));
     }
@@ -857,9 +857,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public String getRendering(OWLObject object) {
         // Look for a cached version of the rending first!
         if (object instanceof OWLEntity) {
-            AnonymousClassManager anonymousClassManager = get(AnonymousClassManager.ID);
-            if (object instanceof OWLClass && anonymousClassManager.isAnonymous((OWLClass)object)){
-                return owlObjectRenderingCache.getRendering(anonymousClassManager.getExpression((OWLClass)object), getOWLObjectRenderer());
+            AnonymousDefinedClassManager ADCManager = get(AnonymousDefinedClassManager.ID);
+            if (object instanceof OWLClass && ADCManager.isAnonymous((OWLClass)object)){
+                return owlObjectRenderingCache.getRendering(ADCManager.getExpression((OWLClass)object), getOWLObjectRenderer());
             }
             else{
                 getOWLEntityRenderer();
@@ -1124,7 +1124,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     private OWLDescriptionParser owlDescriptionParser;
-    
+
 
     public OWLDescriptionParser getOWLDescriptionParser() {
         return owlDescriptionParser;

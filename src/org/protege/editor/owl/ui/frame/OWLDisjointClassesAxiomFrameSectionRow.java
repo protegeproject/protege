@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
@@ -18,11 +17,11 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLDisjointClassesAxiom, Set<OWLDescription>> {
+public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDescription, OWLDisjointClassesAxiom, Set<OWLDescription>> {
 
 
     public OWLDisjointClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
-                                                  OWLOntology ontology, OWLClass rootObject,
+                                                  OWLOntology ontology, OWLDescription rootObject,
                                                   OWLDisjointClassesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

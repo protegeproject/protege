@@ -1,16 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.util.CollectionFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -19,10 +18,10 @@ import org.semanticweb.owl.util.CollectionFactory;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLEquivalentClassesAxiom, OWLDescription> {
+public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDescription, OWLEquivalentClassesAxiom, OWLDescription> {
 
     public OWLEquivalentClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
-                                                    OWLOntology ontology, OWLClass rootObject,
+                                                    OWLOntology ontology, OWLDescription rootObject,
                                                     OWLEquivalentClassesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

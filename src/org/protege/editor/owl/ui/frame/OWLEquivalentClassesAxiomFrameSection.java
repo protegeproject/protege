@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.inference.UnsupportedReasonerOperationException;
 import org.semanticweb.owl.model.*;
@@ -15,11 +17,11 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSection<OWLClass, OWLEquivalentClassesAxiom, OWLDescription> {
+public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLEquivalentClassesAxiom, OWLDescription> {
 
     private static final String LABEL = "Equivalent classes";
 
-    private Set<OWLClass> added = new HashSet<OWLClass>();
+    private Set<OWLDescription> added = new HashSet<OWLDescription>();
 
     private boolean inferredEquivalentClasses = true;
 
@@ -34,22 +36,31 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    /**
-     * Refills the section with rows.  This method will be called
-     * by the system and should be directly called.
-     */
-    protected void refill(OWLOntology ontology) {
-        for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(getRootObject())) {
-            addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                this,
-                                                                ontology,
-                                                                getRootObject(),
-                                                                ax));
-            for (OWLDescription desc : ax.getDescriptions()) {
-                if (!desc.isAnonymous()) {
-                    added.add(desc.asOWLClass());
+    protected void addAxiom(OWLEquivalentClassesAxiom ax, OWLOntology ontology) {
+        addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                            this,
+                                                            ontology,
+                                                            getRootObject(),
+                                                            ax));
+        for (OWLDescription desc : ax.getDescriptions()) {
+            added.add(desc);
+        }
+    }
+
+
+    protected Set<OWLEquivalentClassesAxiom> getClassAxioms(OWLDescription descr, OWLOntology ont) {
+        if (!descr.isAnonymous()){
+            return ont.getEquivalentClassesAxioms(descr.asOWLClass());
+        }
+        else{
+            Set<OWLEquivalentClassesAxiom> axioms = new HashSet<OWLEquivalentClassesAxiom>();
+            for (OWLAxiom ax : ont.getGeneralClassAxioms()){
+                if (ax instanceof OWLEquivalentClassesAxiom &&
+                    ((OWLEquivalentClassesAxiom)ax).getDescriptions().contains(descr)){
+                    axioms.add((OWLEquivalentClassesAxiom)ax);
                 }
             }
+            return axioms;
         }
     }
 
@@ -67,18 +78,24 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSecti
                                                                     getOWLDataFactory().getOWLEquivalentClassesAxiom(
                                                                             CollectionFactory.createSet(getRootObject(),
                                                                                                         getOWLModelManager().getOWLDataFactory().getOWLNothing()))));
-                return;
             }
-            for (OWLClass cls : getOWLModelManager().getReasoner().getEquivalentClasses(getRootObject())) {
-                if (!added.contains(cls) && !cls.equals(getRootObject())) {
-                    addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                        this,
-                                                                        null,
-                                                                        getRootObject(),
-                                                                        getOWLDataFactory().getOWLEquivalentClassesAxiom(
-                                                                                CollectionFactory.createSet(
-                                                                                        getRootObject(),
-                                                                                        cls))));
+            else{
+                final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+
+                for (OWLDescription cls : getOWLModelManager().getReasoner().getEquivalentClasses(getRootObject())) {
+                    if (ADCManager.isAnonymous(cls.asOWLClass())){
+                        cls = ADCManager.getExpression(cls.asOWLClass());
+                    }
+                    if (!added.contains(cls) && !cls.equals(getRootObject())) {
+                        addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                            this,
+                                                                            null,
+                                                                            getRootObject(),
+                                                                            getOWLDataFactory().getOWLEquivalentClassesAxiom(
+                                                                                    CollectionFactory.createSet(
+                                                                                            getRootObject(),
+                                                                                            cls))));
+                    }
                 }
             }
         }
@@ -142,7 +159,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLFrameSecti
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLClass, OWLEquivalentClassesAxiom, OWLDescription>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLDescription, OWLEquivalentClassesAxiom, OWLDescription>> getRowComparator() {
         return null;
     }
 }

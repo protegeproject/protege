@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousClassManager;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLObject;
@@ -100,10 +100,10 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
     protected void updateView(OWLOntology activeOntology) throws Exception {
         Set<AnonymousClassItem> clses = new HashSet<AnonymousClassItem>();
-        AnonymousClassManager anonClassManager = getOWLModelManager().get(AnonymousClassManager.ID);
-        if (anonClassManager != null){
+        AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+        if (ADCManager != null){
             for (OWLClass cls : activeOntology.getReferencedClasses()){
-                if (anonClassManager.isAnonymous(cls)){
+                if (ADCManager.isAnonymous(cls)){
                     clses.add(new AnonymousClassItem(cls));
                 }
             }
