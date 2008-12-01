@@ -61,7 +61,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
                 for (Set<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject())) {
                     for (OWLDescription desc : descs) {
-                        if (!ADCManager.isAnonymous(desc.asOWLClass())){
+                        if (ADCManager.isAnonymous(desc.asOWLClass())){
                             desc = ADCManager.getExpression(desc.asOWLClass());
                         }
                         if (!added.contains(desc) && !getRootObject().equals(desc)) {
