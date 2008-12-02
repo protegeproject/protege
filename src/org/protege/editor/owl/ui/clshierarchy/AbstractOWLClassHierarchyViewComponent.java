@@ -5,6 +5,7 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.protege.editor.owl.ui.view.AbstractOWLClassViewComponent;
@@ -18,6 +19,7 @@ import org.semanticweb.owl.util.OWLEntitySetProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import javax.swing.event.*;
+import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,7 +47,10 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
     final public void initialiseClassView() throws Exception {
         setLayout(new BorderLayout(7, 7));
+        
         tree = new OWLModelManagerTree<OWLClass>(getOWLEditorKit(), getOWLClassHierarchyProvider());
+
+        // ordering based on default, but putting Nothing at the top
         final Comparator<OWLClass> comp = getOWLModelManager().getOWLObjectComparator();
         tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<OWLClass>(comp) {
             public int compare(OWLClass o1, OWLClass o2) {
@@ -60,6 +65,13 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
                 }
             }
         });
+
+        // render keywords should be on now for class expressions
+        final TreeCellRenderer treeCellRenderer = tree.getCellRenderer();
+        if (treeCellRenderer instanceof OWLCellRenderer){
+            ((OWLCellRenderer) treeCellRenderer).setHighlightKeywords(true);
+        }
+
         initSelectionManagement();
         add(ComponentFactory.createScrollPane(tree));
         performExtraInitialisation();
