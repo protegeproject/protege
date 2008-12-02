@@ -54,16 +54,18 @@ public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> e
 
 
     public final OWLDescription getRootObject() {
-        final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-
         final OWLDescription cls = super.getRootObject();
-        if (ADCManager.isAnonymous(cls.asOWLClass())){
-            return ADCManager.getExpression(cls.asOWLClass());
+        if (cls != null){
+            final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+
+            if (ADCManager.isAnonymous(cls.asOWLClass())){
+                return ADCManager.getExpression(cls.asOWLClass());
+            }
         }
         return cls;
     }
 
-    
+
     protected final void refill(OWLOntology ontology) {
         for (A ax : getClassAxioms(getRootObject(), ontology)){
             addAxiom(ax, ontology);
