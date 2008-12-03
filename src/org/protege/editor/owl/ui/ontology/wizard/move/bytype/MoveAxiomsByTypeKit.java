@@ -77,7 +77,7 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit {
     }
 
 
-    public void setTypes(Set<AxiomType<? extends OWLAxiom>> types) {
+    public void setTypes(Set<AxiomType> types) {
         this.types.clear();
         this.types.addAll(types);
     }
