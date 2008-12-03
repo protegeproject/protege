@@ -40,10 +40,11 @@ public class RemovableObjectList<O> extends MList {
 
     private ListCellRenderer rendererDelegate;
 
+
     public RemovableObjectList() {
         super.setModel(new MutableObjectListModel());
         final MListCellRenderer ren = (MListCellRenderer) getCellRenderer();
-        ren.setContentRenderer(new ListCellRenderer() {
+        ren.setContentRenderer(new DefaultListCellRenderer() {
 
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                           boolean cellHasFocus) {
@@ -52,7 +53,7 @@ public class RemovableObjectList<O> extends MList {
                     return rendererDelegate.getListCellRendererComponent(list, val, index, isSelected, cellHasFocus);
                 }
                 else {
-                    return ren.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 }
             }
         });
@@ -222,7 +223,6 @@ public class RemovableObjectList<O> extends MList {
         public boolean handleDelete() {
             MutableObjectListModel model = ((MutableObjectListModel) getModel());
             int index = model.indexOf(this);
-            System.out.println("Index: " + index);
             return model.remove(index) != null;
         }
 
