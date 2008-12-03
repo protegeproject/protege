@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.*;
 
-import java.util.*;
 import java.net.URI;
+import java.util.*;
 
 /**
  * User: nickdrummond Date: May 20, 2008
@@ -127,13 +127,8 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private void setupKits() {
         moveAxiomsKits = new ArrayList<MoveAxiomsKit>();
-//
-//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new ClassReferencingAxiomsStrategy()));
-//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new ObjectPropertyReferencingAxiomStrategy()));
-//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new DataPropertyReferencingAxiomStrategy()));
-//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new IndividualReferencingAxiomStrategy()));
+
 //        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AnnotationAxiomsStrategy()));
-//        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AxiomTypeStrategy()));
 //        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AllAxiomsStrategy()));
 
         MoveAxiomsKitPluginLoader loader = new MoveAxiomsKitPluginLoader(editorKit);
@@ -156,6 +151,11 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
             }
         }
         if (!moveAxiomsKits.isEmpty()) {
+            Collections.sort(moveAxiomsKits, new Comparator<MoveAxiomsKit>(){
+                public int compare(MoveAxiomsKit kit1, MoveAxiomsKit kit2) {
+                    return kit1.getName().compareTo(kit2.getName());
+                }
+            });
             selectedKit = moveAxiomsKits.get(0);
         }
     }
