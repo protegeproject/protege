@@ -1153,4 +1153,10 @@
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.bytype.MoveAxiomsByTypeKit" />
     </extension>
 
+    <extension id="MoveAxiomsByProfile"
+               point="org.protege.editor.owl.moveaxiomskit">
+        <name value="Move axioms by profile" />
+        <class value="org.protege.editor.owl.ui.ontology.wizard.move.byprofile.MoveAxiomsByProfileKit" />
+    </extension>
+
 </plugin>
