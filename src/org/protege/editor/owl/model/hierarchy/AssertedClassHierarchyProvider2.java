@@ -186,17 +186,14 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
     private Set<OWLClass> extractChildren(OWLClass parent) {
         childClassExtractor.setCurrentParentClass(parent);
-        Set<OWLClass> result = new HashSet<OWLClass>(childClassExtractor.getResult());
         for (OWLOntology ont : ontologies) {
             for (OWLAxiom ax : ont.getReferencingAxioms(parent)) {
-                childClassExtractor.reset();
                 if (ax.isLogicalAxiom()) {
                     ax.accept(childClassExtractor);
-                    result.addAll(childClassExtractor.getResult());
                 }
             }
         }
-        return result;
+        return childClassExtractor.getResult();
     }
 
 
@@ -400,13 +397,12 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
         public void setCurrentParentClass(OWLClass currentParentClass) {
             this.currentParentClass = currentParentClass;
-//            checker.setNamedConjunct(currentParentClass);
             reset();
         }
 
 
         public Set<OWLClass> getResult() {
-            return results;
+            return new HashSet<OWLClass>(results);
         }
 
 
@@ -418,7 +414,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             if (checker.containsConjunct(currentParentClass, axiom.getSuperClass())) {
                 // We only want named classes
                 if (!axiom.getSubClass().isAnonymous()) {
-                    results.add((OWLClass) axiom.getSubClass());
+                    results.add(axiom.getSubClass().asOWLClass());
                 }
             }
         }
