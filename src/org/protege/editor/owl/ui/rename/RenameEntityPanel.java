@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.rename;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLEntity;
@@ -26,6 +27,7 @@ public class RenameEntityPanel extends JPanel {
 
     private static final Logger logger = Logger.getLogger(RenameEntityPanel.class);
 
+    private static final String AUTO_RENAME_PUNS = "AUTO_RENAME_PUNS";
 
     private OWLEditorKit owlEditorKit;
 
@@ -35,29 +37,47 @@ public class RenameEntityPanel extends JPanel {
 
     private JCheckBox showFullURICheckBox;
 
+    private JCheckBox renamePunsCheckBox;
+
     private static boolean showFullURI = false;
+
+    private boolean renamePuns;
 
 
     public RenameEntityPanel(OWLEditorKit owlEditorKit, OWLEntity owlEntity) {
         this.owlEditorKit = owlEditorKit;
         this.owlEntity = owlEntity;
+        renamePuns = RenameEntityPanel.isAutoRenamePuns();
         createUI();
     }
 
 
     private void createUI() {
         setLayout(new BorderLayout(3, 3));
+
         textField = new JTextField(50);
-        add(textField, BorderLayout.NORTH);
-        JPanel checkBoxHolderPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        renamePunsCheckBox = new JCheckBox("Rename all entities with this URI", renamePuns);
+        renamePunsCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renamePuns = renamePunsCheckBox.isSelected();
+            }
+        });
+
         showFullURICheckBox = new JCheckBox("Show full URI", showFullURI);
         showFullURICheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateTextField();
             }
         });
-        checkBoxHolderPanel.add(showFullURICheckBox);
+
+        JPanel checkBoxHolderPanel = new JPanel(new BorderLayout());
+        checkBoxHolderPanel.add(renamePunsCheckBox, BorderLayout.WEST);
+        checkBoxHolderPanel.add(showFullURICheckBox, BorderLayout.EAST);
+
+        add(textField, BorderLayout.NORTH);
         add(checkBoxHolderPanel, BorderLayout.SOUTH);
+
         updateTextField();
     }
 
@@ -134,6 +154,16 @@ public class RenameEntityPanel extends JPanel {
     }
 
 
+    public boolean getRenamePuns(){
+        return renamePuns;
+    }
+
+
+    public static boolean isAutoRenamePuns() {
+        return PreferencesManager.getInstance().getApplicationPreferences(RenameEntityPanel.class).getBoolean(AUTO_RENAME_PUNS, false);
+    }
+
+    
     public static URI showDialog(OWLEditorKit owlEditorKit, OWLEntity entity) {
         RenameEntityPanel panel = new RenameEntityPanel(owlEditorKit, entity);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -143,6 +173,8 @@ public class RenameEntityPanel extends JPanel {
                                             JOptionPane.PLAIN_MESSAGE,
                                             JOptionPane.OK_CANCEL_OPTION,
                                             panel.textField) == JOptionPane.OK_OPTION){
+
+            PreferencesManager.getInstance().getApplicationPreferences(RenameEntityPanel.class).putBoolean(AUTO_RENAME_PUNS, panel.getRenamePuns());
             return panel.getURI();
         }
         return null;
