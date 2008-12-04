@@ -44,14 +44,10 @@ public class RenameEntitiesBySearchAndReplaceAction extends ProtegeOWLAction {
     public void actionPerformed(ActionEvent event) {
         RenameEntitiesPanel panel = new RenameEntitiesPanel(getOWLEditorKit());
         final UIHelper uiHelper = new UIHelper(getOWLEditorKit());
-        if (uiHelper.showValidatingDialog("Rename entities", panel, panel.getFocusComponent()) == JOptionPane.OK_OPTION){
+        if (uiHelper.showValidatingDialog("Change multiple entity URIs", panel, panel.getFocusComponent()) == JOptionPane.OK_OPTION){
             EntityFindAndReplaceURIRenamer renamer = panel.getRenamer();
             List<OWLOntologyChange> changes = renamer.getChanges();
             getOWLModelManager().applyChanges(changes);
-//            uiHelper.showOptionPane("Entity Renamer",
-//                                    panel.getSelectedEntities().size() + " entities renamed.",
-//                                    JOptionPane.OK_OPTION,
-//                                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 
