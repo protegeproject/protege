@@ -906,9 +906,9 @@
 
     <extension id="menu.RenameEntity"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Rename..."/>
+        <name value="Change entity URI..."/>
         <class value="org.protege.editor.owl.ui.action.RenameEntityAction"/>
-        <toolTip value="Change the URI of the selected entity (rename)"/>
+        <toolTip value="Change the URI of the selected entity"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="U"/>
@@ -916,7 +916,7 @@
 
     <extension id="menu.RenameEntitiesBySearchAndReplace"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Rename entities..."/>
+        <name value="Change multiple entity URIs..."/>
         <class value="org.protege.editor.owl.ui.action.RenameEntitiesBySearchAndReplaceAction"/>
         <toolTip value="Change the URI of entities using search and replace"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-C"/>
