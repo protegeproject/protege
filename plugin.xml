@@ -1005,7 +1005,7 @@
 
     <extension id="menu.MoveAxiomsToOntologyAction"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Extract/move axioms ..."/>
+        <name value="Copy/move/delete axioms ..."/>
         <class value="org.protege.editor.owl.ui.action.MoveAxiomsToOntologyAction"/>
         <toolTip value="Extract or move axioms from an ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
