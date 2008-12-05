@@ -200,6 +200,8 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
             }
         }
 
+        final OWLDataFactory df = editorKit.getModelManager().getOWLDataFactory();
+
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
         Set<OWLAxiom> axiomsToBeMoved = getAxiomsToBeMoved();
@@ -211,6 +213,10 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                     if(targetOntology != null){
+                        if (ax instanceof OWLOntologyAnnotationAxiom){ // turn this into an annotation on the target
+                            ax = df.getOWLOntologyAnnotationAxiom(targetOntology,
+                                                                  ((OWLOntologyAnnotationAxiom)ax).getAnnotation());
+                        }
                         changes.add(new AddAxiom(targetOntology, ax));
                     }
                 }

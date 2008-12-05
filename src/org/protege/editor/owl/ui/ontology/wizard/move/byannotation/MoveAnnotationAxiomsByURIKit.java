@@ -1,13 +1,14 @@
-package org.protege.editor.owl.ui.ontology.wizard.move.bytype;
+package org.protege.editor.owl.ui.ontology.wizard.move.byannotation;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
-import org.semanticweb.owl.model.AxiomType;
+import org.semanticweb.owl.model.OWLAnnotationAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,63 +44,65 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Nov 28, 2008<br><br>
  */
-public class MoveAxiomsByTypeKit extends MoveAxiomsKit implements FilteredAxiomsModel {
+public class MoveAnnotationAxiomsByURIKit extends MoveAxiomsKit implements FilteredAxiomsModel {
 
-    private Set<AxiomType> types;
+    private Set<URI> uris;
 
-    private AxiomTypeSelectorPanel axiomTypeSelectorPanel;
+    private AnnotationSelectorPanel annotationURISelectorPanel;
 
     private SelectAxiomsPanel selectAxiomsPanel;
 
-    private Set<OWLAxiom> axioms;
+    private Set<OWLAxiom> filteredAxioms;
 
 
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
         List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
-        panels.add(axiomTypeSelectorPanel);
+        panels.add(annotationURISelectorPanel);
         panels.add(selectAxiomsPanel);
         return panels;
     }
 
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies) {
-        return axioms;
+        return filteredAxioms;
     }
 
 
     public void initialise() throws Exception {
-        types = new HashSet<AxiomType>();
-        axiomTypeSelectorPanel = new AxiomTypeSelectorPanel(this);
-        selectAxiomsPanel = new SelectAxiomsPanel(this, "axioms.type");
+        uris = new HashSet<URI>();
+        annotationURISelectorPanel = new AnnotationSelectorPanel(this);
+        selectAxiomsPanel = new SelectAxiomsPanel(this, "axioms.annotate");
     }
 
 
     public void dispose() throws Exception {
-        axiomTypeSelectorPanel.dispose();
+        annotationURISelectorPanel.dispose();
     }
 
 
-    public void setTypes(Set<AxiomType> types) {
-        this.types.clear();
-        this.types.addAll(types);
+    public void setURIs(Set<URI> uris) {
+        this.uris.clear();
+        this.uris.addAll(uris);
     }
 
 
-    public Set<AxiomType> getTypes() {
-        return types;
+    public Set<URI> getTypes() {
+        return uris;
     }
 
 
     public void setFilteredAxioms(Set<OWLAxiom> axioms) {
-        this.axioms = axioms;
+        this.filteredAxioms = axioms;
     }
 
 
     public Set<OWLAxiom> getUnfilteredAxioms(Set<OWLOntology> sourceOntologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLOntology ont : sourceOntologies){
-            for (AxiomType type : types){
-                axioms.addAll(ont.getAxioms(type));
+            for (OWLAnnotationAxiom ax : ont.getAnnotationAxioms()){
+                if (uris.contains(ax.getAnnotation().getAnnotationURI())){
+                    axioms.add(ax);
+                }
             }
         }
         return axioms;

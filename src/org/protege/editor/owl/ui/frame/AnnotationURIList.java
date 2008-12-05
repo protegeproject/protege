@@ -97,9 +97,9 @@ public class AnnotationURIList extends MList {
      * format has a space to 'tuck' these annotations when an RDF/XML file is parsed.  We
      * therefore retrieve these annotation URIs and make them available to the user.
      */
-    private Set<URI> getAnnotationURIsViaHack() {
+    private Set<URI> getAnnotationURIsViaHack(Set<OWLOntology> ontologies) {
         Set<URI> result = new HashSet<URI>();
-        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
+        for (OWLOntology ont : ontologies) {
             OWLOntologyFormat format = owlEditorKit.getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
             if (format instanceof RDFXMLOntologyFormat) {
                 RDFXMLOntologyFormat rdfxmlOntologyFormat = (RDFXMLOntologyFormat) format;
@@ -111,6 +111,12 @@ public class AnnotationURIList extends MList {
 
 
     public void rebuildAnnotationURIList() {
+        rebuildAnnotationURIList(owlEditorKit.getModelManager().getActiveOntologies());
+    }
+
+
+    public void rebuildAnnotationURIList(Set<OWLOntology> ontologies) {
+
         // Custom
         // Built in
         // Dublin core
@@ -119,10 +125,10 @@ public class AnnotationURIList extends MList {
 
         java.util.List<URIItem> custom = new ArrayList<URIItem>();
         Set<URI> customURIs = new HashSet<URI>();
-        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
+        for (OWLOntology ont : ontologies) {
             customURIs.addAll(ont.getAnnotationURIs());
         }
-        customURIs.addAll(getAnnotationURIsViaHack());
+        customURIs.addAll(getAnnotationURIsViaHack(ontologies));
         if (uriBeingAdded != null) {
             customURIs.add(uriBeingAdded);
         }
@@ -226,7 +232,7 @@ public class AnnotationURIList extends MList {
         return uris;
     }
 
-    private class URIItem implements MListItem, Comparable<URIItem> {
+    public class URIItem implements MListItem, Comparable<URIItem> {
 
         private URI uri;
 
