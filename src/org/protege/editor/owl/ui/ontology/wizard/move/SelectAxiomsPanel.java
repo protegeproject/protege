@@ -49,8 +49,12 @@ public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
     private FilteredAxiomsModel filterModel;
 
 
-    public SelectAxiomsPanel(FilteredAxiomsModel filterModel) {
+    private String id;
+
+
+    public SelectAxiomsPanel(FilteredAxiomsModel filterModel, String id) {
         this.filterModel = filterModel;
+        this.id = id;
     }
 
 
@@ -73,7 +77,7 @@ public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
 
 
     public String getID() {
-        return getClass().getName();
+        return id;
     }
 
 
