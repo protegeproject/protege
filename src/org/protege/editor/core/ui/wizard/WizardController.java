@@ -90,7 +90,7 @@ public class WizardController implements ActionListener {
     }
 
 
-    void resetButtonsToPanelRules() {
+    public void resetButtonsToPanelRules() {
 
         //  Reset the buttons to support the original panel rules,
         //  including whether the next or back buttons are enabled or
