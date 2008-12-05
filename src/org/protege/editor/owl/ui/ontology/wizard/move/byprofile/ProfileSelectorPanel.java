@@ -78,7 +78,12 @@ public class ProfileSelectorPanel extends MoveAxiomsKitConfigurationPanel {
 
 
     public String getTitle() {
-        return "Axioms by profile";
+        return "Select profile";
+    }
+
+
+    public String getInstructions() {
+        return "Select the OWL profile that you wish to extract.";
     }
 
 

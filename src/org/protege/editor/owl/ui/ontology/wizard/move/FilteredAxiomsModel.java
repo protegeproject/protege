@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.axioms.AxiomSelectionStrategy;
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
-import javax.swing.*;/*
+import java.util.Set;
+/*
 * Copyright (C) 2007, University of Manchester
 *
 * Modifications to the initial code base are copyright of their
@@ -32,26 +33,11 @@ import javax.swing.*;/*
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: May 30, 2008<br><br>
+ * Date: Dec 4, 2008<br><br>
  */
-public abstract class StrategyEditor<O extends AxiomSelectionStrategy> {
+public interface FilteredAxiomsModel {
 
-    private O strategy;
+    void setFilteredAxioms(Set<OWLAxiom> axioms);
 
-    private OWLEditorKit eKit;
-
-    public StrategyEditor(O strategy, OWLEditorKit eKit) {
-        this.strategy = strategy;
-        this.eKit = eKit;
-    }
-
-    public final O getStrategy(){
-        return strategy;
-    }
-
-    protected final OWLEditorKit getOWLEditorKit(){
-        return eKit;
-    }
-
-    public abstract JComponent getComponent();
+    Set<OWLAxiom> getUnfilteredAxioms(Set<OWLOntology> sourceOntologies);
 }
