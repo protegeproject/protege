@@ -37,7 +37,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
-        setTitle("Move axioms to ontology");
+        setTitle("Copy/move/delete axioms");
         this.editorKit = eKit;
 
         sourceOntologies = new HashSet<OWLOntology>();
@@ -176,10 +176,10 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
 
     public void dispose() {
-        super.dispose();
         for (MoveAxiomsKitConfigurationPanel panel : panels) {
             panel.dispose();
         }
+        super.dispose();
     }
 
 

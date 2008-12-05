@@ -26,6 +26,8 @@ public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
                 logger.error(e);
             }
         }
+
+        wiz.dispose();
     }
 
 
