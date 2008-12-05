@@ -1007,7 +1007,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Copy/move/delete axioms ..."/>
         <class value="org.protege.editor.owl.ui.action.MoveAxiomsToOntologyAction"/>
-        <toolTip value="Extract or move axioms from an ontology"/>
+        <toolTip value="Extract/select axioms from an ontology and optionally move them to another ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -1143,19 +1143,19 @@
 
     <extension id="MoveAxiomsByReference"
                point="org.protege.editor.owl.moveaxiomskit">
-        <name value="Move axioms by reference" />
+        <name value="Axioms by reference (select entities from the ontology)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.byreference.MoveAxiomsByReferenceKit" />
     </extension>
 
     <extension id="MoveAxiomsByType"
                point="org.protege.editor.owl.moveaxiomskit">
-        <name value="Move axioms by type" />
+        <name value="Axioms by type (eg subclass axioms, annotation axioms)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.bytype.MoveAxiomsByTypeKit" />
     </extension>
 
     <extension id="MoveAxiomsByProfile"
                point="org.protege.editor.owl.moveaxiomskit">
-        <name value="Move axioms by profile" />
+        <name value="Axioms by profile (select axioms in a sublanguage of OWL)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.byprofile.MoveAxiomsByProfileKit" />
     </extension>
 
