@@ -1,13 +1,12 @@
 package org.protege.editor.core.ui.workspace;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.Resettable;
-import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.util.*;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
@@ -160,6 +159,14 @@ public abstract class TabbedWorkspace extends Workspace {
             }
         });
 
+        final AbstractAction deleteTabsAction = new AbstractAction("Delete custom tabs...") {
+            public void actionPerformed(ActionEvent event) {
+                handleDeleteTabs();
+            }
+        };
+        deleteTabsAction.setEnabled(!getCustomTabsManager().getCustomTabs().isEmpty());
+        tabMenu.add(deleteTabsAction);
+
         tabMenu.addSeparator();
         tabMenu.add(new AbstractAction("Export current tab...") {
 
@@ -186,6 +193,7 @@ public abstract class TabbedWorkspace extends Workspace {
             }
         });
     }
+
 
 
     private void refreshActions() {
@@ -258,6 +266,36 @@ public abstract class TabbedWorkspace extends Workspace {
             return tab;
         }
         return null;
+    }
+
+    private void handleDeleteTabs() {
+        LoadedTabsSelector selector = new LoadedTabsSelector();
+        int ret = JOptionPaneEx.showConfirmDialog(this,
+                                                  "Delete Tabs",
+                                                  selector,
+                                                  JOptionPane.PLAIN_MESSAGE,
+                                                  JOptionPane.OK_CANCEL_OPTION,
+                                                  selector);
+        if (ret == JOptionPane.OK_OPTION){
+            for (WorkspaceTabPlugin tabPlugin : selector.getSelectedTabs()){
+                final String id = tabPlugin.getId();
+
+                if (containsTab(id)) {
+                    // make sure we remove it from the workspace if it is currently active
+                    WorkspaceTab tab = getWorkspaceTab(id);
+                    removeTab(tab);
+                    try {
+                        tab.dispose();
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                
+                getCustomTabsManager().deleteCustomTab(id);
+            }
+            rebuildTabMenu();
+        }
     }
 
 
@@ -419,5 +457,30 @@ public abstract class TabbedWorkspace extends Workspace {
         }
         workspaceTabs.clear();
         tabbedPane.removeAll();
+    }
+
+
+    private class LoadedTabsSelector extends JPanel {
+
+        private CheckTable<WorkspaceTabPlugin> table;
+
+        private LoadedTabsSelector() {
+            super(new BorderLayout());
+            table = new CheckTable<WorkspaceTabPlugin>("Custom tabs");
+            table.setDefaultRenderer(new DefaultTableCellRenderer(){
+                public Component getTableCellRendererComponent(JTable jTable, Object o, boolean b, boolean b1, int i, int i1) {
+                    if (o instanceof WorkspaceTabPlugin){
+                        o = ((WorkspaceTabPlugin)o).getLabel();
+                    }
+                    return super.getTableCellRendererComponent(jTable, o, b, b1, i, i1);
+                }
+            });
+            table.getModel().setData(getCustomTabsManager().getCustomTabPlugins(TabbedWorkspace.this), false);
+            add(new JScrollPane(table), BorderLayout.CENTER);
+        }
+
+        public List<WorkspaceTabPlugin> getSelectedTabs(){
+            return table.getFilteredValues();
+        }
     }
 }
