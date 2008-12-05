@@ -27,13 +27,13 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private Map<String, Object> kitId2LastPanelId;
 
-    private Set<OWLAxiom> axioms;
-
     private List<MoveAxiomsKitConfigurationPanel> panels;
 
-    private boolean copyAxioms;
-
     private URI physicalURI;
+
+    private boolean deleteFromOriginalOntology;
+
+    private boolean addToTargetOntology;
 
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
@@ -41,28 +41,32 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         this.editorKit = eKit;
 
         sourceOntologies = new HashSet<OWLOntology>();
-        axioms = new HashSet<OWLAxiom>();
         panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
         selectedKit = null;
         kitId2FirstPanelId = new HashMap<String, Object>();
         kitId2LastPanelId = new HashMap<String, Object>();
         setupKits();
 
-        // We select the type of move/copy
 
         // We select the ontologies
 
-        // We configure the move/copy
+        // We select the method
 
-        // we confirm the move/copy
+        // We configure the method
+
+        // We confirm the axioms
+
+        // we specify move/copy/delete
 
         // We specify whether we want to create a new ontology or move to an existing ontology
 
         // We finish or cancel
 
+        registerWizardPanel(SelectSourceOntologiesPanel.ID, new SelectSourceOntologiesPanel(editorKit));
+
         registerWizardPanel(SelectKitPanel.ID, new SelectKitPanel(editorKit));
 
-        registerWizardPanel(SelectSourceOntologiesPanel.ID, new SelectSourceOntologiesPanel(editorKit));
+        registerWizardPanel(SelectActionPanel.ID, new SelectActionPanel(editorKit));
 
         registerWizardPanel(SelectTargetOntologyTypePanel.ID, new SelectTargetOntologyTypePanel(editorKit));
 
@@ -72,8 +76,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
         registerWizardPanel(NewOntologyPhysicalLocationPanel.ID, new NewOntologyPhysicalLocationPanel(editorKit));
 
-        registerWizardPanel(SelectMoveOrCopyPanel.ID, new SelectMoveOrCopyPanel(editorKit));
-        
+
 
         // Setup and init all of the plugin wizard pages - any of them could be used
         for (MoveAxiomsKit kit : moveAxiomsKits) {
@@ -83,11 +86,11 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 this.panels.add(panel);
                 panel.setup(editorKit, this);
                 panel.initialise();
-                Object prevId = SelectSourceOntologiesPanel.ID;
-                Object nextId = SelectTargetOntologyTypePanel.ID;
+                Object prevId = SelectKitPanel.ID;
+                Object nextId = SelectActionPanel.ID;
                 if (i == 0) {
                     kitId2FirstPanelId.put(kit.getID(), panel.getID());
-                    prevId = SelectSourceOntologiesPanel.ID;
+                    prevId = SelectKitPanel.ID;
                 }
                 if (i > 0) {
                     prevId = panels.get(i - 1).getID();
@@ -97,7 +100,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 }
                 if (i == panels.size() - 1) {
                     kitId2LastPanelId.put(kit.getID(), panel.getID());
-                    nextId = SelectTargetOntologyTypePanel.ID;
+                    nextId = SelectActionPanel.ID;
                 }
                 MoveAxiomsWizardKitConfigurationPanel configPanel = new MoveAxiomsWizardKitConfigurationPanel(prevId,
                                                                                                               nextId,
@@ -106,7 +109,8 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 registerWizardPanel(panel.getID(), configPanel);
             }
         }
-        setCurrentPanel(SelectKitPanel.ID);
+
+        setCurrentPanel(SelectSourceOntologiesPanel.ID);
     }
 
 
@@ -185,24 +189,30 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
     //  Implementation of the model
 
     public List<OWLOntologyChange> getChanges() throws OWLOntologyCreationException {
+        OWLOntology targetOntology = null;
+        if (addToTargetOntology){
+            OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
+            if(man.contains(getTargetOntologyURI())) {
+                targetOntology = man.getOntology(getTargetOntologyURI());
+            }
+            else {
+                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), getTargetOntologyPhysicalURI());
+            }
+        }
+
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+
         Set<OWLAxiom> axiomsToBeMoved = getAxiomsToBeMoved();
-        OWLOntology targetOntology;
-        OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
-        if(man.contains(getTargetOntologyURI())) {
-            targetOntology = man.getOntology(getTargetOntologyURI());
-        }
-        else {
-            targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), getTargetOntologyPhysicalURI());
-        }
 
         for(OWLAxiom ax : axiomsToBeMoved) {
             for (OWLOntology ont : getSourceOntologies()) {
                 if (ont.containsAxiom(ax)) {
-                    if(!isCopyAxioms()) {
+                    if(deleteFromOriginalOntology) {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
-                    changes.add(new AddAxiom(targetOntology, ax));
+                    if(targetOntology != null){
+                        changes.add(new AddAxiom(targetOntology, ax));
+                    }
                 }
             }
         }
@@ -245,12 +255,12 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
     }
 
 
-    public void setCopyAxioms(boolean b) {
-        this.copyAxioms = b;
+    public void setDeleteFromOriginalOntology(boolean deleteFromOriginalOntology) {
+        this.deleteFromOriginalOntology = deleteFromOriginalOntology;
     }
 
 
-    public boolean isCopyAxioms() {
-        return copyAxioms;
+    public void setAddToTargetOntology(boolean addToTargetOntology) {
+        this.addToTargetOntology = addToTargetOntology;
     }
 }

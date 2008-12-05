@@ -1,7 +1,9 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.bytype;
 
+import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
 import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
@@ -41,27 +43,26 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Nov 28, 2008<br><br>
  */
-public class MoveAxiomsByTypeKit extends MoveAxiomsKit {
+public class MoveAxiomsByTypeKit extends MoveAxiomsKit implements FilteredAxiomsModel {
 
     private Set<AxiomType> types;
 
     private AxiomTypeSelectorPanel axiomTypeSelectorPanel;
 
+    private SelectAxiomsPanel selectAxiomsPanel;
+
+    private Set<OWLAxiom> axioms;
+
 
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
         List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
         panels.add(axiomTypeSelectorPanel);
+        panels.add(selectAxiomsPanel);
         return panels;
     }
 
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : sourceOntologies){
-            for (AxiomType type : types){
-                axioms.addAll(ont.getAxioms(type));
-            }
-        }
         return axioms;
     }
 
@@ -69,6 +70,7 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit {
     public void initialise() throws Exception {
         types = new HashSet<AxiomType>();
         axiomTypeSelectorPanel = new AxiomTypeSelectorPanel(this);
+        selectAxiomsPanel = new SelectAxiomsPanel(this);
     }
 
 
@@ -85,5 +87,21 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit {
 
     public Set<AxiomType> getTypes() {
         return types;
+    }
+
+
+    public void setFilteredAxioms(Set<OWLAxiom> axioms) {
+        this.axioms = axioms;
+    }
+
+
+    public Set<OWLAxiom> getUnfilteredAxioms(Set<OWLOntology> sourceOntologies) {
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        for (OWLOntology ont : sourceOntologies){
+            for (AxiomType type : types){
+                axioms.addAll(ont.getAxioms(type));
+            }
+        }
+        return axioms;
     }
 }

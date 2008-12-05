@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,18 +44,18 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
 
 
     public SelectTargetOntologyTypePanel(OWLEditorKit owlEditorKit) {
-        super(ID, "Move/Copy axioms", owlEditorKit);
+        super(ID, "Target ontology", owlEditorKit);
     }
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Specify whether you want to move/copy the axioms into an existing ontology, or move/copy the axioms into a new ontology");
+        setInstructions("Specify whether you want to move/copy the axioms into an existing ontology or a new ontology");
         parent.setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
         parent.add(box, BorderLayout.NORTH);
         mergeIntoNew = new JRadioButton("New ontology (create a new ontology)", true);
         box.add(mergeIntoNew);
-        mergeIntoExisting = new JRadioButton("Existing ontology (choose and existing ontology)");
+        mergeIntoExisting = new JRadioButton("Existing ontology (choose an existing ontology)");
         box.add(mergeIntoExisting);
         ButtonGroup bg = new ButtonGroup();
         bg.add(mergeIntoNew);
@@ -71,7 +70,7 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
 
 
     public Object getBackPanelDescriptor() {
-        return getWizard().getLastPanelIDForKit();
+        return SelectActionPanel.ID;
     }
 
 

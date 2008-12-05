@@ -1,25 +1,27 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.common;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.core.ui.util.CheckList;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
-import javax.swing.Timer;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -166,10 +168,10 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
                 final Set<OWLAxiom> axioms = signatureSelection.getAxioms(sourceOntologies, entities);
                 final java.util.List<OWLAxiom> axs = new ArrayList<OWLAxiom>(new TreeSet<OWLAxiom>(axioms));
                 final int upperBound = 500 > axs.size() ? axs.size() : 500;
-                System.out.println("Updating for sig: " + entities);
+//                System.out.println("Updating for sig: " + entities);
                 Runnable runnable = new Runnable() {
                     public void run() {
-                        System.out.println("Filling list");
+//                        System.out.println("Filling list");
                         previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " in module)");
                     }
                 };
@@ -177,13 +179,13 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
                 SwingUtilities.invokeLater(runnable);
 
-                System.out.println(axioms.size());
+//                System.out.println(axioms.size());
 
                 Runnable runnable2 = new Runnable() {
                     public void run() {
 
                         previewList.setListData(axs.subList(0, upperBound).toArray());
-                        System.out.println("Done");
+//                        System.out.println("Done");
                     }
                 };
                 SwingUtilities.invokeLater(runnable2);

@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.ui.util.CheckTable;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.merge.SelectTargetOntologyPage;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;/*
 * Copyright (C) 2007, University of Manchester
 *
@@ -39,54 +39,70 @@ import java.util.Set;/*
  * Bio Health Informatics Group<br>
  * Date: May 30, 2008<br><br>
  */
-public class SelectAxiomsPanel extends AbstractMoveAxiomsWizardPanel {
-
-    public static String ID = "AxiomSelectionPanel";
+public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
 
     private CheckTable<OWLAxiom> list;
 
+    private Set<OWLAxiom> unfilteredAxioms;
 
-    public SelectAxiomsPanel(OWLEditorKit eKit) {
-        super(ID, "Confirm axioms to move", eKit);
+
+    private FilteredAxiomsModel filterModel;
+
+
+    public SelectAxiomsPanel(FilteredAxiomsModel filterModel) {
+        this.filterModel = filterModel;
     }
 
 
-    protected void createUI(JComponent parent) {
-        parent.setLayout(new BorderLayout());
+    public void initialise() {
+        setLayout(new BorderLayout());
 
         list = new CheckTable<OWLAxiom>("Axioms");
-        final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getOWLEditorKit());
+        final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
-        owlCellRenderer.setOpaque(true);
         list.setDefaultRenderer(owlCellRenderer);
 
         final JScrollPane scroller = new JScrollPane(list);
-        parent.add(scroller);
-    }
-
-    
-    public void aboutToDisplayPanel() {
-//        list.setData(new ArrayList<OWLAxiom>(getUnfilteredAxioms()));
-        list.checkAll(true);        
+        add(scroller);
     }
 
 
-    public Object getBackPanelDescriptor() {
-        return getWizard().getLastPanelIDForKit();
+    public void dispose() {
+        // do nothing
     }
 
 
-    public Object getNextPanelDescriptor() {
-        return SelectTargetOntologyPage.ID;
+    public String getID() {
+        return getClass().getName();
     }
 
 
-    private Set<? extends OWLAxiom> getUnfilteredAxioms() {
-        return getWizard().getAxiomsToBeMoved();
+    public String getTitle() {
+        return "Confirm axioms to extract";
     }
 
 
-    public java.util.List<OWLAxiom> getFilteredAxioms() {
-        return list.getFilteredValues();
+    public String getInstructions() {
+        return "Confirm the axioms that are to be used in the extraction.";
+    }
+
+
+    public void update() {
+        final Set<OWLAxiom> axiomsFromKit = filterModel.getUnfilteredAxioms(getModel().getSourceOntologies());
+        if (unfilteredAxioms == null || !unfilteredAxioms.equals(axiomsFromKit)){
+            unfilteredAxioms = axiomsFromKit;
+            list.getModel().setData(new ArrayList<OWLAxiom>(unfilteredAxioms), true);
+            list.checkAll(true);
+        }
+    }
+
+
+    public void commit() {
+        filterModel.setFilteredAxioms(getFilteredAxioms());
+    }
+
+
+    private Set<OWLAxiom> getFilteredAxioms() {
+        return new HashSet<OWLAxiom>(list.getFilteredValues());
     }
 }

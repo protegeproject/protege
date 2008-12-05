@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
 import org.semanticweb.owl.model.OWLOntology;
 
-import javax.swing.*;
-import java.util.Set;
 import java.awt.*;
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -40,18 +39,18 @@ public class SelectSourceOntologiesPanel extends AbstractSelectOntologiesPage {
     public static final String ID = "SelectSourceOntologiesPanel";
 
     public SelectSourceOntologiesPanel(OWLEditorKit owlEditorKit) {
-        super(ID, owlEditorKit, "Select source ontologies");
-        setInstructions("Select the ontology that you want to move or copy axioms from");
+        super(ID, owlEditorKit, "Select source ontology");
+        setInstructions("Select the ontology that you want to extract axioms from");
     }
 
 
     public Object getNextPanelDescriptor() {
-        return ((MoveAxiomsWizard) getWizard()).getFirstPanelIDForKit();
+        return SelectKitPanel.ID;
     }
 
 
     public Object getBackPanelDescriptor() {
-        return SelectKitPanel.ID;
+        return null;
     }
 
 

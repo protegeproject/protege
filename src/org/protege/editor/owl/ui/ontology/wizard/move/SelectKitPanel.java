@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.selection.axioms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class SelectKitPanel extends AbstractMoveAxiomsWizardPanel {
 
     public SelectKitPanel(OWLEditorKit editorKit) {
         super(ID, "Select method", editorKit);
-        setInstructions("Select the method of moving or copying axioms.");
+        setInstructions("Select the method of choosing axioms from the source ontology.");
     }
 
 
@@ -60,11 +59,11 @@ public class SelectKitPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getBackPanelDescriptor() {
-        return null;
+        return SelectSourceOntologiesPanel.ID;
     }
 
 
     public Object getNextPanelDescriptor() {
-        return SelectSourceOntologiesPanel.ID;
+        return getWizard().getFirstPanelIDForKit();
     }
 }

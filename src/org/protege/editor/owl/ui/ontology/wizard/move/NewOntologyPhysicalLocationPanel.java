@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.ui.wizard.WizardPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -39,7 +40,7 @@ public class NewOntologyPhysicalLocationPanel extends PhysicalLocationPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return SelectMoveOrCopyPanel.ID;
+        return WizardPanel.FINISH;
     }
 
 

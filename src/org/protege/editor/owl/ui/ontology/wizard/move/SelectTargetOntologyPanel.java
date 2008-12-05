@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
+import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -51,6 +52,6 @@ public class SelectTargetOntologyPanel extends AbstractSelectOntologiesPage {
 
 
     public Object getNextPanelDescriptor() {
-        return SelectMoveOrCopyPanel.ID;
+        return WizardPanel.FINISH;
     }
 }

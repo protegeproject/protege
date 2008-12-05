@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
-import java.util.Set;
 import java.net.URI;
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -47,7 +47,7 @@ public interface MoveAxiomsModel {
 
     Set<OWLAxiom> getAxiomsToBeMoved();
 
-    public void setCopyAxioms(boolean b);
+//    public void setCopyAxioms(boolean b);
 
-    public boolean isCopyAxioms();
+//    public boolean isCopyAxioms();
 }
