@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,7 +67,11 @@ public class OWLIndividualsByClassViewComponent extends AbstractOWLIndividualVie
 
         provider = new IndividualsByTypeHierarchyProvider(getOWLModelManager().getOWLOntologyManager());
         tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), provider);
+        final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
+        tree.setOWLObjectComparator(comp);
+
         add(new JScrollPane(tree));
+        
         provider.setOntologies(getOWLModelManager().getActiveOntologies());
         listener = new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
