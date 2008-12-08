@@ -7,6 +7,8 @@ import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
+import org.protege.editor.owl.ui.tree.OWLObjectTreeCellRenderer;
+import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLIndividual;
 import org.semanticweb.owl.model.OWLObject;
@@ -69,9 +71,21 @@ public class OWLIndividualsByClassViewComponent extends AbstractOWLIndividualVie
         tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), provider);
         final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
         tree.setOWLObjectComparator(comp);
+        tree.setCellRenderer(new OWLObjectTreeCellRenderer(getOWLEditorKit()){
+            protected String getRendering(Object object) {
+                StringBuilder label = new StringBuilder(super.getRendering(object));
+                if (object instanceof OWLClass){
+                    int size = provider.getChildren((OWLClass)object).size();
+                    label.append(" (");
+                    label.append(size);
+                    label.append(")");
+                }
+                return label.toString();
+            }
+        });
 
         add(new JScrollPane(tree));
-        
+
         provider.setOntologies(getOWLModelManager().getActiveOntologies());
         listener = new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
