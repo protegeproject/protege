@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDataRangeChecker;
 import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
 import org.semanticweb.owl.model.OWLDataRange;
 import org.semanticweb.owl.model.OWLDataType;
@@ -23,9 +24,11 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
     private JTabbedPane tabbedPane;
 
-    private OWLDataTypeSelectorPanel datatypeListScrollPane;
+    private OWLDataTypeSelectorPanel datatypeList;
 
     private ExpressionEditor<OWLDataRange> expressionEditor;
+
+    private JScrollPane expressionScroller;
 
 
     public OWLDataRangeEditor(OWLEditorKit owlEditorKit) {
@@ -33,25 +36,23 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
         tabbedPane = new JTabbedPane();
         editorPanel.add(tabbedPane);
-        tabbedPane.add("Built in datatypes", datatypeListScrollPane = new OWLDataTypeSelectorPanel(owlEditorKit));
-//        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLExpressionChecker<OWLDataRange>() {
-//            public void check(String text) throws OWLExpressionParserException, OWLException {
-//                editorKit.getModelManager().getOWLDescriptionParser().
-//            }
-//
-//
-//            public OWLDataRange createObject(String text) throws OWLExpressionParserException, OWLException {
-//                return null;
-//            }
-//        });
-//        tabbedPane.add("Data range expression", expressionEditor);
+        tabbedPane.add("Built in datatypes", datatypeList = new OWLDataTypeSelectorPanel(owlEditorKit));
+        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLDataRangeChecker(owlEditorKit.getOWLModelManager()));
+        expressionScroller = new JScrollPane(expressionEditor);
+        tabbedPane.add("Data range expression", expressionScroller);
         tabbedPane.setPreferredSize(new Dimension(400, 600));
     }
 
 
     public void setEditedObject(OWLDataRange dataRange){
+        expressionEditor.setExpressionObject(dataRange);
         if (dataRange.isDataType()){
-            datatypeListScrollPane.setSelection((OWLDataType)dataRange);
+            datatypeList.setSelection((OWLDataType)dataRange);
+            tabbedPane.setSelectedComponent(datatypeList);
+        }
+        else{
+            datatypeList.setSelection((OWLDataType)null);
+            tabbedPane.setSelectedComponent(expressionScroller);
         }
     }
 
@@ -62,8 +63,8 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
 
     public OWLDataRange getEditedObject() {
-        if (tabbedPane.getSelectedComponent() == datatypeListScrollPane) {
-            return datatypeListScrollPane.getSelectedObject();
+        if (tabbedPane.getSelectedComponent() == datatypeList) {
+            return datatypeList.getSelectedObject();
         }
         else {
             if (expressionEditor.isWellFormed()) {
@@ -82,7 +83,8 @@ public class OWLDataRangeEditor extends AbstractOWLFrameSectionRowObjectEditor<O
 
 
     public void clear() {
-        datatypeListScrollPane.setSelection((OWLDataType)null);
+        datatypeList.setSelection((OWLDataType)null);
+        expressionEditor.setExpressionObject(null);
     }
 
 
