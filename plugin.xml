@@ -333,6 +333,17 @@
     </extension>
 
 
+    <extension id="OWLIndividualsByInferredType"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Individuals by inferred type"/>
+        <class value="org.protege.editor.owl.ui.view.OWLIndividualsByInferredTypeViewComponent"/>
+        <headerColor value="@org.protege.individualcolor"/>
+        <category value="@org.protege.individualcategory"/>
+        <navigates value="@org.protege.classcategory"/>
+        <navigates value="@org.protege.individualcategory"/>
+    </extension>
+
+
     <extension id="OWLMembersList"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Members list"/>
