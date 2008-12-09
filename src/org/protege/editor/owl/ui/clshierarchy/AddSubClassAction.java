@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
@@ -47,9 +48,13 @@ public class AddSubClassAction extends AbstractOWLClassTreeAction {
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        OWLClass cls = getSelectedOWLClass();
+        OWLDescription cls = getSelectedOWLClass();
         if (cls == null) {
             return;
+        }
+        AnonymousDefinedClassManager adcManager = owlEditorKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+        if (adcManager != null && adcManager.isAnonymous(cls.asOWLClass())){
+            cls = adcManager.getExpression(cls.asOWLClass());
         }
         OWLEntityCreationSet<OWLClass> creationSet = owlEditorKit.getWorkspace().createOWLClass();
         if (creationSet == null) {
