@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.clshierarchy;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
@@ -74,17 +75,24 @@ public class AddSiblingClassAction extends OWLSelectionViewAction {
         if (creationSet == null) {
             return;
         }
+
+        OWLModelManager mngr = owlEditorKit.getModelManager();
+        OWLDataFactory df = mngr.getOWLDataFactory();
+
+        AnonymousDefinedClassManager adcManager = mngr.get(AnonymousDefinedClassManager.ID);
+
         // Combine the changes that are required to create the OWLClass, with the
         // changes that are required to make it a sibling class.
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(creationSet.getOntologyChanges());
-        OWLModelManager owlModelManager = owlEditorKit.getModelManager();
-        for (OWLClass par : owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
-            OWLDataFactory df = owlModelManager.getOWLDataFactory();
+        for (OWLDescription par : mngr.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
+            if (adcManager != null && adcManager.isAnonymous(par.asOWLClass())){
+                par = adcManager.getExpression(par.asOWLClass());
+            }
             OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
-            changes.add(new AddAxiom(owlModelManager.getActiveOntology(), ax));
+            changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
         }
-        owlModelManager.applyChanges(changes);
+        mngr.applyChanges(changes);
         // Select the new class
         tree.setSelectedOWLObject(creationSet.getOWLEntity());
     }
