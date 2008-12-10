@@ -1,9 +1,5 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
@@ -17,6 +13,10 @@ import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -115,6 +115,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
     public Set<OWLClass> getParents(OWLClass object) {
         try {
+            if (object.equals(owlModelManager.getOWLDataFactory().getOWLNothing())){
+                return Collections.singleton(owlModelManager.getOWLDataFactory().getOWLThing());
+            }
             Set<OWLClass> parents = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSuperClasses(object));
             parents.remove(object);
             return parents;
