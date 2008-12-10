@@ -34,7 +34,8 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
     private OWLModelManager owlModelManager;
 
-    private OWLClass root;
+    private OWLClass owlThing;
+    private OWLClass owlNothing;
 
     private OWLModelManagerListener owlModelManagerListener;
 
@@ -42,7 +43,10 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public InferredOWLClassHierarchyProvider(OWLModelManager owlModelManager, OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.owlModelManager = owlModelManager;
-        root = owlModelManager.getOWLDataFactory().getOWLThing();
+
+        owlThing = owlModelManager.getOWLDataFactory().getOWLThing();
+        owlNothing = owlModelManager.getOWLDataFactory().getOWLNothing();
+
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.REASONER_CHANGED) || event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(
@@ -66,7 +70,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
 
     public Set<OWLClass> getRoots() {
-        return Collections.singleton(root);
+        return Collections.singleton(owlThing);
     }
 
 
@@ -80,15 +84,15 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
             Set<OWLClass> subs = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSubClasses(object));
             // Add in owl:Nothing if there are inconsistent classes
             if (object.isOWLThing() && !owlModelManager.getReasoner().getInconsistentClasses().isEmpty()) {
-                subs.add(owlModelManager.getOWLDataFactory().getOWLNothing());
+                subs.add(owlNothing);
             }
-            else if (object.equals(owlModelManager.getOWLDataFactory().getOWLNothing())) {
+            else if (object.isOWLNothing()) {
                 subs.addAll(getReasoner().getInconsistentClasses());
-                subs.remove(owlModelManager.getOWLDataFactory().getOWLNothing());
+                subs.remove(owlNothing);
             }
             else {
                 // Class which is not Thing or Nothing
-                subs.remove(owlModelManager.getOWLDataFactory().getOWLNothing());
+                subs.remove(owlNothing);
                 for (Iterator<OWLClass> it = subs.iterator(); it.hasNext();) {
                     if (!getReasoner().isSatisfiable(it.next())) {
                         it.remove();
@@ -115,8 +119,11 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
     public Set<OWLClass> getParents(OWLClass object) {
         try {
-            if (object.equals(owlModelManager.getOWLDataFactory().getOWLNothing())){
-                return Collections.singleton(owlModelManager.getOWLDataFactory().getOWLThing());
+            if (object.isOWLNothing()){
+                return Collections.singleton(owlThing);
+            }
+            else if (!getReasoner().isSatisfiable(object)){
+                return Collections.singleton(owlNothing);
             }
             Set<OWLClass> parents = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSuperClasses(object));
             parents.remove(object);
