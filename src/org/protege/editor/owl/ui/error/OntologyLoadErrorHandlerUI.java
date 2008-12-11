@@ -1,21 +1,20 @@
 package org.protege.editor.owl.ui.error;
 
 import org.protege.editor.core.ui.error.ErrorExplainer;
-import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.io.OWLParser;
 import org.semanticweb.owl.io.UnparsableOntologyException;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
-import java.util.Map;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -51,35 +50,21 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
     private OWLEditorKit eKit;
 
-    private ErrorExplainer errorFilter;
-
-    private ErrorExplainer.ErrorExplanationFactory<UnparsableOntologyException> myErrorExplanationFactory =
-            new ErrorExplainer.ErrorExplanationFactory<UnparsableOntologyException>(){
-                public <T extends UnparsableOntologyException> ErrorExplainer.ErrorExplanation<T> createExplanation(T e) {
-                    // TODO should report the location from which we tried to load
-                    String message = "<html>Could not parse the ontology." +
-                                     "<p>The following parsers were tried:</html>";
-                    return new ErrorExplainer.ErrorExplanation<T>(e, message);
-                }
-            };
-
 
     public OntologyLoadErrorHandlerUI(OWLEditorKit owlEditorKit) {
         eKit = owlEditorKit;
-        errorFilter = new ErrorExplainer();
-        errorFilter.addExplanationFactory(UnparsableOntologyException.class, myErrorExplanationFactory);
     }
 
 
     public <T extends Throwable> void handleErrorLoadingOntology(URI ont, URI loc, T e) throws Throwable {
-        ErrorExplainer.ErrorExplanation explanation = errorFilter.getErrorExplanation(e, true);
 
-        ErrorPanel errorPanel;
+        JComponent errorPanel;
 
         if (e instanceof UnparsableOntologyException){
-            errorPanel = new ParseErrorPanel((ErrorExplainer.ErrorExplanation<UnparsableOntologyException>)explanation, loc);
+            errorPanel = new ParseErrorPanel((UnparsableOntologyException)e, loc);
         }
         else{
+            ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
             errorPanel = new ErrorPanel<T>(explanation, loc);
         }
 
@@ -92,74 +77,96 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
     }
 
 
-    private SendErrorReportHandler getErrorReportHandler() {
-        return null;
-    }
-
-
     public class ErrorPanel<O extends Throwable> extends JPanel{
 
         private JTextComponent errorConsole;
 
-        private JComponent clientPanel;
+        private JSplitPane splitPane;
 
-        private URI loc;
+        private JComponent errorMessageComponent;
 
-        private ErrorExplainer.ErrorExplanation<O> explanation;
+        private JButton stackTraceButton;
 
-        private String message;
+        private boolean hidden = true;
 
 
-        public ErrorPanel(ErrorExplainer.ErrorExplanation<O> explanation, URI loc) {
-            this.explanation = explanation;
-            this.loc = loc;
-            this.message = explanation.getMessage();
+        public ErrorPanel(final ErrorExplainer.ErrorExplanation<O> explanation, URI loc) {
 
-            initialise(explanation, loc);
+            setLayout(new BorderLayout(12, 12));
+            setBorder(new EmptyBorder(7, 7, 7, 7));
 
-            updateErrorMessage();
+            JEditorPane errorMessagePanel = new JEditorPane();
+            errorMessagePanel.setEditable(false);
+            errorMessagePanel.setText(explanation.getMessage());
+            errorMessagePanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+            JScrollPane messageScroller = new JScrollPane(errorMessagePanel);
+
+            errorMessageComponent = new JPanel(new BorderLayout(7, 7));
+            errorMessageComponent.add(messageScroller, BorderLayout.CENTER);
+
+            Box expandPanel = new Box(BoxLayout.LINE_AXIS);
+            expandPanel.add(Box.createHorizontalGlue());
+            stackTraceButton = new JButton("Show stacktrace");
+            stackTraceButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+                    if (hidden){
+                        showStackTrace(explanation.getCause());
+                    }
+                    else{
+                        hideStackTrace();
+                    }
+                }
+            });
+            expandPanel.add(stackTraceButton);
+
+            add(errorMessageComponent, BorderLayout.CENTER);
+            add(expandPanel, BorderLayout.SOUTH);
         }
 
 
-        protected void initialise(ErrorExplainer.ErrorExplanation<O> explanation, URI loc){
-            setLayout(new BorderLayout(6, 6));
+        private void hideStackTrace(){
+            hidden = true;
+            remove(splitPane);
+            add(errorMessageComponent, BorderLayout.CENTER);
+            stackTraceButton.setText("Show stacktrace");
+            repaint();
+        }
 
-            JComponent messageComponent = new JLabel(getMessage());
+        private void showStackTrace(Throwable exception){
+            hidden = false;
+            remove(errorMessageComponent);
 
-            add(messageComponent, BorderLayout.NORTH);
+            if (errorConsole == null){
+                errorConsole = new JTextArea(20, 60);
+                errorConsole.setBorder(new EmptyBorder(7, 7, 7, 7));
 
-            errorConsole = new JTextArea(20, 60);
+                JComponent stackTraceComponent = new JPanel(new BorderLayout(7, 7));
+                stackTraceComponent.add(new JLabel("Stack Trace:"), BorderLayout.NORTH);
+                stackTraceComponent.add(new JScrollPane(errorConsole), BorderLayout.CENTER);
 
-            clientPanel = new JPanel(new BorderLayout(6, 6));
-            clientPanel.add(new JScrollPane(errorConsole), BorderLayout.CENTER);
+                splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                                           errorMessageComponent,
+                                           stackTraceComponent);
 
-            add(clientPanel, BorderLayout.CENTER);
+                splitPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+                setErrorMessage(exception);
+            }
+            else{
+                splitPane.setTopComponent(errorMessageComponent);
+            }
+
+            add(splitPane, BorderLayout.CENTER);
+
+            splitPane.setDividerLocation(0.3);
+            
+            stackTraceButton.setText("Hide stacktrace");
+
+            repaint();
         }
 
 
-        protected JComponent getClientPanel(){
-            return clientPanel;
-        }
-
-
-        public Throwable getThrowable() {
-            return explanation.getCause();
-        }
-
-
-        protected String getMessage() {
-            return message;//"<html>Could not load the ontology found at <b>" + getLoc() + "</b>.</html>";
-        }
-
-
-        protected URI getLoc() {
-            return loc;
-        }
-
-
-        protected void updateErrorMessage() {
-
-            Throwable exception = getThrowable();
+        protected void setErrorMessage(Throwable exception) {
 
             final StringWriter stringWriter = new StringWriter();
             final PrintWriter writer = new PrintWriter(stringWriter);
@@ -174,44 +181,24 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
     }
 
 
-    public class ParseErrorPanel extends ErrorPanel<UnparsableOntologyException>{
+    public class ParseErrorPanel extends JPanel{
 
-        private JComboBox formatPanel;
+        public ParseErrorPanel(UnparsableOntologyException e, URI loc) {
+            setLayout(new BorderLayout(12, 12));
 
-        private Map<OWLParser, Throwable> exceptionMap;
+            ErrorExplainer errorFilter = new ErrorExplainer();
 
-
-        public ParseErrorPanel(ErrorExplainer.ErrorExplanation<UnparsableOntologyException> e, URI loc) {
-            super(e, loc);
-        }
-
-
-        protected void initialise(ErrorExplainer.ErrorExplanation<UnparsableOntologyException> e, URI loc){
-            super.initialise(e, loc);
-
-            exceptionMap = e.getCause().getExceptions();
-            formatPanel = new JComboBox();
-            for (OWLParser parser : exceptionMap.keySet()){
-                formatPanel.addItem(parser);
+            JTabbedPane tabs = new JTabbedPane();
+            tabs.setPreferredSize(new Dimension(700, 500));
+            for (OWLParser parser : e.getExceptions().keySet()){
+                Throwable parseError = e.getExceptions().get(parser);
+                ErrorExplainer.ErrorExplanation explanation = errorFilter.getErrorExplanation(parseError, true);
+                tabs.addTab(parser.getClass().getSimpleName(), new ErrorPanel(explanation, loc));
             }
-            formatPanel.setRenderer(new DefaultListCellRenderer(){
-                public Component getListCellRendererComponent(JList jList, Object val, int i, boolean b, boolean b1) {
-                    return super.getListCellRendererComponent(jList, val.getClass().getSimpleName(), i, b, b1);
-                }
-            });
-            formatPanel.addItemListener(new ItemListener(){
-                public void itemStateChanged(ItemEvent event) {
-                    updateErrorMessage();
-                }
-            });
 
-            getClientPanel().add(formatPanel, BorderLayout.NORTH);
-        }
-
-
-        public Throwable getThrowable() {
-            OWLParser parser = (OWLParser)formatPanel.getSelectedItem();
-            return exceptionMap.get(parser);
+            add(new JLabel("<html>Could not parse the ontology found at: " + loc +
+                           "<p>The following parsers were tried:</html>"), BorderLayout.NORTH);
+            add(tabs, BorderLayout.CENTER);
         }
     }
 }
