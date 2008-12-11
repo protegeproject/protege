@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.error;
 
+import org.xml.sax.SAXParseException;
+
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,11 @@ public class ErrorExplainer {
         addExplanationFactory(FileNotFoundException.class, new ErrorExplanationFactory<FileNotFoundException>(){
             public <T extends FileNotFoundException> ErrorExplanation<T> createExplanation(T throwable) {
                 return new ErrorExplanation<T>(throwable, "File not found: " + throwable.getMessage());
+            }
+        });
+        addExplanationFactory(SAXParseException.class, new ErrorExplanationFactory<SAXParseException>(){
+            public <T extends SAXParseException> ErrorExplanation<T> createExplanation(T throwable) {
+                return new ErrorExplanation<T>(throwable, "XML error at line " + throwable.getLineNumber() + ", column " + throwable.getColumnNumber() + "\n" + throwable.getMessage());
             }
         });
     }
