@@ -52,9 +52,18 @@ public class ErrorExplainer {
                 return new ErrorExplanation<T>(throwable, "File not found: " + throwable.getMessage());
             }
         });
+
         addExplanationFactory(SAXParseException.class, new ErrorExplanationFactory<SAXParseException>(){
             public <T extends SAXParseException> ErrorExplanation<T> createExplanation(T throwable) {
-                return new ErrorExplanation<T>(throwable, "XML error at line " + throwable.getLineNumber() + ", column " + throwable.getColumnNumber() + "\n" + throwable.getMessage());
+                final String message = "XML error at line " + throwable.getLineNumber() + ", column " +
+                                       throwable.getColumnNumber() + "\n" + throwable.getMessage();
+                if (throwable.getLineNumber() <= 0 || throwable.getColumnNumber() <= 0){
+                    System.out.println("throwable = " + throwable);
+                }
+                return new ParseErrorExplanation<T>(throwable,
+                                                    message,
+                                                    throwable.getLineNumber()-1, // as they are indexed from 1
+                                                    throwable.getColumnNumber()-1);
             }
         });
     }
@@ -88,7 +97,7 @@ public class ErrorExplainer {
     }
 
 
-    public <T extends Throwable> void addExplanationFactory(Class<T> cls, ErrorExplanationFactory<T> fac){
+    public <T extends Throwable> void addExplanationFactory(Class<T> cls, ErrorExplanationFactory<? super T> fac){
         factories.put(cls, fac);
     }
 
@@ -155,6 +164,27 @@ public class ErrorExplainer {
     }
 
 
+        public static class ParseErrorExplanation<O extends Throwable> extends ErrorExplanation<O> {
+
+            private int line;
+
+            private int col;
+
+
+            public ParseErrorExplanation(O cause, String message, int line, int col) {
+                super(cause, message);
+                this.line = line;
+                this.col = col;
+            }
+
+            public int getLine(){
+                return line;
+            }
+
+            public int getColumn(){
+                return col;
+            }
+        }
 
 //    public static void main(String[] args) {
 //        Set<Class<? extends Collection>> clses = new HashSet<Class<? extends Collection>>();
