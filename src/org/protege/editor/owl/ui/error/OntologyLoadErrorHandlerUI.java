@@ -1,20 +1,22 @@
 package org.protege.editor.owl.ui.error;
 
+import edu.unika.aifb.rdf.api.syntax.RDFParserException;
+import org.coode.obo.parser.OBOParserException;
+import org.coode.owl.functionalparser.OWLFunctionalSyntaxParserException;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.io.OWLParser;
+import org.semanticweb.owl.io.OWLParserException;
 import org.semanticweb.owl.io.UnparsableOntologyException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -61,7 +63,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         JComponent errorPanel;
 
         if (e instanceof UnparsableOntologyException){
-            errorPanel = new ParseErrorPanel((UnparsableOntologyException)e, loc);
+            errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
         }
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
@@ -77,123 +79,51 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
     }
 
 
-    public class ErrorPanel<O extends Throwable> extends JPanel{
+    public class ParseErrorsPanel extends JPanel{
 
-        private JTextComponent errorConsole;
-
-        private JSplitPane splitPane;
-
-        private JComponent errorMessageComponent;
-
-        private JButton stackTraceButton;
-
-        private boolean hidden = true;
-
-
-        public ErrorPanel(final ErrorExplainer.ErrorExplanation<O> explanation, URI loc) {
-
-            setLayout(new BorderLayout(12, 12));
-            setBorder(new EmptyBorder(7, 7, 7, 7));
-
-            JEditorPane errorMessagePanel = new JEditorPane();
-            errorMessagePanel.setEditable(false);
-            errorMessagePanel.setText(explanation.getMessage());
-            errorMessagePanel.setBorder(new EmptyBorder(7, 7, 7, 7));
-            JScrollPane messageScroller = new JScrollPane(errorMessagePanel);
-
-            errorMessageComponent = new JPanel(new BorderLayout(7, 7));
-            errorMessageComponent.add(messageScroller, BorderLayout.CENTER);
-
-            Box expandPanel = new Box(BoxLayout.LINE_AXIS);
-            expandPanel.add(Box.createHorizontalGlue());
-            stackTraceButton = new JButton("Show stacktrace");
-            stackTraceButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (hidden){
-                        showStackTrace(explanation.getCause());
-                    }
-                    else{
-                        hideStackTrace();
-                    }
-                }
-            });
-            expandPanel.add(stackTraceButton);
-
-            add(errorMessageComponent, BorderLayout.CENTER);
-            add(expandPanel, BorderLayout.SOUTH);
-        }
-
-
-        private void hideStackTrace(){
-            hidden = true;
-            remove(splitPane);
-            add(errorMessageComponent, BorderLayout.CENTER);
-            stackTraceButton.setText("Show stacktrace");
-            repaint();
-        }
-
-        private void showStackTrace(Throwable exception){
-            hidden = false;
-            remove(errorMessageComponent);
-
-            if (errorConsole == null){
-                errorConsole = new JTextArea(20, 60);
-                errorConsole.setBorder(new EmptyBorder(7, 7, 7, 7));
-
-                JComponent stackTraceComponent = new JPanel(new BorderLayout(7, 7));
-                stackTraceComponent.add(new JLabel("Stack Trace:"), BorderLayout.NORTH);
-                stackTraceComponent.add(new JScrollPane(errorConsole), BorderLayout.CENTER);
-
-                splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                           errorMessageComponent,
-                                           stackTraceComponent);
-
-                splitPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-                setErrorMessage(exception);
-            }
-            else{
-                splitPane.setTopComponent(errorMessageComponent);
-            }
-
-            add(splitPane, BorderLayout.CENTER);
-
-            splitPane.setDividerLocation(0.3);
-            
-            stackTraceButton.setText("Hide stacktrace");
-
-            repaint();
-        }
-
-
-        protected void setErrorMessage(Throwable exception) {
-
-            final StringWriter stringWriter = new StringWriter();
-            final PrintWriter writer = new PrintWriter(stringWriter);
-
-            writer.write(exception.getMessage());
-            writer.write("\n\n\nFull Stack Trace\n-----------------------------------------------------------------------------------------\n\n");
-            exception.printStackTrace(writer);
-            writer.flush();
-            errorConsole.setText(stringWriter.toString());
-            errorConsole.setCaretPosition(0);
-        }
-    }
-
-
-    public class ParseErrorPanel extends JPanel{
-
-        public ParseErrorPanel(UnparsableOntologyException e, URI loc) {
+        public ParseErrorsPanel(UnparsableOntologyException e, URI loc) {
             setLayout(new BorderLayout(12, 12));
 
             ErrorExplainer errorFilter = new ErrorExplainer();
+            // RDF/XML syntax
+            errorFilter.addExplanationFactory(RDFParserException.class, new ErrorExplainer.ErrorExplanationFactory<RDFParserException>(){
+                public <T extends RDFParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+                }
+            });
+            // Will catch functional syntax/OBO but only use it for the specified exceptions (below)
+            ErrorExplainer.ErrorExplanationFactory<OWLParserException> owlParserExceptionExplanationFac = new ErrorExplainer.ErrorExplanationFactory<OWLParserException>(){
+                public <T extends OWLParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
+                }
+            };
+            errorFilter.addExplanationFactory(OWLFunctionalSyntaxParserException.class, owlParserExceptionExplanationFac);
+            errorFilter.addExplanationFactory(OBOParserException.class, owlParserExceptionExplanationFac);
+
+            // Manchester Syntax
+            errorFilter.addExplanationFactory(ParserException.class, new ErrorExplainer.ErrorExplanationFactory<ParserException>(){
+                public <T extends ParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+                }
+            });
+
+            SourcePanel sourcePanel = null;
+            try {
+                URL physicalLoc = loc.toURL();
+                sourcePanel = new SourcePanel(physicalLoc);
+                sourcePanel.setBorder(new EmptyBorder(0, 7, 0, 7));
+            }
+            catch (MalformedURLException e1) {
+                throw new RuntimeException(e1);
+            }
 
             JTabbedPane tabs = new JTabbedPane();
             tabs.setPreferredSize(new Dimension(700, 500));
             for (OWLParser parser : e.getExceptions().keySet()){
                 Throwable parseError = e.getExceptions().get(parser);
                 ErrorExplainer.ErrorExplanation explanation = errorFilter.getErrorExplanation(parseError, true);
-                tabs.addTab(parser.getClass().getSimpleName(), new ErrorPanel(explanation, loc));
+                final ErrorPanel errorPanel = new ParseErrorPanel(explanation, loc, sourcePanel);
+                tabs.addTab(parser.getClass().getSimpleName(), errorPanel);
             }
 
             add(new JLabel("<html>Could not parse the ontology found at: " + loc +
