@@ -103,6 +103,11 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLDisjointDataPropertiesAxiom owlDisjointDataPropertiesAxiom) {
+        icon = dataPropertyIcon;
+    }
+
+
     public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
         icon = objectPropertyIcon;
     }
@@ -124,6 +129,11 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLObjectPropertyDomainAxiom axiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLEquivalentObjectPropertiesAxiom owlEquivalentObjectPropertiesAxiom) {
         icon = objectPropertyIcon;
     }
 
@@ -233,8 +243,23 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLAntiSymmetricObjectPropertyAxiom owlAntiSymmetricObjectPropertyAxiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLReflexiveObjectPropertyAxiom owlReflexiveObjectPropertyAxiom) {
+        icon = objectPropertyIcon;
+    }
+
+
     public void visit(OWLDisjointClassesAxiom owlDisjointClassesAxiom) {
         icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLDataPropertyDomainAxiom owlDataPropertyDomainAxiom) {
+        icon = dataPropertyIcon;
     }
 
 
@@ -243,8 +268,43 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLSymmetricObjectPropertyAxiom owlSymmetricObjectPropertyAxiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLDataPropertyRangeAxiom owlDataPropertyRangeAxiom) {
+        icon = dataPropertyIcon;
+    }
+
+
+    public void visit(OWLFunctionalDataPropertyAxiom owlFunctionalDataPropertyAxiom) {
+        icon = dataPropertyIcon;
+    }
+
+
+    public void visit(OWLEquivalentDataPropertiesAxiom owlEquivalentDataPropertiesAxiom) {
+        icon = dataPropertyIcon;
+    }
+
+
     public void visit(OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
         icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLTransitiveObjectPropertyAxiom owlTransitiveObjectPropertyAxiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLIrreflexiveObjectPropertyAxiom owlIrreflexiveObjectPropertyAxiom) {
+        icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLDataSubPropertyAxiom owlDataSubPropertyAxiom) {
+        icon = dataPropertyIcon;
     }
 
 
