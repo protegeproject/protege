@@ -1,6 +1,11 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.semanticweb.owl.model.OWLDescription;
+
+import javax.swing.*;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -30,13 +35,17 @@ import org.protege.editor.owl.OWLEditorKit;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 11, 2008<br><br>
- *
- * @deprecated use <code>org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel</code>
+ * Date: Dec 23, 2008<br><br>
  */
-public class OWLObjectRestrictionCreatorPanel extends org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel {
+public interface OWLDescriptionEditor extends VerifiedInputEditor, Disposable {
 
-    public OWLObjectRestrictionCreatorPanel(OWLEditorKit eKit) {
-        super(eKit);
-    }
+    String getEditorName();
+
+    JComponent getComponent();
+
+    boolean isValidInput();
+
+    boolean setDescription(OWLDescription description);
+
+    Set<OWLDescription> getDescriptions();
 }
