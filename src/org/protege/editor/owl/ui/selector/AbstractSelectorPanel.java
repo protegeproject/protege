@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.selector;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.owl.OWLEditorKit;
@@ -9,6 +11,8 @@ import org.semanticweb.owl.model.OWLObject;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,13 +28,19 @@ import java.util.Set;
  * A common base class for selector panels, so that they
  * all have the same preferred size etc.
  */
-public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel implements OWLObjectSelector<O> {
+public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
+        implements OWLObjectSelector<O>, VerifiedInputEditor {
 
     private OWLEditorKit editorKit;
 
     private View view;
 
     private boolean editable;
+
+    private List<InputVerificationStatusChangedListener> validateListeners = new ArrayList<InputVerificationStatusChangedListener>();
+
+    public boolean isValid = false;
+
 
     public AbstractSelectorPanel(OWLEditorKit editorKit) {
         this(editorKit, true);
@@ -46,6 +56,18 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
         if (autoCreateUI){
             createUI();
         }
+// cannot do this as the selectors are lazily created
+//        addSelectionListener(new ChangeListener(){
+//            public void stateChanged(ChangeEvent event) {
+//                boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
+//                if (valid != isValid){
+//                    for (InputVerificationStatusChangedListener l : validateListeners){
+//                        l.verifiedStatusChanged(valid);
+//                    }
+//                    isValid = valid;
+//                }
+//            }
+//        });
     }
 
     public OWLEditorKit getOWLEditorKit() {
@@ -105,6 +127,16 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel 
     
     public abstract void removeSelectionListener(ChangeListener listener);
 
-    
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener){
+        validateListeners.add(listener);
+        listener.verifiedStatusChanged(isValid);
+    }
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener){
+        validateListeners.remove(listener);
+    }
+
+
     public abstract void dispose();
 }

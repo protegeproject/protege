@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.frame.property;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Arrays;
 import java.util.List;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
