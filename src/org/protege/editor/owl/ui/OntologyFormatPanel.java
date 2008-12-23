@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui;
 
 import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
 import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.coode.obo.parser.OBOOntologyFormat;
 import org.coode.owl.latex.LatexOntologyFormat;
 import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
@@ -39,10 +40,11 @@ public class OntologyFormatPanel extends JPanel {
         formats.add(new OWLFunctionalSyntaxOntologyFormat());
         formats.add(new ManchesterOWLSyntaxOntologyFormat());
         
-        formats.add(new KRSS2OntologyFormat());       
+        formats.add(new OBOOntologyFormat());
+        formats.add(new KRSS2OntologyFormat());
         formats.add(new LatexOntologyFormat());
         formats.add(new TurtleOntologyFormat());
-        
+
         formatComboBox = new JComboBox(formats.toArray());
         setLayout(new BorderLayout());
         add(formatComboBox, BorderLayout.NORTH);
