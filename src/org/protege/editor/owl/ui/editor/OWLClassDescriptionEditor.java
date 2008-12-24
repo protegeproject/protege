@@ -35,7 +35,9 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private JTabbedPane tabbedPane;
 
-    private java.util.List<OWLDescriptionEditor> editors = new ArrayList<OWLDescriptionEditor>();
+    private java.util.List<OWLDescriptionEditor> activeEditors = new ArrayList<OWLDescriptionEditor>();
+
+    private Set<OWLDescriptionEditor> editors = new HashSet<OWLDescriptionEditor>();
 
     private boolean currentStatus = false;
 
@@ -75,8 +77,10 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     public void addPanel(OWLDescriptionEditor editorPanel){
+        editors.add(editorPanel);
+
         if (editorPanel.setDescription(description)){
-            editors.add(editorPanel);
+            activeEditors.add(editorPanel);
             tabbedPane.add(editorPanel.getEditorName(), editorPanel.getComponent());
             for (InputVerificationStatusChangedListener l : listeners){
                 editorPanel.addStatusChangedListener(l);
@@ -103,7 +107,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     private OWLDescriptionEditor getSelectedEditor() {
-        return editors.get(tabbedPane.getSelectedIndex());
+        return activeEditors.get(tabbedPane.getSelectedIndex());
     }
 
 
@@ -118,7 +122,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
 
     public void clear() {
-        for (OWLDescriptionEditor editor : editors){
+        for (OWLDescriptionEditor editor : activeEditors){
             editor.setDescription(null);
         }
     }
@@ -154,7 +158,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
         listeners.add(l);
-        for (OWLDescriptionEditor editor : editors){
+        for (OWLDescriptionEditor editor : activeEditors){
             editor.addStatusChangedListener(l);
         }
         l.verifiedStatusChanged(isValidated());
@@ -163,7 +167,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
         listeners.remove(l);
-        for (OWLDescriptionEditor editor : editors){
+        for (OWLDescriptionEditor editor : activeEditors){
             editor.removeStatusChangedListener(l);
         }
     }
