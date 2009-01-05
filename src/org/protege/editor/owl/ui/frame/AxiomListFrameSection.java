@@ -68,6 +68,7 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
         for(OWLAxiom ax : axs) {
             if (ontology.containsAxiom(ax)) {
                 addRow(new AxiomListFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+                added.add(ax);
             }
         }
     }
