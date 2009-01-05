@@ -199,7 +199,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         rows.clear();
         clear();
         if (rootObject != null) {
-            for (OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
+            for (OWLOntology ontology : getOntologies()) {
                 refill(ontology);
             }
             try {
@@ -219,6 +219,11 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             rows.addAll(ts);
         }
         fireContentChanged();
+    }
+
+
+    protected Set<OWLOntology> getOntologies() {
+        return getOWLModelManager().getActiveOntologies();
     }
 
 
