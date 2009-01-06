@@ -86,7 +86,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
             }
             tempMan.applyChanges(changes);
 
-            tempMan.saveOntology(ont, wizard.getPhysicalURI());
+            tempMan.saveOntology(ont, wizard.getFormat(), wizard.getPhysicalURI());
 
             JOptionPane.showMessageDialog(getWorkspace(),
                                           "The inferred axioms have been exported as an ontology to \n" + wizard.getPhysicalURI(),

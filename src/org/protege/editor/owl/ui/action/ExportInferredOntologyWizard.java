@@ -4,8 +4,9 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owl.util.InferredAxiomGenerator;
 
 import java.net.URI;
 import java.util.List;
@@ -49,6 +50,8 @@ public class ExportInferredOntologyWizard extends Wizard {
 
     private ExportInferredOntologyIncludeAssertedAxiomsPanel assertedAxiomsPanel;
 
+    private OntologyFormatPage ontologyFormatPanel;
+
 
     public ExportInferredOntologyWizard(OWLEditorKit editorKit) {
         setTitle("Export inferred axioms as ontology");
@@ -58,7 +61,12 @@ public class ExportInferredOntologyWizard extends Wizard {
         registerWizardPanel(ExportInferredOntologyIncludeAssertedAxiomsPanel.ID,
                             assertedAxiomsPanel = new ExportInferredOntologyIncludeAssertedAxiomsPanel(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new ExportInferredOntologyURIPanel(editorKit));
-        registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit));
+        registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit){
+            public Object getNextPanelDescriptor() {
+                return OntologyFormatPage.ID;
+            }
+        });
+        registerWizardPanel(OntologyFormatPage.ID, ontologyFormatPanel = new OntologyFormatPage(editorKit));
     }
 
 
@@ -84,5 +92,10 @@ public class ExportInferredOntologyWizard extends Wizard {
 
     public boolean isIncludeAssertedLogicalAxioms() {
         return assertedAxiomsPanel.isIncludeAssertedLogicalAxioms();
+    }
+
+
+    public OWLOntologyFormat getFormat() {
+        return ontologyFormatPanel.getFormat();
     }
 }
