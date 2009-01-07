@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -93,7 +94,10 @@ public class PluginTable extends JPanel {
 
 
     public List<PluginInfo> getSelectedUpdateInfo() {
-        return tableModel.getSelectedUpdateInfo();
+        if (tableModel != null){
+            return tableModel.getSelectedUpdateInfo();
+        }
+        return Collections.emptyList();
     }
 
 
