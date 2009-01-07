@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
@@ -81,12 +80,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
                                                                                                         getOWLModelManager().getOWLDataFactory().getOWLNothing()))));
             }
             else{
-                final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-
                 for (OWLDescription cls : getOWLModelManager().getReasoner().getEquivalentClasses(getRootObject())) {
-                    if (ADCManager.isAnonymous(cls.asOWLClass())){
-                        cls = ADCManager.getExpression(cls.asOWLClass());
-                    }
                     if (!added.contains(cls) && !cls.equals(getRootObject())) {
                         addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                             this,

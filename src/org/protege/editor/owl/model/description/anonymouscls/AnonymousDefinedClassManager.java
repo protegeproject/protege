@@ -52,15 +52,27 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     private PseudoRandomAutoIDGenerator idGen;
 
+    private ADCRewriter adcRewriter;
+
 
     public AnonymousDefinedClassManager(OWLModelManager mngr) {
         this.mngr = mngr;
+
         idGen = new PseudoRandomAutoIDGenerator();
+
+        adcRewriter = new ADCRewriter(this, mngr.getOWLDataFactory());
     }
 
 
     public boolean isAnonymous(OWLClass cls){
-        return cls.getURI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX);
+        if(cls.getURI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX)){
+            for (OWLOntology ont : mngr.getActiveOntologies()){
+                if (ont.containsClassReference(cls.getURI())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -110,6 +122,10 @@ public class AnonymousDefinedClassManager implements Disposable {
         return null;
     }
 
+
+    public ADCRewriter getChangeRewriter(){
+        return adcRewriter;
+    }
 
     public void dispose() throws Exception {
         mngr = null;
