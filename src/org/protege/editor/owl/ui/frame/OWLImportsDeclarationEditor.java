@@ -90,6 +90,7 @@ public class OWLImportsDeclarationEditor extends OntologyImportWizard implements
             changes.add(new AddAxiom(ont, ax));
             try {
                 editorKit.getModelManager().getOWLOntologyManager().loadOntology(uri);
+                editorKit.addRecent(uri);
                 editorKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
             }
             catch (OWLException e) {

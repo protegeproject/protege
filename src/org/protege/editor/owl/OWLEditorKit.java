@@ -18,8 +18,6 @@ import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
-import org.protege.editor.owl.ui.framelist.ExplanationHandler;
-import org.protege.editor.owl.ui.framelist.OWLFrameListExplanationHandler;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.*;
@@ -231,7 +229,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    private void addRecent(URI physicalURI) {
+    public void addRecent(URI physicalURI) {
         String label = physicalURI.toString();
         if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
             label = new File(physicalURI).getPath();
