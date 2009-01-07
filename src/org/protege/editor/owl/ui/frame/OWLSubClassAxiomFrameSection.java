@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
@@ -58,13 +57,9 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
     protected void refillInferred() {
         try {
             if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
-                final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
 
                 for (Set<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject())) {
                     for (OWLDescription desc : descs) {
-                        if (ADCManager.isAnonymous(desc.asOWLClass())){
-                            desc = ADCManager.getExpression(desc.asOWLClass());
-                        }
                         if (!added.contains(desc) && !getRootObject().equals(desc)) {
                             addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
                                                                        this,

@@ -666,6 +666,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void applyChange(OWLOntologyChange change) {
         try {
+            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
+            if (adcManager != null){
+                change = adcManager.getChangeRewriter().rewriteChange(change);
+            }
             manager.applyChange(change);
         }
         catch (OWLOntologyChangeException e) {
@@ -676,6 +680,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void applyChanges(List<? extends OWLOntologyChange> changes) {
         try {
+            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
+            if (adcManager != null){
+                changes = adcManager.getChangeRewriter().rewriteChanges(changes);
+            }
             manager.applyChanges(changes);
         }
         catch (OWLOntologyChangeException e) {
@@ -850,9 +858,11 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public String getRendering(OWLObject object) {
         // Look for a cached version of the rending first!
         if (object instanceof OWLEntity) {
-            AnonymousDefinedClassManager ADCManager = get(AnonymousDefinedClassManager.ID);
-            if (object instanceof OWLClass && ADCManager.isAnonymous((OWLClass)object)){
-                return owlObjectRenderingCache.getRendering(ADCManager.getExpression((OWLClass)object), getOWLObjectRenderer());
+            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
+            if (adcManager != null &&
+                object instanceof OWLClass &&
+                adcManager.isAnonymous((OWLClass)object)){
+                return owlObjectRenderingCache.getRendering(adcManager.getExpression((OWLClass)object), getOWLObjectRenderer());
             }
             else{
                 getOWLEntityRenderer();
