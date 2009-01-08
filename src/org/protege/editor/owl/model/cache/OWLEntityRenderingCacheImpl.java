@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.cache;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owl.model.*;
@@ -38,10 +37,10 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     private OWLModelManager owlModelManager;
 
     private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                processChanges(changes);
-            }
-        };
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+            processChanges(changes);
+        }
+    };
 
 
     public OWLEntityRenderingCacheImpl() {
@@ -70,8 +69,6 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         clear();
         OWLEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
 
-        AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
-
         OWLClass thing = owlModelManager.getOWLDataFactory().getOWLThing();
         owlClassMap.put(entityRenderer.render(thing), thing);
         entityRenderingMap.put(thing, entityRenderer.render(thing));
@@ -81,9 +78,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             for (OWLClass cls : ont.getReferencedClasses()) {
-                if (anonymousClassManager != null && !anonymousClassManager.isAnonymous(cls)){
-                    addRendering(cls, owlClassMap);
-                }
+                addRendering(cls, owlClassMap);
             }
             for (OWLObjectProperty prop : ont.getReferencedObjectProperties()) {
                 addRendering(prop, owlObjectPropertyMap);
@@ -188,10 +183,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
             }
 
             public void visit(OWLClass entity) {
-                AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
-                if (anonymousClassManager != null && !anonymousClassManager.isAnonymous(entity)){
-                    addRendering(entity, owlClassMap);
-                }
+                addRendering(entity, owlClassMap);
             }
 
             public void visit(OWLDataType entity) {
@@ -203,7 +195,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     private <T extends OWLEntity> void addRendering(T entity, Map<String, T> map) {
         if (!entityRenderingMap.containsKey(entity)) {
-            String rendering = owlModelManager.getOWLEntityRenderer().render(entity);
+            String rendering = owlModelManager.getRendering(entity);
             map.put(rendering, entity);
             entityRenderingMap.put(entity, rendering);
         }
@@ -217,10 +209,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         owlEntity.accept(new OWLEntityVisitor() {
 
             public void visit(OWLClass entity) {
-                AnonymousDefinedClassManager anonymousClassManager = owlModelManager.get(AnonymousDefinedClassManager.ID);
-                if (anonymousClassManager != null && !anonymousClassManager.isAnonymous(entity)){
-                    owlClassMap.remove(oldRendering);
-                }
+                owlClassMap.remove(oldRendering);
             }
 
             public void visit(OWLDataProperty entity) {

@@ -197,7 +197,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
 
-        put(AnonymousDefinedClassManager.ID, new AnonymousDefinedClassManager(this));
+//        put(AnonymousDefinedClassManager.ID, new AnonymousDefinedClassManager(this));
 
         put(OntologySourcesManager.ID, new OntologySourcesManager(this));
     }
