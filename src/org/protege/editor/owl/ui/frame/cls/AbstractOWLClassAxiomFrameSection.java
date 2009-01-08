@@ -58,7 +58,7 @@ public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> e
         if (cls != null){
             final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
 
-            if (ADCManager.isAnonymous(cls.asOWLClass())){
+            if (ADCManager != null && ADCManager.isAnonymous(cls.asOWLClass())){
                 return ADCManager.getExpression(cls.asOWLClass());
             }
         }
