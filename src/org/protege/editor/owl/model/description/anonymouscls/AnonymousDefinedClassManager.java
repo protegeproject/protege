@@ -6,6 +6,8 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.AutoIDException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.PseudoRandomAutoIDGenerator;
+import org.protege.editor.owl.model.io.IOListener;
+import org.protege.editor.owl.model.io.IOListenerEvent;
 import org.semanticweb.owl.model.*;
 
 import java.net.URI;
@@ -48,11 +50,40 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     private static final String DEFAULT_ANON_CLASS_URI_PREFIX = "http://www.co-ode.org/ontologies/owlx/anon#";
 
+    private static final URI DEFAULT_ANON_CLASS_ANNOTATION_URI = URI.create(DEFAULT_ANON_CLASS_URI_PREFIX + "anonClass");
+
     private OWLModelManager mngr;
 
     private PseudoRandomAutoIDGenerator idGen;
 
     private ADCRewriter adcRewriter;
+
+    private ADCFactory adcFactory;
+
+    private IOListener ioListener = new IOListener(){
+
+        public void beforeSave(IOListenerEvent event) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+
+        public void afterSave(IOListenerEvent event) {
+            // do nothing
+        }
+
+
+        public void beforeLoad(IOListenerEvent event) {
+            // do nothing
+        }
+
+
+        public void afterLoad(IOListenerEvent event) {
+            URI uri = event.getOntologyURI();
+            OWLOntology ont = mngr.getOWLOntologyManager().getOntology(uri);
+            adcFactory.getADCsForOntology(ont);
+        }
+    };
+
 
 
     public AnonymousDefinedClassManager(OWLModelManager mngr) {
@@ -61,6 +92,10 @@ public class AnonymousDefinedClassManager implements Disposable {
         idGen = new PseudoRandomAutoIDGenerator();
 
         adcRewriter = new ADCRewriter(this, mngr.getOWLDataFactory());
+
+        adcFactory = new ADCFactory(this);
+
+        mngr.addIOListener(ioListener);
     }
 
 
@@ -129,5 +164,10 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     public void dispose() throws Exception {
         mngr = null;
+    }
+
+
+    public URI getAnnotationURI() {
+        return DEFAULT_ANON_CLASS_ANNOTATION_URI;
     }
 }

@@ -136,8 +136,8 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
     public static OWLEntityCreationSet<OWLClass> showDialog(OWLDescription desc, OWLEditorKit eKit) {
         OWLEntityCreationSet<OWLClass> creationSet = null;
 
-        AnonymousDefinedClassManager ADCManager = eKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-        if (ADCManager != null){
+        AnonymousDefinedClassManager adcManager = eKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
+        if (adcManager != null){
             CreateDefinedClassPanel panel = new CreateDefinedClassPanel(eKit);
             int ret = JOptionPaneEx.showValidatingConfirmDialog(eKit.getOWLWorkspace().getRootPane(), "Create defined class", panel,
                                                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION,
@@ -146,7 +146,7 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
             if (ret == JOptionPane.OK_OPTION){
                 creationSet = panel.getEntityCreationSet();
                 if (creationSet == null){
-                    creationSet = ADCManager.createAnonymousClass(eKit.getOWLModelManager().getActiveOntology(), desc);
+                    creationSet = adcManager.createAnonymousClass(eKit.getOWLModelManager().getActiveOntology(), desc);
                 }
                 else{
                     creationSet = appendDefinitionToCreationSet(creationSet, desc, eKit);
