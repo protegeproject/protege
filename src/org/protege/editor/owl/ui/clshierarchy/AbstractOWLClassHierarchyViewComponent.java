@@ -18,6 +18,7 @@ import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
+import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -136,11 +137,15 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
 
     private void ensureSelection() {
-        OWLClass cls = getSelectedOWLClass();
+        final OWLClass cls = getSelectedOWLClass();
         if (cls != null) {
             OWLClass treeSel = tree.getSelectedOWLObject();
             if (treeSel == null || !treeSel.equals(cls)) {
-                tree.setSelectedOWLObject(cls);
+                SwingUtilities.invokeLater(new Runnable(){
+                    public void run() {
+                        tree.setSelectedOWLObject(cls);
+                    }
+                });
             }
         }
     }
