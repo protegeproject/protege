@@ -442,9 +442,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 break;
             }
         }
-        if (paths.iterator().next().getPathCount() == 1){
-            System.out.println("selObject = " + selObject);
-        }
         return paths;
     }
 
