@@ -78,7 +78,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
             }
         }
         if (changed){
-            PrefixMapperManager.getInstance().save();            
+            PrefixMapperManager.getInstance().save();
         }
         return changed;
     }
@@ -132,8 +132,10 @@ public class PrefixMapperTableModel extends AbstractTableModel {
         String currentValue = (String) getValueAt(rowIndex, 1);
         if (columnIndex == 0) {
             // Replacing prefix
-            removeMapping(currentPrefix);
-            addMapping(aValue.toString(), currentValue);
+            if (!prefixes.contains(aValue.toString())){
+                removeMapping(currentPrefix);
+                addMapping(aValue.toString(), currentValue);
+            }
         }
         else {
             // Replacing value
