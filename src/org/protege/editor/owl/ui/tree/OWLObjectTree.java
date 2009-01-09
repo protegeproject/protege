@@ -161,13 +161,16 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         // If we are displaying the node which had the child added or removed
         // then we update the node
 
+        final Set<OWLObjectTreeNode<N>> treeNodes = nodeMap.get(node);
+
         // The parents/children might have changed
-        if (nodeMap.containsKey(node)) {
+        if (treeNodes != null) {
             // Remove children that aren't there any more
             Set<N> children = provider.getChildren(node);
 
+
             Set<OWLObjectTreeNode<N>> nodesToRemove = new HashSet<OWLObjectTreeNode<N>>();
-            for (OWLObjectTreeNode<N> treeNode : nodeMap.get(node)) {
+            for (OWLObjectTreeNode<N> treeNode : treeNodes) {
                 for (int i = 0; i < treeNode.getChildCount(); i++) {
                     OWLObjectTreeNode<N> childTreeNode = (OWLObjectTreeNode<N>) treeNode.getChildAt(i);
                     if (!children.contains(childTreeNode.getOWLObject())) {
@@ -175,20 +178,30 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                     }
                 }
             }
+
             for (OWLObjectTreeNode<N> nodeToRemove : nodesToRemove) {
+                // update the nodeMap to remove this parent from the child
+                final Set<OWLObjectTreeNode<N>> childNodes = getNodes(nodeToRemove.getOWLObject());
+                final Set<OWLObjectTreeNode<N>> updatedChildNodes = new HashSet<OWLObjectTreeNode<N>>();
+                for (OWLObjectTreeNode childNode : childNodes){
+                    if (!treeNodes.contains(childNode.getParent())){
+                        updatedChildNodes.add(childNode);
+                    }
+                }
+                nodeMap.put(nodeToRemove.getOWLObject(), updatedChildNodes);
                 ((DefaultTreeModel) getModel()).removeNodeFromParent(nodeToRemove);
             }
 
             // Add new children
             Set<N> existingChildren = new HashSet<N>();
-            for (OWLObjectTreeNode<N> treeNode : nodeMap.get(node)) {
+            for (OWLObjectTreeNode<N> treeNode : treeNodes) {
                 for (int i = 0; i < treeNode.getChildCount(); i++) {
                     existingChildren.add(((OWLObjectTreeNode<N>) treeNode.getChildAt(i)).getOWLObject());
                 }
             }
 
 
-            for (OWLObjectTreeNode<N> treeNode : nodeMap.get(node)) {
+            for (OWLObjectTreeNode<N> treeNode : treeNodes) {
                 for (N child : children) {
                     if (!existingChildren.contains(child)) {
                         OWLObjectTreeNode<N> childTreeNode = createTreeNode(child);
@@ -429,6 +442,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 break;
             }
         }
+        if (paths.iterator().next().getPathCount() == 1){
+            System.out.println("selObject = " + selObject);
+        }
         return paths;
     }
 
@@ -516,7 +532,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return false;
         }
         N dropTargetObj = ((OWLObjectTreeNode<N>) dropPath.getLastPathComponent()).getOWLObject();
-        for (OWLObject owlObject : owlObjects) {
+        for (final OWLObject owlObject : owlObjects) {
             if (!dropTargetObj.getClass().equals(owlObject.getClass())) {
                 // If the object being dropped isn't the same class as the thing it
                 // is being dropped on to then return.
@@ -541,7 +557,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             if (selObj == null) {
                 // In ADD operation (We can only add here)
                 dragAndDropHandler.add((N) owlObject, dropTargetObj);
-                setSelectedOWLObject((N) owlObject);
             }
             else {
                 if (selObj.equals(owlObject)) {
@@ -557,7 +572,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                     dragAndDropHandler.add((N) owlObject, dropTargetObj);
                 }
             }
-            setSelectedOWLObject((N) owlObject);
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
+                    setSelectedOWLObject((N) owlObject);
+                }
+            });
         }
 
         return true;

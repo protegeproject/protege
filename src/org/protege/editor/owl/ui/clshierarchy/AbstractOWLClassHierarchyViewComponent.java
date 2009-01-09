@@ -18,8 +18,9 @@ import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -80,25 +81,6 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         if (cls != null) {
             setSelectedClass(cls);
         }
-        tree.getModel().addTreeModelListener(new TreeModelListener() {
-            public void treeNodesChanged(TreeModelEvent e) {
-            }
-
-
-            public void treeNodesInserted(TreeModelEvent e) {
-                ensureSelection();
-            }
-
-
-            public void treeNodesRemoved(TreeModelEvent e) {
-                ensureSelection();
-            }
-
-
-            public void treeStructureChanged(TreeModelEvent e) {
-                ensureSelection();
-            }
-        });
         tree.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 transmitSelection();
@@ -118,10 +100,12 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         tree.setSelectedOWLObject(cls);
     }
 
+
     public void setSelectedClasses(Set<OWLClass> clses) {
         tree.setSelectedOWLObjects(clses);
     }
 
+    
     public OWLClass getSelectedClass() {
         return tree.getSelectedOWLObject();
     }
@@ -131,23 +115,9 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
         return new HashSet<OWLClass>(tree.getSelectedOWLObjects());
     }
 
+
     private boolean isNothing(OWLClass o1) {
         return o1.getURI().equals(OWLRDFVocabulary.OWL_NOTHING.getURI());
-    }
-
-
-    private void ensureSelection() {
-        final OWLClass cls = getSelectedOWLClass();
-        if (cls != null) {
-            OWLClass treeSel = tree.getSelectedOWLObject();
-            if (treeSel == null || !treeSel.equals(cls)) {
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
-                        tree.setSelectedOWLObject(cls);
-                    }
-                });
-            }
-        }
     }
 
 
