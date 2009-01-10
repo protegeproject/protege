@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Protege Editor Framework
 Bundle-SymbolicName: org.protege.editor.core.application;singleton:=true
-Bundle-Version: 4.0.105
+Bundle-Version: 4.0.106
 Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
