@@ -525,30 +525,6 @@ public class View extends JComponent implements NodeComponent {
         view.syncronizing = false;
     }
 
-//    private void undockView() {
-//        if (getParent() instanceof ViewContainer) {
-//            Dimension size = getSize();
-//            Point loc = getLocation();
-//            SwingUtilities.convertPointToScreen(loc, this);
-//            ((ViewContainer) getParent()).closeView(this);
-//            viewBarComponent.getViewBar().getViewBanner().removeAllActions();
-//            final JDialog dlg = new JDialog(ProtegeManager.getInstance().getFrame(workspace));
-//            dlg.setFocusableWindowState(false);
-//            setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-//            dlg.setContentPane(this);
-//            dlg.setSize(size);
-//            dlg.setLocation(loc);
-//            dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//            dlg.addWindowListener(new WindowAdapter() {
-//                public void windowClosing(WindowEvent e) {
-//                    viewComponent.dispose();
-//                }
-//            });
-//            syncronizing = false;
-//            dlg.setVisible(true);
-//        }
-//    }
-
 
     public void dispose() {
         // Dispose of the view if the content was successfully initialised.
@@ -569,7 +545,7 @@ public class View extends JComponent implements NodeComponent {
                     viewComponent.dispose();
                 }
                 catch (Exception e) {
-                    logger.warn("BAD ViewComponent: (" + viewBarComponent.getClass().getSimpleName() + ") Exception on dispose: " + e.getMessage());
+                    logger.warn("BAD ViewComponent: (" + viewComponent.getClass().getSimpleName() + ") Exception on dispose: " + e.getMessage());
                 }
             }
         }
