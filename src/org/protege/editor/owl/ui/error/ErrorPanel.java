@@ -80,8 +80,12 @@ public class ErrorPanel<O extends Throwable> extends JPanel {
         final StringWriter stringWriter = new StringWriter();
         final PrintWriter writer = new PrintWriter(stringWriter);
 
-        writer.write(exception.getMessage());
-        writer.write("\n\n\nFull Stack Trace\n-----------------------------------------------------------------------------------------\n\n");
+        final String message = exception.getMessage();
+        if (message != null){
+            writer.write(message);
+            writer.write("\n\n\n");
+        }
+        writer.write("Full Stack Trace\n-----------------------------------------------------------------------------------------\n\n");
 
         exception.printStackTrace(writer);
         writer.flush();
