@@ -48,7 +48,7 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
     final public void initialiseClassView() throws Exception {
         setLayout(new BorderLayout(7, 7));
-        
+
         tree = new OWLModelManagerTree<OWLClass>(getOWLEditorKit(), getOWLClassHierarchyProvider());
 
         // ordering based on default, but putting Nothing at the top
@@ -137,17 +137,17 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
 
 
     private void ensureSelection() {
-        final OWLClass cls = getSelectedOWLClass();
-        if (cls != null) {
-            OWLClass treeSel = tree.getSelectedOWLObject();
-            if (treeSel == null || !treeSel.equals(cls)) {
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run() {
+                final OWLClass cls = getSelectedOWLClass();
+                if (cls != null) {
+                    OWLClass treeSel = tree.getSelectedOWLObject();
+                    if (treeSel == null || !treeSel.equals(cls)) {
                         tree.setSelectedOWLObject(cls);
                     }
-                });
+                }
             }
-        }
+        });
     }
 
 
