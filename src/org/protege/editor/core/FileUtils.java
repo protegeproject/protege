@@ -1,12 +1,12 @@
 package org.protege.editor.core;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -92,5 +92,15 @@ public class FileUtils {
         String [] params = new String []{"explorer", "/n,/select," + path};
 
         Runtime.getRuntime().exec(params);
+    }
+
+
+    public static void deleteRecursively(File file) {
+        if (file.isDirectory()){
+            for(File f : file.listFiles()){
+                deleteRecursively(f);
+            }
+        }
+        file.delete();
     }
 }

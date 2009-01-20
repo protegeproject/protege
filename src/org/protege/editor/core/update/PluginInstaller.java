@@ -1,21 +1,16 @@
 package org.protege.editor.core.update;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.apache.log4j.Logger;
+import org.protege.editor.core.BundleManager;
+import org.protege.editor.core.FileUtils;
+
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.core.BundleManager;
 
 
 /**
@@ -43,6 +38,7 @@ public class PluginInstaller {
                 URL downloadURL = info.getDownloadURL();
                 final String[] path = downloadURL.getFile().split("/");
                 String downloadFileName = path[path.length-1];
+
                 String tmpPath = System.getProperty("java.io.tmpdir");
                 File tempPluginFile = new File(tmpPath, downloadFileName);
                 tempPluginFile.deleteOnExit();
@@ -87,39 +83,31 @@ public class PluginInstaller {
         boolean doCopy = true;
 
         File oldPluginFile = null;
+        File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
 
         if (info.getPluginDescriptor() != null){
             String location = info.getPluginDescriptor().getLocation();
             location = location.substring(location.indexOf(":")+1, location.length());
             File existingPlugin = new File(location);
 
-            oldPluginFile = new File(existingPlugin.getName() + "-old");
+            oldPluginFile = new File(pluginsFolder, existingPlugin.getName() + "-old");
             doCopy = existingPlugin.renameTo(oldPluginFile);
         }
 
         if (doCopy){
-            File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
             final File newPluginFile = new File(pluginsFolder, pluginFile.getName());
-            if (pluginFile.renameTo(newPluginFile)){
+            try{
+                FileUtils.copyFileToDirectory(pluginFile, pluginsFolder);
                 if (oldPluginFile != null && oldPluginFile.exists()){
-                    delete(oldPluginFile);
+                    FileUtils.deleteRecursively(oldPluginFile);
                 }
             }
-            else{
-                logger.error("Could not create plugin: " + newPluginFile);
+            catch(IOException e){
+                logger.error("Could not create plugin: " + newPluginFile, e);
             }
         }
     }
 
-
-    private static void delete(File file) {
-        if (file.isDirectory()){
-            for(File f : file.listFiles()){
-                delete(f);
-            }
-        }
-        file.delete();
-    }
 
 
     /**
