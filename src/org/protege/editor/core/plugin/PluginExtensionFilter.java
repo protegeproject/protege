@@ -1,14 +1,13 @@
 package org.protege.editor.core.plugin;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Collections;
-import java.util.logging.Logger;
-
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.protege.editor.core.ProtegeApplication;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
 
 
 /**
@@ -69,8 +68,14 @@ public class PluginExtensionFilter {
             return Collections.emptySet();
         }
         for (IExtension ext : extensions) {
-            if (extensionMatcher.matches(ext)) {
-                result.add(ext);
+            // check this extension has an identifier
+            if (extensionMatcher.matches(ext)){
+                if (ext.getUniqueIdentifier() != null){
+                    result.add(ext);
+                }
+                else{
+                    logger.warning("No ID found for " + extensionPointId  + " in bundle: " + ext.getContributor().getName());
+                }
             }
         }
         return result;
