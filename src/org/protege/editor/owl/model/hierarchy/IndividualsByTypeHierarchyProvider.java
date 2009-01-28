@@ -95,10 +95,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLObject> getParents(OWLObject object) {
-        if (roots.contains(object)) {
-            return Collections.emptySet();
-        }
-        else {
+        if (object instanceof OWLIndividual) {
             OWLIndividual ind = (OWLIndividual) object;
             Set<OWLObject> clses = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
@@ -110,6 +107,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             }
             return clses;
         }
+        return Collections.emptySet();
     }
 
 
