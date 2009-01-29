@@ -39,16 +39,22 @@
             <classpath refid = "owleditor.classpath"/>
         </javac>
     </target>
-    
-    <!-- ===================================================================================== -->
-    <!-- JAR - create the distribution JAR file that goes in the JPF "plugins" directory -->
-    <!-- ===================================================================================== -->
-    <target name = "bundle" depends = "compile">
+
+    <target name = "copy.resources">
         <copy todir="${owleditor.classes}">
             <fileset dir="${resources.dir}"/>
             <fileset dir="${icons.dir}"/>
         </copy>
         <copy todir="${owleditor.classes}" file="${owleditor.dir}/plugin.xml"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- BND -->
+    <!-- =================================================================== -->
+
+    <target name="bnd" depends="compile, copy.resources">
+        <taskdef resource="aQute/bnd/ant/taskdef.properties"
+                 classpath="tools/bnd.jar"/> 
         <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
         <bnd classpath  = "${owleditor.classes}"
              files      = "${owleditor.dir}/META-INF/manifest.bnd"
@@ -57,6 +63,16 @@
              exceptions = "true"
              output     = "${owleditor.jar}"/>
         <echo message="OSGi owl editor bundle built"/>
+    </target>
+    
+    <!-- ===================================================================================== -->
+    <!-- JAR - create the distribution JAR file that goes in the OSGi "plugins" directory -->
+    <!-- ===================================================================================== -->
+
+    <target name = "bundle" depends = "compile, copy.resources">
+        <jar basedir = "${owleditor.classes}"
+             destfile = "${owleditor.jar}"
+             manifest = "${owleditor.dir}/META-INF/MANIFEST.MF"/>
     </target>
 
     <!-- =================================================================== -->
