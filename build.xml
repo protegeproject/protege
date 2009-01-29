@@ -68,9 +68,20 @@
             <echo message="Core editor bundle built"/>
         </target>
 
+        <!-- ===================================================================================== -->
+        <!-- SRC.BUNDLE - create a bundle with sources for developers -->
+        <!-- ===================================================================================== -->
+        <target name="src.bundle" depends="copy.resources,compile">
+          <zip destfile="${core.classes}/${core.name}src.zip">
+            <fileset dir="${src.dir}"/>
+          </zip>
+          <antcall target="bundle"/>
+        </target>
+
+
         
         <!-- ===================================================================================== -->
-        <!-- JAR - create the distribution JAR file that goes in the OSGi "plugins" directory -->
+        <!-- BUNDLE - create the distribution JAR file that goes in the OSGi "plugins" directory -->
         <!-- ===================================================================================== -->
         <target name = "bundle" 
                 depends = "compile, copy.resources">
