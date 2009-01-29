@@ -65,8 +65,20 @@
         <echo message="OSGi owl editor bundle built"/>
     </target>
     
+
     <!-- ===================================================================================== -->
-    <!-- JAR - create the distribution JAR file that goes in the OSGi "plugins" directory -->
+    <!-- SRC.BUNDLE - create a bundle with sources for developers -->
+    <!-- ===================================================================================== -->
+    <target name="src.bundle" depends="copy.resources,compile">
+      <zip destfile="${owleditor.classes}/${owleditor.name}src.zip">
+        <fileset dir="${src.dir}"/>
+      </zip>
+      <antcall target="bundle"/>
+    </target>
+
+
+    <!-- ===================================================================================== -->
+    <!-- BUNDLE - create the distribution JAR file that goes in the OSGi "plugins" directory -->
     <!-- ===================================================================================== -->
 
     <target name = "bundle" depends = "compile, copy.resources">
