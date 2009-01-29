@@ -155,7 +155,9 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
         }
         else{
             creationSet = OWLEntityCreationPanel.showDialog(eKit, "Create defined class", OWLClass.class);
-            appendDefinitionToCreationSet(creationSet, desc, eKit);
+            if (creationSet != null){
+                appendDefinitionToCreationSet(creationSet, desc, eKit);
+            }
         }
         return creationSet;
     }
