@@ -36,18 +36,27 @@
   <target name = "bnd"/>
     
 
-  <target name="bundle" depends="compile">
+  <target name="copy.resources" depends="init">
     <copy todir="${commonlibs.classes}/lib">
         <fileset dir="${commonlibs.dir}/lib"/>
     </copy>
-    <!--
-    <unjar src = "${commonlibs.dir}/lib/commons-logging.jar"
-           dest="${commonlibs.classes}"/>
-    <unjar src = "${commonlibs.dir}/lib/log4j.jar"
-           dest="${commonlibs.classes}"/>
-    <unjar src = "${commonlibs.dir}/lib/looks.jar"
-           dest="${commonlibs.classes}"/>
-    -->
+  </target>
+
+  <!-- ===================================================================================== -->
+  <!-- SRC.BUNDLE - create a bundle with sources for developers -->
+  <!-- ===================================================================================== -->
+  <target name="src.bundle" depends="copy.resources">
+    <zip destfile="${commonlibs.classes}/${commonlibs.name}src.zip">
+      <fileset dir="${commonlibs.dir}/src"/>
+    </zip>
+    <antcall target="bundle"/>
+  </target>
+
+
+  <!-- ===================================================================================== -->
+  <!-- BUNDLE - create a bundle to run with OSGi -->
+  <!-- ===================================================================================== -->
+  <target name="bundle" depends="compile,copy.resources">
     <jar basedir = "${commonlibs.classes}"
          jarfile  = "${commonlibs.jar}"
          manifest = "${commonlibs.dir}/META-INF/MANIFEST.MF"/>
