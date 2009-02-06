@@ -58,6 +58,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         }
     });
 
+    private JLabel uriPreviewLabel;
+
 
     public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, Class<T> type) {
         this.owlEditorKit = owlEditorKit;
@@ -105,7 +107,14 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         errorLabel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
         errorLabel.setPreferredSize(new Dimension(errorLabel.getPreferredSize().width, 40));
 
+        uriPreviewLabel = new JLabel("");
+        uriPreviewLabel.setFont(errorLabel.getFont().deriveFont(10.0f));        
+        uriPreviewLabel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
+        Box previewPanel = new Box(BoxLayout.PAGE_AXIS);
+        previewPanel.add(uriPreviewLabel);
+
         add(entryPanel, BorderLayout.NORTH);
+        add(previewPanel, BorderLayout.CENTER);
         add(errorLabel, BorderLayout.SOUTH);
 
         OWLDescriptionAutoCompleter completer = new OWLDescriptionAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
@@ -189,9 +198,12 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
-            owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
-                                                                           getEntityName(),
-                                                                           getBaseURI());
+            OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
+                                                                                                             getEntityName(),
+                                                                                                             getBaseURI());
+            URI uri = changeSet.getOWLEntity().getURI();
+            uriPreviewLabel.setText("uri: " + uri);
+            
             currentlyValid = true;
             OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(getEntityName());
             if(entity != null){
