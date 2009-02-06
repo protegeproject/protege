@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.action.OntologyFormatPage;
+import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owl.model.*;
 
 import java.net.URI;
@@ -34,6 +36,10 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
     private boolean deleteFromOriginalOntology;
 
     private boolean addToTargetOntology;
+
+    private OntologyFormatPage ontologyFormatPage;
+
+    private PhysicalLocationPanel ontologyPhysicalLocationPage;
 
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
@@ -74,7 +80,9 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
         registerWizardPanel(CreateNewOntologyPanel.ID, new CreateNewOntologyPanel(editorKit));
 
-        registerWizardPanel(NewOntologyPhysicalLocationPanel.ID, new NewOntologyPhysicalLocationPanel(editorKit));
+        registerWizardPanel(PhysicalLocationPanel.ID, ontologyPhysicalLocationPage = new PhysicalLocationPanel(editorKit));
+
+        registerWizardPanel(OntologyFormatPage.ID, ontologyFormatPage = new OntologyFormatPage(editorKit));
 
 
 
@@ -196,7 +204,8 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 targetOntology = man.getOntology(getTargetOntologyURI());
             }
             else {
-                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), getTargetOntologyPhysicalURI());
+                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), ontologyPhysicalLocationPage.getLocationURI());
+                editorKit.getModelManager().getOWLOntologyManager().setOntologyFormat(targetOntology, ontologyFormatPage.getFormat());
             }
         }
 
@@ -248,16 +257,6 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     public void setTargetOntologyURI(URI targetOntologyURI) {
         this.targetOntologyURI = targetOntologyURI;
-    }
-
-
-    public void setTargetOntologyPhysicalURI(URI uri) {
-        this.physicalURI = uri;
-    }
-
-
-    public URI getTargetOntologyPhysicalURI() {
-        return physicalURI;
     }
 
 

@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.ontology.migration;
 
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+
+import javax.swing.*;
 
 
 /**
@@ -14,6 +14,8 @@ import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated
  */
 public class MigrationStartPanel extends AbstractOWLWizardPanel {
 

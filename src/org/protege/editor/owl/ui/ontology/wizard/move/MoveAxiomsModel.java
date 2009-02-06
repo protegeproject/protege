@@ -43,8 +43,6 @@ public interface MoveAxiomsModel {
 
     void setTargetOntologyURI(URI ontology);
 
-    void setTargetOntologyPhysicalURI(URI ontologyURI);
-
     Set<OWLAxiom> getAxiomsToBeMoved();
 
 //    public void setCopyAxioms(boolean b);

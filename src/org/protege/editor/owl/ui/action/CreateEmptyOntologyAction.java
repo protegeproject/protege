@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.net.URI;
-
-import javax.swing.JOptionPane;
-
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
+import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
 import org.semanticweb.owl.model.OWLRuntimeException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URI;
 
 
 /**
@@ -41,7 +41,8 @@ public class CreateEmptyOntologyAction extends ProtegeOWLAction {
         URI uri = wizard.getOntologyURI();
         if (uri != null) {
             try {
-                getOWLModelManager().createNewOntology(uri, wizard.getLocationURI());
+                OWLOntology ont = getOWLModelManager().createNewOntology(uri, wizard.getLocationURI());
+                getOWLModelManager().getOWLOntologyManager().setOntologyFormat(ont, wizard.getFormat());
             }
             catch (OWLOntologyCreationException e1) {
                 throw new OWLRuntimeException(e1);

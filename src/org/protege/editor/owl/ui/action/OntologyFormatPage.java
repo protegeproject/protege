@@ -47,13 +47,14 @@ public class OntologyFormatPage extends AbstractWizardPanel {
 
 
     public OntologyFormatPage(EditorKit editorKit) {
-        super(ID, "Select an ontology format", editorKit);
+        super(ID, "Ontology Format", editorKit);
     }
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please select a format in which to save the ontology.");
+        setInstructions("Please select the format in which the ontology will be saved (by default).");
         panel = new OntologyFormatPanel();
+        
         parent.add(panel);
     }
 
