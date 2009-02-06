@@ -159,7 +159,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         if (result == Wizard.FINISH_RETURN_CODE) {
             URI uri = w.getOntologyURI();
             if (uri != null) {
-                getModelManager().createNewOntology(uri, w.getLocationURI());
+                OWLOntology ont = getModelManager().createNewOntology(uri, w.getLocationURI());
+                getModelManager().getOWLOntologyManager().setOntologyFormat(ont, w.getFormat());
                 newPhysicalURIs.add(w.getLocationURI());
                 addRecent(w.getLocationURI());
                 return true;

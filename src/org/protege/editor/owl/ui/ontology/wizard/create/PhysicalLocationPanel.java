@@ -7,8 +7,8 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ProtegeOWL;
+import org.protege.editor.owl.ui.action.OntologyFormatPage;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -228,7 +228,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return WizardPanel.FINISH;
+        return OntologyFormatPage.ID;
     }
 
 

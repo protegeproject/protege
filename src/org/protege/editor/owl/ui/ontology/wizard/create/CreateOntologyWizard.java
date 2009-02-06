@@ -1,10 +1,12 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
-import java.awt.Frame;
-import java.net.URI;
-
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.action.OntologyFormatPage;
+import org.semanticweb.owl.model.OWLOntologyFormat;
+
+import java.awt.*;
+import java.net.URI;
 
 /**
  * Author: Matthew Horridge<br>
@@ -21,11 +23,15 @@ public class CreateOntologyWizard extends Wizard {
 
     private PhysicalLocationPanel physicalLocationPanel;
 
+    private OntologyFormatPage formatPanel;
+
+
     public CreateOntologyWizard(Frame owner, OWLEditorKit editorKit) {
         super(owner);
         setTitle("Create ontology wizard");
         registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new OntologyURIPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, physicalLocationPanel = new PhysicalLocationPanel(editorKit));
+        registerWizardPanel(OntologyFormatPage.ID, formatPanel = new OntologyFormatPage(editorKit));
         setCurrentPanel(OntologyURIPanel.ID);
     }
 
@@ -35,6 +41,10 @@ public class CreateOntologyWizard extends Wizard {
 
     public URI getLocationURI() {
         return physicalLocationPanel.getLocationURI();
+    }
+
+    public OWLOntologyFormat getFormat() {
+        return formatPanel.getFormat();
     }
 
     public int showModalDialog() {

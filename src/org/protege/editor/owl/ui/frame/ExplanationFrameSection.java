@@ -265,6 +265,7 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
         if (ret == Wizard.FINISH_RETURN_CODE) {
             try {
                 OWLOntology ont = getOWLModelManager().createNewOntology(wizard.getOntologyURI(), wizard.getLocationURI());
+                getOWLModelManager().getOWLOntologyManager().setOntologyFormat(ont, wizard.getFormat());
                 List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
                 for(OWLAxiom ax : orderedAxioms) {
                     changes.add(new AddAxiom(ont, ax));

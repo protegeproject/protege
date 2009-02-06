@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.action.OntologyFormatPage;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owl.model.OWLOntology;
@@ -37,6 +38,8 @@ public class MergeOntologiesWizard extends Wizard {
 
     private SelectTargetOntologyPage selectTargetOntologyPage;
 
+    private OntologyFormatPage ontologyFormatPage;
+
 
     public MergeOntologiesWizard(OWLEditorKit editorKit) {
         setTitle("Create ontology wizard");
@@ -47,6 +50,7 @@ public class MergeOntologiesWizard extends Wizard {
         registerWizardPanel(MergeTypePage.ID, new MergeTypePage(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, uriPanel = new OntologyURIPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, physicalLocationPanel = new PhysicalLocationPanel(editorKit));
+        registerWizardPanel(OntologyFormatPage.ID, ontologyFormatPage = new OntologyFormatPage(editorKit));
         registerWizardPanel(SelectTargetOntologyPage.ID, selectTargetOntologyPage = new SelectTargetOntologyPage(editorKit, "Select ontology to merge into"));
         selectTargetOntologyPage.setInstructions("Please select the target ontology to merge into");
 
@@ -64,14 +68,13 @@ public class MergeOntologiesWizard extends Wizard {
         if (ont == null){
             try {
                 URI uri = uriPanel.getURI();
-                return owlModelManager.createNewOntology(uri, physicalLocationPanel.getLocationURI());
+                ont = owlModelManager.createNewOntology(uri, physicalLocationPanel.getLocationURI());
+                owlModelManager.getOWLOntologyManager().setOntologyFormat(ont, ontologyFormatPage.getFormat());
             }
             catch (OWLOntologyCreationException e) {
                 throw new OWLRuntimeException(e);
             }
         }
-        else{
-            return ont;
-        }
+        return ont;
     }
 }

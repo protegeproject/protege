@@ -61,11 +61,7 @@ public class ExportInferredOntologyWizard extends Wizard {
         registerWizardPanel(ExportInferredOntologyIncludeAssertedAxiomsPanel.ID,
                             assertedAxiomsPanel = new ExportInferredOntologyIncludeAssertedAxiomsPanel(editorKit));
         registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new ExportInferredOntologyURIPanel(editorKit));
-        registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit){
-            public Object getNextPanelDescriptor() {
-                return OntologyFormatPage.ID;
-            }
-        });
+        registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit));
         registerWizardPanel(OntologyFormatPage.ID, ontologyFormatPanel = new OntologyFormatPage(editorKit));
     }
 

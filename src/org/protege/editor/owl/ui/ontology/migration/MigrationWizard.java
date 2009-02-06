@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.ontology.migration;
 
-import java.awt.Frame;
-
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
+
+import java.awt.*;
 
 
 /**
@@ -16,6 +16,8 @@ import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated
  */
 public class MigrationWizard extends Wizard {
 

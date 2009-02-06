@@ -198,14 +198,15 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
+            final String name = getEntityName();
             OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
-                                                                                                             getEntityName(),
+                                                                                                             name,
                                                                                                              getBaseURI());
             URI uri = changeSet.getOWLEntity().getURI();
             uriPreviewLabel.setText("uri: " + uri);
             
             currentlyValid = true;
-            OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(getEntityName());
+            OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(name);
             if(entity != null){
                 displayWarningMessage("Warning: an entity with that name already exists.");
             }
