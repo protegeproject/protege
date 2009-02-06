@@ -2,6 +2,8 @@ package org.protege.editor.owl.model.entity;
 
 import org.semanticweb.owl.model.OWLEntity;
 
+import java.util.Stack;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,9 +35,26 @@ import org.semanticweb.owl.model.OWLEntity;
  * Bio Health Informatics Group<br>
  * Date: Jul 25, 2008<br><br>
  */
-public class PseudoRandomAutoIDGenerator extends AbstractIDGenerator {
+public class PseudoRandomAutoIDGenerator extends AbstractIDGenerator implements Revertable {
+
+    private long nextId = System.nanoTime();
+
+    private Stack<Long> checkpoints = new Stack<Long>();
 
     protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
-        return System.nanoTime();
+        long id = nextId;
+        nextId = System.nanoTime();
+        return id;
     }
+
+
+    public void checkpoint() {
+        checkpoints.push(nextId);
+    }
+
+
+    public void revert() {
+        nextId = checkpoints.pop();
+    }
+
 }
