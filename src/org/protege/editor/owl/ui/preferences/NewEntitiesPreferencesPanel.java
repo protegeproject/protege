@@ -97,6 +97,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
     private static final int HORIZONTAL_SPACE = 25;
 
+// Can't do this as the entity renderer always uses the current prefs
 //    private JLabel exampleURILabel;
 
 
@@ -262,12 +263,13 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         JComponent namePane = createNamePanel();
 
 //        exampleURILabel = new JLabel();
+//        exampleURILabel.setFont(exampleURILabel.getFont().deriveFont(10.0f));
 //        exampleURILabel.setForeground(Color.GRAY);
 
         c.add(basePane);
         c.add(separatorPane);
         c.add(namePane);
-//        c.add(Box.createVerticalStrut(VERTICAL_SPACE));
+        c.add(Box.createVerticalStrut(VERTICAL_SPACE));
 //        c.add(exampleURILabel);
         return c;
     }
