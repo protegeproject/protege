@@ -82,7 +82,18 @@ public abstract class AbstractOWLPropertyHierarchyProvider<E extends OWLProperty
 
     private boolean isRoot(P prop) {
 
-        if (getParents(prop).isEmpty()) {
+        // We deem a property to be a root property if it doesn't have
+        // any super properties (i.e. it is not on
+        // the LHS of a subproperty axiom
+        // Assume the property is a root property to begin with
+        boolean isRoot = getParents(prop).isEmpty();
+        boolean isReferenced = false;
+        for (OWLOntology ont : ontologies) {
+            if (containsReference(ont, prop)) {
+                isReferenced = true;
+            }
+        }
+        if (isRoot && isReferenced) {
             return true;
         }
         else {
