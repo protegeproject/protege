@@ -267,7 +267,7 @@ public class OWLDescriptionAutoCompleter {
     private void createPopupWindow() {
         JScrollPane sp = ComponentFactory.createScrollPane(popupList);
         popupWindow = new JWindow((Window) SwingUtilities.getAncestorOfClass(Window.class, textComponent));
-        popupWindow.setAlwaysOnTop(true);
+//        popupWindow.setAlwaysOnTop(true); // this doesn't appear to work with certain Windows/java combinations
         popupWindow.getContentPane().setLayout(new BorderLayout());
         popupWindow.getContentPane().add(sp, BorderLayout.CENTER);
         popupWindow.setFocusableWindowState(false);
