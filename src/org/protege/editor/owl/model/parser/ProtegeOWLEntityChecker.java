@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.expression.OWLEntityChecker;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.vocab.Namespaces;
+import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import java.net.URI;/*
@@ -86,6 +87,9 @@ public class ProtegeOWLEntityChecker implements OWLEntityChecker {
 
 
     public OWLDataType getOWLDataType(String string) {
+        if (OWLRDFVocabulary.RDFS_LITERAL.getShortName().equals(string)){
+            return mngr.getOWLDataFactory().getOWLDataType(OWLRDFVocabulary.RDFS_LITERAL.getURI());
+        }
         String fullName = Namespaces.XSD + string;
         for(XSDVocabulary v : XSDVocabulary.values()) {
             if(v.toString().equals(fullName)) {
