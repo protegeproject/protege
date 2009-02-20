@@ -251,6 +251,9 @@ public interface OWLModelManager extends ModelManager {
     public OWLIndividual getOWLIndividual(String rendering);
 
 
+    public OWLDataType getOWLDatatype(String rendering);
+
+
     public OWLEntity getOWLEntity(String rendering);
 
 

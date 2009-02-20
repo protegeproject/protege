@@ -54,11 +54,15 @@ public class OWLDataTypeUtils {
         Set<OWLDataType> datatypes = new HashSet<OWLDataType>();
         final OWLDataFactory df = mngr.getOWLDataFactory();
 
+        // the top datatype
+        datatypes.add(df.getOWLDataType(OWLRDFVocabulary.RDFS_LITERAL.getURI()));
+
         datatypes.add(df.getTopDataType());
         for (URI uri : XSDVocabulary.ALL_DATATYPES) {
             datatypes.add(df.getOWLDataType(uri));
         }
         datatypes.add(df.getOWLDataType(OWLRDFVocabulary.RDF_XML_LITERAL.getURI()));
+
         return datatypes;
     }
 }
