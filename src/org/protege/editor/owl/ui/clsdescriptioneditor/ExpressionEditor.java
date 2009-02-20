@@ -152,7 +152,7 @@ public class ExpressionEditor<O> extends JTextPane
     }
 
 
-    public O createObject() throws OWLExpressionParserException, OWLException {
+    public O createObject() throws OWLException {
         return expressionChecker.createObject(getText());
     }
 

@@ -932,29 +932,59 @@ public class OWLModelManagerImpl extends AbstractModelManager
         return owlExpressionCheckerFactory;
     }
 
+    private static final String ESCAPE_CHAR = "'";
 
     public OWLClass getOWLClass(String rendering) {
-        return owlEntityRenderingCache.getOWLClass(rendering);
+        OWLClass cls = owlEntityRenderingCache.getOWLClass(rendering);
+        if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            cls = owlEntityRenderingCache.getOWLClass(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return cls;
     }
 
 
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
-        return owlEntityRenderingCache.getOWLObjectProperty(rendering);
+        OWLObjectProperty prop = owlEntityRenderingCache.getOWLObjectProperty(rendering);
+        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            prop = owlEntityRenderingCache.getOWLObjectProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return prop;
     }
 
 
     public OWLDataProperty getOWLDataProperty(String rendering) {
-        return owlEntityRenderingCache.getOWLDataProperty(rendering);
+        OWLDataProperty prop = owlEntityRenderingCache.getOWLDataProperty(rendering);
+        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            prop = owlEntityRenderingCache.getOWLDataProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return prop;
     }
 
 
     public OWLIndividual getOWLIndividual(String rendering) {
-        return owlEntityRenderingCache.getOWLIndividual(rendering);
+        OWLIndividual individual = owlEntityRenderingCache.getOWLIndividual(rendering);
+        if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            individual = owlEntityRenderingCache.getOWLIndividual(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return individual;
+    }
+
+
+    public OWLDataType getOWLDatatype(String rendering) {
+        OWLDataType dataType = owlEntityRenderingCache.getOWLDataType(rendering);
+        if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            dataType = owlEntityRenderingCache.getOWLDataType(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return dataType;
     }
 
 
     public OWLEntity getOWLEntity(String rendering) {
-        return owlEntityRenderingCache.getOWLEntity(rendering);
+        OWLEntity entity = owlEntityRenderingCache.getOWLEntity(rendering);
+        if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            entity = owlEntityRenderingCache.getOWLEntity(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return entity;
     }
 
 
