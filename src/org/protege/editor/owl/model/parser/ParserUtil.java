@@ -37,7 +37,7 @@ import org.semanticweb.owl.expression.ParserException;
 public class ParserUtil {
 
     public static OWLExpressionParserException convertException(ParserException ex) {
-        int endPos = ex.getCurrentToken().length();
+        int endPos = ex.getStartPos() + ex.getCurrentToken().length();
         if (ex.getCurrentToken().equals("<EOF>")){
             endPos = ex.getStartPos(); // because start + length of <EOF> would push us past the end of the document
         }
