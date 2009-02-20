@@ -225,40 +225,38 @@ public class OWLDescriptionAutoCompleter {
     private List getMatches() {
         // We need to determine if the matches should be classes, individuals etc.
 
-        int wordIndex = getWordIndex();
-        if (wordIndex > -1) {
+        try {
+            int wordIndex = getWordIndex();
+            String expression = textComponent.getDocument().getText(0, wordIndex);
+            // Add a bit to the end to force a parse error
+            expression += "**";
             try {
-                String expression = textComponent.getDocument().getText(0, wordIndex);
-                // Add a bit to the end to force a parse error
-                expression += "**";
-                try {
-                    checker.check(expression);
-                }
-                catch (OWLExpressionParserException e) {
-                    String word = getWordToComplete();
-                    Set<OWLObject> matches = matcher.getMatches(word,
-                                                                e.isOWLClassExpected(),
-                                                                e.isOWLObjectPropertyExpected(),
-                                                                e.isOWLDataPropertyExpected(),
-                                                                e.isOWLIndividualExpected(),
-                                                                e.isDataTypeExpected());
-                    List kwMatches = new ArrayList(matches.size() + 10);
-                    for (String s : e.getExpectedKeyWords()) {
-                        if (s.toLowerCase().startsWith(word.toLowerCase())) {
-                            kwMatches.add(s);
-                        }
+                checker.check(expression);
+            }
+            catch (OWLExpressionParserException e) {
+                String word = getWordToComplete();
+                Set<OWLObject> matches = matcher.getMatches(word,
+                                                            e.isOWLClassExpected(),
+                                                            e.isOWLObjectPropertyExpected(),
+                                                            e.isOWLDataPropertyExpected(),
+                                                            e.isOWLIndividualExpected(),
+                                                            e.isDataTypeExpected());
+                List kwMatches = new ArrayList(matches.size() + 10);
+                for (String s : e.getExpectedKeyWords()) {
+                    if (s.toLowerCase().startsWith(word.toLowerCase())) {
+                        kwMatches.add(s);
                     }
-                    kwMatches.addAll(matches);
+                }
+                kwMatches.addAll(matches);
 
-                    return kwMatches;
-                }
-                catch (OWLException owlEx) {
-                    owlEx.printStackTrace();
-                }
+                return kwMatches;
             }
-            catch (BadLocationException e) {
-                Logger.getLogger(getClass()).warn(e);
+            catch (OWLException owlEx) {
+                owlEx.printStackTrace();
             }
+        }
+        catch (BadLocationException e) {
+            Logger.getLogger(getClass()).warn(e);
         }
         return Collections.EMPTY_LIST;
     }
@@ -302,7 +300,9 @@ public class OWLDescriptionAutoCompleter {
 
             int index = getWordIndex();
             int caretIndex = textComponent.getCaretPosition();
-            textComponent.getDocument().remove(index, caretIndex - index);
+            if (caretIndex > 0 && caretIndex > index){
+                textComponent.getDocument().remove(index, caretIndex - index);
+            }
             textComponent.getDocument().insertString(index, word, null);
         }
         catch (BadLocationException e) {
@@ -319,10 +319,10 @@ public class OWLDescriptionAutoCompleter {
             popupWindow.setSize(POPUP_WIDTH, POPUP_HEIGHT);
             try {
                 int wordIndex = getWordIndex();
-                if (wordIndex < 0) {
-                    return;
+                Point p = new Point(0, 0); // default for when the doc is empty
+                if (wordIndex > 0){
+                    p = textComponent.modelToView(wordIndex).getLocation();
                 }
-                Point p = textComponent.modelToView(getWordIndex()).getLocation();
                 SwingUtilities.convertPointToScreen(p, textComponent);
                 p.y = p.y + textComponent.getFontMetrics(textComponent.getFont()).getHeight();
                 popupWindow.setLocation(p);
@@ -384,15 +384,54 @@ public class OWLDescriptionAutoCompleter {
     }
 
 
+
+
     private int getWordIndex() {
+        int index = getEscapedWordIndex();
+        if (index == -1){
+            index = getUnbrokenWordIndex();
+        }
+        return Math.max(0, index);
+    }
+
+
+    // determines if we are currently inside an escaped name (if there are an uneven number of escape characters)
+    private int getEscapedWordIndex() {
         try {
-            int caretPos = getEffectiveCaretPosition() - 1;
-            for (int index = caretPos; index > -1; index--) {
-                if (wordDelimeters.contains(textComponent.getDocument().getText(index, 1))) {
-                    return index + 1;
+            int caretPos = Math.max(0, getEffectiveCaretPosition() - 1);
+            String expression = textComponent.getDocument().getText(0, caretPos);
+            int escapeEnd = -1;
+            do{
+                int escapeStart = expression.indexOf("'", escapeEnd+1);
+                if (escapeStart != -1){
+                    escapeEnd = expression.indexOf("'", escapeStart+1);
+                    if (escapeEnd == -1){
+                        return escapeStart;
+                    }
                 }
-                if (index == 0) {
-                    return 0;
+                else{
+                    return -1;
+                }
+            }while(true);
+        }
+        catch (BadLocationException e) {
+            logger.error(e);
+        }
+        return -1;
+    }
+
+
+    private int getUnbrokenWordIndex() {
+        try {
+            int caretPos = Math.max(0, getEffectiveCaretPosition() - 1);
+            if (caretPos > 0){
+                for (int index = caretPos; index > -1; index--) {
+                    if (wordDelimeters.contains(textComponent.getDocument().getText(index, 1))) {
+                        return index + 1;
+                    }
+                    if (index == 0) {
+                        return 0;
+                    }
                 }
             }
         }
