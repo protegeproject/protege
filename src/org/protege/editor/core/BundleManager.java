@@ -82,6 +82,7 @@ public class BundleManager {
         List<File> locations = new ArrayList<File>();
         locations.addAll(getPluginBundles());
         locations.addAll(getExtraBundles());
+        locations.addAll(getNewExtraBundles());
         if (locations.isEmpty()) {
             logger.warn("No plugins found");
         }
@@ -184,6 +185,15 @@ public class BundleManager {
             }
         }
         return extra_bundles;
+    }
+    
+    private List<File> getNewExtraBundles() {
+        List<File> pluginLocations = new ArrayList<File>();
+        String location;
+        for (int i = 0; (location = System.getProperty(BUNDLE_EXTRA_PROP + "." + i)) != null; i++) {
+            pluginLocations.add(new File(location));
+        }
+        return pluginLocations;
     }
     
     private boolean isTrivialBundleLoadException(File plugin, Throwable t) {
