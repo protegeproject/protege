@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.ExtensionInstantiator;
+import org.protege.editor.core.plugin.JPFUtil;
+import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLDescription;
-
-import javax.swing.*;
-import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -37,25 +34,34 @@ import java.util.Set;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Dec 23, 2008<br><br>
+ * Date: Feb 26, 2009<br><br>
  */
-public interface OWLDescriptionEditor extends ProtegePluginInstance, VerifiedInputEditor, Disposable {
+public class OWLDescriptionEditorPluginImpl implements OWLDescriptionEditorPlugin {
 
-    String getEditorName();
+    private IExtension extension;
 
-    JComponent getComponent();
+    private OWLEditorKit editorKit;
 
-    boolean isValidInput();
-
-
-    /**
-     * @param description the class expression to be edited (may be null which is used to "reset" the editor)
-     * @return false if the description cannot be represented by this editor (should always be able to handle null)
-     */
-    boolean setDescription(OWLDescription description);
-
-    Set<OWLDescription> getDescriptions();
+    public OWLDescriptionEditorPluginImpl(OWLEditorKit editorKit, IExtension extension) {
+        this.extension = extension;
+        this.editorKit = editorKit;
+    }
 
 
-    void setup(String uniqueIdentifier, String label, OWLEditorKit editorKit);
+    public String getId() {
+        return extension.getUniqueIdentifier();
+    }
+
+
+    public String getDocumentation() {
+        return JPFUtil.getDocumentation(extension);
+    }
+
+
+    public OWLDescriptionEditor newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
+        ExtensionInstantiator<OWLDescriptionEditor> instantiator = new ExtensionInstantiator<OWLDescriptionEditor>(extension);
+        OWLDescriptionEditor editor =  instantiator.instantiate();
+        editor.setup(extension.getUniqueIdentifier(), PluginUtilities.getAttribute(extension, "label"), editorKit);
+        return editor;
+    }
 }

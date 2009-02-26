@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
-import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.semanticweb.owl.model.OWLDataFactory;
@@ -51,8 +50,9 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Sep 11, 2008<br><br>
  */
-public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject> extends JPanel
-        implements OWLDescriptionEditor {
+public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject> extends AbstractOWLDescriptionEditor {
+
+    private JPanel panel;
 
     private AbstractHierarchySelectorPanel<P> propertySelectorPanel;
 
@@ -62,7 +62,6 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
     private JComboBox typeCombo;
 
-    private OWLEditorKit eKit;
 
     private boolean currentStatus = false;
 
@@ -75,8 +74,8 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
     };
 
 
-    public AbstractRestrictionCreatorPanel(OWLEditorKit eKit) {
-        this.eKit = eKit;
+    public void initialise() throws Exception {
+        panel = new JPanel();
 
         propertySelectorPanel = createPropertySelectorPanel();
         propertySelectorPanel.addSelectionListener(selListener);
@@ -86,14 +85,14 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         propertySelectorPanel.addSelectionListener(selListener);
         fillerSelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restriction filler"));
 
-        setLayout(new BorderLayout());
+        panel.setLayout(new BorderLayout());
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false);
         splitPane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         splitPane.setResizeWeight(0.5);
         splitPane.setLeftComponent(propertySelectorPanel);
         splitPane.setRightComponent(fillerSelectorPanel);
-        add(splitPane);
+        panel.add(splitPane);
 
         java.util.List<RestrictionCreator<P, F>> types = createTypes();
 
@@ -106,7 +105,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
         final JPanel typePanel = new JPanel();
         typePanel.setBorder(ComponentFactory.createTitledBorder("Restriction type"));
-        add(typePanel, BorderLayout.SOUTH);
+        panel.add(typePanel, BorderLayout.SOUTH);
         typePanel.add(typeCombo);
         typeCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -134,7 +133,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
 
     public JComponent getComponent() {
-        return this;
+        return panel;
     }
 
 
@@ -160,19 +159,15 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
     }
 
 
-    protected final OWLEditorKit getOWLEditorKit() {
-        return eKit;
-    }
-
-
     protected final OWLDataFactory getDataFactory(){
-        return eKit.getModelManager().getOWLDataFactory();
+        return getOWLEditorKit().getModelManager().getOWLDataFactory();
     }
 
 
     public void dispose() {
         propertySelectorPanel.dispose();
         fillerSelectorPanel.dispose();
+        panel = null;
     }
 
 

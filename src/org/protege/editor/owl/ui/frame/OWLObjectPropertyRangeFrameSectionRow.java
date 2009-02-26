@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyRangeAxiom;
@@ -26,7 +25,7 @@ public class OWLObjectPropertyRangeFrameSectionRow extends AbstractOWLFrameSecti
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), getAxiom().getRange());
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getRange());
     }
 
 

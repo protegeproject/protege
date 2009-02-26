@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame.property;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
@@ -51,7 +50,7 @@ public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLPropert
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), getAxiom().getDomain());
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getDomain());        
     }
 
 

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
 
@@ -27,12 +26,13 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
 
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
         if (getAxiom() instanceof OWLSubClassAxiom) {
-            return new OWLClassDescriptionEditor(getOWLEditorKit(), ((OWLSubClassAxiom) getAxiom()).getSuperClass());
+            OWLDescription superCls = ((OWLSubClassAxiom) getAxiom()).getSuperClass();
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls);
         }
         else {
             Set<OWLDescription> descs = new HashSet<OWLDescription>(((OWLEquivalentClassesAxiom) getAxiom()).getDescriptions());
             descs.remove(getRootObject());
-            return new OWLClassDescriptionEditor(getOWLEditorKit(), descs.iterator().next());
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next());
         }
     }
 

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
@@ -38,7 +37,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
         Set<OWLDescription> descs = new HashSet<OWLDescription>(getAxiom().getDescriptions());
         descs.remove(getRoot());
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), descs.iterator().next());
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next());
     }
 
 

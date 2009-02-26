@@ -37,6 +37,6 @@ import org.protege.editor.owl.OWLEditorKit;
 public class OWLDataRestrictionCreatorPanel extends org.protege.editor.owl.ui.editor.OWLDataRestrictionCreatorPanel {
 
     public OWLDataRestrictionCreatorPanel(OWLEditorKit eKit) {
-        super(eKit);
+        setup("OWLDataRestrictionCreatorPanel", "Data restriction creator", eKit);
     }
 }

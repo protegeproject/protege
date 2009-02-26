@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.frame.cls.AbstractOWLClassAxiomFrameSection;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.inference.UnsupportedReasonerOperationException;
@@ -116,7 +115,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
 
 
     public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return new OWLClassDescriptionEditor(getOWLEditorKit(), null);
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null);
     }
 
 
