@@ -37,6 +37,6 @@ import org.protege.editor.owl.OWLEditorKit;
 public class OWLObjectRestrictionCreatorPanel extends org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel {
 
     public OWLObjectRestrictionCreatorPanel(OWLEditorKit eKit) {
-        super(eKit);
+        setup("OWLObjectRestrictionCreatorPanel", "Object restriction creator", eKit);
     }
 }

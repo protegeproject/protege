@@ -103,7 +103,7 @@ public class UIHelper {
 
 
     public OWLClass pickOWLClass() {
-        OWLClassSelectorPanel clsPanel = new OWLClassSelectorPanel(owlEditorKit);
+        OWLClassSelectorPanel clsPanel = owlEditorKit.getOWLWorkspace().getOWLComponentFactory().getOWLClassSelectorPanel();
         int ret = showDialog("Select a class", clsPanel);
         if (ret == JOptionPane.OK_OPTION) {
             OWLClass cls = clsPanel.getSelectedObject();
@@ -117,7 +117,7 @@ public class UIHelper {
 
 
     public OWLIndividual pickOWLIndividual() {
-        OWLIndividualSelectorPanel indPanel = new OWLIndividualSelectorPanel(owlEditorKit);
+        OWLIndividualSelectorPanel indPanel = owlEditorKit.getOWLWorkspace().getOWLComponentFactory().getOWLIndividualSelectorPanel();
         int ret = showDialog("Select an individual", indPanel);
         if (ret == JOptionPane.OK_OPTION) {
             OWLIndividual ind = indPanel.getSelectedObject();
@@ -196,7 +196,7 @@ public class UIHelper {
 
 
     public OWLObjectProperty pickOWLObjectProperty() {
-        OWLObjectPropertySelectorPanel objPropPanel = new OWLObjectPropertySelectorPanel(owlEditorKit);
+        OWLObjectPropertySelectorPanel objPropPanel = owlEditorKit.getOWLWorkspace().getOWLComponentFactory().getOWLObjectPropertySelectorPanel();
         if (showDialog("Select an object property", objPropPanel) == JOptionPane.OK_OPTION) {
             return objPropPanel.getSelectedObject();
         }
@@ -207,7 +207,7 @@ public class UIHelper {
 
 
     public OWLDataProperty pickOWLDataProperty() {
-        OWLDataPropertySelectorPanel panel = new OWLDataPropertySelectorPanel(owlEditorKit);
+        OWLDataPropertySelectorPanel panel = owlEditorKit.getOWLWorkspace().getOWLComponentFactory().getOWLDataPropertySelectorPanel();
         if (showDialog("Select an object property", panel) == JOptionPane.OK_OPTION) {
             return panel.getSelectedObject();
         }

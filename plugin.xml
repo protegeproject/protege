@@ -21,12 +21,18 @@
     <extension-point id="io.listener"
                      name="IO Listener"/>
 
+    <extension-point id="ui.editor.description"
+                     name="OWL Description Editor"/>
+
+
+
+    <!-- PLUGINS -->
+
     <extension id="FolderLibrary"
                point="org.protege.editor.owl.model.libraryfactory">
         <class value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
     </extension>
 
-    <!-- An clsdescriptioneditor kit factory that can produce clsdescriptioneditor kits that edit owl ontologies -->
 
     <extension id="OWLEditorKitFactory"
                point="org.protege.editor.core.application.EditorKitFactory">
@@ -37,6 +43,36 @@
 
     <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
         <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
+    </extension>
+
+
+    <!-- Class Description Editors -->
+
+    <extension id="OWLDescriptionExpressionEditor"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Class expression editor"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLDescriptionExpressionEditor"/>
+    </extension>
+
+
+    <extension id="OWLObjectRestrictionCreatorPanel"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Object restriction creator"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel"/>
+    </extension>
+
+
+    <extension id="OWLDataRestrictionCreatorPanel"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Data restriction creator"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLDataRestrictionCreatorPanel"/>
+    </extension>
+
+
+    <extension id="OWLClassSelectorWrapper"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Asserted class hierarchy"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLClassSelectorWrapper"/>
     </extension>
 
 
@@ -412,7 +448,7 @@
 
     <!-- Ontology views -->
 
-        <extension id="OWLOntologyAnnotationsView"
+    <extension id="OWLOntologyAnnotationsView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Ontology annotations"/>
         <class value="org.protege.editor.owl.ui.view.OWLOntologyAnnotationViewComponent"/>
@@ -465,7 +501,7 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-    
+
     <extension id="NavigationView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Navigation view"/>

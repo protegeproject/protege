@@ -3,19 +3,14 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
-import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,11 +57,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
         tabbedPane = new JTabbedPane();
         tabbedPane.setFocusable(false);
-
-        addPanel(new OWLDescriptionExpressionEditor(editorKit, description));
-        addPanel(new OWLClassSelectorPanel(editorKit));
-        addPanel(new OWLObjectRestrictionCreatorPanel(editorKit));
-        addPanel(new OWLDataRestrictionCreatorPanel(editorKit));
 
         editingComponent.add(tabbedPane);
 
@@ -169,77 +159,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         listeners.remove(l);
         for (OWLDescriptionEditor editor : activeEditors){
             editor.removeStatusChangedListener(l);
-        }
-    }
-
-
-    class OWLDescriptionExpressionEditor implements OWLDescriptionEditor{
-
-        private static final String CLASS_EXPRESSION_EDITOR_LABEL = "Class expression editor";
-
-        private ExpressionEditor<OWLDescription> editor;
-
-        private JScrollPane scroller;
-
-
-        OWLDescriptionExpressionEditor(OWLEditorKit eKit, OWLDescription description) {
-            editor = new ExpressionEditor<OWLDescription>(eKit, eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker());
-            editor.setExpressionObject(description);
-
-            scroller = new JScrollPane(editor);
-        }
-
-
-        public String getEditorName() {
-            return CLASS_EXPRESSION_EDITOR_LABEL;
-        }
-
-
-        public JComponent getComponent() {
-            return scroller;
-        }
-
-
-        public boolean isValidInput() {
-            return editor.isWellFormed();
-        }
-
-
-        public boolean setDescription(OWLDescription description) {
-            editor.setExpressionObject(description);
-            return true;
-        }
-
-
-        public Set<OWLDescription> getDescriptions() {
-            try {
-                if (editor.isWellFormed()) {
-                    OWLDescription owlDescription = editor.createObject();
-                    OWLExpressionUserCache.getInstance(editorKit.getModelManager()).add(owlDescription, editor.getText());
-                    return Collections.singleton(owlDescription);
-                }
-                else {
-                    return null;
-                }
-            }
-            catch (OWLException e) {
-                return null;
-            }
-        }
-
-
-        public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
-            editor.addStatusChangedListener(l);
-        }
-
-
-        public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
-            editor.removeStatusChangedListener(l);
-        }
-
-
-        public void dispose() throws Exception {
-            // surely ExpressionEditor should be disposable?
         }
     }
 }

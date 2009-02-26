@@ -36,6 +36,8 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.protege.editor.owl.ui.util.OWLComponentFactory;
+import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
 import org.semanticweb.owl.util.OWLEntityCollectingOntologyChangeListener;
@@ -91,19 +93,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private ErrorNotificationLabel errorNotificationLabel;
 
-    private OWLClassSelectorPanel classSelectorPanel;
-
-    private OWLObjectPropertySelectorPanel objectPropertySelectorPanel;
-
-    private OWLDataPropertySelectorPanel dataPropertySelectorPanel;
-
-    private OWLIndividualSelectorPanel individualSelectorPanel;
-
     private OWLEntityCollectingOntologyChangeListener listener;
 
     private Set<URI> hiddenAnnotationURIs;
 
     private JMenu ontologiesMenu;
+
+    private OWLComponentFactory owlComponentFactory;
 
 
     public OWLEditorKit getOWLEditorKit() {
@@ -138,6 +134,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         hiddenAnnotationURIs = new HashSet<URI>();
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
+
+        owlComponentFactory = new OWLComponentFactoryImpl(getOWLEditorKit());
 
         final OWLModelManager mngr = getOWLModelManager();
 
@@ -601,18 +599,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     public void dispose() {
         // Save our workspace!
         super.dispose();
-        if (classSelectorPanel != null) {
-            classSelectorPanel.dispose();
-        }
-        if (objectPropertySelectorPanel != null) {
-            objectPropertySelectorPanel.dispose();
-        }
-        if (dataPropertySelectorPanel != null) {
-            dataPropertySelectorPanel.dispose();
-        }
-        if (individualSelectorPanel != null) {
-            individualSelectorPanel.dispose();
-        }
+
+        owlComponentFactory.dispose();
+
         getOWLModelManager().removeListener(owlModelManagerListener);
         getOWLModelManager().removeOntologyChangeListener(listener);
     }
@@ -701,35 +690,39 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    /**
+     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
+     */
     public OWLClassSelectorPanel getOWLClassSelectorPanel() {
-        if (classSelectorPanel == null) {
-            classSelectorPanel = new OWLClassSelectorPanel(getOWLEditorKit());
-        }
-        return classSelectorPanel;
+        return owlComponentFactory.getOWLClassSelectorPanel();
     }
 
-
+    /**
+     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
+     */
     public OWLObjectPropertySelectorPanel getOWLObjectPropertySelectorPanel() {
-        if (objectPropertySelectorPanel == null) {
-            objectPropertySelectorPanel = new OWLObjectPropertySelectorPanel(getOWLEditorKit());
-        }
-        return objectPropertySelectorPanel;
+        return owlComponentFactory.getOWLObjectPropertySelectorPanel();
     }
 
 
+    /**
+     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
+     */
     public OWLDataPropertySelectorPanel getOWLDataPropertySelectorPanel() {
-        if (dataPropertySelectorPanel == null) {
-            dataPropertySelectorPanel = new OWLDataPropertySelectorPanel(getOWLEditorKit());
-        }
-        return dataPropertySelectorPanel;
+        return owlComponentFactory.getOWLDataPropertySelectorPanel();
     }
 
 
+    /**
+     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
+     */
     public OWLIndividualSelectorPanel getOWLIndividualSelectorPanel() {
-        if (individualSelectorPanel == null) {
-            individualSelectorPanel = new OWLIndividualSelectorPanel(getOWLEditorKit());
-        }
-        return individualSelectorPanel;
+        return owlComponentFactory.getOWLIndividualSelectorPanel();
+    }
+
+
+    public OWLComponentFactory getOWLComponentFactory() {
+        return owlComponentFactory;
     }
 
 

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
@@ -44,24 +43,12 @@ import java.util.Set;
  */
 public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPanel<OWLDataProperty, OWLDataType> {
 
-    private static final String DATA_RESTRICTION_CREATOR_LABEL = "Data restriction creator";
-
     private RestrictionCreator<OWLDataProperty, OWLDataType> some;
     private RestrictionCreator<OWLDataProperty, OWLDataType> only;
     private CardinalityRestrictionCreator<OWLDataProperty, OWLDataType> min;
     private CardinalityRestrictionCreator<OWLDataProperty, OWLDataType> exactly;
     private CardinalityRestrictionCreator<OWLDataProperty, OWLDataType> max;
-
-
-    public OWLDataRestrictionCreatorPanel(OWLEditorKit eKit) {
-        super(eKit);
-    }
-
-
-    public String getEditorName() {
-        return DATA_RESTRICTION_CREATOR_LABEL;
-    }
-
+    
 
     protected List<RestrictionCreator<OWLDataProperty, OWLDataType>> createTypes() {
         List<RestrictionCreator<OWLDataProperty, OWLDataType>> types = new ArrayList<RestrictionCreator<OWLDataProperty, OWLDataType>>();

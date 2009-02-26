@@ -1,8 +1,12 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.editor;
 
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLProperty;
+import org.protege.editor.owl.ProtegeOWL;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,14 +36,24 @@ import org.semanticweb.owl.model.OWLProperty;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 11, 2008<br><br>
- *
- * @deprecated use <code>org.protege.editor.owl.ui.editor.AbstractRestrictionCreatorPanel<P, F></code>
+ * Date: Feb 26, 2009<br><br>
  */
-public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject>
-        extends org.protege.editor.owl.ui.editor.AbstractRestrictionCreatorPanel<P, F> {
+public class OWLDescriptionEditorPluginLoader extends AbstractPluginLoader<OWLDescriptionEditorPlugin> {
 
-    public AbstractRestrictionCreatorPanel(OWLEditorKit eKit) {
-        setup("AbstractRestrictionCreatorPanel", "Restriction Panel", eKit);
+    private OWLEditorKit editorKit;
+
+    public OWLDescriptionEditorPluginLoader(OWLEditorKit editorKit) {
+        super(ProtegeOWL.ID, OWLDescriptionEditorPlugin.ID);
+        this.editorKit = editorKit;
+    }
+
+
+    protected PluginExtensionMatcher getExtensionMatcher() {
+        return new DefaultPluginExtensionMatcher();
+    }
+
+
+    protected OWLDescriptionEditorPlugin createInstance(IExtension extension) {
+        return new OWLDescriptionEditorPluginImpl(editorKit, extension);
     }
 }

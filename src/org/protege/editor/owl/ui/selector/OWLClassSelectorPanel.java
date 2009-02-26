@@ -8,15 +8,11 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.clshierarchy.AbstractOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent;
-import org.protege.editor.owl.ui.editor.OWLDescriptionEditor;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
 
-import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -29,9 +25,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> implements OWLDescriptionEditor {
-
-    private static final String TITLE = "OWL Asserted Class Hierarchy";
+public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
 
     private AbstractOWLClassHierarchyViewComponent viewComponent;
 
@@ -48,43 +42,12 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
         super(editorKit, editable, hp);
     }
 
-    public String getEditorName() {
-        return TITLE;
-    }
-
-
-    public JComponent getComponent() {
-        return this;
-    }
-
-
-    public boolean isValidInput() {
-        return getSelectedObjects() != null && !getSelectedObjects().isEmpty();
-    }
-
-
-    public boolean setDescription(OWLDescription description) {
-        if (description == null){
-            return true;
-        }
-        if (!description.isAnonymous()){
-            setSelection(description.asOWLClass());
-            return true;
-        }
-        return false;
-    }
-
-
-    public Set<OWLDescription> getDescriptions() {
-        return new HashSet<OWLDescription>(getSelectedObjects());
-    }
-
 
     protected ViewComponentPlugin getViewComponentPlugin() {
 
         return new ViewComponentPluginAdapter() {
             public String getLabel() {
-                return getEditorName();
+                return "Asserted Class Hierarchy";
             }
 
 

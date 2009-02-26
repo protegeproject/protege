@@ -1,8 +1,6 @@
-package org.protege.editor.owl.ui.frame;
+package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLProperty;
+import org.protege.editor.core.plugin.ProtegePlugin;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,14 +30,8 @@ import org.semanticweb.owl.model.OWLProperty;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Sep 11, 2008<br><br>
- *
- * @deprecated use <code>org.protege.editor.owl.ui.editor.AbstractRestrictionCreatorPanel<P, F></code>
+ * Date: Feb 26, 2009<br><br>
  */
-public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject>
-        extends org.protege.editor.owl.ui.editor.AbstractRestrictionCreatorPanel<P, F> {
-
-    public AbstractRestrictionCreatorPanel(OWLEditorKit eKit) {
-        setup("AbstractRestrictionCreatorPanel", "Restriction Panel", eKit);
-    }
+public interface OWLDescriptionEditorPlugin extends ProtegePlugin<OWLDescriptionEditor> {
+    public static final String ID = "ui.editor.description";
 }
