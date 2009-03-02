@@ -189,7 +189,7 @@
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Release Notes"/>
         <toolTip value="Updates for each release"/>
-        <url value="http://protege.stanford.edu/download/protege4/release-notes.html"/>
+        <url value="http://protege.stanford.edu/protege/4.0/webnotes/release-notes.html"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
