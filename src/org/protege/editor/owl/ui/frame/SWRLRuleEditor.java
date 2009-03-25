@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
@@ -39,7 +41,7 @@ import java.awt.*;
  * Bio-Health Informatics Group<br>
  * Date: 06-Jul-2007<br><br>
  */
-public class SWRLRuleEditor extends AbstractOWLFrameSectionRowObjectEditor<SWRLRule> {
+public class SWRLRuleEditor extends AbstractOWLFrameSectionRowObjectEditor<SWRLRule> implements VerifiedInputEditor {
 
     private ExpressionEditor<SWRLRule> editor;
 
@@ -80,5 +82,15 @@ public class SWRLRuleEditor extends AbstractOWLFrameSectionRowObjectEditor<SWRLR
 
 
     public void dispose() {
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        editor.addStatusChangedListener(listener);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        editor.removeStatusChangedListener(listener);
     }
 }
