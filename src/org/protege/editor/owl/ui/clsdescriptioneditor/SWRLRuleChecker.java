@@ -1,8 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.apache.log4j.Logger;
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.model.parser.ParserUtil;
+import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
+import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.model.SWRLRule;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -55,7 +59,14 @@ public class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
 
 
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
-        logger.warn("Sorry, SWRL parser not currently available.");
-        return null;
+        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
+        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
+        try {
+            return parser.parseRuleFrame();
+        }
+        catch (ParserException e) {
+            throw ParserUtil.convertException(e);
+        }
     }
 }
