@@ -115,7 +115,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
 
 
     public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null);
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, AxiomType.EQUIVALENT_CLASSES);
     }
 
 

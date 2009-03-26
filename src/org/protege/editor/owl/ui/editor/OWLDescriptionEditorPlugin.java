@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.core.plugin.ProtegePlugin;
+import org.semanticweb.owl.model.AxiomType;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,5 +34,10 @@ import org.protege.editor.core.plugin.ProtegePlugin;
  * Date: Feb 26, 2009<br><br>
  */
 public interface OWLDescriptionEditorPlugin extends ProtegePlugin<OWLDescriptionEditor> {
+
     public static final String ID = "ui.editor.description";
+
+    boolean isSuitableFor(AxiomType type);
+
+    String getIndex();
 }

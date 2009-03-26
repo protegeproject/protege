@@ -52,20 +52,7 @@
                point="org.protege.editor.owl.ui.editor.description">
         <label value="Class expression editor"/>
         <class value="org.protege.editor.owl.ui.editor.OWLDescriptionExpressionEditor"/>
-    </extension>
-
-
-    <extension id="OWLObjectRestrictionCreatorPanel"
-               point="org.protege.editor.owl.ui.editor.description">
-        <label value="Object restriction creator"/>
-        <class value="org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel"/>
-    </extension>
-
-
-    <extension id="OWLDataRestrictionCreatorPanel"
-               point="org.protege.editor.owl.ui.editor.description">
-        <label value="Data restriction creator"/>
-        <class value="org.protege.editor.owl.ui.editor.OWLDataRestrictionCreatorPanel"/>
+        <index value="A"/>
     </extension>
 
 
@@ -73,6 +60,23 @@
                point="org.protege.editor.owl.ui.editor.description">
         <label value="Asserted class hierarchy"/>
         <class value="org.protege.editor.owl.ui.editor.OWLClassSelectorWrapper"/>
+        <index value="B"/>
+    </extension>
+
+
+    <extension id="OWLObjectRestrictionCreatorPanel"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Object restriction creator"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel"/>
+        <index value="C"/>
+    </extension>
+
+
+    <extension id="OWLDataRestrictionCreatorPanel"
+               point="org.protege.editor.owl.ui.editor.description">
+        <label value="Data restriction creator"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLDataRestrictionCreatorPanel"/>
+        <index value="D"/>
     </extension>
 
 

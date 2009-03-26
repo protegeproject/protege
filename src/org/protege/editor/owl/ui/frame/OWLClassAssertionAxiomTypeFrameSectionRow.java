@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +23,7 @@ public class OWLClassAssertionAxiomTypeFrameSectionRow extends AbstractOWLFrameS
 
 
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getDescription());
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getDescription(), AxiomType.CLASS_ASSERTION);
     }
 
 
