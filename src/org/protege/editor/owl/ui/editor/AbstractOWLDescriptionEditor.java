@@ -63,7 +63,7 @@ public abstract class AbstractOWLDescriptionEditor implements OWLDescriptionEdit
     }
 
 
-    protected final AxiomType getType(){
+    protected final AxiomType getAxiomType(){
         return type;
     }
 }
