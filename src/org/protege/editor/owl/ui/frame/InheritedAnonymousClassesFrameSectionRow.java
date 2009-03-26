@@ -27,12 +27,12 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
     protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
         if (getAxiom() instanceof OWLSubClassAxiom) {
             OWLDescription superCls = ((OWLSubClassAxiom) getAxiom()).getSuperClass();
-            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls);
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls, AxiomType.SUBCLASS);
         }
         else {
             Set<OWLDescription> descs = new HashSet<OWLDescription>(((OWLEquivalentClassesAxiom) getAxiom()).getDescriptions());
             descs.remove(getRootObject());
-            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next());
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES);
         }
     }
 

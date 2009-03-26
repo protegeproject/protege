@@ -29,12 +29,12 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     protected OWLSubClassAxiom createAxiom(OWLDescription object) {
-        return getOWLDataFactory().getOWLSubClassAxiom(getRootObject(), object);
+        return null; // canAdd() = false
     }
 
 
     public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null);
+        return null; // canAdd() = false
     }
 
 

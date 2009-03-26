@@ -4,6 +4,7 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLDescription;
 
 import javax.swing.*;
@@ -58,4 +59,12 @@ public interface OWLDescriptionEditor extends ProtegePluginInstance, VerifiedInp
 
 
     void setup(String uniqueIdentifier, String label, OWLEditorKit editorKit);
+
+
+    /**
+     * Called before initialisation - the user should not have to deal with this
+     *  - this allows an editor to implement different behaviours based on where the description is going
+     * @param type the type of axiom (if any) this description will be added to
+     */
+    void setAxiomType(AxiomType type);
 }

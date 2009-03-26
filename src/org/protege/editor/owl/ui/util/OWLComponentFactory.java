@@ -6,6 +6,7 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLDescription;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -42,6 +43,8 @@ public interface OWLComponentFactory extends Disposable {
 
 
     OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr);
+
+    OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr, AxiomType type);
 
     OWLClassSelectorPanel getOWLClassSelectorPanel();
 

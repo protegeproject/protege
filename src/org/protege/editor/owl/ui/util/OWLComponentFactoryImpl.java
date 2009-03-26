@@ -10,7 +10,13 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLDescription;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -54,23 +60,31 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
 
     private OWLIndividualSelectorPanel individualSelectorPanel;
 
-    private OWLDescriptionEditorPluginLoader loader;
+    private List<OWLDescriptionEditorPlugin> descriptionEditorPlugins;
 
 
     public OWLComponentFactoryImpl(OWLEditorKit eKit) {
         this.eKit = eKit;
-
-        loader = new OWLDescriptionEditorPluginLoader(eKit);
     }
 
 
     public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr) {
+        return getOWLClassDescriptionEditor(expr, null);
+    }
+
+
+    public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
-        for (OWLDescriptionEditorPlugin plugin : loader.getPlugins()) {
+        for (OWLDescriptionEditorPlugin plugin : getDescriptionEditorPlugins()) {
             try {
-                OWLDescriptionEditor editorPanel = plugin.newInstance();
-                editorPanel.initialise();
-                editor.addPanel(editorPanel);
+                if (type == null || plugin.isSuitableFor(type)){
+                    OWLDescriptionEditor editorPanel = plugin.newInstance();
+                    if (type != null){
+                        editorPanel.setAxiomType(type);
+                    }
+                    editorPanel.initialise();
+                    editor.addPanel(editorPanel);
+                }
             }
             catch (Exception e) {
                 ProtegeApplication.getErrorLog().logError(e);
@@ -126,5 +140,20 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
         if (individualSelectorPanel != null) {
             individualSelectorPanel.dispose();
         }
+    }
+
+
+    private List<OWLDescriptionEditorPlugin> getDescriptionEditorPlugins() {
+        if (descriptionEditorPlugins == null){
+            OWLDescriptionEditorPluginLoader loader = new OWLDescriptionEditorPluginLoader(eKit);
+            descriptionEditorPlugins = new ArrayList<OWLDescriptionEditorPlugin>(loader.getPlugins());
+            Comparator<OWLDescriptionEditorPlugin> clsDescrPluginComparator = new Comparator<OWLDescriptionEditorPlugin>(){
+                public int compare(OWLDescriptionEditorPlugin p1, OWLDescriptionEditorPlugin p2) {
+                    return p1.getIndex().compareTo(p2.getIndex());
+                }
+            };
+            Collections.sort(descriptionEditorPlugins, clsDescrPluginComparator);
+        }
+        return descriptionEditorPlugins;
     }
 }

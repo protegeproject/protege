@@ -54,7 +54,14 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
 
     public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null);        
+        AxiomType type;
+        if (getRootObject() instanceof OWLObjectProperty){
+            type = AxiomType.OBJECT_PROPERTY_DOMAIN;
+        }
+        else{
+            type = AxiomType.DATA_PROPERTY_DOMAIN;
+        }
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, type);        
     }
 
 

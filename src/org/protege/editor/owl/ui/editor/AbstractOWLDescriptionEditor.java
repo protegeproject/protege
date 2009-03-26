@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.AxiomType;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -38,10 +39,17 @@ public abstract class AbstractOWLDescriptionEditor implements OWLDescriptionEdit
 
     private String label;
 
+    private AxiomType type = null;
+
 
     public final void setup(String id, String name, OWLEditorKit eKit) {
         this.eKit = eKit;
         this.label = name;
+    }
+
+
+    public final void setAxiomType(AxiomType type) {
+        this.type = type;
     }
 
 
@@ -52,5 +60,10 @@ public abstract class AbstractOWLDescriptionEditor implements OWLDescriptionEdit
 
     protected final OWLEditorKit getOWLEditorKit(){
         return eKit;
+    }
+
+
+    protected final AxiomType getType(){
+        return type;
     }
 }
