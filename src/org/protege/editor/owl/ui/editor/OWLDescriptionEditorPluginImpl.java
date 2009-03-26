@@ -6,9 +6,6 @@ import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.AxiomType;
-
-import java.util.Arrays;
-import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -63,14 +60,19 @@ public class OWLDescriptionEditorPluginImpl implements OWLDescriptionEditorPlugi
 
 
     public boolean isSuitableFor(AxiomType type) {
-        String suitableFor = PluginUtilities.getAttribute(extension, "suitableFor");
-        if (suitableFor != null){
-            List<String> axiomTypes = Arrays.asList(suitableFor.split(","));
-            return axiomTypes.contains(type.toString());
+        String axiomTypes = PluginUtilities.getAttribute(extension, "axiomTypes");
+        if (axiomTypes == null){
+            return true;
         }
-        else{
-            return true; // if no suitableFor attribute then assume all
+
+        if (type != null){
+            for(String axiomType : axiomTypes.split(",")){
+                if (type.toString().equals(axiomType.trim())){
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
 
