@@ -9,8 +9,11 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +44,8 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
 
     public boolean isValid = false;
 
+    private boolean registeredListener = false;
+
 
     public AbstractSelectorPanel(OWLEditorKit editorKit) {
         this(editorKit, true);
@@ -56,18 +61,6 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         if (autoCreateUI){
             createUI();
         }
-// cannot do this as the selectors are lazily created
-//        addSelectionListener(new ChangeListener(){
-//            public void stateChanged(ChangeEvent event) {
-//                boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
-//                if (valid != isValid){
-//                    for (InputVerificationStatusChangedListener l : validateListeners){
-//                        l.verifiedStatusChanged(valid);
-//                    }
-//                    isValid = valid;
-//                }
-//            }
-//        });
     }
 
     public OWLEditorKit getOWLEditorKit() {
@@ -96,6 +89,27 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         add(view);
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
                                                      BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+
+        // only attach change listeners once the component is shown
+        // (as those that use a view component are lazilly created)
+        view.addHierarchyListener(new HierarchyListener(){
+            public void hierarchyChanged(HierarchyEvent event) {
+                if (!registeredListener){
+                    addSelectionListener(new ChangeListener(){
+                        public void stateChanged(ChangeEvent event) {
+                            boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
+                            if (valid != isValid){
+                                for (InputVerificationStatusChangedListener l : validateListeners){
+                                    l.verifiedStatusChanged(valid);
+                                }
+                                isValid = valid;
+                            }
+                        }
+                    });
+                    registeredListener = true;
+                }
+            }
+        });
     }
 
     public abstract void setSelection(O entity);
@@ -124,7 +138,7 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
     // cheating because we know this gets fired when selection changed
     public abstract void addSelectionListener(ChangeListener listener);
 
-    
+
     public abstract void removeSelectionListener(ChangeListener listener);
 
 

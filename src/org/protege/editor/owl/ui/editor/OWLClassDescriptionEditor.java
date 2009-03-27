@@ -46,6 +46,12 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     private OWLDescription description;
 
+    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
+        public void verifiedStatusChanged(boolean newState) {
+            handleVerifyEditorContents();
+        }
+    };
+
 
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
 
@@ -72,9 +78,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         if (editorPanel.setDescription(description)){
             activeEditors.add(editorPanel);
             tabbedPane.add(editorPanel.getEditorName(), editorPanel.getComponent());
-            for (InputVerificationStatusChangedListener l : listeners){
-                editorPanel.addStatusChangedListener(l);
-            }
+            editorPanel.addStatusChangedListener(inputListener);
         }
     }
 
@@ -148,17 +152,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
         listeners.add(l);
-        for (OWLDescriptionEditor editor : activeEditors){
-            editor.addStatusChangedListener(l);
-        }
         l.verifiedStatusChanged(isValidated());
     }
 
 
     public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
         listeners.remove(l);
-        for (OWLDescriptionEditor editor : activeEditors){
-            editor.removeStatusChangedListener(l);
-        }
     }
 }
