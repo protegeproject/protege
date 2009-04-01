@@ -6,7 +6,6 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.AbstractEditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
-import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
@@ -132,14 +131,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     public boolean handleLoadRequest() throws Exception {
-        Set<String> ext = new HashSet<String>();
-        ext.add("owl");
-        ext.add("rdf");
-        ext.add("xml");
-        ext.add("krss");
-        ext.add("obo");
-        ext.add("turtle");
-        File f = UIUtil.openFile(new JFrame(), "Select an OWL file", ext);
+        File f = new UIHelper(this).chooseOWLFile("Select an OWL file");
         return f != null && handleLoadFrom(f.toURI());
     }
 

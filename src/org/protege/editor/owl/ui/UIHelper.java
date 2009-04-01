@@ -36,9 +36,20 @@ public class UIHelper {
 
     private OWLEditorKit owlEditorKit;
 
+    private Set<String> extensions = new HashSet<String>();
+
 
     public UIHelper(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
+        extensions.add("owl");
+        extensions.add("rdf");
+        extensions.add("xml");
+        extensions.add("krss");
+        extensions.add("obo");
+        extensions.add("n3");
+        extensions.add("ttl");
+        extensions.add("turtle");
+        extensions.add("pom");
     }
 
 
@@ -277,11 +288,6 @@ public class UIHelper {
 
 
     public File chooseOWLFile(String title) {
-        Set<String> extensions = new HashSet<String>();
-        extensions.add("owl");
-        extensions.add("rdf");
-        extensions.add("xml");
-        extensions.add("pom");
         JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getParent());
         if (f == null) {
             f = new JFrame();
@@ -291,10 +297,6 @@ public class UIHelper {
 
 
     public File saveOWLFile(String title) {
-        Set<String> extensions = new HashSet<String>();
-        extensions.add("owl");
-        extensions.add("rdf");
-        extensions.add("xml");
         return UIUtil.saveFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getParent()),
                                title,
                                extensions);
