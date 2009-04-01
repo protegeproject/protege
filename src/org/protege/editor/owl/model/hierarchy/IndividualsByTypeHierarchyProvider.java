@@ -24,23 +24,54 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
 
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            final Set<OWLClass> changedNodes = new HashSet<OWLClass>();
-            for (OWLOntologyChange chg : changes){
-                if (chg.isAxiomChange()){
-                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                        public void visit(OWLClassAssertionAxiom ax) {
-                            if (!ax.getDescription().isAnonymous()){
+            handleOntologyChanges(changes);
+        }
+    };
+
+
+    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
+        final Set<OWLClass> changedNodes = new HashSet<OWLClass>();
+        final Set<OWLObject> newRoots = new HashSet<OWLObject>(roots);
+
+        for (OWLOntologyChange chg : changes){
+            if (chg instanceof AddAxiom){
+                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                    public void visit(OWLClassAssertionAxiom ax) {
+                        if (!ax.getDescription().isAnonymous()){
+                            if (roots.contains(ax.getDescription().asOWLClass())){
                                 changedNodes.add(ax.getDescription().asOWLClass());
                             }
+                            else{
+                                newRoots.add(ax.getDescription().asOWLClass());
+                            }
                         }
-                    });
-                }
+                    }
+                });
             }
+            else if (chg instanceof RemoveAxiom){
+                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                    public void visit(OWLClassAssertionAxiom ax) {
+                        if (!ax.getDescription().isAnonymous()){
+                            if (roots.contains(ax.getDescription().asOWLClass())){
+                                changedNodes.add(ax.getDescription().asOWLClass());
+                                // @@TODO should remove the type node if no other members remain
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        if (!newRoots.equals(roots)){
+            roots = newRoots;
+            fireHierarchyChanged();
+        }
+        else{
             for (OWLClass cls : changedNodes){
                 fireNodeChanged(cls);
             }
         }
-    };
+    }
+
 
     public IndividualsByTypeHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
