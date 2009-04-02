@@ -986,7 +986,7 @@
 
     <extension id="menu.ConvertEntityURIsToLabels"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Convert entity URIs to labels"/>
+        <name value="Convert entity URIs to labels..."/>
         <class value="org.protege.editor.owl.ui.action.ConvertEntityURIsToLabels"/>
         <toolTip value="Change the URI of all entities to an ID and move the name to a label annotation on the entity as per settings in the New Entity preferences"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-Y"/>

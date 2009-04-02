@@ -37,5 +37,5 @@ import java.util.Set;
  */
 public interface OntologyTargetResolver {
 
-    OWLOntology resolve(OWLEntity entity, Set<OWLOntology> ontologies);
+    Set<OWLOntology> resolve(OWLEntity entity, Set<OWLOntology> ontologies);
 }

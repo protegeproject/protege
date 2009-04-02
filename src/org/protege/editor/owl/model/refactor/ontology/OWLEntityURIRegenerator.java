@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
@@ -43,7 +44,7 @@ import java.net.URI;
  * If no fragment exists, adds the ID directly
  *
  */
-public class OWLEntityURIRegenerator {
+public class OWLEntityURIRegenerator implements Disposable {
 
     private OWLEntityFactory fac;
 
@@ -93,5 +94,10 @@ public class OWLEntityURIRegenerator {
             return URI.create(uri.toString().substring(0, uri.toString().lastIndexOf(fragment)));
         }
         return uri;
+    }
+
+
+    public void dispose() throws Exception {
+        fragmentRenderer.dispose();
     }
 }
