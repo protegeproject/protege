@@ -1,12 +1,13 @@
 package org.protege.editor.core.ui.util;
 
 
+import org.eclipse.core.runtime.IExtension;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-
-import org.eclipse.core.runtime.IExtension;
-
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -65,6 +66,31 @@ public class ComponentFactory {
 
     public static JTextField createTextField() {
         return new JTextField();
+    }
+
+
+    /**
+     * Creates a JEditorPane suitable for showing HTML content
+     * @param hyperlinkListener an optional hyperlink listener
+     * @return
+     */
+    public static JEditorPane createHTMLPane(HyperlinkListener hyperlinkListener) {
+        JEditorPane editorPane = new JEditorPane(new HTMLEditorKit().getContentType(), "");
+
+        // set the font to the same as a normal label
+        Font font = UIManager.getFont("Label.font");
+        String bodyRule = "body { font-family: " + font.getFamily() + "; " +
+                          "font-size: " + font.getSize() + "pt; }";
+        ((HTMLDocument) editorPane.getDocument()).getStyleSheet().addRule(bodyRule);
+
+        editorPane.setEditable(false);
+        editorPane.setOpaque(false);
+
+        if (hyperlinkListener != null){
+            editorPane.addHyperlinkListener(hyperlinkListener);
+        }
+
+        return editorPane;
     }
 
 
