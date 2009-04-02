@@ -93,8 +93,8 @@ public class ConvertEntityURIsToIdentifierPattern {
         // The label renderer drops through to a specified backup renderer if a label cannot be found
         // So, hook it up with one that returns null so we can check if the label rendering failed.
         AnnotationValueShortFormProvider sfp = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
-                                                    OWLRendererPreferences.getInstance().getAnnotationLangs(),
-                                                    mngr.getOWLOntologyManager(), new ShortFormProvider(){
+                                                                                    OWLRendererPreferences.getInstance().getAnnotationLangs(),
+                                                                                    mngr.getOWLOntologyManager(), new ShortFormProvider(){
             public String getShortForm(OWLEntity owlEntity) {
                 return null;
             }
@@ -104,12 +104,20 @@ public class ConvertEntityURIsToIdentifierPattern {
             }
         });
 
+        OWLEntityURIRegenerator uriGen = new OWLEntityURIRegenerator(mngr);
+
         for(OWLEntity entity : getAllReferencedEntities()) {
             String labelRendering = sfp.getShortForm(entity);
             if (labelRendering == null){
-                final URI newURI = getNextURI(entity);
-                uriMap.put(entity, newURI);
+                uriMap.put(entity, uriGen.generateNewURI(entity));
             }
+        }
+
+        try {
+            uriGen.dispose();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -124,8 +132,8 @@ public class ConvertEntityURIsToIdentifierPattern {
         fragmentRenderer.initialise();
 
         for (OWLEntity entity : uriMap.keySet()){
-            final OWLOntology ont = getOntologyForEntityLabel(entity);
-            if (ont != null){
+            final Set<OWLOntology> onts = getOntologiesForEntityLabel(entity);
+            if (!onts.isEmpty()){
                 String uriRendering = fragmentRenderer.render(entity);
 
                 OWLConstantAnnotation annotation = generateLabelAnnotation(uriRendering);
@@ -134,12 +142,17 @@ public class ConvertEntityURIsToIdentifierPattern {
                 final OWLEntity newEntity = getEntityOfSameType(newURI, entity);
                 final OWLEntityAnnotationAxiom ax = df.getOWLEntityAnnotationAxiom(newEntity, annotation);
 
-                changes.add(new AddAxiom(ont, ax));
+                for (OWLOntology ont : onts){
+                    changes.add(new AddAxiom(ont, ax));
+                }
             }
             else{
                 logger.warn("Ignored ID conversion for entity (" + mngr.getRendering(entity) + "): cannot determine suitable ontology target for axiom");
             }
         }
+
+        fragmentRenderer.dispose();
+
         return changes;
     }
 
@@ -167,21 +180,15 @@ public class ConvertEntityURIsToIdentifierPattern {
     }
 
 
-    private OWLOntology getOntologyForEntityLabel(OWLEntity entity) {
+    private Set<OWLOntology> getOntologiesForEntityLabel(OWLEntity entity) {
         Set<OWLOntology> onts = ontologyImportsWalker.getLowestOntologiesToContainReference(entity);
         if (onts.size() == 1){
-            return onts.iterator().next();
+            return onts;
         }
         if (resolver != null){
             return resolver.resolve(entity, onts);
         }
-        return null;
-    }
-
-
-    private URI getNextURI(OWLEntity entity) {
-        OWLEntityURIRegenerator uriGen = new OWLEntityURIRegenerator(mngr);
-        return uriGen.generateNewURI(entity);
+        return Collections.emptySet();
     }
 
 
