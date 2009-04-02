@@ -90,6 +90,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     private void rebuild() {
+        roots.clear();
         for (OWLOntology ont : ontologies) {
             for (OWLIndividual ind : ont.getReferencedIndividuals()) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
