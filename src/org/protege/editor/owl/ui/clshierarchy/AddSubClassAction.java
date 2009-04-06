@@ -58,8 +58,10 @@ public class AddSubClassAction extends AbstractOWLClassTreeAction {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(creationSet.getOntologyChanges());
         OWLDataFactory df = owlEditorKit.getModelManager().getOWLDataFactory();
-        OWLSubClassAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), cls);
-        changes.add(new AddAxiom(owlEditorKit.getModelManager().getActiveOntology(), ax));
+        if (!df.getOWLThing().equals(cls)){
+            OWLSubClassAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), cls);
+            changes.add(new AddAxiom(owlEditorKit.getModelManager().getActiveOntology(), ax));
+        }
         owlEditorKit.getModelManager().applyChanges(changes);
         tree.setSelectedOWLObject(creationSet.getOWLEntity());
     }

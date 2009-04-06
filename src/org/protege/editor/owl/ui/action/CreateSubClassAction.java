@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLSubClassAxiom;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -13,6 +13,8 @@ import org.semanticweb.owl.model.OWLSubClassAxiom;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 03-Feb-2007<br><br>
+ *
+ * @deprecated now use <code>CreateNewChildAction</code>
  */
 public class CreateSubClassAction extends SelectedOWLClassAction {
 
