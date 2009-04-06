@@ -21,6 +21,8 @@ import java.util.List;
  * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
+ * @deprecated - class hierarchy implements this
  */
 public class AddSubClassAction extends AbstractOWLClassTreeAction {
 

@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
-import javax.swing.Icon;
+import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
+import org.semanticweb.owl.model.OWLClass;
+
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import org.protege.editor.core.ui.view.DisposableAction;
-import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
-import org.semanticweb.owl.model.OWLClass;
 
 
 /**
@@ -36,6 +36,7 @@ public abstract class AbstractOWLClassTreeAction extends DisposableAction {
             }
         };
         selectionModel.addTreeSelectionListener(selectionListener);
+        setEnabled(canPerform(getSelectedOWLClass()));
     }
 
 
