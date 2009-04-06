@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLDataPropertySetEditor;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLDisjointDataPropertiesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.CollectionFactory;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -15,7 +17,7 @@ import java.util.Comparator;
  * Bio-Health Informatics Group<br>
  * Date: 16-Feb-2007<br><br>
  */
-public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLDisjointDataPropertiesAxiom, OWLDataProperty> {
+public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLDisjointDataPropertiesAxiom, Set<OWLDataProperty>> {
 
     public static final String LABEL = "Disjoint properties";
 
@@ -25,9 +27,10 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    protected OWLDisjointDataPropertiesAxiom createAxiom(OWLDataProperty object) {
-        return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                 object));
+    protected OWLDisjointDataPropertiesAxiom createAxiom(Set<OWLDataProperty> object) {
+        Set<OWLDataProperty> disjoints = new HashSet<OWLDataProperty>(object);
+        disjoints.add(getRootObject());
+        return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(disjoints);
     }
 
 
@@ -46,8 +49,8 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLDataProperty> getObjectEditor() {
-        return new OWLDataPropertyEditor(getOWLEditorKit());
+    public OWLFrameSectionRowObjectEditor<Set<OWLDataProperty>> getObjectEditor() {
+        return new OWLDataPropertySetEditor(getOWLEditorKit());
     }
 
 
@@ -58,7 +61,7 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    public Comparator<OWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, OWLDataProperty>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, Set<OWLDataProperty>>> getRowComparator() {
         return null;
     }
 }

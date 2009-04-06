@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertySetEditor;
 import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
@@ -18,7 +19,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, OWLObjectProperty> {
+public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectProperty>> {
 
     private OWLFrameSection section;
 
@@ -31,25 +32,26 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLObjectProperty> getObjectEditor() {
-        OWLObjectPropertyEditor editor = (OWLObjectPropertyEditor) section.getEditor();
-        final Set<OWLObjectPropertyExpression> disjoints =
-                new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
-        disjoints.remove(getRootObject());
-        if (disjoints.size() == 1){
-            OWLObjectPropertyExpression p = disjoints.iterator().next();
+    protected OWLFrameSectionRowObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
+        OWLObjectPropertySetEditor editor = (OWLObjectPropertySetEditor) section.getEditor();
+        final Set<OWLObjectPropertyExpression> disjoints = getAxiom().getProperties();
+        final Set<OWLObjectProperty> namedDisjoints = new HashSet<OWLObjectProperty>();
+        for (OWLObjectPropertyExpression p : disjoints){
             if (!p.isAnonymous()){
-                editor.setEditedObject(p.asOWLObjectProperty());
+                namedDisjoints.add(p.asOWLObjectProperty());
             }
         }
+        namedDisjoints.remove(getRootObject());
+        editor.setEditedObject(namedDisjoints);
+        // @@TODO handle property expressions
         return editor;
     }
 
 
-    protected OWLDisjointObjectPropertiesAxiom createAxiom(OWLObjectProperty editedObject) {
+    protected OWLDisjointObjectPropertiesAxiom createAxiom(Set<OWLObjectProperty> editedObject) {
         Set<OWLObjectProperty> props = new HashSet<OWLObjectProperty>();
         props.add(getRootObject());
-        props.add(editedObject);
+        props.addAll(editedObject);
         return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(props);
     }
 
