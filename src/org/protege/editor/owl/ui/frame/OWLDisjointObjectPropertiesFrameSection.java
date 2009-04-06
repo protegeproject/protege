@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertySetEditor;
 import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.CollectionFactory;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, OWLObjectProperty> {
+public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectProperty>> {
 
     public static final String LABEL = "Disjoint properties";
 
@@ -52,9 +52,10 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
     }
 
 
-    protected OWLDisjointObjectPropertiesAxiom createAxiom(OWLObjectProperty object) {
-        return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                   object));
+    protected OWLDisjointObjectPropertiesAxiom createAxiom(Set<OWLObjectProperty> object) {
+        Set<OWLObjectProperty> disjoints = new HashSet<OWLObjectProperty>(object);
+        disjoints.add(getRootObject());
+        return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(disjoints);
     }
 
 
@@ -65,8 +66,8 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLObjectProperty> getObjectEditor() {
-        return new OWLObjectPropertyEditor(getOWLEditorKit());
+    public OWLFrameSectionRowObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
+        return new OWLObjectPropertySetEditor(getOWLEditorKit());
     }
 
 
@@ -76,7 +77,7 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, OWLObjectProperty>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectProperty>>> getRowComparator() {
         return null;
     }
 }

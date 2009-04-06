@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLDataPropertySetEditor;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.CollectionFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 16-Feb-2007<br><br>
  */
-public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, OWLDataProperty> {
+public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, Set<OWLDataProperty>> {
 
     private OWLFrameSection section;
 
@@ -28,23 +28,26 @@ public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSe
     }
 
 
-    protected OWLDisjointDataPropertiesAxiom createAxiom(OWLDataProperty editedObject) {
-        return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(CollectionFactory.createSet(getRoot(),
-                editedObject));
+    protected OWLDisjointDataPropertiesAxiom createAxiom(Set<OWLDataProperty> editedObject) {
+        Set<OWLDataProperty> props = new HashSet<OWLDataProperty>();
+        props.add(getRootObject());
+        props.addAll(editedObject);
+        return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(props);
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLDataProperty> getObjectEditor() {
-        OWLDataPropertyEditor editor = (OWLDataPropertyEditor) section.getEditor();
-        final Set<OWLDataPropertyExpression> disjoints =
-                new HashSet<OWLDataPropertyExpression>(getAxiom().getProperties());
-        disjoints.remove(getRootObject());
-        if (disjoints.size() == 1){
-            OWLDataPropertyExpression p = disjoints.iterator().next();
+    protected OWLFrameSectionRowObjectEditor<Set<OWLDataProperty>> getObjectEditor() {
+        OWLDataPropertySetEditor editor = (OWLDataPropertySetEditor) section.getEditor();
+        final Set<OWLDataPropertyExpression> disjoints = getAxiom().getProperties();
+        final Set<OWLDataProperty> namedDisjoints = new HashSet<OWLDataProperty>();
+        for (OWLDataPropertyExpression p : disjoints){
             if (!p.isAnonymous()){
-                editor.setEditedObject(p.asOWLDataProperty());
+                namedDisjoints.add(p.asOWLDataProperty());
             }
         }
+        namedDisjoints.remove(getRootObject());
+        editor.setEditedObject(namedDisjoints);
+        // @@TODO handle property expressions
         return editor;
     }
 
