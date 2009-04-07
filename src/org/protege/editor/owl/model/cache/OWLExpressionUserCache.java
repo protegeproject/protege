@@ -107,7 +107,10 @@ public class OWLExpressionUserCache implements Disposable {
         if (cacheExternalForm == null){
             cacheExternalForm = new ArrayList<String>();
             for (String s : cacheInternalForm){
-                cacheExternalForm.add(fromInternalForm(s));
+                final String externalForm = fromInternalForm(s);
+                if (externalForm != null){
+                    cacheExternalForm.add(externalForm);
+                }
             }
         }
         return cacheExternalForm;
@@ -190,7 +193,7 @@ public class OWLExpressionUserCache implements Disposable {
         if (input == null){
             return null;
         }
-        
+
         InternalFormEntityRenderer ren = new InternalFormEntityRenderer();
 
         StringBuilder sb = new StringBuilder();
@@ -235,17 +238,22 @@ public class OWLExpressionUserCache implements Disposable {
 
         while (tokenizer.hasMoreTokens()){
             String token = tokenizer.nextToken();
+            int startIndex = input.indexOf(token, endIndex);
+
             if (token.equals("'")){
                 while(tokenizer.hasMoreTokens() && !token.endsWith("'")){
                     token += tokenizer.nextToken();
                 }
             }
 
-            int startIndex = input.indexOf(token, endIndex);
-
             OWLEntity entity = parseOWLEntity(token);
             if (entity != null){
-                sb.append(mngr.getRendering(entity));
+                if (containsEntity(entity)){
+                    sb.append(mngr.getRendering(entity));
+                }
+                else{
+                    return null; // cannot find the entity so this expression will not be helpful
+                }
             }
             else{
                 sb.append(token);
@@ -254,6 +262,16 @@ public class OWLExpressionUserCache implements Disposable {
             endIndex = startIndex + token.length();
         }
         return sb.toString();
+    }
+
+
+    private boolean containsEntity(OWLEntity entity) {
+        for (OWLOntology ont : mngr.getActiveOntologies()){
+            if (ont.containsEntityReference(entity)){
+                return true;
+            }
+        }
+        return false;
     }
 
 
