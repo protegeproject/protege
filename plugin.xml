@@ -1033,7 +1033,16 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-
+    <extension id="menu.SplitDisjointClasses"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Split disjoint classes into pairwise disjoints"/>
+        <class value="org.protege.editor.owl.ui.action.SplitDisjointClassesAction"/>
+        <toolTip value="Splits disjoint classes axioms in the active ontologies into pairwise disjoints to aid backwards
+        compatibility.  For example, disjointClasses(A, B, C) would be split into A disjointWith B,
+        A disjointWith C, B disjointWith C"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotC-G"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
 
     <extension id="menu.MergeOntologies"
                point="org.protege.editor.core.application.EditorKitMenuAction">
