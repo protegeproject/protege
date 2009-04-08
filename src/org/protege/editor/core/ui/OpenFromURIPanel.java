@@ -1,26 +1,5 @@
 package org.protege.editor.core.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ui.list.MList;
@@ -30,6 +9,19 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -190,6 +182,7 @@ public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
         listeners.add(listener);
+        listener.verifiedStatusChanged(isValidURI());
     }
 
 
@@ -264,7 +257,7 @@ public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
 
     public static URI showDialog() {
         OpenFromURIPanel panel = new OpenFromURIPanel();
-        int ret = JOptionPaneEx.showConfirmDialog(null,
+        int ret = JOptionPaneEx.showValidatingConfirmDialog(null,
                                                   "Enter or select a URI",
                                                   panel,
                                                   JOptionPane.PLAIN_MESSAGE,
