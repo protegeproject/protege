@@ -1,18 +1,18 @@
 package org.protege.editor.owl.model.repository;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.protege.editor.owl.model.util.URIUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -25,16 +25,16 @@ import org.xml.sax.helpers.DefaultHandler;
  * www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
  * A utility class that can be used to extract an ontology URI
- * from an RDF/XML file.  An ontology URI corresponds to the xml:base of
- * an RDF/XML document that contains an ontology.  If there is no
- * explicit xml:base, then the ontology URI will correspond to the
- * document URI.
+ * from an RDF/XML or OWL/XML file:
+ * - first look for a valid Ontology element
+ * - otherwise use the xml:base
+ * - if there is no explicit xml:base, then this will be the document URI.
  */
 public class OntologyURIExtractor {
 
     private URI physicalURI;
 
-    private URI baseURI;
+    private URI ontologyURI;
 
     private boolean startElementPresent;
 
@@ -46,8 +46,8 @@ public class OntologyURIExtractor {
     public OntologyURIExtractor(URI physicalURI) {
         this.physicalURI = physicalURI;
         // Set the base URI to the physical URI for cases where there
-        // isn't an explict xml:base
-        this.baseURI = physicalURI;
+        // isn't an explicit xml:base
+        this.ontologyURI = physicalURI;
         namespaceMap = new HashMap<String, String>();
     }
 
@@ -63,63 +63,91 @@ public class OntologyURIExtractor {
 
 
     public URI getOntologyURI() {
-        // We actually just want the base of the document
         try {
-            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            URL url = physicalURI.toURL();
             final InputStream is = URIUtilities.getInputStream(physicalURI);
+            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             parser.parse(is, new DefaultHandler() {
 
-                private boolean extract = true;
+                private boolean searchingForOWLOntology = false;
 
-
-                public void startElement(String uri, String localName, String qName, Attributes attributes) throws
-                                                                                                            SAXException {
-                    startElementPresent = true;
-                    for (int i = 0; i < attributes.getLength(); i++) {
-                        String attQName = attributes.getQName(i);
-                        if (attQName.startsWith("xmlns")) {
-                            int colonIndex = attQName.indexOf(':');
-                            if (colonIndex == -1) {
-                                defaultNamespace = attributes.getValue(i);
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    try {
+                        if (!searchingForOWLOntology){
+                            if (qName.equals("rdf:RDF")){ // RDF/XML
+                                startElementPresent = true;
+                                handleNamespaces(attributes);
+                                ontologyURI = new URI(attributes.getValue("xml:base"));
+                                String s = ontologyURI.toString().trim();
+                                if (s.endsWith("#")) {
+                                    ontologyURI = new URI(s.substring(0, s.length() - 1));
+                                }
+                                searchingForOWLOntology = true;
                             }
-                            else {
-                                String prefix = attQName.substring(colonIndex + 1, attQName.length());
-                                namespaceMap.put(prefix, attributes.getValue(i));
+                            else if (qName.equals("Ontology")){ // OWL XML
+                                startElementPresent = true;
+                                handleNamespaces(attributes);
+                                String uriString = attributes.getValue("URI");
+                                if (uriString != null){
+                                    ontologyURI = new URI(uriString);
+                                }
                             }
                         }
-                    }
-                    if (extract) {
-                        try {
-                            baseURI = new URI(attributes.getValue("xml:base"));
-                            String s = baseURI.toString().trim();
-                            if (s.endsWith("#")) {
-                                baseURI = new URI(s.substring(0, s.length() - 1));
+                        else{
+                            if (qName.equals("owl:Ontology")){
+                                String ontID = attributes.getValue("rdf:about");
+                                if (!ontID.equals("")){
+                                    ontologyURI = new URI(ontID);
+                                }
                             }
+                            searchingForOWLOntology = false;
+                        }
+
+                        if (!searchingForOWLOntology){
                             // Close the input stream, which will eventually cause
                             // the parser to stop parsing and throw an exception
-                            is.close();
+                            try {
+                                is.close();
+                            }
+                            catch (IOException e) {
+                                // do nothing
+                            }
+
                             // Throw a SAX exception, because this will stop
-                            // paring here and now
+                            // parsing here and now
                             throw new SAXException("Exit exception");
                         }
-                        catch (Exception e) {
-                            // Don't care about this exception.  We
-                            // will just return the baseURI, or physicalURI
-                            // if we couldn't get hold of the base.
-                        }
                     }
-                    extract = false;
-                    throw new SAXException("Exit exception");
+                    catch (URISyntaxException e) {
+                        // Don't care about this exception.  We
+                        // will just return the baseURI, or physicalURI
+                        // if we couldn't get hold of the base.
+                    }
                 }
             });
-            defaultNamespace = baseURI + "#";
-            return baseURI;
+            if (defaultNamespace == null){
+                defaultNamespace = ontologyURI + "#";
+            }
         }
         catch (Exception e) {
-            // We actually don't care that there is
-            // an exception,
-            return baseURI;
+            // We expect there to be an exception,
+        }
+        return ontologyURI;
+    }
+
+
+    private void handleNamespaces(Attributes attributes) {
+        for (int i = 0; i < attributes.getLength(); i++) {
+            String attQName = attributes.getQName(i);
+            if (attQName.startsWith("xmlns")) {
+                int colonIndex = attQName.indexOf(':');
+                if (colonIndex == -1) {
+                    defaultNamespace = attributes.getValue(i);
+                }
+                else {
+                    String prefix = attQName.substring(colonIndex + 1, attQName.length());
+                    namespaceMap.put(prefix, attributes.getValue(i));
+                }
+            }
         }
     }
 
