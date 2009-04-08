@@ -40,6 +40,7 @@ import java.util.Set;
  */
 public class OWLDataPropertySetEditor extends AbstractOWLFrameSectionRowObjectEditor<Set<OWLDataProperty>> {
 
+
     private OWLDataPropertySelectorPanel editor;
 
 
