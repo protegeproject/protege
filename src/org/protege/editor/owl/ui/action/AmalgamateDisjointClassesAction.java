@@ -51,7 +51,7 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
             }
         }
         getOWLModelManager().applyChanges(changes);
-        logger.info(axiomsRemoved + " disjoint class axioms replaced with " + axiomsAdded);
+        logger.info(axiomsRemoved + " (of " + numberOfDisjoints  + " total) disjoint class axioms replaced with " + axiomsAdded);
     }
 
 
