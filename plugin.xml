@@ -1044,6 +1044,17 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="menu.AmalgamateDisjointClassesAction"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Amalgamate disjoint classes into larger disjoint sets"/>
+        <class value="org.protege.editor.owl.ui.action.AmalgamateDisjointClassesAction"/>
+        <toolTip value="Merges disjoint classes axioms in the active ontologies into more efficient sets.
+          For example, A disjointWith B, A disjointWith C, B disjointWith C would be merged into disjointClasses(A, B, C)"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotC-H"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+
     <extension id="menu.MergeOntologies"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Merge ontologies..."/>
