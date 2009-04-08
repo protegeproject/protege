@@ -1,16 +1,18 @@
 package org.protege.editor.owl.ui.ontology.wizard;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.merge.MergeTypePage;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.protege.editor.owl.ui.ontology.wizard.merge.MergeTypePage;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -57,7 +59,19 @@ public class AbstractSelectOntologiesPage extends AbstractOWLWizardPanel {
         list.setListData(orderedOntologies.toArray());
         parent.add(new JScrollPane(list), BorderLayout.NORTH);
         updateSelectionMode();
+
+        list.addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                handleSelectionChanged();
+            }
+        });
     }
+
+
+    private void handleSelectionChanged() {
+        getWizard().setNextFinishButtonEnabled(!getOntologies().isEmpty());
+    }
+
 
     private void updateSelectionMode() {
         if (isMultiSelect()) {
