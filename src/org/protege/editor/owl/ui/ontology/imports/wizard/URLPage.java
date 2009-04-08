@@ -24,6 +24,8 @@ public class URLPage extends AbstractImportSourcePage {
 
     public OpenFromURIPanel urlPanel;
 
+    private boolean displayed = false;
+
 
     public URLPage(OWLEditorKit owlEditorKit) {
         super(ID, "Import from URL", owlEditorKit);
@@ -47,11 +49,6 @@ public class URLPage extends AbstractImportSourcePage {
                 return false;
             }
         });
-        urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
-            public void verifiedStatusChanged(boolean newState) {
-                getWizard().setNextFinishButtonEnabled(newState);
-            }
-        });
     }
 
 
@@ -66,9 +63,16 @@ public class URLPage extends AbstractImportSourcePage {
 
 
     public void displayingPanel() {
-        getWizard().setNextFinishButtonEnabled(false);
         urlPanel.requestFocus();
         getWizard().setNextFinishButtonEnabled(urlPanel.isValid());
+        if (!displayed){
+        urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
+            public void verifiedStatusChanged(boolean newState) {
+                getWizard().setNextFinishButtonEnabled(newState);
+            }
+        });
+        }
+        displayed = true;
     }
 
 
