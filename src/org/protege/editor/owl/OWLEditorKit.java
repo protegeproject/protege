@@ -242,6 +242,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         if (e.getCause() != null && e.getCause() instanceof ProtocolException){
             handleSaveAs();
         }
+        else{
+            throw e;
+        }
     }
 
     private void loadIOListenerPlugins() {

@@ -1,9 +1,5 @@
 package org.protege.editor.owl.ui.preferences;
 
-import org.protege.editor.owl.model.XMLWriterPrefs;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -33,24 +29,8 @@ import java.awt.*;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 27-Nov-2007<br><br>
+ *
+ * @deprecated use <code>SavePreferencesPanel</code>
  */
-public class XMLWriterPreferencesPanel extends OWLPreferencesPanel {
-
-    private JCheckBox useXMLEntitiesCheckBox;
-
-    public void initialise() throws Exception {
-        useXMLEntitiesCheckBox = new JCheckBox("Use XML Entities");
-        setLayout(new BorderLayout());
-        add(useXMLEntitiesCheckBox, BorderLayout.NORTH);
-        useXMLEntitiesCheckBox.setSelected(XMLWriterPrefs.getInstance().isUseEntities());
-    }
-
-
-    public void applyChanges() {
-        XMLWriterPrefs.getInstance().setUseEntities(useXMLEntitiesCheckBox.isSelected());
-    }
-
-
-    public void dispose() throws Exception {
-    }
+public class XMLWriterPreferencesPanel extends SavePreferencesPanel {
 }
