@@ -29,10 +29,23 @@ public class FileUtils {
      * @param directory The directory the file should be copied to.
      */
     public static void copyFileToDirectory(File file, File directory) throws IOException {
+        copyFile(file, directory);
+    }
 
-        File outputFile = new File(directory, file.getName());
+    /**
+     * Copies a file to the specified location.
+     * @param inputFile      The file to be copied.
+     * @param outputFile The directory the file should be copied to.
+     */
+    public static void copyFile(File inputFile, File outputFile) throws IOException {
+        if (inputFile.isDirectory()){
+            throw new IOException("Cannot copy file: " + inputFile + " as this is a directory");
+        }
+        if (outputFile.isDirectory()){
+            outputFile = new File(outputFile, inputFile.getName());
+        }
 
-        FileInputStream in = new FileInputStream(file);
+        FileInputStream in = new FileInputStream(inputFile);
         FileOutputStream out = new FileOutputStream(outputFile);
 
         FileChannel inc = in.getChannel();
@@ -102,5 +115,13 @@ public class FileUtils {
             }
         }
         file.delete();
+    }
+
+
+    public static File createTempFile(File targetFile) throws IOException {
+        final String targetName = targetFile.getName();
+        final int extensionIndex = targetName.lastIndexOf(".");
+        return File.createTempFile(targetName.substring(0, extensionIndex),
+                                   targetName.substring(extensionIndex));
     }
 }
