@@ -26,6 +26,7 @@ public class UIUtil {
 
     public static final String CURRENT_FILE_DIRECTORY_KEY = "CURRENT_FILE_DIRECTORY_KEY";
 
+    public static final String ENABLE_TEMP_DIRECTORIES_KEY = "ENABLE_TEMP_DIRECTORIES_KEY";    
 
     public static String getCurrentFileDirectory() {
         String dir = "~";
