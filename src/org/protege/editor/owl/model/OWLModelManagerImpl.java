@@ -4,8 +4,11 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
+import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
@@ -47,6 +50,7 @@ import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.util.URIShortFormProvider;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
@@ -501,18 +505,44 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     private void saveOntology(OWLOntology ont) throws OWLOntologyStorageException {
+        final URI physicalURI = manager.getPhysicalURIForOntology(ont);
+
         try{
-            fireBeforeSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
-            manager.saveOntology(ont, manager.getOntologyFormat(ont), manager.getPhysicalURIForOntology(ont));
-            logger.info("Saved " + getRendering(ont) + " to " + getOntologyPhysicalURI(ont));
+            fireBeforeSaveEvent(ont.getURI(), physicalURI);
+
+            if (isTempFileSavingActive()){ // save to a temp file
+                try {
+                    final File targetFile = new File(physicalURI);
+
+                    // we use the temp directory as storing in the current directory would only cause
+                    // problems for loading later on
+                    final File tempFile = FileUtils.createTempFile(targetFile);
+                    logger.debug("Saving " + getRendering(ont) + " to temp file: " + tempFile);
+                    tempFile.deleteOnExit();
+                    manager.saveOntology(ont, manager.getOntologyFormat(ont), tempFile.toURI());
+
+                    FileUtils.copyFile(tempFile, targetFile);
+                    manager.setPhysicalURIForOntology(ont, physicalURI);
+                }
+                catch (IOException e) {
+                    throw new OWLOntologyStorageException("Could not create a temp file for saving ontology: " + ont.getURI(), e);
+                }
+            }
+            else{
+                manager.saveOntology(ont, manager.getOntologyFormat(ont), physicalURI);
+            }
+
+            logger.info("Saved " + getRendering(ont) + " to " + physicalURI);
+
             dirtyOntologies.remove(ont);
+
             fireEvent(EventType.ONTOLOGY_SAVED);
-            fireAfterSaveEvent(ont.getURI(), manager.getPhysicalURIForOntology(ont));
+            fireAfterSaveEvent(ont.getURI(), physicalURI);
         }
         catch(OWLOntologyStorageException e){
             if (saveErrorHandler != null){
                 try {
-                    saveErrorHandler.handleErrorSavingOntology(ont, manager.getPhysicalURIForOntology(ont), e);
+                    saveErrorHandler.handleErrorSavingOntology(ont, physicalURI, e);
                 }
                 catch (Exception e1) {
                     throw new OWLOntologyStorageException(e1);
@@ -522,6 +552,11 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 throw e;
             }
         }
+    }
+
+
+    private boolean isTempFileSavingActive() {
+        return PreferencesManager.getInstance().getApplicationPreferences(UIUtil.FILE_PREFERENCES_KEY).getBoolean(UIUtil.ENABLE_TEMP_DIRECTORIES_KEY, true);
     }
 
 

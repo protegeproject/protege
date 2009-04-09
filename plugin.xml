@@ -1185,8 +1185,8 @@
 
     <extension id="io.rdfxmlwriter.XMLWriterPreferences"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="XML Writer"/>
-        <class value="org.protege.editor.owl.ui.preferences.XMLWriterPreferencesPanel"/>
+        <label value="Save"/>
+        <class value="org.protege.editor.owl.ui.preferences.SavePreferencesPanel"/>
     </extension>
 
     <!-- Finder prefs -->
