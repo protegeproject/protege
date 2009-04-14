@@ -10,8 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 
 
 /**
@@ -101,8 +103,13 @@ public class RenameEntityPanel extends JPanel {
     private String getBase() {
         String fragment = getFragment();
         if (fragment != null) {
-            String uriString = owlEntity.getURI().toString();
-            return uriString.substring(0, uriString.length() - fragment.length());
+            try {
+                String uriString = URLDecoder.decode(owlEntity.getURI().toString(), "utf-8");
+                return uriString.substring(0, uriString.length() - fragment.length());
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
         }
         return "";
     }
