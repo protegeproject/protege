@@ -517,7 +517,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                     // we use the temp directory as storing in the current directory would only cause
                     // problems for loading later on
                     final File tempFile = FileUtils.createTempFile(targetFile);
-                    logger.debug("Saving " + getRendering(ont) + " to temp file: " + tempFile);
+                    logger.info("Saving " + getRendering(ont) + " to temp file: " + tempFile);
                     tempFile.deleteOnExit();
                     manager.saveOntology(ont, manager.getOntologyFormat(ont), tempFile.toURI());
 
