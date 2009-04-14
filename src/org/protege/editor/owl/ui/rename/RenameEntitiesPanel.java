@@ -10,7 +10,7 @@ import org.protege.editor.owl.model.find.EntityFinderPreferences;
 import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -30,6 +30,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -232,15 +235,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
     private void extractNSFromEntity(OWLEntity entity) {
-        if (fragRenderer == null){
-            fragRenderer = new OWLEntityRendererImpl();
-        }
-        String frag = fragRenderer.render(entity);
-        final String uriStr = entity.getURI().toString();
-        if (frag.startsWith("'")){
-            frag = frag.substring(1, frag.length()-1);
-        }
-        String ns = uriStr.substring(0, uriStr.lastIndexOf(frag));
+        String ns = getBase(entity.getURI());
         Set<OWLEntity> matchingEntities = nsMap.get(ns);
         if (matchingEntities == null){
             matchingEntities = new HashSet<OWLEntity>();
@@ -249,6 +244,41 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         nsMap.put(ns, matchingEntities);
     }
 
+
+    private String getBase(URI uri){
+
+        String frag = getShortForm(uri);
+        final String uriStr;
+        try {
+            uriStr = URLDecoder.decode(uri.toString(), "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        if (frag.startsWith("'")){
+            frag = frag.substring(1, frag.length()-1);
+        }
+        return uriStr.substring(0, uriStr.lastIndexOf(frag));
+    }
+
+    
+    private String getShortForm(URI uri){
+        try {
+            String rendering = uri.getFragment();
+            if (rendering == null) {
+                // Get last bit of path
+                String path = uri.getPath();
+                if (path == null) {
+                    return uri.toString();
+                }
+                return uri.getPath().substring(path.lastIndexOf("/") + 1);
+            }
+            return RenderingEscapeUtils.getEscapedRendering(rendering);
+        }
+        catch (Exception e) {
+            return "<Error! " + e.getMessage() + ">";
+        }
+    }
 
 /////////////////////// validation
 
