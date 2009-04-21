@@ -28,9 +28,9 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
     public String render(OWLEntity entity) {
         try {
             PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
-            String s = URLDecoder.decode(mapper.getShortForm(entity.getURI()), "utf-8");
+            String s = mapper.getShortForm(entity.getURI());
             if (s != null) {
-                return s;
+                return URLDecoder.decode(s, "utf-8");
             }
             else {
                 // No mapping
