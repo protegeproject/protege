@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.frame.property;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.semanticweb.owl.model.*;
 
@@ -41,7 +41,7 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Oct 16, 2008<br><br>
  */
-public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLProperty, A extends OWLPropertyDomainAxiom> extends AbstractOWLFrameSectionRow<P, A, OWLDescription> {
+public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLProperty, A extends OWLPropertyDomainAxiom> extends AbstractOWLFrameSectionRow<P, A, OWLClassExpression> {
 
     public AbstractPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                 OWLOntology ontology, P rootObject,
@@ -50,7 +50,7 @@ public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLPropert
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
+    protected OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
         final OWLComponentFactory cf = getOWLEditorKit().getWorkspace().getOWLComponentFactory();
         final A ax = getAxiom();
         return cf.getOWLClassDescriptionEditor(ax.getDomain(), ax.getAxiomType());

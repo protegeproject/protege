@@ -68,7 +68,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLDataType owlDataType) {
+    public void visit(OWLDatatype owlDatatype) {
         icon = dataTypeIcon;
     }
 
@@ -78,7 +78,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLDataAllRestriction owlDataAllRestriction) {
+    public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
         icon = primitiveClassIcon;
     }
 
@@ -88,12 +88,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLDataSomeRestriction owlDataSomeRestriction) {
+    public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLDataValueRestriction owlDataValueRestriction) {
+    public void visit(OWLDataHasValue owlDataValueRestriction) {
         icon = primitiveClassIcon;
     }
 
@@ -143,7 +143,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLObjectSubPropertyAxiom axiom) {
+    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
@@ -158,42 +158,42 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLObjectAllRestriction owlObjectAllRestriction) {
+    public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLObjectMinCardinalityRestriction desc) {
+    public void visit(OWLObjectMinCardinality desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLObjectExactCardinalityRestriction desc) {
+    public void visit(OWLObjectExactCardinality desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLObjectMaxCardinalityRestriction desc) {
+    public void visit(OWLObjectMaxCardinality desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLObjectSelfRestriction desc) {
+    public void visit(OWLObjectHasSelf desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLDataMinCardinalityRestriction desc) {
+    public void visit(OWLDataMinCardinality desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLDataExactCardinalityRestriction desc) {
+    public void visit(OWLDataExactCardinality desc) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLDataMaxCardinalityRestriction desc) {
+    public void visit(OWLDataMaxCardinality desc) {
         icon = primitiveClassIcon;
     }
 
@@ -203,12 +203,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLObjectSomeRestriction owlObjectSomeRestriction) {
+    public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLObjectValueRestriction owlObjectValueRestriction) {
+    public void visit(OWLObjectHasValue owlObjectValueRestriction) {
         icon = primitiveClassIcon;
     }
 
@@ -229,7 +229,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLImportsDeclaration axiom) {
-        if (owlModelManager.getOWLOntologyManager().contains(axiom.getImportedOntologyURI())) {
+        if (owlModelManager.getOWLOntologyManager().contains(axiom.getURI())) {
             icon = ontologyIcon;
         }
         else {
@@ -238,12 +238,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLSubClassAxiom owlSubClassAxiom) {
+    public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
         icon = primitiveClassIcon;
     }
 
 
-    public void visit(OWLAntiSymmetricObjectPropertyAxiom owlAntiSymmetricObjectPropertyAxiom) {
+    public void visit(OWLAsymmetricObjectPropertyAxiom owlAntiSymmetricObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
@@ -303,12 +303,12 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLDataSubPropertyAxiom owlDataSubPropertyAxiom) {
+    public void visit(OWLSubDataPropertyOfAxiom owlDataSubPropertyAxiom) {
         icon = dataPropertyIcon;
     }
 
 
-    public void visit(OWLSameIndividualsAxiom owlSameIndividualsAxiom) {
+    public void visit(OWLSameIndividualAxiom owlSameIndividualsAxiom) {
         icon = individualIcon;
     }
 
@@ -318,7 +318,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLObjectPropertyChainSubPropertyAxiom axiom) {
+    public void visit(OWLSubPropertyChainOfAxiom axiom) {
         icon = objectPropertyIcon;
     }
 

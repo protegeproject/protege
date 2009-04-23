@@ -111,7 +111,7 @@ public class AnonymousDefinedClassManager implements Disposable {
     }
 
 
-    public OWLEntityCreationSet<OWLClass> createAnonymousClass(OWLOntology ont, OWLDescription descr){
+    public OWLEntityCreationSet<OWLClass> createAnonymousClass(OWLOntology ont, OWLClassExpression descr){
 
         OWLClass anonCls = mngr.getOWLDataFactory().getOWLClass(getNextID());
 
@@ -147,8 +147,8 @@ public class AnonymousDefinedClassManager implements Disposable {
     }
 
 
-    public OWLDescription getExpression(OWLClass cls) {
-        for (OWLDescription descr : cls.getEquivalentClasses(mngr.getActiveOntologies())){
+    public OWLClassExpression getExpression(OWLClass cls) {
+        for (OWLClassExpression descr : cls.getEquivalentClasses(mngr.getActiveOntologies())){
             if (!descr.equals(cls)){
                 return descr;
             }
@@ -167,7 +167,7 @@ public class AnonymousDefinedClassManager implements Disposable {
     }
 
 
-    public URI getAnnotationURI() {
+    public URI getURI() {
         return DEFAULT_ANON_CLASS_ANNOTATION_URI;
     }
 }

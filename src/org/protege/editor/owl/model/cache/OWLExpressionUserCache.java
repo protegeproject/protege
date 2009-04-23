@@ -51,7 +51,7 @@ public class OWLExpressionUserCache implements Disposable {
     private static final String ID = OWLExpressionUserCache.class.getName();
 
 
-    private Map<OWLDescription, String> renderingsCache = new HashMap<OWLDescription, String>();
+    private Map<OWLClassExpression, String> renderingsCache = new HashMap<OWLClassExpression, String>();
 
     private List<String> cacheInternalForm = new ArrayList<String>();
     private List<String> cacheExternalForm = null;
@@ -88,7 +88,7 @@ public class OWLExpressionUserCache implements Disposable {
     }
 
 
-    public void add(OWLDescription owlDescription, String rendering) {
+    public void add(OWLClassExpression owlDescription, String rendering) {
         if (!getRenderings().contains(rendering)){
             getRenderings().add(0, rendering); // add them backwards
         }
@@ -117,7 +117,7 @@ public class OWLExpressionUserCache implements Disposable {
     }
 
 
-    public String getRendering(OWLDescription descr) {
+    public String getRendering(OWLClassExpression descr) {
         return fromInternalForm(renderingsCache.get(descr));
     }
 
@@ -151,7 +151,7 @@ public class OWLExpressionUserCache implements Disposable {
 //            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
 //                String external = fromInternalForm(internal);
 //                try {
-//                    OWLDescription descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
+//                    OWLClassExpression descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
 //                    renderingsCache.put(descr, internal);
 //                    cacheInternalForm.add(internal);
 //                    cacheExternalForm.add(external);
@@ -181,8 +181,9 @@ public class OWLExpressionUserCache implements Disposable {
     private static final String OWLCLASS = "OWLClass";
     private static final String OWLOBJECTPROPERTY = "OWLObjectProperty";
     private static final String OWLDATAPROPERTY = "OWLDataProperty";
+    private static final String OWLANNOTATIONPROPERTY = "OWLAnnotationProperty";
     private static final String OWLINDIVIDUAL = "OWLIndividual";
-    private static final String OWLDATATYPE = "OWLDataType";
+    private static final String OWLDATATYPE = "OWLDatatype";
     private static final String DELIMITER = "::";
 
     private static final String WHITESPACE = " \n\t{}()[]'";
@@ -286,11 +287,14 @@ public class OWLExpressionUserCache implements Disposable {
         else if (s[0].equals(OWLDATAPROPERTY)){
             return mngr.getOWLDataFactory().getOWLDataProperty(URI.create(s[1]));
         }
+        else if (s[0].equals(OWLANNOTATIONPROPERTY)){
+            return mngr.getOWLDataFactory().getOWLAnnotationProperty(URI.create(s[1]));
+        }
         else if (s[0].equals(OWLINDIVIDUAL)){
-            return mngr.getOWLDataFactory().getOWLIndividual(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLNamedIndividual(URI.create(s[1]));
         }
         else if (s[0].equals(OWLDATATYPE)){
-            return mngr.getOWLDataFactory().getOWLDataType(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLDatatype(URI.create(s[1]));
         }
         return null;
     }
@@ -322,13 +326,18 @@ public class OWLExpressionUserCache implements Disposable {
         }
 
 
-        public void visit(OWLIndividual entity) {
+        public void visit(OWLNamedIndividual entity) {
             cf = OWLINDIVIDUAL + DELIMITER + entity.getURI();
         }
 
 
-        public void visit(OWLDataType entity) {
+        public void visit(OWLDatatype entity) {
             cf = OWLDATATYPE + DELIMITER + entity.getURI();
+        }
+
+
+        public void visit(OWLAnnotationProperty entity) {
+            cf = OWLANNOTATIONPROPERTY + DELIMITER + entity.getURI();
         }
     }
 }

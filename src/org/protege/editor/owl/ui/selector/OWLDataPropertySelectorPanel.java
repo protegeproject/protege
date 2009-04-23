@@ -8,7 +8,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLDataProperty;
 
 import javax.swing.event.ChangeListener;
@@ -109,29 +109,5 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
 
     public void dispose() {
         view.dispose();
-    }
-
-    /**
-     * @deprecated Use <code>setSelection</code>
-     * @param property
-     */
-    public void setSelectedOWLDataProperty(OWLDataProperty property) {
-        setSelection(property);
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObject</code>
-     * @return selected OWLDataProperty
-     */
-    public OWLDataProperty getSelectedDataProperty() {
-        return getSelectedObject();
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObjects</code>
-     * @return set of selected OWLDataProperties
-     */
-    public Set<OWLDataProperty> getSelectedOWLDataProperties() {
-        return getSelectedObjects();
     }
 }

@@ -1,12 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLAnnotation;
+import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,7 +41,7 @@ import java.util.Comparator;
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
  */
-public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>{
+public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWLAxiom, OWLAnnotationAssertionAxiom, OWLAnnotation>{
 
     private static final String LABEL = "Annotations";
 
@@ -46,8 +50,8 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
     }
 
 
-    protected OWLAxiomAnnotationAxiom createAxiom(OWLAnnotation object) {
-        return getOWLDataFactory().getOWLAxiomAnnotationAxiom(getRootObject(), object);
+    protected OWLAnnotationAssertionAxiom createAxiom(OWLAnnotation object) {
+        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), object);
     }
 
 
@@ -62,7 +66,17 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
 
     protected void refill(OWLOntology ontology) {
-        for(OWLAxiomAnnotationAxiom ax : ontology.getAnnotations(getRootObject())) {
+
+        // no straightforward way to ask the ontology for annotation axioms on a given axiom
+        Set<OWLAnnotationAssertionAxiom> annotationAssertionsForOntology = new HashSet<OWLAnnotationAssertionAxiom>();
+        for (OWLAnnotation annot : getRootObject().getAnnotations()){
+            OWLAnnotationAssertionAxiom annotAx = getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), annot);
+            if (ontology.containsAxiom(annotAx)){
+                annotationAssertionsForOntology.add(annotAx);
+            }
+        }
+        
+        for(OWLAnnotationAssertionAxiom ax : annotationAssertionsForOntology) {
                 addRow(new OWLAxiomAnnotationsFrameSectionRow(getOWLEditorKit(),
                                                              this,
                                                              ontology,
@@ -76,12 +90,12 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
     }
 
 
-    public Comparator<OWLFrameSectionRow<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLAxiom, OWLAnnotationAssertionAxiom, OWLAnnotation>> getRowComparator() {
         return null;
     }
 
 
-    public void visit(OWLAxiomAnnotationAxiom axiom) {
+    public void visit(OWLAnnotationAssertionAxiom axiom) {
         final OWLAxiom root = getRootObject();
         if(root != null && root.equals(axiom.getSubject())) {
             reset();

@@ -4,7 +4,7 @@ import org.protege.editor.owl.model.hierarchy.roots.Relation;
 import org.protege.editor.owl.model.hierarchy.roots.TerminalElementFinder;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.*;
 
@@ -234,7 +234,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     public Set<OWLClass> getEquivalents(OWLClass object) {
         Set<OWLClass> result = new HashSet<OWLClass>();
         for (OWLOntology ont : ontologies) {
-            for (OWLDescription equiv : object.getEquivalentClasses(ont)) {
+            for (OWLClassExpression equiv : object.getEquivalentClasses(ont)) {
                 if (!equiv.isAnonymous()) {
                     result.add((OWLClass) equiv);
                 }
@@ -293,13 +293,13 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         }
 
 
-        public void visit(OWLSubClassAxiom axiom) {
+        public void visit(OWLSubClassOfAxiom axiom) {
             axiom.getSuperClass().accept(extractor);
         }
 
 
         public void visit(OWLEquivalentClassesAxiom axiom) {
-            for (OWLDescription desc : axiom.getDescriptions()) {
+            for (OWLClassExpression desc : axiom.getClassExpressions()) {
                 if (desc.equals(current)) {
                     continue;
                 }
@@ -309,7 +309,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     }
 
 
-    private class NamedClassExtractor extends OWLDescriptionVisitorAdapter {
+    private class NamedClassExtractor extends OWLClassExpressionVisitorAdapter {
 
         Set<OWLClass> result = new HashSet<OWLClass>();
 
@@ -330,7 +330,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
         public void visit(OWLObjectIntersectionOf desc) {
-            for (OWLDescription op : desc.getOperands()) {
+            for (OWLClassExpression op : desc.getOperands()) {
                 op.accept(this);
             }
         }
@@ -340,14 +340,14 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     /**
      * Checks whether a class description contains a specified named conjunct.
      */
-    private class NamedConjunctChecker extends OWLDescriptionVisitorAdapter {
+    private class NamedConjunctChecker extends OWLClassExpressionVisitorAdapter {
 
         private boolean found;
 
         private OWLClass searchClass;
 
 
-        public boolean containsConjunct(OWLClass conjunct, OWLDescription description) {
+        public boolean containsConjunct(OWLClass conjunct, OWLClassExpression description) {
             found = false;
             searchClass = conjunct;
             description.accept(this);
@@ -365,7 +365,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
         public void visit(OWLObjectIntersectionOf desc) {
-            for (OWLDescription op : desc.getOperands()) {
+            for (OWLClassExpression op : desc.getOperands()) {
                 op.accept(this);
                 if (found) {
                     break;
@@ -406,7 +406,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
         }
 
 
-        public void visit(OWLSubClassAxiom axiom) {
+        public void visit(OWLSubClassOfAxiom axiom) {
             // Example:
             // If searching for subs of B, candidates are:
             // SubClassOf(A B)
@@ -425,9 +425,9 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
             if (!namedClassInEquivalentAxiom(axiom)){
                 return;
             }
-            Set<OWLDescription> candidateDescriptions = new HashSet<OWLDescription>();
+            Set<OWLClassExpression> candidateDescriptions = new HashSet<OWLClassExpression>();
             boolean found = false;
-            for (OWLDescription equivalentClass : axiom.getDescriptions()) {
+            for (OWLClassExpression equivalentClass : axiom.getClassExpressions()) {
                 if (!checker.containsConjunct(currentParentClass, equivalentClass)) {
                     // Potential operand
                     candidateDescriptions.add(equivalentClass);
@@ -443,7 +443,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
                 return;
             }
             namedClassExtractor.reset();
-            for (OWLDescription desc : candidateDescriptions) {
+            for (OWLClassExpression desc : candidateDescriptions) {
                 desc.accept(namedClassExtractor);
             }
             results.addAll(namedClassExtractor.getResult());
@@ -451,7 +451,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
 
 
         private boolean namedClassInEquivalentAxiom(OWLEquivalentClassesAxiom axiom) {
-            for (OWLDescription equiv : axiom.getDescriptions()){
+            for (OWLClassExpression equiv : axiom.getClassExpressions()){
                 if (!equiv.isAnonymous()){
                     return true;
                 }

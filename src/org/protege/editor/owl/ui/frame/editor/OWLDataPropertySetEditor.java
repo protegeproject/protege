@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLDataProperty;
 

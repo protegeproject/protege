@@ -150,30 +150,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    /**
-     * @param owlEditorKit     The editor kit
-     * @param renderExpression determines if values are rendered as expressions (i.e. whether key words are
-     *                         highlighted or not)
-     * @param renderIcon       Determines if an icon is shown
-     * @param indentation      Legacy - has no effect
-     * @deprecated Use OWLCellRenderer(OWLEditorKit, renderExpression, renderIcon)
-     *             Creates a cell renderer
-     */
-    public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, int indentation) {
-        this(owlEditorKit, renderExpression, renderIcon);
-    }
-
-
     public void setForceReadOnlyRendering(boolean forceReadOnlyRendering) {
         this.forceReadOnlyRendering = forceReadOnlyRendering;
-    }
-
-
-    /**
-     * @deprecated use <code>setOpaque</code>
-     */
-    public void setTransparent() {
-        renderingComponent.setOpaque(false);
     }
 
 
@@ -447,11 +425,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
-        public void visit(OWLDataType dataType) {
+        public void visit(OWLDatatype dataType) {
         }
 
 
-        public void visit(OWLIndividual individual) {
+        public void visit(OWLNamedIndividual individual) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(individual).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
@@ -466,6 +444,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
         public void visit(OWLObjectProperty property) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
+                ontology = getOWLModelManager().getActiveOntology();
+            }
+        }
+
+
+        public void visit(OWLAnnotationProperty property) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
@@ -797,7 +782,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     try {
                         if (highlightUnsatisfiableClasses &&
 //                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
-                            !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                             // Paint red because of inconsistency
                             doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                         }
@@ -882,7 +867,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         return false;
     }
 
-    
+
     private void fadeOntologyURI(StyledDocument doc, int tokenStartIndex, int tokenLength, boolean enclosedByBracket) {
         // if surrounded by brackets, also render them in grey
         int start = tokenStartIndex;
@@ -920,7 +905,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                                                   int tokenLength) {
         try {
             OWLObjectProperty prop = (OWLObjectProperty) entity;
-            OWLDescription d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinalityRestriction(prop, 1);
+            OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(prop, 1);
             if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
                 doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
             }

@@ -1,27 +1,10 @@
 package org.protege.editor.owl.model.util;
 
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLDataAllRestriction;
-import org.semanticweb.owl.model.OWLDataExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataSomeRestriction;
-import org.semanticweb.owl.model.OWLDataValueRestriction;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLObjectAllRestriction;
-import org.semanticweb.owl.model.OWLObjectComplementOf;
-import org.semanticweb.owl.model.OWLObjectExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectIntersectionOf;
-import org.semanticweb.owl.model.OWLObjectMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectSelfRestriction;
-import org.semanticweb.owl.model.OWLObjectSomeRestriction;
-import org.semanticweb.owl.model.OWLObjectUnionOf;
-import org.semanticweb.owl.model.OWLObjectValueRestriction;
-import org.semanticweb.owl.model.OWLPropertyExpression;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
 
 
 /**
@@ -35,13 +18,13 @@ import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
  * <p/>
  * A visitor that collects the properties that are
  * restricted in <code>OWLRestriction</code>s.  This visitor
- * visits <code>OWLDescription</code>s.  As it goes, it accumulates
+ * visits <code>OWLClassExpression</code>s.  As it goes, it accumulates
  * all of the properties that are used in any restrictions that it
  * visits.  Note that <code>OWLAnd</code>, <code>OWLOr</code> and <code>OWLNot</code> descriptions are "flattened"
  * out, so any restrictions that are contained as one of their operands
  * are also visited.
  */
-public class RestrictedPropertyExtractor extends OWLDescriptionVisitorAdapter {
+public class RestrictedPropertyExtractor extends OWLClassExpressionVisitorAdapter {
 
     private Set<OWLPropertyExpression> properties;
 
@@ -62,7 +45,7 @@ public class RestrictedPropertyExtractor extends OWLDescriptionVisitorAdapter {
 
 
     public void visit(OWLObjectIntersectionOf node) {
-        for (OWLDescription desc : node.getOperands()) {
+        for (OWLClassExpression desc : node.getOperands()) {
             desc.accept(this);
         }
     }
@@ -74,73 +57,73 @@ public class RestrictedPropertyExtractor extends OWLDescriptionVisitorAdapter {
 
 
     public void visit(OWLObjectUnionOf node) {
-        for (OWLDescription desc : node.getOperands()) {
+        for (OWLClassExpression desc : node.getOperands()) {
             desc.accept(this);
         }
     }
 
 
-    public void visit(OWLDataAllRestriction node) {
+    public void visit(OWLDataAllValuesFrom node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLDataSomeRestriction node) {
+    public void visit(OWLDataSomeValuesFrom node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLDataValueRestriction node) {
+    public void visit(OWLDataHasValue node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectAllRestriction node) {
+    public void visit(OWLObjectAllValuesFrom node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectSomeRestriction node) {
+    public void visit(OWLObjectSomeValuesFrom node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectValueRestriction node) {
+    public void visit(OWLObjectHasValue node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectMinCardinalityRestriction node) {
+    public void visit(OWLObjectMinCardinality node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectExactCardinalityRestriction node) {
+    public void visit(OWLObjectExactCardinality node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectMaxCardinalityRestriction node) {
+    public void visit(OWLObjectMaxCardinality node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLObjectSelfRestriction node) {
+    public void visit(OWLObjectHasSelf node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLDataMinCardinalityRestriction node) {
+    public void visit(OWLDataMinCardinality node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLDataExactCardinalityRestriction node) {
+    public void visit(OWLDataExactCardinality node) {
         properties.add(node.getProperty());
     }
 
 
-    public void visit(OWLDataMaxCardinalityRestriction node) {
+    public void visit(OWLDataMaxCardinality node) {
         properties.add(node.getProperty());
     }
 }

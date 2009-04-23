@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -41,11 +41,11 @@ import java.util.*;
  * Bio Health Informatics Group<br>
  * Date: Oct 16, 2008<br><br>
  */
-public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, A extends OWLPropertyDomainAxiom>  extends AbstractOWLFrameSection<P, A, OWLDescription> {
+public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, A extends OWLPropertyDomainAxiom>  extends AbstractOWLFrameSection<P, A, OWLClassExpression> {
 
     public static final String LABEL = "Domains (intersection)";
 
-    Set<OWLDescription> addedDomains = new HashSet<OWLDescription>();
+    Set<OWLClassExpression> addedDomains = new HashSet<OWLClassExpression>();
 
 
     public AbstractPropertyDomainFrameSection(OWLEditorKit editorKit, OWLFrame<P> frame) {
@@ -53,7 +53,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLDescription> getObjectEditor() {
+    public OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
         AxiomType type;
         if (getRootObject() instanceof OWLObjectProperty){
             type = AxiomType.OBJECT_PROPERTY_DOMAIN;
@@ -67,7 +67,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
     public final boolean canAcceptDrop(List<OWLObject> objects) {
         for (OWLObject obj : objects) {
-            if (!(obj instanceof OWLDescription)) {
+            if (!(obj instanceof OWLClassExpression)) {
                 return false;
             }
         }
@@ -78,8 +78,8 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     public final boolean dropObjects(List<OWLObject> objects) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLObject obj : objects) {
-            if (obj instanceof OWLDescription) {
-                OWLDescription desc = (OWLDescription) obj;
+            if (obj instanceof OWLClassExpression) {
+                OWLClassExpression desc = (OWLClassExpression) obj;
                 OWLAxiom ax = createAxiom(desc);
                 changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             }
@@ -98,7 +98,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     protected abstract Set<A> getAxioms(OWLOntology ontology);
 
 
-    protected abstract Set<Set<OWLDescription>> getInferredDomains() throws OWLReasonerException;
+    protected abstract Set<Set<OWLClassExpression>> getInferredDomains() throws OWLReasonerException;
 
 
     protected void clear() {
@@ -116,8 +116,8 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
     protected final void refillInferred() {
         try {
-            for (Set<OWLDescription> domains : getInferredDomains()) {
-                for (OWLDescription domain : domains){
+            for (Set<OWLClassExpression> domains : getInferredDomains()) {
+                for (OWLClassExpression domain : domains){
                     if (!addedDomains.contains(domain)) {
                         addRow(createFrameSectionRow(createAxiom(domain), null));
                         addedDomains.add(domain);
@@ -131,7 +131,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     }
 
 
-    public Comparator<OWLFrameSectionRow<P, A, OWLDescription>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<P, A, OWLClassExpression>> getRowComparator() {
         return null;
     }
 }

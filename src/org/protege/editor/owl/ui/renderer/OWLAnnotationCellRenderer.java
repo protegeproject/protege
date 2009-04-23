@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,8 +55,8 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
                                                   boolean cellHasFocus) {
         if (value instanceof OWLAnnotation) {
             OWLAnnotation anno = (OWLAnnotation) value;
-            String ren = owlEditorKit.getModelManager().getURIRendering(anno.getAnnotationURI());
-            String val = owlEditorKit.getModelManager().getRendering(anno.getAnnotationValue());
+            String ren = owlEditorKit.getModelManager().getRendering(anno.getProperty());
+            String val = owlEditorKit.getModelManager().getRendering(anno.getValue());
 
             annotationURILabel.setText(ren);
             annotationContentArea.setText(val);
@@ -68,7 +68,7 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
                 annotationContentArea.setForeground(list.getForeground());
                 annotationURILabel.setForeground(LABEL_COLOR);
             }
-            iconLabel.setVisible(anno.getAnnotationValue() instanceof OWLEntity);
+            iconLabel.setVisible(anno.getValue() instanceof IRI);
         }
         else {
             annotationURILabel.setText("WARNING!");

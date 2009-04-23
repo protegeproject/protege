@@ -179,7 +179,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
         data.add(new TypeItem(AxiomType.ANTI_SYMMETRIC_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.REFLEXIVE_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.IRREFLEXIVE_OBJECT_PROPERTY));
-        data.add(new TypeItem(AxiomType.PROPERTY_CHAIN_SUB_PROPERTY));
+        data.add(new TypeItem(AxiomType.SUB_PROPERTY_CHAIN_OF));
 
         data.add(new MListSectionHeader(){
             public String getName() {
@@ -221,9 +221,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
                 return false;
             }
         });
-        data.add(new TypeItem(AxiomType.ONTOLOGY_ANNOTATION));
-        data.add(new TypeItem(AxiomType.ENTITY_ANNOTATION));
-        data.add(new TypeItem(AxiomType.AXIOM_ANNOTATION));
+        data.add(new TypeItem(AxiomType.ANNOTATION_ASSERTION));
 
         data.add(new MListSectionHeader(){
             public String getName() {
@@ -235,7 +233,6 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
         });
         data.add(new TypeItem(AxiomType.SWRL_RULE));
         data.add(new TypeItem(AxiomType.DECLARATION));
-        data.add(new TypeItem(AxiomType.IMPORTS_DECLARATION));
         data.add(new TypeItem(AxiomType.DISJOINT_UNION));
 
         return data;

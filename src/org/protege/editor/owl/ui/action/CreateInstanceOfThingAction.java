@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLNamedIndividual;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -21,7 +21,7 @@ public class CreateInstanceOfThingAction extends ProtegeOWLAction {
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        OWLEntityCreationSet<OWLIndividual> set = getOWLWorkspace().createOWLIndividual();
+        OWLEntityCreationSet<OWLNamedIndividual> set = getOWLWorkspace().createOWLIndividual();
         if (set == null) {
             return;
         }

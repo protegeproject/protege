@@ -1,19 +1,11 @@
 package org.protege.editor.owl.ui.framelist;
 
-import com.clarkparsia.explanation.BlackBoxExplanation;
-import com.clarkparsia.explanation.ExplanationGenerator;
-import com.clarkparsia.explanation.HSTExplanationGenerator;
-import com.clarkparsia.explanation.SatisfiabilityConverter;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.explanation.ExplanationGeneratorPanel;
-import org.semanticweb.owl.debugging.DebuggerDescriptionGenerator;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLOntology;
 
-import javax.swing.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -67,40 +59,40 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
     }
 
     public void handleExplain(OWLAxiom ax) {
-        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(getOWLDataFactory());
-        ax.accept(gen);
-        //OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-
-        SatisfiabilityConverter satCon = new SatisfiabilityConverter(getOWLDataFactory());
-        final OWLDescription desc = satCon.convert(ax);
-
-        BlackBoxExplanation bbexp = new BlackBoxExplanation(editorKit.getModelManager().getOWLOntologyManager());
-        OWLOntology ontology = getOntology();
-        bbexp.setOntology(ontology);
-        OWLReasoner reasoner = getReasoner();
-        bbexp.setReasoner(reasoner);
-        bbexp.setReasonerFactory(editorKit.getModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
-
-
-        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
-
-        final ExplanationGenerator debugger = hstGen;
-
-        ExplanationGeneratorPanel genPan = new ExplanationGeneratorPanel(ax, editorKit);
-        hstGen.setProgressMonitor(genPan.getProgressMonitor());
-        JDialog dlg = new JDialog((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, editorKit.getWorkspace()));
-        dlg.setContentPane(genPan);
-
-        Runnable r = new Runnable() {
-            public void run() {
-                debugger.getExplanations(desc);
-            }
-        };
-
-        Thread t = new Thread(r);
-        t.start();
-        dlg.pack();
-        dlg.setVisible(true);
+//        DebuggerDescriptionGenerator gen = new DebuggerDescriptionGenerator(getOWLDataFactory());
+//        ax.accept(gen);
+//        //OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+//
+//        SatisfiabilityConverter satCon = new SatisfiabilityConverter(getOWLDataFactory());
+//        final OWLClassExpression desc = satCon.convert(ax);
+//
+//        BlackBoxExplanation bbexp = new BlackBoxExplanation(editorKit.getModelManager().getOWLOntologyManager());
+//        OWLOntology ontology = getOntology();
+//        bbexp.setOntology(ontology);
+//        OWLReasoner reasoner = getReasoner();
+//        bbexp.setReasoner(reasoner);
+//        bbexp.setReasonerFactory(editorKit.getModelManager().getOWLReasonerManager().getCurrentReasonerFactory());
+//
+//
+//        HSTExplanationGenerator hstGen = new HSTExplanationGenerator(bbexp);
+//
+//        final ExplanationGenerator debugger = hstGen;
+//
+//        ExplanationGeneratorPanel genPan = new ExplanationGeneratorPanel(ax, editorKit);
+//        hstGen.setProgressMonitor(genPan.getProgressMonitor());
+//        JDialog dlg = new JDialog((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, editorKit.getWorkspace()));
+//        dlg.setContentPane(genPan);
+//
+//        Runnable r = new Runnable() {
+//            public void run() {
+//                debugger.getExplanations(desc);
+//            }
+//        };
+//
+//        Thread t = new Thread(r);
+//        t.start();
+//        dlg.pack();
+//        dlg.setVisible(true);
     }
 
 

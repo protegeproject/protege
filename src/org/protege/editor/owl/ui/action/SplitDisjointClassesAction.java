@@ -44,12 +44,12 @@ public class SplitDisjointClassesAction extends ProtegeOWLAction {
 
     public Set<OWLDisjointClassesAxiom> split(OWLDisjointClassesAxiom ax){
         Set<OWLDisjointClassesAxiom> pairwiseAxioms = new HashSet<OWLDisjointClassesAxiom>();
-        if (ax.getDescriptions().size() > 2){
-            List<OWLDescription> orderedOperands = new ArrayList<OWLDescription>(ax.getDescriptions());
+        if (ax.getClassExpressions().size() > 2){
+            List<OWLClassExpression> orderedOperands = new ArrayList<OWLClassExpression>(ax.getClassExpressions());
             for (int i=0; i<orderedOperands.size(); i++){
-                OWLDescription a = orderedOperands.get(i);
+                OWLClassExpression a = orderedOperands.get(i);
                 for (int j=i+1; j<orderedOperands.size(); j++){
-                    OWLDescription b = orderedOperands.get(j);
+                    OWLClassExpression b = orderedOperands.get(j);
                     OWLDisjointClassesAxiom pairwiseAxiom = getOWLDataFactory().getOWLDisjointClassesAxiom(a, b);
                     pairwiseAxioms.add(pairwiseAxiom);
                 }

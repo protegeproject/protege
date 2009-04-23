@@ -123,17 +123,18 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
             annotURIs = OWLRendererPreferences.getInstance().getAnnotationURIs();
         }
 
-        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAnnotationAxiom ax : selectedClass.getAnnotationAxioms(ont)){
-                final OWLAnnotation annot = ax.getAnnotation();
-                if (annotURIs == null ||
-                    !annotURIs.contains(annot.getAnnotationURI()) ||
-                    !annot.getAnnotationValueAsConstant().getLiteral().equals(selectedClassName)){
-                    OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
-                    changes.add(new AddAxiom(ont, duplicatedAxiom));
-                }
-            }
-        }
+// @@TODO v3 port
+//        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+//            for (OWLAnnotationAssertionAxiom ax : selectedClass.getAnnotationAssertionAxioms(ont)){
+//                final OWLAnnotation annot = ax.getAnnotation();
+//                if (annotURIs == null ||
+//                    !annotURIs.contains(annot.getProperty().getURI()) ||
+//                    !annot.getValue().getLiteral().equals(selectedClassName)){
+//                    OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
+//                    changes.add(new AddAxiom(ont, duplicatedAxiom));
+//                }
+//            }
+//        }
         return changes;
     }
 

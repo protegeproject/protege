@@ -71,8 +71,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
-    public OWLEntityCreationSet<OWLIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException {
-        return createOWLEntity(OWLIndividual.class, shortName, baseURI);
+    public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException {
+        return createOWLEntity(OWLNamedIndividual.class, shortName, baseURI);
     }
 
 
@@ -180,15 +180,9 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         String lang = descr.getLanguage();
 
         OWLDataFactory df = mngr.getOWLDataFactory();
-        OWLConstant con;
-        if (lang == null){
-            con = df.getOWLUntypedConstant(value);
-        }
-        else{
-            con = df.getOWLUntypedConstant(value, lang);
-        }
-        OWLAnnotation anno = df.getOWLConstantAnnotation(uri, con);
-        OWLAxiom ax = df.getOWLEntityAnnotationAxiom(owlEntity, anno);
+        OWLLiteral con = df.getRDFTextLiteral(value, lang);
+        OWLAnnotationProperty prop = df.getOWLAnnotationProperty(uri);
+        OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(owlEntity, prop, con);
         return Collections.singletonList(new AddAxiom(mngr.getActiveOntology(), ax));
     }
 
@@ -263,8 +257,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         else if (OWLDataProperty.class.isAssignableFrom(type)){
             return (T)mngr.getOWLDataFactory().getOWLDataProperty(uri);
         }
-        else if (OWLIndividual.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLIndividual(uri);
+        else if (OWLNamedIndividual.class.isAssignableFrom(type)){
+            return (T)mngr.getOWLDataFactory().getOWLNamedIndividual(uri);
         }
         return null;
     }

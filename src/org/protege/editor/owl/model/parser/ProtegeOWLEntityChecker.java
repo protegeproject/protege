@@ -43,27 +43,32 @@ public class ProtegeOWLEntityChecker implements OWLEntityChecker {
     }
 
 
-    public OWLClass getOWLClass(String string) {
-        return mngr.getOWLClass(string);
+    public OWLClass getOWLClass(String rendering) {
+        return mngr.getOWLClass(rendering);
     }
 
 
-    public OWLObjectProperty getOWLObjectProperty(String string) {
-        return mngr.getOWLObjectProperty(string);
+    public OWLObjectProperty getOWLObjectProperty(String rendering) {
+        return mngr.getOWLObjectProperty(rendering);
     }
 
 
-    public OWLDataProperty getOWLDataProperty(String string) {
-        return mngr.getOWLDataProperty(string);
+    public OWLDataProperty getOWLDataProperty(String rendering) {
+        return mngr.getOWLDataProperty(rendering);
     }
 
 
-    public OWLIndividual getOWLIndividual(String string) {
-        return mngr.getOWLIndividual(string);
+    public OWLNamedIndividual getOWLIndividual(String rendering) {
+        return mngr.getOWLIndividual(rendering);
     }
 
 
-    public OWLDataType getOWLDataType(String string) {
-        return mngr.getOWLDatatype(string);
+    public OWLDatatype getOWLDatatype(String rendering) {
+        return mngr.getOWLDatatype(rendering);
+    }
+
+
+    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
+        return mngr.getOWLAnnotationProperty(rendering);
     }
 }

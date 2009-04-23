@@ -9,7 +9,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLDatatype;
 import org.semanticweb.owl.model.OWLOntologyManager;
 
 import javax.swing.event.ChangeEvent;
@@ -31,11 +31,11 @@ import java.util.*;
  *
  * Should extend AbstractSelectorPanel
  */
-public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDataType> {
+public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype> {
 
     private AbstractOWLViewComponent view;
 
-    private OWLObjectList<OWLDataType> list;
+    private OWLObjectList<OWLDatatype> list;
 
 
     public OWLDataTypeSelectorPanel(OWLEditorKit editorKit) {
@@ -53,23 +53,23 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDataType>
     }
 
 
-    public void setSelection(OWLDataType dt) {
+    public void setSelection(OWLDatatype dt) {
         list.setSelectedValue(dt, true);
     }
 
 
-    public void setSelection(Set<OWLDataType> ranges) {
+    public void setSelection(Set<OWLDatatype> ranges) {
         list.setSelectedValues(ranges, true);
     }
 
 
-    public OWLDataType getSelectedObject(){
-        return (OWLDataType)list.getSelectedValue();
+    public OWLDatatype getSelectedObject(){
+        return (OWLDatatype)list.getSelectedValue();
     }
 
 
-    public Set<OWLDataType> getSelectedObjects() {
-        return new HashSet<OWLDataType>(list.getSelectedOWLObjects());
+    public Set<OWLDatatype> getSelectedObjects() {
+        return new HashSet<OWLDatatype>(list.getSelectedOWLObjects());
     }
 
 
@@ -94,10 +94,10 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDataType>
 
                         // Add the built in datatypes
                         final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-                        java.util.List<OWLDataType> datatypeList = new ArrayList<OWLDataType>(new OWLDataTypeUtils(mngr).getBuiltinDatatypes());
+                        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getBuiltinDatatypes());
                         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
 
-                        list = new OWLObjectList<OWLDataType>(getOWLEditorKit());
+                        list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
                         list.setListData(datatypeList.toArray());
                         list.setSelectedIndex(0);
 

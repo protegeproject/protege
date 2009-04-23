@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataType;
+import org.semanticweb.owl.model.OWLDatatype;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
@@ -50,18 +50,18 @@ public class OWLDataTypeUtils {
     }
 
 
-    public Set<OWLDataType> getBuiltinDatatypes(){
-        Set<OWLDataType> datatypes = new HashSet<OWLDataType>();
+    public Set<OWLDatatype> getBuiltinDatatypes(){
+        Set<OWLDatatype> datatypes = new HashSet<OWLDatatype>();
         final OWLDataFactory df = mngr.getOWLDataFactory();
 
         // the top datatype
-        datatypes.add(df.getOWLDataType(OWLRDFVocabulary.RDFS_LITERAL.getURI()));
+        datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDFS_LITERAL.getURI()));
 
-        datatypes.add(df.getTopDataType());
+        datatypes.add(df.getTopDatatype());
         for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            datatypes.add(df.getOWLDataType(uri));
+            datatypes.add(df.getOWLDatatype(uri));
         }
-        datatypes.add(df.getOWLDataType(OWLRDFVocabulary.RDF_XML_LITERAL.getURI()));
+        datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getURI()));
 
         return datatypes;
     }

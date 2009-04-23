@@ -75,7 +75,7 @@ public class AutoMappedRepositoryURIMapper implements OWLOntologyURIMapper {
                 // Map the URI
                 mngr.getOWLOntologyManager().addURIMapper(new SimpleURIMapper(logicalURI, uri));
                 if (logger.isInfoEnabled()) {
-                    logger.info("Mapping (from automapping): " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
+                    logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
                 }
                 return uri;
             }

@@ -45,7 +45,7 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
             set.addAll(owlModelManager.getEntityFinder().getMatchingOWLIndividuals(fragment, false));
         }
         if (datatypes) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLDataTypes(fragment, false));
+            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLDatatypes(fragment, false));
         }
         return set;
     }

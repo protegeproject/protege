@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLDescriptionComparator;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
-import org.semanticweb.owl.vocab.OWLRestrictedDataRangeFacetVocabulary;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
+import org.semanticweb.owl.vocab.OWLFacet;
 import org.semanticweb.owl.vocab.XSDVocabulary;
 
 import java.net.URI;
@@ -34,7 +35,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     private BracketWriter bracketWriter;
 
-    private Map<OWLRestrictedDataRangeFacetVocabulary, String> facetMap;
+    private Map<OWLFacet, String> facetMap;
 
     private Map<URI, Boolean> simpleRenderDatatypes;
 
@@ -47,11 +48,11 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         this.owlModelManager = owlModelManager;
         buffer = new StringBuilder();
         bracketWriter = new BracketWriter();
-        facetMap = new HashMap<OWLRestrictedDataRangeFacetVocabulary, String>();
-        facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MIN_EXCLUSIVE, ">");
-        facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MAX_EXCLUSIVE, "<");
-        facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MIN_INCLUSIVE, ">=");
-        facetMap.put(OWLRestrictedDataRangeFacetVocabulary.MAX_INCLUSIVE, "<=");
+        facetMap = new HashMap<OWLFacet, String>();
+        facetMap.put(OWLFacet.MIN_EXCLUSIVE, ">");
+        facetMap.put(OWLFacet.MAX_EXCLUSIVE, "<");
+        facetMap.put(OWLFacet.MIN_INCLUSIVE, ">=");
+        facetMap.put(OWLFacet.MAX_INCLUSIVE, "<=");
         simpleRenderDatatypes = new HashMap<URI, Boolean>();
         simpleRenderDatatypes.put(XSDVocabulary.INT.getURI(), false);
         simpleRenderDatatypes.put(XSDVocabulary.FLOAT.getURI(), false);
@@ -80,8 +81,8 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     public void setFocusedObject(OWLObject focusedObject) {
         this.focusedObject = focusedObject;
-        if(focusedObject instanceof OWLDescription) {
-            comparator.setFocusedDescription((OWLDescription) focusedObject);
+        if(focusedObject instanceof OWLClassExpression) {
+            comparator.setFocusedDescription((OWLClassExpression) focusedObject);
         }
     }
 
@@ -200,8 +201,8 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     private OWLDescriptionComparator comparator = new OWLDescriptionComparator(owlModelManager);
 
 
-    private List<OWLDescription> sort(Set<OWLDescription> descriptions) {
-        List<OWLDescription> sortedDescs = new ArrayList<OWLDescription>(descriptions);
+    private List<OWLClassExpression> sortClassExpressions(Set<OWLClassExpression> expressions) {
+        List<OWLClassExpression> sortedDescs = new ArrayList<OWLClassExpression>(expressions);
         Collections.sort(sortedDescs, comparator);
         return sortedDescs;
     }
@@ -210,9 +211,9 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     public void visit(OWLObjectIntersectionOf node) {
 
         int indent = getIndent();
-        List<OWLDescription> ops = sort(node.getOperands());
+        List<OWLClassExpression> ops = sortClassExpressions(node.getOperands());
         for (int i = 0; i < ops.size(); i++) {
-            OWLDescription curOp = ops.get(i);
+            OWLClassExpression curOp = ops.get(i);
             curOp.accept(this);
             if (i < ops.size() - 1) {
                 write("\n");
@@ -228,9 +229,9 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLTypedConstant node) {
-        if (simpleRenderDatatypes.containsKey(node.getDataType().getURI())) {
-            boolean renderQuotes = simpleRenderDatatypes.get(node.getDataType().getURI());
+    public void visit(OWLTypedLiteral node) {
+        if (simpleRenderDatatypes.containsKey(node.getDatatype().getURI())) {
+            boolean renderQuotes = simpleRenderDatatypes.get(node.getDatatype().getURI());
             if (renderQuotes) {
                 write("\"");
             }
@@ -243,51 +244,36 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
             write("\"");
             write(node.getLiteral());
             write("\"^^");
-            node.getDataType().accept(this);
+            node.getDatatype().accept(this);
         }
     }
 
 
-    public void visit(OWLUntypedConstant node) {
+    public void visit(OWLRDFTextLiteral node) {
         write("\"");
         write(node.getLiteral());
         write("\"");
-        if (node.hasLang()) {
+        if (node.getLang() != null) {
             write("@");
             write(node.getLang());
         }
     }
 
 
-    public void visit(OWLDataType node) {
+    public void visit(OWLDatatype node) {
         write(node.getURI().getFragment());
     }
 
 
     public void visit(OWLDataOneOf node) {
         write("{");
-        for (Iterator<OWLConstant> it = node.getValues().iterator(); it.hasNext();) {
+        for (Iterator<OWLLiteral> it = node.getValues().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write(", ");
             }
         }
         write("}");
-    }
-
-
-    public void visit(OWLDataRangeRestriction node) {
-//        writeOpenBracket(node);
-        node.getDataRange().accept(this);
-        write("[");
-        for (Iterator<OWLDataRangeFacetRestriction> it = node.getFacetRestrictions().iterator(); it.hasNext();) {
-            it.next().accept(this);
-            if (it.hasNext()) {
-                write(", ");
-            }
-        }
-        write("]");
-//        writeCloseBracket(node);
     }
 
 
@@ -298,7 +284,27 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataRangeFacetRestriction node) {
+    public void visit(OWLDataIntersectionOf owlDataIntersectionOf) {
+        throw new NotImplementedException("Cannot render " + owlDataIntersectionOf);
+    }
+
+
+    public void visit(OWLDatatypeRestriction node) {
+//        writeOpenBracket(node);
+        node.getDatatype().accept(this);
+        write("[");
+        for (Iterator<OWLFacetRestriction> it = node.getFacetRestrictions().iterator(); it.hasNext();) {
+            it.next().accept(this);
+            if (it.hasNext()) {
+                write(", ");
+            }
+        }
+        write("]");
+//        writeCloseBracket(node);
+    }
+
+
+    public void visit(OWLFacetRestriction node) {
         String rendering = facetMap.get(node.getFacet());
         if (rendering == null) {
             rendering = node.getFacet().getShortName();
@@ -309,7 +315,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectSelfRestriction desc) {
+    public void visit(OWLObjectHasSelf desc) {
         desc.getProperty().accept(this);
         write(" ");
         write(getSomeKeyWord());
@@ -317,7 +323,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataAllRestriction node) {
+    public void visit(OWLDataAllValuesFrom node) {
         node.getProperty().accept(this);
         write(" ");
         write(getAllKeyWord());
@@ -331,7 +337,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataSomeRestriction node) {
+    public void visit(OWLDataSomeValuesFrom node) {
         node.getProperty().accept(this);
         write(" ");
         write(getSomeKeyWord());
@@ -340,7 +346,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataValueRestriction node) {
+    public void visit(OWLDataHasValue node) {
         node.getProperty().accept(this);
         write(" ");
         write(getValueKeyWord());
@@ -349,24 +355,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLIndividual node) {
-        if (node.isAnonymous()) {
-            write("Anonymous : [");
-            for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
-                for (OWLDescription desc : node.getTypes(ont)) {
-                    write(" ");
-                    desc.accept(this);
-                }
-            }
-            write(" ]");
-        }
-        else {
-            write(getRendering(node));
-        }
-    }
-
-
-    public void visit(OWLObjectAllRestriction node) {
+    public void visit(OWLObjectAllValuesFrom node) {
         node.getProperty().accept(this);
         write(" ");
         write(getAllKeyWord());
@@ -377,17 +366,17 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectMinCardinalityRestriction desc) {
+    public void visit(OWLObjectMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
 
-    public void visit(OWLObjectExactCardinalityRestriction desc) {
+    public void visit(OWLObjectExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
 
-    public void visit(OWLObjectMaxCardinalityRestriction desc) {
+    public void visit(OWLObjectMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -405,17 +394,17 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataMinCardinalityRestriction desc) {
+    public void visit(OWLDataMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
 
-    public void visit(OWLDataExactCardinalityRestriction desc) {
+    public void visit(OWLDataExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
 
-    public void visit(OWLDataMaxCardinalityRestriction desc) {
+    public void visit(OWLDataMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -438,7 +427,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectSomeRestriction node) {
+    public void visit(OWLObjectSomeValuesFrom node) {
         node.getProperty().accept(this);
         write(" ");
         write(getSomeKeyWord());
@@ -449,7 +438,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectValueRestriction node) {
+    public void visit(OWLObjectHasValue node) {
         node.getProperty().accept(this);
         write(" ");
         write(getValueKeyWord());
@@ -474,8 +463,8 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
     public void visit(OWLObjectUnionOf node) {
         int indent = getIndent();
-        for (Iterator it = sort(node.getOperands()).iterator(); it.hasNext();) {
-            OWLDescription curOp = (OWLDescription) it.next();
+        for (Iterator it = sortClassExpressions(node.getOperands()).iterator(); it.hasNext();) {
+            OWLClassExpression curOp = (OWLClassExpression) it.next();
             writeOpenBracket(curOp);
             curOp.accept(this);
             writeCloseBracket(curOp);
@@ -519,7 +508,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
 
     public void visit(OWLDisjointClassesAxiom node) {
-        for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
+        for (Iterator<OWLClassExpression> it = sortClassExpressions(node.getClassExpressions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write(" disjointWith ");
@@ -529,9 +518,9 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
 
 
     public void visit(OWLEquivalentClassesAxiom node) {
-        List<OWLDescription> orderedDescs = sort(node.getDescriptions());
-        for(Iterator<OWLDescription> it = orderedDescs.iterator(); it.hasNext(); ) {
-            OWLDescription desc = it.next();
+        List<OWLClassExpression> orderedDescs = sortClassExpressions(node.getClassExpressions());
+        for(Iterator<OWLClassExpression> it = orderedDescs.iterator(); it.hasNext(); ) {
+            OWLClassExpression desc = it.next();
             if(orderedDescs.get(0).isOWLNothing()) {
                 it.remove();
                 orderedDescs.add(desc);
@@ -539,7 +528,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
             }
         }
 
-        for (Iterator<OWLDescription> it = orderedDescs.iterator(); it.hasNext();) {
+        for (Iterator<OWLClassExpression> it = orderedDescs.iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write(" equivalentTo ");
@@ -548,7 +537,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLSubClassAxiom node) {
+    public void visit(OWLSubClassOfAxiom node) {
         node.getSubClass().accept(this);
         write(" subClassOf ");
         node.getSuperClass().accept(this);
@@ -573,7 +562,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLDataSubPropertyAxiom axiom) {
+    public void visit(OWLSubDataPropertyOfAxiom axiom) {
         axiom.getSubProperty().accept(this);
         write(" subPropertyOf ");
         axiom.getSuperProperty().accept(this);
@@ -634,7 +623,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     public void visit(OWLClassAssertionAxiom axiom) {
         axiom.getIndividual().accept(this);
         write(" types ");
-        axiom.getDescription().accept(this);
+        axiom.getClassExpression().accept(this);
     }
 
 
@@ -654,7 +643,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLSameIndividualsAxiom axiom) {
+    public void visit(OWLSameIndividualAxiom axiom) {
         write("SameIndividuals: [");
         for (Iterator<OWLIndividual> it = axiom.getIndividuals().iterator(); it.hasNext();) {
             it.next().accept(this);
@@ -745,7 +734,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLAntiSymmetricObjectPropertyAxiom axiom) {
+    public void visit(OWLAsymmetricObjectPropertyAxiom axiom) {
         write("AntiSymmetric: ");
         axiom.getProperty().accept(this);
     }
@@ -765,7 +754,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectSubPropertyAxiom axiom) {
+    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
         axiom.getSubProperty().accept(this);
         write(" subPropertyOf ");
         axiom.getSuperProperty().accept(this);
@@ -777,7 +766,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         write(" disjointUnionOf ");
         write("[");
         int indent = getIndent();
-        for (Iterator<OWLDescription> it = axiom.getDescriptions().iterator(); it.hasNext();) {
+        for (Iterator<OWLClassExpression> it = axiom.getClassExpressions().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write("\n");
@@ -810,22 +799,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLImportsDeclaration axiom) {
-        writeOntologyURI(axiom.getImportedOntologyURI());
-        if (owlModelManager.getOWLOntologyManager().getImportedOntology(axiom) == null) {
-            write("      (Not Loaded)");
-        }
-    }
-
-
-    public void visit(OWLAxiomAnnotationAxiom axiom) {
-        axiom.getSubject().accept(this);
-        write(" ");
-        axiom.getAnnotation().accept(this);
-    }
-
-
-    private void writeOpenBracket(OWLDescription description) {
+    private void writeOpenBracket(OWLClassExpression description) {
         description.accept(bracketWriter);
         if (bracketWriter.writeBrackets()) {
             write("(");
@@ -841,7 +815,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    private void writeCloseBracket(OWLDescription description) {
+    private void writeCloseBracket(OWLClassExpression description) {
         description.accept(bracketWriter);
         if (bracketWriter.writeBrackets()) {
             write(")");
@@ -862,7 +836,7 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLObjectPropertyChainSubPropertyAxiom axiom) {
+    public void visit(OWLSubPropertyChainOfAxiom axiom) {
         for (Iterator<OWLObjectPropertyExpression> it = axiom.getPropertyChain().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
@@ -871,13 +845,6 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         }
         write(" \u279E ");
         axiom.getSuperProperty().accept(this);
-    }
-
-
-    public void visit(OWLConstantAnnotation annotation) {
-        write(owlModelManager.getURIRendering(annotation.getAnnotationURI()));
-        write(" ");
-        write(annotation.getAnnotationValue().toString());
     }
 
 
@@ -898,29 +865,8 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    public void visit(OWLEntityAnnotationAxiom owlEntityAnnotationAxiom) {
-        owlEntityAnnotationAxiom.getSubject().accept(this);
-        write(" ");
-        owlEntityAnnotationAxiom.getAnnotation().accept(this);
-    }
-
-
-    public void visit(OWLOntologyAnnotationAxiom axiom) {
-        axiom.getSubject().accept(this);
-        write(" ");
-        axiom.getAnnotation().accept(this);
-    }
-
-
-    public void visit(OWLObjectAnnotation owlObjectAnnotation) {
-        write(owlModelManager.getURIRendering(owlObjectAnnotation.getAnnotationURI()));
-        write(" ");
-        owlObjectAnnotation.getAnnotationValue().accept(this);
-    }
-
-
     public void visit(SWRLClassAtom swrlClassAtom) {
-        OWLDescription desc = swrlClassAtom.getPredicate();
+        OWLClassExpression desc = swrlClassAtom.getPredicate();
         if (desc.isAnonymous()) {
             write("(");
         }
@@ -1033,7 +979,116 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
     }
 
 
-    private class BracketWriter extends OWLDescriptionVisitorAdapter implements OWLDataVisitor {
+    public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
+        axiom.getSubProperty().accept(this);
+        write(" subPropertyOf ");
+        axiom.getSuperProperty().accept(this);
+    }
+
+
+
+    public void visit(OWLImportsDeclaration axiom) {
+        writeOntologyURI(axiom.getURI());
+        if (owlModelManager.getOWLOntologyManager().getImportedOntology(axiom) == null) {
+            write("      (Not Loaded)");
+        }
+    }
+
+
+    //////////////////////////////////////// new for OWL API v3
+
+
+    public void visit(OWLAnonymousIndividual node) {
+        write("Anonymous : [");
+        for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
+            for (OWLClassExpression desc : node.getTypes(ont)) {
+                write(" ");
+                desc.accept(this);
+            }
+        }
+        write(" ]");
+    }
+
+
+    public void visit(OWLAnnotationProperty node) {
+        write(getRendering(node));
+    }
+
+
+    public void visit(OWLAnnotationAssertionAxiom owlAnnotationAssertionAxiom) {
+        throw new NotImplementedException("Cannot render: " + owlAnnotationAssertionAxiom);
+    }
+
+
+    public void visit(OWLAnnotationPropertyDomainAxiom axiom) {
+        if (!OWLRendererPreferences.getInstance().isRenderDomainAxiomsAsGCIs()) {
+            axiom.getProperty().accept(this);
+            write(" domain ");
+            axiom.getDomain().accept(this);
+        }
+        else {
+            axiom.getProperty().accept(this);
+            write(" some ");
+            owlModelManager.getOWLDataFactory().getOWLThing().accept(this);
+            write(" subClassOf ");
+            axiom.getDomain().accept(this);
+        }
+    }
+
+
+    public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
+        axiom.getProperty().accept(this);
+        write(" range ");
+        axiom.getRange().accept(this);
+    }
+
+
+    public void visit(OWLAnnotation owlAnnotation) {
+        owlAnnotation.getProperty().accept(this);
+        write(" ");
+        owlAnnotation.getValue().accept(this);
+    }
+
+
+    public void visit(OWLHasKeyAxiom owlHasKeyAxiom) {
+        throw new NotImplementedException("Cannot render: " + owlHasKeyAxiom);
+    }
+
+
+    public void visit(OWLDatatypeDefinition owlDatatypeDefinition) {
+        throw new NotImplementedException("Cannot render: " + owlDatatypeDefinition);
+    }
+
+
+    public void visit(OWLNamedIndividual node) {
+        write(getRendering(node));
+    }
+
+
+    public void visit(IRI iri) {
+        throw new NotImplementedException("Cannot render: " + iri);
+    }
+
+
+
+    public void visit(OWLDataUnionOf node) {
+        int indent = getIndent();
+        Set<OWLDataRange> ops = new TreeSet<OWLDataRange>(node.getOperands());
+        for (Iterator it = ops.iterator(); it.hasNext();) {
+            OWLClassExpression curOp = (OWLClassExpression) it.next();
+            writeOpenBracket(curOp);
+            curOp.accept(this);
+            writeCloseBracket(curOp);
+            if (it.hasNext()) {
+                write("\n");
+                insertIndent(indent);
+                writeOrKeyword();
+            }
+        }
+    }
+
+
+    private class BracketWriter extends OWLClassExpressionVisitorAdapter implements OWLDataVisitor {
 
         boolean nested = false;
 
@@ -1048,32 +1103,32 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         }
 
 
-        public void visit(OWLDataAllRestriction owlDataAllRestriction) {
+        public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLDataSomeRestriction owlDataSomeRestriction) {
+        public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
             nested = true;
         }
 
 
-        public void visit(OWLDataValueRestriction owlDataValueRestriction) {
+        public void visit(OWLDataHasValue owlDataValueRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectAllRestriction owlObjectAllRestriction) {
+        public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectSomeRestriction owlObjectSomeRestriction) {
+        public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectValueRestriction owlObjectValueRestriction) {
+        public void visit(OWLObjectHasValue owlObjectValueRestriction) {
             nested = true;
         }
 
@@ -1098,42 +1153,42 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         }
 
 
-        public void visit(OWLObjectMinCardinalityRestriction desc) {
+        public void visit(OWLObjectMinCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectExactCardinalityRestriction desc) {
+        public void visit(OWLObjectExactCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectMaxCardinalityRestriction desc) {
+        public void visit(OWLObjectMaxCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectSelfRestriction desc) {
+        public void visit(OWLObjectHasSelf desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataMinCardinalityRestriction desc) {
+        public void visit(OWLDataMinCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataExactCardinalityRestriction desc) {
+        public void visit(OWLDataExactCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataMaxCardinalityRestriction desc) {
+        public void visit(OWLDataMaxCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataType node) {
+        public void visit(OWLDatatype node) {
             nested = false;
         }
 
@@ -1143,27 +1198,42 @@ public class OWLObjectRendererImpl implements OWLObjectVisitor, OWLObjectRendere
         }
 
 
+        public void visit(OWLDataIntersectionOf owlDataIntersectionOf) {
+            nested = true;
+        }
+
+
+        public void visit(OWLDataUnionOf owlDataUnionOf) {
+            nested = true;
+        }
+
+
+        public void visit(OWLDatatypeRestriction owlDatatypeRestriction) {
+            nested = false;
+        }
+
+
         public void visit(OWLDataOneOf node) {
             nested = false;
         }
 
 
-        public void visit(OWLDataRangeRestriction node) {
+        public void visit(OWLDataRange node) {
             nested = true;
         }
 
 
-        public void visit(OWLTypedConstant node) {
+        public void visit(OWLTypedLiteral node) {
             nested = false;
         }
 
 
-        public void visit(OWLUntypedConstant node) {
+        public void visit(OWLRDFTextLiteral node) {
             nested = false;
         }
 
 
-        public void visit(OWLDataRangeFacetRestriction node) {
+        public void visit(OWLFacetRestriction node) {
             nested = false;
         }
     }

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.description;
 
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 
 /**
@@ -14,15 +14,15 @@ import org.semanticweb.owl.model.OWLDescription;
  */
 public class OWLDescriptionLeafNode implements OWLDescriptionNode {
 
-    private OWLDescription description;
+    private OWLClassExpression description;
 
 
-    public OWLDescriptionLeafNode(OWLDescription description) {
+    public OWLDescriptionLeafNode(OWLClassExpression description) {
         this.description = description;
     }
 
 
-    public OWLDescription getDescription() {
+    public OWLClassExpression getClassExpression() {
         return description;
     }
 

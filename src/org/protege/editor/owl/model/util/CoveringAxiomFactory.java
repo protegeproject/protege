@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -19,19 +19,19 @@ import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class CoveringAxiomFactory extends OWLDescriptionVisitorAdapter {
+public class CoveringAxiomFactory extends OWLClassExpressionVisitorAdapter {
 
     private OWLDataFactory owlDataFactory;
 
     private OWLObjectHierarchyProvider<OWLClass> provider;
 
-    private Set<OWLDescription> operands;
+    private Set<OWLClassExpression> operands;
 
 
     public CoveringAxiomFactory(OWLDataFactory owlDataFactory, OWLObjectHierarchyProvider<OWLClass> provider) {
         this.owlDataFactory = owlDataFactory;
         this.provider = provider;
-        operands = new HashSet<OWLDescription>();
+        operands = new HashSet<OWLClassExpression>();
     }
 
 
@@ -40,7 +40,7 @@ public class CoveringAxiomFactory extends OWLDescriptionVisitorAdapter {
     }
 
 
-    public OWLDescription getCoveringAxiom() {
+    public OWLClassExpression getCoveringAxiom() {
         if (operands.isEmpty()) {
             return null;
         }

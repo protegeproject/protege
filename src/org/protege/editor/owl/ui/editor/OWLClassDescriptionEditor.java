@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRowObjectEditor;
-import org.semanticweb.owl.model.OWLDescription;
+import org.protege.editor.owl.ui.frame.editor.AbstractOWLFrameSectionRowObjectEditor;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -21,7 +21,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 15-Feb-2007<br><br>
  */
-public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLDescription>
+public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLClassExpression>
         implements VerifiedInputEditor {
 
     private OWLEditorKit editorKit;
@@ -44,7 +44,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         }
     };
 
-    private OWLDescription description;
+    private OWLClassExpression description;
 
     private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
         public void verifiedStatusChanged(boolean newState) {
@@ -53,7 +53,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     };
 
 
-    public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLDescription description) {
+    public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLClassExpression description) {
 
         this.editorKit = editorKit;
 
@@ -122,13 +122,13 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     }
 
 
-    public Set<OWLDescription> getEditedObjects() {
-        return getSelectedEditor().getDescriptions();
+    public Set<OWLClassExpression> getEditedObjects() {
+        return getSelectedEditor().getClassExpressions();
     }
 
 
-    public OWLDescription getEditedObject() {
-        Set<OWLDescription> sel = getSelectedEditor().getDescriptions();
+    public OWLClassExpression getEditedObject() {
+        Set<OWLClassExpression> sel = getSelectedEditor().getClassExpressions();
         if (sel.isEmpty()){
             return null;
         }

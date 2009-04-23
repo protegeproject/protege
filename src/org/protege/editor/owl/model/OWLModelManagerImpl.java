@@ -90,8 +90,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private URIShortFormProvider uriShortFormProvider;
 
-    private boolean includeImports = true;
-
     private OWLOntology activeOntology;
 
     private Set<File> ontologyRootFolders;
@@ -135,8 +133,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     private Set<OntologySelectionStrategy> ontSelectionStrategies;
 
     private OntologySelectionStrategy activeOntologiesStrategy;
-
-    private OWLAnnotationURIRenderer annotationRenderer;
 
     private OWLExpressionCheckerFactory owlExpressionCheckerFactory;
 
@@ -335,30 +331,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public boolean isIncludeImports() {
-        return includeImports;
-    }
-
-
-    /**
-     * @deprecated use <code>setActiveOntologiesStrategy</code> with either
-     * <code>ActiveOntologySelectionStrategy</code> or
-     * <code>ImportsClosureOntologySelectionStrategy</code>
-     * @param b whether the imports closure of the active ontology should be visible or not
-     */
-    public void setIncludeImports(boolean b) {
-        if (includeImports != b){
-            includeImports = b;
-            if (includeImports){
-                setActiveOntologiesStrategy(new ImportsClosureOntologySelectionStrategy(this));
-            }
-            else{
-                setActiveOntologiesStrategy(new ActiveOntologySelectionStrategy(this));
-            }
-        }
-    }
-
-
     /**
      * A convenience method that loads an ontology from a file
      * The location of the file is specified by the URI argument.
@@ -453,7 +425,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
-        ont = manager.reloadOntology(getOntologyPhysicalURI(ont));
+        manager.removeOntology(ont);
+        ont = manager.loadOntologyFromPhysicalURI(getOntologyPhysicalURI(ont));
 
         fireEvent(EventType.ONTOLOGY_LOADED);
         setActiveOntology(ont, true);
@@ -467,7 +440,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             boolean resetActiveOntologyRequired = ont.equals(activeOntology);
             activeOntologies.remove(ont);
             dirtyOntologies.remove(ont);
-            manager.removeOntology(ont.getURI());
+            manager.removeOntology(ont);
 
             if (resetActiveOntologyRequired){
                 OWLOntology newActiveOnt = null;
@@ -727,24 +700,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    /**
-     * Called when some changes have been applied to various ontologies.  These
-     * may be an axiom added or an axiom removed changes.
-     * @param changes A list of changes that have occurred.  Each change may be examined
-     *                to determine which ontology it was applied to.
-     */
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
         getHistoryManager().logChanges(changes);
+        boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {
             dirtyOntologies.add(change.getOntology());
-            if (change.isAxiomChange()) {
-                OWLAxiom axiom = change.getAxiom();
-                if (axiom instanceof OWLImportsDeclaration) {
-                    // Reload the active ontology
-                    setActiveOntology(getActiveOntology(), true);
-                    break;
-                }
+            if (change.isImportChange()){
+                refreshActiveOntology = true;
             }
+        }
+        if (refreshActiveOntology){
+            setActiveOntology(getActiveOntology(), true);
         }
     }
 
@@ -916,15 +882,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public String getURIRendering(URI uri) {
-        if (getOWLEntityRenderer() instanceof OWLEntityAnnotationValueRenderer){
-            if (annotationRenderer == null){
-                annotationRenderer = new OWLAnnotationURIRenderer(this);
-            }
-            String shortForm = annotationRenderer.getRendering(uri);
-            if (shortForm != null){
-                return shortForm;
-            }
-        }
         return uriShortFormProvider.getShortForm(uri);
     }
 
@@ -996,8 +953,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OWLIndividual getOWLIndividual(String rendering) {
-        OWLIndividual individual = owlEntityRenderingCache.getOWLIndividual(rendering);
+    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
+        OWLAnnotationProperty prop = owlEntityRenderingCache.getOWLAnnotationProperty(rendering);
+        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
+            prop = owlEntityRenderingCache.getOWLAnnotationProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        }
+        return prop;
+    }
+
+
+    public OWLNamedIndividual getOWLIndividual(String rendering) {
+        OWLNamedIndividual individual = owlEntityRenderingCache.getOWLIndividual(rendering);
         if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             individual = owlEntityRenderingCache.getOWLIndividual(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
         }
@@ -1005,10 +971,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OWLDataType getOWLDatatype(String rendering) {
-        OWLDataType dataType = owlEntityRenderingCache.getOWLDataType(rendering);
+    public OWLDatatype getOWLDatatype(String rendering) {
+        OWLDatatype dataType = owlEntityRenderingCache.getOWLDatatype(rendering);
         if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            dataType = owlEntityRenderingCache.getOWLDataType(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            dataType = owlEntityRenderingCache.getOWLDatatype(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
         }
         return dataType;
     }
@@ -1054,7 +1020,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         long t0 = System.currentTimeMillis();
         owlEntityRenderingCache.rebuild();
         owlObjectRenderingCache.clear();
-        annotationRenderer = null;
         logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
     }
 
@@ -1184,8 +1149,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public List<OWLDataType> getMatchingOWLDataTypes(String renderingStart) {
-        List<OWLDataType> orderedResults = new ArrayList<OWLDataType>(getEntityFinder().getMatchingOWLDataTypes(renderingStart + "*", false));
+    public List<OWLDatatype> getMatchingOWLDatatypes(String renderingStart) {
+        List<OWLDatatype> orderedResults = new ArrayList<OWLDatatype>(getEntityFinder().getMatchingOWLDatatypes(renderingStart + "*", false));
         Collections.sort(orderedResults, getOWLObjectComparator());
         return orderedResults;
     }

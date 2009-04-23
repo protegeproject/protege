@@ -90,11 +90,19 @@ public class DeleteEntityAction extends SelectedOWLEntityAction {
             }
 
 
-            public void visit(OWLDataType dataType) {
+            public void visit(OWLDatatype dataType) {
             }
 
 
-            public void visit(OWLIndividual individual) {
+            public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+                View view = getOWLWorkspace().showResultsView("OWLAnnotationPropertyUsageView",
+                                                              true,
+                                                              OWLWorkspace.BOTTOM_RESULTS_VIEW);
+                view.setPinned(true);
+            }
+
+
+            public void visit(OWLNamedIndividual individual) {
                 View view = getOWLWorkspace().showResultsView("OWLIndividualUsageView",
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);

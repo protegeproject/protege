@@ -68,23 +68,23 @@ public class EntityFinderImpl implements EntityFinder {
     }
 
 
-    public Set<OWLIndividual> getMatchingOWLIndividuals(String match) {
-        return getEntities(match, OWLIndividual.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
+    public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match) {
+        return getEntities(match, OWLNamedIndividual.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
-    public Set<OWLIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp) {
-        return getEntities(match, OWLIndividual.class, fullRegExp);
+    public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp) {
+        return getEntities(match, OWLNamedIndividual.class, fullRegExp);
     }
 
 
-    public Set<OWLDataType> getMatchingOWLDataTypes(String match) {
-        return getEntities(match, OWLDataType.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
+    public Set<OWLDatatype> getMatchingOWLDatatypes(String match) {
+        return getEntities(match, OWLDatatype.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
-    public Set<OWLDataType> getMatchingOWLDataTypes(String match, boolean fullRegExp) {
-        return getEntities(match, OWLDataType.class, fullRegExp);
+    public Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp) {
+        return getEntities(match, OWLDatatype.class, fullRegExp);
     }
 
 
@@ -203,7 +203,7 @@ public class EntityFinderImpl implements EntityFinder {
 
 
     private <T extends OWLEntity> Set<T> getAllEntities(Class<T> type) {
-        if (type.equals(OWLDataType.class)){
+        if (type.equals(OWLDatatype.class)){
             return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes();
         }
         else{
@@ -240,8 +240,8 @@ public class EntityFinderImpl implements EntityFinder {
         else if (type.equals(OWLIndividual.class)){
             return (T)renderingCache.getOWLIndividual(rendering);
         }
-        else if (type.equals(OWLDataType.class)){
-            return (T)renderingCache.getOWLDataType(rendering);
+        else if (type.equals(OWLDatatype.class)){
+            return (T)renderingCache.getOWLDatatype(rendering);
         }
         else{
             return (T)renderingCache.getOWLEntity(rendering);
@@ -262,7 +262,7 @@ public class EntityFinderImpl implements EntityFinder {
         else if (type.equals(OWLIndividual.class)){
             return renderingCache.getOWLIndividualRenderings();
         }
-        else if (type.equals(OWLDataType.class)){
+        else if (type.equals(OWLDatatype.class)){
             return renderingCache.getOWLDatatypeRenderings();
         }
         else{

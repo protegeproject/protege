@@ -40,10 +40,14 @@ public class FilteringOWLSelectionModelListener implements OWLSelectionModelList
     }
 
 
-    public void visit(OWLIndividual individual) {
+    public void visit(OWLAnnotationProperty property) {
     }
 
 
-    public void visit(OWLDataType dataType) {
+    public void visit(OWLNamedIndividual individual) {
+    }
+
+
+    public void visit(OWLDatatype dataType) {
     }
 }

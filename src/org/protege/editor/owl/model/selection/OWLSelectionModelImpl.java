@@ -36,10 +36,100 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
     private OWLObjectProperty lastSelectedObjectProperty;
 
-    private OWLIndividual lastSelectedIndividual;
+    private OWLAnnotationProperty lastSelectedAnnotationProperty;
+
+    private OWLNamedIndividual lastSelectedIndividual;
+
+    private OWLDatatype lastSelectedDatatype;
 
     private OWLAxiom lastSelectedAxiom;
 
+    private final OWLEntityVisitor updateVisitor = new OWLEntityVisitor() {
+        public void visit(OWLClass cls) {
+            lastSelectedClass = cls;
+        }
+
+
+        public void visit(OWLObjectProperty property) {
+            lastSelectedObjectProperty = property;
+        }
+
+
+        public void visit(OWLDataProperty property) {
+            lastSelectedDataProperty = property;
+        }
+
+
+        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            lastSelectedAnnotationProperty = owlAnnotationProperty;
+        }
+
+
+        public void visit(OWLNamedIndividual individual) {
+            lastSelectedIndividual = individual;
+        }
+
+
+        public void visit(OWLDatatype dataType) {
+            lastSelectedDatatype = dataType;
+        }
+    };
+
+    private final OWLEntityVisitor clearVisitor = new OWLEntityVisitor() {
+        public void visit(OWLClass cls) {
+            if (lastSelectedClass != null) {
+                if (lastSelectedClass.equals(cls)) {
+                    lastSelectedClass = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+
+        public void visit(OWLObjectProperty property) {
+            if (lastSelectedObjectProperty != null) {
+                if (lastSelectedObjectProperty.equals(property)) {
+                    lastSelectedObjectProperty = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+
+        public void visit(OWLDataProperty property) {
+            if (lastSelectedDataProperty != null) {
+                if (lastSelectedDataProperty.equals(property)) {
+                    lastSelectedDataProperty = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+
+        public void visit(OWLAnnotationProperty property) {
+            if (lastSelectedAnnotationProperty != null) {
+                if (lastSelectedAnnotationProperty.equals(property)) {
+                    lastSelectedAnnotationProperty = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+
+        public void visit(OWLNamedIndividual individual) {
+            if (lastSelectedIndividual != null) {
+                if (lastSelectedIndividual.equals(individual)) {
+                    lastSelectedIndividual = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+
+        public void visit(OWLDatatype dataType) {
+            if (lastSelectedDatatype != null) {
+                if (lastSelectedDatatype.equals(dataType)) {
+                    lastSelectedDatatype = null;
+                    fireSelectionChanged();
+                }
+            }
+        }
+    };
 
     public OWLSelectionModelImpl() {
         listeners = new ArrayList<OWLSelectionModelListener>();
@@ -117,54 +207,11 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
-    public void clearLastSelectedEntity(final OWLEntity entity) {
+    public void clearLastSelectedEntity(OWLEntity entity) {
         if (entity == null) {
             return;
         }
-        entity.accept(new OWLEntityVisitor() {
-            public void visit(OWLClass cls) {
-                if (lastSelectedClass != null) {
-                    if (lastSelectedClass.equals(entity)) {
-                        lastSelectedClass = null;
-                        fireSelectionChanged();
-                    }
-                }
-            }
-
-
-            public void visit(OWLObjectProperty property) {
-                if (lastSelectedObjectProperty != null) {
-                    if (lastSelectedObjectProperty.equals(entity)) {
-                        lastSelectedObjectProperty = null;
-                        fireSelectionChanged();
-                    }
-                }
-            }
-
-
-            public void visit(OWLDataProperty property) {
-                if (lastSelectedDataProperty != null) {
-                    if (lastSelectedDataProperty.equals(entity)) {
-                        lastSelectedDataProperty = null;
-                        fireSelectionChanged();
-                    }
-                }
-            }
-
-
-            public void visit(OWLIndividual individual) {
-                if (lastSelectedIndividual != null) {
-                    if (lastSelectedIndividual.equals(entity)) {
-                        lastSelectedIndividual = null;
-                        fireSelectionChanged();
-                    }
-                }
-            }
-
-
-            public void visit(OWLDataType dataType) {
-            }
-        });
+        entity.accept(clearVisitor);
         if (lastSelectedEntity != null && entity.equals(lastSelectedEntity)) {
             lastSelectedEntity = null;
             fireSelectionChanged();
@@ -179,30 +226,8 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
         }
         if (selectedObject instanceof OWLEntity) {
             lastSelectedEntity = (OWLEntity)selectedObject;
-            lastSelectedEntity.accept(new OWLEntityVisitor() {
-                public void visit(OWLClass cls) {
-                    lastSelectedClass = cls;
-                }
 
-
-                public void visit(OWLObjectProperty property) {
-                    lastSelectedObjectProperty = property;
-                }
-
-
-                public void visit(OWLDataProperty property) {
-                    lastSelectedDataProperty = property;
-                }
-
-
-                public void visit(OWLIndividual individual) {
-                    lastSelectedIndividual = individual;
-                }
-
-
-                public void visit(OWLDataType dataType) {
-                }
-            });
+            lastSelectedEntity.accept(updateVisitor);
             lastSelectedAxiom = null; // unlikely we will want the axiom selection to still be valid
         }
         else if (selectedObject instanceof OWLAxiom){
@@ -226,8 +251,18 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
-    public OWLIndividual getLastSelectedIndividual() {
+    public OWLAnnotationProperty getLastSelectedAnnotationProperty() {
+        return lastSelectedAnnotationProperty;
+    }
+
+
+    public OWLNamedIndividual getLastSelectedIndividual() {
         return lastSelectedIndividual;
+    }
+
+
+    public OWLDatatype getLastSelectedDatatype() {
+        return lastSelectedDatatype;
     }
 
 

@@ -299,8 +299,9 @@ public class MetricsPanel extends JPanel {
 
     private void createAnnotationAxiomMetrics() {
         List<OWLMetric> metrics = new ArrayList<OWLMetric>();
-        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ENTITY_ANNOTATION));
-        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.AXIOM_ANNOTATION));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_ASSERTION));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_PROPERTY_DOMAIN));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_PROPERTY_RANGE));
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Annotation axioms", metricManager);
     }

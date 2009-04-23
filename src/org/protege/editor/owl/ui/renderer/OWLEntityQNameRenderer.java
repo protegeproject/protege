@@ -5,7 +5,6 @@ import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
 import org.semanticweb.owl.model.OWLEntity;
 
 import java.net.URI;
-import java.net.URLDecoder;
 
 
 /**
@@ -30,16 +29,16 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
             PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
             String s = mapper.getShortForm(entity.getURI());
             if (s != null) {
-                return URLDecoder.decode(s, "utf-8");
+                return s;
             }
             else {
                 // No mapping
                 URI uri = entity.getURI();
                 if (uri.getFragment() != null) {
-                    return uri.getFragment(); // which is decoded automatically
+                    return uri.getFragment();
                 }
                 else {
-                    return URLDecoder.decode(uri.toString(), "utf-8");
+                    return uri.toString();
                 }
             }
         }

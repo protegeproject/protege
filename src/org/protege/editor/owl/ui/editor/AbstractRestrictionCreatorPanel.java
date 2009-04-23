@@ -4,8 +4,8 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLProperty;
 
@@ -137,8 +137,8 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
     }
 
 
-    public Set<OWLDescription> getDescriptions(){
-        Set<OWLDescription> result = new HashSet<OWLDescription>();
+    public Set<OWLClassExpression> getClassExpressions(){
+        Set<OWLClassExpression> result = new HashSet<OWLClassExpression>();
         RestrictionCreator<P, F> creator = (RestrictionCreator<P, F>) typeCombo.getSelectedItem();
         if (creator == null) {
             return Collections.emptySet();
@@ -147,15 +147,6 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
                                    new HashSet<F>(fillerSelectorPanel.getSelectedObjects()),
                                    result);
         return result;
-    }
-
-
-    /**
-     * @deprecated use <code>getDescriptions()</code>
-     * @return a set of restrictions described by this editor
-     */
-    public Set<OWLDescription> createRestrictions() {
-        return getDescriptions();
     }
 
 
@@ -232,7 +223,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         }
 
 
-        abstract void createRestrictions(Set<P> properties, Set<F> fillers, Set<OWLDescription> result);
+        abstract void createRestrictions(Set<P> properties, Set<F> fillers, Set<OWLClassExpression> result);
     }
 
 
@@ -245,7 +236,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
 
         public void createRestrictions(Set<P> properties, Set<F> fillers,
-                                       Set<OWLDescription> result) {
+                                       Set<OWLClassExpression> result) {
             for (P prop : properties) {
                 for (F desc : fillers) {
                     result.add(createRestriction(prop, desc, (Integer) cardinalitySpinner.getValue()));
@@ -254,6 +245,6 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         }
 
 
-        public abstract OWLDescription createRestriction(P prop, F filler, int card);
+        public abstract OWLClassExpression createRestriction(P prop, F filler, int card);
     }
 }

@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.entity;
 
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLOntologyChange;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
 
 
 /**
@@ -30,10 +29,9 @@ public class OWLEntityCreationSet<E extends OWLEntity> {
     }
 
 
-    public OWLEntityCreationSet(E owlEntity, OWLOntology ontology) {
+    public OWLEntityCreationSet(E owlEntity) {
         this.owlEntity = owlEntity;
         changes = new ArrayList<OWLOntologyChange>();
-//        changes.add(new AddEntity(ontology, owlEntity, null));
     }
 
 

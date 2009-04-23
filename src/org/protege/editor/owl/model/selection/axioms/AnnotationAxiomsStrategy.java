@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.net.URI;
@@ -31,13 +29,14 @@ public class AnnotationAxiomsStrategy extends AbstractAxiomSelectionStrategy {
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : ontologies){
-            for (OWLEntityAnnotationAxiom ax : ont.getAxioms(AxiomType.ENTITY_ANNOTATION)){
-                if (uris.contains(ax.getAnnotation().getAnnotationURI())){
-                    axioms.add(ax);
-                }
-            }
-        }        
+// @@TODO v3 port
+//        for (OWLOntology ont : ontologies){
+//            for (OWLEntityAnnotationAxiom ax : ont.getAxioms(AxiomType.ENTITY_ANNOTATION)){
+//                if (uris.contains(ax.getAnnotation().getURI())){
+//                    axioms.add(ax);
+//                }
+//            }
+//        }
         return axioms;
     }
 

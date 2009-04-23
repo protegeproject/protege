@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.description;
 
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 
 /**
@@ -14,7 +14,7 @@ import org.semanticweb.owl.model.OWLDescription;
  */
 public interface OWLDescriptionNode {
 
-    OWLDescription getDescription();
+    OWLClassExpression getClassExpression();
 
 
     void accept(OWLDescriptionNodeVisitor visitor);

@@ -32,10 +32,6 @@ import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
-import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.semanticweb.owl.model.*;
@@ -255,19 +251,25 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         OWLClass lastSelectedClass = selectionModel.getLastSelectedClass();
         OWLObjectProperty lastSelectedObjectProperty = selectionModel.getLastSelectedObjectProperty();
         OWLDataProperty lastSelectedDataProperty = selectionModel.getLastSelectedDataProperty();
-        OWLIndividual lastSelectedIndividual = selectionModel.getLastSelectedIndividual();
+        OWLAnnotationProperty lastSelectedAnnotationProperty = selectionModel.getLastSelectedAnnotationProperty();
+        OWLNamedIndividual lastSelectedIndividual = selectionModel.getLastSelectedIndividual();
+        OWLDatatype lastSelectedDatatype = selectionModel.getLastSelectedDatatype();
         OWLEntity selectedEntity = selectionModel.getSelectedEntity();
 
         selectionModel.setSelectedEntity(lastSelectedClass);
         selectionModel.setSelectedEntity(lastSelectedObjectProperty);
         selectionModel.setSelectedEntity(lastSelectedDataProperty);
+        selectionModel.setSelectedEntity(lastSelectedAnnotationProperty);
         selectionModel.setSelectedEntity(lastSelectedIndividual);
+        selectionModel.setSelectedEntity(lastSelectedDatatype);
         selectionModel.setSelectedEntity(selectedEntity);
 
         verifySelection(CollectionFactory.createSet(lastSelectedClass,
                                                     lastSelectedDataProperty,
-                                                    lastSelectedIndividual,
                                                     lastSelectedObjectProperty,
+                                                    lastSelectedAnnotationProperty,
+                                                    lastSelectedIndividual,
+                                                    lastSelectedDatatype,
                                                     selectedEntity));
     }
 
@@ -640,18 +642,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    /**
-     * @deprecated use <code>createOWLCellRenderer(boolean renderExpression, boolean renderIcon)</code>
-     * @param renderExpression see <code>OWLCellRenderer</code>
-     * @param renderIcon see <code>OWLCellRenderer</code>
-     * @param indentation no longer has any effect
-     * @return the renderer
-     */
-    public OWLCellRenderer createOWLCellRenderer(boolean renderExpression, boolean renderIcon, int indentation) {
-        return createOWLCellRenderer(renderExpression, renderIcon);
-    }
-
-
     public Map<String, Color> getKeyWordColorMap() {
         return keyWordColorMap;
     }
@@ -685,39 +675,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    public OWLEntityCreationSet<OWLIndividual> createOWLIndividual() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an individual name", OWLIndividual.class);
-    }
-
-
-    /**
-     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
-     */
-    public OWLClassSelectorPanel getOWLClassSelectorPanel() {
-        return owlComponentFactory.getOWLClassSelectorPanel();
-    }
-
-    /**
-     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
-     */
-    public OWLObjectPropertySelectorPanel getOWLObjectPropertySelectorPanel() {
-        return owlComponentFactory.getOWLObjectPropertySelectorPanel();
-    }
-
-
-    /**
-     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
-     */
-    public OWLDataPropertySelectorPanel getOWLDataPropertySelectorPanel() {
-        return owlComponentFactory.getOWLDataPropertySelectorPanel();
-    }
-
-
-    /**
-     * @deprecated use the appropriate method on OWLComponentFactory - <code>OWLWorkspace.getOWLComponentFactory()</code>
-     */
-    public OWLIndividualSelectorPanel getOWLIndividualSelectorPanel() {
-        return owlComponentFactory.getOWLIndividualSelectorPanel();
+    public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual() {
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an individual name", OWLNamedIndividual.class);
     }
 
 

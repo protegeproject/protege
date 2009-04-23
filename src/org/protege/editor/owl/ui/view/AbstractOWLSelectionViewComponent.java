@@ -236,6 +236,11 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
     }
 
 
+    protected boolean isOWLAnnotationPropertyView() {
+        return canNavigate(ProtegeProperties.ANNOTATION_PROPERTY_VIEW_CATEGORY);
+    }
+
+
     protected boolean isOWLDatatypeView() {
         return canNavigate(ProtegeProperties.DATATYPE_VIEW_CATEGORY);
     }
@@ -277,13 +282,18 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         }
 
 
-        public void visit(OWLIndividual owlIndividual) {
+        public void visit(OWLNamedIndividual owlIndividual) {
             result = isOWLIndividualView();
         }
 
 
-        public void visit(OWLDataType owlDataType) {
+        public void visit(OWLDatatype owlDatatype) {
             result = isOWLDatatypeView();
+        }
+
+
+        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            result = isOWLAnnotationPropertyView();
         }
     }
 }

@@ -61,10 +61,10 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
         }
 
 
-        public void visit(OWLObjectMinCardinalityRestriction min) {
+        public void visit(OWLObjectMinCardinality min) {
             if (min.getCardinality() == 1 && min.isQualified()){
-                OWLObjectSomeRestriction someValuesFrom =
-                        getOWLDataFactory().getOWLObjectSomeRestriction(min.getProperty(), min.getFiller());
+                OWLObjectSomeValuesFrom someValuesFrom =
+                        getOWLDataFactory().getOWLObjectSomeValuesFrom(min.getProperty(), min.getFiller());
                 visit(someValuesFrom);
             }
             else{
@@ -73,10 +73,10 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
         }
 
 
-        public void visit(OWLDataMinCardinalityRestriction min) {
+        public void visit(OWLDataMinCardinality min) {
             if (min.getCardinality() == 1 && min.isQualified()){
-                OWLDataSomeRestriction someValuesFrom =
-                        getOWLDataFactory().getOWLDataSomeRestriction(min.getProperty(), min.getFiller());
+                OWLDataSomeValuesFrom someValuesFrom =
+                        getOWLDataFactory().getOWLDataSomeValuesFrom(min.getProperty(), min.getFiller());
                 visit(someValuesFrom);
             }
             else{

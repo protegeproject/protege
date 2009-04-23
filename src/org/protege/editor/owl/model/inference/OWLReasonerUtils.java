@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.inference;
 
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,14 +47,14 @@ public class OWLReasonerUtils {
     }
 
 
-    public Set<Set<OWLDescription>> getMostSpecificSets(Set<Set<OWLDescription>> setOfSets) throws OWLReasonerException {
-        Set<Set<OWLDescription>> results = new HashSet<Set<OWLDescription>>();
-        for(Set<OWLDescription> descrs : setOfSets) {
+    public Set<Set<OWLClassExpression>> getMostSpecificSets(Set<Set<OWLClassExpression>> setOfSets) throws OWLReasonerException {
+        Set<Set<OWLClassExpression>> results = new HashSet<Set<OWLClassExpression>>();
+        for(Set<OWLClassExpression> descrs : setOfSets) {
             if (results.isEmpty()){
                 results.add(descrs);
             }
             else{
-                for (Set<OWLDescription> result : results){
+                for (Set<OWLClassExpression> result : results){
                     if (getReasoner().isSubClassOf(descrs.iterator().next(), result.iterator().next())){
                         // if the new set is more specific than an existing one, replace the existing one
                         results.remove(result);
@@ -76,14 +76,14 @@ public class OWLReasonerUtils {
     }
 
 
-    public Set<OWLDescription> getMostSpecific(Set<OWLDescription> descriptions) throws OWLReasonerException {
-        Set<OWLDescription> results = new HashSet<OWLDescription>();
-        for(OWLDescription descr : descriptions) {
+    public Set<OWLClassExpression> getMostSpecific(Set<OWLClassExpression> descriptions) throws OWLReasonerException {
+        Set<OWLClassExpression> results = new HashSet<OWLClassExpression>();
+        for(OWLClassExpression descr : descriptions) {
             if (results.isEmpty()){
                 results.add(descr);
             }
             else{
-                for (OWLDescription result : results){
+                for (OWLClassExpression result : results){
                     if (getReasoner().isSubClassOf(descr, result)){
                         // if the new descr is more specific than an existing one, replace the existing one
                         results.remove(result);

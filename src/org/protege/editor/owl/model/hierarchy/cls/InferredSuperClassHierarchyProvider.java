@@ -1,17 +1,17 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLRuntimeException;
+
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -39,7 +39,7 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
     }
 
 
-    protected Set<? extends OWLDescription> getEquivalentClasses(OWLClass cls) {
+    protected Set<? extends OWLClassExpression> getEquivalentClasses(OWLClass cls) {
         try {
             // Get the equivalent classes from the reasoner
             if (reasoner == null) {

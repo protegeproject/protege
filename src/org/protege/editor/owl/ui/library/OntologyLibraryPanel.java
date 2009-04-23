@@ -270,7 +270,7 @@ public class OntologyLibraryPanel extends JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             Object userObject = node.getUserObject();
             if (userObject instanceof OntologyLibrary) {
-                label.setText("<html><body><b>" + ((OntologyLibrary) userObject).getDescription() + "</b></body></html>");
+                label.setText("<html><body><b>" + ((OntologyLibrary) userObject).getClassExpression() + "</b></body></html>");
                 label.setBorder(BorderFactory.createEmptyBorder(2, 2, 8, 0));
                 setIcon(OWLIcons.getIcon("ontology.library.png"));
             }

@@ -133,7 +133,7 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
     }
 
 
-    public static OWLEntityCreationSet<OWLClass> showDialog(OWLDescription desc, OWLEditorKit eKit) {
+    public static OWLEntityCreationSet<OWLClass> showDialog(OWLClassExpression desc, OWLEditorKit eKit) {
         OWLEntityCreationSet<OWLClass> creationSet = null;
 
         AnonymousDefinedClassManager adcManager = eKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
@@ -163,7 +163,7 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
     }
 
 
-    private static OWLEntityCreationSet<OWLClass> appendDefinitionToCreationSet(OWLEntityCreationSet<OWLClass> creationSet, OWLDescription desc, OWLEditorKit eKit) {
+    private static OWLEntityCreationSet<OWLClass> appendDefinitionToCreationSet(OWLEntityCreationSet<OWLClass> creationSet, OWLClassExpression desc, OWLEditorKit eKit) {
         final OWLClass owlEntity = creationSet.getOWLEntity();
         final OWLAxiom ax = eKit.getOWLModelManager().getOWLDataFactory().getOWLEquivalentClassesAxiom(owlEntity, desc);
 

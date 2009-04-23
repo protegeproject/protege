@@ -73,8 +73,8 @@ public class OWLObjectRenderingCache implements Disposable {
 
     public String getRendering(OWLObject object, OWLObjectRenderer owlObjectRenderer) {
         String s = null;
-        if (object instanceof OWLDescription){
-            String userRendering = OWLExpressionUserCache.getInstance(mngr).getRendering((OWLDescription) object);
+        if (object instanceof OWLClassExpression){
+            String userRendering = OWLExpressionUserCache.getInstance(mngr).getRendering((OWLClassExpression) object);
             if (userRendering != null){
                 s = userRendering;
                 cache.put(object, s);

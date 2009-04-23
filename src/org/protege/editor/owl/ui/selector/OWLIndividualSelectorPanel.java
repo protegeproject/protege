@@ -6,8 +6,8 @@ import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
-import org.protege.editor.owl.ui.view.OWLIndividualListViewComponent;
-import org.semanticweb.owl.model.OWLIndividual;
+import org.protege.editor.owl.ui.view.individual.OWLIndividualListViewComponent;
+import org.semanticweb.owl.model.OWLNamedIndividual;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br>
  * <br>
  */
-public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndividual> {
+public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIndividual> {
 
     private OWLIndividualListViewComponent viewComponent;
 
@@ -63,7 +63,7 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
         this.viewComponent.setSelectionMode(selectionMode);
     }
 
-    public void setSelection(OWLIndividual ind) {
+    public void setSelection(OWLNamedIndividual ind) {
         if (viewComponent.getView() != null) {
             viewComponent.getView().setPinned(false);
         }
@@ -71,16 +71,16 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
     }
 
 
-    public void setSelection(Set<OWLIndividual> entities) {
+    public void setSelection(Set<OWLNamedIndividual> entities) {
         viewComponent.setSelectedIndividuals(entities);
     }
 
 
-    public OWLIndividual getSelectedObject() {
+    public OWLNamedIndividual getSelectedObject() {
         return viewComponent.getSelectedIndividual();
     }
 
-    public Set<OWLIndividual> getSelectedObjects() {
+    public Set<OWLNamedIndividual> getSelectedObjects() {
         return viewComponent.getSelectedIndividuals();
     }
 
@@ -135,29 +135,5 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLIndivid
 
     public void removeSelectionListener(ChangeListener listener) {
         viewComponent.removeChangeListener(listener);
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObject</code>
-     * @return
-     */
-    public OWLIndividual getSelectedIndividual() {
-        return getSelectedObject();
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObjects</code>
-     * @return
-     */
-    public Set<OWLIndividual> getSelectedIndividuals() {
-        return getSelectedObjects();
-    }
-
-    /**
-     * @deprecated Use <code>setSelection</code>
-     * @param ind
-     */
-    public void setSelectedIndividual(OWLIndividual ind) {
-        setSelection(ind);
     }
 }

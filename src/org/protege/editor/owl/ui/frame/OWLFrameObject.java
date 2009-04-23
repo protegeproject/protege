@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.List;
-
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLObject;
+
+import java.util.List;
 
 
 /**

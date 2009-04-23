@@ -205,7 +205,7 @@
     <extension id="OWLClassAnnotations"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
-        <class value="org.protege.editor.owl.ui.view.OWLClassAnnotationsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.OWLClassAnnotationsViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
     </extension>
@@ -214,7 +214,7 @@
     <extension id="OWLClassDescription"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
-        <class value="org.protege.editor.owl.ui.view.OWLClassDescriptionViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.OWLClassDescriptionViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -245,7 +245,7 @@
     <extension id="OWLObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Object properties"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
         <navigates value="@org.protege.objectpropertycategory"/>
@@ -255,7 +255,7 @@
     <extension id="InferredObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Inferred object property hierarchy"/>
-        <class value="org.protege.editor.owl.ui.view.InferredObjectPropertyHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.InferredObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
         <navigates value="@org.protege.objectpropertycategory"/>
@@ -265,7 +265,7 @@
             id="OWLObjectPropertyAnnotations"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyAnnotationsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyAnnotationsViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
@@ -274,7 +274,7 @@
             id="OWLObjectPropertyDescription"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyDescriptionViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyDescriptionViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
         <navigates value="@org.protege.objectpropertycategory"/>
@@ -285,7 +285,7 @@
             id="OWLObjectPropertyDomainsAndRanges"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Domains and ranges"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyDomainsAndRangesViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyDomainsAndRangesViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
@@ -295,7 +295,7 @@
             id="OWLObjectPropertyCharacteristics"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Characteristics"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyCharacteristicsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyCharacteristicsViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
@@ -306,7 +306,7 @@
     <extension id="OWLDataPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Data properties"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
         <navigates value="@org.protege.datapropertycategory"/>
@@ -316,7 +316,7 @@
     <extension id="OWLDataPropertyDescription"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyDescriptionViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyDescriptionViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
     </extension>
@@ -325,7 +325,7 @@
     <extension id="OWLDataPropertyAnnotations"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyAnnotationsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyAnnotationsViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
     </extension>
@@ -334,7 +334,7 @@
     <extension id="OWLDataPropertyDomainsAndRanges"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Domains and ranges"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyDomainsAndRangesViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyDomainsAndRangesViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
     </extension>
@@ -344,7 +344,7 @@
             id="OWLDataPropertyCharacteristics"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Characteristics"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyCharacteristicsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyCharacteristicsViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
     </extension>
@@ -355,7 +355,7 @@
     <extension id="OWLIndividualsList"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Individuals"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualListViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.individualcategory"/>
@@ -365,7 +365,7 @@
     <extension id="OWLIndividualsByClass"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Individuals by class"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualsByClassViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualsByClassViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -376,7 +376,7 @@
     <extension id="OWLIndividualsByInferredType"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Individuals by inferred type"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualsByInferredTypeViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualsByInferredTypeViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -387,7 +387,7 @@
     <extension id="OWLMembersList"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Members list"/>
-        <class value="org.protege.editor.owl.ui.view.OWLMembersListViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLMembersListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.individualcategory"/>
@@ -397,7 +397,7 @@
     <extension id="OWLIndividualAnnotations"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualAnnotationsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualAnnotationsViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
     </extension>
@@ -406,7 +406,7 @@
     <extension id="OWLIndividualTypes"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Description"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualDescriptionViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualDescriptionViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
     </extension>
@@ -415,7 +415,7 @@
     <extension id="OWLIndividualRelationships"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Property assertions"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualPropertyAssertionsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualPropertyAssertionsViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
     </extension>
@@ -455,7 +455,7 @@
     <extension id="OWLOntologyAnnotationsView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Ontology annotations"/>
-        <class value="org.protege.editor.owl.ui.view.OWLOntologyAnnotationViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.OWLOntologyAnnotationViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -482,7 +482,7 @@
     <extension id="OWLOntologyImportsTable"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Imported ontologies"/>
-        <class value="org.protege.editor.owl.ui.view.OWLImportsDeclarationsViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.OWLImportsDeclarationsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -529,7 +529,7 @@
     <extension id="RDFXML"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="RDF/XML rendering"/>
-        <class value="org.protege.editor.owl.ui.view.RDFXMLRenderingViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.RDFXMLRenderingViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -537,7 +537,7 @@
     <extension id="OWLXML"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="OWL/XML rendering"/>
-        <class value="org.protege.editor.owl.ui.view.OWLXMLRenderingViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.OWLXMLRenderingViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -546,7 +546,7 @@
     <extension id="ManchesterOWLSyntax"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Manchester syntax rendering"/>
-        <class value="org.protege.editor.owl.ui.view.ManchesterSyntaxRenderingViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.ManchesterSyntaxRenderingViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -554,7 +554,7 @@
     <extension id="OWLFunctionalSyntax"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="OWL functional syntax rendering"/>
-        <class value="org.protege.editor.owl.ui.view.OWLFunctionalSyntaxRenderingViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.ontology.OWLFunctionalSyntaxRenderingViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
     </extension>
@@ -565,7 +565,7 @@
     <extension id="OWLClassUsageView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLClassUsageViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.OWLClassUsageViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
     </extension>
@@ -573,7 +573,7 @@
     <extension id="OWLObjectPropertyUsageView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLObjectPropertyUsageViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyUsageViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
     </extension>
@@ -581,15 +581,23 @@
     <extension id="OWLDataPropertyUsageView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLDataPropertyUsageViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyUsageViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
+    </extension>
+
+    <extension id="OWLAnnotationPropertyUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyUsageViewComponent"/>
+        <headerColor value="@org.protege.annotationpropertycolor"/>
+        <category value="@org.protege.annotationpropertycategory"/>
     </extension>
 
     <extension id="OWLIndividualUsageView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Usage"/>
-        <class value="org.protege.editor.owl.ui.view.OWLIndividualUsageViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualUsageViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
     </extension>

@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.core.ui.list.MListSectionHeader;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLAxiom;
 
 import java.util.Comparator;
@@ -13,7 +14,7 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public interface OWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListSectionHeader {
+public interface OWLFrameSection<R, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListSectionHeader {
 
     void dispose();
 
@@ -46,15 +47,6 @@ public interface OWLFrameSection<R extends Object, A extends OWLAxiom, E> extend
      *         not contained within this section.
      */
     int getRowIndex(OWLFrameSectionRow row);
-
-
-    /**
-     * @deprecated use <code>canAdd</code> instead
-     * Determines if rows can be added to this section.
-     * @return <code>true</code> if rows can be added to this section,
-     *         or <code>false</code> if rows cannot be added to this section.
-     */
-    boolean canAddRows();
 
 
     OWLFrameSectionRowObjectEditor<E> getEditor();

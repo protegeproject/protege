@@ -57,7 +57,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
         for (OWLOntology ont : ontologies) {
             for (OWLClassAxiom ax : ont.getClassAxioms()) {
                 if (ax instanceof OWLDisjointClassesAxiom) {
-                    if (((OWLDisjointClassesAxiom)ax).getDescriptions().contains(owlClass)){
+                    if (((OWLDisjointClassesAxiom)ax).getClassExpressions().contains(owlClass)){
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                 }
