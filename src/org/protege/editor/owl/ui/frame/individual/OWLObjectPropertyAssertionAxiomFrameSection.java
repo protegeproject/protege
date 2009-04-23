@@ -8,7 +8,10 @@ import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
 import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertyIndividualPairEditor;
 import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -28,7 +31,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     private Set<OWLObjectPropertyAssertionAxiom> added;
 
 
-    public OWLObjectPropertyAssertionAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<OWLNamedIndividual> frame) {
+    public OWLObjectPropertyAssertionAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLIndividual> frame) {
         super(owlEditorKit, LABEL, "Object property assertion", frame);
         added = new HashSet<OWLObjectPropertyAssertionAxiom>();
     }

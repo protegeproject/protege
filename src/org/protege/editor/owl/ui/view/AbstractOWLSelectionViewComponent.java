@@ -116,7 +116,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
      * A convenience method that sets the specified entity to be the
      * selected entity in the <code>OWLSelectionModel</code>.
      */
-    protected void setSelectedEntity(OWLEntity owlEntity) {
+    public void setSelectedEntity(OWLEntity owlEntity) {
         if (getView() != null) {
             if (getView().isSyncronizing()) {
                 getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(owlEntity);

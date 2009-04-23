@@ -17,14 +17,14 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 26-Jan-2007<br><br>
  */
-public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> {
+public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> {
 
     private static final String LABEL = "Annotations";
 
     private static OWLAnnotationSectionRowComparator comparator;
 
 
-    public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLEntity> frame) {
+    public OWLAnnotationFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLAnnotationSubject> frame) {
         super(editorKit, LABEL, "Entity annotation", frame);
         comparator = new OWLAnnotationSectionRowComparator(editorKit.getModelManager());
     }
@@ -36,9 +36,12 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
 
     protected void refill(OWLOntology ontology) {
         boolean hidden = false;
-        for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(getRootObject())) {
+        final OWLAnnotationSubject annotationSubject = getRootObject();
+        // @@TODO this should also work for anon individuals but the OWLAPI is currently incorrect
+        if (annotationSubject instanceof OWLEntity){
+        for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms((OWLEntity)annotationSubject)) {
             if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
-                addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
+                addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, (OWLEntity)annotationSubject, ax));
             }
             else {
                 hidden = true;
@@ -49,6 +52,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
         }
         else {
             setLabel(LABEL);
+        }
         }
     }
 
@@ -69,8 +73,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation>> getRowComparator() {
-
+    public Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> getRowComparator() {
         return comparator;
     }
 
@@ -107,7 +110,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
     }
 
 
-    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
+    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
 
         private Comparator<OWLAnnotationAxiom> owlObjectComparator;
 
@@ -115,8 +118,8 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
              owlObjectComparator = owlModelManager.getOWLObjectComparator();
         }
 
-        public int compare(OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
-                           OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
+        public int compare(OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
+                           OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
                 return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
         }
     }

@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.selector;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.semanticweb.owl.model.OWLObject;/*
+import org.semanticweb.owl.model.OWLEntity;/*
 * Copyright (C) 2007, University of Manchester
 *
 * Modifications to the initial code base are copyright of their
@@ -33,7 +33,7 @@ import org.semanticweb.owl.model.OWLObject;/*
  * Bio Health Informatics Group<br>
  * Date: Jun 5, 2008<br><br>
  */
-public abstract class AbstractHierarchySelectorPanel<O extends OWLObject> extends AbstractSelectorPanel<O> {
+public abstract class AbstractHierarchySelectorPanel<O extends OWLEntity> extends AbstractSelectorPanel<O> {
 
     private OWLObjectHierarchyProvider<O> hp;
 

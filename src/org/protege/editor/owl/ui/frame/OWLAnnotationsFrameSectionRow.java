@@ -5,7 +5,7 @@ import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLAnnotationSubject;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Arrays;
@@ -18,10 +18,10 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 26-Jan-2007<br><br>
  */
-public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> {
+public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> {
 
     public OWLAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
-                                         OWLEntity rootObject, OWLAnnotationAssertionAxiom axiom) {
+                                         OWLAnnotationSubject rootObject, OWLAnnotationAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
 

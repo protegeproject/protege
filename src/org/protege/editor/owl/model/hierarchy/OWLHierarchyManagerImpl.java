@@ -47,11 +47,13 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
     private InferredOWLClassHierarchyProvider inferredClassHierarchyProvider;
 
-    private OWLObjectHierarchyProvider<OWLObjectProperty> toldObjectPropertyHierarchyProvider;
+    private OWLObjectHierarchyProvider<OWLObjectProperty> assertedObjectPropertyHierarchyProvider;
 
     private OWLObjectHierarchyProvider<OWLObjectProperty> inferredObjectPropertyHierarchyProvider;
 
-    private OWLObjectHierarchyProvider<OWLDataProperty> toldDataPropertyHierarchyProvider;
+    private OWLObjectHierarchyProvider<OWLDataProperty> assertedDataPropertyHierarchyProvider;
+
+    private OWLAnnotationPropertyHierarchyProvider assertedAnnotationPropertyHierarchyProvider;
 
     private OWLModelManager mngr;
 
@@ -89,20 +91,29 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
 
     public OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider() {
-        if (toldObjectPropertyHierarchyProvider == null) {
-            toldObjectPropertyHierarchyProvider = new OWLObjectPropertyHierarchyProvider(mngr.getOWLOntologyManager());
-            toldObjectPropertyHierarchyProvider.setOntologies(mngr.getActiveOntologies());
+        if (assertedObjectPropertyHierarchyProvider == null) {
+            assertedObjectPropertyHierarchyProvider = new OWLObjectPropertyHierarchyProvider(mngr.getOWLOntologyManager());
+            assertedObjectPropertyHierarchyProvider.setOntologies(mngr.getActiveOntologies());
         }
-        return toldObjectPropertyHierarchyProvider;
+        return assertedObjectPropertyHierarchyProvider;
     }
 
 
     public OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider() {
-        if (toldDataPropertyHierarchyProvider == null) {
-            toldDataPropertyHierarchyProvider = new OWLDataPropertyHierarchyProvider(mngr.getOWLOntologyManager());
-            toldDataPropertyHierarchyProvider.setOntologies(mngr.getActiveOntologies());
+        if (assertedDataPropertyHierarchyProvider == null) {
+            assertedDataPropertyHierarchyProvider = new OWLDataPropertyHierarchyProvider(mngr.getOWLOntologyManager());
+            assertedDataPropertyHierarchyProvider.setOntologies(mngr.getActiveOntologies());
         }
-        return toldDataPropertyHierarchyProvider;
+        return assertedDataPropertyHierarchyProvider;
+    }
+
+
+    public OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider() {
+        if (assertedAnnotationPropertyHierarchyProvider == null){
+            assertedAnnotationPropertyHierarchyProvider = new OWLAnnotationPropertyHierarchyProvider(mngr.getOWLOntologyManager());
+            assertedAnnotationPropertyHierarchyProvider.setOntologies(mngr.getOntologies());
+        }
+        return assertedAnnotationPropertyHierarchyProvider;
     }
 
 
@@ -125,14 +136,14 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
         if (inferredClassHierarchyProvider != null) {
             inferredClassHierarchyProvider.dispose();
         }
-        if (toldObjectPropertyHierarchyProvider != null) {
-            toldObjectPropertyHierarchyProvider.dispose();
+        if (assertedObjectPropertyHierarchyProvider != null) {
+            assertedObjectPropertyHierarchyProvider.dispose();
         }
         if (inferredObjectPropertyHierarchyProvider != null) {
             inferredObjectPropertyHierarchyProvider.dispose();
         }
-        if (toldDataPropertyHierarchyProvider != null) {
-            toldDataPropertyHierarchyProvider.dispose();
+        if (assertedDataPropertyHierarchyProvider != null) {
+            assertedDataPropertyHierarchyProvider.dispose();
         }
     }
 
@@ -142,10 +153,10 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
         if (assertedClassHierarchyProvider != null) {
             getOWLClassHierarchyProvider().setOntologies(mngr.getActiveOntologies());
         }
-        if (toldObjectPropertyHierarchyProvider != null) {
+        if (assertedObjectPropertyHierarchyProvider != null) {
             getOWLObjectPropertyHierarchyProvider().setOntologies(mngr.getActiveOntologies());
         }
-        if (toldDataPropertyHierarchyProvider != null) {
+        if (assertedDataPropertyHierarchyProvider != null) {
             getOWLDataPropertyHierarchyProvider().setOntologies(mngr.getActiveOntologies());
         }
     }

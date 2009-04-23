@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.frame.individual;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owl.model.OWLIndividual;
 
 
 /**
@@ -11,7 +11,7 @@ import org.semanticweb.owl.model.OWLNamedIndividual;
  * Bio-Health Informatics Group<br>
  * Date: 30-Jan-2007<br><br>
  */
-public class OWLIndividualPropertyAssertionsFrame extends AbstractOWLFrame<OWLNamedIndividual> {
+public class OWLIndividualPropertyAssertionsFrame<O extends OWLIndividual> extends AbstractOWLFrame<O> {
 
     public OWLIndividualPropertyAssertionsFrame(OWLEditorKit owlEditorKit) {
         super(owlEditorKit.getModelManager().getOWLOntologyManager());

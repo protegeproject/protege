@@ -1,9 +1,12 @@
-package org.protege.editor.owl.model.hierarchy;
+package org.protege.editor.owl.ui.view.annotationproperty;
 
-import org.protege.editor.core.Disposable;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.semanticweb.owl.model.OWLObject;
+
+import java.util.ArrayList;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,30 +36,26 @@ import org.semanticweb.owl.model.OWLObjectProperty;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Nov 27, 2008<br><br>
+ * Date: Apr 23, 2009<br><br>
  */
-public interface OWLHierarchyManager extends Disposable {
+public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>{
 
-    String ID = OWLHierarchyManager.class.toString();
-
-    /**
-     * This returns the class hierarchy provider whose hierarchy is
-     * generated from told information about the active ontologies.
-     */
-    OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider();
+    protected void performExtraInitialisation() throws Exception {
+        // do nothing
+    }
 
 
-    OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider();
+    protected OWLObjectHierarchyProvider<OWLAnnotationProperty> getHierarchyProvider() {
+        return getOWLModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
+    }
 
 
-    OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider();
+    protected OWLObject updateView() {
+        return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());
+    }
 
 
-    OWLObjectHierarchyProvider<OWLObjectProperty> getInferredOWLObjectPropertyHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider();
-
-
-    OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider();
+    public List<OWLAnnotationProperty> find(String match) {
+        return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLAnnotationProperties(match));
+    }
 }

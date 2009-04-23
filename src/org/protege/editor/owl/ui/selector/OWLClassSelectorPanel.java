@@ -6,9 +6,9 @@ import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.clshierarchy.AbstractOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLClass;
 
 import javax.swing.event.ChangeListener;
@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
 
-    private AbstractOWLClassHierarchyViewComponent viewComponent;
+    private AbstractOWLEntityHierarchyViewComponent<OWLClass> viewComponent;
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
@@ -81,21 +81,21 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
     }
 
     public void setSelection(OWLClass cls) {
-        viewComponent.setSelectedClass(cls);
+        viewComponent.setSelectedEntity(cls);
     }
 
 
     public void setSelection(Set<OWLClass> clses) {
-        viewComponent.setSelectedClasses(clses);
+        viewComponent.setSelectedEntities(clses);
     }
 
 
     public OWLClass getSelectedObject() {
-        return viewComponent.getSelectedClass();
+        return viewComponent.getSelectedEntity();
     }
 
     public Set<OWLClass> getSelectedObjects() {
-        return viewComponent.getSelectedClasses();
+        return viewComponent.getSelectedEntities();
     }
 
     public void dispose() {

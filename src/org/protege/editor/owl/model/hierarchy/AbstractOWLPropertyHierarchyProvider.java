@@ -19,7 +19,6 @@ public abstract class AbstractOWLPropertyHierarchyProvider<E extends OWLProperty
 
     private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
 
-
     private Set<OWLOntology> ontologies;
 
     private Set<P> roots;

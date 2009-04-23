@@ -88,6 +88,16 @@ public class EntityFinderImpl implements EntityFinder {
     }
 
 
+    public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match) {
+        return getEntities(match, OWLAnnotationProperty.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
+    }
+
+
+    public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp) {
+        return getEntities(match, OWLAnnotationProperty.class, fullRegExp);
+    }
+
+
     public Set<OWLEntity> getEntities(String match) {
         return getEntities(match, OWLEntity.class, EntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
@@ -221,6 +231,12 @@ public class EntityFinderImpl implements EntityFinder {
                 else if (type.equals(OWLIndividual.class)){
                     entities.addAll((Set<T>)ont.getReferencedIndividuals());
                 }
+                else if (type.equals(OWLAnnotationProperty.class)){
+                    entities.addAll((Set<T>)ont.getReferencedAnnotationProperties());
+                }
+                else if (type.equals(OWLDatatype.class)){
+                    entities.addAll((Set<T>)ont.getReferencedDatatypes());
+                }
             }
             return entities;
         }
@@ -239,6 +255,9 @@ public class EntityFinderImpl implements EntityFinder {
         }
         else if (type.equals(OWLIndividual.class)){
             return (T)renderingCache.getOWLIndividual(rendering);
+        }
+        else if (type.equals(OWLAnnotationProperty.class)){
+            return (T)renderingCache.getOWLDataProperty(rendering);
         }
         else if (type.equals(OWLDatatype.class)){
             return (T)renderingCache.getOWLDatatype(rendering);
@@ -261,6 +280,9 @@ public class EntityFinderImpl implements EntityFinder {
         }
         else if (type.equals(OWLIndividual.class)){
             return renderingCache.getOWLIndividualRenderings();
+        }
+        else if (type.equals(OWLAnnotationProperty.class)){
+            return renderingCache.getOWLAnnotationPropertyRenderings();
         }
         else if (type.equals(OWLDatatype.class)){
             return renderingCache.getOWLDatatypeRenderings();

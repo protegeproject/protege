@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame.editor;
 
+import org.semanticweb.owl.model.OWLAnnotationValue;
+
 import javax.swing.*;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -31,7 +33,7 @@ import javax.swing.*;
  * Bio-Health Informatics Group<br>
  * Date: 01-Aug-2007<br><br>
  */
-public interface OWLAnnotationValueEditor<O extends Object> {
+public interface OWLAnnotationValueEditor<O extends OWLAnnotationValue> {
 
     boolean canEdit(Object object);
 
