@@ -1,9 +1,13 @@
 package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.model.OWLObject;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,14 +19,23 @@ import java.awt.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class InferredOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent {
+public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLClass> {
 
     protected void performExtraInitialisation() throws Exception {
         getTree().setBackground(new Color(255, 255, 215));
     }
 
 
-    protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
+    protected OWLObjectHierarchyProvider<OWLClass> getHierarchyProvider() {
         return getOWLModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider();
+    }
+
+    public List<OWLClass> find(String match) {
+        return new ArrayList<OWLClass>(getOWLModelManager().getEntityFinder().getMatchingOWLClasses(match));
+    }
+
+
+    protected OWLObject updateView() {
+        return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
     }
 }

@@ -81,21 +81,21 @@ public class OWLObjectPropertySelectorPanel extends AbstractHierarchySelectorPan
 
 
     public void setSelection(OWLObjectProperty property) {
-        view.setSelectedProperty(property);
+        view.setSelectedEntity(property);
     }
 
 
     public void setSelection(Set<OWLObjectProperty> properties) {
-        view.setSelectedProperties(properties);
+        view.setSelectedEntities(properties);
     }
 
 
     public OWLObjectProperty getSelectedObject() {
-        return view.getSelectedProperty();
+        return view.getSelectedEntity();
     }
 
     public Set<OWLObjectProperty> getSelectedObjects() {
-        return view.getSelectedProperties();
+        return view.getSelectedEntities();
     }
 
     

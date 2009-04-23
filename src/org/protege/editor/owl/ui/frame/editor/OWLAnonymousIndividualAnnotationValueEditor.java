@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.frame.editor;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.semanticweb.owl.model.OWLAnonymousIndividual;
+import org.semanticweb.owl.model.OWLIndividual;
+
+import javax.swing.*;
+import java.awt.*;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -30,82 +41,89 @@ package org.protege.editor.owl.ui.frame.editor;
  * Bio-Health Informatics Group<br>
  * Date: 01-Aug-2007<br><br>
  */
-public class OWLAnonymousIndividualAnnotationValueEditor{}
-// @@TODO v3 port - anon individuals are not entities
-//implements OWLAnnotationValueEditor {
-//
-//    private OWLFrameList2<OWLIndividual> frameList;
-//
-//    private JComponent mainComponent;
-//
-//    private OWLEditorKit editorKit;
-//
-//    private JLabel annotationValueLabel;
-//
-//
-//    public OWLAnonymousIndividualAnnotationValueEditor(OWLEditorKit owlEditorKit) {
-//        editorKit = owlEditorKit;
-//        OWLIndividualPropertyAssertionsFrame frame = new OWLIndividualPropertyAssertionsFrame(owlEditorKit);
-//        frame.addSection(new OWLClassAssertionAxiomTypeFrameSection(owlEditorKit, frame), 0);
-//        frame.addSection(new OWLAnnotationFrameSection(owlEditorKit, frame), 0);
-//
-//        frameList = new OWLFrameList2<OWLIndividual>(owlEditorKit, frame);
-//
-//        mainComponent = new JPanel(new BorderLayout(7, 7));
-//        JScrollPane sp = new JScrollPane(frameList);
-//        JPanel scrollPaneHolder = new JPanel(new BorderLayout());
-//        scrollPaneHolder.add(sp);
-//        scrollPaneHolder.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-//        mainComponent.add(scrollPaneHolder);
-//        annotationValueLabel = new JLabel();
-//        mainComponent.add(annotationValueLabel, BorderLayout.NORTH);
-//    }
-//
-//
-//    public boolean canEdit(Object object) {
-//        return object instanceof OWLIndividual;
-//    }
-//
-//
-//    public boolean isPreferred(Object object) {
-//        return object instanceof OWLIndividual && ((OWLIndividual) object).isAnonymous();
-//    }
-//
-//
-//    public Object getEditedObject() {
-//        return frameList.getRootObject();
-//    }
-//
-//
-//    public void setEditedObject(Object object) {
-//        if (object == null) {
-//            URI uri = URI.create(editorKit.getModelManager().getActiveOntology().getURI() + "#genid" + System.nanoTime());
-//            object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(uri);
-//        }
-//        frameList.setRootObject((OWLIndividual) object);
-//        if (object != null) {
-//            mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-//            annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
-//            annotationValueLabel.setText(editorKit.getModelManager().getRendering((OWLIndividual) object));
-//        }
-//        else {
-//            annotationValueLabel.setIcon(null);
-//            annotationValueLabel.setText("");
-//        }
-//    }
-//
-//
-//    public String getEditorTypeName() {
-//        return "Property values";
-//    }
-//
-//
-//    public JComponent getComponent() {
-//        return mainComponent;
-//    }
-//
-//
-//    public void dispose() {
-//        frameList.dispose();
-//    }
-//}
+public class OWLAnonymousIndividualAnnotationValueEditor implements OWLAnnotationValueEditor<OWLAnonymousIndividual> {
+
+    private OWLFrameList2<OWLAnonymousIndividual> frameList;
+
+    private JComponent mainComponent;
+
+    private OWLEditorKit editorKit;
+
+    private JLabel annotationValueLabel;
+
+
+    public OWLAnonymousIndividualAnnotationValueEditor(OWLEditorKit owlEditorKit) {
+        editorKit = owlEditorKit;
+
+        OWLAnonymousIndividualPropertyAssertionsFrame frame = new OWLAnonymousIndividualPropertyAssertionsFrame(owlEditorKit);
+
+        frameList = new OWLFrameList2<OWLAnonymousIndividual>(owlEditorKit, frame);
+
+        mainComponent = new JPanel(new BorderLayout(7, 7));
+        JScrollPane sp = new JScrollPane(frameList);
+        JPanel scrollPaneHolder = new JPanel(new BorderLayout());
+        scrollPaneHolder.add(sp);
+        scrollPaneHolder.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+        mainComponent.add(scrollPaneHolder);
+        annotationValueLabel = new JLabel();
+        mainComponent.add(annotationValueLabel, BorderLayout.NORTH);
+    }
+
+
+    public boolean canEdit(Object object) {
+        return object instanceof OWLIndividual;
+    }
+
+
+    public boolean isPreferred(Object object) {
+        return object instanceof OWLIndividual && ((OWLIndividual) object).isAnonymous();
+    }
+
+
+    public OWLAnonymousIndividual getEditedObject() {
+        return frameList.getRootObject();
+    }
+
+
+    public void setEditedObject(OWLAnonymousIndividual object) {
+        if (object == null) {
+            String id = editorKit.getModelManager().getActiveOntology().getURI() + "#genid" + System.nanoTime();
+            object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
+        }
+        frameList.setRootObject(object);
+        if (object != null) {
+            mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
+            annotationValueLabel.setText(editorKit.getModelManager().getRendering((OWLIndividual) object));
+        }
+        else {
+            annotationValueLabel.setIcon(null);
+            annotationValueLabel.setText("");
+        }
+    }
+
+
+    public String getEditorTypeName() {
+        return "Property values";
+    }
+
+
+    public JComponent getComponent() {
+        return mainComponent;
+    }
+
+
+    public void dispose() {
+        frameList.dispose();
+    }
+
+    class OWLAnonymousIndividualPropertyAssertionsFrame extends OWLIndividualPropertyAssertionsFrame{
+
+        public OWLAnonymousIndividualPropertyAssertionsFrame(OWLEditorKit owlEditorKit) {
+            super(owlEditorKit);
+            addSection(new OWLClassAssertionAxiomTypeFrameSection(owlEditorKit, this), 0);
+// @@TODO OWLAnonymousIndividual should implement OWLAnnotationSubject
+//            addSection(new OWLAnnotationFrameSection(owlEditorKit, this), 0);
+        }
+    }
+}

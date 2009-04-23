@@ -47,4 +47,9 @@ public interface EntityFinder {
     Set<OWLDatatype> getMatchingOWLDatatypes(String match);
 
     Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp);
+
+
+    Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match);
+
+    Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp);
 }

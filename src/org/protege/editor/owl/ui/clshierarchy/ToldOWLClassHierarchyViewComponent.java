@@ -104,7 +104,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     }
 
 
-    protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
+    protected OWLObjectHierarchyProvider<OWLClass> getHierarchyProvider() {
         return getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
     }
 
@@ -121,13 +121,13 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
 
     public boolean canCreateNewChild() {
-        return !getSelectedClasses().isEmpty();
+        return !getSelectedEntities().isEmpty();
     }
 
 
     public boolean canCreateNewSibling() {
-        return !getSelectedClasses().isEmpty() &&
-               !getSelectedClass().equals(getOWLModelManager().getOWLDataFactory().getOWLThing());
+        return !getSelectedEntities().isEmpty() &&
+               !getSelectedEntity().equals(getOWLModelManager().getOWLDataFactory().getOWLThing());
     }
 
 
@@ -135,7 +135,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         OWLEntityCreationSet<OWLClass> set = getOWLWorkspace().createOWLClass();
         if (set != null){
             OWLClass newClass = set.getOWLEntity();
-            OWLClass selectedClass = getSelectedClass();
+            OWLClass selectedClass = getSelectedEntity();
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(set.getOntologyChanges());
             final OWLModelManager mngr = getOWLEditorKit().getModelManager();

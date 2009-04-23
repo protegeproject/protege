@@ -1,19 +1,19 @@
 package org.protege.editor.owl.ui.selector;
 
-import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -61,7 +61,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
     private JScrollPane sp;
 
 
-    public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit) {
+    public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit, boolean multiselect) {
         setLayout(new EntitySelectorPanelLayoutManager());
         classSelectorPanel = new OWLClassSelectorPanel(owlEditorKit, false);
         classSelectorPanel.setBorder(null);
@@ -130,7 +130,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         return new HashSet<OWLEntity>(entityList.getListItems());
     }
 
-    public void setSelection(Set<OWLEntity> entities) {
+    public void setSelection(Set<? extends OWLEntity> entities) {
         entityList.setListData(entities.toArray());
     }
 
@@ -159,6 +159,21 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
     public Set<? extends OWLEntity> getCurrentSelection() {
         Component selComponent = tabbedPane.getSelectedComponent();
         return ((OWLObjectSelector<? extends OWLEntity>) selComponent).getSelectedObjects();
+    }
+
+    public void addSelectionListener(ChangeListener l){
+        classSelectorPanel.addSelectionListener(l);
+        objectPropertySelectorPanel.addSelectionListener(l);
+        dataPropertySelectorPanel.addSelectionListener(l);
+        individualSelectorPanel.addSelectionListener(l);
+    }
+
+
+    public void removeSelectionListener(ChangeListener l){
+        classSelectorPanel.removeSelectionListener(l);
+        objectPropertySelectorPanel.removeSelectionListener(l);
+        dataPropertySelectorPanel.removeSelectionListener(l);
+        individualSelectorPanel.removeSelectionListener(l);
     }
 
 

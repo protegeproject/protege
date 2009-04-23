@@ -421,6 +421,18 @@
     </extension>
 
 
+    <!-- Annotation property views -->
+
+    <extension id="OWLAnnotationPropertyTree"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Annotation properties"/>
+        <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent"/>
+        <headerColor value="@org.protege.annotationpropertycolor"/>
+        <category value="@org.protege.annotationpropertycategory"/>
+        <navigates value="@org.protege.annotationpropertycategory"/>
+    </extension>
+
+
     <!-- misc views -->
 
     <extension id="SelectedEntityView"

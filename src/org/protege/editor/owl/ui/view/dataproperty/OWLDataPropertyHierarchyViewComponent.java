@@ -56,7 +56,7 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHi
 
 
     private void createSubProperty() {
-        OWLDataProperty selProp = getSelectedProperty();
+        OWLDataProperty selProp = getSelectedEntity();
         if (selProp == null) {
             return;
         }

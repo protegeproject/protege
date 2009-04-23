@@ -1,9 +1,19 @@
 package org.protege.editor.owl.ui.selector;
 
-import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.view.ViewComponent;
+import org.protege.editor.core.ui.view.ViewComponentPlugin;
+import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
+import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent;
+import org.semanticweb.owl.model.OWLAnnotationProperty;
 
-import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.Set;
 
 
 /**
@@ -15,51 +25,89 @@ import javax.swing.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLAnnotationPropertySelectorPanel extends JPanel {
-
-    private static final Logger logger = Logger.getLogger(OWLAnnotationPropertySelectorPanel.class);
-
-    private JList propertyList;
+public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLAnnotationProperty> {
 
 
-    public OWLAnnotationPropertySelectorPanel(OWLEditorKit owlEditorKit, String message, boolean onlyActiveOntology) {
-        add(new JLabel("Re-implement me!"));
-//        setLayout(new BorderLayout(7, 7));
-//        // Encapsulate the message in html tags so that it wraps
-//        add(new JLabel("<html><body>" + message + "</body></html>"));
-//        Set<OWLAnnotationProperty> props = new TreeSet<OWLAnnotationProperty>(new OWLEntityComparator(owlEditorKit.getModelManager()));
-//        for (OWLOntology ont : owlEditorKit.getModelManager().getActiveOntologies()) {
-//            if (onlyActiveOntology) {
-//                if (ont.equals(owlEditorKit.getModelManager().getActiveOntology())) {
-//                    props.addAll(ont.getAnnotationProperties());
-//                }
-//            } else {
-//                props.addAll(ont.getAnnotationProperties());
-//            }
-//        }
-//        // Ensure that built in annotation properties are included.
-//        addBuiltInAnnotationProperties(props, owlEditorKit.getModelManager().getOWLDataFactory());
-//        propertyList = new JList(props.toArray());
-//        propertyList.setCellRenderer(owlEditorKit.getWorkspace().createOWLCellRenderer());
-//        add(ComponentFactory.createScrollPane(propertyList));
+    private AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty> viewComponent;
+
+
+    public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit) {
+        this(editorKit, true);
     }
 
-//    public OWLAnnotationProperty getSelectedProperty() {
-//        OWLAnnotationProperty selProp = (OWLAnnotationProperty) propertyList.getSelectedValue();
-//        return selProp;
-//    }
-//
-//    private static void addBuiltInAnnotationProperties(Set<OWLAnnotationProperty> properties, OWLDataFactory factory) {
-//        for(String s : OWLVocabularyAdapter.INSTANCE.getAnnotationProperties()) {
-//            try {
-//                OWLAnnotationProperty prop  = factory.getOWLAnnotationProperty(URI.create(s));
-//                properties.add(prop);
-//            } catch (OWLException e) {
-//                logger.error(e);
-//            }
-//
-//        }
-//    }
+    public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
+        this(editorKit, editable, editorKit.getModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider());
+    }
+
+    public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLAnnotationProperty> hp) {
+        super(editorKit, editable, hp);
+    }
 
 
+    protected ViewComponentPlugin getViewComponentPlugin() {
+
+        return new ViewComponentPluginAdapter() {
+            public String getLabel() {
+                return "Annotation Properties";
+            }
+
+
+            public Workspace getWorkspace() {
+                return getOWLEditorKit().getWorkspace();
+            }
+
+
+            public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
+                    InstantiationException {
+                viewComponent = new OWLAnnotationPropertyHierarchyViewComponent(){
+                    public void performExtraInitialisation() throws Exception {
+                        if (isEditable()){
+                            super.performExtraInitialisation();
+                        }
+                    }
+
+                    protected OWLObjectHierarchyProvider<OWLAnnotationProperty> getHierarchyProvider() {
+                        return OWLAnnotationPropertySelectorPanel.this.getHierarchyProvider();
+                    }
+                };
+                viewComponent.setup(this);
+                return viewComponent;
+            }
+
+
+            public Color getBackgroundColor() {
+                return OWLSystemColors.getOWLClassColor();
+            }
+        };
+    }
+
+    public void setSelection(OWLAnnotationProperty cls) {
+        viewComponent.setSelectedEntity(cls);
+    }
+
+
+    public void setSelection(Set<OWLAnnotationProperty> clses) {
+        viewComponent.setSelectedEntities(clses);
+    }
+
+
+    public OWLAnnotationProperty getSelectedObject() {
+        return viewComponent.getSelectedEntity();
+    }
+
+    public Set<OWLAnnotationProperty> getSelectedObjects() {
+        return viewComponent.getSelectedEntities();
+    }
+
+    public void dispose() {
+        viewComponent.dispose();
+    }
+
+    public void addSelectionListener(ChangeListener listener) {
+        viewComponent.addChangeListener(listener);
+    }
+
+    public void removeSelectionListener(ChangeListener listener) {
+        viewComponent.removeChangeListener(listener);
+    }
 }

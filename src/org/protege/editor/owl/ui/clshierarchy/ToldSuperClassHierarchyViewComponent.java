@@ -30,4 +30,9 @@ public class ToldSuperClassHierarchyViewComponent extends AbstractSuperClassHier
         }
         return provider;
     }
+
+
+    protected void performExtraInitialisation() throws Exception {
+        // do nothing
+    }
 }

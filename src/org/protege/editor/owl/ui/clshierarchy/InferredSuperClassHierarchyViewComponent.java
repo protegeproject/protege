@@ -32,7 +32,6 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
 
 
     protected void performExtraInitialisation() throws Exception {
-        super.performExtraInitialisation();
         getOWLModelManager().addListener(l);
         getTree().setBackground(new Color(255, 255, 215));
     }
