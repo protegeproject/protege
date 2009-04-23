@@ -83,7 +83,7 @@ public class OWLObjectRenderingCache implements Disposable {
         if (s == null){
             s = cache.get(object);
             if (s == null){
-                s = owlObjectRenderer.render(object, null);
+                s = owlObjectRenderer.render(object);
                 cache.put(object, s);
             }
         }

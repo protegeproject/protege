@@ -19,10 +19,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
     private static final Logger logger = Logger.getLogger(OWLObjectRendererImpl.class);
 
-
     private StringBuffer buffer;
-
-    private OWLEntityRenderer entityRenderer;
 
     private BracketWriter bracketWriter;
 
@@ -36,16 +33,15 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void setFocusedObject(OWLObject object) {
-
-    }
-
-
-    public void initialise() {
-    }
-
-
-    public void dispose() {
+    public String render(OWLObject object) {
+        reset();
+        try {
+            object.accept(this);
+            return buffer.toString();
+        }
+        catch (Exception e) {
+            return "<Error! " + e.getMessage() + ">";
+        }
     }
 
 
@@ -92,24 +88,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         return "=";
     }
 
-
-    public String render(OWLObject object, OWLEntityRenderer entityRenderer) {
-        reset();
-        this.entityRenderer = entityRenderer;
-        try {
-            object.accept(this);
-            return buffer.toString();
-        }
-        catch (Exception e) {
-            return "<Error! " + e.getMessage() + ">";
-        }
-    }
-
-
     protected String getRendering(OWLEntity entity) {
-        if (entityRenderer != null){
-            return entityRenderer.render(entity);
-        }
         return mngr.getRendering(entity);
     }
 

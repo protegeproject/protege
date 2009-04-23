@@ -6,7 +6,8 @@ import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLAnnotationAxiom;
+import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
 
@@ -130,19 +131,18 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             return label;
         }
         else {
-
-            if (((AbstractOWLFrameSectionRow) value).getAxiom() instanceof OWLAnnotationAxiom &&
+            final OWLAxiom axiom = ((AbstractOWLFrameSectionRow) value).getAxiom();
+            if (axiom instanceof OWLAnnotationAssertionAxiom &&
                     annotationRendererEnabled) {
-                OWLAnnotationAxiom ax = (OWLAnnotationAxiom) ((AbstractOWLFrameSectionRow) value).getAxiom();
+                OWLAnnotationAssertionAxiom annotationAssertionAxiom = (OWLAnnotationAssertionAxiom) axiom;
                 return annotationRenderer.getListCellRendererComponent(list,
-                                                                       ax.getAnnotations(),
+                                                                       annotationAssertionAxiom.getAnnotation(),
                                                                        index,
                                                                        isSelected,
                                                                        cellHasFocus);
             }
 
             boolean commentedOut = false;
-            OWLFrameSectionRow row = ((OWLFrameSectionRow) value);
             owlCellRenderer.setCommentedOut(commentedOut);
             Object valueToRender = getValueToRender(list, value, index, isSelected, cellHasFocus);
             owlCellRenderer.setIconObject(getIconObject(list, value, index, isSelected, cellHasFocus));
@@ -151,11 +151,6 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             owlCellRenderer.setHighlightKeywords(highlightKeywords);
             owlCellRenderer.setHighlightUnsatisfiableClasses(highlightUnsatisfiableClasses);
             owlCellRenderer.setCrossedOutEntities(crossedOutEntities);
-//            if(row.getOntology() != null) {
-//                if(!row.getOntology().containsAxiom(row.getAxiom())) {
-//                    owlCellRenderer.setStrikeThrough(true);
-//                }
-//            }
             return owlCellRenderer.getListCellRendererComponent(list,
                                                                 valueToRender,
                                                                 index,
