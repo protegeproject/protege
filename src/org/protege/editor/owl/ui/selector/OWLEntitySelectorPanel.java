@@ -61,7 +61,8 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
     private JScrollPane sp;
 
 
-    public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit, boolean multiselect) {
+    // @@TODO need to make a single select version
+    public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit) {
         setLayout(new EntitySelectorPanelLayoutManager());
         classSelectorPanel = new OWLClassSelectorPanel(owlEditorKit, false);
         classSelectorPanel.setBorder(null);
