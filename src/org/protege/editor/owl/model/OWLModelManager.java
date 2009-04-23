@@ -40,9 +40,7 @@ public interface OWLModelManager extends ModelManager {
 
     void addListener(OWLModelManagerListener listener);
 
-
     void removeListener(OWLModelManagerListener listener);
-
 
     void fireEvent(EventType event);
 

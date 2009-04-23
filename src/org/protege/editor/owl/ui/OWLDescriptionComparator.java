@@ -46,7 +46,7 @@ public class OWLDescriptionComparator implements Comparator<OWLClassExpression> 
                 return -1;
             }
             else if(o2.equals(focusedDescription)) {
-                return -1;
+                return 1;
             }
         }
         o1.accept(typeVisitor);
