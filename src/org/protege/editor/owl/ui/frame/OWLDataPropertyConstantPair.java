@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLConstant;
 import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owl.model.OWLLiteral;
 
 
 /**
@@ -14,10 +14,10 @@ public class OWLDataPropertyConstantPair {
 
     private OWLDataProperty property;
 
-    private OWLConstant constant;
+    private OWLLiteral constant;
 
 
-    public OWLDataPropertyConstantPair(OWLDataProperty property, OWLConstant constant) {
+    public OWLDataPropertyConstantPair(OWLDataProperty property, OWLLiteral constant) {
         this.property = property;
         this.constant = constant;
     }
@@ -28,7 +28,7 @@ public class OWLDataPropertyConstantPair {
     }
 
 
-    public OWLConstant getConstant() {
+    public OWLLiteral getConstant() {
         return constant;
     }
 }

@@ -39,12 +39,12 @@ public interface EntityFinder {
     Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp);
 
 
-    Set<OWLIndividual> getMatchingOWLIndividuals(String match);
+    Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match);
 
-    Set<OWLIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp);
+    Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp);
 
 
-    Set<OWLDataType> getMatchingOWLDataTypes(String match);
+    Set<OWLDatatype> getMatchingOWLDatatypes(String match);
 
-    Set<OWLDataType> getMatchingOWLDataTypes(String match, boolean fullRegExp);
+    Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp);
 }

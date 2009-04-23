@@ -1,18 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
-import org.semanticweb.owl.util.InferredAxiomGeneratorException;
-import org.semanticweb.owl.util.InferredOntologyGenerator;
+import org.apache.commons.lang.NotImplementedException;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -47,73 +37,75 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent e) {
-        try {
-            ExportInferredOntologyWizard wizard = new ExportInferredOntologyWizard(getOWLEditorKit());
-            int ret = wizard.showModalDialog();
-            if (ret != Wizard.FINISH_RETURN_CODE) {
-                return;
-            }
-            List<InferredAxiomGenerator<? extends OWLAxiom>> inferredAxiomGenerator = wizard.getInferredAxiomGenerators();
-
-            OWLOntologyManager tempMan = OWLManager.createOWLOntologyManager();
-            InferredOntologyGenerator gen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(),
-                                                                          inferredAxiomGenerator);
-            OWLOntology ont = tempMan.createOntology(wizard.getOntologyURI());
-
-            gen.fillOntology(tempMan, ont);
-
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            if (wizard.isIncludeAnnotations()) {
-                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
-                    for (OWLAnnotationAxiom ax : o.getAnnotationAxioms()) {
-                        if (!(ax instanceof OWLOntologyAnnotationAxiom)) {
-                            changes.add(new AddAxiom(ont, ax));
-                        }
-                        else {
-                            OWLOntologyAnnotationAxiom newAx = getOWLDataFactory().getOWLOntologyAnnotationAxiom(ont,
-                                                                                                                 ((OWLOntologyAnnotationAxiom) ax).getAnnotation());
-                            changes.add(new AddAxiom(ont, newAx));
-                        }
-                    }
-                }
-            }
-            if (wizard.isIncludeAssertedLogicalAxioms()) {
-                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
-                    for (OWLLogicalAxiom ax : o.getLogicalAxioms()) {
-                        changes.add(new AddAxiom(ont, ax));
-                    }
-                }
-            }
-            tempMan.applyChanges(changes);
-
-            tempMan.saveOntology(ont, wizard.getFormat(), wizard.getPhysicalURI());
-
-            JOptionPane.showMessageDialog(getWorkspace(),
-                                          "The inferred axioms have been exported as an ontology to \n" + wizard.getPhysicalURI(),
-                                          "Export finished",
-                                          JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch (OWLOntologyCreationException e1) {
-            JOptionPane.showMessageDialog(getWorkspace(),
-                                          "Could not create ontology:\n" + e1.getMessage(),
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-        }
-        catch (InferredAxiomGeneratorException e1) {
-            JOptionPane.showMessageDialog(getWorkspace(), e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        catch (OWLOntologyChangeException e1) {
-            ProtegeApplication.getErrorLog().logError(e1);
-        }
-        catch (OWLReasonerException e1) {
-            JOptionPane.showMessageDialog(getWorkspace(),
-                                          "The selected reasoner does not support the following queries: " + e1.getMessage(),
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-        }
-        catch (OWLOntologyStorageException e1) {
-            ProtegeApplication.getErrorLog().logError(e1);
-        }
+        throw new NotImplementedException();
+        // @@TODO v3 port
+//        try {
+//            ExportInferredOntologyWizard wizard = new ExportInferredOntologyWizard(getOWLEditorKit());
+//            int ret = wizard.showModalDialog();
+//            if (ret != Wizard.FINISH_RETURN_CODE) {
+//                return;
+//            }
+//            List<InferredAxiomGenerator<? extends OWLAxiom>> inferredAxiomGenerator = wizard.getInferredAxiomGenerators();
+//
+//            OWLOntologyManager tempMan = OWLManager.createOWLOntologyManager();
+//            InferredOntologyGenerator gen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(),
+//                                                                          inferredAxiomGenerator);
+//            OWLOntology ont = tempMan.createOntology(wizard.getOntologyURI());
+//
+//            gen.fillOntology(tempMan, ont);
+//
+//            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+//            if (wizard.isIncludeAnnotations()) {
+//                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
+//                    for (OWLAnnotationAxiom ax : o.getAnnotationAxioms()) {
+//                        if (!(ax instanceof OWLOntologyAnnotationAxiom)) {
+//                            changes.add(new AddAxiom(ont, ax));
+//                        }
+//                        else {
+//                            OWLOntologyAnnotationAxiom newAx = getOWLDataFactory().getOWLOntologyAnnotationAxiom(ont,
+//                                                                                                                 ((OWLOntologyAnnotationAxiom) ax).getAnnotation());
+//                            changes.add(new AddAxiom(ont, newAx));
+//                        }
+//                    }
+//                }
+//            }
+//            if (wizard.isIncludeAssertedLogicalAxioms()) {
+//                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
+//                    for (OWLLogicalAxiom ax : o.getLogicalAxioms()) {
+//                        changes.add(new AddAxiom(ont, ax));
+//                    }
+//                }
+//            }
+//            tempMan.applyChanges(changes);
+//
+//            tempMan.saveOntology(ont, wizard.getFormat(), wizard.getPhysicalURI());
+//
+//            JOptionPane.showMessageDialog(getWorkspace(),
+//                                          "The inferred axioms have been exported as an ontology to \n" + wizard.getPhysicalURI(),
+//                                          "Export finished",
+//                                          JOptionPane.INFORMATION_MESSAGE);
+//        }
+//        catch (OWLOntologyCreationException e1) {
+//            JOptionPane.showMessageDialog(getWorkspace(),
+//                                          "Could not create ontology:\n" + e1.getMessage(),
+//                                          "Error",
+//                                          JOptionPane.ERROR_MESSAGE);
+//        }
+//        catch (InferredAxiomGeneratorException e1) {
+//            JOptionPane.showMessageDialog(getWorkspace(), e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//        catch (OWLOntologyChangeException e1) {
+//            ProtegeApplication.getErrorLog().logError(e1);
+//        }
+//        catch (OWLReasonerException e1) {
+//            JOptionPane.showMessageDialog(getWorkspace(),
+//                                          "The selected reasoner does not support the following queries: " + e1.getMessage(),
+//                                          "Error",
+//                                          JOptionPane.ERROR_MESSAGE);
+//        }
+//        catch (OWLOntologyStorageException e1) {
+//            ProtegeApplication.getErrorLog().logError(e1);
+//        }
     }
 
 

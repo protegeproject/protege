@@ -24,7 +24,7 @@ public interface OntologyLibrary {
      * Gets a description of the library, which can be
      * used in user interfaces.
      */
-    public String getDescription();
+    public String getClassExpression();
 
 
     /**

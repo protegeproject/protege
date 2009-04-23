@@ -38,23 +38,23 @@ public class RenameEntityAction extends SelectedOWLEntityAction {
                 ensureSelected(getOWLDataFactory().getOWLClass(uri));
             }
 
-
             public void visit(OWLObjectProperty property) {
                 ensureSelected(getOWLDataFactory().getOWLObjectProperty(uri));
             }
-
 
             public void visit(OWLDataProperty property) {
                 ensureSelected(getOWLDataFactory().getOWLDataProperty(uri));
             }
 
-
-            public void visit(OWLIndividual individual) {
-                ensureSelected(getOWLDataFactory().getOWLIndividual(uri));
+            public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+                ensureSelected(getOWLDataFactory().getOWLDataProperty(uri));
             }
 
+            public void visit(OWLNamedIndividual individual) {
+                ensureSelected(getOWLDataFactory().getOWLNamedIndividual(uri));
+            }
 
-            public void visit(OWLDataType dataType) {
+            public void visit(OWLDatatype dataType) {
             }
         });
     }

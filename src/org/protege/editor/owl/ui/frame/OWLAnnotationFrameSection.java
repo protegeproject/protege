@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 26-Jan-2007<br><br>
  */
-public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> {
+public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> {
 
     private static final String LABEL = "Annotations";
 
@@ -32,14 +34,10 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
     }
 
 
-    /**
-     * Refills the section with rows.  This method will be called
-     * by the system and should be directly called.
-     */
     protected void refill(OWLOntology ontology) {
         boolean hidden = false;
-        for (OWLEntityAnnotationAxiom ax : ontology.getEntityAnnotationAxioms(getRootObject())) {
-            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getAnnotationURI())) {
+        for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(getRootObject())) {
+            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
                 addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
             }
             else {
@@ -55,8 +53,8 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
     }
 
 
-    protected OWLEntityAnnotationAxiom createAxiom(OWLAnnotation object) {
-        return getOWLDataFactory().getOWLEntityAnnotationAxiom(getRootObject(), object);
+    protected OWLAnnotationAssertionAxiom createAxiom(OWLAnnotation object) {
+        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), object);
     }
 
 
@@ -71,7 +69,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation>> getRowComparator() {
 
         return comparator;
     }
@@ -91,7 +89,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
         for (OWLObject obj : objects) {
             if (obj instanceof OWLAnnotation) {
                 OWLAnnotation annot = (OWLAnnotation)obj;
-                OWLAxiom ax = getOWLDataFactory().getOWLEntityAnnotationAxiom(getRootObject(), annot);
+                OWLAxiom ax = getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), annot);
                 changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             }
             else {
@@ -102,14 +100,14 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
         return true;
     }
 
-    public void visit(OWLEntityAnnotationAxiom axiom) {
+    public void visit(OWLAnnotationAssertionAxiom axiom) {
         if (axiom.getSubject().equals(getRootObject())) {
             reset();
         }
     }
 
 
-    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation>> {
+    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
 
         private Comparator<OWLAnnotationAxiom> owlObjectComparator;
 
@@ -117,8 +115,8 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLEntity
              owlObjectComparator = owlModelManager.getOWLObjectComparator();
         }
 
-        public int compare(OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o1,
-                           OWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> o2) {
+        public int compare(OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
+                           OWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
                 return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
         }
     }

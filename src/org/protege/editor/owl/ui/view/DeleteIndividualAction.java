@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLNamedIndividual;
 import org.semanticweb.owl.util.OWLEntityRemover;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
 
@@ -19,10 +19,10 @@ public class DeleteIndividualAction extends OWLSelectionViewAction {
 
     private OWLEditorKit owlEditorKit;
 
-    private OWLEntitySetProvider<OWLIndividual> indSetProvider;
+    private OWLEntitySetProvider<OWLNamedIndividual> indSetProvider;
 
 
-    public DeleteIndividualAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLIndividual> indSetProvider) {
+    public DeleteIndividualAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLNamedIndividual> indSetProvider) {
         super("Delete individual(s)", OWLIcons.getIcon("individual.delete.png"));
         this.owlEditorKit = owlEditorKit;
         this.indSetProvider = indSetProvider;
@@ -41,7 +41,7 @@ public class DeleteIndividualAction extends OWLSelectionViewAction {
     public void actionPerformed(ActionEvent e) {
         OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getModelManager().getOWLOntologyManager(),
                                                         owlEditorKit.getModelManager().getOntologies());
-        for (OWLIndividual ind : indSetProvider.getEntities()) {
+        for (OWLNamedIndividual ind : indSetProvider.getEntities()) {
             ind.accept(remover);
         }
         owlEditorKit.getModelManager().applyChanges(remover.getChanges());

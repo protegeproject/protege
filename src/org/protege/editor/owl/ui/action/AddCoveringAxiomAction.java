@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
+import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owl.model.OWLSubClassOfAxiom;
 
 import java.awt.event.ActionEvent;
 import java.util.Set;
@@ -42,8 +42,8 @@ public class AddCoveringAxiomAction extends SelectedOWLClassAction {
         OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         // TODO: Push into OWLAPI
         Set<OWLClass> subClses = getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(cls);
-        OWLDescription coveringDesc = getOWLDataFactory().getOWLObjectUnionOf(subClses);
-        OWLSubClassAxiom ax = getOWLDataFactory().getOWLSubClassAxiom(cls, coveringDesc);
+        OWLClassExpression coveringDesc = getOWLDataFactory().getOWLObjectUnionOf(subClses);
+        OWLSubClassOfAxiom ax = getOWLDataFactory().getOWLSubClassOfAxiom(cls, coveringDesc);
         getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
     }
 

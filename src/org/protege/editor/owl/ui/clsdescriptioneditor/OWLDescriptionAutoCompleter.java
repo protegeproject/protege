@@ -240,7 +240,7 @@ public class OWLDescriptionAutoCompleter {
                                                             e.isOWLObjectPropertyExpected(),
                                                             e.isOWLDataPropertyExpected(),
                                                             e.isOWLIndividualExpected(),
-                                                            e.isDataTypeExpected());
+                                                            e.isDatatypeExpected());
                 List kwMatches = new ArrayList(matches.size() + 10);
                 for (String s : e.getExpectedKeyWords()) {
                     if (s.toLowerCase().startsWith(word.toLowerCase())) {

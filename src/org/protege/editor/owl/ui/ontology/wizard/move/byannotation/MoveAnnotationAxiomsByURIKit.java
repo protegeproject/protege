@@ -4,7 +4,8 @@ import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
-import org.semanticweb.owl.model.OWLAnnotationAxiom;
+import org.semanticweb.owl.model.AxiomType;
+import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -99,8 +100,8 @@ public class MoveAnnotationAxiomsByURIKit extends MoveAxiomsKit implements Filte
     public Set<OWLAxiom> getUnfilteredAxioms(Set<OWLOntology> sourceOntologies) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLOntology ont : sourceOntologies){
-            for (OWLAnnotationAxiom ax : ont.getAnnotationAxioms()){
-                if (uris.contains(ax.getAnnotation().getAnnotationURI())){
+            for (OWLAnnotationAssertionAxiom ax : ont.getAxioms(AxiomType.ANNOTATION_ASSERTION)){
+                if (uris.contains(ax.getAnnotation().getProperty().getURI())){
                     axioms.add(ax);
                 }
             }

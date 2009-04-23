@@ -5,7 +5,7 @@ import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedCla
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Set;
@@ -40,21 +40,21 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Nov 28, 2008<br><br>
  */
-public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> extends AbstractOWLFrameSection<OWLDescription, A, E> {
+public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> extends AbstractOWLFrameSection<OWLClassExpression, A, E> {
 
 
-    protected AbstractOWLClassAxiomFrameSection(OWLEditorKit editorKit, String label, String rowLabel, OWLFrame<? extends OWLDescription> owlFrame) {
+    protected AbstractOWLClassAxiomFrameSection(OWLEditorKit editorKit, String label, String rowLabel, OWLFrame<? extends OWLClassExpression> owlFrame) {
         super(editorKit, label, rowLabel, owlFrame);
     }
 
 
-    protected AbstractOWLClassAxiomFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends OWLDescription> owlFrame) {
+    protected AbstractOWLClassAxiomFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends OWLClassExpression> owlFrame) {
         super(editorKit, label, owlFrame);
     }
 
 
-    public final OWLDescription getRootObject() {
-        final OWLDescription cls = super.getRootObject();
+    public final OWLClassExpression getRootObject() {
+        final OWLClassExpression cls = super.getRootObject();
         if (cls != null){
             final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
 
@@ -76,5 +76,5 @@ public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> e
     protected abstract void addAxiom(A ax, OWLOntology ont);
 
 
-    protected abstract Set<A> getClassAxioms(OWLDescription descr, OWLOntology ont);
+    protected abstract Set<A> getClassAxioms(OWLClassExpression descr, OWLOntology ont);
 }

@@ -45,10 +45,13 @@ public interface OWLEntityRenderingCache extends Disposable {
     public OWLDataProperty getOWLDataProperty(String rendering);
 
 
-    public OWLIndividual getOWLIndividual(String rendering);
+    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
 
 
-    public OWLDataType getOWLDataType(String rendering);
+    public OWLNamedIndividual getOWLIndividual(String rendering);
+
+
+    public OWLDatatype getOWLDatatype(String rendering);
 
 
     public Set<String> getOWLClassRenderings();
@@ -58,6 +61,9 @@ public interface OWLEntityRenderingCache extends Disposable {
 
 
     public Set<String> getOWLDataPropertyRenderings();
+
+
+    public Set<String> getOWLAnnotationPropertyRenderings();
 
 
     public Set<String> getOWLIndividualRenderings();

@@ -5,7 +5,7 @@ import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,45 +58,45 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
 
         types.add(some = new RestrictionCreator<OWLObjectProperty, OWLClass>("Some (existential)") {
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
-                                           Set<OWLDescription> result) {
+                                           Set<OWLClassExpression> result) {
                 for (OWLObjectProperty prop : properties) {
                     for (OWLClass filler : fillers) {
-                        result.add(getDataFactory().getOWLObjectSomeRestriction(prop, filler));
+                        result.add(getDataFactory().getOWLObjectSomeValuesFrom(prop, filler));
                     }
                 }
             }
         });
         types.add(only = new RestrictionCreator<OWLObjectProperty, OWLClass>("Only (universal)") {
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
-                                           Set<OWLDescription> result) {
+                                           Set<OWLClassExpression> result) {
                 for (OWLObjectProperty prop : properties) {
                     if (fillers.isEmpty()) {
                         return;
                     }
-                    OWLDescription filler;
+                    OWLClassExpression filler;
                     if (fillers.size() > 1) {
                         filler = getDataFactory().getOWLObjectUnionOf(fillers);
                     }
                     else {
                         filler = fillers.iterator().next();
                     }
-                    result.add(getDataFactory().getOWLObjectAllRestriction(prop, filler));
+                    result.add(getDataFactory().getOWLObjectAllValuesFrom(prop, filler));
                 }
             }
         });
         types.add(min = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Min (min cardinality)") {
-            public OWLDescription createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectMinCardinalityRestriction(prop, card, filler);
+            public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
+                return getDataFactory().getOWLObjectMinCardinality(prop, card, filler);
             }
         });
         types.add(exactly = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Exactly (exact cardinality)") {
-            public OWLDescription createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectExactCardinalityRestriction(prop, card, filler);
+            public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
+                return getDataFactory().getOWLObjectExactCardinality(prop, card, filler);
             }
         });
         types.add(max = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Max (max cardinality)") {
-            public OWLDescription createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectMaxCardinalityRestriction(prop, card, filler);
+            public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
+                return getDataFactory().getOWLObjectMaxCardinality(prop, card, filler);
             }
         });
 
@@ -114,7 +114,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
     }
 
 
-    public boolean setDescription(OWLDescription description) {
+    public boolean setDescription(OWLClassExpression description) {
         if (description == null){
             return true;
         }
@@ -132,14 +132,14 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         return false;
     }
 
-    class AcceptableExpressionFilter extends OWLDescriptionVisitorAdapter {
+    class AcceptableExpressionFilter extends OWLClassExpressionVisitorAdapter {
         private boolean isAcceptable = false;
         private OWLObjectProperty p;
         private OWLClass f;
         private RestrictionCreator t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLObjectPropertyExpression, OWLDescription> r) {
+        private void handleRestriction(OWLQuantifiedRestriction<OWLObjectPropertyExpression, OWLClassExpression> r) {
             if (!r.getProperty().isAnonymous() && !r.getFiller().isAnonymous()){
                 p = r.getProperty().asOWLObjectProperty();
                 f = r.getFiller().asOWLClass();
@@ -147,29 +147,29 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
             }
         }
 
-        public void visit(OWLObjectSomeRestriction r) {
+        public void visit(OWLObjectSomeValuesFrom r) {
             t = some;
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectAllRestriction r) {
+        public void visit(OWLObjectAllValuesFrom r) {
             t = only;
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectMinCardinalityRestriction r) {
+        public void visit(OWLObjectMinCardinality r) {
             t = min;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectExactCardinalityRestriction r) {
+        public void visit(OWLObjectExactCardinality r) {
             t = exactly;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectMaxCardinalityRestriction r) {
+        public void visit(OWLObjectMaxCardinality r) {
             t = max;
             cardinality = r.getCardinality();
             handleRestriction(r);

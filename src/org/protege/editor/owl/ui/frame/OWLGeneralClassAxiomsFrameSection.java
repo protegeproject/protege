@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLGeneralAxiomEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Comparator;
@@ -45,7 +47,7 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
     }
 
 
-    public void visit(OWLSubClassAxiom axiom) {
+    public void visit(OWLSubClassOfAxiom axiom) {
         if (axiom.getSubClass().isAnonymous()) {
             reset();
         }
@@ -53,7 +55,7 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
 
 
     public void visit(OWLDisjointClassesAxiom axiom) {
-        for (OWLDescription desc : axiom.getDescriptions()) {
+        for (OWLClassExpression desc : axiom.getClassExpressions()) {
             if (!desc.isAnonymous()) {
                 return;
             }
@@ -63,7 +65,7 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
 
 
     public void visit(OWLEquivalentClassesAxiom axiom) {
-        for (OWLDescription desc : axiom.getDescriptions()) {
+        for (OWLClassExpression desc : axiom.getClassExpressions()) {
             if (!desc.isAnonymous()) {
                 return;
             }

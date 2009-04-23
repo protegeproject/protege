@@ -1,43 +1,7 @@
 package org.protege.editor.owl.ui.metrics;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLAntiSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLDataPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLDataSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLDeclarationAxiom;
-import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
-import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
-import org.semanticweb.owl.model.OWLDisjointDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLDisjointUnionAxiom;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLEquivalentDataPropertiesAxiom;
-import org.semanticweb.owl.model.OWLEquivalentObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLFunctionalDataPropertyAxiom;
-import org.semanticweb.owl.model.OWLFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLImportsDeclaration;
-import org.semanticweb.owl.model.OWLInverseFunctionalObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLInverseObjectPropertiesAxiom;
-import org.semanticweb.owl.model.OWLIrreflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLNegativeObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyChainSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLObjectPropertyRangeAxiom;
-import org.semanticweb.owl.model.OWLObjectSubPropertyAxiom;
-import org.semanticweb.owl.model.OWLOntologyAnnotationAxiom;
-import org.semanticweb.owl.model.OWLReflexiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLSameIndividualsAxiom;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.model.OWLSymmetricObjectPropertyAxiom;
-import org.semanticweb.owl.model.OWLTransitiveObjectPropertyAxiom;
-import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -86,11 +50,11 @@ public abstract class Metric {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public void visit(OWLAntiSymmetricObjectPropertyAxiom axiom) {
+    public void visit(OWLAsymmetricObjectPropertyAxiom axiom) {
     }
 
 
-    public void visit(OWLAxiomAnnotationAxiom axiom) {
+    public void visit(OWLAnnotationAxiom axiom) {
     }
 
 
@@ -110,7 +74,7 @@ public abstract class Metric {
     }
 
 
-    public void visit(OWLDataSubPropertyAxiom axiom) {
+    public void visit(OWLSubDataPropertyOfAxiom axiom) {
     }
 
 
@@ -135,10 +99,6 @@ public abstract class Metric {
 
 
     public void visit(OWLDisjointUnionAxiom axiom) {
-    }
-
-
-    public void visit(OWLEntityAnnotationAxiom axiom) {
     }
 
 
@@ -190,7 +150,7 @@ public abstract class Metric {
     }
 
 
-    public void visit(OWLObjectPropertyChainSubPropertyAxiom axiom) {
+    public void visit(OWLSubPropertyChainOfAxiom axiom) {
     }
 
 
@@ -202,11 +162,7 @@ public abstract class Metric {
     }
 
 
-    public void visit(OWLObjectSubPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLOntologyAnnotationAxiom axiom) {
+    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
     }
 
 
@@ -214,11 +170,11 @@ public abstract class Metric {
     }
 
 
-    public void visit(OWLSameIndividualsAxiom axiom) {
+    public void visit(OWLSameIndividualAxiom axiom) {
     }
 
 
-    public void visit(OWLSubClassAxiom axiom) {
+    public void visit(OWLSubClassOfAxiom axiom) {
     }
 
 

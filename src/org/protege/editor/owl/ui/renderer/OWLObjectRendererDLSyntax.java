@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.renderer;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLDescriptionVisitorAdapter;
+import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
 import java.util.*;
@@ -159,10 +159,10 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    private static List<OWLDescription> sort(Set<OWLDescription> descriptions) {
-        List<OWLDescription> sortedDescs = new ArrayList<OWLDescription>(descriptions);
-        Collections.sort(sortedDescs, new Comparator<OWLDescription>() {
-            public int compare(OWLDescription o1, OWLDescription o2) {
+    private static List<OWLClassExpression> sort(Set<OWLClassExpression> descriptions) {
+        List<OWLClassExpression> sortedDescs = new ArrayList<OWLClassExpression>(descriptions);
+        Collections.sort(sortedDescs, new Comparator<OWLClassExpression>() {
+            public int compare(OWLClassExpression o1, OWLClassExpression o2) {
                 if (o1 instanceof OWLClass) {
                     return -1;
                 }
@@ -174,9 +174,9 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     public void visit(OWLObjectIntersectionOf node) {
-        List<OWLDescription> ops = sort(node.getOperands());
+        List<OWLClassExpression> ops = sort(node.getOperands());
         for (int i = 0; i < ops.size(); i++) {
-            OWLDescription curOp = ops.get(i);
+            OWLClassExpression curOp = ops.get(i);
 //            boolean bracket = getIndent() != 1;
 //            if (bracket) {
 //                writeOpenBracket(curOp);
@@ -195,33 +195,33 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLTypedConstant node) {
+    public void visit(OWLTypedLiteral node) {
         write("\"");
         write(node.getLiteral());
         write("\"^^");
-        node.getDataType().accept(this);
+        node.getDatatype().accept(this);
     }
 
 
-    public void visit(OWLUntypedConstant node) {
+    public void visit(OWLRDFTextLiteral node) {
         write("\"");
         write(node.getLiteral());
         write("\"");
-        if (node.hasLang()) {
+        if (node.getLang() != null) {
             write("@");
             write(node.getLang());
         }
     }
 
 
-    public void visit(OWLDataType node) {
+    public void visit(OWLDatatype node) {
         write(node.getURI().getFragment());
     }
 
 
     public void visit(OWLDataOneOf node) {
         write("{");
-        for (Iterator<OWLConstant> it = node.getValues().iterator(); it.hasNext();) {
+        for (Iterator<OWLLiteral> it = node.getValues().iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write(" ");
@@ -231,7 +231,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLDataAllRestriction node) {
+    public void visit(OWLDataAllValuesFrom node) {
         write(getAllKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -245,7 +245,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLDataSomeRestriction node) {
+    public void visit(OWLDataSomeValuesFrom node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -254,7 +254,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLDataValueRestriction node) {
+    public void visit(OWLDataHasValue node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -264,12 +264,12 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLIndividual node) {
+    public void visit(OWLNamedIndividual node) {
         write(getRendering(node));
     }
 
 
-    public void visit(OWLObjectAllRestriction node) {
+    public void visit(OWLObjectAllValuesFrom node) {
         write(getAllKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -280,17 +280,17 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLObjectMinCardinalityRestriction desc) {
+    public void visit(OWLObjectMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
 
-    public void visit(OWLObjectExactCardinalityRestriction desc) {
+    public void visit(OWLObjectExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
 
-    public void visit(OWLObjectMaxCardinalityRestriction desc) {
+    public void visit(OWLObjectMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -308,17 +308,17 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLDataMinCardinalityRestriction desc) {
+    public void visit(OWLDataMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
 
-    public void visit(OWLDataExactCardinalityRestriction desc) {
+    public void visit(OWLDataExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
 
-    public void visit(OWLDataMaxCardinalityRestriction desc) {
+    public void visit(OWLDataMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -341,7 +341,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLObjectSomeRestriction node) {
+    public void visit(OWLObjectSomeValuesFrom node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -352,7 +352,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLObjectValueRestriction node) {
+    public void visit(OWLObjectHasValue node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -379,7 +379,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     public void visit(OWLObjectUnionOf node) {
         int indent = getIndent();
         for (Iterator it = sort(node.getOperands()).iterator(); it.hasNext();) {
-            OWLDescription curOp = (OWLDescription) it.next();
+            OWLClassExpression curOp = (OWLClassExpression) it.next();
             writeOpenBracket(curOp);
             curOp.accept(this);
             writeCloseBracket(curOp);
@@ -418,7 +418,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     public void visit(OWLDisjointClassesAxiom node) {
-        for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
+        for (Iterator<OWLClassExpression> it = sort(node.getClassExpressions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write("  \u2291 \u00ac ");
@@ -428,7 +428,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     public void visit(OWLEquivalentClassesAxiom node) {
-        for (Iterator<OWLDescription> it = sort(node.getDescriptions()).iterator(); it.hasNext();) {
+        for (Iterator<OWLClassExpression> it = sort(node.getClassExpressions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
                 write("  \u2261  ");
@@ -437,14 +437,14 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLSubClassAxiom node) {
+    public void visit(OWLSubClassOfAxiom node) {
         node.getSubClass().accept(this);
         write(" \u2291 ");
         node.getSuperClass().accept(this);
     }
 
 
-    private void writeOpenBracket(OWLDescription description) {
+    private void writeOpenBracket(OWLClassExpression description) {
         description.accept(bracketWriter);
         if (bracketWriter.writeBrackets()) {
             write("(");
@@ -460,7 +460,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    private void writeCloseBracket(OWLDescription description) {
+    private void writeCloseBracket(OWLClassExpression description) {
         description.accept(bracketWriter);
         if (bracketWriter.writeBrackets()) {
             write(")");
@@ -481,7 +481,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    private class BracketWriter extends OWLDescriptionVisitorAdapter implements OWLDataVisitor {
+    private class BracketWriter extends OWLClassExpressionVisitorAdapter implements OWLDataVisitor {
 
         boolean nested = false;
 
@@ -496,32 +496,32 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
 
 
-        public void visit(OWLDataAllRestriction owlDataAllRestriction) {
+        public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLDataSomeRestriction owlDataSomeRestriction) {
+        public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
             nested = true;
         }
 
 
-        public void visit(OWLDataValueRestriction owlDataValueRestriction) {
+        public void visit(OWLDataHasValue owlDataValueRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectAllRestriction owlObjectAllRestriction) {
+        public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectSomeRestriction owlObjectSomeRestriction) {
+        public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectValueRestriction owlObjectValueRestriction) {
+        public void visit(OWLObjectHasValue owlObjectValueRestriction) {
             nested = true;
         }
 
@@ -546,42 +546,42 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
 
 
-        public void visit(OWLObjectMinCardinalityRestriction desc) {
+        public void visit(OWLObjectMinCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectExactCardinalityRestriction desc) {
+        public void visit(OWLObjectExactCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectMaxCardinalityRestriction desc) {
+        public void visit(OWLObjectMaxCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLObjectSelfRestriction desc) {
+        public void visit(OWLObjectHasSelf desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataMinCardinalityRestriction desc) {
+        public void visit(OWLDataMinCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataExactCardinalityRestriction desc) {
+        public void visit(OWLDataExactCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataMaxCardinalityRestriction desc) {
+        public void visit(OWLDataMaxCardinality desc) {
             nested = true;
         }
 
 
-        public void visit(OWLDataType node) {
+        public void visit(OWLDatatype node) {
             nested = false;
         }
 
@@ -591,27 +591,42 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
 
 
+        public void visit(OWLDataIntersectionOf owlDataIntersectionOf) {
+            nested = true;
+        }
+
+
+        public void visit(OWLDataUnionOf owlDataUnionOf) {
+            nested = true;
+        }
+
+
+        public void visit(OWLDatatypeRestriction owlDatatypeRestriction) {
+            nested = false;
+        }
+
+
         public void visit(OWLDataOneOf node) {
             nested = false;
         }
 
 
-        public void visit(OWLDataRangeRestriction node) {
+        public void visit(OWLDataRange node) {
             nested = false;
         }
 
 
-        public void visit(OWLTypedConstant node) {
+        public void visit(OWLTypedLiteral node) {
             nested = false;
         }
 
 
-        public void visit(OWLUntypedConstant node) {
+        public void visit(OWLRDFTextLiteral node) {
             nested = false;
         }
 
 
-        public void visit(OWLDataRangeFacetRestriction node) {
+        public void visit(OWLFacetRestriction node) {
             nested = false;
         }
     }

@@ -11,7 +11,7 @@ import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,12 +68,12 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     }
 
 
-    public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr) {
+    public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr) {
         return getOWLClassDescriptionEditor(expr, null);
     }
 
 
-    public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLDescription expr, AxiomType type) {
+    public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
         for (OWLDescriptionEditorPlugin plugin : getDescriptionEditorPlugins()) {
             try {

@@ -4,7 +4,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.CreateDefinedClassPanel;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLObject;
 
 import java.awt.event.ActionEvent;
@@ -55,14 +55,14 @@ public class CreateNewEquivalentClassAction<C extends OWLObject> extends OWLFram
     }
 
 
-    private OWLDescription getSelectedRowDescription() {
+    private OWLClassExpression getSelectedRowDescription() {
         Object selVal = getFrameList().getSelectedValue();
         if (selVal instanceof OWLFrameSectionRow) {
             List objects = ((OWLFrameSectionRow) selVal).getManipulatableObjects();
             if (objects.size() == 1){
                 Object o = objects.iterator().next();
-                if (o instanceof OWLDescription && ((OWLDescription)o).isAnonymous()){
-                    return (OWLDescription)o;
+                if (o instanceof OWLClassExpression && ((OWLClassExpression)o).isAnonymous()){
+                    return (OWLClassExpression)o;
                 }
             }
         }
@@ -76,7 +76,7 @@ public class CreateNewEquivalentClassAction<C extends OWLObject> extends OWLFram
 
 
     public void actionPerformed(ActionEvent e) {
-        OWLDescription descr = getSelectedRowDescription();
+        OWLClassExpression descr = getSelectedRowDescription();
         if (descr != null) {
             OWLEntityCreationSet<OWLClass> creationSet = CreateDefinedClassPanel.showDialog(descr, getOWLEditorKit());
             if (creationSet != null){

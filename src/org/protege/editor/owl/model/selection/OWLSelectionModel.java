@@ -30,7 +30,7 @@ public interface OWLSelectionModel {
 
     /**
      * Gets the most recently selected property
-     * @return The selected <code>OWLProperty</code>, or <code>null</code>
+     * @return The selected <code>OWLObjectProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
     public OWLObjectProperty getLastSelectedObjectProperty();
@@ -38,10 +38,17 @@ public interface OWLSelectionModel {
 
     /**
      * Gets the most recently selected property
-     * @return The selected <code>OWLProperty</code>, or <code>null</code>
+     * @return The selected <code>OWLDataProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
     public OWLDataProperty getLastSelectedDataProperty();
+
+    /**
+     * Gets the most recently selected annotation property
+     * @return The selected <code>OWLAnnotationProperty</code>, or <code>null</code>
+     *         if there is no selected property.
+     */
+    public OWLAnnotationProperty getLastSelectedAnnotationProperty();
 
 
     /**
@@ -49,7 +56,16 @@ public interface OWLSelectionModel {
      * @return The selected individual, or <code>null</code> if
      *         there is no selected individual.
      */
-    public OWLIndividual getLastSelectedIndividual();
+    public OWLNamedIndividual getLastSelectedIndividual();
+
+
+    /**
+     * Gets the most recently selected datatype.
+     * @return The selected datatype, or <code>null</code> if
+     *         there is no selected datatype.
+     */
+    public OWLDatatype getLastSelectedDatatype();
+
 
     /**
      * Gets the last selected entity.

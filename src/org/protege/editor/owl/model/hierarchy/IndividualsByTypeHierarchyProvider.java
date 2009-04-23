@@ -37,12 +37,12 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             if (chg instanceof AddAxiom){
                 chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
                     public void visit(OWLClassAssertionAxiom ax) {
-                        if (!ax.getDescription().isAnonymous()){
-                            if (roots.contains(ax.getDescription().asOWLClass())){
-                                changedNodes.add(ax.getDescription().asOWLClass());
+                        if (!ax.getClassExpression().isAnonymous()){
+                            if (roots.contains(ax.getClassExpression().asOWLClass())){
+                                changedNodes.add(ax.getClassExpression().asOWLClass());
                             }
                             else{
-                                newRoots.add(ax.getDescription().asOWLClass());
+                                newRoots.add(ax.getClassExpression().asOWLClass());
                             }
                         }
                     }
@@ -51,9 +51,9 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             else if (chg instanceof RemoveAxiom){
                 chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
                     public void visit(OWLClassAssertionAxiom ax) {
-                        if (!ax.getDescription().isAnonymous()){
-                            if (roots.contains(ax.getDescription().asOWLClass())){
-                                changedNodes.add(ax.getDescription().asOWLClass());
+                        if (!ax.getClassExpression().isAnonymous()){
+                            if (roots.contains(ax.getClassExpression().asOWLClass())){
+                                changedNodes.add(ax.getClassExpression().asOWLClass());
                                 // @@TODO should remove the type node if no other members remain
                             }
                         }
@@ -94,8 +94,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         for (OWLOntology ont : ontologies) {
             for (OWLIndividual ind : ont.getReferencedIndividuals()) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
-                    if (!ax.getDescription().isAnonymous()) {
-                        roots.add(ax.getDescription());
+                    if (!ax.getClassExpression().isAnonymous()) {
+                        roots.add(ax.getClassExpression());
                     }
                 }
             }
@@ -132,8 +132,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             Set<OWLObject> clses = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
-                    if (!ax.getDescription().isAnonymous()) {
-                        clses.add(ax.getDescription().asOWLClass());
+                    if (!ax.getClassExpression().isAnonymous()) {
+                        clses.add(ax.getClassExpression().asOWLClass());
                     }
                 }
             }

@@ -228,7 +228,7 @@ public class UIHelper {
     }
 
 
-    public OWLDataType pickOWLDataType() {
+    public OWLDatatype pickOWLDatatype() {
         OWLDataTypeSelectorPanel panel = new OWLDataTypeSelectorPanel(owlEditorKit);
         if (showDialog("Select a datatype", panel) == JOptionPane.OK_OPTION) {
             return panel.getSelectedObject();
@@ -303,7 +303,7 @@ public class UIHelper {
     }
 
 
-    public OWLConstant createConstant() {
+    public OWLLiteral createConstant() {
 //        DataValueCreationPanel dataValuePanel = new DataValueCreationPanel(owlEditorKit);
 //        if (showDialog("Create a data value", dataValuePanel) == JOptionPane.OK_OPTION) {
 //            return dataValuePanel.getDataValue();
@@ -325,7 +325,7 @@ public class UIHelper {
 
     public JComboBox getDatatypeSelector() {
         final OWLModelManager mngr = getOWLModelManager();
-        List<OWLDataType> datatypeList = new ArrayList<OWLDataType>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes());
+        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes());
 
         Collections.sort(datatypeList, mngr.getOWLObjectComparator());
         datatypeList.add(0, null);

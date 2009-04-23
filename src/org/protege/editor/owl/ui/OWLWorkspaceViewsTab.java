@@ -119,13 +119,18 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
             nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY);
         }
 
+        
+        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.ANNOTATION_PROPERTY_VIEW_CATEGORY);
+        }
 
-        public void visit(OWLIndividual owlIndividual) {
+
+        public void visit(OWLNamedIndividual owlIndividual) {
             nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.INDIVIDUAL_VIEW_CATEGORY);
         }
 
 
-        public void visit(OWLDataType owlDataType) {
+        public void visit(OWLDatatype owlDatatype) {
             nav = ProtegeProperties.getInstance().getProperty(ProtegeProperties.DATATYPE_VIEW_CATEGORY);
         }
     }

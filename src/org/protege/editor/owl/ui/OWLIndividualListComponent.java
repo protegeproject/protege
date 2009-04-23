@@ -91,11 +91,6 @@ public class OWLIndividualListComponent extends JPanel {
     }
 
 
-    private OWLIndividual getSelectedOWLIndividual() {
-        return null;
-    }
-
-
     public void initialiseIndividualsView() {
         list = new OWLObjectList(getOWLEditorKit());
         setLayout(new BorderLayout());
@@ -152,7 +147,7 @@ public class OWLIndividualListComponent extends JPanel {
     private void reset() {
 
         list.setListData(individualsInList.toArray());
-        OWLEntity entity = getSelectedOWLIndividual();
+        OWLEntity entity = getSelectedIndividual();
         if (entity instanceof OWLIndividual) {
             list.setSelectedValue(entity, true);
         }
@@ -171,15 +166,15 @@ public class OWLIndividualListComponent extends JPanel {
     }
 
 
-    public OWLIndividual getSelectedIndividual() {
-        return (OWLIndividual) list.getSelectedValue();
+    public OWLNamedIndividual getSelectedIndividual() {
+        return (OWLNamedIndividual) list.getSelectedValue();
     }
 
 
-    public Set<OWLIndividual> getSelectedIndividuals() {
-        Set<OWLIndividual> inds = new HashSet<OWLIndividual>();
+    public Set<OWLNamedIndividual> getSelectedIndividuals() {
+        Set<OWLNamedIndividual> inds = new HashSet<OWLNamedIndividual>();
         for (Object obj : list.getSelectedValues()) {
-            inds.add((OWLIndividual) obj);
+            inds.add((OWLNamedIndividual) obj);
         }
         return inds;
     }
@@ -209,8 +204,8 @@ public class OWLIndividualListComponent extends JPanel {
             }
         }
         for(OWLEntity ent : removedCollector.getObjects()) {
-            if(ent instanceof OWLIndividual) {
-                if(individualsInList.remove((OWLIndividual) ent)) {
+            if(ent instanceof OWLNamedIndividual) {
+                if(individualsInList.remove(ent)) {
                     mod = true;
                 }
             }
@@ -222,14 +217,14 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     private void addIndividual() {
-        OWLEntityCreationSet<OWLIndividual> set = getOWLWorkspace().createOWLIndividual();
+        OWLEntityCreationSet<OWLNamedIndividual> set = getOWLWorkspace().createOWLIndividual();
         if (set == null) {
             return;
         }
         java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(set.getOntologyChanges());
         getOWLModelManager().applyChanges(changes);
-        OWLIndividual ind = set.getOWLEntity();
+        OWLNamedIndividual ind = set.getOWLEntity();
         if (ind != null) {
             getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(ind);
         }
@@ -258,7 +253,7 @@ public class OWLIndividualListComponent extends JPanel {
     public void handleDelete() {
         OWLEntityRemover entityRemover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
                                                               getOWLModelManager().getOntologies());
-        for (OWLIndividual ind : getSelectedIndividuals()) {
+        for (OWLNamedIndividual ind : getSelectedIndividuals()) {
             ind.accept(entityRemover);
         }
         getOWLModelManager().applyChanges(entityRemover.getChanges());

@@ -26,15 +26,15 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
 
             // act on each ontology in turn
-            CliqueFinder<OWLDescription> merger = new CliqueFinder<OWLDescription>();
+            CliqueFinder<OWLClassExpression> merger = new CliqueFinder<OWLClassExpression>();
 
             Set<OWLDisjointClassesAxiom> oldAxioms = ont.getAxioms(AxiomType.DISJOINT_CLASSES);
             numberOfDisjoints += oldAxioms.size();
             for (OWLDisjointClassesAxiom ax : oldAxioms){
-                merger.add(ax.getDescriptions());
+                merger.add(ax.getClassExpressions());
             }
 
-            for (Set<OWLDescription> newAxioms : merger.getResults()){
+            for (Set<OWLClassExpression> newAxioms : merger.getResults()){
                 OWLDisjointClassesAxiom newAxiom = getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(newAxioms);
                 if (oldAxioms.contains(newAxiom)){
                     oldAxioms.remove(newAxiom);

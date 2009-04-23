@@ -4,6 +4,14 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.ui.frame.cls.OWLClassAssertionAxiomMembersSection;
+import org.protege.editor.owl.ui.frame.cls.OWLDisjointClassesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLEquivalentClassesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.*;
+import org.protege.editor.owl.ui.frame.individual.*;
+import org.protege.editor.owl.ui.frame.objectproperty.*;
+import org.protege.editor.owl.ui.frame.ontology.OWLOntologyAnnotationAxiomFrameSection;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -51,6 +59,8 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
 
     private List<OWLFrameSection> owlDataPropertySections;
 
+    private List<OWLFrameSection> owlAnnotationPropertySections;
+
     private List<OWLFrameSection> owlIndividualSections;
 
     private OWLModelManagerListener owlModelManagerListener = new OWLModelManagerListener() {
@@ -58,7 +68,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
                     refill();
-                    setRootObject(OWLEntityFrame.this.editorKit.getModelManager().getActiveOntology());
+                    setRootObject(editorKit.getModelManager().getActiveOntology());
                 }
             }
         };
@@ -70,7 +80,8 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
 
         owlOntologyFrameSections = new ArrayList<OWLFrameSection>();
         owlOntologyFrameSections.add(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
-        owlOntologyFrameSections.add(new OWLImportsDeclarationFrameSection(editorKit, this));
+// @@TODO v3 port       
+//        owlOntologyFrameSections.add(new OWLImportsDeclarationFrameSection(editorKit, this));
 //        owlOntologyFrameSections.add(new OWLIndirectImportsFrameSection(editorKit, this));
         owlOntologyFrameSections.add(new InferredAxiomsFrameSection(editorKit, this));
 
@@ -80,7 +91,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlClassSections.add(new OWLAnnotationFrameSection(editorKit, this));
         owlClassSections.add(new OWLEquivalentClassesAxiomFrameSection(editorKit, this));
         owlClassSections.add(new OWLSubClassAxiomFrameSection(editorKit, this));
-        owlClassSections.add(new OWLClassAssertionAxiomIndividualSection(editorKit, this));
+        owlClassSections.add(new OWLClassAssertionAxiomMembersSection(editorKit, this));
         owlClassSections.add(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
 
         owlObjectPropertySections = new ArrayList<OWLFrameSection>();
@@ -102,6 +113,11 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlDataPropertySections.add(new OWLEquivalentDataPropertiesFrameSection(editorKit, this));
         owlDataPropertySections.add(new OWLSubDataPropertyAxiomSuperPropertyFrameSection(editorKit, this));
         owlDataPropertySections.add(new OWLDisjointDataPropertiesFrameSection(editorKit, this));
+
+
+        owlAnnotationPropertySections = new ArrayList<OWLFrameSection>();
+
+
 
         owlIndividualSections = new ArrayList<OWLFrameSection>();
 
@@ -140,22 +156,27 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
     }
 
 
+    public void visit(OWLObjectProperty owlObjectProperty) {
+        setupSections(owlObjectPropertySections);
+    }
+
+
     public void visit(OWLDataProperty owlDataProperty) {
         setupSections(owlDataPropertySections);
     }
 
 
-    public void visit(OWLDataType owlDataType) {
+    public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+        setupSections(owlAnnotationPropertySections);
     }
 
 
-    public void visit(OWLIndividual owlIndividual) {
+    public void visit(OWLDatatype owlDatatype) {
+    }
+
+
+    public void visit(OWLNamedIndividual owlIndividual) {
         setupSections(owlIndividualSections);
-    }
-
-
-    public void visit(OWLObjectProperty owlObjectProperty) {
-        setupSections(owlObjectPropertySections);
     }
 
     
@@ -172,6 +193,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         disposeOfSections(owlClassSections);
         disposeOfSections(owlObjectPropertySections);
         disposeOfSections(owlDataPropertySections);
+        disposeOfSections(owlAnnotationPropertySections);
         disposeOfSections(owlIndividualSections);
     }
 

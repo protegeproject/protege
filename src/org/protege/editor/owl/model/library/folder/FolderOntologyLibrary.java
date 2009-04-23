@@ -36,7 +36,7 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
     }
 
 
-    public String getDescription() {
+    public String getClassExpression() {
         try {
             return "Folder: " + folder.getCanonicalPath();
         }

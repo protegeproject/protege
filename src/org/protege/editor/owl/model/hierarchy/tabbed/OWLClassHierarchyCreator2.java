@@ -95,7 +95,7 @@ public class OWLClassHierarchyCreator2 {
         if (siblingsDisjoint){
             addToMap(parent, child);
         }
-        changes.add(new AddAxiom(ont, df.getOWLSubClassAxiom(child, parent)));
+        changes.add(new AddAxiom(ont, df.getOWLSubClassOfAxiom(child, parent)));
     }
 
 

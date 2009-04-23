@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 import javax.swing.*;
 import java.util.HashSet;
@@ -59,7 +59,7 @@ public class OWLClassSelectorWrapper extends AbstractOWLDescriptionEditor {
     }
 
 
-    public boolean setDescription(OWLDescription description) {
+    public boolean setDescription(OWLClassExpression description) {
         if (description == null){
             return true;
         }
@@ -71,8 +71,8 @@ public class OWLClassSelectorWrapper extends AbstractOWLDescriptionEditor {
     }
 
 
-    public Set<OWLDescription> getDescriptions() {
-        return new HashSet<OWLDescription>(component.getSelectedObjects());
+    public Set<OWLClassExpression> getClassExpressions() {
+        return new HashSet<OWLClassExpression>(component.getSelectedObjects());
     }
 
 

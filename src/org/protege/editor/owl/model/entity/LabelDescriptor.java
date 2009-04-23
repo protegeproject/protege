@@ -36,5 +36,6 @@ public interface LabelDescriptor {
 
     String getLanguage();
 
+    // @@TODO should be getAnnotationProperty()
     URI getURI();
 }

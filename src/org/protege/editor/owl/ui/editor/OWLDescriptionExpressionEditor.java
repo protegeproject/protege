@@ -5,7 +5,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLException;
 
 import javax.swing.*;
@@ -44,14 +44,14 @@ import java.util.Set;
  */
 public class OWLDescriptionExpressionEditor extends AbstractOWLDescriptionEditor{
 
-    private ExpressionEditor<OWLDescription> editor;
+    private ExpressionEditor<OWLClassExpression> editor;
 
     private JScrollPane scroller;
 
     public void initialise() throws Exception {
         final OWLEditorKit eKit = getOWLEditorKit();
-        final OWLExpressionChecker<OWLDescription> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker();
-        editor = new ExpressionEditor<OWLDescription>(eKit, checker);
+        final OWLExpressionChecker<OWLClassExpression> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker();
+        editor = new ExpressionEditor<OWLClassExpression>(eKit, checker);
 
         scroller = new JScrollPane(editor);
     }
@@ -67,16 +67,16 @@ public class OWLDescriptionExpressionEditor extends AbstractOWLDescriptionEditor
     }
 
 
-    public boolean setDescription(OWLDescription description) {
+    public boolean setDescription(OWLClassExpression description) {
         editor.setExpressionObject(description);
         return true;
     }
 
 
-    public Set<OWLDescription> getDescriptions() {
+    public Set<OWLClassExpression> getClassExpressions() {
         try {
             if (editor.isWellFormed()) {
-                OWLDescription owlDescription = editor.createObject();
+                OWLClassExpression owlDescription = editor.createObject();
                 OWLExpressionUserCache.getInstance(getOWLEditorKit().getModelManager()).add(owlDescription, editor.getText());
                 return Collections.singleton(owlDescription);
             }

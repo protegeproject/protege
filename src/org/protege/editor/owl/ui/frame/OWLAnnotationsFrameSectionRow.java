@@ -1,13 +1,15 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.semanticweb.owl.model.OWLAnnotation;
+import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLOntology;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -16,10 +18,10 @@ import org.semanticweb.owl.model.OWLOntology;
  * Bio-Health Informatics Group<br>
  * Date: 26-Jan-2007<br><br>
  */
-public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLEntity, OWLEntityAnnotationAxiom, OWLAnnotation> {
+public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLEntity, OWLAnnotationAssertionAxiom, OWLAnnotation> {
 
     public OWLAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
-                                         OWLEntity rootObject, OWLEntityAnnotationAxiom axiom) {
+                                         OWLEntity rootObject, OWLAnnotationAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
 
@@ -36,8 +38,8 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     }
 
 
-    protected OWLEntityAnnotationAxiom createAxiom(OWLAnnotation editedObject) {
-        return getOWLDataFactory().getOWLEntityAnnotationAxiom(getRootObject(), editedObject);
+    protected OWLAnnotationAssertionAxiom createAxiom(OWLAnnotation editedObject) {
+        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), editedObject);
     }
 
 

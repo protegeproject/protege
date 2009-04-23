@@ -68,7 +68,7 @@ public class UserRepositoryURIMapper implements OWLOntologyURIMapper {
         if (lib != null) {
             uri = lib.getPhysicalURI(logicalURI);
             if (logger.isInfoEnabled()) {
-                logger.info("Mapping (from library: " + lib.getDescription() + "): " + logicalURI + " -> " + uri);
+                logger.info("Mapping (from library: " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
             }
             return lib.getPhysicalURI(logicalURI);
         }

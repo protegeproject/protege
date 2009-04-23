@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.inference;
 
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
+
+import java.util.Set;
 
 
 /**
@@ -24,6 +26,11 @@ public class NoOpReasonerFactory implements ProtegeOWLReasonerFactory {
 
     public String getReasonerName() {
         return "None";
+    }
+
+
+    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager, Set<OWLOntology> owlOntologies) {
+        return new NoOpReasoner(owlOntologyManager);
     }
 
 

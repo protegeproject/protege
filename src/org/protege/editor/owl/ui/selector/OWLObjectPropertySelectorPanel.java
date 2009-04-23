@@ -8,7 +8,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.OWLObjectPropertyHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
 import javax.swing.event.ChangeListener;
@@ -110,29 +110,5 @@ public class OWLObjectPropertySelectorPanel extends AbstractHierarchySelectorPan
 
     public void removeSelectionListener(ChangeListener listener) {
         view.removeChangeListener(listener);
-    }
-
-    /**
-     * @deprecated Use <code>setSelection</code>
-     * @param property
-     */
-    public void setSelectedOWLObjectProperty(OWLObjectProperty property) {
-        setSelection(property);
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObject</code>
-     * @return selected OWLObjectProperty
-     */
-    public OWLObjectProperty getSelectedOWLObjectProperty() {
-        return getSelectedObject();
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObjects</code>
-     * @return set of selected OWLObjectProperties
-     */
-    public Set<OWLObjectProperty> getSelectedOWLObjectProperties() {
-        return getSelectedObjects();
     }
 }

@@ -135,7 +135,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
                     annotationRendererEnabled) {
                 OWLAnnotationAxiom ax = (OWLAnnotationAxiom) ((AbstractOWLFrameSectionRow) value).getAxiom();
                 return annotationRenderer.getListCellRendererComponent(list,
-                                                                       ax.getAnnotation(),
+                                                                       ax.getAnnotations(),
                                                                        index,
                                                                        isSelected,
                                                                        cellHasFocus);

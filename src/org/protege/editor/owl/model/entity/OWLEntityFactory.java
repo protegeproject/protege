@@ -50,7 +50,7 @@ public interface OWLEntityFactory {
      * @return an object wrapping the changes that need to be applied
      * @throws OWLEntityCreationException if the entity could not be created because of bad input/name clashes/auto ID etc
      */
-    public OWLEntityCreationSet<OWLIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException;
+    public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException;
 
     /**
      *

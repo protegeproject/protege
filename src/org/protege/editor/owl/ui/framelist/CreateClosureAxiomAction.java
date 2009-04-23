@@ -109,7 +109,7 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
         }
 
 
-        public void visit(OWLSubClassAxiom owlSubClassAxiom) {
+        public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
             if (!visited.contains(owlSubClassAxiom)){
                 visited.add(owlSubClassAxiom);
                 owlSubClassAxiom.getSuperClass().accept(this);
@@ -120,7 +120,7 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
         public void visit(OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
             if (!visited.contains(owlEquivalentClassesAxiom)){
                 visited.add(owlEquivalentClassesAxiom);
-                for (OWLDescription op : owlEquivalentClassesAxiom.getDescriptions()){
+                for (OWLClassExpression op : owlEquivalentClassesAxiom.getClassExpressions()){
                     op.accept(this);
                 }
             }
@@ -128,25 +128,25 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
 
 
         public void visit(OWLObjectIntersectionOf owlObjectIntersectionOf) {
-            for (OWLDescription op : owlObjectIntersectionOf.getOperands()){
+            for (OWLClassExpression op : owlObjectIntersectionOf.getOperands()){
                 op.accept(this);
             }
         }
 
 
-        public void visit(OWLObjectSomeRestriction restr) {
+        public void visit(OWLObjectSomeValuesFrom restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectMinCardinalityRestriction restr) {
+        public void visit(OWLObjectMinCardinality restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectExactCardinalityRestriction restr) {
+        public void visit(OWLObjectExactCardinality restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectValueRestriction restr) {
+        public void visit(OWLObjectHasValue restr) {
             restr.getProperty().accept(this);
         }
 

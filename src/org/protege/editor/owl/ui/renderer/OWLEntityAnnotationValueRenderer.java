@@ -1,8 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
 
 import java.net.URI;
@@ -40,13 +38,15 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
     protected void processChanges(List<? extends OWLOntologyChange> changes) {
         final List<URI> uris = provider.getAnnotationURIs();
         for (OWLOntologyChange change : changes) {
-            if (change.isAxiomChange() && change.getAxiom() instanceof OWLEntityAnnotationAxiom) {
-                OWLEntityAnnotationAxiom axiom = (OWLEntityAnnotationAxiom) change.getAxiom();
-                if (uris.contains(axiom.getAnnotation().getAnnotationURI())){
-                    OWLEntity ent = axiom.getSubject();
-                    // @@TODO we need some way to determine whether the rendering really has changed due to these axioms
-                    // otherwise we're telling a whole load of things to update that don't need to
-                    fireRenderingChanged(ent);
+            if (change.isAxiomChange() && change.getAxiom().getAxiomType().equals(AxiomType.ANNOTATION_ASSERTION)) {
+                OWLAnnotationAssertionAxiom ax = (OWLAnnotationAssertionAxiom) change.getAxiom();
+                // @@TODO we need some way to determine whether the rendering really has changed due to these axioms
+                // otherwise we're telling a whole load of things to update that don't need to
+                if (uris.contains(ax.getProperty().getURI())){
+                    OWLAnnotationSubject subject = ax.getSubject();
+                    if (subject instanceof OWLEntity){
+                        fireRenderingChanged((OWLEntity)subject);
+                    }
                 }
             }
         }
@@ -58,7 +58,12 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
     }
 
 
-    private String escape(String rendering) {
+    protected String escape(String rendering) {
         return RenderingEscapeUtils.getEscapedRendering(rendering);
+    }
+
+
+    protected AnnotationValueShortFormProvider getProvider(){
+        return provider;
     }
 }

@@ -136,11 +136,11 @@ public class ConvertEntityURIsToIdentifierPattern {
             if (!onts.isEmpty()){
                 String uriRendering = fragmentRenderer.render(entity);
 
-                OWLConstantAnnotation annotation = generateLabelAnnotation(uriRendering);
+                OWLAnnotation annotation = generateLabelAnnotation(uriRendering);
 
                 final URI newURI = uriMap.get(entity);
                 final OWLEntity newEntity = getEntityOfSameType(newURI, entity);
-                final OWLEntityAnnotationAxiom ax = df.getOWLEntityAnnotationAxiom(newEntity, annotation);
+                final OWLAnnotationAssertionAxiom ax = df.getOWLAnnotationAssertionAxiom(newEntity, annotation);
 
                 for (OWLOntology ont : onts){
                     changes.add(new AddAxiom(ont, ax));
@@ -156,26 +156,19 @@ public class ConvertEntityURIsToIdentifierPattern {
         return changes;
     }
 
-    private OWLConstantAnnotation generateLabelAnnotation(String label) {
+    private OWLAnnotation generateLabelAnnotation(String label) {
         OWLDataFactory df = mngr.getOWLDataFactory();
-        URI annotationURI = getPreferredLabel();
-        String lang = getPreferredLanguage(annotationURI);
+        OWLAnnotationProperty aProp = getPreferredLabel();
+        String lang = getPreferredLanguage(aProp);
 
-        OWLConstant value;
+        OWLRDFTextLiteral value = df.getRDFTextLiteral(label, lang);
 
-        if (lang != null){
-            value = df.getOWLUntypedConstant(label, lang);
-        }
-        else{
-            value = df.getOWLUntypedConstant(label);
-        }
-
-        return df.getOWLConstantAnnotation(annotationURI, value);
+        return df.getOWLAnnotation(aProp, value);
     }
 
 
-    private String getPreferredLanguage(URI uri) {
-        final List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(uri);
+    private String getPreferredLanguage(OWLAnnotationProperty annotationProperty) {
+        final List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(annotationProperty.getURI());
         return langs.isEmpty() ? null : langs.get(0);
     }
 
@@ -192,20 +185,17 @@ public class ConvertEntityURIsToIdentifierPattern {
     }
 
 
-    public URI getPreferredLabel() {
+    public OWLAnnotationProperty getPreferredLabel() {
         final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-        return uris.isEmpty() ? OWLRDFVocabulary.RDFS_LABEL.getURI() : uris.get(0);
+        URI uri = uris.isEmpty() ? OWLRDFVocabulary.RDFS_LABEL.getURI() : uris.get(0);
+        return mngr.getOWLDataFactory().getOWLAnnotationProperty(uri);
     }
 
 
     private Set<OWLEntity> getAllReferencedEntities() {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         for(OWLOntology ont : ontologies) {
-            entities.addAll(ont.getReferencedClasses());
-            entities.addAll(ont.getReferencedObjectProperties());
-            entities.addAll(ont.getReferencedDataProperties());
-            entities.addAll(ont.getReferencedIndividuals());
-
+            entities.addAll(ont.getReferencedEntities());
         }
         entities.remove(mngr.getOWLDataFactory().getOWLThing());
         return entities;
@@ -222,8 +212,11 @@ public class ConvertEntityURIsToIdentifierPattern {
         else if (entity.isOWLDataProperty()){
             return mngr.getOWLDataFactory().getOWLDataProperty(uri);
         }
+        else if (entity.isOWLAnnotationProperty()){
+            return mngr.getOWLDataFactory().getOWLAnnotationProperty(uri);
+        }
         else if (entity.isOWLIndividual()){
-            return mngr.getOWLDataFactory().getOWLIndividual(uri);
+            return mngr.getOWLDataFactory().getOWLNamedIndividual(uri);
         }
         return null;
     }

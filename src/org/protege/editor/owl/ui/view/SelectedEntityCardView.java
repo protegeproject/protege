@@ -1,22 +1,16 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.net.URL;
-
-import javax.swing.JPanel;
-
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,24 +27,19 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private JPanel cardPanel;
 
-    private ViewsPane classesViewsPane;
-
-    private ViewsPane objectPropertiesViewsPane;
-
-    private ViewsPane dataPropertiesViewsPane;
-
-    private ViewsPane individualViewsPane;
-
+    private List<ViewsPane> viewsPanes = new ArrayList<ViewsPane>();
 
     private static final String CLASSES_PANEL = "Classes";
-
-    private static final String BLANK_PANEL = "Blank";
 
     private static final String OBJECT_PROPERTIES_PANEL = "ObjectProperties";
 
     private static final String DATA_PROPERTIES_PANEL = "DataProperties";
 
+    private static final String ANNOTATION_PROPERTIES_PANEL = "AnnotationProperties";
+
     private static final String INDIVIDUALS_PANEL = "Individual";
+
+    private static final String BLANK_PANEL = "Blank";
 
 
     protected void initialiseOWLView() throws Exception {
@@ -71,50 +60,58 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
 
     private void createViewPanes(boolean reset) {
-        URL clsURL = getClass().getResource("/selected-entity-view-class-panel.xml");
-        classesViewsPane = new ViewsPane(getOWLWorkspace(),
-                                         new ViewsPaneMemento(clsURL,
-                                                              "org.protege.editor.owl.ui.view.selectedentityview.classes",
-                                                              reset));
-        cardPanel.add(classesViewsPane, CLASSES_PANEL);
-        URL objPropURL = getClass().getResource("/selected-entity-view-objectproperty-panel.xml");
-        objectPropertiesViewsPane = new ViewsPane(getOWLWorkspace(),
-                                                  new ViewsPaneMemento(objPropURL,
-                                                                       "org.protege.editor.owl.ui.view.selectedentityview.objectproperties",
-                                                                       reset));
-        cardPanel.add(objectPropertiesViewsPane, OBJECT_PROPERTIES_PANEL);
-        URL dataPropURL = getClass().getResource("/selected-entity-view-dataproperty-panel.xml");
+        addPane(CLASSES_PANEL,
+                "/selected-entity-view-class-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.classes",
+                reset);
 
-        dataPropertiesViewsPane = new ViewsPane(getOWLWorkspace(),
-                                                new ViewsPaneMemento(dataPropURL,
-                                                                     "org.protege.editor.owl.ui.view.selectedentityview.dataproperties",
-                                                                     reset));
-        cardPanel.add(dataPropertiesViewsPane, DATA_PROPERTIES_PANEL);
 
-        URL indURL = getClass().getResource("/selected-entity-view-individual-panel.xml");
-        individualViewsPane = new ViewsPane(getOWLWorkspace(),
-                                            new ViewsPaneMemento(indURL,
-                                                                 "org.protege.editor.owl.ui.view.selectedentityview.individuals",
-                                                                 reset));
-        cardPanel.add(individualViewsPane, INDIVIDUALS_PANEL);
+        addPane(OBJECT_PROPERTIES_PANEL,
+                "/selected-entity-view-objectproperty-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.objectproperties",
+                reset);
+
+
+        addPane(DATA_PROPERTIES_PANEL,
+                "/selected-entity-view-dataproperty-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.dataproperties",
+                reset);
+
+
+        addPane(ANNOTATION_PROPERTIES_PANEL,
+                "/selected-entity-view-annotationproperty-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.annotationproperties",
+                reset);
+
+
+        addPane(INDIVIDUALS_PANEL,
+                "/selected-entity-view-individual-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.individuals",
+                reset);
+    }
+
+
+    private void addPane(String panelId, String configFile, String viewPaneId, boolean reset) {
+        URL clsURL = getClass().getResource(configFile);
+        ViewsPane pane = new ViewsPane(getOWLWorkspace(), new ViewsPaneMemento(clsURL, viewPaneId, reset));
+        cardPanel.add(pane, panelId);
+        viewsPanes.add(pane);
     }
 
 
     public void reset() {
-        cardPanel.remove(classesViewsPane);
-        cardPanel.remove(objectPropertiesViewsPane);
-        cardPanel.remove(dataPropertiesViewsPane);
-        cardPanel.remove(individualViewsPane);
-        classesViewsPane.dispose();
-        objectPropertiesViewsPane.dispose();
-        dataPropertiesViewsPane.dispose();
-        individualViewsPane.dispose();
+        for (ViewsPane pane : viewsPanes){
+            cardPanel.remove(pane);
+            pane.dispose();
+        }
+
+        viewsPanes.clear();
         createViewPanes(true);
         validate();
-        classesViewsPane.saveViews();
-        objectPropertiesViewsPane.saveViews();
-        dataPropertiesViewsPane.saveViews();
-        individualViewsPane.saveViews();
+
+        for (ViewsPane pane : viewsPanes){
+            pane.saveViews();
+        }
     }
 
 
@@ -140,12 +137,17 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
                 }
 
 
-                public void visit(OWLIndividual individual) {
+                public void visit(OWLAnnotationProperty property) {
+                    selectPanel(ANNOTATION_PROPERTIES_PANEL);
+                }
+
+
+                public void visit(OWLNamedIndividual individual) {
                     selectPanel(INDIVIDUALS_PANEL);
                 }
 
 
-                public void visit(OWLDataType dataType) {
+                public void visit(OWLDatatype dataType) {
                 }
             });
         }
@@ -158,13 +160,9 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
 
     protected void disposeOWLView() {
-        classesViewsPane.saveViews();
-        classesViewsPane.dispose();
-        objectPropertiesViewsPane.saveViews();
-        objectPropertiesViewsPane.dispose();
-        dataPropertiesViewsPane.saveViews();
-        dataPropertiesViewsPane.dispose();
-        individualViewsPane.saveViews();
-        individualViewsPane.dispose();
+        for (ViewsPane pane : viewsPanes){
+            pane.saveViews();
+            pane.dispose();
+        }
     }
 }

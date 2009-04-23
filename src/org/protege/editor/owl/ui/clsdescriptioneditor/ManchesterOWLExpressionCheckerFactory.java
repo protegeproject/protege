@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.SWRLRule;
 
@@ -49,12 +49,12 @@ public class ManchesterOWLExpressionCheckerFactory implements OWLExpressionCheck
     }
 
 
-    public OWLExpressionChecker<OWLDescription> getOWLDescriptionChecker() {
+    public OWLExpressionChecker<OWLClassExpression> getOWLDescriptionChecker() {
         return new OWLDescriptionChecker(mngr);
     }
 
 
-    public OWLExpressionChecker<Set<OWLDescription>> getOWLDescriptionSetChecker() {
+    public OWLExpressionChecker<Set<OWLClassExpression>> getOWLDescriptionSetChecker() {
         return new OWLDescriptionSetChecker(mngr);
     }
 

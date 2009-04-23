@@ -1,24 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClassAssertionAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLEntityAnnotationAxiom;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.RemoveAxiom;
 
 
 /**
@@ -32,58 +21,51 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
 
     public void actionPerformed(ActionEvent e) {
 
+        OWLDataFactory df = getOWLDataFactory();
         Set<OWLOntology> onts = getOWLModelManager().getOntologies();
-        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
+        Set<OWLIndividual> inds = new HashSet<OWLIndividual>();
 
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLOntology ont : onts) {
-            individuals.addAll(ont.getReferencedIndividuals());
+            inds.addAll(ont.getReferencedIndividuals());
         }
 
         Set<OWLDataProperty> props = new HashSet<OWLDataProperty>();
-        for (OWLIndividual ind : individuals) {
-            boolean punned = false;
-            for (OWLOntology ont : onts) {
-                if (ont.containsClassReference(ind.getURI())) {
-                    punned = true;
-                    break;
-                }
-            }
-            if (!punned) {
-                continue;
-            }
+        for (OWLIndividual ind : inds) {
 
-            for (OWLOntology ont : onts) {
-                for (OWLDataPropertyAssertionAxiom ax : ont.getDataPropertyAssertionAxioms(ind)) {
-                    if (!ax.getProperty().isAnonymous()) {
-                        changes.add(new RemoveAxiom(ont, ax));
-                        OWLDataFactory df = getOWLDataFactory();
-                        OWLAnnotation anno = df.getOWLConstantAnnotation(((OWLDataProperty) ax.getProperty()).getURI(),
-                                                                         ax.getObject());
-                        OWLEntityAnnotationAxiom annoAx = df.getOWLEntityAnnotationAxiom(df.getOWLClass(ind.getURI()),
-                                                                                         anno);
-                        changes.add(new AddAxiom(ont, annoAx));
-                        props.add((OWLDataProperty) ax.getProperty());
-                    }
-                }
-            }
-            for (OWLOntology ont : onts) {
-                for (OWLAxiom ax : ont.getDeclarationAxioms(ind)) {
-                    changes.add(new RemoveAxiom(ont, ax));
-                }
-                for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
-                    changes.add(new RemoveAxiom(ont, ax));
-                }
-            }
-            for (OWLDataProperty prop : props) {
+            if (isPunForClass(ind)){
+                OWLNamedIndividual pun = ind.asNamedIndividual();
                 for (OWLOntology ont : onts) {
-                    for (OWLAxiom ax : ont.getDeclarationAxioms(prop)) {
+                    for (OWLDataPropertyAssertionAxiom ax : ont.getDataPropertyAssertionAxioms(pun)) {
+                        if (!ax.getProperty().isAnonymous()) {
+                            changes.add(new RemoveAxiom(ont, ax));
+                            OWLAnnotationProperty aProp = df.getOWLAnnotationProperty(ax.getProperty().asOWLDataProperty().getURI());
+                            OWLAnnotation anno = df.getOWLAnnotation(aProp, ax.getObject());
+                            OWLAnnotationAssertionAxiom annoAx = df.getOWLAnnotationAssertionAxiom(df.getOWLClass(pun.getURI()), anno);
+                            changes.add(new AddAxiom(ont, annoAx));
+                            props.add((OWLDataProperty) ax.getProperty());
+                        }
+                    }
+                }
+                for (OWLOntology ont : onts) {
+                    for (OWLAxiom ax : ont.getDeclarationAxioms(pun)) {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
-                    for (OWLAxiom ax : ont.getAxioms(prop)) {
+                    for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(pun)) {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                 }
+                for (OWLDataProperty prop : props) {
+                    for (OWLOntology ont : onts) {
+                        for (OWLAxiom ax : ont.getDeclarationAxioms(prop)) {
+                            changes.add(new RemoveAxiom(ont, ax));
+                        }
+                        for (OWLAxiom ax : ont.getAxioms(prop)) {
+                            changes.add(new RemoveAxiom(ont, ax));
+                        }
+                    }
+                }
+
             }
         }
         getOWLModelManager().applyChanges(changes);
@@ -96,6 +78,19 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
                 }
             }
         }
+    }
+
+
+    private boolean isPunForClass(OWLIndividual ind) {
+        if (ind.isAnonymous()){
+            return false;
+        }
+        for (OWLOntology ont : getOWLModelManager().getOntologies()) {
+            if (ont.containsClassReference(ind.asNamedIndividual().getURI())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -84,22 +84,22 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                 getOWLModelManager().getOWLDataFactory().getOWLSubClassAxiom(child, parent)));
+                                 getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(child, parent)));
         getOWLModelManager().applyChanges(changes);
     }
 
 
     private void handleMove(OWLClass child, OWLClass fromParent, OWLClass toParent) {
-        if (child.equals(getOWLModelManager().getOWLDataFactory().getOWLThing())) {
+        final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+        if (child.equals(df.getOWLThing())) {
             return;
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                 getOWLModelManager().getOWLDataFactory().getOWLSubClassAxiom(child,
-                                                                                              toParent)));
+                                 df.getOWLSubClassOfAxiom(child, toParent)));
+
         changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
-                                    getOWLModelManager().getOWLDataFactory().getOWLSubClassAxiom(child,
-                                                                                                 fromParent)));
+                                    df.getOWLSubClassOfAxiom(child, fromParent)));
         getOWLModelManager().applyChanges(changes);
     }
 
@@ -141,7 +141,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             final OWLModelManager mngr = getOWLEditorKit().getModelManager();
             final OWLDataFactory df = mngr.getOWLDataFactory();
             if (!df.getOWLThing().equals(selectedClass)){
-                OWLSubClassAxiom ax = df.getOWLSubClassAxiom(set.getOWLEntity(), selectedClass);
+                OWLSubClassOfAxiom ax = df.getOWLSubClassOfAxiom(set.getOWLEntity(), selectedClass);
                 changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
             }
             mngr.applyChanges(changes);
@@ -178,7 +178,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             OWLDataFactory df = mngr.getOWLDataFactory();
             for (OWLClass par : mngr.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
                 if (!df.getOWLThing().equals(par)){
-                    OWLAxiom ax = df.getOWLSubClassAxiom(creationSet.getOWLEntity(), par);
+                    OWLAxiom ax = df.getOWLSubClassOfAxiom(creationSet.getOWLEntity(), par);
                     changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
                 }
             }

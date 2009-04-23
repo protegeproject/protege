@@ -1,28 +1,9 @@
 package org.protege.editor.owl.model.util;
 
+import org.semanticweb.owl.model.*;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataAllRestriction;
-import org.semanticweb.owl.model.OWLDataExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLDataSomeRestriction;
-import org.semanticweb.owl.model.OWLDataValueRestriction;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLDescriptionVisitor;
-import org.semanticweb.owl.model.OWLObjectAllRestriction;
-import org.semanticweb.owl.model.OWLObjectComplementOf;
-import org.semanticweb.owl.model.OWLObjectExactCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectIntersectionOf;
-import org.semanticweb.owl.model.OWLObjectMaxCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectMinCardinalityRestriction;
-import org.semanticweb.owl.model.OWLObjectOneOf;
-import org.semanticweb.owl.model.OWLObjectSelfRestriction;
-import org.semanticweb.owl.model.OWLObjectSomeRestriction;
-import org.semanticweb.owl.model.OWLObjectUnionOf;
-import org.semanticweb.owl.model.OWLObjectValueRestriction;
 
 
 /**
@@ -34,8 +15,8 @@ import org.semanticweb.owl.model.OWLObjectValueRestriction;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  * <p/>
- * A visitor that may be used to "flatten" <code>OWLDescription</code>s.
- * The visitor collects <code>OWLDescription</code>s and operands of
+ * A visitor that may be used to "flatten" <code>OWLClassExpression</code>s.
+ * The visitor collects <code>OWLClassExpression</code>s and operands of
  * <code>OWLAnd</code> classes.  For example the description:
  * <code>
  * A and (B and C) and (D or E) and F
@@ -44,15 +25,15 @@ import org.semanticweb.owl.model.OWLObjectValueRestriction;
  * <p/>
  * The general pattern of usage is to visit several descriptions and
  * which accumulates the set of flattened descriptions.  These can
- * be obtained with the <code>getDescriptions</code> method.
+ * be obtained with the <code>getClassExpressions</code> method.
  */
-public class NestedIntersectionFlattener implements OWLDescriptionVisitor {
+public class NestedIntersectionFlattener implements OWLClassExpressionVisitor {
 
-    private Set<OWLDescription> descriptions;
+    private Set<OWLClassExpression> descriptions;
 
 
     public NestedIntersectionFlattener() {
-        descriptions = new HashSet<OWLDescription>();
+        descriptions = new HashSet<OWLClassExpression>();
     }
 
 
@@ -61,44 +42,44 @@ public class NestedIntersectionFlattener implements OWLDescriptionVisitor {
     }
 
 
-    public Set<OWLDescription> getDescriptions() {
+    public Set<OWLClassExpression> getClassExpressions() {
         return descriptions;
     }
 
 
     public void visit(OWLObjectIntersectionOf node) {
-        for (OWLDescription desc : node.getOperands()) {
+        for (OWLClassExpression desc : node.getOperands()) {
             desc.accept(this);
         }
     }
 
 
-    public void visit(OWLDataAllRestriction node) {
+    public void visit(OWLDataAllValuesFrom node) {
         descriptions.add(node);
     }
 
 
-    public void visit(OWLDataSomeRestriction node) {
+    public void visit(OWLDataSomeValuesFrom node) {
         descriptions.add(node);
     }
 
 
-    public void visit(OWLDataValueRestriction node) {
+    public void visit(OWLDataHasValue node) {
         descriptions.add(node);
     }
 
 
-    public void visit(OWLObjectAllRestriction node) {
+    public void visit(OWLObjectAllValuesFrom node) {
         descriptions.add(node);
     }
 
 
-    public void visit(OWLObjectSomeRestriction node) {
+    public void visit(OWLObjectSomeValuesFrom node) {
         descriptions.add(node);
     }
 
 
-    public void visit(OWLObjectValueRestriction node) {
+    public void visit(OWLObjectHasValue node) {
         descriptions.add(node);
     }
 
@@ -123,37 +104,37 @@ public class NestedIntersectionFlattener implements OWLDescriptionVisitor {
     }
 
 
-    public void visit(OWLObjectMinCardinalityRestriction desc) {
+    public void visit(OWLObjectMinCardinality desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLObjectExactCardinalityRestriction desc) {
+    public void visit(OWLObjectExactCardinality desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLObjectMaxCardinalityRestriction desc) {
+    public void visit(OWLObjectMaxCardinality desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLObjectSelfRestriction desc) {
+    public void visit(OWLObjectHasSelf desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLDataMinCardinalityRestriction desc) {
+    public void visit(OWLDataMinCardinality desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLDataExactCardinalityRestriction desc) {
+    public void visit(OWLDataExactCardinality desc) {
         descriptions.add(desc);
     }
 
 
-    public void visit(OWLDataMaxCardinalityRestriction desc) {
+    public void visit(OWLDataMaxCardinality desc) {
         descriptions.add(desc);
     }
 }

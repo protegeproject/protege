@@ -2,13 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataType;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLEntityVisitor;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -27,41 +21,30 @@ public class ShowUsageAction extends SelectedOWLEntityAction {
         }
         ent.accept(new OWLEntityVisitor() {
             public void visit(OWLClass cls) {
-                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLClassUsageView",
-                                                              true,
-                                                              OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                if (view != null) {
-                    view.setPinned(true);
-                }
+                showResultsView("org.protege.editor.owl.OWLClassUsageView");
             }
-
-
-            public void visit(OWLDataType dataType) {
-            }
-
-
-            public void visit(OWLIndividual individual) {
-                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLIndividualUsageView",
-                                                              true,
-                                                              OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                if (view != null) {
-                    view.setPinned(true);
-                }
-            }
-
 
             public void visit(OWLDataProperty property) {
-                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLDataPropertyUsageView",
-                                                              true,
-                                                              OWLWorkspace.BOTTOM_RESULTS_VIEW);
-                if (view != null) {
-                    view.setPinned(true);
-                }
+                showResultsView("org.protege.editor.owl.OWLDataPropertyUsageView");
             }
 
-
             public void visit(OWLObjectProperty property) {
-                View view = getOWLWorkspace().showResultsView("org.protege.editor.owl.OWLObjectPropertyUsageView",
+                showResultsView("org.protege.editor.owl.OWLObjectPropertyUsageView");
+            }
+
+            public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+                showResultsView("org.protege.editor.owl.OWLAnnotationPropertyUsageView");
+            }
+
+            public void visit(OWLNamedIndividual individual) {
+                showResultsView("org.protege.editor.owl.OWLIndividualUsageView");
+            }
+
+            public void visit(OWLDatatype dataType) {
+            }
+
+            private void showResultsView(String viewId) {
+                View view = getOWLWorkspace().showResultsView(viewId,
                                                               true,
                                                               OWLWorkspace.BOTTOM_RESULTS_VIEW);
                 if (view != null) {

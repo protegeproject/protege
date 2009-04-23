@@ -71,7 +71,7 @@ public class OntologyMerger {
 
 
         public void visit(OWLImportsDeclaration owlImportsDeclaration) {
-            if (owlImportsDeclaration.getImportedOntologyURI().equals(targetOntology.getURI())){
+            if (owlImportsDeclaration.getURI().equals(targetOntology.getURI())){
                 ax = null;
                 logger.warn("Merge: ignoring import declaration for URI " + targetOntology.getURI() +
                             " (would result in targetOntology importing itself).");
@@ -79,11 +79,12 @@ public class OntologyMerger {
         }
 
 
-        // all targetOntology annotations should be asserted on the target
-        public void visit(OWLOntologyAnnotationAxiom owlOntologyAnnotationAxiom) {
-            if (!owlOntologyAnnotationAxiom.getSubject().equals(targetOntology)){
-                ax = owlOntologyManager.getOWLDataFactory().getOWLOntologyAnnotationAxiom(targetOntology, owlOntologyAnnotationAxiom.getAnnotation());
-            }
-        }
+// @@TODO v3 port
+//        // all targetOntology annotations should be asserted on the target
+//        public void visit(OWLOntologyAnnotationAxiom owlOntologyAnnotationAxiom) {
+//            if (!owlOntologyAnnotationAxiom.getSubject().equals(targetOntology)){
+//                ax = owlOntologyManager.getOWLDataFactory().getOWLOntologyAnnotationAxiom(targetOntology, owlOntologyAnnotationAxiom.getAnnotation());
+//            }
+//        }
     }
 }

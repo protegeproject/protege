@@ -15,13 +15,13 @@ import java.util.Comparator;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionComparator implements Comparator<OWLDescription> {
+public class OWLDescriptionComparator implements Comparator<OWLClassExpression> {
 
     private TypeVisitor typeVisitor;
 
     private OWLModelManager owlModelManager;
 
-    private OWLDescription focusedDescription;
+    private OWLClassExpression focusedDescription;
 
 
     public OWLDescriptionComparator(OWLModelManager owlModelManager) {
@@ -30,17 +30,17 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
     }
 
 
-    public OWLDescription getFocusedDescription() {
+    public OWLClassExpression getFocusedDescription() {
         return focusedDescription;
     }
 
 
-    public void setFocusedDescription(OWLDescription focusedDescription) {
+    public void setFocusedDescription(OWLClassExpression focusedDescription) {
         this.focusedDescription = focusedDescription;
     }
 
 
-    public int compare(OWLDescription o1, OWLDescription o2) {
+    public int compare(OWLClassExpression o1, OWLClassExpression o2) {
         if(focusedDescription != null) {
             if(o1.equals(focusedDescription)) {
                 return -1;
@@ -64,7 +64,7 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
     }
 
 
-    private class TypeVisitor implements OWLDescriptionVisitor {
+    private class TypeVisitor implements OWLClassExpressionVisitor {
 
         private int type;
 
@@ -94,62 +94,62 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
         }
 
 
-        public void visit(OWLObjectSomeRestriction owlObjectSomeRestriction) {
+        public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
             type = 3001;
         }
 
 
-        public void visit(OWLObjectValueRestriction owlObjectValueRestriction) {
+        public void visit(OWLObjectHasValue owlObjectValueRestriction) {
             type = 3002;
         }
 
 
-        public void visit(OWLObjectAllRestriction owlObjectAllRestriction) {
+        public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
             type = 3003;
         }
 
 
-        public void visit(OWLDataSomeRestriction owlDataSomeRestriction) {
+        public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
             type = 3004;
         }
 
 
-        public void visit(OWLDataValueRestriction owlDataValueRestriction) {
+        public void visit(OWLDataHasValue owlDataValueRestriction) {
             type = 3005;
         }
 
 
-        public void visit(OWLDataAllRestriction owlDataAllRestriction) {
+        public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
             type = 3006;
         }
 
 
-        public void visit(OWLObjectMinCardinalityRestriction desc) {
+        public void visit(OWLObjectMinCardinality desc) {
             type = 3010;
         }
 
 
-        public void visit(OWLObjectExactCardinalityRestriction desc) {
+        public void visit(OWLObjectExactCardinality desc) {
             type = 3011;
         }
 
 
-        public void visit(OWLObjectMaxCardinalityRestriction desc) {
+        public void visit(OWLObjectMaxCardinality desc) {
             type = 3012;
         }
 
 
-        public void visit(OWLDataMinCardinalityRestriction desc) {
+        public void visit(OWLDataMinCardinality desc) {
             type = 3007;
         }
 
 
-        public void visit(OWLDataExactCardinalityRestriction desc) {
+        public void visit(OWLDataExactCardinality desc) {
             type = 3008;
         }
 
 
-        public void visit(OWLDataMaxCardinalityRestriction desc) {
+        public void visit(OWLDataMaxCardinality desc) {
             type = 3009;
         }
 
@@ -159,7 +159,7 @@ public class OWLDescriptionComparator implements Comparator<OWLDescription> {
         }
 
 
-        public void visit(OWLObjectSelfRestriction desc) {
+        public void visit(OWLObjectHasSelf desc) {
             type = 6000;
         }
     }

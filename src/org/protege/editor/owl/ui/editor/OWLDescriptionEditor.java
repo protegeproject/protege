@@ -5,7 +5,7 @@ import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 import javax.swing.*;
 import java.util.Set;
@@ -53,9 +53,9 @@ public interface OWLDescriptionEditor extends ProtegePluginInstance, VerifiedInp
      * @param description the class expression to be edited (may be null which is used to "reset" the editor)
      * @return false if the description cannot be represented by this editor (should always be able to handle null)
      */
-    boolean setDescription(OWLDescription description);
+    boolean setDescription(OWLClassExpression description);
 
-    Set<OWLDescription> getDescriptions();
+    Set<OWLClassExpression> getClassExpressions();
 
 
     void setup(String uniqueIdentifier, String label, OWLEditorKit editorKit);

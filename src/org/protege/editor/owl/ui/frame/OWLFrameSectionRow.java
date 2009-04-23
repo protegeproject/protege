@@ -15,7 +15,7 @@ import java.util.List;
  * An <code>OWLFrameSectionRow</code> constitues a row in a frame section, which represents
  * an axiom.
  */
-public interface OWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListItem {
+public interface OWLFrameSectionRow<R, A extends OWLAxiom, E> extends OWLFrameObject<R, A, E>, MListItem {
 
     /**
      * Gets the frame section which this row belongs to.
@@ -64,13 +64,6 @@ public interface OWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> ext
      *         if the row is not editable.
      */
     boolean isEditable();
-
-
-    /**
-     * @deprecated Use <code>isDeleateable</code> instead
-     * @return true if the row can be deleted, false otherwise
-     */
-    boolean isDeletable();
 
 
     public boolean isInferred();

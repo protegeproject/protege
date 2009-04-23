@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.semanticweb.owl.model.OWLClassAxiom;
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.SWRLRule;
 
@@ -40,9 +40,9 @@ import java.util.Set;
  */
 public interface OWLExpressionCheckerFactory {
 
-    OWLExpressionChecker<OWLDescription> getOWLDescriptionChecker();
+    OWLExpressionChecker<OWLClassExpression> getOWLDescriptionChecker();
 
-    OWLExpressionChecker<Set<OWLDescription>> getOWLDescriptionSetChecker();    
+    OWLExpressionChecker<Set<OWLClassExpression>> getOWLDescriptionSetChecker();
 
     OWLExpressionChecker<OWLClassAxiom> getClassAxiomChecker();
 

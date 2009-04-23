@@ -73,13 +73,6 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         tree.setSelectedOWLObjects(properties);
     }
 
-    /**
-     * @deprecated use <code>setSelectedProperty</code>
-     * @param property
-     */
-    public void show(O property) {
-        setSelectedProperty(property);
-    }
 
     protected O updateView(O property) {
         final O currentProperty = getSelectedProperty();
@@ -127,6 +120,11 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
     }
 
 
+    public void show(O property) {
+        setSelectedProperty(property);
+    }
+
+    
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Deletable

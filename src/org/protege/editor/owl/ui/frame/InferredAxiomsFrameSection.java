@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -70,7 +71,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
        try {
            for (OWLClass cls : getReasoner().getInconsistentClasses()) {
                if (!cls.isOWLNothing()) {
-                   OWLAxiom unsatAx = getOWLDataFactory().getOWLSubClassAxiom(cls,
+                   OWLAxiom unsatAx = getOWLDataFactory().getOWLSubClassOfAxiom(cls,
                                                                               getOWLDataFactory().getOWLNothing());
                    addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), unsatAx));
                }
@@ -94,8 +95,8 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
                    }
                }
                if (add) {
-                   if (ax instanceof OWLSubClassAxiom) {
-                       OWLSubClassAxiom subClsAx = (OWLSubClassAxiom) ax;
+                   if (ax instanceof OWLSubClassOfAxiom) {
+                       OWLSubClassOfAxiom subClsAx = (OWLSubClassOfAxiom) ax;
                        if (!subClsAx.getSuperClass().isOWLThing()) {
                            addRow(new InferredAxiomsFrameSectionRow(getOWLEditorKit(),
                                                                     this,

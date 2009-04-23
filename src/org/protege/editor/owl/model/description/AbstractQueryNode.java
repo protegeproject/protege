@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.description;
 
-import org.semanticweb.owl.model.OWLDescription;
+import org.semanticweb.owl.model.OWLClassExpression;
 
 
 /**
@@ -35,7 +35,7 @@ public abstract class AbstractQueryNode implements OWLDescriptionNode {
     }
 
 
-    public OWLDescription getDescription() {
+    public OWLClassExpression getClassExpression() {
         return null;
     }
 }

@@ -16,7 +16,7 @@ public abstract class AbstractOntologyLibrary implements OntologyLibrary {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(getDescription());
+        builder.append(getClassExpression());
         builder.append("\n");
         for (URI ontURI : getOntologyURIs()) {
             builder.append("    ");

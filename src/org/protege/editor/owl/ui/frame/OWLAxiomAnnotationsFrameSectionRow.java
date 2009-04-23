@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Collections;
@@ -35,12 +37,12 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
  */
-public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiom, OWLAxiomAnnotationAxiom, OWLAnnotation>{
+public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiom, OWLAnnotationAssertionAxiom, OWLAnnotation>{
 
-    private OWLAnnotation<? extends OWLObject> annotation;
+    private OWLAnnotation annotation;
 
     public OWLAxiomAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
-                                              OWLAxiom rootObject, OWLAxiomAnnotationAxiom axiom) {
+                                              OWLAxiom rootObject, OWLAnnotationAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
         this.annotation = axiom.getAnnotation();
     }
@@ -53,8 +55,8 @@ public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionR
     }
 
 
-    protected OWLAxiomAnnotationAxiom createAxiom(OWLAnnotation editedObject) {
-        return getOWLDataFactory().getOWLAxiomAnnotationAxiom(getRoot(), editedObject);
+    protected OWLAnnotationAssertionAxiom createAxiom(OWLAnnotation editedObject) {
+        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRoot(), editedObject);
     }
 
 

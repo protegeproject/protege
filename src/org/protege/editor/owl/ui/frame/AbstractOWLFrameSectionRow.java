@@ -4,6 +4,8 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditorHandler;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -194,15 +196,6 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
      */
     public boolean isEditable() {
         return getOntology() != null;
-    }
-
-
-    /**
-     * @deprecated use <code>isDeleateable</code> instead
-     * @return
-     */
-    public boolean isDeletable() {
-        return isDeleteable();
     }
 
 

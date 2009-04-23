@@ -1,22 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.CollectionFactory;
+
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDescription;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLSubClassAxiom;
-import org.semanticweb.owl.model.RemoveAxiom;
-import org.semanticweb.owl.util.CollectionFactory;
 
 
 /**
@@ -37,9 +29,9 @@ public class ConvertToDefinedClassAction extends SelectedOWLClassAction {
     public void actionPerformed(ActionEvent e) {
         OWLClass selClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        Set<OWLDescription> operands = new HashSet<OWLDescription>();
+        Set<OWLClassExpression> operands = new HashSet<OWLClassExpression>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLSubClassAxiom ax : ont.getSubClassAxiomsForLHS(selClass)) {
+            for (OWLSubClassOfAxiom ax : ont.getSubClassAxiomsForSubClass(selClass)) {
                 changes.add(new RemoveAxiom(ont, ax));
                 operands.add(ax.getSuperClass());
             }
@@ -48,7 +40,7 @@ public class ConvertToDefinedClassAction extends SelectedOWLClassAction {
             return;
         }
         OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-        OWLDescription equCls;
+        OWLClassExpression equCls;
         if (operands.size() == 1) {
             equCls = operands.iterator().next();
         }

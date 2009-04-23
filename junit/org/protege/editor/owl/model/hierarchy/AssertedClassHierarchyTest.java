@@ -1,29 +1,16 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.io.File;
-import java.io.StringWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Set;
-
 import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
-import org.coode.owl.functionalrenderer.OWLFunctionalSyntaxRenderer;
 import org.protege.editor.owl.util.JunitUtil;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.io.OWLRendererException;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeException;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.RemoveAxiom;
+import org.semanticweb.owl.model.*;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Set;
 
 public class AssertedClassHierarchyTest extends TestCase {
     private Logger log = Logger.getLogger(AssertedClassHierarchyTest.class);
@@ -74,7 +61,7 @@ public class AssertedClassHierarchyTest extends TestCase {
         assertTrue(hierarchy.getChildren(b).isEmpty());
         assertTrue(hierarchy.getChildren(c).isEmpty());
         
-        OWLAxiom axiom = factory.getOWLSubClassAxiom(a, c);
+        OWLAxiom axiom = factory.getOWLSubClassOfAxiom(a, c);
         manager.applyChange(new RemoveAxiom(ontology, axiom));
         
         assertEquals(1, hierarchy.getChildren(factory.getOWLThing()).size());
@@ -124,8 +111,8 @@ public class AssertedClassHierarchyTest extends TestCase {
         OWLObjectProperty p = factory.getOWLObjectProperty(new URI(namespace + "p"));
         OWLClass y = factory.getOWLClass(new URI(namespace + "Y"));
         OWLClass z = factory.getOWLClass(new URI(namespace + "Z"));
-        OWLAxiom gca = factory.getOWLSubClassAxiom(
-                             factory.getOWLObjectIntersectionOf(x, factory.getOWLObjectSomeRestriction(p, y)),
+        OWLAxiom gca = factory.getOWLSubClassOfAxiom(
+                             factory.getOWLObjectIntersectionOf(x, factory.getOWLObjectSomeValuesFrom(p, y)),
                              z);
         OWLOntologyChange change = new AddAxiom(ontology, gca);
         manager.applyChange(change);
@@ -147,16 +134,16 @@ public class AssertedClassHierarchyTest extends TestCase {
         CollectingHierarchyListener listener = new CollectingHierarchyListener();
         hierarchy.addListener(listener);
         
-        manager.addAxiom(ontology, factory.getOWLSubClassAxiom(a, factory.getOWLThing()));
+        manager.addAxiom(ontology, factory.getOWLSubClassOfAxiom(a, factory.getOWLThing()));
         assertTrue(listener.getCollectedNodes().contains(factory.getOWLThing()));
         listener.clear();
         
-        OWLAxiom temporary = factory.getOWLSubClassAxiom(b, factory.getOWLThing());
+        OWLAxiom temporary = factory.getOWLSubClassOfAxiom(b, factory.getOWLThing());
         manager.addAxiom(ontology, temporary);
         assertTrue(listener.getCollectedNodes().contains(factory.getOWLThing()));
         listener.clear();
         
-        manager.addAxiom(ontology, factory.getOWLSubClassAxiom(b, a));
+        manager.addAxiom(ontology, factory.getOWLSubClassOfAxiom(b, a));
         listener.clear();
 
         JunitUtil.printOntology(manager, ontology);

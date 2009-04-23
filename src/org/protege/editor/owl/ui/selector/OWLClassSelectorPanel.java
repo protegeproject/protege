@@ -109,28 +109,4 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
     public void removeSelectionListener(ChangeListener listener) {
         viewComponent.removeChangeListener(listener);
     }
-
-    /**
-     * @deprecated Use <code>setSelection()</code>
-     * @param cls
-     */
-    public void setSelectedClass(OWLClass cls) {
-        setSelection(cls);
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObject()</code>
-     * @return OWLClass
-     */
-    public OWLClass getSelectedClass() {
-        return getSelectedObject();
-    }
-
-    /**
-     * @deprecated Use <code>getSelectedObjects</code>
-     * @return set of selected classes
-     */
-    public Set<OWLClass> getSelectedClasses() {
-        return viewComponent.getSelectedClasses();
-    }
 }

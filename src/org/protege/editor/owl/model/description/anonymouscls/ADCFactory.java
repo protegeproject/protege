@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.parser.OWLParseException;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,13 +41,13 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Jan 8, 2009<br><br>
  */
-public class ADCFactory extends OWLAxiomVisitorAdapter {
+public class ADCFactory extends OWLObjectVisitorAdapter {
 
     private static final Logger logger = Logger.getLogger(ADCFactory.class);
 
     private AnonymousDefinedClassManager adcManager;
 
-    private Set<OWLDescription> descrs = new HashSet<OWLDescription>();
+    private Set<OWLClassExpression> descrs = new HashSet<OWLClassExpression>();
 
 
     public ADCFactory(AnonymousDefinedClassManager adcManager) {
@@ -62,11 +62,11 @@ public class ADCFactory extends OWLAxiomVisitorAdapter {
             ax.accept(this);
         }
 
-        for (OWLOntologyAnnotationAxiom ax : ont.getAnnotations(ont)){
-            ax.accept(this);
+        for (OWLAnnotation annotation : ont.getAnnotations()){ // get annotations on ontology
+            annotation.accept(this);
         }
 
-        for (OWLDescription descr : descrs){
+        for (OWLClassExpression descr : descrs){
             OWLEntityCreationSet<OWLClass> chSet = adcManager.createAnonymousClass(ont, descr);
             changes.addAll(chSet.getOntologyChanges());
         }
@@ -75,7 +75,7 @@ public class ADCFactory extends OWLAxiomVisitorAdapter {
     }
 
 
-    public void visit(OWLSubClassAxiom ax) {
+    public void visit(OWLSubClassOfAxiom ax) {
         if (ax.getSubClass().isAnonymous()){
             descrs.add(ax.getSubClass());
         }
@@ -83,7 +83,7 @@ public class ADCFactory extends OWLAxiomVisitorAdapter {
 
 
     public void visit(OWLEquivalentClassesAxiom ax) {
-        for (OWLDescription descr : ax.getDescriptions()){
+        for (OWLClassExpression descr : ax.getClassExpressions()){
             if (descr.isAnonymous()){
                 descrs.add(descr);
             }
@@ -91,21 +91,36 @@ public class ADCFactory extends OWLAxiomVisitorAdapter {
     }
 
 
-    public void visit(OWLOntologyAnnotationAxiom ax) {
-        if (ax.getAnnotation().getAnnotationURI().equals(adcManager.getAnnotationURI())){
-            String value = ax.getAnnotation().getAnnotationValueAsConstant().getLiteral();
-            try{
-                OWLDescription descr = parseOWLDescription(value);
-                descrs.add(descr);
-            }
-            catch(OWLParseException e){
-                logger.error(e);
-            }
+    public void visit(OWLAnnotation annotation) {
+        if (annotation.getProperty().getURI().equals(adcManager.getURI())){
+            annotation.getValue().accept(this);
         }
     }
 
 
-    private OWLDescription parseOWLDescription(String s) throws OWLParseException {
+    public void visit(OWLRDFTextLiteral owlrdfTextLiteral) {
+        try{
+            OWLClassExpression descr = parseOWLDescription(owlrdfTextLiteral.getLiteral());
+            descrs.add(descr);
+        }
+        catch(OWLParseException e){
+            logger.error(e);
+        }
+    }
+
+
+    public void visit(OWLTypedLiteral owlTypedLiteral) {
+        try{
+            OWLClassExpression descr = parseOWLDescription(owlTypedLiteral.getLiteral());
+            descrs.add(descr);
+        }
+        catch(OWLParseException e){
+            logger.error(e);
+        }
+    }
+
+
+    private OWLClassExpression parseOWLDescription(String s) throws OWLParseException {
         throw new OWLParseException("Retrieving ADCs from annotations not currently implemented");
     }
 }

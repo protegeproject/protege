@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -125,13 +124,6 @@ public class OWLEntitySelectorPanel extends JPanel {
         add(buttonPanel, BorderLayout.NORTH);
     }
 
-    private static void setupComponent(JComponent c) {
-
-    }
-
-    private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getModelManager();
-    }
 
     private void setModelSelection(OWLEntity entity) {
         owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(entity);

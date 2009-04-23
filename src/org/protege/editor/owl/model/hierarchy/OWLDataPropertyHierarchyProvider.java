@@ -1,17 +1,10 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import org.semanticweb.owl.model.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLAxiomChange;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyExpression;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLSubPropertyAxiom;
 
 
 /**
@@ -61,6 +54,6 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
 
     protected Set<? extends OWLSubPropertyAxiom<OWLDataPropertyExpression>> getSubPropertyAxiomForRHS(
             OWLDataProperty prop, OWLOntology ont) {
-        return ont.getDataSubPropertyAxiomsForRHS(prop);
+        return ont.getDataSubPropertyAxiomsForSuperProperty(prop);
     }
 }

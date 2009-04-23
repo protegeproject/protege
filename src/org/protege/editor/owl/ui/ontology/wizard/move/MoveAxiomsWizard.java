@@ -222,10 +222,11 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                     if(targetOntology != null){
-                        if (ax instanceof OWLOntologyAnnotationAxiom){ // turn this into an annotation on the target
-                            ax = df.getOWLOntologyAnnotationAxiom(targetOntology,
-                                                                  ((OWLOntologyAnnotationAxiom)ax).getAnnotation());
-                        }
+// @@TODO v3 port
+//                        if (ax instanceof OWLOntologyAnnotationAxiom){ // turn this into an annotation on the target
+//                            ax = df.getOWLOntologyAnnotationAxiom(targetOntology,
+//                                                                  ((OWLOntologyAnnotationAxiom)ax).getAnnotation());
+//                        }
                         changes.add(new AddAxiom(targetOntology, ax));
                     }
                 }

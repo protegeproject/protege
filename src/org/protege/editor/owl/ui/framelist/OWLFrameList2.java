@@ -13,6 +13,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.protege.editor.owl.ui.frame.*;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
@@ -514,7 +515,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
         OWLAxiom ax = row.getAxiom();
         ExplanationHandler explanationHandler = getExplanationHandler();
         if(explanationHandler != null) {
-            explanationHandler.handleExplain(ax);    
+            explanationHandler.handleExplain(ax);
         }
 
     }
@@ -540,12 +541,7 @@ public class OWLFrameList2<R extends Object> extends MList implements
 
     private boolean isAnnotationPresent(OWLFrameSectionRow row) {
         OWLAxiom ax = row.getAxiom();
-        for (OWLOntology ont : editorKit.getModelManager().getActiveOntologies()){
-            if (!ax.getAnnotationAxioms(ont).isEmpty()){
-                return true;
-            }
-        }
-        return false;
+        return (!ax.getAnnotations().isEmpty());
     }
 
 

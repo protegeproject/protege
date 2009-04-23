@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLGeneralAxiomEditor;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
+import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLAxiomAnnotationAxiom;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,10 +39,10 @@ public class OWLAxiomAnnotationsRoot {
 
     private OWLAxiom subject;
 
-    private Set<OWLAxiomAnnotationAxiom> axioms = new HashSet<OWLAxiomAnnotationAxiom>();
+    private Set<OWLAnnotationAssertionAxiom> axioms = new HashSet<OWLAnnotationAssertionAxiom>();
 
 
-    public OWLAxiomAnnotationsRoot(OWLAxiom subject, Set<OWLAxiomAnnotationAxiom> axioms) {
+    public OWLAxiomAnnotationsRoot(OWLAxiom subject, Set<OWLAnnotationAssertionAxiom> axioms) {
         this.subject = subject;
         this.axioms.addAll(axioms);
     }
@@ -53,12 +53,12 @@ public class OWLAxiomAnnotationsRoot {
     }
 
 
-    public Set<OWLAxiomAnnotationAxiom> getAxioms() {
+    public Set<OWLAnnotationAssertionAxiom> getAxioms() {
         return axioms;
     }
 
 
-    public void addAxiom(OWLAxiomAnnotationAxiom axiom) {
+    public void addAxiom(OWLAnnotationAssertionAxiom axiom) {
         axioms.add(axiom);
     }
 }

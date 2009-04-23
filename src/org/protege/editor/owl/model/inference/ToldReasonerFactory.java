@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.inference;
 
 import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
+
+import java.util.Set;
 
 
 /**
@@ -12,6 +14,11 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  * Date: 16-Apr-2007<br><br>
  */
 public class ToldReasonerFactory extends ProtegeOWLReasonerFactoryAdapter {
+
+    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager, Set<OWLOntology> owlOntologies) {
+        return null;
+    }
+    
 
     public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) {
         return null;

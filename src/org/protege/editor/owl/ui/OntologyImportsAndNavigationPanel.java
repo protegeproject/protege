@@ -84,7 +84,8 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
                 setShowImports();
             }
         });
-        showImportsCheckBox.setSelected(owlEditorKit.getModelManager().isIncludeImports());
+// @@TODO v3 port - no longer supports isIncludesImports
+//        showImportsCheckBox.setSelected(owlEditorKit.getModelManager().isIncludeImports());
         showImportsCheckBox.setFont(showImportsCheckBox.getFont().deriveFont(Font.PLAIN, 11.0f));
         add(showImportsCheckBox, BorderLayout.SOUTH);
         tree.setCellRenderer(new OntologyTreeCellRenderer());
@@ -92,7 +93,8 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
 
 
     private void setShowImports() {
-        owlEditorKit.getModelManager().setIncludeImports(showImportsCheckBox.isSelected());
+// @@TODO v3 port - no longer supports isIncludesImports      
+//        owlEditorKit.getModelManager().setIncludeImports(showImportsCheckBox.isSelected());
     }
 
 

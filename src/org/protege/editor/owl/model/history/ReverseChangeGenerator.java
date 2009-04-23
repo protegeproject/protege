@@ -1,10 +1,6 @@
 package org.protege.editor.owl.model.history;
 
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeVisitor;
-import org.semanticweb.owl.model.RemoveAxiom;
-import org.semanticweb.owl.model.SetOntologyURI;
+import org.semanticweb.owl.model.*;
 
 
 /**
@@ -34,6 +30,26 @@ public class ReverseChangeGenerator implements OWLOntologyChangeVisitor {
 
 
     public void visit(SetOntologyURI change) {
-        reverseChange = new SetOntologyURI(change.getOntology(), change.getOriginalURI());
+        reverseChange = new SetOntologyURI(change.getOntology(), change.getOriginalOntologyID().getOntologyIRI().toURI());
+    }
+
+
+    public void visit(AddImport addImport) {
+        reverseChange = new RemoveImport(addImport.getOntology(), addImport.getImportDeclaration());
+    }
+
+
+    public void visit(RemoveImport removeImport) {
+        reverseChange = new AddImport(removeImport.getOntology(), removeImport.getImportDeclaration());
+    }
+
+
+    public void visit(AddOntologyAnnotation addOntologyAnnotation) {
+        reverseChange = new RemoveOntologyAnnotation(addOntologyAnnotation.getOntology(), addOntologyAnnotation.getAnnotation());
+    }
+
+
+    public void visit(RemoveOntologyAnnotation removeOntologyAnnotation) {
+        reverseChange = new AddOntologyAnnotation(removeOntologyAnnotation.getOntology(), removeOntologyAnnotation.getAnnotation());
     }
 }

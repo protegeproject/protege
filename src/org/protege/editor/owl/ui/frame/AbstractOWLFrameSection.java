@@ -4,9 +4,12 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditorHandler;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
+import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
 
 import java.util.*;
 
@@ -16,8 +19,11 @@ import java.util.*;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
+ *
+ * The visitor methods can be overriden to be notified when an axiom is added or removed
  */
-public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> implements OWLFrameSection<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E>, OWLAxiomVisitor {
+public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
+        implements OWLFrameSection<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E> {
 
     private OWLEditorKit owlEditorKit;
 
@@ -278,15 +284,6 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     }
 
 
-    /**
-     * @deprecated use <code>canAdd</code> instead
-     * @return
-     */
-    public boolean canAddRows() {
-        return canAdd();
-    }
-
-
     public boolean canAdd() {
         return getOWLModelManager().isActiveOntologyMutable();
     }
@@ -313,160 +310,6 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         }
         return sb.toString();
     }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Implementation of <code>OWLAxiomVisitor</code>.  These methods can be overriden to be notified when
-    // an axiom is added or removed
-
-
-    public void visit(OWLAntiSymmetricObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLAxiomAnnotationAxiom axiom) {
-    }
-
-
-    public void visit(OWLClassAssertionAxiom axiom) {
-    }
-
-
-    public void visit(OWLDataPropertyAssertionAxiom axiom) {
-    }
-
-
-    public void visit(OWLDataPropertyDomainAxiom axiom) {
-    }
-
-
-    public void visit(OWLDataPropertyRangeAxiom axiom) {
-    }
-
-
-    public void visit(OWLDataSubPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLDeclarationAxiom axiom) {
-    }
-
-
-    public void visit(OWLDifferentIndividualsAxiom axiom) {
-    }
-
-
-    public void visit(OWLDisjointClassesAxiom axiom) {
-    }
-
-
-    public void visit(OWLDisjointDataPropertiesAxiom axiom) {
-    }
-
-
-    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-    }
-
-
-    public void visit(OWLDisjointUnionAxiom axiom) {
-    }
-
-
-    public void visit(OWLEntityAnnotationAxiom axiom) {
-    }
-
-
-    public void visit(OWLEquivalentClassesAxiom axiom) {
-    }
-
-
-    public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
-    }
-
-
-    public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-    }
-
-
-    public void visit(OWLFunctionalDataPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLImportsDeclaration axiom) {
-    }
-
-
-    public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLInverseObjectPropertiesAxiom axiom) {
-    }
-
-
-    public void visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-    }
-
-
-    public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-    }
-
-
-    public void visit(OWLObjectPropertyAssertionAxiom axiom) {
-    }
-
-
-    public void visit(OWLObjectPropertyChainSubPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLObjectPropertyDomainAxiom axiom) {
-    }
-
-
-    public void visit(OWLObjectPropertyRangeAxiom axiom) {
-    }
-
-
-    public void visit(OWLObjectSubPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLReflexiveObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLSameIndividualsAxiom axiom) {
-    }
-
-
-    public void visit(OWLSubClassAxiom axiom) {
-    }
-
-
-    public void visit(OWLSymmetricObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(OWLTransitiveObjectPropertyAxiom axiom) {
-    }
-
-
-    public void visit(SWRLRule rule) {
-    }
-
-
-    public void visit(OWLOntologyAnnotationAxiom axiom) {
-    }
-
 
     public String getName() {
         return getLabel();

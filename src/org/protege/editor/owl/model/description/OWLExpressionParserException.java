@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.description;
 
-import java.util.Set;
-
 import org.semanticweb.owl.model.OWLException;
+
+import java.util.Set;
 
 
 /**
@@ -84,7 +84,7 @@ public class OWLExpressionParserException extends OWLException {
     }
 
 
-    public boolean isDataTypeExpected() {
+    public boolean isDatatypeExpected() {
         return dataTypeExpected;
     }
 
