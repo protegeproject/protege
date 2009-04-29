@@ -36,6 +36,8 @@ import java.util.List;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
+ *
+ * THis is all wrong - the framesection cannot be used as axiom annotations are not annotation assertions
  */
 public class OWLAxiomAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAxiom, OWLAnnotationAssertionAxiom, OWLAnnotation>{
 

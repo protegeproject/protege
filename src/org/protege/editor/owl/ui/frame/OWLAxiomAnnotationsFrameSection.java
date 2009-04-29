@@ -9,8 +9,6 @@ import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -40,6 +38,8 @@ import java.util.Set;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 06-Dec-2007<br><br>
+ *
+ * THis is all wrong - the framesection cannot be used as axiom annotations are not annotation assertions
  */
 public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWLAxiom, OWLAnnotationAssertionAxiom, OWLAnnotation>{
 
@@ -67,22 +67,23 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
     protected void refill(OWLOntology ontology) {
 
-        // no straightforward way to ask the ontology for annotation axioms on a given axiom
-        Set<OWLAnnotationAssertionAxiom> annotationAssertionsForOntology = new HashSet<OWLAnnotationAssertionAxiom>();
-        for (OWLAnnotation annot : getRootObject().getAnnotations()){
-            OWLAnnotationAssertionAxiom annotAx = getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), annot);
-            if (ontology.containsAxiom(annotAx)){
-                annotationAssertionsForOntology.add(annotAx);
-            }
-        }
-        
-        for(OWLAnnotationAssertionAxiom ax : annotationAssertionsForOntology) {
-                addRow(new OWLAxiomAnnotationsFrameSectionRow(getOWLEditorKit(),
-                                                             this,
-                                                             ontology,
-                                                             getRootObject(),
-                                                             ax));
-            }
+//        // no straightforward way to ask the ontology for annotation axioms on a given axiom
+        // this won't work as annotations are part of the axiom - annotation assertions are just on
+//        Set<OWLAnnotationAssertionAxiom> annotationAssertionsForOntology = new HashSet<OWLAnnotationAssertionAxiom>();
+//        for (OWLAnnotation annot : getRootObject().getAnnotations()){
+//            OWLAnnotationAssertionAxiom annotAx = getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), annot);
+//            if (ontology.containsAxiom(annotAx)){
+//                annotationAssertionsForOntology.add(annotAx);
+//            }
+//        }
+//
+//        for(OWLAnnotationAssertionAxiom ax : annotationAssertionsForOntology) {
+//                addRow(new OWLAxiomAnnotationsFrameSectionRow(getOWLEditorKit(),
+//                                                             this,
+//                                                             ontology,
+//                                                             getRootObject(),
+//                                                             ax));
+//            }
     }
 
 
