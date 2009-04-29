@@ -146,11 +146,19 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         if (editedObjects == null) {
             return;
         }
+        Set<A> axioms = new HashSet<A>();
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (E editedObject : editedObjects) {
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), createAxiom(editedObject)));
+            final A ax = createAxiom(editedObject);
+            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            axioms.add(ax);
         }
         getOWLModelManager().applyChanges(changes);
+        for (A axiom : axioms){
+            if (!getOWLModelManager().getActiveOntology().containsAxiom(axiom)){
+                System.out.println("axiom not added = " + axiom);
+            }
+        }
     }
 
 

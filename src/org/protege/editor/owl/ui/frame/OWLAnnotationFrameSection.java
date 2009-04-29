@@ -39,20 +39,20 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         final OWLAnnotationSubject annotationSubject = getRootObject();
         // @@TODO this should also work for anon individuals but the OWLAPI is currently incorrect
         if (annotationSubject instanceof OWLEntity){
-        for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms((OWLEntity)annotationSubject)) {
-            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
-                addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, (OWLEntity)annotationSubject, ax));
+            for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(((OWLEntity)annotationSubject).getIRI())) {
+                if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
+                    addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
+                }
+                else {
+                    hidden = true;
+                }
+            }
+            if (hidden) {
+                setLabel(LABEL + " (some annotations are hidden)");
             }
             else {
-                hidden = true;
+                setLabel(LABEL);
             }
-        }
-        if (hidden) {
-            setLabel(LABEL + " (some annotations are hidden)");
-        }
-        else {
-            setLabel(LABEL);
-        }
         }
     }
 
@@ -115,12 +115,12 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         private Comparator<OWLAnnotationAxiom> owlObjectComparator;
 
         public OWLAnnotationSectionRowComparator(OWLModelManager owlModelManager) {
-             owlObjectComparator = owlModelManager.getOWLObjectComparator();
+            owlObjectComparator = owlModelManager.getOWLObjectComparator();
         }
 
         public int compare(OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
                            OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
-                return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
+            return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
         }
     }
 }

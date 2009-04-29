@@ -44,7 +44,7 @@ import java.util.Set;
  */
 public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<OWLEntity>, Disposable {
 
-     private OWLClassSelectorPanel classSelectorPanel;
+    private OWLClassSelectorPanel classSelectorPanel;
 
     private OWLObjectPropertySelectorPanel objectPropertySelectorPanel;
 
@@ -60,10 +60,11 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     private JScrollPane sp;
 
-
-    // @@TODO need to make a single select version
     public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit) {
-        setLayout(new EntitySelectorPanelLayoutManager());
+        this(owlEditorKit, true);
+    }
+
+    public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit, boolean multiselect) {
         classSelectorPanel = new OWLClassSelectorPanel(owlEditorKit, false);
         classSelectorPanel.setBorder(null);
         objectPropertySelectorPanel = new OWLObjectPropertySelectorPanel(owlEditorKit, false);
@@ -77,30 +78,86 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         tabbedPane.add("Object properties", objectPropertySelectorPanel);
         tabbedPane.add("Data properties", dataPropertySelectorPanel);
         tabbedPane.add("Individuals", individualSelectorPanel);
-        entityList = new RemovableObjectList();
-        entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
-        entityList.addListSelectionListener(new ListSelectionListener() {
+        if (!multiselect){
+            setLayout(new BorderLayout());
+            add(tabbedPane, BorderLayout.CENTER);
+        }
+        else{
+            setLayout(new EntitySelectorPanelLayoutManager());
+            add(tabbedPane);
+            entityList = new RemovableObjectList();
+            entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
-            public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()) {
-                    transmitSelectionFromList();
+            entityList.addListSelectionListener(new ListSelectionListener() {
+
+                public void valueChanged(ListSelectionEvent e) {
+                    if(!e.getValueIsAdjusting()) {
+                        transmitSelectionFromList();
+                    }
                 }
-            }
-        });
-        add(tabbedPane);
+            });
 
-        add(button = new JButton(new AbstractAction(">>") {
-            public void actionPerformed(ActionEvent e) {
-                addSelectedItems();
-            }
-        }));
-        sp = new JScrollPane(entityList);
-        add(sp);
+            add(button = new JButton(new AbstractAction(">>") {
+                public void actionPerformed(ActionEvent e) {
+                    addSelectedItems();
+                }
+            }));
+            sp = new JScrollPane(entityList);
+            add(sp);
+        }
     }
 
+
+    private boolean isMultiSelect(){
+        return entityList != null;
+    }
+
+
     public void transmitSelectionFromList() {
-        OWLEntity ent = (OWLEntity) entityList.getSelectedObject();
+        if (isMultiSelect()){
+            OWLEntity ent = (OWLEntity) entityList.getSelectedObject();
+            setTreeSelection(ent);
+        }
+    }
+
+
+    public OWLEntity getSelectedObject() {
+        if (isMultiSelect()){
+            return (OWLEntity) entityList.getSelectedObject();
+        }
+        else{
+            return getCurrentSelection().iterator().next();
+        }
+    }
+
+
+    public Set<OWLEntity> getSelectedObjects() {
+        if (isMultiSelect()){
+            return new HashSet<OWLEntity>(entityList.getListItems());
+        }
+        else{
+            return new HashSet<OWLEntity>(getCurrentSelection());
+        }
+    }
+
+    public void setSelection(Set<? extends OWLEntity> entities) {
+        if (isMultiSelect()){
+            entityList.setListData(entities.toArray());
+        }
+    }
+
+    public void setSelection(OWLEntity entity){
+        if (isMultiSelect()){
+            entityList.setListData(new OWLEntity[]{entity});
+        }
+        else{
+            setTreeSelection(entity);
+        }
+    }
+
+
+    private void setTreeSelection(OWLEntity ent) {
         if (ent != null) {
             if(ent.isOWLClass()) {
                 tabbedPane.setSelectedComponent(classSelectorPanel);
@@ -122,20 +179,6 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
     }
 
 
-    public OWLEntity getSelectedObject() {
-        return (OWLEntity) entityList.getSelectedObject();
-    }
-
-
-    public Set<OWLEntity> getSelectedObjects() {
-        return new HashSet<OWLEntity>(entityList.getListItems());
-    }
-
-    public void setSelection(Set<? extends OWLEntity> entities) {
-        entityList.setListData(entities.toArray());
-    }
-
-
     public void dispose() {
         classSelectorPanel.dispose();
         objectPropertySelectorPanel.dispose();
@@ -154,7 +197,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
     }
 
     public void addSelectedItems() {
-            entityList.addObject(getCurrentSelection());
+        entityList.addObject(getCurrentSelection());
     }
 
     public Set<? extends OWLEntity> getCurrentSelection() {
@@ -214,9 +257,9 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
             Component tabComponent = tabbedPane.getComponentAt(0);
             int listYOffset = tabComponent.getBounds().y;
             sp.setBounds(xOffset + leftAndRightColWidth + buttonPrefDim.width,
-                                 yOffset + listYOffset,
-                                 tabComponent.getWidth(),
-                                 tabComponent.getHeight());
+                         yOffset + listYOffset,
+                         tabComponent.getWidth(),
+                         tabComponent.getHeight());
             button.setBounds(xOffset + leftAndRightColWidth, yOffset + availHeight/2, buttonPrefDim.width, buttonPrefDim.height);
         }
     }

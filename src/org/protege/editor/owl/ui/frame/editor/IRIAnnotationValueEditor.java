@@ -9,7 +9,6 @@ import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.util.Collections;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -50,8 +49,7 @@ public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI> {
 
     public IRIAnnotationValueEditor(OWLEditorKit owlEditorKit) {
         this.eKit = owlEditorKit;
-        entitySelectorPanel = new OWLEntitySelectorPanel(owlEditorKit);
-        entitySelectorPanel.setPreferredSize(new Dimension(400, 300));
+        entitySelectorPanel = new OWLEntitySelectorPanel(owlEditorKit, false);
     }
 
 
