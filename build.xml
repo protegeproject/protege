@@ -1,68 +1,207 @@
-<?xml version="1.0"?> 
-<project name="common library bundle" default="bundle" basedir="..">
-
-  <property name="src" location="${commonlibs.dir}/src"/>
-    
-    
-    <!-- =================================================================== -->
-    <!-- Classpath declaration - used in the "compile" target -->
-    <!-- =================================================================== -->
-    <path id = "local.classpath">    
-      <fileset dir="${commonlibs.dir}/lib" includes="*.jar"/>
-    </path>
-    
-  <target name="init"> 
-    <echo message="---------------Building the common libs Bundle-------------"/>
-    <mkdir dir="${commonlibs.classes}"/>
-  </target>
-    
-    <!-- =================================================================== -->
-    <!-- COMPILE -->
-    <!-- =================================================================== -->
-  <target name = "compile" depends = "init">    
-      <javac srcdir = "${commonlibs.dir}/src" 
-             destdir = "${commonlibs.classes}" 
-             debug = "${debug}" 
-             source = "${source}" 
-             includeAntRuntime = "${includeAntRuntime}">
-          <classpath refid = "local.classpath"/>
-       </javac>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- BND -->
-  <!-- =================================================================== -->
-  
-  <target name = "bnd"/>
-    
-
-  <target name="copy.resources" depends="init">
-    <copy todir="${commonlibs.classes}/lib">
-        <fileset dir="${commonlibs.dir}/lib"/>
-    </copy>
-  </target>
-
-  <!-- ===================================================================================== -->
-  <!-- SRC.BUNDLE - create a bundle with sources for developers -->
-  <!-- ===================================================================================== -->
-  <target name="src.bundle" depends="copy.resources">
-    <zip destfile="${commonlibs.classes}/${commonlibs.name}src.zip">
-      <fileset dir="${commonlibs.dir}/src"/>
-    </zip>
-    <antcall target="bundle"/>
-  </target>
+<?xml version = "1.0" encoding = "utf-8"?>
+<project name = "org.protege.common project" default = "install" basedir = ".">    
 
 
-  <!-- ===================================================================================== -->
-  <!-- BUNDLE - create a bundle to run with OSGi -->
-  <!-- ===================================================================================== -->
-  <target name="bundle" depends="compile,copy.resources">
-    <jar basedir = "${commonlibs.classes}"
-         jarfile  = "${commonlibs.jar}"
-         manifest = "${commonlibs.dir}/META-INF/MANIFEST.MF"/>
-  </target> 
+   <!-- 
+        To run this build file set the environment variable
+        PROTEGE_HOME to point to a protege distribution and type ant
+        install or jar.
+     -->
+
+   <property environment="env"/>
+   <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
+   <property file="local.properties"/>
 
 
-  <target name = "junit"/>
+   <!-- 
+        This setting defines the name of the plugin.
+        This may be the only setting that the developer needs to
+        change.
+     -->
+   <property name = "plugin"          value = "org.protege.common"/>
+
+   
+   <!-- 
+        these can be overridden in the local.properties for different
+        distributions 
+     -->
+   <property name = "protege.osgi"      location="${protege.home}/org.eclipse.osgi.jar"/>
+
+
+   <!-- 
+        these properties probably don't need changing
+        -->
+   <property name = "src"               location = "./src"/>  
+   <property name = "build"             location = "./build"/>
+   <property name = "bundle.dir"        location = "${build}"/>
+   <property name = "classes"           location = "${build}/classes"/>
+   <property name = "lib"               location = "./lib"/>
+   <property name = "manifest"          location = "${build}/manifest.mf"/>
+
+   <property name = "protege.common"    location="${protege.home}/bundles"/>
+
+
+   <target name = "init">
+     <tstamp>
+       <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+     </tstamp>
+     <mkdir dir = "${build}"/>
+     <mkdir dir = "${classes}"/>
+     <mkdir dir = "${classes}/lib"/>
+   </target>  
+
+   <!-- ============================================================= -->
+   <!--             Configuring the Compile Classpath                 -->
+   <!-- ============================================================= -->
+
+
+    <target name="checkProtegeLibsAndReport" depends="checkProtegeLibs"
+            unless="libs.found">
+      <echo message="Missing protege libraries.  You need to set "/>
+      <echo message="the PROTEGE_HOME environment variable to a"/>
+      <echo message="protege installation directory where the"/>
+      <echo message="appropriate plugins have been installed."/>
+      <echo message="Alternatively set the jar libs in local.properties (protege.lib=...)"/>
+      <echo message="Use the -v option to ant to see what jars are missing."/>
+      <fail message = "missing protege libraries"/>
+    </target>
+
+   <!-- 
+        The following target only needs to be modified if the user
+        needs to change the classpath.  It is preconfigured to use
+        the common protege 4 jars, the lib directory and the
+        libraries that have been uncovered in buildlibs. 
+     -->
+   <target name = "checkProtegeLibs" depends="init">
+     <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
+     <echo message="Using OSGi Library = ${protege.osgi}"/>
+     <condition property="libs.found">
+       <and>
+           <available file="${protege.osgi}" type = "file"/>
+	   <available file="${equinox.common}" type = "file"/>
+	   <available file="${equinox.registry}" type = "file"/>
+       </and>
+     </condition>
+     <path id = "project.classpath">    
+       <pathelement location="${protege.osgi}"/>
+       <pathelement location="${protege.lib}"/>
+       <pathelement location="${equinox.common}"/>
+       <pathelement location="${equinox.registry}"/>
+       <fileset dir="${lib}"/>
+     </path>
+   </target>
+
+   <!-- 
+        Here is the copy.resources target.  It may need modification
+        to copy the right resources into the classes directory.  By
+        default it already copies non-java files found in the source
+        directory, the libraries needed by the project and the
+        viewconfig and the plugin.xml.  This will be sufficient in
+        many cases. 
+     -->
+   <target name="copy.resources" depends="build.manifest">
+     <copy todir="${classes}">
+       <fileset dir="${src}">
+         <include name="**/*"/>
+         <exclude name="**/*.java"/>
+         <exclude name="**/MANIFEST.MF"/>
+         <exclude name="**/manifest.mf"/>
+       </fileset>
+     </copy>
+     <copy todir="${classes}/lib">
+       <fileset dir="${lib}" excludes="junit*.jar"/>
+     </copy>
+     <copy todir="${classes}">
+       <fileset dir="." includes="*.xml">
+           <exclude name="build.xml"/>
+       </fileset>
+     </copy>
+   	 <!-- the manifest doesn't belong here but this is good for IDE's -->
+     <mkdir dir="${classes}/META-INF"/>  
+     <copy todir="${classes}/META-INF"   
+           file = "${manifest}"/>
+   </target>
+
+
+   <!-- 
+        It is less likely that the developer will want to make changes
+        below this line 
+        -->
+   <!-- ============================================================= -->
+
+   <target name="add.source" depends="init">
+       <zip destfile="${classes}/${plugin}src.zip">
+           <fileset dir="${src}"/>
+       </zip>
+   </target>
+
+   <target name = "compile" depends = "checkProtegeLibsAndReport">
+     <javac srcdir = "${src}"
+            destdir = "${classes}" 
+            debug="on"
+            includeAntRuntime="false">
+       <classpath refid = "project.classpath"/>  
+     </javac>
+   </target>
+
+   <target name="build.manifest">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <attribute name="Build-Date" value = "${build.time}"/>
+     </manifest>
+   </target>
+
+   <target name = "jar" depends = "compile, copy.resources">
+     <jar jarfile = "${build}/${plugin}.jar"
+          basedir = "${classes}" 
+          manifest = "${build}/manifest.mf"/>
+   </target>
+
+   <target name = "install" depends = "jar">
+     <!-- flush cache -->
+     <delete dir = "${protege.home}/configuration/org.eclipse.core.runtime"/>
+     <delete dir = "${protege.home}/configuration/org.eclipse.osgi"/>
+     <copy file="${build}/${plugin}.jar" 
+           todir = "${protege.common}"
+           overwrite = "true"/>
+   </target>
+	
+   <target name = "clean">
+     <delete dir = "${build}"/>
+   </target>
+
+
+   <target name = "usage">
+     <echo message = "To run this script set the PROTEGE_HOME environment"/>
+     <echo message = "variable and use one of the following targets"/>
+     <echo message = "jar - builds the jar (bundle) file for this project"/>
+     <echo message = "install - installs  the bundle into the Protege distribution"/>
+     <echo message = "copy.resources - copyies resources into the classes directory"/>
+     <echo message = "    this can  be useful for ide developers - see the wiki"/>
+   </target>
+
+
+   <!-- 
+        Standard properties that should not require changing
+        -->
+   <property name="equinox.common" 
+             location="${protege.common}/org.eclipse.equinox.common.jar"/>
+   <property name="equinox.registry"
+             location="${protege.common}/org.eclipse.equinox.registry.jar"/>
+   <property name="protege.lib" 
+             location="${protege.common}/org.protege.editor.core.application.jar"/>
+   <property name="common.lib"
+             location="${protege.common}/org.protege.common.jar"/>
+
+   <property name="owl.lib"
+             location="${protege.plugins}/org.semanticweb.owl.owlapi.jar"/>
+
+   <property name="owl.editor.jar"
+	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+
+
 
 </project>
