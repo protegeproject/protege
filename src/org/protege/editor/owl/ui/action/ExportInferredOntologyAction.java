@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -37,7 +35,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent e) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("Not Implemented yet");
         // @@TODO v3 port
 //        try {
 //            ExportInferredOntologyWizard wizard = new ExportInferredOntologyWizard(getOWLEditorKit());
