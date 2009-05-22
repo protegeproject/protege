@@ -94,7 +94,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
                         // Add the built in datatypes
                         final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-                        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getBuiltinDatatypes());
+                        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
                         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
 
                         list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
