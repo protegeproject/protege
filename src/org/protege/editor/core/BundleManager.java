@@ -1,18 +1,14 @@
 package org.protege.editor.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
 
 /*
  * I have left this a BundleActivator to emphasize that it could 
@@ -149,7 +145,7 @@ public class BundleManager {
                     pluginSanityCheck(b);
                 }
                 catch (BundleException be) {
-                    logger.warn("Problem staring plugin " + getNiceBundleName(b), be);
+                    logger.warn("Problem starting plugin " + getNiceBundleName(b), be);
                 }
             }
         }

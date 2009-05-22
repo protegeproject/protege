@@ -71,6 +71,7 @@ public class PluginPanel extends JPanel {
     public PluginPanel(Map<String, DownloadsProvider> downloadsProviders) {
         setLayout(new BorderLayout(2, 2));
 
+
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setBorder(new EmptyBorder(6, 6, 6, 6));
         sp.setResizeWeight(0.5);
@@ -103,7 +104,7 @@ public class PluginPanel extends JPanel {
             }
         });
 
-        alwaysShow = new JCheckBox("Always check for updates on startup.", true);
+        alwaysShow = new JCheckBox("Always check for updates on startup.", PluginManager.getInstance().isAutoUpdateEnabled());
         alwaysShow.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
                 PluginManager.getInstance().setAutoUpdateEnabled(alwaysShow.isSelected());
@@ -198,22 +199,35 @@ public class PluginPanel extends JPanel {
     }
 
 
-    private void updateInfoPanel(PluginInfo info) {
+    private void updateInfoPanel(final PluginInfo info) {
+        updateDocPanel(new ContentMimePair("", ""), readmePane, readmeScroller);
         if (info != null){
             authorLabel.setText(info.getAuthor());
+            licenseLabel.setText(info.getLicense());
 
             ContentMimePair readme = updateInfoReadmeMap.get(info);
-            if (readme == null){
-                readme = getContent(info.getReadmeURI());
-                updateInfoReadmeMap.put(info, readme);
+            if (readme != null){
+                updateDocPanel(readme, readmePane, readmeScroller);
             }
-            updateDocPanel(readme, readmePane, readmeScroller);
-
-            licenseLabel.setText(info.getLicense());
+            else{
+                Runnable loadContent = new Runnable() {
+                    public void run() {
+                        final ContentMimePair readme = getContent(info.getReadmeURI());
+                        updateInfoReadmeMap.put(info, readme);
+                        SwingUtilities.invokeLater(new Runnable(){
+                            public void run() {
+                                updateDocPanel(readme, readmePane, readmeScroller);
+                            }
+                        });
+                    }
+                };
+                Thread t = new Thread(loadContent, "Load plugin info");
+                t.setPriority(Thread.MIN_PRIORITY);
+                t.start();
+            }
         }
         else{
             authorLabel.setText("");
-            updateDocPanel(new ContentMimePair("", ""), readmePane, readmeScroller);
             licenseLabel.setText("");
         }
     }

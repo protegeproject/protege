@@ -1,9 +1,11 @@
 package org.protege.editor.core;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.editorkit.*;
-import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromRepositoryPanel;
+import org.protege.editor.core.ui.OpenFromURIPanel;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -12,10 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.net.URI;
-import java.util.Map;
 
 
 /**
@@ -38,11 +37,16 @@ public class ProtegeWelcomeFrame extends JFrame {
         setContentPane(welcomePanel);
         pack();
         centre();
-        addComponentListener(new ComponentAdapter() {
-            public void componentShown(ComponentEvent event) {
-                welcomePanel.refresh();
-            }
-        });
+    }
+
+
+    public void setVisible(boolean b) {
+        if (b){
+            welcomePanel.refresh();
+            pack();
+            centre();
+        }
+        super.setVisible(b);
     }
 
 
@@ -60,8 +64,6 @@ public class ProtegeWelcomeFrame extends JFrame {
         private Box box;
 
         private Box recentLinkBox;
-
-        private Map<String, Action> linkMap;
 
 
         public ProtegeWelcomePanel() {
@@ -243,7 +245,7 @@ public class ProtegeWelcomeFrame extends JFrame {
                 box.add(recentLinkBox);
             }
 
-            box.revalidate();
+            revalidate();
         }
     }
 }

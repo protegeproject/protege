@@ -81,6 +81,7 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         registryHolder.setBorder(ComponentFactory.createTitledBorder("Plugin registry"));
 
         pluginRegistryEditor = new JTextField(PluginManager.getInstance().getPluginRegistryLocation().toString());
+        pluginRegistryEditor.setColumns(30);
 
         JButton resetToDefaultRegistry = new JButton(new AbstractAction("Reset to default"){
             public void actionPerformed(ActionEvent event) {

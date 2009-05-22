@@ -3,7 +3,10 @@ package org.protege.editor.core.update;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BundleManager;
 import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.progress.BackgroundTask;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,49 +35,71 @@ public class PluginInstaller {
 
 
     public void run() {
-        for (PluginInfo info : updates) {
-            logger.info("Downloading " + info.getLabel());
-            try {
-                URL downloadURL = info.getDownloadURL();
-                final String[] path = downloadURL.getFile().split("/");
-                String downloadFileName = path[path.length-1];
+        final BackgroundTask installAllTask = ProtegeApplication.getBackgroundTaskManager().startTask("installing plugins");
 
-                String tmpPath = System.getProperty("java.io.tmpdir");
-                File tempPluginFile = new File(tmpPath, downloadFileName);
-                tempPluginFile.deleteOnExit();
-                URLConnection conn = downloadURL.openConnection();
+        Runnable r = new Runnable(){
+
+            public void run() {
+                for (PluginInfo info : updates) {
+                    install(info);
+                }
+                ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
+                JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");                
+            }
+        };
+
+        Thread t = new Thread(r, "Installing plugins thread");
+        t.setPriority(Thread.MIN_PRIORITY);
+        t.start();
+    }
+
+
+    private void install(PluginInfo info) {
+        BackgroundTask downloading = ProtegeApplication.getBackgroundTaskManager().startTask("downloading " + info.getLabel());
+        logger.info("Downloading " + info.getLabel());
+        try {
+            URL downloadURL = info.getDownloadURL();
+            final String[] path = downloadURL.getFile().split("/");
+            String downloadFileName = path[path.length-1];
+
+            String tmpPath = System.getProperty("java.io.tmpdir");
+            File tempPluginFile = new File(tmpPath, downloadFileName);
+            tempPluginFile.deleteOnExit();
+            URLConnection conn = downloadURL.openConnection();
 //                int len = conn.getContentLength();
-                BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
 //                int totalRead = 0;
-                while (true) {
-                    byte [] buffer = new byte [4068];
-                    int read = bis.read(buffer);
-                    if (read == -1) {
-                        break;
-                    }
+            while (true) {
+                byte [] buffer = new byte [4068];
+                int read = bis.read(buffer);
+                if (read == -1) {
+                    break;
+                }
 //                    totalRead += read;
 //                    logger.info("Downloading " + ((int) (((totalRead * 100.0) / len)) + "%"));
-                    bos.write(buffer, 0, read);
-                }
-                bis.close();
-                bos.flush();
-                bos.close();
+                bos.write(buffer, 0, read);
+            }
+            bis.close();
+            bos.flush();
+            bos.close();
 
-                // Extract if a zip file
-                if (downloadURL.getFile().endsWith(".zip")){
-                    tempPluginFile = extractPlugin(tempPluginFile, info);
-                }
+            // Extract if a zip file
+            if (downloadURL.getFile().endsWith(".zip")){
+                tempPluginFile = extractPlugin(tempPluginFile, info);
+            }
 
-                copyPluginToInstallLocation(tempPluginFile, info);
-            }
-            catch (URISyntaxException e) {
-                logger.error(e);
-            }
-            catch (IOException e) {
-                logger.error(e);
-            }
+            copyPluginToInstallLocation(tempPluginFile, info);
         }
+        catch (URISyntaxException e) {
+            logger.error(e);
+        }
+        catch (IOException e) {
+            logger.error(e);
+        }
+        finally{
+            ProtegeApplication.getBackgroundTaskManager().endTask(downloading);
+        }        
     }
 
 
