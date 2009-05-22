@@ -7,6 +7,7 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.*;
 
@@ -22,10 +23,9 @@ import java.util.*;
  */
 public class PreferencesDialogPanel extends JPanel implements Disposable {
 
-
-    private EditorKit editorKit;
-
     private Map<String, PreferencesPanel> map;
+
+    private Map<String, JComponent> scrollerMap;
 
     private JTabbedPane tabbedPane;
 
@@ -33,8 +33,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
 
     public PreferencesDialogPanel(EditorKit editorKit) {
-        this.editorKit = editorKit;
         map = new HashMap<String, PreferencesPanel>();
+        scrollerMap = new HashMap<String, JComponent>();
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane();
         PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
@@ -50,8 +50,12 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
             try {
                 PreferencesPanel panel = plugin.newInstance();
                 panel.initialise();
-                map.put(plugin.getLabel(), panel);
-                tabbedPane.addTab(plugin.getLabel(), panel);
+                final String label = plugin.getLabel();
+                final JScrollPane scroller = new JScrollPane(panel);
+                scroller.setBorder(new EmptyBorder(0, 0, 0, 0));
+                map.put(label, panel);
+                scrollerMap.put(label, scroller);
+                tabbedPane.addTab(label, scroller);
             }
             catch (Exception e) {
                 ProtegeApplication.getErrorLog().logError(e);
@@ -87,7 +91,10 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
 
     protected String getSelectedPanel() {
-        final Component c = tabbedPane.getSelectedComponent();
+        Component c = tabbedPane.getSelectedComponent();
+        if (c instanceof JScrollPane){
+            c = ((JScrollPane)c).getViewport().getView();
+        }
         for (String tabName : map.keySet()){
             if (c.equals(map.get(tabName))){
                 return tabName;
@@ -108,7 +115,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         if (selectedPanel == null){
             selectedPanel = prefs.getString(PREFS_HISTORY_PANEL_KEY, null);
         }
-        Component c = panel.map.get(selectedPanel);
+        Component c = panel.scrollerMap.get(selectedPanel);
         if (c != null) {
             panel.tabbedPane.setSelectedComponent(c);
         }

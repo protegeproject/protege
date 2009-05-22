@@ -121,7 +121,11 @@ public class FileUtils {
     public static File createTempFile(File targetFile) throws IOException {
         final String targetName = targetFile.getName();
         final int extensionIndex = targetName.lastIndexOf(".");
-        return File.createTempFile(targetName.substring(0, extensionIndex),
+        String filename = targetName.substring(0, extensionIndex);
+        for (int i=filename.length(); i<3; i++){
+            filename += "_";
+        }
+        return File.createTempFile(filename,
                                    targetName.substring(extensionIndex));
     }
 }

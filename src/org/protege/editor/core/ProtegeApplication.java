@@ -1,20 +1,10 @@
 package org.protege.editor.core;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.List;
-import java.util.Locale;
-
-import javax.swing.JFrame;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.UIManager;
-
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -30,16 +20,22 @@ import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.List;
+import java.util.Locale;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -96,6 +92,8 @@ public class ProtegeApplication implements BundleActivator {
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
+
+    private static BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
 
     private JFrame welcomeFrame;
 
@@ -313,7 +311,10 @@ public class ProtegeApplication implements BundleActivator {
         catch (Exception e) {
             logger.error("Exception caught loading ontology", e);
         }
-        PluginManager.getInstance().checkForUpdatesInBackground();
+        
+        if (PluginManager.getInstance().isAutoUpdateEnabled()){
+            PluginManager.getInstance().performAutoUpdate();
+        }
     }
 
     private void showWelcomeFrame(){
@@ -345,10 +346,17 @@ public class ProtegeApplication implements BundleActivator {
         return errorLog;
     }
 
+
+    public static BackgroundTaskManager getBackgroundTaskManager() {
+        return backgroundTaskManager;
+    }
+
+
     public static BundleManager getBundleManager() {
         return bundleManager;
     }
 
+    
     public static boolean handleQuit() {
         quitting = true;
         final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();

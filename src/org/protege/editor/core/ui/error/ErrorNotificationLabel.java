@@ -1,15 +1,11 @@
 package org.protege.editor.core.ui.error;
 
-import java.awt.Frame;
+import org.protege.editor.core.ui.util.Icons;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import org.protege.editor.core.ui.util.Icons;
 
 
 /**
@@ -32,7 +28,7 @@ public class ErrorNotificationLabel extends JLabel {
     public ErrorNotificationLabel(ErrorLog errorLog, SendErrorReportHandler handler) {
         super(Icons.getIcon("error.png"));
         this.handler = handler;
-        setToolTipText("Protege-Gaurd: Click to view errors");
+        setToolTipText("Protege-Guard: Click to view errors");
         setupMouseHandler();
         this.errorLog = errorLog;
         listener = new ErrorLogListener() {

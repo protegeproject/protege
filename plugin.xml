@@ -71,7 +71,7 @@
         <name value="Close"/>
         <toolTip value="Close the current set of ontologies"/>
         <class value="org.protege.editor.core.ui.action.CloseAction"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotE-M"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotY-M"/>
         <editorKitId value="any"/>
         <accelerator value="W"/>
     </extension>
@@ -95,14 +95,13 @@
     </extension>
 
 
-
-    <!--extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Download/update plugins"/>
+    <extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Check for plugins..."/>
         <toolTip value="Search for plugin downloads and updates"/>
         <class value="org.protege.editor.core.ui.action.CheckPluginsAction"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotP-A"/>
         <editorKitId value="any"/>
-    </extension-->
+    </extension>
 
     <!-- Edit menu -->
 

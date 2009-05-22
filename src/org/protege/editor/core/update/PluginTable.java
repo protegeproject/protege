@@ -3,6 +3,8 @@ package org.protege.editor.core.update;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.protege.editor.core.plugin.PluginUtilities;
+import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.util.TableUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -56,40 +58,59 @@ public class PluginTable extends JPanel {
 
     private ComponentAdapter componentAdapter = new ComponentAdapter(){
         public void componentShown(ComponentEvent event) {
-            createTree();
+            removeComponentListener(componentAdapter);
+            handleTableShown();
         }
     };
 
+    private JLabel waitLabel;
+
 
     public PluginTable(DownloadsProvider provider) {
+        setOpaque(false);
         this.provider = provider;
         addComponentListener(componentAdapter);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 200));
+        waitLabel = new JLabel("Checking for plugins...", Icons.getIcon("busy.gif"), SwingConstants.CENTER);
+        add(waitLabel, BorderLayout.CENTER);
     }
 
 
-    private void createTree(){
-        table = new JTable(tableModel = new PluginUpdateTableModel(provider));
-        table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        table.setShowGrid(true);
-        table.setRowMargin(1);
-        table.setGridColor(Color.LIGHT_GRAY);
-        table.setRowHeight(table.getRowHeight() + 5);
-        table.setRowSelectionAllowed(true);
-        table.setColumnSelectionAllowed(false);
+    private void handleTableShown(){
 
-        JScrollPane tableSp = new JScrollPane(table);
+        Thread t = new Thread(new Runnable(){
+            public void run() {
+                tableModel = new PluginUpdateTableModel(provider);
+                table = new JTable(tableModel);
 
-        for (ListSelectionListener l : pendingListeners){
-            table.getSelectionModel().addListSelectionListener(l);
-        }
-        pendingListeners.clear();
+                table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+                table.setShowGrid(true);
+                table.setRowMargin(1);
+                table.setGridColor(Color.LIGHT_GRAY);
+                table.setRowHeight(table.getRowHeight() + 5);
+                table.setRowSelectionAllowed(true);
+                table.setColumnSelectionAllowed(false);
+                TableUtils.pack(table, true, false, 3);
+                
+                final JScrollPane tableSp = new JScrollPane(table);
 
-        add(tableSp, BorderLayout.CENTER);
-        validate();
+                for (ListSelectionListener l : pendingListeners){
+                    table.getSelectionModel().addListSelectionListener(l);
+                }
+                pendingListeners.clear();
 
-        removeComponentListener(componentAdapter);
+                SwingUtilities.invokeLater(new Runnable(){
+                    public void run() {
+                        remove(waitLabel);
+                        add(tableSp, BorderLayout.CENTER);
+                        validate();
+                    }
+                });
+            }
+        }, "Load plugin table contents");
+
+        t.start();
     }
 
 
@@ -135,6 +156,7 @@ public class PluginTable extends JPanel {
 
         public PluginUpdateTableModel(DownloadsProvider provider) {
             this.provider = provider;
+            getInstallList();
         }
 
 

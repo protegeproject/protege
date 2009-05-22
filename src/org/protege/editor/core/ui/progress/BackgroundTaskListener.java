@@ -1,8 +1,4 @@
-package org.protege.editor.core.ui.action;
-
-import org.protege.editor.core.update.PluginManager;
-
-import java.awt.event.ActionEvent;
+package org.protege.editor.core.ui.progress;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,21 +28,11 @@ import java.awt.event.ActionEvent;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Nov 6, 2008<br><br>
+ * Date: May 8, 2009<br><br>
  */
-public class CheckPluginsAction extends ProtegeAction {
+public interface BackgroundTaskListener {
 
-    public void actionPerformed(ActionEvent event) {
-        PluginManager.getInstance().performCheckPlugins();
-    }
+    void startTask(BackgroundTask task);
 
-
-    public void initialise() throws Exception {
-        // do nothing
-    }
-
-
-    public void dispose() throws Exception {
-        // do nothing
-    }
+    void endTask(BackgroundTask task);
 }
