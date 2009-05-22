@@ -25,8 +25,8 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
-                    if (entity instanceof OWLDataProperty) {
-                        result.add((OWLDataProperty) entity);
+                    if (entity.isOWLDataProperty()) {
+                        result.add(entity.asOWLDataProperty());
                     }
                 }
             }

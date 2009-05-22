@@ -511,7 +511,7 @@
 
     <extension id="InferredAxioms"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Inferred axioms"/>
+        <label value="Selected entailments"/>
         <class value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
@@ -630,9 +630,9 @@
 
     <extension id="openfromURI"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Open from URI..."/>
+        <name value="Open from URL..."/>
         <class value="org.protege.editor.owl.ui.action.OpenFromURIAction"/>
-        <toolTip value="Open an ontology from a URI"/>
+        <toolTip value="Open an ontology from a URL"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-G"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift O"/>
@@ -658,6 +658,18 @@
         <accelerator value="Z"/>
     </extension>
 
+
+    <extension id="change.redo"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Redo"/>
+        <class value="org.protege.editor.owl.ui.action.RedoAction"/>
+        <toolTip value="Redo the last set of changes"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotAB-ZB"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="shift Z"/>
+    </extension>
+
+    
     <extension id="gatherontologies"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Gather ontologies..."/>
@@ -676,17 +688,6 @@
         <toolTip value="Exports inferred axioms as an ontology"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-D"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-
-    <extension id="change.redo"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Redo"/>
-        <class value="org.protege.editor.owl.ui.action.RedoAction"/>
-        <toolTip value="Redo the last set of changes"/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotA-B"/>
-        <editorKitId value="OWLEditorKit"/>
-        <accelerator value="shift Z"/>
     </extension>
 
 

@@ -49,12 +49,14 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
 
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ONTOLOGY_LOADED)) {
-                    rebuild();
-                }
+        public void handleChange(OWLModelManagerChangeEvent event) {
+            if(event.isType(EventType.ONTOLOGY_LOADED) ||
+               event.isType(EventType.ONTOLOGY_RELOADED) ||
+               event.isType(EventType.ONTOLOGY_CREATED)) {
+                rebuild();
             }
-        };
+        }
+    };
 
 
     public OWLOntologyHierarchyProvider(OWLModelManager mngr) {
@@ -65,7 +67,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
         child2ParentMap = new HashMap<OWLOntology, Set<OWLOntology>>();
         rebuild();
         mngr.addListener(modelManagerListener);
-        
+
     }
 
 
@@ -139,7 +141,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     public boolean containsReference(OWLOntology object) {
         return parent2ChildMap.containsKey(object) ||
-                roots.contains(object);
+               roots.contains(object);
     }
 
 

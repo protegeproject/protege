@@ -120,11 +120,9 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 changes.addAll(createLabel(entity, shortName));
             }
 
-            if (changes.isEmpty()) {
-                OWLDataFactory df = mngr.getOWLDataFactory();
-                OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
-                changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
-            }
+            OWLDataFactory df = mngr.getOWLDataFactory();
+            OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
+            changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
 
             return new OWLEntityCreationSet<T>(entity, changes);
         }
@@ -288,5 +286,5 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         return EntityCreationPreferences.getDefaultBaseURI();
     }
 
-    
+
 }

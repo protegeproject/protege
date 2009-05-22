@@ -249,7 +249,6 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                         reasonerProgressMonitor.setMessage(s);
                         logger.info(s);
                         currentReasoner = runningReasoner;
-                        runningReasoner = null;
                         fireReclassified();
                     }
                 }
@@ -258,6 +257,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                 }
                 catch (Exception e) {
                     exceptionHandler.handle(new ReasonerException(e));
+                }
+                finally{
+                    runningReasoner = null;
                 }
             }
         }, "Classify Thread");

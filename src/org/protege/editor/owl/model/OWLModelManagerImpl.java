@@ -51,6 +51,7 @@ import org.semanticweb.owl.util.URIShortFormProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
 
@@ -338,7 +339,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
         OWLOntology ontology = null;
 
-        // Obtain the actual ontology URI.  This is probably the xml:base
+        // Obtain the actual ontology URI.
         URI ontologyURI = new OntologyURIExtractor(uri).getOntologyURI();
 
         // if the ontology has already been loaded, we cannot have more than one ont with the same URI
@@ -428,7 +429,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.removeOntology(ont);
         ont = manager.loadOntologyFromPhysicalURI(getOntologyPhysicalURI(ont));
 
-        fireEvent(EventType.ONTOLOGY_LOADED);
+        fireEvent(EventType.ONTOLOGY_RELOADED);
         setActiveOntology(ont, true);
         return ont;
     }
@@ -472,12 +473,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
         // Save all of the ontologies that are editable and that
         // have been modified.
         for (OWLOntology ont : new HashSet<OWLOntology>(dirtyOntologies)) {
-            saveOntology(ont);
+            save(ont);
         }
     }
 
 
-    private void saveOntology(OWLOntology ont) throws OWLOntologyStorageException {
+    public void save(OWLOntology ont) throws OWLOntologyStorageException {
         final URI physicalURI = manager.getPhysicalURIForOntology(ont);
 
         try{
@@ -485,6 +486,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
             if (isTempFileSavingActive()){ // save to a temp file
                 try {
+                    if (!physicalURI.getScheme().equals("file")){
+                        throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
+                    }
                     final File targetFile = new File(physicalURI);
 
                     // we use the temp directory as storing in the current directory would only cause
@@ -498,7 +502,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                     manager.setPhysicalURIForOntology(ont, physicalURI);
                 }
                 catch (IOException e) {
-                    throw new OWLOntologyStorageException("Could not create a temp file for saving ontology: " + ont.getURI(), e);
+                    throw new OWLOntologyStorageException("Error while saving ontology " + ont.getURI() + " to " + physicalURI, e);
                 }
             }
             else{
@@ -544,7 +548,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public Set<OWLOntology> getDirtyOntologies() {
-        return Collections.unmodifiableSet(dirtyOntologies);
+        return new HashSet<OWLOntology>(dirtyOntologies);
     }
 
 

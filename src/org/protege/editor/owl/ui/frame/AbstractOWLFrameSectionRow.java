@@ -91,10 +91,12 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
             return;
         }
         A axiom = createAxiom(editedObjects.iterator().next());
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        changes.add(new RemoveAxiom(getOntology(), getAxiom()));
-        changes.add(new AddAxiom(getOntology(), axiom));
-        getOWLModelManager().applyChanges(changes);
+        if (axiom != null){ // the editor should protect from this, but just in case
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            changes.add(new RemoveAxiom(getOntology(), getAxiom()));
+            changes.add(new AddAxiom(getOntology(), axiom));
+            getOWLModelManager().applyChanges(changes);
+        }
     }
 
 

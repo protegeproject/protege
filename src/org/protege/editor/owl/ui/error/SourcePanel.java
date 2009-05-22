@@ -76,21 +76,24 @@ public class SourcePanel extends JPanel {
         }
     }
 
-    public void highlight(final int line, final int col){
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-                int caretPos = 0;
-                final Document document = sourceConsole.getDocument();
-                if (document instanceof PlainDocument){
-                    PlainDocument doc = (PlainDocument) document;
-                    caretPos = doc.getDefaultRootElement().getElement(line).getStartOffset() + col;
+    public void highlight(final int line, int col){
+        if (line >= 0){
+            final int colCorrected = Math.max(col, 0);
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
+                    int caretPos = 0;
+                    final Document document = sourceConsole.getDocument();
+                    if (document instanceof PlainDocument){
+                        PlainDocument doc = (PlainDocument) document;
+                        caretPos = doc.getDefaultRootElement().getElement(line).getStartOffset() + colCorrected;
+                    }
+                    sourceConsole.setCaretPosition(caretPos);
+                    sourceConsole.setSelectionStart(caretPos);
+                    sourceConsole.setSelectionEnd(caretPos+1);
+                    sourceConsole.requestFocus();
                 }
-                sourceConsole.setCaretPosition(caretPos);
-                sourceConsole.setSelectionStart(caretPos);
-                sourceConsole.setSelectionEnd(caretPos+1);
-                sourceConsole.requestFocus();
-            }
-        });
+            });
+        }
     }
 
     private void saveContent(URL url) {

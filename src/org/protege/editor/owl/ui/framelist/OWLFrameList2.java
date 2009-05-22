@@ -381,10 +381,8 @@ public class OWLFrameList2<R extends Object> extends MList implements
             }
             OWLFrameObject row = (OWLFrameObject) val;
             showEditorDialog(row, new EditHandler() {
-                public void handleEditFinished(
-                        OWLFrameSectionRowObjectEditor editor) {
-                    editor.getHandler().handleEditingFinished(
-                            editor.getEditedObjects());
+                public void handleEditFinished(OWLFrameSectionRowObjectEditor editor) {
+                    editor.getHandler().handleEditingFinished(editor.getEditedObjects());
                 }
             });
         }

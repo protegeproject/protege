@@ -32,6 +32,8 @@ public class OntologyFormatPanel extends JPanel {
 
     private JComboBox formatComboBox;
 
+    private JLabel messageLabel;
+
 
     public OntologyFormatPanel() {
         List<Object> formats = new ArrayList<Object>();
@@ -46,8 +48,8 @@ public class OntologyFormatPanel extends JPanel {
         formats.add(new TurtleOntologyFormat());
 
         formatComboBox = new JComboBox(formats.toArray());
-        setLayout(new BorderLayout());
-        add(formatComboBox, BorderLayout.NORTH);
+        setLayout(new BorderLayout(12, 12));
+        add(formatComboBox, BorderLayout.SOUTH);
         formatComboBox.setSelectedItem(formats.get(0));
     }
 
@@ -62,6 +64,18 @@ public class OntologyFormatPanel extends JPanel {
                 return;
             }
         }
+    }
+
+
+    public void setMessage(String message) {
+        if (messageLabel == null){
+            messageLabel = new JLabel(message);
+            add(messageLabel, BorderLayout.NORTH);
+        }
+        else{
+            messageLabel.setText(message);
+        }
+        revalidate();
     }
 
 
@@ -81,7 +95,15 @@ public class OntologyFormatPanel extends JPanel {
 
 
     public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat) {
+        return showDialog(editorKit, defaultFormat, null);
+    }
+
+    
+    public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat, String message) {
         OntologyFormatPanel panel = new OntologyFormatPanel();
+        if (message != null){
+            panel.setMessage(message);
+        }
         panel.setSelectedFormat(defaultFormat);
         int ret = JOptionPaneEx.showConfirmDialog(editorKit.getWorkspace(),
                                                   "Select an ontology format",
