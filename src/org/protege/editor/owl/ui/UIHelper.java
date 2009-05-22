@@ -325,7 +325,7 @@ public class UIHelper {
 
     public JComboBox getDatatypeSelector() {
         final OWLModelManager mngr = getOWLModelManager();
-        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes());
+        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies()));
 
         Collections.sort(datatypeList, mngr.getOWLObjectComparator());
         datatypeList.add(0, null);

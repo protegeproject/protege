@@ -96,7 +96,10 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
                     addRendering(ind.asNamedIndividual(), owlIndividualMap);
                 }
             }
-            for (OWLDatatype dt : new OWLDataTypeUtils(owlModelManager.getOWLOntologyManager()).getBuiltinDatatypes()) {
+
+            // datatypes
+            final OWLDataTypeUtils datatypeUtils = new OWLDataTypeUtils(owlModelManager.getOWLOntologyManager());
+            for (OWLDatatype dt : datatypeUtils.getKnownDatatypes(owlModelManager.getActiveOntologies())) {
                 addRendering(dt, owlDatatypeMap);
             }
         }
