@@ -214,7 +214,7 @@ public class EntityFinderImpl implements EntityFinder {
 
     private <T extends OWLEntity> Set<T> getAllEntities(Class<T> type) {
         if (type.equals(OWLDatatype.class)){
-            return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getBuiltinDatatypes();
+            return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies());
         }
         else{
             Set<T> entities = new HashSet<T>();

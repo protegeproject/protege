@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDatatype;
+import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 import org.semanticweb.owl.vocab.XSDVocabulary;
@@ -64,5 +65,23 @@ public class OWLDataTypeUtils {
         datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getURI()));
 
         return datatypes;
+    }
+
+
+    public Set<OWLDatatype> getReferencedDatatypes(Set<OWLOntology> onts){
+        Set<OWLDatatype> referencedTypes = new HashSet<OWLDatatype>();
+        for (OWLOntology ont : onts){
+            referencedTypes.addAll(ont.getReferencedDatatypes());
+        }
+        return referencedTypes;
+    }
+
+
+    public Set<OWLDatatype> getKnownDatatypes(Set<OWLOntology> onts){
+        Set<OWLDatatype> knownTypes = getBuiltinDatatypes();
+        for (OWLOntology ont : onts){
+            knownTypes.addAll(ont.getReferencedDatatypes());
+        }
+        return knownTypes;
     }
 }

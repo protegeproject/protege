@@ -1,22 +1,39 @@
 package org.protege.editor.owl.ui.error;
 
+import de.uulm.ecs.ai.owl.krssparser.KRSS2OWLParser;
+import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
 import edu.unika.aifb.rdf.api.syntax.RDFParserException;
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyParser;
+import org.coode.obo.parser.OBOOntologyFormat;
+import org.coode.obo.parser.OBOParser;
 import org.coode.obo.parser.OBOParserException;
+import org.coode.owl.functionalparser.OWLFunctionalSyntaxParser;
 import org.coode.owl.functionalparser.OWLFunctionalSyntaxParserException;
+import org.coode.owl.owlxmlparser.OWLXMLParser;
+import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
+import org.coode.owl.rdfxml.parser.RDFXMLParser;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.io.SyntaxGuesser;
+import org.protege.editor.owl.model.util.URIUtilities;
 import org.semanticweb.owl.expression.ParserException;
-import org.semanticweb.owl.io.OWLParser;
-import org.semanticweb.owl.io.OWLParserException;
-import org.semanticweb.owl.io.UnparsableOntologyException;
+import org.semanticweb.owl.io.*;
+import org.semanticweb.owl.model.OWLOntologyFormat;
+import uk.ac.manchester.cs.owl.turtle.parser.TurtleParser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -52,6 +69,10 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
     private OWLEditorKit eKit;
 
+    private String lastSelectedParser = null;
+
+    private ErrorExplainer errorExplainer;
+
 
     public OntologyLoadErrorHandlerUI(OWLEditorKit owlEditorKit) {
         eKit = owlEditorKit;
@@ -60,52 +81,83 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
     public <T extends Throwable> void handleErrorLoadingOntology(URI ont, URI loc, T e) throws Throwable {
 
-        JComponent errorPanel;
-
         if (e instanceof UnparsableOntologyException){
-            errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
+            errorExplainer = createErrorExplainer();
+            ParseErrorsPanel errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
+            JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                            "Load Error: " + ont,
+                                            errorPanel,
+                                            JOptionPane.ERROR_MESSAGE,
+                                            JOptionPane.DEFAULT_OPTION,
+                                            null);
+            lastSelectedParser = errorPanel.tabs.getTitleAt(errorPanel.tabs.getSelectedIndex());
         }
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
-            errorPanel = new ErrorPanel<T>(explanation, loc);
+            ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
+            JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                            "Load Error: " + ont,
+                                            errorPanel,
+                                            JOptionPane.ERROR_MESSAGE,
+                                            JOptionPane.DEFAULT_OPTION,
+                                            null);
         }
+    }
 
-        JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                        "Load Error: " + ont,
-                                        errorPanel,
-                                        JOptionPane.ERROR_MESSAGE,
-                                        JOptionPane.DEFAULT_OPTION,
-                                        null);
+    
+    private ErrorExplainer createErrorExplainer() {
+        ErrorExplainer errorFilter = new ErrorExplainer();
+
+        // RDF/XML syntax
+        errorFilter.addExplanationFactory(RDFParserException.class, new ErrorExplainer.ErrorExplanationFactory<RDFParserException>(){
+            public <T extends RDFParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+            }
+        });
+
+
+        // Will catch functional syntax/OBO but only use it for the specified exceptions (below)
+        ErrorExplainer.ErrorExplanationFactory<OWLParserException> owlParserExceptionExplanationFac = new ErrorExplainer.ErrorExplanationFactory<OWLParserException>(){
+            public <T extends OWLParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
+            }
+        };
+        errorFilter.addExplanationFactory(OWLFunctionalSyntaxParserException.class, owlParserExceptionExplanationFac);
+        errorFilter.addExplanationFactory(OBOParserException.class, owlParserExceptionExplanationFac);
+
+        // Manchester Syntax
+        errorFilter.addExplanationFactory(ParserException.class, new ErrorExplainer.ErrorExplanationFactory<ParserException>(){
+            public <T extends ParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
+                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+            }
+        });
+
+        return errorFilter;
     }
 
 
     public class ParseErrorsPanel extends JPanel{
 
-        public ParseErrorsPanel(UnparsableOntologyException e, URI loc) {
+        private JTabbedPane tabs;
+
+        private Map<Class<? extends OWLOntologyFormat>, String> format2ParserMap = new HashMap<Class<? extends OWLOntologyFormat>, String>();
+
+        public ParseErrorsPanel(UnparsableOntologyException e, final URI loc) {
             setLayout(new BorderLayout(12, 12));
 
-            ErrorExplainer errorFilter = new ErrorExplainer();
-            // RDF/XML syntax
-            errorFilter.addExplanationFactory(RDFParserException.class, new ErrorExplainer.ErrorExplanationFactory<RDFParserException>(){
-                public <T extends RDFParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
-                }
-            });
-            // Will catch functional syntax/OBO but only use it for the specified exceptions (below)
-            ErrorExplainer.ErrorExplanationFactory<OWLParserException> owlParserExceptionExplanationFac = new ErrorExplainer.ErrorExplanationFactory<OWLParserException>(){
-                public <T extends OWLParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
-                }
-            };
-            errorFilter.addExplanationFactory(OWLFunctionalSyntaxParserException.class, owlParserExceptionExplanationFac);
-            errorFilter.addExplanationFactory(OBOParserException.class, owlParserExceptionExplanationFac);
+            // hack as there is no way to get from an ontology format to a parser
+            // this must be updated if the supported parsers are changed
+            format2ParserMap.put(RDFXMLOntologyFormat.class, RDFXMLParser.class.getSimpleName());
+            format2ParserMap.put(OWLXMLOntologyFormat.class, OWLXMLParser.class.getSimpleName());
+            format2ParserMap.put(ManchesterOWLSyntaxOntologyFormat.class, ManchesterOWLSyntaxOntologyParser.class.getSimpleName());
+            format2ParserMap.put(TurtleOntologyFormat.class, TurtleParser.class.getSimpleName());
+            format2ParserMap.put(OWLFunctionalSyntaxOntologyFormat.class, OWLFunctionalSyntaxParser.class.getSimpleName());
+            format2ParserMap.put(KRSS2OntologyFormat.class, KRSS2OWLParser.class.getSimpleName());
+            format2ParserMap.put(OBOOntologyFormat.class, OBOParser.class.getSimpleName());
 
-            // Manchester Syntax
-            errorFilter.addExplanationFactory(ParserException.class, new ErrorExplainer.ErrorExplanationFactory<ParserException>(){
-                public <T extends ParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                    return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
-                }
-            });
+
+            tabs = new JTabbedPane();
+            tabs.setPreferredSize(new Dimension(700, 500));
 
             SourcePanel sourcePanel = null;
             try {
@@ -117,17 +169,62 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
                 throw new RuntimeException(e1);
             }
 
-            JTabbedPane tabs = new JTabbedPane();
-            tabs.setPreferredSize(new Dimension(700, 500));
-            for (OWLParser parser : e.getExceptions().keySet()){
+
+            final java.util.List<OWLParser> parsers = new ArrayList<OWLParser>(e.getExceptions().keySet());
+// sort
+//            Collections.sort(parsers, new Comparator<OWLParser>(){
+//                public int compare(OWLParser p1, OWLParser p2) {
+//                    return p1.getClass().getSimpleName().compareTo(p2.getClass().getSimpleName());
+//                }
+//            });
+
+            for (OWLParser parser : parsers){
                 Throwable parseError = e.getExceptions().get(parser);
-                ErrorExplainer.ErrorExplanation explanation = errorFilter.getErrorExplanation(parseError, true);
+                ErrorExplainer.ErrorExplanation explanation = errorExplainer.getErrorExplanation(parseError, true);
                 final ErrorPanel errorPanel = new ParseErrorPanel(explanation, loc, sourcePanel);
                 tabs.addTab(parser.getClass().getSimpleName(), errorPanel);
             }
 
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
+                    InputStream is = null;
+                    try {
+                        is = URIUtilities.getInputStream(loc);
+                        SyntaxGuesser syntaxGuesser = new SyntaxGuesser();
+                        OWLOntologyFormat syntax = syntaxGuesser.getSyntax(is);
+                        if (syntax != null){
+                            String parserName = format2ParserMap.get(syntax.getClass());
+                            if (parserName != null){
+                                lastSelectedParser = parserName;
+                            }
+
+                            for (int i=0; i<tabs.getTabCount(); i++){
+                                if (lastSelectedParser.equals(tabs.getTitleAt(i))){
+                                    tabs.setSelectedIndex(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch (IOException e1) {
+                        throw new RuntimeException(e1);
+                    }
+                    finally{
+                        if (is != null){
+                            try {
+                                is.close();
+                            }
+                            catch (IOException e1) {
+                                throw new RuntimeException(e1);
+                            }
+                        }
+                    }
+                }
+            });
+
             add(new JLabel("<html>Could not parse the ontology found at: " + loc +
                            "<p>The following parsers were tried:</html>"), BorderLayout.NORTH);
+
             add(tabs, BorderLayout.CENTER);
         }
     }

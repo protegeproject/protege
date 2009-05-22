@@ -7,6 +7,7 @@ import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
+import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
@@ -89,6 +90,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private ErrorNotificationLabel errorNotificationLabel;
 
+    private BackgroundTaskLabel backgroundTaskLabel;
+
     private OWLEntityCollectingOntologyChangeListener listener;
 
     private Set<URI> hiddenAnnotationURIs;
@@ -121,6 +124,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         super.initialise();
 
         errorNotificationLabel = new ErrorNotificationLabel(ProtegeApplication.getErrorLog(), this);
+
+        backgroundTaskLabel = new BackgroundTaskLabel(ProtegeApplication.getBackgroundTaskManager());
 
         createActiveOntologyPanel();
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
@@ -342,14 +347,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         JMenu windowMenu = getWindowMenu(menuBar);
         windowMenu.addSeparator();
-        if(windowMenu != null) {
-            windowMenu.add(new AbstractAction("Refresh User Interface") {
+        windowMenu.add(new AbstractAction("Refresh User Interface") {
 
-                public void actionPerformed(ActionEvent e) {
-                    refreshComponents();
-                }
-            });
-        }
+            public void actionPerformed(ActionEvent e) {
+                refreshComponents();
+            }
+        });
     }
 
 
@@ -501,6 +504,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
+        topBarPanel.add(backgroundTaskLabel);
         topBarPanel.add(errorNotificationLabel);
 
         add(topBarPanel, BorderLayout.NORTH);

@@ -1,18 +1,29 @@
 package org.protege.editor.owl.model.repository;
 
+import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
+import org.protege.editor.owl.model.io.SyntaxGuesser;
 import org.protege.editor.owl.model.util.URIUtilities;
+import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owl.io.OWLXMLOntologyFormat;
+import org.semanticweb.owl.io.RDFXMLOntologyFormat;
+import org.semanticweb.owl.model.OWLOntologyFormat;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -52,78 +63,40 @@ public class OntologyURIExtractor {
     }
 
 
-    public String getDefaultNamespace() {
-        return defaultNamespace;
-    }
-
-
-    public Map<String, String> getNamespaceMap() {
-        return namespaceMap;
-    }
-
+//    public String getDefaultNamespace() {
+//        return defaultNamespace;
+//    }
+//
+//
+//    public Map<String, String> getNamespaceMap() {
+//        return namespaceMap;
+//    }
+//
 
     public URI getOntologyURI() {
         try {
-            final InputStream is = URIUtilities.getInputStream(physicalURI);
-            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            parser.parse(is, new DefaultHandler() {
+            InputStream is = URIUtilities.getInputStream(physicalURI);
 
-                private boolean searchingForOWLOntology = false;
+            SyntaxGuesser syntaxGuesser = new SyntaxGuesser();
+            OWLOntologyFormat syntax = syntaxGuesser.getSyntax(is);
+            is.close();
 
-                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-                    try {
-                        if (!searchingForOWLOntology){
-                            if (qName.equals("rdf:RDF")){ // RDF/XML
-                                startElementPresent = true;
-                                handleNamespaces(attributes);
-                                ontologyURI = new URI(attributes.getValue("xml:base"));
-                                String s = ontologyURI.toString().trim();
-                                if (s.endsWith("#")) {
-                                    ontologyURI = new URI(s.substring(0, s.length() - 1));
-                                }
-                                searchingForOWLOntology = true;
-                            }
-                            else if (qName.equals("Ontology")){ // OWL XML
-                                startElementPresent = true;
-                                handleNamespaces(attributes);
-                                String uriString = attributes.getValue("URI");
-                                if (uriString != null){
-                                    ontologyURI = new URI(uriString);
-                                }
-                            }
-                        }
-                        else{
-                            if (qName.equals("owl:Ontology")){
-                                String ontID = attributes.getValue("rdf:about");
-                                if (!ontID.equals("")){
-                                    ontologyURI = new URI(ontID);
-                                }
-                            }
-                            searchingForOWLOntology = false;
-                        }
+            is = URIUtilities.getInputStream(physicalURI);
 
-                        if (!searchingForOWLOntology){
-                            // Close the input stream, which will eventually cause
-                            // the parser to stop parsing and throw an exception
-                            try {
-                                is.close();
-                            }
-                            catch (IOException e) {
-                                // do nothing
-                            }
+            if (syntax instanceof OWLXMLOntologyFormat || syntax instanceof RDFXMLOntologyFormat){
+                readXML(is);
+            }
+            else if (syntax instanceof ManchesterOWLSyntaxOntologyFormat){
+                readMOS(is);
+            }
+            else if (syntax instanceof OWLFunctionalSyntaxOntologyFormat){
+                readFOS(is);
+            }
+            else if (syntax instanceof TurtleOntologyFormat){
+                readTurtle(is);
+            }
+            // KRSS does not appear to support an ontology URI
 
-                            // Throw a SAX exception, because this will stop
-                            // parsing here and now
-                            throw new SAXException("Exit exception");
-                        }
-                    }
-                    catch (URISyntaxException e) {
-                        // Don't care about this exception.  We
-                        // will just return the baseURI, or physicalURI
-                        // if we couldn't get hold of the base.
-                    }
-                }
-            });
             if (defaultNamespace == null){
                 defaultNamespace = ontologyURI + "#";
             }
@@ -132,6 +105,132 @@ public class OntologyURIExtractor {
             // We expect there to be an exception,
         }
         return ontologyURI;
+    }
+
+
+    private void readTurtle(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Pattern p = Pattern.compile("<(.*)> [rdf:type a] owl:Ontology.*");
+        boolean finished = false;
+        while (!finished){
+            String line = reader.readLine().trim();
+            if (line.length() > 0){
+                Matcher matcher = p.matcher(line);
+                if (matcher.matches()){
+                    ontologyURI = new URI(matcher.group(1));
+                    startElementPresent = true;
+                    finished = true;
+                }
+                else if (!(line.startsWith("@prefix") || line.startsWith("@base"))){
+                    finished = true;
+                }
+            }
+        }
+    }
+
+
+    private void readFOS(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Pattern p = Pattern.compile("Ontology\\(<(.*)>");
+        boolean finished = false;
+        while (!finished){
+            String line = reader.readLine().trim();
+            if (line.length() > 0){
+                Matcher matcher = p.matcher(line);
+                if (matcher.matches()){
+                    ontologyURI = new URI(matcher.group(1));
+                    startElementPresent = true;
+                    finished = true;
+                }
+                else if (!line.startsWith("Namespace(")){
+                    finished = true;
+                }
+            }
+        }
+    }
+
+
+    private void readMOS(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        Pattern p = Pattern.compile("Ontology: <(.*)>");
+        boolean finished = false;
+        while (!finished){
+            String line = reader.readLine().trim();
+            if (line.length() > 0){
+                Matcher matcher = p.matcher(line);
+                if (matcher.matches()){
+                    ontologyURI = new URI(matcher.group(1));
+                    startElementPresent = true;
+                    finished = true;
+                }
+                else if (!line.startsWith("Namespace:")){
+                    finished = true;
+                }
+            }
+        }
+    }
+
+
+    private void readXML(final InputStream is) throws Exception {
+        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        parser.parse(is, new DefaultHandler() {
+
+            private boolean searchingForOWLOntology = false;
+
+            public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                try {
+                    if (!searchingForOWLOntology){
+                        if (qName.equals("rdf:RDF")){ // RDF/XML
+                            startElementPresent = true;
+                            handleNamespaces(attributes);
+                            ontologyURI = new URI(attributes.getValue("xml:base"));
+                            String s = ontologyURI.toString().trim();
+                            if (s.endsWith("#")) {
+                                ontologyURI = new URI(s.substring(0, s.length() - 1));
+                            }
+                            searchingForOWLOntology = true;
+                        }
+                        else if (qName.equals("Ontology")){ // OWL XML
+                            startElementPresent = true;
+                            handleNamespaces(attributes);
+                            String uriString = attributes.getValue("URI");
+                            if (uriString != null){
+                                ontologyURI = new URI(uriString);
+                            }
+                        }
+                    }
+                    else{
+                        if (qName.equals("owl:Ontology")){
+                            String ontID = attributes.getValue("rdf:about");
+                            if (!ontID.equals("")){
+                                ontologyURI = new URI(ontID);
+                            }
+                        }
+                        searchingForOWLOntology = false;
+                    }
+
+                    if (!searchingForOWLOntology){
+                        // Close the input stream, which will eventually cause
+                        // the parser to stop parsing and throw an exception
+                        try {
+                            is.close();
+                        }
+                        catch (IOException e) {
+                            // do nothing
+                        }
+
+                        // Throw a SAX exception, because this will stop
+                        // parsing here and now
+                        throw new SAXException("Exit exception");
+                    }
+                }
+                catch (URISyntaxException e) {
+                    // Don't care about this exception.  We
+                    // will just return the baseURI, or physicalURI
+                    // if we couldn't get hold of the base.
+                }
+            }
+        });
     }
 
 

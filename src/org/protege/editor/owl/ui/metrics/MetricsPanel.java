@@ -256,6 +256,8 @@ public class MetricsPanel extends JPanel {
                                         AxiomType.OBJECT_PROPERTY_DOMAIN));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.OBJECT_PROPERTY_RANGE));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
+                                        AxiomType.SUB_PROPERTY_CHAIN_OF));
         OWLMetricManager metricManager = new OWLMetricManager(metrics);
         metricManagerMap.put("Object property axioms", metricManager);
     }

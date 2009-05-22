@@ -34,7 +34,8 @@ public enum UsageFilter {
 
     filterSelf("filter.self"),
     filterNamedSubsSupers("filter.class.subs"),
-    filterDisjoints("filter.class.disjoints");
+    filterDisjoints("filter.class.disjoints"),
+    filterDifferent("filter.individual.different");
 
 
     private String key;

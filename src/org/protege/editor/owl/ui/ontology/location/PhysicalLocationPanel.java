@@ -1,27 +1,32 @@
 package org.protege.editor.owl.ui.ontology.location;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.view.ViewBanner;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.action.ShowFileAction;
+import org.protege.editor.owl.ui.SaveConfirmationPanel;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.OWLOntologyStorageException;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -37,24 +42,74 @@ public class PhysicalLocationPanel extends JPanel {
 
     private static final Logger logger = Logger.getLogger(PhysicalLocationPanel.class);
 
+    private static final Color ROLL_OVER_COLOR = new Color(50, 50, 255);
+
     private OWLEditorKit owlEditorKit;
 
-    private JComponent ontologiesPanel;
+    private MList ontologiesPanel;
+
+    private Set<OWLOntology> ontologies;
+
+    private ReloadMListButton reload;
+
+    private ShowFileMListButton showFile;
+
+    private SaveMListButton saveFile;
 
 
     public PhysicalLocationPanel(OWLEditorKit owlEditorKit) {
+        this(owlEditorKit, owlEditorKit.getOWLModelManager().getOntologies());
+    }
+
+
+    public PhysicalLocationPanel(OWLEditorKit owlEditorKit, Set<OWLOntology> ontologies) {
         this.owlEditorKit = owlEditorKit;
+        this.ontologies = ontologies;
         createUI();
+    }
+
+
+    public Set<OWLOntology> getSelectedOntologies(){
+        Set<OWLOntology> onts = new HashSet<OWLOntology>();
+        for (Object sel : ontologiesPanel.getSelectedValues()){
+            if (sel instanceof OntologyListItem){
+                onts.add(((OntologyListItem)sel).ont);
+            }
+        }
+        return onts;
+    }
+
+
+    public void setOntologies(Set<OWLOntology> ontologies){
+        this.ontologies = ontologies;
+        reload();
     }
 
 
     private void createUI() {
         setLayout(new BorderLayout(3, 3));
-        add(new ViewBanner("Loaded ontology sources", OWLSystemColors.getOWLOntologyColor()), BorderLayout.NORTH);
-        ontologiesPanel = new Box(BoxLayout.Y_AXIS);
-        ontologiesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        reload = new ReloadMListButton();
+        showFile = new ShowFileMListButton();
+        saveFile = new SaveMListButton();
+
+        ontologiesPanel = new MList(){
+            protected List<MListButton> getButtons(Object value) {
+                List<MListButton> buttons  = new ArrayList<MListButton>(super.getButtons(value));
+                buttons.add(reload);
+                OWLOntology ont = ((OntologyListItem)value).ont;
+                if (owlEditorKit.getModelManager().getOntologyPhysicalURI(ont).getScheme().equals("file")){
+                    buttons.add(showFile);
+                }
+                if (owlEditorKit.getModelManager().getDirtyOntologies().contains(ont)){
+                    buttons.add(saveFile);
+                }
+                return buttons;
+            }
+        };
+
+        ontologiesPanel.setCellRenderer(new OntologyListCellRenderer());
         load();
-        ontologiesPanel.setBackground(Color.WHITE);
         JPanel boxHolder = new JPanel(new BorderLayout());
         boxHolder.setOpaque(false);
         boxHolder.add(ontologiesPanel, BorderLayout.NORTH);
@@ -65,27 +120,28 @@ public class PhysicalLocationPanel extends JPanel {
     private void load() {
         final OWLModelManager mngr = owlEditorKit.getModelManager();
         Set<OWLOntology> ts = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
-        ts.addAll(mngr.getOntologies());
-        for (OWLOntology ont : ts) {
-            OntologySourcePanel panel = new OntologySourcePanel(ont);
-            panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
-            ontologiesPanel.add(panel);
+        ts.addAll(ontologies);
+
+        java.util.List<OntologyListItem> items = new ArrayList<OntologyListItem>();
+        for (OWLOntology ont : ts){
+            items.add(new OntologyListItem(ont));
         }
+        ontologiesPanel.setListData(items.toArray());
     }
 
 
     private void reload(){
-        ontologiesPanel.removeAll();
         load();
         revalidate();
     }
+
 
     public Dimension getPreferredSize() {
         return new Dimension(800, 500);
     }
 
 
-    public static final void showDialog(OWLEditorKit owlEditorKit) {
+    public static void showDialog(OWLEditorKit owlEditorKit) {
         PhysicalLocationPanel panel = new PhysicalLocationPanel(owlEditorKit);
         JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION);
         JDialog dlg = pane.createDialog(owlEditorKit.getWorkspace(), "Ontology source locations");
@@ -94,43 +150,109 @@ public class PhysicalLocationPanel extends JPanel {
     }
 
 
+    private void handleSave(OWLOntology ont){
+        try {
+            owlEditorKit.getOWLModelManager().save(ont);
+            owlEditorKit.addRecent(owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont));
+            SaveConfirmationPanel.showDialog(owlEditorKit, Collections.singleton(ont));
+            reload();
+        }
+        catch (OWLOntologyStorageException e) {
+            ErrorLogPanel.showErrorDialog(e);
+        }
+    }
+
+
+    private void handleReload(OWLOntology ont){
+        try {
+            owlEditorKit.getModelManager().reload(ont);
+        }
+        catch (OWLOntologyCreationException e) {
+            JOptionPane.showMessageDialog(owlEditorKit.getWorkspace(),
+                                          "<html>Failed to reload ontology<p><p>" +
+                                          owlEditorKit.getModelManager().getRendering(ont) +
+                                          ".</html>");
+        }
+    }
+
+
+    private void handleShowFile(OWLOntology ont){
+        URI physicalURI = owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont);
+        if (!physicalURI.getScheme().equals("file")) {
+            throw new IllegalArgumentException("URI must be a file URI!");
+        }
+        try {
+            FileUtils.showFile(new File(physicalURI));
+        }
+        catch (IOException ex) {
+            logger.error(ex);
+        }
+    }
+
+    
+    private void handleClose(OWLOntology ont){
+        if (owlEditorKit.getModelManager().removeOntology(ont)){
+            ontologies.remove(ont);
+            reload();
+        }
+        else{
+            ProtegeManager.getInstance().disposeOfEditorKit(owlEditorKit);
+        }
+    }
+
+    private class OntologyListItem implements MListItem {
+
+        private OWLOntology ont;
+
+
+        private OntologyListItem(OWLOntology ont) {
+            this.ont = ont;
+        }
+
+
+        public boolean isEditable() {
+            return false;
+        }
+
+
+        public void handleEdit() {
+            // do nothing
+        }
+
+
+        public boolean isDeleteable() {
+            return true;
+        }
+
+
+        public boolean handleDelete() {
+            handleClose(ont);
+            return true;
+        }
+
+
+        public String getTooltip() {
+            return ont.getAxiomCount() + " axioms";
+        }
+    }
+
+
     private class OntologySourcePanel extends JPanel {
 
-        public OntologySourcePanel(OWLOntology ont) {
-            setOpaque(false);
+        private JLabel locURILabel;
+
+        private JLabel ontURILabel;
+
+
+        public OntologySourcePanel() {
+            setOpaque(true);
             setLayout(new BorderLayout(3, 3));
-            final OWLModelManager mngr = owlEditorKit.getModelManager();
-            String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, mngr);
+            setBorder(new EmptyBorder(5, 5, 5, 5));
 
-            JLabel ontURILabel = new JLabel(label);
+            ontURILabel = new JLabel();
             ontURILabel.setIcon(OWLIcons.getIcon("ontology.png"));
-            add(ontURILabel, BorderLayout.NORTH);
-            final URI physicalURI = mngr.getOntologyPhysicalURI(ont);
-            JLabel locURILabel = new JLabel();
-            final JPopupMenu popupMenu = new JPopupMenu();
-            addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        popupMenu.show(OntologySourcePanel.this, e.getX(), e.getY());
-                    }
-                }
-
-
-                public void mouseReleased(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        popupMenu.show(OntologySourcePanel.this, e.getX(), e.getY());
-                    }
-                }
-            });
-            if (physicalURI.getScheme().equals("file")) {
-                locURILabel.setText(new File(physicalURI).toString());
-                popupMenu.add(new ShowFileAction(physicalURI));
-            }
-            else {
-                locURILabel.setText(physicalURI.toString());
-            }
-            popupMenu.add(new ReloadOntologyAction(ont));
-            popupMenu.add(new CloseOntologyAction(ont));
+            add(ontURILabel, BorderLayout.CENTER);
+            locURILabel = new JLabel();
 
             locURILabel.setFont(locURILabel.getFont().deriveFont(12.0f));
             locURILabel.setForeground(Color.DARK_GRAY);
@@ -138,50 +260,110 @@ public class PhysicalLocationPanel extends JPanel {
             locURILabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
             add(locURILabel, BorderLayout.SOUTH);
         }
-    }
 
-    private class ReloadOntologyAction extends AbstractAction {
+        public void setOntology(OWLOntology ont){
+            final OWLModelManager mngr = owlEditorKit.getModelManager();
+            String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, mngr);
 
-        private OWLOntology ont;
+            ontURILabel.setText(label);
 
-
-        public ReloadOntologyAction(OWLOntology ont) {
-            super("Reload from file");
-            this.ont = ont;
-        }
-
-
-        public void actionPerformed(ActionEvent event) {
-            try {
-                owlEditorKit.getModelManager().reload(ont);
+            final URI physicalURI = mngr.getOntologyPhysicalURI(ont);
+            if (physicalURI.getScheme().equals("file")) {
+                locURILabel.setText(new File(physicalURI).toString());
             }
-            catch (OWLOntologyCreationException e) {
-                    JOptionPane.showMessageDialog(owlEditorKit.getWorkspace(),
-                                                  "<html>Failed to reload ontology<p><p>" +
-                                                  owlEditorKit.getModelManager().getRendering(ont) +
-                                                  ".</html>");
+            else {
+                locURILabel.setText(physicalURI.toString());
             }
+
         }
     }
 
-        private class CloseOntologyAction extends AbstractAction {
+    private class OntologyListCellRenderer implements ListCellRenderer {
 
-        private OWLOntology ont;
+        OntologySourcePanel panel;
 
-
-        public CloseOntologyAction(OWLOntology ont) {
-            super("Close ontology");
-            this.ont = ont;
-        }
-
-
-        public void actionPerformed(ActionEvent event) {
-            if (owlEditorKit.getModelManager().removeOntology(ont)){
-                reload();
+        public Component getListCellRendererComponent(JList jList, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            if (panel == null){
+                panel = new OntologySourcePanel();
+            }
+            panel.setOntology(((OntologyListItem)value).ont);
+            if (isSelected){
+                panel.setBackground(jList.getSelectionBackground());
             }
             else{
-                ProtegeManager.getInstance().disposeOfEditorKit(owlEditorKit);
+                panel.setBackground(jList.getBackground());
             }
+            return panel;
+        }
+    }
+
+    private class ReloadMListButton extends MListButton {
+        protected ReloadMListButton() {
+            super("Reload", ROLL_OVER_COLOR, new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                        handleReload(item.ont);
+                    }
+                }
+            });
+        }
+
+        public void paintButtonContent(Graphics2D g) {
+            int w = getBounds().width;
+            int h = getBounds().height;
+            int x = getBounds().x;
+            int y = getBounds().y;
+            g.drawArc(x + 4, y + 4, w - 8, h - 8, 0, -270);
+            final Polygon arrowHead = new Polygon(new int[]{x+(w/2)+3, x+(w/2), x+(w/2)}, new int[]{y+4, y+2, y+6}, 3);
+            g.drawPolygon(arrowHead);
+        }
+    }
+
+    private class ShowFileMListButton extends MListButton {
+
+        protected ShowFileMListButton() {
+            super("Show source file", ROLL_OVER_COLOR, new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                        handleShowFile(item.ont);
+                    }
+                }
+            });
+        }
+
+        public void paintButtonContent(Graphics2D g) {
+            int w = getBounds().width;
+            int h = getBounds().height;
+            int x = getBounds().x;
+            int y = getBounds().y;
+            g.drawOval(x + 3, y + 3, 6, 6);
+            g.drawLine(x + 8, y + 8, x + w - 5, y + h - 5);
+        }
+    }
+
+    private class SaveMListButton extends MListButton {
+
+        protected SaveMListButton() {
+            super("Save ontology", ROLL_OVER_COLOR, new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                        handleSave(item.ont);
+                    }
+                }
+            });
+        }
+
+        public void paintButtonContent(Graphics2D g) {
+            int w = getBounds().width;
+            int h = getBounds().height;
+            int x = getBounds().x;
+            int y = getBounds().y;
+            g.drawRect(x + 4, y + 4, w - 8, h - 8);
+            g.drawRect(x + 6, y + 4, w - 12, (h - 8)/2);
+            g.drawRect(x + 8, y + ((h - 8)/2) + 1, 2, ((h - 8)/2) - 2);
         }
     }
 }

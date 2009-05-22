@@ -97,7 +97,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             final JLabel label = new JLabel(message);
             label.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
             entryPanel.add(label, BorderLayout.NORTH);
-                    }
+        }
 
         entryPanel.add(textField, BorderLayout.SOUTH);
 
@@ -108,7 +108,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         errorLabel.setPreferredSize(new Dimension(errorLabel.getPreferredSize().width, 40));
 
         uriPreviewLabel = new JLabel("");
-        uriPreviewLabel.setFont(errorLabel.getFont().deriveFont(10.0f));        
+        uriPreviewLabel.setFont(errorLabel.getFont().deriveFont(10.0f));
         uriPreviewLabel.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
         Box previewPanel = new Box(BoxLayout.PAGE_AXIS);
         previewPanel.add(uriPreviewLabel);
@@ -198,20 +198,38 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
-            final String name = getEntityName();
+                final String name = getEntityName();
             OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
                                                                                                              name,
                                                                                                              getBaseURI());
             URI uri = changeSet.getOWLEntity().getURI();
             uriPreviewLabel.setText("uri: " + uri);
-            
+
             currentlyValid = true;
-            OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(name);
-            if(entity != null){
-                displayWarningMessage("Warning: an entity with that name already exists.");
+
+            String warningMessage = null;
+
+            for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()){
+                if (ont.containsClassReference(uri) ||
+                    ont.containsDataPropertyReference(uri) ||
+                    ont.containsObjectPropertyReference(uri) ||
+                    ont.containsIndividualReference(uri)){
+                    warningMessage = "Warning: this is a pun for an existing entity.";
+                    break;
+                }
             }
-            else{
-                clearMessage();
+            if (warningMessage == null){
+                OWLEntity entity = owlEditorKit.getModelManager().getOWLEntity(name);
+                if(entity != null){
+                    warningMessage = "Warning: an entity with that name already exists.";
+                }
+                else{
+                    clearMessage();
+                }
+            }
+
+            if (warningMessage != null){
+                displayWarningMessage(warningMessage);
             }
         }
         catch(OWLEntityCreationException e){

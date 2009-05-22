@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.usage;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owl.model.OWLIndividual;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class UsagePanel extends JPanel {
 
     private JCheckBox showAllCheckbox;
     private JCheckBox showDisjointsCheckbox;
+    private JCheckBox showDifferentCheckbox;
     private JCheckBox showNamedSubSuperclassesCheckbox;
 
     private OWLEntity currentSelection;
@@ -44,6 +46,14 @@ public class UsagePanel extends JPanel {
         showDisjointsCheckbox.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
                 UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDisjoints, !showDisjointsCheckbox.isSelected());
+                setOWLEntity(currentSelection);
+            }
+        });
+
+        showDifferentCheckbox = new JCheckBox("different", !UsagePreferences.getInstance().isFilterActive(UsageFilter.filterDifferent));
+        showDifferentCheckbox.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent event) {
+                UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDifferent, !showDifferentCheckbox.isSelected());
                 setOWLEntity(currentSelection);
             }
         });
@@ -70,6 +80,8 @@ public class UsagePanel extends JPanel {
     public void setOWLEntity(OWLEntity entity) {
         currentSelection = entity;
         showNamedSubSuperclassesCheckbox.setVisible(entity != null && entity instanceof OWLClass);
+        showDisjointsCheckbox.setVisible(entity != null && !(entity instanceof OWLIndividual));
+        showDifferentCheckbox.setVisible(entity != null && entity instanceof OWLIndividual);
         tree.setOWLEntity(entity);
     }
 }

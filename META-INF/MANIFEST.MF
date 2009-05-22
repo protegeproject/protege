@@ -101,7 +101,8 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.usage,
  org.protege.editor.owl.ui.view,
  org.protege.editor.owl.ui.explanation,
- org.protege.editor.owl.ui.util
+ org.protege.editor.owl.ui.util,
+ org.protege.editor.owl.ui.progress
 Bundle-Version: 4.1.0
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,

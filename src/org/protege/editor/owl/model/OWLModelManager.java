@@ -88,10 +88,23 @@ public interface OWLModelManager extends ModelManager {
      * specific.  For example, some implementations may choose to save the
      * active ontology, other implementations may choose to save all open
      * ontologies etc.
+     * @throws org.semanticweb.owl.model.OWLOntologyStorageException if a problem occurs during the save
      */
     void save() throws OWLOntologyStorageException;
 
 
+    /**
+     * Save only the ontology specified
+     * @param ont the ontology to save
+     * @throws org.semanticweb.owl.model.OWLOntologyStorageException if a problem occurs during the save
+     */
+    void save(OWLOntology ont) throws OWLOntologyStorageException;
+
+
+    /**
+     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
+     * @throws OWLOntologyStorageException if a problem occurs during the save
+     */
     void saveAs() throws OWLOntologyStorageException;
 
 
