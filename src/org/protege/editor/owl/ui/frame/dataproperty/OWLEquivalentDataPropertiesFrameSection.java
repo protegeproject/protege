@@ -52,7 +52,7 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
     protected void refill(OWLOntology ontology) {
         added.clear();
-        for (OWLEquivalentDataPropertiesAxiom ax : ontology.getEquivalentDataPropertiesAxiom(getRootObject())) {
+        for (OWLEquivalentDataPropertiesAxiom ax : ontology.getEquivalentDataPropertiesAxioms(getRootObject())) {
             addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
                                                                   this,
                                                                   ontology,

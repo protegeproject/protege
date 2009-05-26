@@ -50,8 +50,6 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
     private JComboBox datatypeComboBox;
 
-    private OWLDescriptionAutoCompleter autoCompleter;
-
     private OWLDataFactory dataFactory;
 
     private String lastLanguage;
@@ -135,11 +133,11 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
         }
         else {
             if (isLangSelected()) {
-                constant = dataFactory.getRDFTextLiteral(value, getSelectedLang());
+                constant = dataFactory.getOWLStringLiteral(value, getSelectedLang());
                 lastLanguage = getSelectedLang();
             }
             else {
-                constant = dataFactory.getRDFTextLiteral(value, null);
+                constant = dataFactory.getOWLStringLiteral(value, null);
             }
         }
         return constant;
@@ -172,7 +170,7 @@ public class OWLConstantEditor extends JPanel implements OWLAnnotationValueEdito
 
 
     private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
-        autoCompleter = new OWLDescriptionAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
+        new OWLDescriptionAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
             public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text,
                                                        0,

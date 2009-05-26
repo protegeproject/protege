@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLDataPropertyViewComponent {
 
-    private static final Logger logger = Logger.getLogger(OWLDataPropertyCharacteristicsViewComponent.class);
+//    private static final Logger logger = Logger.getLogger(OWLDataPropertyCharacteristicsViewComponent.class);
 
 
     private JCheckBox checkBox;
@@ -34,7 +34,7 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
         prop = property;
         checkBox.setSelected(false);
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            if (ont.getFunctionalDataPropertyAxiom(prop) != null) {
+            if (!ont.getFunctionalDataPropertyAxioms(prop).isEmpty()) {
                 checkBox.setSelected(true);
                 break;
             }

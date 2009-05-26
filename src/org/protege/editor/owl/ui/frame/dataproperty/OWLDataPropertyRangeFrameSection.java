@@ -48,7 +48,7 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
 
     protected void refill(OWLOntology ontology) {
-        for (OWLDataPropertyRangeAxiom ax : ontology.getDataPropertyRangeAxiom(getRootObject())) {
+        for (OWLDataPropertyRangeAxiom ax : ontology.getDataPropertyRangeAxioms(getRootObject())) {
             addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
             addedRanges.add(ax.getRange());
         }

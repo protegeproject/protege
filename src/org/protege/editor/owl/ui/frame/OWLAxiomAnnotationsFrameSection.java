@@ -51,7 +51,8 @@ public class OWLAxiomAnnotationsFrameSection extends AbstractOWLFrameSection<OWL
 
 
     protected OWLAnnotationAssertionAxiom createAxiom(OWLAnnotation object) {
-        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), object);
+        return null;
+//        return getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), object);
     }
 
 
