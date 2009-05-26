@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
-    private static final Logger logger = Logger.getLogger(OWLObjectPropertyCharacteristicsViewComponent.class);
+//    private static final Logger logger = Logger.getLogger(OWLObjectPropertyCharacteristicsViewComponent.class);
 
 
     private JCheckBox functionalCB;
@@ -42,8 +42,6 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
     private List<JCheckBox> checkBoxes;
 
     private OWLOntologyChangeListener listener;
-
-    private Map<JCheckBox, PropertyCharacteristicSetter> map;
 
     private OWLObjectProperty prop;
 
@@ -85,7 +83,6 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         box.add(irreflexiveCB);
         add(new JScrollPane(box));
 
-        map = new HashMap<JCheckBox, PropertyCharacteristicSetter>();
         setupSetters();
 
         listener = new FilteringOWLOntologyChangeListener() {
@@ -173,7 +170,6 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
 
 
     private void addSetter(final JCheckBox checkBox, final PropertyCharacteristicSetter setter) {
-        map.put(checkBox, setter);
         checkBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (checkBox.isSelected()) {
@@ -224,43 +220,43 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         enableAll();
         // We only require one axiom to specify that a property has a specific characteristic
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            if (ont.getFunctionalObjectPropertyAxiom(property) != null) {
+            if (!ont.getFunctionalObjectPropertyAxioms(property).isEmpty()) {
                 functionalCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     functionalCB.setEnabled(false);
                 }
             }
-            if (ont.getInverseFunctionalObjectPropertyAxiom(property) != null) {
+            if (!ont.getInverseFunctionalObjectPropertyAxioms(property).isEmpty()) {
                 inverseFunctionalCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     inverseFunctionalCB.setEnabled(false);
                 }
             }
-            if (ont.getTransitiveObjectPropertyAxiom(property) != null) {
+            if (!ont.getTransitiveObjectPropertyAxioms(property).isEmpty()) {
                 transitiveCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     transitiveCB.setEnabled(false);
                 }
             }
-            if (ont.getSymmetricObjectPropertyAxiom(property) != null) {
+            if (!ont.getSymmetricObjectPropertyAxioms(property).isEmpty()) {
                 symmetricCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     symmetricCB.setEnabled(false);
                 }
             }
-            if (ont.getAsymmetricObjectPropertyAxiom(property) != null) {
+            if (!ont.getAsymmetricObjectPropertyAxioms(property).isEmpty()) {
                 aSymmetricCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     aSymmetricCB.setEnabled(false);
                 }
             }
-            if (ont.getReflexiveObjectPropertyAxiom(property) != null) {
+            if (!ont.getReflexiveObjectPropertyAxioms(property).isEmpty()) {
                 reflexiveCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     reflexiveCB.setEnabled(false);
                 }
             }
-            if (ont.getIrreflexiveObjectPropertyAxiom(property) != null) {
+            if (!ont.getIrreflexiveObjectPropertyAxioms(property).isEmpty()) {
                 irreflexiveCB.setSelected(true);
                 if (!getOWLModelManager().isMutable(ont)) {
                     irreflexiveCB.setEnabled(false);

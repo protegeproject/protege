@@ -247,7 +247,7 @@ public class MetricsPanel extends JPanel {
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.SYMMETRIC_OBJECT_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
-                                        AxiomType.ANTI_SYMMETRIC_OBJECT_PROPERTY));
+                                        AxiomType.ASYMMETRIC_OBJECT_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.REFLEXIVE_OBJECT_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),

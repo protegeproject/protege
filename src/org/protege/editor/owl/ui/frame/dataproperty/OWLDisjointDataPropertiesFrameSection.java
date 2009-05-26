@@ -43,7 +43,7 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
 
 
     protected void refill(OWLOntology ontology) {
-        for (OWLDisjointDataPropertiesAxiom ax : ontology.getDisjointDataPropertiesAxiom(getRootObject())) {
+        for (OWLDisjointDataPropertiesAxiom ax : ontology.getDisjointDataPropertiesAxioms(getRootObject())) {
             addRow(new OWLDisjointDataPropertiesFrameSectionRow(getOWLEditorKit(),
                                                                 this,
                                                                 ontology,

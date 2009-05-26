@@ -178,7 +178,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         String lang = descr.getLanguage();
 
         OWLDataFactory df = mngr.getOWLDataFactory();
-        OWLLiteral con = df.getRDFTextLiteral(value, lang);
+        OWLLiteral con = df.getOWLStringLiteral(value, lang);
         OWLAnnotationProperty prop = df.getOWLAnnotationProperty(uri);
         OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(owlEntity, prop, con);
         return Collections.singletonList(new AddAxiom(mngr.getActiveOntology(), ax));

@@ -51,8 +51,6 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
 
     private MList typeSource;
 
-    private JButton button;
-
     private RemovableObjectList<AxiomType> typeSelection;
 
 
@@ -79,7 +77,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
             }
         });
 
-        button = new JButton(new AbstractAction(">>") {
+        JButton button = new JButton(new AbstractAction(">>") {
             public void actionPerformed(ActionEvent e) {
                 addSelectedItems();
             }
@@ -145,7 +143,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
     }
 
     private List createTypesByTypeList() {
-        java.util.List data = new ArrayList();
+        java.util.List<Object> data = new ArrayList<Object>();
         data.add(new MListSectionHeader(){
             public String getName() {
                 return "Class Axioms";
@@ -176,7 +174,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
         data.add(new TypeItem(AxiomType.FUNCTIONAL_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.TRANSITIVE_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.SYMMETRIC_OBJECT_PROPERTY));
-        data.add(new TypeItem(AxiomType.ANTI_SYMMETRIC_OBJECT_PROPERTY));
+        data.add(new TypeItem(AxiomType.ASYMMETRIC_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.REFLEXIVE_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.IRREFLEXIVE_OBJECT_PROPERTY));
         data.add(new TypeItem(AxiomType.SUB_PROPERTY_CHAIN_OF));

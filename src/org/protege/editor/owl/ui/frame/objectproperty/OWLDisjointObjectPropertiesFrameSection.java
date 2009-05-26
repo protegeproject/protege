@@ -10,6 +10,7 @@ import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.inference.OWLReasonerException;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -26,7 +27,7 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
 
     public static final String LABEL = "Disjoint properties";
 
-    private Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
+//    private Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
 
 
     public OWLDisjointObjectPropertiesFrameSection(OWLEditorKit editorKit,
@@ -36,7 +37,7 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
 
 
     protected void clear() {
-        added.clear();
+//        added.clear();
     }
 
 
@@ -45,13 +46,13 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
-        for (OWLDisjointObjectPropertiesAxiom ax : ontology.getDisjointObjectPropertiesAxiom(getRootObject())) {
+        for (OWLDisjointObjectPropertiesAxiom ax : ontology.getDisjointObjectPropertiesAxioms(getRootObject())) {
             addRow(new OWLDisjointObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                        this,
                                                                        ontology,
                                                                        getRootObject(),
                                                                        ax));
-            added.addAll(ax.getProperties());
+//            added.addAll(ax.getProperties());
         }
     }
 

@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implements OWLObjectRenderer {
 
-    private static final Logger logger = Logger.getLogger(OWLObjectRendererImpl.class);
+//    private static final Logger logger = Logger.getLogger(OWLObjectRendererImpl.class);
 
     private StringBuffer buffer;
 
@@ -182,7 +182,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    public void visit(OWLRDFTextLiteral node) {
+    public void visit(OWLStringLiteral node) {
         write("\"");
         write(node.getLiteral());
         write("\"");
@@ -590,17 +590,12 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
 
 
-        public void visit(OWLDataRange node) {
-            nested = false;
-        }
-
-
         public void visit(OWLTypedLiteral node) {
             nested = false;
         }
 
 
-        public void visit(OWLRDFTextLiteral node) {
+        public void visit(OWLStringLiteral node) {
             nested = false;
         }
 

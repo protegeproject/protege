@@ -34,6 +34,11 @@ public class ReverseChangeGenerator implements OWLOntologyChangeVisitor {
     }
 
 
+    public void visit(SetOntologyID change) {
+        reverseChange = new SetOntologyID(change.getOntology(), change.getOriginalOntologyID());
+    }
+
+
     public void visit(AddImport addImport) {
         reverseChange = new RemoveImport(addImport.getOntology(), addImport.getImportDeclaration());
     }
