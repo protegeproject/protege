@@ -52,6 +52,8 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     private OWLIndividualSelectorPanel individualSelectorPanel;
 
+    private OWLAnnotationPropertySelectorPanel annotationPropertySelectorPanel;
+
     private JTabbedPane tabbedPane;
 
     private RemovableObjectList entityList;
@@ -73,11 +75,16 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         dataPropertySelectorPanel.setBorder(null);
         individualSelectorPanel = new OWLIndividualSelectorPanel(owlEditorKit, false);
         individualSelectorPanel.setBorder(null);
+        annotationPropertySelectorPanel = new OWLAnnotationPropertySelectorPanel(owlEditorKit, false);
+        annotationPropertySelectorPanel.setBorder(null);
+
+
         tabbedPane = new JTabbedPane();
         tabbedPane.add("Classes", classSelectorPanel);
         tabbedPane.add("Object properties", objectPropertySelectorPanel);
         tabbedPane.add("Data properties", dataPropertySelectorPanel);
         tabbedPane.add("Individuals", individualSelectorPanel);
+        tabbedPane.add("Annotation Properties", annotationPropertySelectorPanel);
 
         if (!multiselect){
             setLayout(new BorderLayout());
@@ -127,8 +134,12 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
             return (OWLEntity) entityList.getSelectedObject();
         }
         else{
-            return getCurrentSelection().iterator().next();
+            final Set<? extends OWLEntity> sel = getCurrentSelection();
+            if (!sel.isEmpty()){
+                return sel.iterator().next();
+            }
         }
+        return null;
     }
 
 
@@ -175,6 +186,10 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
                 tabbedPane.setSelectedComponent(individualSelectorPanel);
                 individualSelectorPanel.setSelection(ent.asOWLIndividual());
             }
+            else if(ent.isOWLAnnotationProperty()) {
+                tabbedPane.setSelectedComponent(annotationPropertySelectorPanel);
+                annotationPropertySelectorPanel.setSelection(ent.asOWLAnnotationProperty());
+            }
         }
     }
 
@@ -184,6 +199,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         objectPropertySelectorPanel.dispose();
         dataPropertySelectorPanel.dispose();
         individualSelectorPanel.dispose();
+        annotationPropertySelectorPanel.dispose();
     }
 
 
@@ -210,6 +226,8 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         objectPropertySelectorPanel.addSelectionListener(l);
         dataPropertySelectorPanel.addSelectionListener(l);
         individualSelectorPanel.addSelectionListener(l);
+        annotationPropertySelectorPanel.addSelectionListener(l);
+        tabbedPane.addChangeListener(l);
     }
 
 
@@ -218,6 +236,8 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         objectPropertySelectorPanel.removeSelectionListener(l);
         dataPropertySelectorPanel.removeSelectionListener(l);
         individualSelectorPanel.removeSelectionListener(l);
+        annotationPropertySelectorPanel.removeSelectionListener(l);
+        tabbedPane.removeChangeListener(l);
     }
 
 

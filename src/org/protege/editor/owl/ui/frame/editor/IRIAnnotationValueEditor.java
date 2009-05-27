@@ -2,10 +2,7 @@ package org.protege.editor.owl.ui.frame.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -64,7 +61,8 @@ public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI> {
 
 
     public IRI getEditedObject() {
-        return entitySelectorPanel.getSelectedObject().getIRI();
+        final OWLEntity entity = entitySelectorPanel.getSelectedObject();
+        return entity != null ? entity.getIRI() : null;
     }
 
 
