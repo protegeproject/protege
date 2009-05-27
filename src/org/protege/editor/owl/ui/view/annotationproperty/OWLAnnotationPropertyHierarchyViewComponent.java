@@ -4,8 +4,12 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.CreateNewChildTarget;
+import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
+import org.protege.editor.owl.ui.view.OWLPropertyTreeDropHandler;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
@@ -48,12 +52,38 @@ import java.awt.event.ActionEvent;
  * Bio Health Informatics Group<br>
  * Date: Apr 23, 2009<br><br>
  */
-public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>{
+public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
+        implements CreateNewChildTarget, CreateNewSiblingTarget {
 
     protected void performExtraInitialisation() throws Exception {
-        addAction(new AddSubAnnotationPropertyAction(), "A", "A");
-        addAction(new AddSibAnnotationPropertyAction(), "A", "B");
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
+                                                                   getTree().getSelectionModel()){
+            public void actionPerformed(ActionEvent event) {
+                createNewChild();
+            }
+            protected boolean canPerform(OWLAnnotationProperty prop) {
+                return canCreateNewChild();
+            }
+        }, "A", "A");
+
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", OWLIcons.getIcon("property.annotation.addsib.png"),
+                                                                   getTree().getSelectionModel()){
+
+            public void actionPerformed(ActionEvent event) {
+                createNewSibling();
+            }
+            protected boolean canPerform(OWLAnnotationProperty cls) {
+                return canCreateNewSibling();
+            }
+        }, "A", "B");
+
         addAction(new DeleteAnnotationPropertyAction(), "B", "A");
+
+//        getTree().setDragAndDropHandler(new OWLPropertyTreeDropHandler<OWLAnnotationProperty>(getOWLModelManager()){
+//            protected OWLAxiom getAxiom(OWLDataFactory df, OWLAnnotationProperty child, OWLAnnotationProperty parent) {
+//                return df.getOWLSubAnnotationPropertyOfAxiom(child, parent);
+//            }
+//        });
     }
 
 
@@ -71,7 +101,36 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLAnnotationProperties(match));
     }
 
-    private void createSibProperty() {
+
+    public boolean canCreateNewChild() {
+        return getSelectedEntity() != null;
+    }
+
+
+    public void createNewChild() {
+        OWLAnnotationProperty selProp = getSelectedEntity();
+        if (selProp == null) {
+            return;
+        }
+        OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
+        if (set != null) {
+            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            changes.addAll(set.getOntologyChanges());
+            OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+            OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
+            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            getOWLModelManager().applyChanges(changes);
+            setSelectedEntity(set.getOWLEntity());
+        }
+    }
+
+
+    public boolean canCreateNewSibling() {
+        return getSelectedEntity() != null;
+    }
+
+
+    public void createNewSibling() {
         OWLAnnotationProperty property = getTree().getSelectedOWLObject();
         if (property == null) {
             // Shouldn't really get here, because the
@@ -96,70 +155,6 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }
     }
 
-
-    private void createSubProperty() {
-        OWLAnnotationProperty selProp = getSelectedEntity();
-        if (selProp == null) {
-            return;
-        }
-        OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
-        if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            changes.addAll(set.getOntologyChanges());
-            OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-            OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-            getOWLModelManager().applyChanges(changes);
-            setSelectedEntity(set.getOWLEntity());
-        }
-    }
-
-    private class AddSibAnnotationPropertyAction extends DisposableAction implements TreeSelectionListener {
-
-        public AddSibAnnotationPropertyAction() {
-            super("Add sibling property", OWLIcons.getIcon("property.annotation.addsib.png"));
-            getTree().getSelectionModel().addTreeSelectionListener(this);
-            setEnabled(getSelectedEntity() != null);
-        }
-
-
-        public void dispose() {
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            createSibProperty();
-        }
-
-
-        public void valueChanged(TreeSelectionEvent event) {
-            setEnabled(getSelectedEntity() != null);
-        }
-    }
-
-
-    private class AddSubAnnotationPropertyAction extends DisposableAction implements TreeSelectionListener {
-
-        public AddSubAnnotationPropertyAction() {
-            super("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"));
-            getTree().getSelectionModel().addTreeSelectionListener(this);
-            setEnabled(getSelectedEntity() != null);
-        }
-
-
-        public void dispose() {
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            createSubProperty();
-        }
-
-
-        public void valueChanged(TreeSelectionEvent event) {
-            setEnabled(getSelectedEntity() != null);
-        }
-    }
 
     public class DeleteAnnotationPropertyAction extends AbstractDeleteEntityAction<OWLAnnotationProperty> {
 

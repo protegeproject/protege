@@ -176,7 +176,7 @@
     <extension id="OWLAssertedClassHierarchy"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Asserted class hierarchy"/>
-        <class value="org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -186,7 +186,7 @@
             id="OWLAssertedSuperClassHierarchy"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Asserted superclass hierarchy"/>
-        <class value="org.protege.editor.owl.ui.clshierarchy.ToldSuperClassHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.ToldSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -196,7 +196,7 @@
             id="OWLInferredSuperClassHierarchy"
             point="org.protege.editor.core.application.ViewComponent">
         <label value="Inferred superclass hierarchy"/>
-        <class value="org.protege.editor.owl.ui.clshierarchy.InferredSuperClassHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.InferredSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
@@ -427,7 +427,7 @@
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotation properties"/>
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent"/>
-        <headerColor value="@org.protege.annotationpropertycolor"/>
+        <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
         <navigates value="@org.protege.annotationpropertycategory"/>
     </extension>
@@ -602,7 +602,7 @@
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Usage"/>
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyUsageViewComponent"/>
-        <headerColor value="@org.protege.annotationpropertycolor"/>
+        <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
     </extension>
 
@@ -950,7 +950,7 @@
     <extension id="InferredOWLClassHierarchy"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Inferred class hierarchy"/>
-        <class value="org.protege.editor.owl.ui.clshierarchy.InferredOWLClassHierarchyViewComponent"/>
+        <class value="org.protege.editor.owl.ui.view.cls.InferredOWLClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
     </extension>
