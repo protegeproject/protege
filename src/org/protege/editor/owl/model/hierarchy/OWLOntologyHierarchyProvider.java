@@ -119,7 +119,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     }
 
 
-    public Set<OWLOntology> getSubPropertiesOfRoot() {
+    public Set<OWLOntology> getRoots() {
         return Collections.unmodifiableSet(roots);
     }
 

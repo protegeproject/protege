@@ -90,7 +90,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
             return;
         }
         OWLObjectHierarchyProvider<N> prov = getProvider();
-        for (N root : prov.getSubPropertiesOfRoot()) {
+        for (N root : prov.getRoots()) {
             autoExpand(root, 0);
         }
     }

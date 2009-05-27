@@ -153,7 +153,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
 
     public boolean canCreateNewSibling() {
-        return getSelectedEntity() != null;
+        return getSelectedEntity() != null && !getSelectedEntity().equals(getTopProperty());
     }
 
 
@@ -179,5 +179,10 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             getOWLModelManager().applyChanges(changes);
             setSelectedEntity(creationSet.getOWLEntity());
         }
+    }
+
+    
+    private O getTopProperty() {
+        return getHierarchyProvider().getRoots().iterator().next();
     }
 }

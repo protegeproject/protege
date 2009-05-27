@@ -154,7 +154,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     	rootFinder.findTerminalElements(possibleTerminalElements);
     }
 
-    public Set<OWLClass> getSubPropertiesOfRoot() {
+    public Set<OWLClass> getRoots() {
         if (root == null) {
             root = owlOntologyManager.getOWLDataFactory().getOWLThing();
         }

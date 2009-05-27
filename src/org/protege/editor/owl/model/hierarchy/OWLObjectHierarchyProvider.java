@@ -33,7 +33,7 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposa
     /**
      * Gets the objects that represent the roots of the hierarchy.
      */
-    public Set<N> getSubPropertiesOfRoot();
+    public Set<N> getRoots();
 
 
     public Set<N> getChildren(N object);
