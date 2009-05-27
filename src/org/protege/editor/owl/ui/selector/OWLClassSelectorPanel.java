@@ -6,7 +6,7 @@ import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.clshierarchy.ToldOWLClassHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLClass;

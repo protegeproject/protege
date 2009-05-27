@@ -3,12 +3,15 @@ package org.protege.editor.owl.ui.view.objectproperty;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.DeleteObjectPropertyAction;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,81 +32,32 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
     }
 
 
-    protected void performExtraInitialisation() throws Exception {
-        addAction(new AddPropertyAction(), "A", "A");
-        addAction(new AddSubPropertyAction(), "A", "B");
-        addAction(new DeleteObjectPropertyAction(getOWLEditorKit(), new OWLEntitySetProvider<OWLObjectProperty>() {
-            public Set<OWLObjectProperty> getEntities() {
-                return new HashSet<OWLObjectProperty>(getTree().getSelectedOWLObjects());
-            }
-        }), "B", "A");
-
-        getTree().setDragAndDropHandler(new OWLObjectPropertyTreeDropHandler(getOWLModelManager()));
-    }
-
-
     protected OWLObjectHierarchyProvider<OWLObjectProperty> getHierarchyProvider() {
         return getOWLModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider();
     }
 
 
-    private void createProperty() {
-        OWLEntityCreationSet<OWLObjectProperty> set = getOWLWorkspace().createOWLObjectProperty();
-        if (set != null) {
-            getOWLModelManager().applyChanges(set.getOntologyChanges());
-            setSelectedEntity(set.getOWLEntity());
-        }
+    protected OWLSubPropertyAxiom getSubPropertyAxiom(OWLObjectProperty child, OWLObjectProperty parent) {
+        return getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(child, parent);
     }
 
 
-    private void createSubProperty() {
-        OWLObjectProperty selProp = getSelectedEntity();
-        if (selProp == null) {
-            return;
-        }
-        OWLEntityCreationSet<OWLObjectProperty> set = getOWLWorkspace().createOWLObjectProperty();
-        if (set != null) {
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            changes.addAll(set.getOntologyChanges());
-            OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-            OWLAxiom ax = df.getOWLSubObjectPropertyOfAxiom(set.getOWLEntity(), selProp);
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-            getOWLModelManager().applyChanges(changes);
-            setSelectedEntity(set.getOWLEntity());
-        }
+    protected OWLEntityCreationSet<OWLObjectProperty> createProperty() {
+        return getOWLWorkspace().createOWLObjectProperty();
     }
 
 
-    private class AddPropertyAction extends DisposableAction {
-
-        public AddPropertyAction() {
-            super("Add property", OWLIcons.getIcon("property.object.add.png"));
-        }
-
-
-        public void dispose() {
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            createProperty();
-        }
+    protected Icon getSubIcon() {
+        return OWLIcons.getIcon("property.object.addsub.png");
     }
 
 
-    private class AddSubPropertyAction extends DisposableAction {
-
-        public AddSubPropertyAction() {
-            super("Add sub property", OWLIcons.getIcon("property.object.addsub.png"));
-        }
+    protected Icon getSibIcon() {
+        return OWLIcons.getIcon("property.object.addsib.png");
+    }
 
 
-        public void dispose() {
-        }
-
-
-        public void actionPerformed(ActionEvent e) {
-            createSubProperty();
-        }
+    protected Icon getDeleteIcon() {
+        return OWLIcons.getIcon("property.object.delete.png");
     }
 }
