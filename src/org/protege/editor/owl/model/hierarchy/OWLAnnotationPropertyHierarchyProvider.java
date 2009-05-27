@@ -70,7 +70,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         owlOntologyManager.addOntologyChangeListener(listener);
     }
 
-    public Set<OWLAnnotationProperty> getSubPropertiesOfRoot() {
+    public Set<OWLAnnotationProperty> getRoots() {
         return Collections.unmodifiableSet(roots);
     }
 

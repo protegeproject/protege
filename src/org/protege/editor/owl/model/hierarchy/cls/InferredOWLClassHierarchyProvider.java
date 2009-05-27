@@ -69,7 +69,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     }
 
 
-    public Set<OWLClass> getSubPropertiesOfRoot() {
+    public Set<OWLClass> getRoots() {
         return Collections.singleton(owlThing);
     }
 

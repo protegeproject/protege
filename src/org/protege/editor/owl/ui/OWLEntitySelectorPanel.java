@@ -364,8 +364,8 @@ public class OWLEntitySelectorPanel extends JPanel {
         }
 
 
-        public Set<N> getSubPropertiesOfRoot() {
-            return current.getSubPropertiesOfRoot();
+        public Set<N> getRoots() {
+            return current.getRoots();
         }
 
 
