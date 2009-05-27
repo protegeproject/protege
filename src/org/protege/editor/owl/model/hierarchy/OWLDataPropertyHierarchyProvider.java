@@ -56,4 +56,9 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
             OWLDataProperty prop, OWLOntology ont) {
         return ont.getDataSubPropertyAxiomsForSuperProperty(prop);
     }
+
+
+    protected OWLDataProperty getRoot() {
+        return getManager().getOWLDataFactory().getOWLTopDataProperty();
+    }
 }

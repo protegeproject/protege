@@ -70,7 +70,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider,
                          Comparator<? super N> objectComparator) {
-        this(owlEditorKit, provider, provider.getRoots(), objectComparator);
+        this(owlEditorKit, provider, provider.getSubPropertiesOfRoot(), objectComparator);
     }
 
 
@@ -210,7 +210,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 }
             }
 
-            if (provider.getRoots().contains(node)) {
+            if (provider.getSubPropertiesOfRoot().contains(node)) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) getModel().getRoot();
                 for (int i = 0; i < treeNode.getChildCount(); i++) {
                     OWLObjectTreeNode<N> objectTreeNode = (OWLObjectTreeNode<N>) treeNode.getChildAt(i);
@@ -233,7 +233,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         else {
             // Might be a new root!
-            if (provider.getRoots().contains(node)) {
+            if (provider.getSubPropertiesOfRoot().contains(node)) {
                 DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) getModel().getRoot();
                 DefaultMutableTreeNode nn = createTreeNode(node);
                 ((DefaultTreeModel) getModel()).insertNodeInto(nn, rootNode, 0);
@@ -262,7 +262,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         // Reload the tree
         nodeMap.clear();
         // TODO: getRoots needs to be changed - the user might have specified specific roots
-        Set<N> roots = provider.getRoots();
+        Set<N> roots = provider.getSubPropertiesOfRoot();
         OWLObjectTreeRootNode<N> rootNode = new OWLObjectTreeRootNode(this, roots);
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
     }
@@ -350,7 +350,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     protected int getChildCount(N owlObject) {
         if (owlObject == null) {
-            return provider.getRoots().size();
+            return provider.getSubPropertiesOfRoot().size();
         }
         else {
             return provider.getChildren(owlObject).size();

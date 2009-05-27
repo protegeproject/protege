@@ -104,7 +104,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
-    public Set<OWLObject> getRoots() {
+    public Set<OWLObject> getSubPropertiesOfRoot() {
         return roots;
     }
 

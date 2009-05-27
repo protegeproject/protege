@@ -39,7 +39,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         final OWLAnnotationSubject annotationSubject = getRootObject();
         // @@TODO this should also work for anon individuals but the OWLAPI is currently incorrect
         if (annotationSubject instanceof OWLEntity){
-            for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(((OWLEntity)annotationSubject).getIRI())) {
+            for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms((OWLEntity)annotationSubject)) {
                 if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
                     addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
                 }

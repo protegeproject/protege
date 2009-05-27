@@ -27,9 +27,9 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
+import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
-import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
@@ -676,6 +676,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty() {
         return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a data property name", OWLDataProperty.class);
+    }
+
+
+    public OWLEntityCreationSet<OWLAnnotationProperty> createOWLAnnotationProperty() {
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an annotation property name", OWLAnnotationProperty.class);        
     }
 
 

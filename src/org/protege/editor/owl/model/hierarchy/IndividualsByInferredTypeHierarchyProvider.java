@@ -63,7 +63,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
     }
 
 
-    public Set<OWLObject> getRoots() {
+    public Set<OWLObject> getSubPropertiesOfRoot() {
         return typeNodes.keySet();
     }
 

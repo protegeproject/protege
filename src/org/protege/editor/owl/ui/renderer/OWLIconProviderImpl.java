@@ -29,6 +29,8 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     private final Icon dataPropertyIcon = OWLIcons.getIcon("property.data.png");
 
+    private final Icon annotationPropertyIcon = OWLIcons.getIcon("property.annotation.png");
+
     private final Icon individualIcon = OWLIcons.getIcon("individual.png");
 
     private final Icon dataTypeIcon = OWLIcons.getIcon("datarange.png");
@@ -148,7 +150,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLIndividual owlIndividual) {
+    public void visit(OWLNamedIndividual owlIndividual) {
         icon = individualIcon;
     }
 
@@ -336,5 +338,10 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     public void visit(OWLObjectOneOf owlEnumeration) {
         icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+        icon = annotationPropertyIcon;
     }
 }

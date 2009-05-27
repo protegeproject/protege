@@ -53,6 +53,11 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
     }
 
 
+    protected OWLObjectProperty getRoot() {
+        return getManager().getOWLDataFactory().getOWLTopObjectProperty();
+    }
+
+
     protected boolean containsReference(OWLOntology ont, OWLObjectProperty prop) {
         return ont.containsObjectPropertyReference(prop.getURI());
     }
