@@ -71,6 +71,11 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
+    public OWLEntityCreationSet<OWLAnnotationProperty> createOWLAnnotationProperty(String shortName, URI baseURI) throws OWLEntityCreationException {
+        return createOWLEntity(OWLAnnotationProperty.class, shortName, baseURI);
+    }
+
+
     public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual(String shortName, URI baseURI) throws OWLEntityCreationException {
         return createOWLEntity(OWLNamedIndividual.class, shortName, baseURI);
     }
@@ -224,7 +229,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
             if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassReference(uri)) ||
                 (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyReference(uri)) ||
                 (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyReference(uri)) ||
-                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualReference(uri))){
+                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualReference(uri)) ||
+                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyReference(uri))){
                 return true;
             }
         }
@@ -234,10 +240,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private boolean isURIAlreadyUsed(URI uri) {
         for (OWLOntology ont : mngr.getOntologies()){
-            if (ont.containsClassReference(uri) ||
-                ont.containsObjectPropertyReference(uri) ||
-                ont.containsDataPropertyReference(uri) ||
-                ont.containsIndividualReference(uri)){
+            if (ont.containsEntityReference(uri)){
                 return true;
             }
         }
@@ -257,6 +260,9 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         }
         else if (OWLNamedIndividual.class.isAssignableFrom(type)){
             return (T)mngr.getOWLDataFactory().getOWLNamedIndividual(uri);
+        }
+        else if (OWLAnnotationProperty.class.isAssignableFrom(type)){
+            return (T)mngr.getOWLDataFactory().getOWLAnnotationProperty(uri);
         }
         return null;
     }
@@ -285,6 +291,4 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     protected URI getDefaultBaseURI() {
         return EntityCreationPreferences.getDefaultBaseURI();
     }
-
-
 }

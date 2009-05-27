@@ -102,7 +102,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     private Set<List<N>> setOfPaths(N obj, Set<N> processed) {
-        if (getRoots().contains(obj)) {
+        if (getSubPropertiesOfRoot().contains(obj)) {
             return getSingleSetOfLists(obj);
         }
         Set<List<N>> paths = new HashSet<List<N>>();

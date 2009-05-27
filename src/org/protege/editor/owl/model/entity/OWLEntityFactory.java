@@ -43,6 +43,17 @@ public interface OWLEntityFactory {
      */
     public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty(String shortName, URI baseURI) throws OWLEntityCreationException;
 
+
+    /**
+     *
+     * @param shortName user supplied name
+     * @param baseURI specify a base or leave as null to let the factory decide
+     * @return an object wrapping the changes that need to be applied
+     * @throws OWLEntityCreationException if the entity could not be created because of bad input/name clashes/auto ID etc
+     */
+    public OWLEntityCreationSet<OWLAnnotationProperty> createOWLAnnotationProperty(String shortName, URI baseURI) throws OWLEntityCreationException;
+
+
     /**
      *
      * @param shortName user supplied name

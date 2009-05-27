@@ -35,7 +35,7 @@ public abstract class AbstractSuperClassHierarchyProvider extends AbstractOWLObj
     }
 
 
-    public Set<OWLClass> getRoots() {
+    public Set<OWLClass> getSubPropertiesOfRoot() {
         if (rootClass == null) {
             return Collections.emptySet();
         }
