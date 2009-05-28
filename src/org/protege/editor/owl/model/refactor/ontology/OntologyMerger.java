@@ -3,6 +3,9 @@ package org.protege.editor.owl.model.refactor.ontology;
 import org.apache.log4j.Logger;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
+import org.protege.editor.owl.ui.error.ErrorPanel;
+import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,7 +71,7 @@ public class OntologyMerger {
             owlOntologyManager.applyChanges(changes);
         }
         catch (OWLOntologyChangeException e) {
-            e.printStackTrace();
+            ErrorLogPanel.showErrorDialog(e);
         }
     }
 }
