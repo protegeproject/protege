@@ -39,21 +39,28 @@ public class OntologyMerger {
 
     public void mergeOntologies() {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        MoveAxiomFilter filter = new MoveAxiomFilter();
         for (OWLOntology ont : ontologies) {
             if (!ont.equals(targetOntology)){
 
                 // move the axioms
                 for (OWLAxiom ax : ont.getAxioms()) {
-                    ax = filter.moveAxiom(ax);
-                    if (ax != null){
-                        changes.add(new AddAxiom(targetOntology, ax));
-                    }
+                    changes.add(new AddAxiom(targetOntology, ax));
                 }
 
                 // move ontology annotations
                 for (OWLAnnotation annot : ont.getAnnotations()){
                     changes.add(new AddOntologyAnnotation(targetOntology, annot));
+                }
+
+                // move ontology imports
+                for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
+                    if (!decl.getURI().equals(targetOntology.getURI())){
+                        changes.add(new AddImport(targetOntology, decl));
+                    }
+                    else{
+                        logger.warn("Merge: ignoring import declaration for URI " + targetOntology.getURI() +
+                                    " (would result in targetOntology importing itself).");
+                    }
                 }
             }
         }
@@ -62,27 +69,6 @@ public class OntologyMerger {
         }
         catch (OWLOntologyChangeException e) {
             e.printStackTrace();
-        }
-    }
-
-
-    class MoveAxiomFilter extends OWLAxiomVisitorAdapter {
-
-        private OWLAxiom ax;
-
-        public OWLAxiom moveAxiom(OWLAxiom visitedAxiom) {
-            this.ax = visitedAxiom;
-            visitedAxiom.accept(this);
-            return ax;
-        }
-
-
-        public void visit(OWLImportsDeclaration owlImportsDeclaration) {
-            if (owlImportsDeclaration.getURI().equals(targetOntology.getURI())){
-                ax = null;
-                logger.warn("Merge: ignoring import declaration for URI " + targetOntology.getURI() +
-                            " (would result in targetOntology importing itself).");
-            }
         }
     }
 }
