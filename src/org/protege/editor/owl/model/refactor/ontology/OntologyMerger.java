@@ -42,11 +42,18 @@ public class OntologyMerger {
         MoveAxiomFilter filter = new MoveAxiomFilter();
         for (OWLOntology ont : ontologies) {
             if (!ont.equals(targetOntology)){
+
+                // move the axioms
                 for (OWLAxiom ax : ont.getAxioms()) {
                     ax = filter.moveAxiom(ax);
                     if (ax != null){
                         changes.add(new AddAxiom(targetOntology, ax));
                     }
+                }
+
+                // move ontology annotations
+                for (OWLAnnotation annot : ont.getAnnotations()){
+                    changes.add(new AddOntologyAnnotation(targetOntology, annot));
                 }
             }
         }
@@ -77,14 +84,5 @@ public class OntologyMerger {
                             " (would result in targetOntology importing itself).");
             }
         }
-
-
-// @@TODO v3 port
-//        // all targetOntology annotations should be asserted on the target
-//        public void visit(OWLOntologyAnnotationAxiom owlOntologyAnnotationAxiom) {
-//            if (!owlOntologyAnnotationAxiom.getSubject().equals(targetOntology)){
-//                ax = owlOntologyManager.getOWLDataFactory().getOWLOntologyAnnotationAxiom(targetOntology, owlOntologyAnnotationAxiom.getAnnotation());
-//            }
-//        }
     }
 }
