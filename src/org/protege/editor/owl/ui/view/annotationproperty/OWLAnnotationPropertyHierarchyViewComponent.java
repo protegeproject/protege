@@ -156,19 +156,30 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
     }
 
 
+    private class InternalOWLEntitySetProvider implements OWLEntitySetProvider<OWLAnnotationProperty> {
+        public Set<OWLAnnotationProperty> getEntities() {
+            return new HashSet<OWLAnnotationProperty>(getTree().getSelectedOWLObjects());
+        }
+    }
+    
     public class DeleteAnnotationPropertyAction extends AbstractDeleteEntityAction<OWLAnnotationProperty> {
 
 
+        /*
+         * WARNING... Using an anonymous class instead of the InternalOWLEntitySetProvider class
+         * below activates the java compiler bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6348760.
+         * This bug has been fixed in Java 6 and in several Java 5 IDE compilers but it has not - as far
+         * as I can tell - been fixed by apple's Java 5 compiler or the Sun Java 5 compilers.  At svn 
+         * revision 14332, ant clean followed by ant equinox or ant install (depending on whether you are using
+         * the top level build file) will result in a java.lang.AssertionError.
+         * It took a fair bit of effort to track this down.  
+         */
         public DeleteAnnotationPropertyAction() {
             super("Delete selected properties",
                   OWLIcons.getIcon("property.annotation.delete.png"),
                   getOWLEditorKit(),
                   getHierarchyProvider(),
-                  new OWLEntitySetProvider<OWLAnnotationProperty>() {
-                      public Set<OWLAnnotationProperty> getEntities() {
-                          return new HashSet<OWLAnnotationProperty>(getTree().getSelectedOWLObjects());
-                      }
-                  });
+                  new InternalOWLEntitySetProvider());
         }
 
 
