@@ -537,8 +537,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         }
 
-        String ontURI = mngr.getRendering(activeOntology);
-        return ontURI + " - [" + location + "]";
+        String ontShortName = mngr.getRendering(activeOntology);
+        return ontShortName + " (" + activeOntology.getOntologyID().getOntologyIRI() + ") - [" + location + "]";
     }
 
 

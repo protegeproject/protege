@@ -9,7 +9,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
-import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
@@ -68,10 +68,10 @@ public class OntologyImportsList extends MList {
     public OntologyImportsList(OWLEditorKit eKit) {
         this.eKit = eKit;
 
-        setCellRenderer(new OWLCellRendererSimple(eKit){
+        setCellRenderer(new OWLOntologyCellRenderer(eKit){
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value instanceof OntologyImportItem){
-                    value = ((OntologyImportItem)value).getImportDeclaration();
+                    value = ((OntologyImportItem)value).getImportDeclaration().getIRI();
                 }
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }

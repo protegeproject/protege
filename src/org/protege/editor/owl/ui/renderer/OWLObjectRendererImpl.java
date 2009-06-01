@@ -1,8 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.OntologyURIShortFormProvider;
 import org.semanticweb.owl.util.ShortFormProvider;
 import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
@@ -25,6 +28,8 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
 
     private org.semanticweb.owl.io.OWLObjectRenderer delegate;
 
+    private OntologyURIShortFormProvider ontURISFP;
+
 
     public OWLObjectRendererImpl(OWLModelManager mngr) {
         this.mngr = mngr;
@@ -38,10 +43,29 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
                 // do nothing
             }
         });
+
+        ontURISFP = new OntologyURIShortFormProvider();
     }
 
 
     public String render(OWLObject object) {
+        if (object instanceof OWLOntology){
+            return renderOntology((OWLOntology) object);
+        }
         return delegate.render(object);
+    }
+
+
+    private String renderOntology(OWLOntology ontology) {
+        if (ontology.isAnonymous()){
+            return "<ANONYMOUS ONTOLOGY>";
+        }
+
+        // show the version uri or the ont uri if there is no version
+        IRI iri = ontology.getOntologyID().getVersionIRI();
+        if (iri == null){
+            iri = ontology.getOntologyID().getOntologyIRI();
+        }
+        return ontURISFP.getShortForm(iri.toURI());
     }
 }

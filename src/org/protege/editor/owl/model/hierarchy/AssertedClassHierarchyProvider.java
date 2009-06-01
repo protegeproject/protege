@@ -15,7 +15,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 17-Jan-2007<br><br>
  */
-public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyProvider<OWLClass> {
+public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLClass> {
 
     private OWLOntologyManager owlOntologyManager;
 
@@ -34,7 +34,7 @@ public class AssertedClassHierarchyProvider2 extends AbstractOWLObjectHierarchyP
     private Set<OWLClass> nodesToUpdate = new HashSet<OWLClass>();
 
 
-    public AssertedClassHierarchyProvider2(OWLOntologyManager owlOntologyManager) {
+    public AssertedClassHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.owlOntologyManager = owlOntologyManager;
         ontologies = new HashSet<OWLOntology>();

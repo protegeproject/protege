@@ -75,7 +75,7 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
     public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
         if (assertedClassHierarchyProvider == null) {
-            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider2(mngr.getOWLOntologyManager());
+            assertedClassHierarchyProvider = new AssertedClassHierarchyProvider(mngr.getOWLOntologyManager());
             assertedClassHierarchyProvider.setOntologies(mngr.getActiveOntologies());
         }
         return assertedClassHierarchyProvider;

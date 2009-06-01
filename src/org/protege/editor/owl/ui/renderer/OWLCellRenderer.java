@@ -95,13 +95,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Set<OWLEntity> crossedOutEntities;
 
-    private boolean focusedEntityIsSelectedEntity;
-
     private Set<String> unsatisfiableNames;
 
     private Set<String> boxedNames;
-
-    private Set<String> annotationURINames;
 
     private int plainFontHeight;
 
@@ -181,11 +177,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    public void setFocusedEntityIsSelectedEntity(boolean focusedEntityIsSelectedEntity) {
-        this.focusedEntityIsSelectedEntity = focusedEntityIsSelectedEntity;
-    }
-
-
     public void setOntology(OWLOntology ont) {
         forceReadOnlyRendering = false;
         this.ontology = ont;
@@ -219,10 +210,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         highlightUnsatisfiableClasses = true;
         highlightUnsatisfiableProperties = true;
         crossedOutEntities.clear();
-        focusedEntityIsSelectedEntity = false;
         unsatisfiableNames.clear();
         boxedNames.clear();
-        annotationURINames = null;
     }
 
 
@@ -571,10 +560,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Style focusedEntityStyle;
 
-//    private Style linespacingStyle;
-
-    private Style annotationURIStyle;
-
     private Style ontologyURIStyle;
 
     private Style commentedOutStyle;
@@ -621,13 +606,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         focusedEntityStyle = doc.addStyle("FOCUSED_ENTITY_STYLE", null);
         StyleConstants.setForeground(focusedEntityStyle, Color.BLACK);
         StyleConstants.setBackground(focusedEntityStyle, new Color(220, 220, 250));
-
-//        linespacingStyle = doc.addStyle("LINE_SPACING_STYLE", null);
-//        StyleConstants.setLineSpacing(linespacingStyle, 0.0f);
-
-        annotationURIStyle = doc.addStyle("ANNOTATION_URI_STYLE", null);
-        StyleConstants.setForeground(annotationURIStyle, Color.BLUE);
-        StyleConstants.setItalic(annotationURIStyle, true);
 
         ontologyURIStyle = doc.addStyle("ONTOLOGY_URI_STYLE", null);
         StyleConstants.setForeground(ontologyURIStyle, Color.GRAY);
@@ -805,10 +783,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // Paint red because of inconsistency
                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                 }
-                else if (isAnnotationURI(curToken) && !annotURIRendered){ // this could be an annotation URI
-                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, annotationURIStyle, true);
-                    annotURIRendered = true;
-                }
                 else if (isOntologyURI(curToken)){
                     fadeOntologyURI(doc, tokenStartIndex, tokenLength, enclosedByBracket);
                 }
@@ -881,19 +855,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    private boolean isAnnotationURI(String token) {
-        if (annotationURINames == null){
-            annotationURINames = new HashSet<String>();
-            for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
-                for (URI uri : (ont.getAnnotationURIs())){
-                    annotationURINames.add(getOWLModelManager().getURIRendering(uri));
-                }
-            }
-        }
-        return annotationURINames.contains(token);
-    }
-
-
     private void strikeoutEntityIfCrossedOut(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                              int tokenLength) {
         if(crossedOutEntities.contains(entity)) {
@@ -912,6 +873,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
         catch (OWLReasonerException e) {
+            // do nothing
         }
     }
 
