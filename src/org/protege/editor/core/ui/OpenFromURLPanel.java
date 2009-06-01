@@ -30,8 +30,8 @@ import java.util.TreeSet;
  * Bio-Health Informatics Group<br>
  * Date: 12-May-2007<br><br>
  */
-public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
-    private static Logger log = Logger.getLogger(OpenFromURIPanel.class);
+public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
+    private static Logger log = Logger.getLogger(OpenFromURLPanel.class);
 
     private JTextField uriField;
 
@@ -41,7 +41,7 @@ public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
             new ArrayList<InputVerificationStatusChangedListener>();
 
 
-    public OpenFromURIPanel() {
+    public OpenFromURLPanel() {
         createUI();
     }
 
@@ -256,7 +256,7 @@ public class OpenFromURIPanel extends JPanel implements VerifiedInputEditor {
 
 
     public static URI showDialog() {
-        OpenFromURIPanel panel = new OpenFromURIPanel();
+        OpenFromURLPanel panel = new OpenFromURLPanel();
         int ret = JOptionPaneEx.showValidatingConfirmDialog(null,
                                                   "Enter or select a URI",
                                                   panel,
