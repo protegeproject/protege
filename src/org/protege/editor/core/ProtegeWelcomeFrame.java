@@ -5,7 +5,7 @@ import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromRepositoryPanel;
-import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.OpenFromURLPanel;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -156,7 +156,7 @@ public class ProtegeWelcomeFrame extends JFrame {
 
         private void handleOpenFromURI(EditorKitFactoryPlugin plugin) {
             try {
-                URI uri = OpenFromURIPanel.showDialog();
+                URI uri = OpenFromURLPanel.showDialog();
                 if (uri != null) {
                     if (ProtegeManager.getInstance().loadAndSetupEditorKitFromURI(plugin, uri)) {
                         dispose();
