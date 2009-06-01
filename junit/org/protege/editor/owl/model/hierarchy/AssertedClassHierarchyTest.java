@@ -20,12 +20,12 @@ public class AssertedClassHierarchyTest extends TestCase {
     
     private OWLOntologyManager manager;
     private OWLDataFactory factory;
-    AssertedClassHierarchyProvider2 hierarchy;
+    AssertedClassHierarchyProvider hierarchy;
     
     protected void init() {
         manager = OWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();
-        hierarchy = new AssertedClassHierarchyProvider2(manager);
+        hierarchy = new AssertedClassHierarchyProvider(manager);
     }
     
     protected OWLOntology createOntology() throws OWLOntologyCreationException, URISyntaxException {

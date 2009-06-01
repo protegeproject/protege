@@ -8,6 +8,7 @@ import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLAnnotationProperty;
 import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
@@ -371,7 +372,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
         // @@TODO should get an annotation property and render that
         sameAsRendererLabelButton = new JRadioButton("Same as label renderer (currently " +
-                                                     getOWLModelManager().getURIRendering(getFirstRendererLabel().toURI()) + ")");
+                                                     new SimpleURIShortFormProvider().getShortForm(getFirstRendererLabel().toURI()) + ")");
         customLabelButton = new JRadioButton("Custom label");
 
         ButtonGroup bg = new ButtonGroup();

@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.OntologyURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,8 +52,13 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
                                                   boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
+        if (value instanceof OWLOntology){
         label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getModelManager()));
-        label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
+            label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
+        }
+        else if (value instanceof IRI){
+            label.setText(getOntologyLabelText((IRI)value, editorKit.getModelManager()));
+        }
         return label;
     }
 
@@ -61,7 +67,24 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     public static String getOntologyLabelText(OWLOntology ont, OWLModelManager mngr){
         final IRI iri = ont.getOntologyID().getOntologyIRI();
 
-        String shortForm = mngr.getURIRendering(iri.toURI());
+        String shortForm = mngr.getRendering(ont);
+
+        if (shortForm != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html><body>");
+            sb.append(shortForm);
+            sb.append(" <font color=\"gray\">(");
+            sb.append(iri.toString());
+            sb.append(")</font></body></html>");
+            return sb.toString();
+        }
+
+        return iri.toString();
+    }
+
+    public static String getOntologyLabelText(IRI iri, OWLModelManager mngr){
+
+        String shortForm = new OntologyURIShortFormProvider().getShortForm(iri.toURI());
 
         if (shortForm != null) {
             StringBuilder sb = new StringBuilder();
