@@ -78,8 +78,8 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
         public void afterLoad(IOListenerEvent event) {
-            URI uri = event.getOntologyURI();
-            OWLOntology ont = mngr.getOWLOntologyManager().getOntology(uri);
+            OWLOntologyID ontologyID = event.getOntologyID();
+            OWLOntology ont = mngr.getOWLOntologyManager().getOntology(ontologyID);
             adcFactory.getADCsForOntology(ont);
         }
     };

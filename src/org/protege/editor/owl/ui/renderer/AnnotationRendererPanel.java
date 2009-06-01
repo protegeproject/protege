@@ -4,7 +4,9 @@ import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.frame.AnnotationURIList;
+import org.protege.editor.owl.ui.UIHelper;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLAnnotationProperty;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +15,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class AnnotationRendererPanel extends JPanel {
                 dirty = true;
             }
         });
-        model.addColumn("Annotation URI");
+        model.addColumn("Annotation IRI");
         model.addColumn("Languages (comma separated in order of preference, ! for none)");
         load();
 
@@ -144,8 +145,8 @@ public class AnnotationRendererPanel extends JPanel {
     }
 
     protected void load(){
-        java.util.List<URI> rows = OWLRendererPreferences.getInstance().getAnnotationURIs();
-        for (URI row : rows){
+        java.util.List<IRI> rows = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        for (IRI row : rows){
             java.util.List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(row);
 
             Object[] rowData = new Object[2];
@@ -169,10 +170,13 @@ public class AnnotationRendererPanel extends JPanel {
 
     protected void applyChanges() {
         if (dirty){
-            java.util.List<URI> uris = new ArrayList<URI>();
-            Map<URI,java.util.List<String>> langMap = new HashMap<URI, java.util.List<String>>();
+            // @@TODO change this to get annotation properties
+            java.util.List<IRI> iris = new ArrayList<IRI>();
+
+            Map<IRI,java.util.List<String>> langMap = new HashMap<IRI, java.util.List<String>>();
+
             for (int i=0; i<model.getRowCount(); i++){
-                URI uri = (URI)model.getValueAt(i, 0);
+                IRI iri = (IRI)model.getValueAt(i, 0);
                 String langsAsString = (String)model.getValueAt(i, 1);
                 if (langsAsString != null){
                     java.util.List<String> langs = new ArrayList<String>();
@@ -183,11 +187,11 @@ public class AnnotationRendererPanel extends JPanel {
                         }
                         langs.add(token);
                     }
-                    langMap.put(uri, langs);
+                    langMap.put(iri, langs);
                 }
-                uris.add(uri);
+                iris.add(iri);
             }
-            OWLRendererPreferences.getInstance().setAnnotations(uris, langMap);
+            OWLRendererPreferences.getInstance().setAnnotations(iris, langMap);
             dirty = false;
         }
     }
@@ -207,13 +211,9 @@ public class AnnotationRendererPanel extends JPanel {
     }
 
     private void handleAddAnnotation() {
-        AnnotationURIList list = new AnnotationURIList(eKit);
-        list.rebuildAnnotationURIList();
-        final JScrollPane scroller = new JScrollPane(list);
-        scroller.setPreferredSize(new Dimension(400, 300));
-        if (JOptionPane.showConfirmDialog(AnnotationRendererPanel.this, scroller, "Pick an annotation",
-                                          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION){
-            Object[] rowData = new Object[]{list.getSelectedURI(), null};
+        OWLAnnotationProperty p = new UIHelper(eKit).pickAnnotationProperty();
+        if (p != null){
+            Object[] rowData = new Object[]{p.getIRI(), null};
             model.addRow(rowData);
             table.getSelectionModel().setSelectionInterval(model.getRowCount()-1, model.getRowCount()-1);
         }

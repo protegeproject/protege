@@ -4,7 +4,6 @@ import org.protege.editor.owl.ui.rename.RenameEntityPanel;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityRenamer;
 
-import java.net.URI;
 import java.util.List;
 
 
@@ -20,38 +19,38 @@ public class RenameEntityAction extends SelectedOWLEntityAction {
     protected void actionPerformed(OWLEntity selectedEntity) {
         OWLEntityRenamer owlEntityRenamer = new OWLEntityRenamer(getOWLModelManager().getOWLOntologyManager(),
                                                                  getOWLModelManager().getOntologies());
-        final URI uri = RenameEntityPanel.showDialog(getOWLEditorKit(), selectedEntity);
-        if (uri == null) {
+        final IRI iri = RenameEntityPanel.showDialog(getOWLEditorKit(), selectedEntity);
+        if (iri == null) {
             return;
         }
         final List<OWLOntologyChange> changes;
         if (RenameEntityPanel.isAutoRenamePuns()){
-            changes = owlEntityRenamer.changeURI(selectedEntity.getURI(), uri);
+            changes = owlEntityRenamer.changeIRI(selectedEntity.getIRI(), iri);
         }
         else{
-            changes = owlEntityRenamer.changeURI(selectedEntity, uri);
+            changes = owlEntityRenamer.changeIRI(selectedEntity, iri);
         }
         getOWLModelManager().applyChanges(changes);
 
         selectedEntity.accept(new OWLEntityVisitor() {
             public void visit(OWLClass cls) {
-                ensureSelected(getOWLDataFactory().getOWLClass(uri));
+                ensureSelected(getOWLDataFactory().getOWLClass(iri));
             }
 
             public void visit(OWLObjectProperty property) {
-                ensureSelected(getOWLDataFactory().getOWLObjectProperty(uri));
+                ensureSelected(getOWLDataFactory().getOWLObjectProperty(iri));
             }
 
             public void visit(OWLDataProperty property) {
-                ensureSelected(getOWLDataFactory().getOWLDataProperty(uri));
+                ensureSelected(getOWLDataFactory().getOWLDataProperty(iri));
             }
 
             public void visit(OWLAnnotationProperty owlAnnotationProperty) {
-                ensureSelected(getOWLDataFactory().getOWLDataProperty(uri));
+                ensureSelected(getOWLDataFactory().getOWLDataProperty(iri));
             }
 
             public void visit(OWLNamedIndividual individual) {
-                ensureSelected(getOWLDataFactory().getOWLNamedIndividual(uri));
+                ensureSelected(getOWLDataFactory().getOWLNamedIndividual(iri));
             }
 
             public void visit(OWLDatatype dataType) {

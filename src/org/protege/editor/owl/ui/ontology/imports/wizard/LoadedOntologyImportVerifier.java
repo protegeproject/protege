@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLOntology;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -32,16 +32,17 @@ public class LoadedOntologyImportVerifier implements ImportVerifier {
 
     public ImportParameters checkImports() {
         return new ImportParameters() {
-            public Set<URI> getOntologiesToBeImported() {
-                Set<URI> uris = new HashSet<URI>();
+            public Set<IRI> getOntologiesToBeImported() {
+                // @@TODO what about anonymous ontologies?
+                Set<IRI> iris = new HashSet<IRI>();
                 for (OWLOntology ont : ontologies) {
-                    uris.add(ont.getURI());
+                    iris.add(ont.getOntologyID().getOntologyIRI());
                 }
-                return uris;
+                return iris;
             }
 
 
-            public String getOntologyLocationDescription(URI ontologyURI) {
+            public String getOntologyLocationDescription(IRI ontologyIRI) {
                 return "Already loaded";
             }
 

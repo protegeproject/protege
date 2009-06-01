@@ -6,9 +6,8 @@ import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLEntity;
-
-import java.net.URI;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -40,17 +39,17 @@ import java.net.URI;
  * Bio Health Informatics Group<br>
  * Date: Aug 21, 2008<br><br>
  *
- * Takes a URI and replaces the fragment/last path element with a generated ID
+ * Takes an IRI and replaces the fragment/last path element with a generated ID
  * If no fragment exists, adds the ID directly
  *
  */
-public class OWLEntityURIRegenerator implements Disposable {
+public class OWLEntityIRIRegenerator implements Disposable {
 
     private OWLEntityFactory fac;
 
     private OWLEntityRendererImpl fragmentRenderer;
 
-    public OWLEntityURIRegenerator(OWLModelManager mngr) {
+    public OWLEntityIRIRegenerator(OWLModelManager mngr) {
 
         fragmentRenderer = new OWLEntityRendererImpl(); // basic fragment renderer
         fragmentRenderer.setup(mngr);
@@ -65,18 +64,18 @@ public class OWLEntityURIRegenerator implements Disposable {
     }
 
 
-    public URI generateNewURI(OWLEntity entity) {
-        URI base = getBaseURI(entity);
+    public IRI generateNewIRI(OWLEntity entity) {
+        IRI base = getBaseIRI(entity);
 
         String id = ""; // this is the "user given name" which will not be used
 
         OWLEntity newEntity = getEntity(entity, id, base);
 
-        return newEntity.getURI();
+        return newEntity.getIRI();
     }
 
 
-    private OWLEntity getEntity(OWLEntity entity, String id, URI base) {
+    private OWLEntity getEntity(OWLEntity entity, String id, IRI base) {
         try {
             return fac.createOWLEntity(entity.getClass(), id, base).getOWLEntity();
         }
@@ -86,14 +85,14 @@ public class OWLEntityURIRegenerator implements Disposable {
     }
 
 
-    private URI getBaseURI(OWLEntity entity) {
+    private IRI getBaseIRI(OWLEntity entity) {
         String fragment = fragmentRenderer.render(entity);
-        URI uri = entity.getURI();
+        IRI iri = entity.getIRI();
 
         if (fragment != null){
-            return URI.create(uri.toString().substring(0, uri.toString().lastIndexOf(fragment)));
+            return IRI.create(iri.toString().substring(0, iri.toString().lastIndexOf(fragment)));
         }
-        return uri;
+        return iri;
     }
 
 

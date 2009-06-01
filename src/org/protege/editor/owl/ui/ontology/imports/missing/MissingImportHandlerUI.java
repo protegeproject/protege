@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.ui.UIHelper;
+import org.semanticweb.owl.model.IRI;
 
 import javax.swing.*;
 import java.io.File;
@@ -31,10 +32,10 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     }
 
 
-    public URI getPhysicalURI(URI ontologyURI) {
+    public URI getPhysicalURI(IRI ontologyIRI) {
 
         int ret = JOptionPane.showConfirmDialog(null,
-                                                "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyURI.toString() + "</font><br><br>" +
+                                                "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyIRI.toString() + "</font><br><br>" +
 
                                                         "Would you like to attempt to resolve the missing import?</body></html>",
                                                 "Resolve missing import?",
@@ -46,7 +47,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
         UIHelper helper = new UIHelper(owlEditorKit);
         File file = helper.chooseOWLFile("Please select an ontology file");
         if (file == null) {
-            return ontologyURI;
+            return ontologyIRI.toURI();
         }
         // Add a mapping from the ontology to the file.  If the user wants the ontology
         // to be editable, then they should have the option to copy the file into the

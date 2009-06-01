@@ -21,7 +21,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private Set<OWLOntology> sourceOntologies;
 
-    private URI targetOntologyURI;
+    private OWLOntologyID targetOntologyID;
 
     private List<MoveAxiomsKit> moveAxiomsKits;
 
@@ -200,16 +200,14 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         OWLOntology targetOntology = null;
         if (addToTargetOntology){
             OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
-            if(man.contains(getTargetOntologyURI())) {
-                targetOntology = man.getOntology(getTargetOntologyURI());
+            if(man.contains(getTargetOntologyID())) {
+                targetOntology = man.getOntology(getTargetOntologyID());
             }
             else {
-                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyURI(), ontologyPhysicalLocationPage.getLocationURI());
+                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyID(), ontologyPhysicalLocationPage.getLocationURL());
                 editorKit.getModelManager().getOWLOntologyManager().setOntologyFormat(targetOntology, ontologyFormatPage.getFormat());
             }
         }
-
-        final OWLDataFactory df = editorKit.getModelManager().getOWLDataFactory();
 
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
@@ -222,11 +220,6 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                     if(targetOntology != null){
-// @@TODO v3 port
-//                        if (ax instanceof OWLOntologyAnnotationAxiom){ // turn this into an annotation on the target
-//                            ax = df.getOWLOntologyAnnotationAxiom(targetOntology,
-//                                                                  ((OWLOntologyAnnotationAxiom)ax).getAnnotation());
-//                        }
                         changes.add(new AddAxiom(targetOntology, ax));
                     }
                 }
@@ -251,13 +244,13 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
     }
 
 
-    public URI getTargetOntologyURI() {
-        return targetOntologyURI;
+    public OWLOntologyID getTargetOntologyID() {
+        return targetOntologyID;
     }
 
 
-    public void setTargetOntologyURI(URI targetOntologyURI) {
-        this.targetOntologyURI = targetOntologyURI;
+    public void setTargetOntologyID(OWLOntologyID targetOntologyID) {
+        this.targetOntologyID = targetOntologyID;
     }
 
 

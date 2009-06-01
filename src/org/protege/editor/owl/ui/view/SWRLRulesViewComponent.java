@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.ui.frame.SWRLRulesFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
@@ -38,14 +38,14 @@ import java.awt.*;
  */
 public class SWRLRulesViewComponent extends AbstractActiveOntologyViewComponent {
 
-    private OWLFrameList2 list;
+    private OWLFrameList list;
 
     private SWRLRulesFrame frame;
 
 
     protected void initialiseOntologyView() throws Exception {
         frame = new SWRLRulesFrame(getOWLEditorKit());
-        list = new OWLFrameList2(getOWLEditorKit(), frame);
+        list = new OWLFrameList(getOWLEditorKit(), frame);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
         updateView(getOWLEditorKit().getModelManager().getActiveOntology());

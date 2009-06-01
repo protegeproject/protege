@@ -8,7 +8,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.frame.OWLEntityFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
@@ -55,7 +55,7 @@ public class SelectedObjectPanel extends JPanel {
 
     private OWLEntityFrame entityFrame;
 
-    private OWLFrameList2 frameList;
+    private OWLFrameList frameList;
 
     private CardLayout layout;
 
@@ -90,7 +90,7 @@ public class SelectedObjectPanel extends JPanel {
         headerPanel.add(showUsageCheckBox, BorderLayout.EAST);
 
         entityFrame = new OWLEntityFrame(getOWLEditorKit());
-        frameList = new OWLFrameList2(getOWLEditorKit(), entityFrame);
+        frameList = new OWLFrameList(getOWLEditorKit(), entityFrame);
         cardPanel.add("ENTITIES", new JScrollPane(frameList));
         owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
 
@@ -167,7 +167,7 @@ public class SelectedObjectPanel extends JPanel {
 
 
             public void visit(OWLOntology owlOntology) {
-                objectDisplayLabel.setText("<html><body><b>Ontology: </b>" + owlOntology.getURI() + "</body></html>");
+                objectDisplayLabel.setText("<html><body><b>Ontology: </b>" + owlEditorKit.getModelManager().getRendering(owlOntology) + "</body></html>");
             }
         });
     }

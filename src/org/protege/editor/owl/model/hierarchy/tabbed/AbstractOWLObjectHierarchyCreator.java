@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
 import org.protege.editor.core.ProtegeApplication;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyChange;
@@ -93,9 +94,10 @@ public abstract class AbstractOWLObjectHierarchyCreator {
     }
 
 
-    protected URI getURI(String s) {
+    protected IRI getIRI(String s) {
         try {
-            return new URI(ontology.getURI().getScheme(), ontology.getURI().getSchemeSpecificPart(), s);
+            final URI defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI().toURI();
+            return IRI.create(new URI(defaultDocURI.getScheme(), defaultDocURI.getSchemeSpecificPart(), s));
         }
         catch (Exception e) {
             ProtegeApplication.getErrorLog().logError(e);

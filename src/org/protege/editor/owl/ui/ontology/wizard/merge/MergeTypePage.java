@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.ontology.wizard.merge;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +54,7 @@ public class MergeTypePage extends AbstractOWLWizardPanel {
 
     public Object getNextPanelDescriptor() {
         if (mergeIntoNew.isSelected()) {
-            return OntologyURIPanel.ID;
+            return OntologyIDPanel.ID;
         }
         else {
             return SelectTargetOntologyPage.ID;

@@ -1,20 +1,13 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.net.URI;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.semanticweb.owl.model.IRI;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -61,8 +54,8 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
                                                          BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         ImportVerifier verifier = ((OntologyImportWizard) getWizard()).getImportVerifier();
         ImportParameters param = verifier.checkImports();
-        for (URI uri : param.getOntologiesToBeImported()) {
-            box.add(new ImportEntryPanel(uri, param.getOntologyLocationDescription(uri)));
+        for (IRI iri : param.getOntologiesToBeImported()) {
+            box.add(new ImportEntryPanel(iri, param.getOntologyLocationDescription(iri)));
         }
 
         importedOntologiesComponent.add(box, BorderLayout.NORTH);
@@ -76,11 +69,11 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
     private class ImportEntryPanel extends JPanel {
 
-        public ImportEntryPanel(URI ontologyURI, String locationDescription) {
+        public ImportEntryPanel(IRI ontologyIRI, String locationDescription) {
             setBorder(BorderFactory.createEmptyBorder(1, 0, 4, 0));
             setLayout(new BorderLayout(1, 1));
             setBackground(Color.WHITE);
-            JLabel ontologyURILabel = new JLabel(ontologyURI.toString());
+            JLabel ontologyURILabel = new JLabel(ontologyIRI.toString());
             add(ontologyURILabel, BorderLayout.NORTH);
             JLabel physicalLocationLabel = new JLabel(locationDescription);
             add(physicalLocationLabel, BorderLayout.SOUTH);

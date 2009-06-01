@@ -142,10 +142,11 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     private String getOntologyLocalName() {
         Wizard wizard = getWizard();
-        OntologyURIPanel uriPanel = (OntologyURIPanel) wizard.getModel().getPanel(OntologyURIPanel.ID);
+        OntologyIDPanel IDPanel = (OntologyIDPanel) wizard.getModel().getPanel(OntologyIDPanel.ID);
         String uriString = "";
-        if (uriPanel != null) {
-            uriString = uriPanel.getURI().toString();
+        if (IDPanel != null) {
+            // @@TODO handle anonymous ontologies
+            uriString = IDPanel.getOntologyID().getOntologyIRI().toString();
         }
         int lastSlashIndex = uriString.lastIndexOf("/");
         if (lastSlashIndex == -1) {
@@ -190,8 +191,8 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         List<String> list = new ArrayList<String>();
         DefaultListModel model = ((DefaultListModel) recentLocations.getModel());
         // Add in current file
-        if (getLocationURI() != null) {
-            File file = new File(getLocationURI()).getParentFile();
+        if (getLocationURL() != null) {
+            File file = new File(getLocationURL()).getParentFile();
             for (int i = 0; i < model.getSize(); i++) {
                 if (model.getElementAt(i).equals(file)) {
                     model.remove(i);
@@ -221,7 +222,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
     }
 
 
-    public URI getLocationURI() {
+    public URI getLocationURL() {
         File f = new File(locationField.getText());
         return f.toURI();
     }
@@ -233,6 +234,6 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     public Object getBackPanelDescriptor() {
-        return OntologyURIPanel.ID;
+        return OntologyIDPanel.ID;
     }
 }

@@ -1,14 +1,10 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.ontology.imports.OntologyImportsList;
-import org.protege.editor.core.ui.list.MList;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +44,7 @@ public class OWLImportsDeclarationsViewComponent extends AbstractOWLViewComponen
 
 
     protected void disposeOWLView() {
-//        list.dispose();
+        list.dispose();
         getOWLModelManager().removeListener(listener);
     }
 }

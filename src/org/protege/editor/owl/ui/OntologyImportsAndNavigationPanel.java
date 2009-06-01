@@ -107,7 +107,7 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
             if(ontology == null) {
                 return label;
             }
-            String uriString = ontology.getURI().toString();
+            String uriString = ontology.getOntologyID().toString();
                 int lastSepIndex = uriString.lastIndexOf('/');
                 StringBuilder sb = new StringBuilder();
                 if (lastSepIndex != -1) {

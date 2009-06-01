@@ -42,7 +42,7 @@ public class SelectTargetOntologyPanel extends AbstractSelectOntologiesPage {
 
     public void aboutToHidePanel() {
         super.aboutToHidePanel();
-        ((MoveAxiomsWizard) getWizard()).setTargetOntologyURI(getOntologies().iterator().next().getURI());
+        ((MoveAxiomsWizard) getWizard()).setTargetOntologyID(getOntologies().iterator().next().getOntologyID());
     }
 
 

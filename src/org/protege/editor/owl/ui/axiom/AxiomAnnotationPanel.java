@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.axiom;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLAxiomAnnotationsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owl.model.OWLAxiom;
 
@@ -41,7 +41,7 @@ import java.awt.*;
  */
 public class AxiomAnnotationPanel extends JComponent {
 
-    private OWLFrameList2<OWLAxiom> axiomAnnotationComponent;
+    private OWLFrameList<OWLAxiom> axiomAnnotationComponent;
 
     private DefaultListModel model;
 
@@ -60,7 +60,7 @@ public class AxiomAnnotationPanel extends JComponent {
         label.setOpaque(true);
         label.setCellRenderer(ren);
 
-        axiomAnnotationComponent = new OWLFrameList2<OWLAxiom>(eKit, new OWLAxiomAnnotationsFrame(eKit));
+        axiomAnnotationComponent = new OWLFrameList<OWLAxiom>(eKit, new OWLAxiomAnnotationsFrame(eKit));
         axiomAnnotationComponent.setAxiomSelectionSyncronized(false);
 
         final JScrollPane scroller = new JScrollPane(axiomAnnotationComponent);

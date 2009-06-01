@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.util.OWLOntologyURIChanger;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import javax.swing.JOptionPane;
-
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.OWLOntologyURIChanger;
 
 
 /**
@@ -16,23 +16,23 @@ import org.semanticweb.owl.util.OWLOntologyURIChanger;
  * Bio-Health Informatics Group<br>
  * Date: 07-Mar-2007<br><br>
  */
-public class ChangeOntologyURI extends ProtegeOWLAction {
+public class ChangeOntologyIRI extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent e) {
         try {
             OWLOntology ont = getOWLModelManager().getActiveOntology();
-            String s = JOptionPane.showInputDialog("New ontology URI", ont.getURI());
+            String s = JOptionPane.showInputDialog("New ontology IRI", ont.getOntologyID().getOntologyIRI());
 
             if (s == null) {
                 return;
             }
-            URI uri = new URI(s);
+            IRI iri = IRI.create(new URI(s));
             OWLOntologyURIChanger changer = new OWLOntologyURIChanger(getOWLModelManager().getOWLOntologyManager());
-            getOWLModelManager().applyChanges(changer.getChanges(ont, uri));
+            getOWLModelManager().applyChanges(changer.getChanges(ont, iri));
         }
         catch (URISyntaxException ex) {
-            JOptionPane.showMessageDialog(getWorkspace(), ex.getMessage(), "Invalid URI", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getWorkspace(), ex.getMessage(), "Invalid IRI", JOptionPane.ERROR_MESSAGE);
         }
     }
 

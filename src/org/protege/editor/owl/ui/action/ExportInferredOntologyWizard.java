@@ -2,10 +2,11 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owl.model.OWLOntologyID;
 import org.semanticweb.owl.util.InferredAxiomGenerator;
 
 import java.net.URI;
@@ -44,7 +45,7 @@ public class ExportInferredOntologyWizard extends Wizard {
 
     private ExportInferredOntologyWizardSelectAxiomsPanel axiomsPanel;
 
-    private ExportInferredOntologyURIPanel ontologyURIPanel;
+    private ExportInferredOntologyIDPanel ontologyIRIPanel;
 
     private PhysicalLocationPanel locationPanel;
 
@@ -60,7 +61,7 @@ public class ExportInferredOntologyWizard extends Wizard {
         setCurrentPanel(ExportInferredOntologyWizardSelectAxiomsPanel.ID);
         registerWizardPanel(ExportInferredOntologyIncludeAssertedAxiomsPanel.ID,
                             assertedAxiomsPanel = new ExportInferredOntologyIncludeAssertedAxiomsPanel(editorKit));
-        registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new ExportInferredOntologyURIPanel(editorKit));
+        registerWizardPanel(OntologyIDPanel.ID, ontologyIRIPanel = new ExportInferredOntologyIDPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, locationPanel = new PhysicalLocationPanel(editorKit));
         registerWizardPanel(OntologyFormatPage.ID, ontologyFormatPanel = new OntologyFormatPage(editorKit));
     }
@@ -71,13 +72,13 @@ public class ExportInferredOntologyWizard extends Wizard {
     }
 
 
-    public URI getOntologyURI() {
-        return ontologyURIPanel.getURI();
+    public OWLOntologyID getOntologyID() {
+        return ontologyIRIPanel.getOntologyID();
     }
 
 
-    public URI getPhysicalURI() {
-        return locationPanel.getLocationURI();
+    public URI getPhysicalURL() {
+        return locationPanel.getLocationURL();
     }
 
 

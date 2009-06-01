@@ -48,25 +48,24 @@ public interface OWLModelManager extends ModelManager {
 
     void removeIOListener(IOListener listener);
 
-
-    /**
-     * Loads the ontology that has the specified ontology URI.
-     * <p/>
-     * @param uri The URI of the ontology to be loaded.  Note
-     *            that this is <b>not</b> the physical URI of a document
-     *            that contains a representation of the ontology.  The
-     *            physical location of any concrete representation of the
-     *            ontology is determined by the resolving mechanism.
-     */
-    OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException;
+// This should really be an ontologyID
+//    /**
+//     * Loads the ontology that has the specified ontology URI.
+//     * <p/>
+//     * @param uri The URI of the ontology to be loaded.  Note
+//     *            that this is <b>not</b> the physical URI of a document
+//     *            that contains a representation of the ontology.  The
+//     *            physical location of any concrete representation of the
+//     *            ontology is determined by the resolving mechanism.
+//     */
+//    OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException;
 
 
     /**
      * Creates a new, empty ontology that has the specified
-     * ontology URI.  Note that this is NOT the physical URI,
-     * it is the logical URI - i.e. the name of the ontology.
+     * ontology ID - i.e. the name of the ontology.
      */
-    OWLOntology createNewOntology(URI uri, URI physicalURI) throws OWLOntologyCreationException;
+    OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException;
 
 
     OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException;

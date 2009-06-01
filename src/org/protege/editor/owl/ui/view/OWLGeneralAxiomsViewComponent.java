@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JScrollPane;
-
 import org.protege.editor.owl.ui.frame.OWLGeneralClassAxiomsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLOntology;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -17,11 +16,11 @@ import org.semanticweb.owl.model.OWLOntology;
  */
 public class OWLGeneralAxiomsViewComponent extends AbstractActiveOntologyViewComponent {
 
-    private OWLFrameList2<OWLOntology> list;
+    private OWLFrameList<OWLOntology> list;
 
 
     protected void initialiseOntologyView() throws Exception {
-        list = new OWLFrameList2<OWLOntology>(getOWLEditorKit(),
+        list = new OWLFrameList<OWLOntology>(getOWLEditorKit(),
                                               new OWLGeneralClassAxiomsFrame(getOWLEditorKit(),
                                                                              getOWLModelManager().getOWLOntologyManager()));
         setLayout(new BorderLayout());

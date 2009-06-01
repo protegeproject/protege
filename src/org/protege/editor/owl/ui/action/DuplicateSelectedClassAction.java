@@ -14,11 +14,11 @@ import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectDuplicator;
+import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +67,10 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
                 OWLEntityCreationSet<OWLClass> set = panel.createOWLClass();
                 if (set != null){
-                    Map<URI, URI> replacementURIMap = new HashMap<URI, URI>();
-                    replacementURIMap.put(selectedClass.getURI(), set.getOWLEntity().getURI());
+                    Map<IRI, IRI> replacementIRIMap = new HashMap<IRI, IRI>();
+                    replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
                     OWLModelManager mngr = getOWLModelManager();
-                    OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementURIMap);
+                    OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
                     List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
                     changes.addAll(set.getOntologyChanges());
@@ -116,26 +116,60 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
     private List<OWLOntologyChange> duplicateAnnotations(OWLClass selectedClass, OWLObjectDuplicator dup) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         OWLModelManagerEntityRenderer ren = getOWLModelManager().getOWLEntityRenderer();
-        List<URI> annotURIs = null;
+        List<IRI> annotIRIs = null;
         String selectedClassName = null;
         if (ren instanceof OWLEntityAnnotationValueRenderer){
             selectedClassName = getOWLModelManager().getRendering(selectedClass);
-            annotURIs = OWLRendererPreferences.getInstance().getAnnotationURIs();
+            annotIRIs = OWLRendererPreferences.getInstance().getAnnotationIRIs();
         }
 
-// @@TODO v3 port
-//        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-//            for (OWLAnnotationAssertionAxiom ax : selectedClass.getAnnotationAssertionAxioms(ont)){
-//                final OWLAnnotation annot = ax.getAnnotation();
-//                if (annotURIs == null ||
-//                    !annotURIs.contains(annot.getProperty().getURI()) ||
-//                    !annot.getValue().getLiteral().equals(selectedClassName)){
-//                    OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
-//                    changes.add(new AddAxiom(ont, duplicatedAxiom));
-//                }
-//            }
-//        }
+        LiteralExtractor literalExtractor = new LiteralExtractor();
+
+        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+            for (OWLAnnotationAssertionAxiom ax : selectedClass.getAnnotationAssertionAxioms(ont)){
+                final OWLAnnotation annot = ax.getAnnotation();
+                if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){
+
+                    String label = literalExtractor.getLiteral(annot.getValue());
+                    if (label == null || !label.equals(selectedClassName)){
+                        OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
+                        changes.add(new AddAxiom(ont, duplicatedAxiom));
+                    }
+                }
+            }
+        }
         return changes;
+    }
+
+
+    class LiteralExtractor extends OWLObjectVisitorAdapter { // @@TODO should be OWLAnnotationValueVisitor (when OWLAPI updated)
+
+        private String label;
+
+        public String getLiteral(OWLAnnotationValue value){
+            label = null;
+            value.accept(this);
+            return label;
+        }
+
+        public void visit(IRI iri) {
+            // do nothing
+        }
+
+
+        public void visit(OWLAnonymousIndividual owlAnonymousIndividual) {
+            // do nothing
+        }
+
+
+        public void visit(OWLTypedLiteral owlTypedLiteral) {
+            label = owlTypedLiteral.getLiteral();
+        }
+
+
+        public void visit(OWLStringLiteral owlStringLiteral) {
+            label = owlStringLiteral.getLiteral();
+        }
     }
 
 
@@ -179,7 +213,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
             JComponent annotationPanel = new JPanel(new BorderLayout(6, 6));
             annotationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             annotationPanel.add(duplicateAnnotationsCheckbox, BorderLayout.WEST);
-            
+
             add(entityNamePanel, BorderLayout.NORTH);
             add(locationPanel, BorderLayout.CENTER);
             add(annotationPanel, BorderLayout.SOUTH);

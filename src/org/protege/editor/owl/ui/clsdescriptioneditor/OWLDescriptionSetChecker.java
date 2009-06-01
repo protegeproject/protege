@@ -20,7 +20,6 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  *
- * @@TODO should be package visibility
  */
 class OWLDescriptionSetChecker implements OWLExpressionChecker<Set<OWLClassExpression>> {
 
@@ -40,7 +39,6 @@ class OWLDescriptionSetChecker implements OWLExpressionChecker<Set<OWLClassExpre
     public Set<OWLClassExpression> createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
-        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
         try {
             return parser.parseClassExpressionList();
         }

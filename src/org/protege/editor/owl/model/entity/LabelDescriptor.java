@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.entity;
 
-import java.net.URI;
+import org.semanticweb.owl.model.IRI;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -36,6 +36,6 @@ public interface LabelDescriptor {
 
     String getLanguage();
 
-    // @@TODO should be getAnnotationProperty()
-    URI getURI();
+    // @@TODO should be getAnnotationProperty() ?
+    IRI getIRI();
 }

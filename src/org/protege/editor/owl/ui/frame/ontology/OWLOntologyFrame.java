@@ -39,8 +39,8 @@ public class OWLOntologyFrame extends AbstractOWLFrame<OWLOntology> {
 
     public OWLOntologyFrame(OWLEditorKit editorKit) {
         super(editorKit.getModelManager().getOWLOntologyManager());
-        addSection(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
 // @@TODO v3 port
+//        addSection(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
 //        addSection(new OWLImportsDeclarationFrameSection(editorKit, this));
 //        addSection(new OWLIndirectImportsFrameSection(editorKit, this));
         addSection(new InferredAxiomsFrameSection(editorKit, this));

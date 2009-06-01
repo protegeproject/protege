@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.frame.OWLEntityFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.*;
@@ -39,7 +39,7 @@ import java.awt.*;
  */
 public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
-    private OWLFrameList2<OWLEntity> list;
+    private OWLFrameList<OWLEntity> list;
 
     private OWLSelectionModelListener listener = new OWLSelectionModelListener() {
 
@@ -51,7 +51,7 @@ public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        list = new OWLFrameList2<OWLEntity>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
         updateFrame();
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         add(new JScrollPane(list));

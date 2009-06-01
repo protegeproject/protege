@@ -1,15 +1,16 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.ExplanationFrame;
 import org.protege.editor.owl.ui.frame.ExplanationFrameSectionRow;
 import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -40,7 +41,7 @@ import java.util.ArrayList;
  * Bio-Health Informatics Group<br>
  * Date: 16-Jan-2008<br><br>
  */
-public class ExplanationFrameList extends OWLFrameList2<OWLAxiom> {
+public class ExplanationFrameList extends OWLFrameList<OWLAxiom> {
 
     private static final String MOVE_UP = "MOVE_UP";
 

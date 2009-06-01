@@ -14,6 +14,7 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
+import org.semanticweb.owl.model.IRI;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -139,10 +140,10 @@ public class OntologyLibraryPanel extends JPanel {
         if (node.getUserObject() instanceof OntologyLibrary) {
             return;
         }
-        URI uri = ((URI) node.getUserObject());
+        IRI iri = ((IRI) node.getUserObject());
         OntologyLibrary lib = (OntologyLibrary) ((DefaultMutableTreeNode) node.getParent()).getUserObject();
         try {
-            final URI physicalURI = lib.getPhysicalURI(uri);
+            final URI physicalURI = lib.getPhysicalURI(iri);
             if (!physicalURI.getScheme().equals("file")) {
                 return;
             }
@@ -236,10 +237,10 @@ public class OntologyLibraryPanel extends JPanel {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
         model.insertNodeInto(libNode, rootNode, rootNode.getChildCount());
-        TreeSet<URI> uris = new TreeSet<URI>(lib.getOntologyURIs());
+        TreeSet<IRI> iris = new TreeSet<IRI>(lib.getOntologyIRIs());
         int uriIndex = 0;
-        for (URI uri : uris) {
-            model.insertNodeInto(new DefaultMutableTreeNode(uri), libNode, uriIndex);
+        for (IRI iri : iris) {
+            model.insertNodeInto(new DefaultMutableTreeNode(iri), libNode, uriIndex);
             uriIndex++;
         }
         tree.expandPath(new TreePath(libNode.getPath()));
@@ -277,10 +278,10 @@ public class OntologyLibraryPanel extends JPanel {
             else {
                 DefaultMutableTreeNode parentNode = ((DefaultMutableTreeNode) node.getParent());
                 if (parentNode != null) {
-                    URI uri = ((URI) node.getUserObject());
+                    IRI iri = ((IRI) node.getUserObject());
                     OntologyLibrary lib = (OntologyLibrary) parentNode.getUserObject();
-                    URI physicalURI = lib.getPhysicalURI(uri);
-                    label.setText("<html><body><b>" + uri + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<font color=\"gray\">" + physicalURI + "</font></body></html>");
+                    URI physicalURI = lib.getPhysicalURI(iri);
+                    label.setText("<html><body><b>" + iri + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<font color=\"gray\">" + physicalURI + "</font></body></html>");
                     label.setIcon(null);
                 }
                 label.setBorder(BorderFactory.createEmptyBorder(2, 20, 8, 0));

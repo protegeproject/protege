@@ -1,11 +1,8 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
-import org.protege.editor.owl.ui.error.ErrorPanel;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,11 +54,12 @@ public class OntologyMerger {
 
                 // move ontology imports
                 for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
-                    if (!decl.getURI().equals(targetOntology.getURI())){
+                    // @@TODO what about anonymous ontologies?
+                    if (!decl.getIRI().equals(targetOntology.getOntologyID().getOntologyIRI())){
                         changes.add(new AddImport(targetOntology, decl));
                     }
                     else{
-                        logger.warn("Merge: ignoring import declaration for URI " + targetOntology.getURI() +
+                        logger.warn("Merge: ignoring import declaration for ontology " + targetOntology.getOntologyID() +
                                     " (would result in targetOntology importing itself).");
                     }
                 }

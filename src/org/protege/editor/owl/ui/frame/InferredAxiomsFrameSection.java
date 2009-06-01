@@ -7,7 +7,6 @@ import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.*;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -77,7 +76,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
                }
            }
            OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-           OWLOntology inferredOnt = man.createOntology(URI.create("http://another.com/ontology" + System.currentTimeMillis()));
+           OWLOntology inferredOnt = man.createOntology(IRI.create("http://another.com/ontology" + System.currentTimeMillis()));
            InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>());
            ontGen.addGenerator(new InferredSubClassAxiomGenerator());
            ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());

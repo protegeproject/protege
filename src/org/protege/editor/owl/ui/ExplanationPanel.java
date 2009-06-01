@@ -6,7 +6,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.frame.ExplanationFrame;
 import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -46,9 +46,9 @@ public class ExplanationPanel extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
-    private OWLFrameList2<OWLOntology> inferredAxiomFrameList;
+    private OWLFrameList<OWLOntology> inferredAxiomFrameList;
 
-    private OWLFrameList2<OWLAxiom> explanationFrameList;
+    private OWLFrameList<OWLAxiom> explanationFrameList;
 
     private OWLModelManagerListener listener;
 
@@ -65,7 +65,7 @@ public class ExplanationPanel extends JPanel {
             }
         };
         owlEditorKit.getModelManager().addListener(listener);
-        explanationFrameList = new OWLFrameList2<OWLAxiom>(owlEditorKit, new ExplanationFrame(owlEditorKit));
+        explanationFrameList = new OWLFrameList<OWLAxiom>(owlEditorKit, new ExplanationFrame(owlEditorKit));
         explanationFrameList.setRootObject(null);
     }
 
@@ -76,7 +76,7 @@ public class ExplanationPanel extends JPanel {
     private void createUI() {
         setLayout(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        inferredAxiomFrameList = new OWLFrameList2<OWLOntology>(owlEditorKit, new InferredAxiomsFrame(owlEditorKit));
+        inferredAxiomFrameList = new OWLFrameList<OWLOntology>(owlEditorKit, new InferredAxiomsFrame(owlEditorKit));
         sp.setLeftComponent(inferredAxiomFrameList);
         inferredAxiomFrameList.setRootObject(owlEditorKit.getModelManager().getActiveOntology());
         add(sp);

@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.repository.OntologyURIExtractor;
+import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owl.util.SimpleIRIMapper;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
@@ -34,23 +34,23 @@ public class URLImportFileVerifier implements ImportVerifier {
 
     public ImportParameters checkImports() {
         try {
-            OntologyURIExtractor extractor = new OntologyURIExtractor(url.toURI());
-            final URI ontologyURI = extractor.getOntologyURI();
-            if (extractor.isStartElementPresent() == false || ontologyURI == null) {
+            OntologyIRIExtractor extractor = new OntologyIRIExtractor(url.toURI());
+            final IRI ontologyIRI = extractor.getOntologyIRI();
+            if (!extractor.isStartElementPresent() || ontologyIRI == null) {
                 String msg = "The ontology contained in the document located at " + url.toString() + " could " + "not be imported. ";
-                if (extractor.isStartElementPresent() == false) {
+                if (!extractor.isStartElementPresent()) {
                     msg += " The document does not appear to contain a valid RDF/XML representation" + "of an ontology.";
                 }
                 throw new RuntimeException(msg);
             }
             else {
                 return new ImportParameters() {
-                    public Set<URI> getOntologiesToBeImported() {
-                        return Collections.singleton(ontologyURI);
+                    public Set<IRI> getOntologiesToBeImported() {
+                        return Collections.singleton(ontologyIRI);
                     }
 
 
-                    public String getOntologyLocationDescription(URI ontologyURI) {
+                    public String getOntologyLocationDescription(IRI ontologyURI) {
                         return url.toString();
                     }
 
@@ -59,7 +59,7 @@ public class URLImportFileVerifier implements ImportVerifier {
                         // May be we need to add a mapping?
                         try {
                             OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
-                            man.addURIMapper(new SimpleURIMapper(ontologyURI, url.toURI()));
+                            man.addIRIMapper(new SimpleIRIMapper(ontologyIRI, url.toURI()));
                         }
                         catch (URISyntaxException e) {
                             throw new OWLRuntimeException(e);

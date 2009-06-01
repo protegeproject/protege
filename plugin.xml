@@ -631,7 +631,7 @@
     <extension id="openfromURI"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Open from URL..."/>
-        <class value="org.protege.editor.owl.ui.action.OpenFromURIAction"/>
+        <class value="org.protege.editor.owl.ui.action.OpenFromURLAction"/>
         <toolTip value="Open an ontology from a URL"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-G"/>
         <editorKitId value="OWLEditorKit"/>
@@ -998,7 +998,7 @@
     <extension id="menu.ChangeOntologyURI"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Change ontology URI..."/>
-        <class value="org.protege.editor.owl.ui.action.ChangeOntologyURI"/>
+        <class value="org.protege.editor.owl.ui.action.ChangeOntologyIRI"/>
         <toolTip value="Change the URI of the active ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-X"/>
         <editorKitId value="OWLEditorKit"/>

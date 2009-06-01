@@ -6,7 +6,6 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.protege.editor.owl.ui.frame.AnnotationURIList;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 import org.protege.editor.owl.ui.selector.*;
@@ -95,8 +94,10 @@ public class UIHelper {
         if (activeOntology == null) {
             return null;
         }
-        String base = activeOntology.getURI().toString();
-        if (base.endsWith("#") == false && base.endsWith("/") == false) {
+        // @@TODO what about anonymous ontologies?
+        String base = activeOntology.getOntologyID().getOntologyIRI().toString();
+        if (!base.endsWith("#") &&
+            !base.endsWith("/")) {
             base += "#";
         }
         return new URI(base + name);
@@ -250,14 +251,14 @@ public class UIHelper {
     }
 
 
-    public URI pickAnnotationURI() {
-        AnnotationURIList uriList = new AnnotationURIList(owlEditorKit);
-        uriList.rebuildAnnotationURIList();
-
-        if (showDialog("Select an annotation URI", new JScrollPane(uriList)) == JOptionPane.OK_OPTION){
-            return uriList.getSelectedURI();
+    public OWLAnnotationProperty pickAnnotationProperty() {
+        OWLAnnotationPropertySelectorPanel panel = new OWLAnnotationPropertySelectorPanel(owlEditorKit);
+        if (showDialog("Select an annotation property", panel) == JOptionPane.OK_OPTION) {
+            return panel.getSelectedObject();
         }
-        return null;
+        else{
+            return null;
+        }
     }
 
 
@@ -266,13 +267,13 @@ public class UIHelper {
         for (OWLOntology ont : ontologies) {
             if (getOWLModelManager().getActiveOntology().equals(ont)) {
                 result += "<font color=\"0000ff\"><b>";
-                result += ont.getURI();
+                result += ont.getOntologyID();
                 result += "</font></b>";
             }
             else {
-                result += ont.getURI();
+                result += ont.getOntologyID();
             }
-            if (getOWLModelManager().isMutable(ont) == false) {
+            if (!getOWLModelManager().isMutable(ont)) {
                 result += "&nbsp;";
                 result += " <font color=\"ff0000\">(Not editable)</font>";
             }

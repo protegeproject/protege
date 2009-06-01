@@ -69,11 +69,7 @@ public class OWLOntologySelectorPanel2 extends JComponent {
 
         list.setDefaultRenderer(new OWLCellRenderer(eKit){
             protected String getRendering(Object object) {
-                if (object instanceof OWLOntology){
-                    OWLOntology ont = (OWLOntology) object;
-                    return eKit.getModelManager().getURIRendering(ont.getURI());
-                }
-                else if (object instanceof Boolean){
+                    if (object instanceof Boolean){
                     if ((Boolean)object){
                         return "Local changes have been made";
                     }

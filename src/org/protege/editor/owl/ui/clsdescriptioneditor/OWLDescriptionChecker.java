@@ -18,9 +18,8 @@ import org.semanticweb.owl.model.OWLClassExpression;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  *
- * @@TODO should be package visibility
  */
-public class OWLDescriptionChecker implements OWLExpressionChecker<OWLClassExpression> {
+class OWLDescriptionChecker implements OWLExpressionChecker<OWLClassExpression> {
 
     private OWLModelManager mngr;
 
@@ -38,7 +37,6 @@ public class OWLDescriptionChecker implements OWLExpressionChecker<OWLClassExpre
     public OWLClassExpression createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
-        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
         try {
             return parser.parseClassExpression();
         }

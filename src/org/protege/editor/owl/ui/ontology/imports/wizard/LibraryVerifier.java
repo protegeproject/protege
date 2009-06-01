@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.semanticweb.owl.model.IRI;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -22,26 +22,26 @@ public class LibraryVerifier implements ImportVerifier {
 
     private OWLModelManager owlModelManager;
 
-    private Set<URI> uris;
+    private Set<IRI> iris;
 
 
-    public LibraryVerifier(OWLModelManager owlModelManager, Set<URI> uris) {
+    public LibraryVerifier(OWLModelManager owlModelManager, Set<IRI> iris) {
         this.owlModelManager = owlModelManager;
-        this.uris = new HashSet<URI>(uris);
+        this.iris = new HashSet<IRI>(iris);
     }
 
 
     public ImportParameters checkImports() {
 //        // All should be o.k.
         return new ImportParameters() {
-            public Set<URI> getOntologiesToBeImported() {
-                return uris;
+            public Set<IRI> getOntologiesToBeImported() {
+                return iris;
             }
 
 
-            public String getOntologyLocationDescription(URI ontologyURI) {
-                OntologyLibrary lib = owlModelManager.getOntologyLibraryManager().getLibrary(ontologyURI);
-                return lib.getPhysicalURI(ontologyURI).toString();
+            public String getOntologyLocationDescription(IRI ontologyIRI) {
+                OntologyLibrary lib = owlModelManager.getOntologyLibraryManager().getLibrary(ontologyIRI);
+                return lib.getPhysicalURI(ontologyIRI).toString();
             }
 
 

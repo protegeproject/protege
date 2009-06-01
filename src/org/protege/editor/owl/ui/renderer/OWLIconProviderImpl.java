@@ -230,16 +230,6 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
-    public void visit(OWLImportsDeclaration axiom) {
-        if (owlModelManager.getOWLOntologyManager().contains(axiom.getURI())) {
-            icon = ontologyIcon;
-        }
-        else {
-            icon = ontologyMissing;
-        }
-    }
-
-
     public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
         icon = primitiveClassIcon;
     }

@@ -56,7 +56,6 @@ public class OWLDataRangeChecker implements OWLExpressionChecker<OWLDataRange>{
     public OWLDataRange createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
-        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
         try {
             return parser.parseDataRange(true);
         }

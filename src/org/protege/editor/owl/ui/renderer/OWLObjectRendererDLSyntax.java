@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
@@ -456,7 +455,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     public void visit(OWLOntology ontology) {
-        write(ontology.getURI().toString());
+        write(ontology.getOntologyID().toString());
     }
 
 

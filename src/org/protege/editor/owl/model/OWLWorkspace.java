@@ -27,9 +27,9 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
-import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
+import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
@@ -381,8 +381,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
             orderedOntologies.addAll(mngr.getOntologies());
             for (final OWLOntology ont : orderedOntologies){
-                JMenuItem item = new JRadioButtonMenuItem(mngr.getURIRendering(ont.getURI()));
-                item.setToolTipText(ont.getURI().toString());
+                JMenuItem item = new JRadioButtonMenuItem(mngr.getRendering(ont));
+                item.setToolTipText(ont.getOntologyID().toString());
                 item.setSelected(ont.equals(mngr.getActiveOntology()));
                 item.addActionListener(new ActionListener(){
                     public void actionPerformed(ActionEvent event) {

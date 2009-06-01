@@ -30,7 +30,7 @@ public class AssertedClassHierarchyTest extends TestCase {
     
     protected OWLOntology createOntology() throws OWLOntologyCreationException, URISyntaxException {
         init();
-        OWLOntology ontology = manager.createOntology(new URI(NEW_ONTOLOGY_URI));
+        OWLOntology ontology = manager.createOntology(IRI.create(NEW_ONTOLOGY_URI));
         hierarchy.setOntologies(manager.getOntologies());
         return ontology;
     }
