@@ -1,7 +1,5 @@
 package org.protege.editor.core.ui.workspace;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileManager;
 import org.protege.editor.core.prefs.Preferences;
