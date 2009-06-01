@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
 import org.protege.editor.owl.ui.frame.objectproperty.OWLObjectPropertyDescriptionFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLObjectProperty;
 
 import javax.swing.*;
@@ -16,11 +16,11 @@ import java.awt.*;
  */
 public class OWLObjectPropertyDescriptionViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
-    private OWLFrameList2<OWLObjectProperty> list;
+    private OWLFrameList<OWLObjectProperty> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList2<OWLObjectProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<OWLObjectProperty>(getOWLEditorKit(),
                                                     new OWLObjectPropertyDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

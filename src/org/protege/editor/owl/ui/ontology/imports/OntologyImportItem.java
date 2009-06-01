@@ -1,18 +1,18 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.*;
-import java.util.List;
-import java.util.Collections;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -68,7 +68,8 @@ class OntologyImportItem implements MListItem {
 
     public List<MListButton> getAdditionalButtons() {
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
-        if (ont != null && !decl.getURI().equals(ont.getURI())) {
+        // @@TODO what about anonymous ontologies?
+        if (ont != null && !decl.getIRI().equals(ont.getOntologyID().getOntologyIRI())) {
             return Collections.singletonList(fixImportsButton);
         }
         return Collections.EMPTY_LIST;
@@ -87,7 +88,8 @@ class OntologyImportItem implements MListItem {
             changes.add(new RemoveImport(ont, decl));
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
-            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getURI())));
+            // @@TODO what about anonymous ontologies?
+            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getOntologyIRI())));
             mngr.applyChanges(changes);
         }
     }
@@ -104,7 +106,8 @@ class OntologyImportItem implements MListItem {
         sb.append("does not match the URI of the ontology that has been imported:<br>");
         sb.append("<font color=\"blue\">");
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
-        sb.append(ont == null ? "(Not loaded)" : ont.getURI());
+        // @@TODO what about anonymous ontologies?
+        sb.append(ont == null ? "(Not loaded)" : ont.getOntologyID().getOntologyIRI());
         sb.append("</font><br><br>");
         sb.append("Do you want to fix the mismatch by modifying the imports statement?");
         sb.append("</body></html>");

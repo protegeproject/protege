@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
 import java.awt.*;
@@ -74,9 +76,9 @@ public class OWLRendererPreferences {
 
     private Font font;
 
-    private List<URI> annotationURIS;
+    private List<IRI> annotationIRIS;
 
-    private Map<URI, List<String>> annotationLanguages;
+    private Map<IRI, List<String>> annotationLanguages;
 
 
 
@@ -115,14 +117,14 @@ public class OWLRendererPreferences {
     }
 
 
-    public void setAnnotations(List<URI> uris, Map<URI, List<String>> langMap){
-        annotationURIS = uris;
+    public void setAnnotations(List<IRI> iris, Map<IRI, List<String>> langMap){
+        annotationIRIS = iris;
         annotationLanguages = langMap;
         List<String> values = new ArrayList<String>();
 
-        for (URI uri : uris){
-            StringBuilder str = new StringBuilder(uri.toString());
-            final List<String> langs = langMap.get(uri);
+        for (IRI iri : iris){
+            StringBuilder str = new StringBuilder(iri.toString());
+            final List<String> langs = langMap.get(iri);
             if (langs != null){
                 for (String lang : langs) {
                     if (lang == null){
@@ -137,13 +139,13 @@ public class OWLRendererPreferences {
     }
 
 
-    public List<URI> getAnnotationURIs(){
-        return new ArrayList<URI>(annotationURIS);
+    public List<IRI> getAnnotationIRIs(){
+        return new ArrayList<IRI>(annotationIRIS);
     }
 
 
-    public List<String> getAnnotationLangs(URI uri){
-        final List<String> langs = annotationLanguages.get(uri);
+    public List<String> getAnnotationLangs(IRI iri){
+        final List<String> langs = annotationLanguages.get(iri);
         if (langs != null){
             return new ArrayList<String>(langs);
         }
@@ -152,7 +154,7 @@ public class OWLRendererPreferences {
         }
     }
 
-    public Map<URI, List<String>> getAnnotationLangs(){
+    public Map<IRI, List<String>> getAnnotationLangs(){
         return annotationLanguages;
     }
 
@@ -193,20 +195,20 @@ public class OWLRendererPreferences {
 
 
     private void loadAnnotations() {
-        annotationURIS = new ArrayList<URI>();
-        annotationLanguages = new HashMap<URI, List<String>>();
+        annotationIRIS = new ArrayList<IRI>();
+        annotationLanguages = new HashMap<IRI, List<String>>();
         final List<String> defaultValues = Collections.emptyList();
         List<String> values = getPreferences().getStringList(ANNOTATIONS, defaultValues);
 
         if (values.equals(defaultValues)){
-            annotationURIS.add(OWLRDFVocabulary.RDFS_LABEL.getURI());
-            annotationURIS.add(URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+            annotationIRIS.add(IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI()));
+            annotationIRIS.add(IRI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
         }
         else{
             for (String value : values){
                 String[] tokens = value.split(",");
                 try {
-                    URI uri = new URI(tokens[0].trim());
+                    IRI iri = IRI.create(new URI(tokens[0].trim()));
                     List<String> langs = new ArrayList<String>();
                     for (int i=1; i<tokens.length; i++){
                         String token = tokens[i].trim();
@@ -215,11 +217,11 @@ public class OWLRendererPreferences {
                         }
                         langs.add(token);
                     }
-                    annotationURIS.add(uri);
-                    annotationLanguages.put(uri, langs);
+                    annotationIRIS.add(iri);
+                    annotationLanguages.put(iri, langs);
                 }
                 catch (URISyntaxException e) {
-                    e.printStackTrace();
+                    ErrorLogPanel.showErrorDialog(e);
                 }
             }
         }

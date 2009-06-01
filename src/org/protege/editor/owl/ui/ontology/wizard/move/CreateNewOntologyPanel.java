@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -30,7 +30,7 @@ import org.protege.editor.owl.OWLEditorKit;
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
  * 23-Sep-2008<br><br>
  */
-public class CreateNewOntologyPanel extends OntologyURIPanel {
+public class CreateNewOntologyPanel extends OntologyIDPanel {
 
 
     public CreateNewOntologyPanel(OWLEditorKit editorKit) {
@@ -44,6 +44,6 @@ public class CreateNewOntologyPanel extends OntologyURIPanel {
 
 
     public void aboutToHidePanel() {
-        ((MoveAxiomsWizard) getWizard()).setTargetOntologyURI(getURI());
+        ((MoveAxiomsWizard) getWizard()).setTargetOntologyID(getOntologyID());
     }
 }

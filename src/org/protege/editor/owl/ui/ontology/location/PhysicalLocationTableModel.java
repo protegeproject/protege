@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.ontology.location;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owl.model.OWLOntologyID;
+
+import javax.swing.table.AbstractTableModel;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.swing.table.AbstractTableModel;
-
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLOntology;
 
 
 /**
@@ -28,17 +28,17 @@ public class PhysicalLocationTableModel extends AbstractTableModel {
 
     private OWLModelManager owlModelManager;
 
-    private Map<URI, URI> uriMap;
+    private Map<OWLOntologyID, URI> uriMap;
 
-    private List<URI> ontologyURIs;
+    private List<OWLOntologyID> ontologyIDs;
 
     private static final String [] COLUMN_NAMES = new String []{"Ontology", "Physical location"};
 
 
     public PhysicalLocationTableModel(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
-        uriMap = new TreeMap<URI, URI>();
-        ontologyURIs = new ArrayList<URI>();
+        uriMap = new TreeMap<OWLOntologyID, URI>();
+        ontologyIDs = new ArrayList<OWLOntologyID>();
         refill();
     }
 
@@ -50,16 +50,16 @@ public class PhysicalLocationTableModel extends AbstractTableModel {
 
     public void refill() {
         uriMap.clear();
-        ontologyURIs.clear();
+        ontologyIDs.clear();
         for (OWLOntology ont : owlModelManager.getOntologies()) {
-            ontologyURIs.add(ont.getURI());
-            uriMap.put(ont.getURI(), owlModelManager.getOntologyPhysicalURI(ont));
+            ontologyIDs.add(ont.getOntologyID());
+            uriMap.put(ont.getOntologyID(), owlModelManager.getOntologyPhysicalURI(ont));
         }
     }
 
 
     public int getRowCount() {
-        return ontologyURIs.size();
+        return ontologyIDs.size();
     }
 
 
@@ -69,12 +69,12 @@ public class PhysicalLocationTableModel extends AbstractTableModel {
 
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        URI ontologyURI = ontologyURIs.get(rowIndex);
+        OWLOntologyID id = ontologyIDs.get(rowIndex);
         if (columnIndex == 0) {
-            return ontologyURI;
+            return id;
         }
         else {
-            return uriMap.get(ontologyURI);
+            return uriMap.get(id);
         }
     }
 

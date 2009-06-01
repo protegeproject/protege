@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.io;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.repository.OntologyURIExtractor;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyLibraryManager;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntologyIRIMapper;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -45,36 +45,38 @@ import java.net.URLConnection;
  * <p/>
  * The mapper uses the following strategy:
  * <p/>
- * The system attemps to resolve the logical URI.  If
- * this succeeds then the logical URI is returned.
-
+ * It looks in the ontology libraries.  If an ontology library
+ * contains an ontology that has the logical URI then the library
+ * is asked for the physical URI and this URI is returned.
  */
-public class WebConnectionURIMapper implements OWLOntologyURIMapper {
+public class UserRepositoryIRIMapper implements OWLOntologyIRIMapper {
 
-    private Logger logger = Logger.getLogger(WebConnectionURIMapper.class);
+    private Logger logger = Logger.getLogger(UserRepositoryIRIMapper.class);
+
+    private OWLModelManager mngr;
 
 
-    public URI getPhysicalURI(URI logicalURI) {
-        // We can't find a local version of the ontology. Can we resolve the URI?
-        try {
-            // First check that the URI can be resolved.
-            URLConnection conn = logicalURI.toURL().openConnection();
-            conn.setReadTimeout(5000);
-            InputStream is = conn.getInputStream();
-            is.close();
-            // Opened a stream.  Is it an ontology at the URI?
-            OntologyURIExtractor ext = new OntologyURIExtractor(logicalURI);
-            ext.getOntologyURI();
-            if (ext.isStartElementPresent()) {
-                // There is an ontology at the URI!
-                return logicalURI;
+    public UserRepositoryIRIMapper(OWLModelManager mngr) {
+        this.mngr = mngr;
+    }
+
+
+    public URI getPhysicalURI(IRI ontologyIRI) {
+        URI uri;
+        // Search user defined libraries
+        OntologyLibraryManager manager = mngr.getOntologyLibraryManager();
+        OntologyLibrary lib = manager.getLibrary(ontologyIRI);
+        if (lib != null) {
+            uri = lib.getPhysicalURI(ontologyIRI);
+            if (logger.isInfoEnabled()) {
+                logger.info("Mapping (from library: " + lib.getClassExpression() + "): " + ontologyIRI + " -> " + uri);
             }
+            return lib.getPhysicalURI(ontologyIRI);
         }
-        catch (IOException e) {
-            // Can't open the stream - problem resolving the URI
-            logger.info(e.getClass().getName() + ": " + e.getMessage());
-            // Delegate to the missing imports handler
+        if (logger.isInfoEnabled()) {
+            logger.info("No mapping for " + ontologyIRI + " found.");
         }
+
         return null;
     }
 }

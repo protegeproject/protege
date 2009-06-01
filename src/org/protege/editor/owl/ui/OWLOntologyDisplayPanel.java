@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.ontology.OWLOntologyFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.metrics.MetricsPanel;
 import org.semanticweb.owl.model.OWLOntology;
 
@@ -49,7 +49,7 @@ public class OWLOntologyDisplayPanel extends JPanel {
 
     private OWLOntologyFrame ontologyFrame;
 
-    private OWLFrameList2<OWLOntology> frameList;
+    private OWLFrameList<OWLOntology> frameList;
 
     private MetricsPanel metricsPanel;
 
@@ -66,7 +66,7 @@ public class OWLOntologyDisplayPanel extends JPanel {
         add(ontologyURILabel, BorderLayout.NORTH);
         ontologyFrame = new OWLOntologyFrame(owlEditorKit);
         ontologyFrame.setRootObject(null);
-        frameList = new OWLFrameList2<OWLOntology>(owlEditorKit, ontologyFrame);
+        frameList = new OWLFrameList<OWLOntology>(owlEditorKit, ontologyFrame);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setResizeWeight(0.85);
         add(splitPane);

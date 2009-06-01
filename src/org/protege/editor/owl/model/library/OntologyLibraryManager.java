@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.library;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owl.model.IRI;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +57,10 @@ public class OntologyLibraryManager {
     }
 
 
-    public OntologyLibrary getLibrary(URI ontologyURI) {
+    public OntologyLibrary getLibrary(IRI ontologyIRI) {
         ensureLoaded();
         for (OntologyLibrary library : libraries) {
-            if (library.contains(ontologyURI)) {
+            if (library.contains(ontologyIRI)) {
                 return library;
             }
         }

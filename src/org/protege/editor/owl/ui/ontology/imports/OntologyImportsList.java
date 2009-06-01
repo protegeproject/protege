@@ -6,17 +6,16 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
-import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.*;
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -52,12 +51,19 @@ public class OntologyImportsList extends MList {
 
     private OWLEditorKit eKit;
 
+    private OWLOntology ont;
+
     private MListSectionHeader directImportsHeader;
 
     private MListSectionHeader indirectImportsHeader;
 
     private OntologyImportWizard wizard;
 
+    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+            handleOntologyChanges(changes);
+        }
+    };
 
     public OntologyImportsList(OWLEditorKit eKit) {
         this.eKit = eKit;
@@ -93,6 +99,8 @@ public class OntologyImportsList extends MList {
                 return false;
             }
         };
+
+        eKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
     }
 
 
@@ -112,12 +120,12 @@ public class OntologyImportsList extends MList {
             OWLOntology ont = eKit.getModelManager().getActiveOntology();
 
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (URI uri : params.getOntologiesToBeImported()) {
-                OWLImportsDeclaration decl = mngr.getOWLDataFactory().getOWLImportsDeclaration(uri);
+            for (IRI iri : params.getOntologiesToBeImported()) {
+                OWLImportsDeclaration decl = mngr.getOWLDataFactory().getOWLImportsDeclaration(iri);
                 changes.add(new AddImport(ont, decl));
                 try {
-                    mngr.getOWLOntologyManager().loadOntology(uri);
-                    eKit.addRecent(uri);
+                    OWLOntology importedOnt = mngr.getOWLOntologyManager().loadOntology(iri);
+                    eKit.addRecent(mngr.getOWLOntologyManager().getPhysicalURIForOntology(importedOnt));
                     mngr.fireEvent(EventType.ONTOLOGY_LOADED);
                 }
                 catch (OWLException e) {
@@ -130,6 +138,8 @@ public class OntologyImportsList extends MList {
 
 
     public void setOntology(OWLOntology ont){
+        this.ont = ont;
+
         List<Object> data = new ArrayList<Object>();
 
         data.add(directImportsHeader);
@@ -158,5 +168,28 @@ public class OntologyImportsList extends MList {
         }
 
         setListData(data.toArray());
+    }
+
+
+    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
+        for (OWLOntologyChange change : changes){
+            if (change instanceof AddImport ||
+                change instanceof RemoveImport){
+                if (change.getOntology().equals(ont)){
+                    refresh();
+                    return;
+                }
+            }
+        }
+    }
+
+
+    private void refresh() {
+        setOntology(ont);
+    }
+
+
+    public void dispose(){
+        eKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
     }
 }

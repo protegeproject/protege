@@ -1,7 +1,8 @@
 package org.protege.editor.owl.model.io;
 
 import org.protege.editor.owl.model.MissingImportHandler;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntologyIRIMapper;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -47,35 +48,35 @@ import java.util.Map;
  * try to obtain the physical URI (usually by adding a library or
  * by specifying a file etc.)
  */
-public class UserResolvedURIMapper implements OWLOntologyURIMapper {
+public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
 
-    private Map<URI, URI> resolvedMissingImports = new HashMap<URI, URI>();
+    private Map<IRI, URI> resolvedMissingImports = new HashMap<IRI, URI>();
 
     private MissingImportHandler missingImportHandler;
 
 
-    public UserResolvedURIMapper(MissingImportHandler missingImportHandler) {
+    public UserResolvedIRIMapper(MissingImportHandler missingImportHandler) {
         this.missingImportHandler = missingImportHandler;
     }
 
 
-    public URI getPhysicalURI(URI logicalURI) {
-        if (resolvedMissingImports.containsKey(logicalURI)) {
+    public URI getPhysicalURI(IRI ontologyIRI) {
+        if (resolvedMissingImports.containsKey(ontologyIRI)) {
             // Already resolved the missing import - don't ask again
-            return resolvedMissingImports.get(logicalURI);
+            return resolvedMissingImports.get(ontologyIRI);
         }
         else {
 
-            URI resolvedURI = resolveMissingImport(logicalURI);
+            URI resolvedURI = resolveMissingImport(ontologyIRI);
             if (resolvedURI != null) {
-                resolvedMissingImports.put(logicalURI, resolvedURI);
+                resolvedMissingImports.put(ontologyIRI, resolvedURI);
             }
             return resolvedURI;
         }
     }
 
-    private URI resolveMissingImport(URI logicalURI) {
-        return missingImportHandler.getPhysicalURI(logicalURI);
+    private URI resolveMissingImport(IRI ontologyIRI) {
+        return missingImportHandler.getPhysicalURI(ontologyIRI);
     }
 
 

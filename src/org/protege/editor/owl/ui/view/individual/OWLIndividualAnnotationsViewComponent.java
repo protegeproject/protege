@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLEntity;
 import org.semanticweb.owl.model.OWLNamedIndividual;
 
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLIndividualAnnotationsViewComponent extends AbstractOWLIndividualViewComponent {
 
-    private OWLFrameList2<OWLEntity> list;
+    private OWLFrameList<OWLEntity> list;
 
 
     public void initialiseIndividualsView() throws Exception {
-        list = new OWLFrameList2<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

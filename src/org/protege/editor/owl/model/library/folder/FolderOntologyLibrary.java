@@ -2,7 +2,8 @@ package org.protege.editor.owl.model.library.folder;
 
 import org.protege.editor.owl.model.library.AbstractOntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryMemento;
-import org.semanticweb.owl.util.AutoURIMapper;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.util.AutoIRIMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
 
     private File folder;
 
-    private AutoURIMapper mapper;
+    private AutoIRIMapper mapper;
 
 
     public FolderOntologyLibrary(File folder) {
@@ -46,18 +47,18 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
     }
 
 
-    public Set<URI> getOntologyURIs() {
-        return getMapper().getOntologyURIs();
+    public Set<IRI> getOntologyIRIs() {
+        return getMapper().getOntologyIRIs();
     }
 
 
-    public boolean contains(URI ontologyURI) {
-        return getMapper().getPhysicalURI(ontologyURI) != null;
+    public boolean contains(IRI ontologyIRI) {
+        return getMapper().getPhysicalURI(ontologyIRI) != null;
     }
 
 
-    public URI getPhysicalURI(URI ontologyURI) {
-        return getMapper().getPhysicalURI(ontologyURI);
+    public URI getPhysicalURI(IRI ontologyIRI) {
+        return getMapper().getPhysicalURI(ontologyIRI);
     }
 
 
@@ -73,9 +74,9 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
     }
 
 
-    private AutoURIMapper getMapper(){
+    private AutoIRIMapper getMapper(){
         if (mapper == null){
-            mapper = new AutoURIMapper(folder, false);
+            mapper = new AutoIRIMapper(folder, false);
             mapper.update();
         }
         return mapper;

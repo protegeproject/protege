@@ -39,7 +39,7 @@ import java.util.*;
  * Bio Health Informatics Group<br>
  * Date: Aug 12, 2008<br><br>
  */
-public class OWLClassHierarchyCreator2 {
+public class OWLClassHierarchyCreator {
 
     private OWLDataFactory df;
     private OWLEntityFactory entityFactory;
@@ -54,7 +54,7 @@ public class OWLClassHierarchyCreator2 {
     private Map<OWLClass, Set<OWLClass>> parent2ChildMap = new HashMap<OWLClass, Set<OWLClass>>();
 
 
-    public OWLClassHierarchyCreator2(OWLDataFactory df, OWLEntityFactory fac, OWLClass rootClass, boolean makeSiblingClassesDisjoint, OWLOntology ontology, List<Edge> edges) {
+    public OWLClassHierarchyCreator(OWLDataFactory df, OWLEntityFactory fac, OWLClass rootClass, boolean makeSiblingClassesDisjoint, OWLOntology ontology, List<Edge> edges) {
         this.df = df;
         this.entityFactory = fac;
 
@@ -103,7 +103,8 @@ public class OWLClassHierarchyCreator2 {
         OWLClass cls = nameMap.get(name);
         if (cls == null){
             try {
-                OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getURI());
+                // @@TODO what about anonymous ontologies?
+                OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getOntologyID().getOntologyIRI());
                 changes.addAll(creationSet.getOntologyChanges());
                 cls = creationSet.getOWLEntity();
                 nameMap.put(name, cls);

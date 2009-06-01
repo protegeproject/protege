@@ -2,11 +2,11 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -57,21 +57,22 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     }
 
     // @@TODO move this somewhere more appropriate
+    // @@TODO what about anonymous ontologies?
     public static String getOntologyLabelText(OWLOntology ont, OWLModelManager mngr){
-        final URI uri = ont.getURI();
+        final IRI iri = ont.getOntologyID().getOntologyIRI();
 
-        String shortForm = mngr.getURIRendering(uri);
+        String shortForm = mngr.getURIRendering(iri.toURI());
 
         if (shortForm != null) {
             StringBuilder sb = new StringBuilder();
             sb.append("<html><body>");
             sb.append(shortForm);
             sb.append(" <font color=\"gray\">(");
-            sb.append(uri.toString());
+            sb.append(iri.toString());
             sb.append(")</font></body></html>");
             return sb.toString();
         }
 
-        return uri.toString();
+        return iri.toString();
     }
 }

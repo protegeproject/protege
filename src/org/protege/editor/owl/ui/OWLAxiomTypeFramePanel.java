@@ -1,16 +1,13 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
 import org.protege.editor.owl.ui.frame.AxiomListFrame;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLOntology;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Set;
-import java.util.Map;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -45,7 +42,7 @@ public class OWLAxiomTypeFramePanel extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
-    private OWLFrameList2<Set<OWLAxiom>> frameList;
+    private OWLFrameList<Set<OWLAxiom>> frameList;
 
     public OWLAxiomTypeFramePanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
@@ -55,7 +52,7 @@ public class OWLAxiomTypeFramePanel extends JPanel {
     private void createUI() {
         setLayout(new BorderLayout());
         AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
-        frameList = new OWLFrameList2<Set<OWLAxiom>>(owlEditorKit, frame);
+        frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
         add(new JScrollPane(frameList));
     }
 

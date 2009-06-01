@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.OpenFromURLPanel;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.OWLEditorKit;
 
@@ -22,7 +22,7 @@ public class URLPage extends AbstractImportSourcePage {
 
     public static final String ID = "URLPage";
 
-    public OpenFromURIPanel urlPanel;
+    public OpenFromURLPanel urlPanel;
 
     private boolean displayed = false;
 
@@ -35,7 +35,7 @@ public class URLPage extends AbstractImportSourcePage {
     protected void createUI(JComponent parent) {
         setInstructions("Please specify the URL that points to the file that contains the " + "ontology.  (Please note that this should be the physical URL, rather than the " + "ontology URI)");
         parent.setLayout(new BorderLayout());
-        parent.add(urlPanel = new OpenFromURIPanel(){
+        parent.add(urlPanel = new OpenFromURLPanel(){
             protected boolean isValidURI() {
                 try {
                     if (super.isValidURI()){

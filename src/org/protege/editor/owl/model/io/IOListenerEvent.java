@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.io;
 
+import org.semanticweb.owl.model.OWLOntologyID;
+
 import java.net.URI;
 /*
  * Copyright (C) 2008, University of Manchester
@@ -31,19 +33,19 @@ import java.net.URI;
  */
 public class IOListenerEvent {
 
-    private URI ontologyURI;
+    private OWLOntologyID ontologyID;
 
     private URI physicalURI;
 
 
-    public IOListenerEvent(URI ontologyURI, URI physicalURI) {
-        this.ontologyURI = ontologyURI;
+    public IOListenerEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        this.ontologyID = ontologyID;
         this.physicalURI = physicalURI;
     }
 
 
-    public URI getOntologyURI() {
-        return ontologyURI;
+    public OWLOntologyID getOntologyID() {
+        return ontologyID;
     }
 
 

@@ -853,9 +853,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean isOntologyURI(String token) {
         try {
-            URI uri = new URI(token);
+            final URI uri = new URI(token);
             if (uri.isAbsolute()){
-                OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getOntology(uri);
+                IRI iri = IRI.create(uri);
+                OWLOntology ont = getOWLModelManager().getOWLOntologyManager().getOntology(iri);
                 if (getOWLModelManager().getActiveOntologies().contains(ont)){
                     return true;
                 }

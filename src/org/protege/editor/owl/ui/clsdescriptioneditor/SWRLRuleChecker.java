@@ -35,9 +35,8 @@ import org.semanticweb.owl.model.SWRLRule;
  * Bio Health Informatics Group<br>
  * Date: Jul 23, 2008<br><br>
  *
- * @@TODO should be package visibility
  */
-public class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
+class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
 
     private Logger logger = Logger.getLogger(SWRLRuleChecker.class);
 
@@ -59,7 +58,6 @@ public class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
         return null;
 //        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
 //        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
-//        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
 //        try {
 //            return parser.parseRuleFrame().iterator().next().getAxiom();
 //        }

@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.frame.ontology.OWLOntologyAnnotationFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,20 +18,19 @@ import java.awt.*;
  */
 public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent {
 
-    private static final Logger logger = Logger.getLogger(OWLOntologyAnnotationViewComponent.class);
-
+//    private static final Logger logger = Logger.getLogger(OWLOntologyAnnotationViewComponent.class);
 
     private OWLModelManagerListener listener;
 
-    private OWLFrameList2<OWLOntology> list;
+    private OWLOntologyAnnotationList list;
 
 
     protected void initialiseOWLView() throws Exception {
 
-        list = new OWLFrameList2<OWLOntology>(getOWLEditorKit(), new OWLOntologyAnnotationFrame(getOWLEditorKit()));
+        list = new OWLOntologyAnnotationList(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.setRootObject(getOWLModelManager().getActiveOntology());
+        list.setOntology(getOWLModelManager().getActiveOntology());
         listener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
@@ -47,7 +43,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
 
     private void updateView() {
-        list.setRootObject(getOWLModelManager().getActiveOntology());
+        list.setOntology(getOWLModelManager().getActiveOntology());
     }
 
 

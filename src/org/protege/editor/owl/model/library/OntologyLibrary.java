@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.library;
 
+import org.semanticweb.owl.model.IRI;
+
 import java.net.URI;
 import java.util.Set;
 
@@ -29,30 +31,30 @@ public interface OntologyLibrary {
 
     /**
      * Gets the ontologies that this library contains.
-     * @return A <code>Set</code> of ontology URIs that
+     * @return A <code>Set</code> of ontology IRIs that
      *         identify the ontologies that this library contains.
      */
-    public Set<URI> getOntologyURIs();
+    public Set<IRI> getOntologyIRIs();
 
 
     /**
      * Determines whether or not the library contains an
      * ontology.
-     * @param ontologyURI The ontology URI (logical URI) that
+     * @param ontologyIRI The ontology IRI (not physical URI) that
      *                    identifies the ontology.
      * @return <code>true</code> if the library contains the ontology,
      *         <code>false</code> if the library doesn't contain the ontology.
      */
-    public boolean contains(URI ontologyURI);
+    public boolean contains(IRI ontologyIRI);
 
 
     /**
-     * Gets the physical URI which can be used to obtain a
+     * Gets the physical IRI which can be used to obtain a
      * stream in order to load the ontology.
-     * @param ontologyURI The ontology URI (logical URI) that
+     * @param ontologyIRI The ontology IRI (not physical URI) that
      *                    identifies the ontology whose physical URI is to be obtained.
      */
-    public URI getPhysicalURI(URI ontologyURI);
+    public URI getPhysicalURI(IRI ontologyIRI);
 
 
     /**

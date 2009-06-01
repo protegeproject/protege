@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
 import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owl.model.OWLOntologyID;
 
 import java.awt.*;
 import java.net.URI;
@@ -19,7 +20,7 @@ import java.net.URI;
  */
 public class CreateOntologyWizard extends Wizard {
 
-    private OntologyURIPanel ontologyURIPanel;
+    private OntologyIDPanel ontologyIDPanel;
 
     private PhysicalLocationPanel physicalLocationPanel;
 
@@ -29,18 +30,18 @@ public class CreateOntologyWizard extends Wizard {
     public CreateOntologyWizard(Frame owner, OWLEditorKit editorKit) {
         super(owner);
         setTitle("Create ontology wizard");
-        registerWizardPanel(OntologyURIPanel.ID, ontologyURIPanel = new OntologyURIPanel(editorKit));
+        registerWizardPanel(OntologyIDPanel.ID, ontologyIDPanel = new OntologyIDPanel(editorKit));
         registerWizardPanel(PhysicalLocationPanel.ID, physicalLocationPanel = new PhysicalLocationPanel(editorKit));
         registerWizardPanel(OntologyFormatPage.ID, formatPanel = new OntologyFormatPage(editorKit));
-        setCurrentPanel(OntologyURIPanel.ID);
+        setCurrentPanel(OntologyIDPanel.ID);
     }
 
-    public URI getOntologyURI() {
-        return ontologyURIPanel.getURI();
+    public OWLOntologyID getOntologyID() {
+        return ontologyIDPanel.getOntologyID();
     }
 
     public URI getLocationURI() {
-        return physicalLocationPanel.getLocationURI();
+        return physicalLocationPanel.getLocationURL();
     }
 
     public OWLOntologyFormat getFormat() {

@@ -1,12 +1,9 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.ui.list.OWLAxiomList;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.ui.framelist.OWLFrameListRenderer;
 import org.protege.editor.owl.ui.frame.ExplanationFrame;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.protege.editor.owl.ui.list.OWLAxiomList;
 import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +42,7 @@ public class ExplanationResultsViewComponent extends AbstractOWLViewComponent {
 
     private OWLAxiomList axiomList;
 
-    private OWLFrameList2<OWLAxiom> frameList;
+    private OWLFrameList<OWLAxiom> frameList;
 
     private ExplanationFrame explanationFrame;
 
@@ -53,7 +50,7 @@ public class ExplanationResultsViewComponent extends AbstractOWLViewComponent {
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
         explanationFrame = new ExplanationFrame(getOWLEditorKit());
-        frameList = new OWLFrameList2<OWLAxiom>(getOWLEditorKit(), explanationFrame);
+        frameList = new OWLFrameList<OWLAxiom>(getOWLEditorKit(), explanationFrame);
         explanationFrame.setRootObject(null);
 
         frameList.setWrap(false);

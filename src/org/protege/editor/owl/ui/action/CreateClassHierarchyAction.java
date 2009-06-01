@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.hierarchy.tabbed.Edge;
-import org.protege.editor.owl.model.hierarchy.tabbed.OWLClassHierarchyCreator2;
+import org.protege.editor.owl.model.hierarchy.tabbed.OWLClassHierarchyCreator;
 import org.protege.editor.owl.model.hierarchy.tabbed.TabIndentedHierarchyParser;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateClassHierarchyWizard;
 import org.semanticweb.owl.model.OWLOntologyChange;
@@ -31,7 +31,7 @@ public class CreateClassHierarchyAction extends ProtegeOWLAction {
                 String suffix = w.getSuffix().trim();
                 TabIndentedHierarchyParser parser = new TabIndentedHierarchyParser(4, prefix, suffix);
                 List<Edge> edges = parser.parse(new StringReader(hierarchy));
-                OWLClassHierarchyCreator2 creator = new OWLClassHierarchyCreator2(getOWLModelManager().getOWLDataFactory(),
+                OWLClassHierarchyCreator creator = new OWLClassHierarchyCreator(getOWLModelManager().getOWLDataFactory(),
                                                                                   getOWLModelManager().getOWLEntityFactory(),
                                                                                   w.getRootClass(),
                                                                                   w.isMakeSiblingClassesDisjoint(),

@@ -5,6 +5,8 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.entity.*;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLAnnotationProperty;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.vocab.OWLRDFVocabulary;
 
@@ -69,7 +71,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     private JTextField annotationURILabel;
     private JButton annotationSelectButton;
     private JComboBox annotationLangSelector;
-    private URI labelAnnotation = null;
+    private IRI labelAnnotation = null;
     private JComponent customLabelPane;
     private JRadioButton sameAsRendererLabelButton;
     private JRadioButton customLabelButton;
@@ -128,10 +130,10 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
 
     private void loadUIWithPrefs() {
-        uriBaseActiveOntology.setSelected(!EntityCreationPreferences.useDefaultBaseURI());
-        uriBaseSpecifiedURI.setSelected(EntityCreationPreferences.useDefaultBaseURI());
-        uriDefaultBaseField.setText(EntityCreationPreferences.getDefaultBaseURI().toString());
-        uriDefaultBaseField.setEnabled(EntityCreationPreferences.useDefaultBaseURI());
+        uriBaseActiveOntology.setSelected(!EntityCreationPreferences.useDefaultBaseIRI());
+        uriBaseSpecifiedURI.setSelected(EntityCreationPreferences.useDefaultBaseIRI());
+        uriDefaultBaseField.setText(EntityCreationPreferences.getDefaultBaseIRI().toString());
+        uriDefaultBaseField.setEnabled(EntityCreationPreferences.useDefaultBaseIRI());
 
         hashButton.setSelected(EntityCreationPreferences.getDefaultSeparator().equals(SEP_HASH));
         slashButton.setSelected(EntityCreationPreferences.getDefaultSeparator().equals(SEP_SLASH));
@@ -146,9 +148,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         sameAsRendererLabelButton.setSelected(labelDescrCls.equals(MatchRendererLabelDescriptor.class));
         customLabelButton.setSelected(labelDescrCls.equals(CustomLabelDescriptor.class));
 
-        labelAnnotation = EntityCreationPreferences.getNameLabelURI();
+        labelAnnotation = EntityCreationPreferences.getNameLabelIRI();
         if (labelAnnotation == null){
-            labelAnnotation = OWLRDFVocabulary.RDFS_LABEL.getURI();
+            labelAnnotation = IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI());
         }
         annotationURILabel.setText(labelAnnotation.toString());
         annotationLangSelector.setSelectedItem(EntityCreationPreferences.getNameLabelLang());
@@ -212,10 +214,10 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
 
     public void applyChanges() {
-        EntityCreationPreferences.setUseDefaultBaseURI(uriBaseSpecifiedURI.isSelected());
+        EntityCreationPreferences.setUseDefaultBaseIRI(uriBaseSpecifiedURI.isSelected());
         try {
-            URI defaultBase = new URI(uriDefaultBaseField.getText());
-            EntityCreationPreferences.setDefaultBaseURI(defaultBase);
+            IRI defaultBase = IRI.create(new URI(uriDefaultBaseField.getText()));
+            EntityCreationPreferences.setDefaultBaseIRI(defaultBase);
         }
         catch (URISyntaxException e) {
             logger.error("Ignoring invalid base URI (" + uriDefaultBaseField.getText() + ")");
@@ -243,7 +245,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
             EntityCreationPreferences.setLabelDescriptorClass(CustomLabelDescriptor.class);
         }
 
-        EntityCreationPreferences.setNameLabelURI(URI.create(annotationURILabel.getText()));
+        EntityCreationPreferences.setNameLabelIRI(IRI.create(annotationURILabel.getText()));
         Object lang = annotationLangSelector.getSelectedItem();
         if (lang != null && !lang.equals("")){
             EntityCreationPreferences.setNameLabelLang((String)lang);
@@ -367,8 +369,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     private JComponent createLabelOptionsPanel(){
         JComponent c = createPane(null, BoxLayout.PAGE_AXIS);
 
+        // @@TODO should get an annotation property and render that
         sameAsRendererLabelButton = new JRadioButton("Same as label renderer (currently " +
-                                                     getOWLModelManager().getURIRendering(getFirstRendererLabel()) + ")");
+                                                     getOWLModelManager().getURIRendering(getFirstRendererLabel().toURI()) + ")");
         customLabelButton = new JRadioButton("Custom label");
 
         ButtonGroup bg = new ButtonGroup();
@@ -512,10 +515,10 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
 
     protected void handleSelectAnnotation() {
-        URI uri = new UIHelper(getOWLEditorKit()).pickAnnotationURI();
-        if (uri != null){
-            labelAnnotation = uri;
-            annotationURILabel.setText(uri.toString());
+        OWLAnnotationProperty prop = new UIHelper(getOWLEditorKit()).pickAnnotationProperty();
+        if (prop != null){
+            labelAnnotation = prop.getIRI();
+            annotationURILabel.setText(labelAnnotation.toString());
         }
     }
 
@@ -533,12 +536,12 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     }
 
 
-    public URI getFirstRendererLabel() {
-        final java.util.List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-        if (!uris.isEmpty()){
-            return uris.get(0);
+    public IRI getFirstRendererLabel() {
+        final java.util.List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        if (!iris.isEmpty()){
+            return iris.get(0);
         }
-        return OWLRDFVocabulary.RDFS_LABEL.getURI();
+        return IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI());
     }
 
 //     public static void main(String[] args) {

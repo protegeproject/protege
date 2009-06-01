@@ -3,8 +3,10 @@ package org.protege.editor.owl.ui.renderer;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
 
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -23,8 +25,20 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
 
 
     public void initialise() {
-        provider = new AnnotationValueShortFormProvider(OWLRendererPreferences.getInstance().getAnnotationURIs(),
-                                                        OWLRendererPreferences.getInstance().getAnnotationLangs(),
+        final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+
+        // convert IRI -> lang map into annotation property -> lang map
+        final List<OWLAnnotationProperty> properties = new ArrayList<OWLAnnotationProperty>();
+        Map<OWLAnnotationProperty, List<String>> propLangMap = new HashMap<OWLAnnotationProperty, List<String>>();
+
+        final Map<IRI, List<String>> iriLangMap = OWLRendererPreferences.getInstance().getAnnotationLangs();
+        for (IRI iri : iriLangMap.keySet()){
+            final OWLAnnotationProperty ap = df.getOWLAnnotationProperty(iri);
+            properties.add(ap);
+            propLangMap.put(ap, iriLangMap.get(iri));
+        }
+        provider = new AnnotationValueShortFormProvider(properties,
+                                                        propLangMap,
                                                         getOWLModelManager().getOWLOntologyManager());
     }
 
@@ -36,13 +50,13 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
 
 
     protected void processChanges(List<? extends OWLOntologyChange> changes) {
-        final List<URI> uris = provider.getAnnotationURIs();
+        final List<OWLAnnotationProperty> properties = provider.getAnnotationProperties();
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange() && change.getAxiom().getAxiomType().equals(AxiomType.ANNOTATION_ASSERTION)) {
                 OWLAnnotationAssertionAxiom ax = (OWLAnnotationAssertionAxiom) change.getAxiom();
                 // @@TODO we need some way to determine whether the rendering really has changed due to these axioms
                 // otherwise we're telling a whole load of things to update that don't need to
-                if (uris.contains(ax.getProperty().getURI())){
+                if (properties.contains(ax.getProperty())){
                     OWLAnnotationSubject subject = ax.getSubject();
                     if (subject instanceof OWLEntity){
                         fireRenderingChanged((OWLEntity)subject);

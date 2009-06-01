@@ -73,7 +73,7 @@ public class ExportInferredOntologyIncludeAssertedAxiomsPanel extends AbstractOW
 
 
     public Object getNextPanelDescriptor() {
-        return ExportInferredOntologyURIPanel.ID;
+        return ExportInferredOntologyIDPanel.ID;
     }
 
 

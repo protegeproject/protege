@@ -18,9 +18,8 @@ import org.semanticweb.owl.model.OWLClassAxiom;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  *
- * @@TODO should be package visibility
  */
-public class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
+class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
     private OWLModelManager mngr;
 
@@ -38,7 +37,6 @@ public class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom>
     public OWLClassAxiom createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
-        parser.setBase(mngr.getActiveOntology().getURI().toString() + "#");
         try {
             return parser.parseClassAxiom();
         }

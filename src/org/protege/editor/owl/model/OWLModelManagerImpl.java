@@ -31,7 +31,7 @@ import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
-import org.protege.editor.owl.model.repository.OntologyURIExtractor;
+import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
 import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
@@ -45,7 +45,7 @@ import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owl.util.SimpleIRIMapper;
 import org.semanticweb.owl.util.SimpleURIShortFormProvider;
 import org.semanticweb.owl.util.URIShortFormProvider;
 
@@ -144,9 +144,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
-    private AutoMappedRepositoryURIMapper autoMappedRepositoryURIMapper;
+    private AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper;
 
-    private UserResolvedURIMapper userResolvedURIMapper;
+    private UserResolvedIRIMapper userResolvedIRIMapper;
 
 
     public OWLModelManagerImpl() {
@@ -160,13 +160,13 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.addOntologyLoaderListener(this);
 
         // URI mappers for loading - added in reverse order
-        autoMappedRepositoryURIMapper = new AutoMappedRepositoryURIMapper(this);
-        userResolvedURIMapper = new UserResolvedURIMapper(new MissingImportHandlerImpl());
-        manager.clearURIMappers();
-        manager.addURIMapper(userResolvedURIMapper);
-        manager.addURIMapper(new WebConnectionURIMapper());
-        manager.addURIMapper(new UserRepositoryURIMapper(this));
-        manager.addURIMapper(autoMappedRepositoryURIMapper);
+        autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
+        userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
+        manager.clearIRIMappers();
+        manager.addIRIMapper(userResolvedIRIMapper);
+        manager.addIRIMapper(new WebConnectionIRIMapper());
+        manager.addIRIMapper(new UserRepositoryIRIMapper(this));
+        manager.addIRIMapper(autoMappedRepositoryIRIMapper);
 
 
         dirtyOntologies = new HashSet<OWLOntology>();
@@ -284,8 +284,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
     ///////////////////////////////////////////////////////////////////////////////////////
 
     public void startedLoadingOntology(LoadingStartedEvent event) {
-        System.out.println("loading " + event.getOntologyURI() + " from " + event.getPhysicalURI());
-        fireBeforeLoadEvent(event.getOntologyURI(), event.getPhysicalURI());
+        System.out.println("loading " + event.getOntologyID() + " from " + event.getPhysicalURI());
+        fireBeforeLoadEvent(event.getOntologyID(), event.getPhysicalURI());
     }
 
 
@@ -294,7 +294,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             Exception e = event.getException();
             if (loadErrorHandler != null){
                 try {
-                    loadErrorHandler.handleErrorLoadingOntology(event.getOntologyURI(),
+                    loadErrorHandler.handleErrorLoadingOntology(event.getOntologyID(),
                                                                 event.getPhysicalURI(),
                                                                 e);
                 }
@@ -304,24 +304,25 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 }
             }
         }
-        fireAfterLoadEvent(event.getOntologyURI(), event.getPhysicalURI());
+        fireAfterLoadEvent(event.getOntologyID(), event.getPhysicalURI());
     }
 
 
     /**
      * Loads the ontology that has the specified ontology URI.
      * <p/>
-     * @param uri The URI of the ontology to be loaded.  Note
+     * @param iri The IRI of the ontology to be loaded.  Note
      *            that this is <b>not</b> the physical URI of a document
      *            that contains a representation of the ontology.  The
      *            physical location of any concrete representation of the
      *            ontology is determined by the <code>Repository</code>
      *            mechanism.
      */
-    public OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException {
+    public OWLOntology loadOntology(IRI iri) throws OWLOntologyCreationException {
+        // @@TODO review this - what if the ontology has no IRI
         OWLOntology ont = null;
         try{
-            ont = manager.loadOntology(uri);
+            ont = manager.loadOntology(iri);
             setActiveOntology(ont);
             fireEvent(EventType.ONTOLOGY_LOADED);
         }
@@ -339,27 +340,27 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
         OWLOntology ontology = null;
 
-        // Obtain the actual ontology URI.
-        URI ontologyURI = new OntologyURIExtractor(uri).getOntologyURI();
+        // Obtain the actual ontology IRI.
+        IRI ontologyIRI = new OntologyIRIExtractor(uri).getOntologyIRI();
 
         // if the ontology has already been loaded, we cannot have more than one ont with the same URI
         // in this ontology manager (and therefore workspace)
-        if (manager.getOntology(ontologyURI) != null){
+        if (manager.getOntology(ontologyIRI) != null){
             throw new OWLOntologyCreationException("Not loaded." +
-                                                   "\nWorkspace already contains ontology: " + ontologyURI +
+                                                   "\nWorkspace already contains ontology: " + ontologyIRI +
                                                    ".\nPlease open the ontology in a new frame.");
         }
         else{
             // Set up a mapping from the ontology URI to the physical URI
-            manager.addURIMapper(new SimpleURIMapper(ontologyURI, uri));
+            manager.addIRIMapper(new SimpleIRIMapper(ontologyIRI, uri));
             if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
                 // Load the URIs of other ontologies that are contained in the
                 // same folder.
                 addRootFolder(uri);
                 //loadOntologyURIMap(new File(uri).getParentFile());
             }
-            // Delegate to the load method using the URI of the ontology
-            ontology = loadOntology(ontologyURI);
+            // Delegate to the load method using the IRI of the ontology
+            ontology = loadOntology(ontologyIRI);
 
             owlModelManagerDescriptor = new OWLModelManagerDescriptor(uri);
         }
@@ -382,7 +383,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         // Add the parent file which will be the folder
         if (ontologyRootFolders.add(file.getParentFile())) {
             // Add automapped library
-            autoMappedRepositoryURIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
+            autoMappedRepositoryIRIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
         }
     }
 
@@ -406,18 +407,18 @@ public class OWLModelManagerImpl extends AbstractModelManager
     protected void loadOntologyURIMap(File folder) {
         // Search through the files to get any ontologies
         for (File curFile : folder.listFiles(new OntologyFileFilter())) {
-            OntologyURIExtractor ext = new OntologyURIExtractor(curFile.toURI());
-            manager.addURIMapper(new SimpleURIMapper(ext.getOntologyURI(), curFile.toURI()));
+            OntologyIRIExtractor ext = new OntologyIRIExtractor(curFile.toURI());
+            manager.addIRIMapper(new SimpleIRIMapper(ext.getOntologyIRI(), curFile.toURI()));
             if (logger.isInfoEnabled()) {
-                logger.info("Adding auto-mapping: " + ext.getOntologyURI() + " -> " + curFile.toURI());
+                logger.info("Adding auto-mapping: " + ext.getOntologyIRI() + " -> " + curFile.toURI());
             }
         }
     }
 
 
-    public OWLOntology createNewOntology(URI logicalURI, URI physicalURI) throws OWLOntologyCreationException {
-        manager.addURIMapper(new SimpleURIMapper(logicalURI, physicalURI));
-        OWLOntology ont = manager.createOntology(logicalURI);
+    public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
+        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getOntologyIRI(), physicalURI));
+        OWLOntology ont = manager.createOntology(ontologyID);
         dirtyOntologies.add(ont);
         setActiveOntology(ont);
         fireEvent(EventType.ONTOLOGY_CREATED);
@@ -436,7 +437,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public boolean removeOntology(OWLOntology ont) {
-        if (manager.contains(ont.getURI()) && manager.getOntologies().size() > 1){
+        if (manager.contains(ont.getOntologyID()) && manager.getOntologies().size() > 1){
 
             boolean resetActiveOntologyRequired = ont.equals(activeOntology);
             activeOntologies.remove(ont);
@@ -482,7 +483,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         final URI physicalURI = manager.getPhysicalURIForOntology(ont);
 
         try{
-            fireBeforeSaveEvent(ont.getURI(), physicalURI);
+            fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
 
             if (isTempFileSavingActive()){ // save to a temp file
                 try {
@@ -502,7 +503,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                     manager.setPhysicalURIForOntology(ont, physicalURI);
                 }
                 catch (IOException e) {
-                    throw new OWLOntologyStorageException("Error while saving ontology " + ont.getURI() + " to " + physicalURI, e);
+                    throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);
                 }
             }
             else{
@@ -514,7 +515,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             dirtyOntologies.remove(ont);
 
             fireEvent(EventType.ONTOLOGY_SAVED);
-            fireAfterSaveEvent(ont.getURI(), physicalURI);
+            fireAfterSaveEvent(ont.getOntologyID(), physicalURI);
         }
         catch(OWLOntologyStorageException e){
             if (saveErrorHandler != null){
@@ -619,7 +620,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             }
         }
         this.activeOntology = activeOntology;
-        logger.info("Setting active ontology to " + activeOntology.getURI());
+        logger.info("Setting active ontology to " + activeOntology.getOntologyID());
         rebuildActiveOntologiesCache();
         // Rebuild entity indices
         rebuildEntityIndices();
@@ -781,10 +782,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
         ioListeners.remove(listener);
     }
 
-    private void fireBeforeLoadEvent(URI ontologyURI, URI physicalURI) {
+    private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
             try {
-                listener.beforeLoad(new IOListenerEvent(ontologyURI, physicalURI));
+                listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
@@ -792,22 +793,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
         }
     }
 
-    private void fireAfterLoadEvent(URI ontologyURI, URI physicalURI) {
+    private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
             try {
-                listener.afterLoad(new IOListenerEvent(ontologyURI, physicalURI));
-            }
-            catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-        }
-    }
-
-
-    private void fireBeforeSaveEvent(URI ontologyURI, URI physicalURI) {
-        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
-            try {
-                listener.beforeSave(new IOListenerEvent(ontologyURI, physicalURI));
+                listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
@@ -816,10 +805,22 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    private void fireAfterSaveEvent(URI ontologyURI, URI physicalURI) {
+    private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
             try {
-                listener.afterSave(new IOListenerEvent(ontologyURI, physicalURI));
+                listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
@@ -1066,7 +1067,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public void setMissingImportHandler(MissingImportHandler missingImportHandler) {
-        userResolvedURIMapper.setMissingImportHandler(missingImportHandler);
+        userResolvedIRIMapper.setMissingImportHandler(missingImportHandler);
     }
 
 

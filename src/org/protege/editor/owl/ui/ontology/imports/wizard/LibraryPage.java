@@ -1,22 +1,18 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
+import org.semanticweb.owl.model.IRI;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -59,7 +55,7 @@ public class LibraryPage extends AbstractImportSourcePage {
         parent.add(listPanel, BorderLayout.NORTH);
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting() == false) {
+                if (!e.getValueIsAdjusting()) {
                     getWizard().setNextFinishButtonEnabled(list.getSelectedIndex() != -1);
                 }
             }
@@ -68,12 +64,12 @@ public class LibraryPage extends AbstractImportSourcePage {
 
 
     public ImportVerifier getImportVerifier() {
-        Set<URI> selectedURIs = new HashSet<URI>();
+        Set<IRI> selectedIRIs = new HashSet<IRI>();
         Object [] selObjs = list.getSelectedValues();
         for (Object o : selObjs) {
-            selectedURIs.add((URI) o);
+            selectedIRIs.add((IRI) o);
         }
-        return new LibraryVerifier(getOWLModelManager(), selectedURIs);
+        return new LibraryVerifier(getOWLModelManager(), selectedIRIs);
     }
 
 

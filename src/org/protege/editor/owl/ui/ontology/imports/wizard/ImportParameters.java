@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.IRI;
+
+import java.util.Set;
 
 
 /**
@@ -17,10 +17,10 @@ import org.protege.editor.owl.OWLEditorKit;
  */
 public interface ImportParameters {
 
-    public Set<URI> getOntologiesToBeImported();
+    public Set<IRI> getOntologiesToBeImported();
 
 
-    public String getOntologyLocationDescription(URI ontologyURI);
+    public String getOntologyLocationDescription(IRI ontologyIRI);
 
 
     public void performImportSetup(OWLEditorKit editorKit);

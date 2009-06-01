@@ -11,7 +11,6 @@ import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.dataproperty.*;
 import org.protege.editor.owl.ui.frame.individual.*;
 import org.protege.editor.owl.ui.frame.objectproperty.*;
-import org.protege.editor.owl.ui.frame.ontology.OWLOntologyAnnotationAxiomFrameSection;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -79,10 +78,6 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         this.editorKit = editorKit;
 
         owlOntologyFrameSections = new ArrayList<OWLFrameSection>();
-        owlOntologyFrameSections.add(new OWLOntologyAnnotationAxiomFrameSection(editorKit, this));
-// @@TODO v3 port       
-//        owlOntologyFrameSections.add(new OWLImportsDeclarationFrameSection(editorKit, this));
-//        owlOntologyFrameSections.add(new OWLIndirectImportsFrameSection(editorKit, this));
         owlOntologyFrameSections.add(new InferredAxiomsFrameSection(editorKit, this));
 
 

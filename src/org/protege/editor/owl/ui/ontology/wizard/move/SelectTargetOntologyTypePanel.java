@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,7 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
 
     public Object getNextPanelDescriptor() {
         if (mergeIntoNew.isSelected()) {
-            return OntologyURIPanel.ID;
+            return OntologyIDPanel.ID;
         }
         else {
             return SelectTargetOntologyPanel.ID;

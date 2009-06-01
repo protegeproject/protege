@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.ui.OpenFromURIPanel;
+import org.protege.editor.core.ui.OpenFromURLPanel;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.OpenRequestHandler;
 import org.protege.editor.core.ui.util.UIUtil;
@@ -18,7 +18,7 @@ import java.net.URI;
  * Bio-Health Informatics Group<br>
  * Date: 20-Dec-2006<br><br>
  */
-public class OpenFromURIAction extends ProtegeOWLAction implements OpenRequestHandler {
+public class OpenFromURLAction extends ProtegeOWLAction implements OpenRequestHandler {
 
     public void actionPerformed(ActionEvent e) {
         try {
@@ -30,8 +30,8 @@ public class OpenFromURIAction extends ProtegeOWLAction implements OpenRequestHa
     }
 
 
-    private URI getURI() {
-        return OpenFromURIPanel.showDialog();
+    private URI getPhysicalURI() {
+        return OpenFromURLPanel.showDialog();
     }
 
 
@@ -49,7 +49,7 @@ public class OpenFromURIAction extends ProtegeOWLAction implements OpenRequestHa
 
 
     public void openInNewWorkspace() throws Exception {
-        URI uri = getURI();
+        URI uri = getPhysicalURI();
         if (uri != null) {
             for (EditorKitFactoryPlugin plugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
                 if (plugin.getId().equals(getEditorKit().getEditorKitFactory().getId())) {
@@ -62,7 +62,7 @@ public class OpenFromURIAction extends ProtegeOWLAction implements OpenRequestHa
 
 
     public void openInCurrentWorkspace() throws Exception {
-        URI uri = getURI();
+        URI uri = getPhysicalURI();
         if (uri != null) {
             getOWLEditorKit().handleLoadFrom(uri);
         }

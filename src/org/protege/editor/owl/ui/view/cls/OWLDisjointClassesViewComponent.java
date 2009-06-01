@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLClass;
 
 import javax.swing.*;
@@ -16,11 +16,11 @@ import java.awt.*;
  */
 public class OWLDisjointClassesViewComponent extends AbstractOWLClassViewComponent {
 
-    private OWLFrameList2<OWLClass> list;
+    private OWLFrameList<OWLClass> list;
 
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList2<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

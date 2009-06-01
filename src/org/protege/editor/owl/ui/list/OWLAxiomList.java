@@ -167,10 +167,10 @@ public class OWLAxiomList extends MList {
 
         public String getTooltip() {
             if (ontology.containsAxiom(axiom)) {
-                return "Asserted in " + ontology.getURI();
+                return "Asserted in " + ontology.getOntologyID();
             }
             else {
-                return "Deleted.  (Was asserted in " + ontology.getURI() + ")";
+                return "Deleted.  (Was asserted in " + ontology.getOntologyID() + ")";
             }
         }
     }

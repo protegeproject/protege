@@ -147,7 +147,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         try {
             return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type,
                                                                                         getEntityName(),
-                                                                                        getBaseURI());
+                                                                                        getBaseIRI());
         }
         catch (OWLEntityCreationException e) {
             return null;
@@ -181,7 +181,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
 
-    public URI getBaseURI() {
+    public IRI getBaseIRI() {
         return null; // let this be managed by the EntityFactory for now - we could add a selector later
     }
 
@@ -198,10 +198,10 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
-                final String name = getEntityName();
+            final String name = getEntityName();
             OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
                                                                                                              name,
-                                                                                                             getBaseURI());
+                                                                                                             getBaseIRI());
             URI uri = changeSet.getOWLEntity().getURI();
             uriPreviewLabel.setText("uri: " + uri);
 

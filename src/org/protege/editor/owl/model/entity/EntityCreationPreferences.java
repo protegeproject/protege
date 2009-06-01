@@ -3,8 +3,7 @@ package org.protege.editor.owl.model.entity;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
-
-import java.net.URI;
+import org.semanticweb.owl.model.IRI;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -76,26 +75,26 @@ public class EntityCreationPreferences {
         return PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_SET_KEY);
     }
 
-    public static URI getDefaultBaseURI() {
+    public static IRI getDefaultBaseIRI() {
         Preferences prefs = getPrefs();
-        String baseURIStr = prefs.getString(DEFAULT_BASE_URI, "http://www.co-ode.org/ontologies/ont.owl#");
-        return URI.create(baseURIStr);
+        String baseIRIStr = prefs.getString(DEFAULT_BASE_URI, "http://www.co-ode.org/ontologies/ont.owl#");
+        return IRI.create(baseIRIStr);
     }
 
 
-    public static boolean useDefaultBaseURI() {
+    public static boolean useDefaultBaseIRI() {
         Preferences prefs = getPrefs();
         return prefs.getBoolean(USE_DEFAULT_BASE_URI, false);
     }
 
 
-    public static void setUseDefaultBaseURI(boolean use) {
+    public static void setUseDefaultBaseIRI(boolean use) {
         Preferences prefs = getPrefs();
         prefs.putBoolean(USE_DEFAULT_BASE_URI, use);
     }
 
 
-    public static void setDefaultBaseURI(URI defaultBase) {
+    public static void setDefaultBaseIRI(IRI defaultBase) {
         Preferences prefs = getPrefs();
         prefs.putString(DEFAULT_BASE_URI, defaultBase.toString());
     }
@@ -220,19 +219,19 @@ public class EntityCreationPreferences {
     }
 
 
-    public static URI getNameLabelURI() {
+    public static IRI getNameLabelIRI() {
         Preferences prefs = getPrefs();
         String uriStr = prefs.getString(NAME_LABEL_URI, null);
         if (uriStr != null){
-            return URI.create(uriStr);
+            return IRI.create(uriStr);
         }
         return null;
     }
 
 
-    public static void setNameLabelURI(URI labelURI) {
+    public static void setNameLabelIRI(IRI iri) {
         Preferences prefs = getPrefs();
-        prefs.putString(NAME_LABEL_URI, (labelURI == null) ? null : labelURI.toString());
+        prefs.putString(NAME_LABEL_URI, (iri == null) ? null : iri.toString());
     }
 
     public static String getNameLabelLang() {

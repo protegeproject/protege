@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.entity;
 
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.semanticweb.owl.model.IRI;
 
-import java.net.URI;
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -38,9 +38,9 @@ import java.util.List;
 public class MatchRendererLabelDescriptor implements LabelDescriptor {
 
     public String getLanguage() {
-        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-        if (!uris.isEmpty()){
-            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(uris.get(0));
+        final List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        if (!iris.isEmpty()){
+            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(iris.get(0));
             if (!langs.isEmpty()){
                 return langs.get(0);
             }
@@ -49,10 +49,10 @@ public class MatchRendererLabelDescriptor implements LabelDescriptor {
     }
 
 
-    public URI getURI() {
-        final List<URI> uris = OWLRendererPreferences.getInstance().getAnnotationURIs();
-        if (!uris.isEmpty()){
-            return uris.get(0);
+    public IRI getIRI() {
+        final List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        if (!iris.isEmpty()){
+            return iris.get(0);
         }
         return null;
     }

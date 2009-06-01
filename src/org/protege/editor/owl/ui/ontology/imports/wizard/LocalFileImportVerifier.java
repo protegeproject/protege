@@ -1,12 +1,13 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.repository.OntologyURIExtractor;
+import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.util.SimpleURIMapper;
+import org.semanticweb.owl.util.SimpleIRIMapper;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 
@@ -34,8 +35,8 @@ public class LocalFileImportVerifier implements ImportVerifier {
 
 
     public ImportParameters checkImports() {
-        OntologyURIExtractor extractor = new OntologyURIExtractor(file.toURI());
-        final URI ontologyURI = extractor.getOntologyURI();
+        OntologyIRIExtractor extractor = new OntologyIRIExtractor(file.toURI());
+        final IRI ontologyURI = extractor.getOntologyIRI();
         if (!extractor.isStartElementPresent() || ontologyURI == null) {
             String msg = "The ontology contained in " + file.toString() + " could " + "not be imported. ";
             if (!extractor.isStartElementPresent()) {
@@ -45,21 +46,21 @@ public class LocalFileImportVerifier implements ImportVerifier {
         }
         else {
             return new ImportParameters() {
-                public Set<URI> getOntologiesToBeImported() {
+                public Set<IRI> getOntologiesToBeImported() {
                     return Collections.singleton(ontologyURI);
                 }
 
 
-                public String getOntologyLocationDescription(URI ontologyURI) {
+                public String getOntologyLocationDescription(IRI iri) {
                     return file.toString();
                 }
 
 
                 public void performImportSetup(OWLEditorKit editorKit) {
+                    final OWLOntologyManager mngr = owlEditorKit.getModelManager().getOWLOntologyManager();
+
                     // We need to copy the file to the root ontology folder
-                    owlEditorKit.getModelManager().getOWLOntologyManager().addURIMapper(new SimpleURIMapper(
-                            ontologyURI,
-                            file.toURI()));
+                    mngr.addIRIMapper(new SimpleIRIMapper(ontologyURI, file.toURI()));
                     // If this fails then we can only add a direct mapping
                 }
             };

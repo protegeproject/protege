@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyURIPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 import javax.swing.*;
 /*
@@ -34,17 +34,17 @@ import javax.swing.*;
  * Bio-Health Informatics Group<br>
  * Date: 09-Aug-2007<br><br>
  */
-public class ExportInferredOntologyURIPanel extends OntologyURIPanel {
+public class ExportInferredOntologyIDPanel extends OntologyIDPanel {
 
 
-    public ExportInferredOntologyURIPanel(OWLEditorKit editorKit) {
+    public ExportInferredOntologyIDPanel(OWLEditorKit editorKit) {
         super(editorKit);
     }
 
 
     protected void createUI(JComponent parent) {
         super.createUI(parent);
-        setInstructions("Please specify the ontology URI for the inferred ontology");
+        setInstructions("Please specify the ontology IRI for the inferred ontology");
     }
 
 

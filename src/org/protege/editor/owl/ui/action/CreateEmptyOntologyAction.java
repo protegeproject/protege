@@ -5,12 +5,12 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owl.model.OWLOntologyID;
 import org.semanticweb.owl.model.OWLRuntimeException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.net.URI;
 
 
 /**
@@ -38,10 +38,10 @@ public class CreateEmptyOntologyAction extends ProtegeOWLAction {
         if (wizard.showModalDialog() == Wizard.CANCEL_RETURN_CODE) {
             return;
         }
-        URI uri = wizard.getOntologyURI();
-        if (uri != null) {
+        OWLOntologyID ontologyID = wizard.getOntologyID();
+        if (ontologyID != null) {
             try {
-                OWLOntology ont = getOWLModelManager().createNewOntology(uri, wizard.getLocationURI());
+                OWLOntology ont = getOWLModelManager().createNewOntology(ontologyID, wizard.getLocationURI());
                 getOWLModelManager().getOWLOntologyManager().setOntologyFormat(ont, wizard.getFormat());
             }
             catch (OWLOntologyCreationException e1) {

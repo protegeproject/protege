@@ -21,6 +21,7 @@ import org.protege.editor.owl.model.util.URIUtilities;
 import org.semanticweb.owl.expression.ParserException;
 import org.semanticweb.owl.io.*;
 import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owl.model.OWLOntologyID;
 import uk.ac.manchester.cs.owl.turtle.parser.TurtleParser;
 
 import javax.swing.*;
@@ -79,13 +80,13 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
     }
 
 
-    public <T extends Throwable> void handleErrorLoadingOntology(URI ont, URI loc, T e) throws Throwable {
+    public <T extends Throwable> void handleErrorLoadingOntology(OWLOntologyID ontologyID, URI loc, T e) throws Throwable {
 
         if (e instanceof UnparsableOntologyException){
             errorExplainer = createErrorExplainer();
             ParseErrorsPanel errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
             JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                            "Load Error: " + ont,
+                                            "Load Error: " + ontologyID,
                                             errorPanel,
                                             JOptionPane.ERROR_MESSAGE,
                                             JOptionPane.DEFAULT_OPTION,
@@ -96,7 +97,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
             ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
             JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                            "Load Error: " + ont,
+                                            "Load Error: " + ontologyID,
                                             errorPanel,
                                             JOptionPane.ERROR_MESSAGE,
                                             JOptionPane.DEFAULT_OPTION,

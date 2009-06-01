@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLAnonymousIndividual;
 import org.semanticweb.owl.model.OWLIndividual;
 
@@ -43,7 +43,7 @@ import java.awt.*;
  */
 public class OWLAnonymousIndividualAnnotationValueEditor implements OWLAnnotationValueEditor<OWLAnonymousIndividual> {
 
-    private OWLFrameList2<OWLAnonymousIndividual> frameList;
+    private OWLFrameList<OWLAnonymousIndividual> frameList;
 
     private JComponent mainComponent;
 
@@ -57,7 +57,7 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLAnnotatio
 
         OWLAnonymousIndividualPropertyAssertionsFrame frame = new OWLAnonymousIndividualPropertyAssertionsFrame(owlEditorKit);
 
-        frameList = new OWLFrameList2<OWLAnonymousIndividual>(owlEditorKit, frame);
+        frameList = new OWLFrameList<OWLAnonymousIndividual>(owlEditorKit, frame);
 
         mainComponent = new JPanel(new BorderLayout(7, 7));
         JScrollPane sp = new JScrollPane(frameList);
@@ -87,7 +87,8 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLAnnotatio
 
     public void setEditedObject(OWLAnonymousIndividual object) {
         if (object == null) {
-            String id = editorKit.getModelManager().getActiveOntology().getURI() + "#genid" + System.nanoTime();
+            // @@TODO what about anonymous ontologies?
+            String id = editorKit.getModelManager().getActiveOntology().getOntologyID().getOntologyIRI() + "#genid" + System.nanoTime();
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }
         frameList.setRootObject(object);

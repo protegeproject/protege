@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.*;
@@ -66,7 +67,7 @@ public class RenameEntityPanel extends JPanel {
             }
         });
 
-        showFullURICheckBox = new JCheckBox("Show full URI", showFullURI);
+        showFullURICheckBox = new JCheckBox("Show full IRI", showFullURI);
         showFullURICheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateTextField();
@@ -104,7 +105,7 @@ public class RenameEntityPanel extends JPanel {
         String fragment = getFragment();
         if (fragment != null) {
             try {
-                String uriString = URLDecoder.decode(owlEntity.getURI().toString(), "utf-8");
+                String uriString = URLDecoder.decode(owlEntity.getIRI().toString(), "utf-8");
                 return uriString.substring(0, uriString.length() - fragment.length());
             }
             catch (UnsupportedEncodingException e) {
@@ -145,14 +146,14 @@ public class RenameEntityPanel extends JPanel {
     }
 
 
-    public URI getURI() {
+    public IRI getIRI() {
         try {
             String newName = textField.getText().trim().replaceAll(" ", "_");
             if (showFullURICheckBox.isSelected()) {
-                return new URI(newName);
+                return IRI.create(new URI(newName));
             }
             else {
-                return new URI(getBase() + newName);
+                return IRI.create(new URI(getBase() + newName));
             }
         }
         catch (URISyntaxException e) {
@@ -171,7 +172,7 @@ public class RenameEntityPanel extends JPanel {
     }
 
     
-    public static URI showDialog(OWLEditorKit owlEditorKit, OWLEntity entity) {
+    public static IRI showDialog(OWLEditorKit owlEditorKit, OWLEntity entity) {
         RenameEntityPanel panel = new RenameEntityPanel(owlEditorKit, entity);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         if (JOptionPaneEx.showConfirmDialog(null,
@@ -182,7 +183,7 @@ public class RenameEntityPanel extends JPanel {
                                             panel.textField) == JOptionPane.OK_OPTION){
 
             PreferencesManager.getInstance().getApplicationPreferences(RenameEntityPanel.class).putBoolean(AUTO_RENAME_PUNS, panel.getRenamePuns());
-            return panel.getURI();
+            return panel.getIRI();
         }
         return null;
     }

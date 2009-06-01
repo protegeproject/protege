@@ -7,6 +7,7 @@ import org.protege.editor.owl.model.util.URIUtilities;
 import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owl.io.OWLXMLOntologyFormat;
 import org.semanticweb.owl.io.RDFXMLOntologyFormat;
+import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLOntologyFormat;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -41,11 +42,11 @@ import java.util.regex.Pattern;
  * - otherwise use the xml:base
  * - if there is no explicit xml:base, then this will be the document URI.
  */
-public class OntologyURIExtractor {
+public class OntologyIRIExtractor {
 
     private URI physicalURI;
 
-    private URI ontologyURI;
+    private IRI ontologyIRI;
 
     private boolean startElementPresent;
 
@@ -54,26 +55,16 @@ public class OntologyURIExtractor {
     private String defaultNamespace;
 
 
-    public OntologyURIExtractor(URI physicalURI) {
+    public OntologyIRIExtractor(URI physicalURI) {
         this.physicalURI = physicalURI;
-        // Set the base URI to the physical URI for cases where there
+        // Set the base URI to the physical URL for cases where there
         // isn't an explicit xml:base
-        this.ontologyURI = physicalURI;
+        ontologyIRI = IRI.create(physicalURI);
         namespaceMap = new HashMap<String, String>();
     }
 
 
-//    public String getDefaultNamespace() {
-//        return defaultNamespace;
-//    }
-//
-//
-//    public Map<String, String> getNamespaceMap() {
-//        return namespaceMap;
-//    }
-//
-
-    public URI getOntologyURI() {
+    public IRI getOntologyIRI() {
         try {
             InputStream is = URIUtilities.getInputStream(physicalURI);
 
@@ -98,13 +89,13 @@ public class OntologyURIExtractor {
             // KRSS does not appear to support an ontology URI
 
             if (defaultNamespace == null){
-                defaultNamespace = ontologyURI + "#";
+                defaultNamespace = ontologyIRI + "#";
             }
         }
         catch (Exception e) {
             // We expect there to be an exception,
         }
-        return ontologyURI;
+        return ontologyIRI;
     }
 
 
@@ -117,7 +108,7 @@ public class OntologyURIExtractor {
             if (line.length() > 0){
                 Matcher matcher = p.matcher(line);
                 if (matcher.matches()){
-                    ontologyURI = new URI(matcher.group(1));
+                    setIRI(matcher.group(1));
                     startElementPresent = true;
                     finished = true;
                 }
@@ -138,7 +129,7 @@ public class OntologyURIExtractor {
             if (line.length() > 0){
                 Matcher matcher = p.matcher(line);
                 if (matcher.matches()){
-                    ontologyURI = new URI(matcher.group(1));
+                    setIRI(matcher.group(1));
                     startElementPresent = true;
                     finished = true;
                 }
@@ -159,7 +150,7 @@ public class OntologyURIExtractor {
             if (line.length() > 0){
                 Matcher matcher = p.matcher(line);
                 if (matcher.matches()){
-                    ontologyURI = new URI(matcher.group(1));
+                    setIRI(matcher.group(1));
                     startElementPresent = true;
                     finished = true;
                 }
@@ -183,10 +174,10 @@ public class OntologyURIExtractor {
                         if (qName.equals("rdf:RDF")){ // RDF/XML
                             startElementPresent = true;
                             handleNamespaces(attributes);
-                            ontologyURI = new URI(attributes.getValue("xml:base"));
-                            String s = ontologyURI.toString().trim();
+                            setIRI(attributes.getValue("xml:base"));
+                            String s = ontologyIRI.toString().trim();
                             if (s.endsWith("#")) {
-                                ontologyURI = new URI(s.substring(0, s.length() - 1));
+                                setIRI(s.substring(0, s.length() - 1));
                             }
                             searchingForOWLOntology = true;
                         }
@@ -195,7 +186,7 @@ public class OntologyURIExtractor {
                             handleNamespaces(attributes);
                             String uriString = attributes.getValue("URI");
                             if (uriString != null){
-                                ontologyURI = new URI(uriString);
+                                setIRI(uriString);
                             }
                         }
                     }
@@ -203,7 +194,7 @@ public class OntologyURIExtractor {
                         if (qName.equals("owl:Ontology")){
                             String ontID = attributes.getValue("rdf:about");
                             if (!ontID.equals("")){
-                                ontologyURI = new URI(ontID);
+                                setIRI(ontID);
                             }
                         }
                         searchingForOWLOntology = false;
@@ -231,6 +222,12 @@ public class OntologyURIExtractor {
                 }
             }
         });
+    }
+
+
+    private void setIRI(String s) throws URISyntaxException {
+        URI uri = new URI(s);
+        ontologyIRI = IRI.create(uri);
     }
 
 

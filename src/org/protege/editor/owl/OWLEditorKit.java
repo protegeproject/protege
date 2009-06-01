@@ -151,9 +151,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         CreateOntologyWizard w = new CreateOntologyWizard(null, this);
         int result = w.showModalDialog();
         if (result == Wizard.FINISH_RETURN_CODE) {
-            URI uri = w.getOntologyURI();
-            if (uri != null) {
-                OWLOntology ont = getModelManager().createNewOntology(uri, w.getLocationURI());
+            OWLOntologyID id = w.getOntologyID();
+            if (id != null) {
+                OWLOntology ont = getModelManager().createNewOntology(id, w.getLocationURI());
                 getModelManager().getOWLOntologyManager().setOntologyFormat(ont, w.getFormat());
                 newPhysicalURIs.add(w.getLocationURI());
                 addRecent(w.getLocationURI());

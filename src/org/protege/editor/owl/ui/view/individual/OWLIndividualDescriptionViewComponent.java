@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualFrame;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLNamedIndividual;
 
 import javax.swing.*;
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLIndividualDescriptionViewComponent extends AbstractOWLIndividualViewComponent {
 
-    private OWLFrameList2<OWLNamedIndividual> list;
+    private OWLFrameList<OWLNamedIndividual> list;
 
 
     public void initialiseIndividualsView() throws Exception {
-        list = new OWLFrameList2<OWLNamedIndividual>(getOWLEditorKit(), new OWLIndividualFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLNamedIndividual>(getOWLEditorKit(), new OWLIndividualFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
         list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLNamedIndividual>());

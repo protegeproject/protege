@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
 
     private InferredAxiomsFrame frame;
 
-    private OWLFrameList2<OWLOntology> frameList;
+    private OWLFrameList<OWLOntology> frameList;
 
     private OWLModelManagerListener listener = new OWLModelManagerListener() {
 
@@ -64,7 +64,7 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
     protected void initialiseOntologyView() throws Exception {
         setLayout(new BorderLayout());
         frame = new InferredAxiomsFrame(getOWLEditorKit());
-        frameList = new OWLFrameList2<OWLOntology>(getOWLEditorKit(), frame);
+        frameList = new OWLFrameList<OWLOntology>(getOWLEditorKit(), frame);
         frameList.setRootObject(getOWLModelManager().getActiveOntology());
         updateHeader();
         add(new JScrollPane(frameList));

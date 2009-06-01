@@ -4,7 +4,7 @@ import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSectionRow;
 import org.protege.editor.owl.ui.framelist.CreateClosureAxiomAction;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameListPopupMenuAction;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
@@ -26,10 +26,10 @@ import java.util.Set;
  */
 public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewComponent {
 
-    private OWLFrameList2<OWLClass> list;
+    private OWLFrameList<OWLClass> list;
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList2<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

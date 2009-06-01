@@ -1,14 +1,13 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JList;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
+import org.semanticweb.owl.model.IRI;
+
+import javax.swing.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -31,17 +30,16 @@ public class LibraryOntologiesList extends JList {
 
 
     public void rebuildList() {
-        Set<URI> ontologyURIs = new TreeSet<URI>();
+        Set<IRI> ontologyIRIs = new TreeSet<IRI>();
         OntologyLibraryManager libraryManager = owlModelManager.getOntologyLibraryManager();
         for (OntologyLibrary lib : libraryManager.getLibraries()) {
-            ontologyURIs.addAll(lib.getOntologyURIs());
+            ontologyIRIs.addAll(lib.getOntologyIRIs());
         }
-        setListData(ontologyURIs.toArray());
+        setListData(ontologyIRIs.toArray());
     }
 
 
-    public URI getSelectedOntologyURI() {
-        URI uri = (URI) getSelectedValue();
-        return uri;
+    public IRI getSelectedOntologyIRI() {
+        return (IRI)getSelectedValue();
     }
 }

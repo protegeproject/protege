@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.library;
 
-import java.net.URI;
+import org.semanticweb.owl.model.IRI;
 
 
 /**
@@ -18,11 +18,11 @@ public abstract class AbstractOntologyLibrary implements OntologyLibrary {
         StringBuilder builder = new StringBuilder();
         builder.append(getClassExpression());
         builder.append("\n");
-        for (URI ontURI : getOntologyURIs()) {
+        for (IRI iri : getOntologyIRIs()) {
             builder.append("    ");
-            builder.append(ontURI);
+            builder.append(iri);
             builder.append(" --> ");
-            builder.append(getPhysicalURI(ontURI));
+            builder.append(getPhysicalURI(iri));
             builder.append("\n");
         }
         return builder.toString();

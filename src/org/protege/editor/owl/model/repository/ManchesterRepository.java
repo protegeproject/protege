@@ -4,15 +4,19 @@ import org.protege.editor.core.OntologyRepository;
 import org.protege.editor.core.OntologyRepositoryEntry;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntologyIRIMapper;
 import org.semanticweb.owl.util.OntologyURIShortFormProvider;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -49,14 +53,14 @@ public class ManchesterRepository implements OntologyRepository {
 
     private List<RepositoryEntry> entries;
 
-    private OWLOntologyURIMapper uriMapper;
+    private OWLOntologyIRIMapper iriMapper;
 
 
     public ManchesterRepository(String repositoryName, URI repositoryLocation) {
         this.repositoryName = repositoryName;
         this.repositoryLocation = repositoryLocation;
         entries = new ArrayList<RepositoryEntry>();
-        uriMapper = new RepositoryURIMapper();
+        iriMapper = new RepositoryIRIMapper();
     }
 
 
@@ -127,11 +131,11 @@ public class ManchesterRepository implements OntologyRepository {
 
         private URI physicalURI;
 
-        public RepositoryEntry(URI ontologyURI) {
-            this.ontologyURI = ontologyURI;
+        public RepositoryEntry(URI ontologyIRI) {
+            this.ontologyURI = ontologyIRI;
             OntologyURIShortFormProvider sfp = new OntologyURIShortFormProvider();
-            shortName = sfp.getShortForm(ontologyURI);
-            physicalURI = URI.create(repositoryLocation + "/download?ontology=" + ontologyURI);
+            shortName = sfp.getShortForm(ontologyIRI);
+            physicalURI = URI.create(repositoryLocation + "/download?ontology=" + ontologyIRI);
         }
 
 
@@ -161,22 +165,22 @@ public class ManchesterRepository implements OntologyRepository {
 
 
         public void configureEditorKit(EditorKit editorKit) {
-            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().addURIMapper(uriMapper);
+            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().addIRIMapper(iriMapper);
         }
 
 
         public void restoreEditorKit(EditorKit editorKit) {
-            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().removeURIMapper(uriMapper);
+            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().removeIRIMapper(iriMapper);
 
         }
     }
 
 
-    private class RepositoryURIMapper implements OWLOntologyURIMapper {
+    private class RepositoryIRIMapper implements OWLOntologyIRIMapper {
 
-        public URI getPhysicalURI(URI uri) {
+        public URI getPhysicalURI(IRI iri) {
             for(RepositoryEntry entry : entries) {
-                if(entry.getOntologyURI().equals(uri)) {
+                if(entry.getOntologyURI().equals(iri.toURI())) {
                     return entry.getPhysicalURI();
                 }
             }

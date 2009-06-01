@@ -19,7 +19,7 @@ import java.util.List;
  */
 public abstract class OWLFrameListPopupMenuAction<R extends Object> extends AbstractAction {
 
-    private OWLFrameList2<R> frameList;
+    private OWLFrameList<R> frameList;
 
     private OWLEditorKit owlEditorKit;
 
@@ -29,7 +29,7 @@ public abstract class OWLFrameListPopupMenuAction<R extends Object> extends Abst
     }
 
 
-    protected void setup(OWLEditorKit owlEditorKit, OWLFrameList2<R> list) {
+    protected void setup(OWLEditorKit owlEditorKit, OWLFrameList<R> list) {
         this.owlEditorKit = owlEditorKit;
         this.frameList = list;
     }
@@ -44,7 +44,7 @@ public abstract class OWLFrameListPopupMenuAction<R extends Object> extends Abst
     protected abstract void dispose() throws Exception;
 
 
-    protected OWLFrameList2<R> getFrameList() {
+    protected OWLFrameList<R> getFrameList() {
         return frameList;
     }
 

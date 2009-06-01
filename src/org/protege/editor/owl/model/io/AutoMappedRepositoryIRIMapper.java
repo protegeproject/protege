@@ -3,10 +3,13 @@ package org.protege.editor.owl.model.io;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.protege.editor.owl.model.library.OntologyLibraryManager;
-import org.semanticweb.owl.model.OWLOntologyURIMapper;
+import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owl.model.OWLOntologyIRIMapper;
+import org.semanticweb.owl.util.SimpleIRIMapper;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -44,38 +47,45 @@ import java.net.URI;
  * <p/>
  * The mapper uses the following strategy:
  * <p/>
- * It looks in the ontology libraries.  If an ontology library
- * contains an ontology that has the logical URI then the library
- * is asked for the physical URI and this URI is returned.
+ * It looks in auto-mapped libraries.  These are folder libraries
+ * that correspond to folders where the "root ontologies" have been
+ * loaded from.  If the mapper finds an ontology that has a mapping
+ * to one of these auto-mapped files, then the URI of the
+ * auto-mapped file is returned.
  */
-public class UserRepositoryURIMapper implements OWLOntologyURIMapper {
+public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
 
-    private Logger logger = Logger.getLogger(UserRepositoryURIMapper.class);
+    private Logger logger = Logger.getLogger(AutoMappedRepositoryIRIMapper.class);
 
     private OWLModelManager mngr;
 
+    private Set<OntologyLibrary> automappedLibraries = new HashSet<OntologyLibrary>();
 
-    public UserRepositoryURIMapper(OWLModelManager mngr) {
+
+    public AutoMappedRepositoryIRIMapper(OWLModelManager mngr) {
         this.mngr = mngr;
     }
 
 
-    public URI getPhysicalURI(URI logicalURI) {
+    public URI getPhysicalURI(IRI logicalURI) {
         URI uri;
-        // Search user defined libraries
-        OntologyLibraryManager manager = mngr.getOntologyLibraryManager();
-        OntologyLibrary lib = manager.getLibrary(logicalURI);
-        if (lib != null) {
-            uri = lib.getPhysicalURI(logicalURI);
-            if (logger.isInfoEnabled()) {
-                logger.info("Mapping (from library: " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
+        // Search auto mapped libraries
+        for (OntologyLibrary lib : automappedLibraries) {
+            if (lib.contains(logicalURI)) {
+                uri = lib.getPhysicalURI(logicalURI);
+                // Map the URI
+                mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, uri));
+                if (logger.isInfoEnabled()) {
+                    logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
+                }
+                return uri;
             }
-            return lib.getPhysicalURI(logicalURI);
         }
-        if (logger.isInfoEnabled()) {
-            logger.info("No mapping for " + logicalURI + " found.");
-        }
-
         return null;
+    }
+
+
+    public void addLibrary(OntologyLibrary ontologyLibrary) {
+        automappedLibraries.add(ontologyLibrary);
     }
 }

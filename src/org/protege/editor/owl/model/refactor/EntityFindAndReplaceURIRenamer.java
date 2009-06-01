@@ -51,7 +51,8 @@ public class EntityFindAndReplaceURIRenamer {
     private String pattern;
     private String newText;
 
-    private Map<OWLEntity, URI> uriMap = new HashMap<OWLEntity, URI>();
+    private Map<OWLEntity, IRI> entity2IRIMap = new HashMap<OWLEntity, IRI>();
+
     private Map<OWLEntity, String> errorMap = new HashMap<OWLEntity, String>();
 
     public EntityFindAndReplaceURIRenamer(OWLOntologyManager mngr, Collection<OWLEntity> entities, Set<OWLOntology> ontologies, String pattern, String newText) {
@@ -67,13 +68,13 @@ public class EntityFindAndReplaceURIRenamer {
     
         private void generateNameMap() {
         for (OWLEntity entity : entities){
-            String newURIStr = entity.getURI().toString().replaceAll("(?i)" + pattern, newText);
+            String newURIStr = entity.getIRI().toString().replaceAll("(?i)" + pattern, newText);
             try {
                 URI newURI = new URI(newURIStr);
                 if (!newURI.isAbsolute()){
-                    throw new URISyntaxException(newURIStr, "URI must be absolute");
+                    throw new URISyntaxException(newURIStr, "IRI must be absolute");
                 }
-                uriMap.put(entity, newURI);
+                entity2IRIMap.put(entity, IRI.create(newURI));
             }
             catch (URISyntaxException e) {
                 errorMap.put(entity, newURIStr);
@@ -102,7 +103,7 @@ public class EntityFindAndReplaceURIRenamer {
                 axioms.addAll(ont.getReferencingAxioms(entity));
             }
 
-            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(uriMap, mngr.getOWLDataFactory());
+            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(entity2IRIMap, mngr.getOWLDataFactory());
             fillListWithTransformChanges(changes, axioms, ont, duplicator);
         }
 

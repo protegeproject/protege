@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyDomainsAndRangesFrame;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
-import org.protege.editor.owl.ui.framelist.OWLFrameList2;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLDataProperty;
 
 import javax.swing.*;
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLDataPropertyDomainsAndRangesViewComponent extends AbstractOWLDataPropertyViewComponent {
 
-    private OWLFrameList2<OWLDataProperty> list;
+    private OWLFrameList<OWLDataProperty> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList2<OWLDataProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<OWLDataProperty>(getOWLEditorKit(),
                                                   new OWLDataPropertyDomainsAndRangesFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
