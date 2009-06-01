@@ -82,7 +82,6 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.ontology.imports.missing,
  org.protege.editor.owl.ui.ontology.imports.wizard,
  org.protege.editor.owl.ui.ontology.location,
- org.protege.editor.owl.ui.ontology.migration,
  org.protege.editor.owl.ui.ontology.wizard.create,
  org.protege.editor.owl.ui.ontology.wizard.merge,
  org.protege.editor.owl.ui.ontology.wizard.move,
@@ -101,8 +100,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.usage,
  org.protege.editor.owl.ui.view,
  org.protege.editor.owl.ui.explanation,
- org.protege.editor.owl.ui.util,
- org.protege.editor.owl.ui.progress
+ org.protege.editor.owl.ui.util
 Bundle-Version: 4.1.0
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
