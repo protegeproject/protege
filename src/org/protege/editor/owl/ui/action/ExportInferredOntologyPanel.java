@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owl.util.*;
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,6 +61,8 @@ public class ExportInferredOntologyPanel extends JPanel {
         addCheckBox(new InferredDataPropertyCharacteristicAxiomGenerator());
         addCheckBox(new InferredInverseObjectPropertiesAxiomGenerator());
         addCheckBox(new InferredClassAssertionAxiomGenerator());
+        addCheckBox(new InferredDisjointClassesAxiomGenerator());
+        addCheckBox(new InferredPropertyAssertionGenerator());
     }
 
 
