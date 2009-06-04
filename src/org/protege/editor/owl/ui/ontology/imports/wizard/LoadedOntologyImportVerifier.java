@@ -36,7 +36,7 @@ public class LoadedOntologyImportVerifier implements ImportVerifier {
                 // @@TODO what about anonymous ontologies?
                 Set<IRI> iris = new HashSet<IRI>();
                 for (OWLOntology ont : ontologies) {
-                    iris.add(ont.getOntologyID().getOntologyIRI());
+                    iris.add(ont.getOntologyID().getDefaultDocumentIRI());
                 }
                 return iris;
             }

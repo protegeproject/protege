@@ -88,7 +88,7 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLAnnotatio
     public void setEditedObject(OWLAnonymousIndividual object) {
         if (object == null) {
             // @@TODO what about anonymous ontologies?
-            String id = editorKit.getModelManager().getActiveOntology().getOntologyID().getOntologyIRI() + "#genid" + System.nanoTime();
+            String id = editorKit.getModelManager().getActiveOntology().getOntologyID().getDefaultDocumentIRI() + "#genid" + System.nanoTime();
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }
         frameList.setRootObject(object);
