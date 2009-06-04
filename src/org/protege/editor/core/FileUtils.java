@@ -45,6 +45,9 @@ public class FileUtils {
             outputFile = new File(outputFile, inputFile.getName());
         }
 
+        outputFile.getParentFile().mkdirs();
+        outputFile.createNewFile();
+
         FileInputStream in = new FileInputStream(inputFile);
         FileOutputStream out = new FileOutputStream(outputFile);
 
