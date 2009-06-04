@@ -433,6 +433,24 @@
     </extension>
 
 
+        <extension id="OWLAnnotationPropertyAnnotations"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Annotations"/>
+        <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyAnnotationsViewComponent"/>
+        <headerColor value="@org.protege.annotationscolor"/>
+        <category value="@org.protege.annotationpropertycategory"/>
+    </extension>
+
+
+    <extension id="OWLAnnotationPropertyDescription"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Description"/>
+        <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyDescriptionViewComponent"/>
+        <headerColor value="@org.protege.annotationscolor"/>
+        <category value="@org.protege.annotationpropertycategory"/>
+    </extension>
+
+
     <!-- misc views -->
 
     <extension id="SelectedEntityView"

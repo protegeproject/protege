@@ -1,8 +1,8 @@
-package org.protege.editor.owl.ui.view.annotationproperty;
+package org.protege.editor.owl.ui.frame.annotationproperty;
 
-import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
 import org.semanticweb.owl.model.OWLAnnotationProperty;
-import org.semanticweb.owl.model.OWLObject;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,26 +32,14 @@ import org.semanticweb.owl.model.OWLObject;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 15, 2009<br><br>
+ * Date: Jun 4, 2009<br><br>
  */
-public abstract class AbstractOWLAnnotationPropertyViewComponent extends AbstractOWLSelectionViewComponent {
+public class OWLAnnotationPropertyDescriptionFrame extends AbstractOWLFrame<OWLAnnotationProperty> {
 
-    protected boolean isOWLAnnotationPropertyView() {
-        return true;
+    public OWLAnnotationPropertyDescriptionFrame(OWLEditorKit owlEditorKit) {
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
+        addSection(new OWLAnnotationPropertyDomainFrameSection(owlEditorKit, this));
+        addSection(new OWLAnnotationPropertyRangeFrameSection(owlEditorKit, this));
+        addSection(new OWLSubAnnotationPropertyFrameSection(owlEditorKit, this));
     }
-
-
-    protected OWLObject updateView() {
-        OWLAnnotationProperty selProp = updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());
-        if (selProp != null) {
-            updateRegisteredActions();
-        }
-        else {
-            disableRegisteredActions();
-        }
-        return selProp;
-    }
-
-
-    protected abstract OWLAnnotationProperty updateView(OWLAnnotationProperty property);
 }

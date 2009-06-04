@@ -1,8 +1,10 @@
-package org.protege.editor.owl.ui.view.annotationproperty;
+package org.protege.editor.owl.ui.frame.editor;
 
-import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
 import org.semanticweb.owl.model.OWLAnnotationProperty;
-import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,26 +34,38 @@ import org.semanticweb.owl.model.OWLObject;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 15, 2009<br><br>
+ * Date: Jun 4, 2009<br><br>
  */
-public abstract class AbstractOWLAnnotationPropertyViewComponent extends AbstractOWLSelectionViewComponent {
+public class OWLAnnotationPropertyEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLAnnotationProperty> {
 
-    protected boolean isOWLAnnotationPropertyView() {
-        return true;
+    private OWLAnnotationPropertySelectorPanel editor;
+
+
+    public OWLAnnotationPropertyEditor(OWLEditorKit owlEditorKit) {
+        editor = new OWLAnnotationPropertySelectorPanel(owlEditorKit);
     }
 
 
-    protected OWLObject updateView() {
-        OWLAnnotationProperty selProp = updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());
-        if (selProp != null) {
-            updateRegisteredActions();
-        }
-        else {
-            disableRegisteredActions();
-        }
-        return selProp;
+    public OWLAnnotationProperty getEditedObject() {
+        return editor.getSelectedObject();
+    }
+
+    public void setEditedObject(OWLAnnotationProperty p){
+        editor.setSelection(p);
     }
 
 
-    protected abstract OWLAnnotationProperty updateView(OWLAnnotationProperty property);
+    public JComponent getEditorComponent() {
+        return editor;
+    }
+
+
+    public void clear() {
+        editor.setSelection((OWLAnnotationProperty)null);
+    }
+
+
+    public void dispose() {
+        editor.dispose();
+    }
 }
