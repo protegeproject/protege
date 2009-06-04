@@ -17,8 +17,7 @@ public class OWLAnnotationPropertyUsageViewComponent extends AbstractOWLAnnotati
     private UsagePanel usagePanel;
 
 
-    protected OWLAnnotationProperty updateView() {
-        OWLAnnotationProperty property = getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty();
+    protected OWLAnnotationProperty updateView(OWLAnnotationProperty property) {
         usagePanel.setOWLEntity(property);
         return property;
     }

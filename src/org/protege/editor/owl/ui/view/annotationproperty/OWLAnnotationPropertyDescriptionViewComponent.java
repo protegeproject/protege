@@ -1,8 +1,11 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
-import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
+import org.protege.editor.owl.ui.frame.annotationproperty.OWLAnnotationPropertyDescriptionFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLAnnotationProperty;
-import org.semanticweb.owl.model.OWLObject;
+
+import javax.swing.*;
+import java.awt.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -32,26 +35,28 @@ import org.semanticweb.owl.model.OWLObject;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 15, 2009<br><br>
+ * Date: Jun 4, 2009<br><br>
  */
-public abstract class AbstractOWLAnnotationPropertyViewComponent extends AbstractOWLSelectionViewComponent {
+public class OWLAnnotationPropertyDescriptionViewComponent extends AbstractOWLAnnotationPropertyViewComponent {
 
-    protected boolean isOWLAnnotationPropertyView() {
-        return true;
+    private OWLFrameList<OWLAnnotationProperty> list;
+
+
+    public void initialiseView() throws Exception {
+        list = new OWLFrameList<OWLAnnotationProperty>(getOWLEditorKit(),
+                                                  new OWLAnnotationPropertyDescriptionFrame(getOWLEditorKit()));
+        setLayout(new BorderLayout());
+        add(new JScrollPane(list));
     }
 
 
-    protected OWLObject updateView() {
-        OWLAnnotationProperty selProp = updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());
-        if (selProp != null) {
-            updateRegisteredActions();
-        }
-        else {
-            disableRegisteredActions();
-        }
-        return selProp;
+    protected OWLAnnotationProperty updateView(OWLAnnotationProperty property) {
+        list.setRootObject(property);
+        return property;
     }
 
 
-    protected abstract OWLAnnotationProperty updateView(OWLAnnotationProperty property);
+    public void disposeView() {
+        list.dispose();
+    }
 }

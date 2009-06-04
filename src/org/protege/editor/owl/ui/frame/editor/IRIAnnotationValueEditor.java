@@ -7,6 +7,7 @@ import org.semanticweb.owl.model.*;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.util.Collections;
+import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,11 +38,13 @@ import java.util.Collections;
  * Bio-Health Informatics Group<br>
  * Date: 01-Aug-2007<br><br>
  */
-public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI> {
+public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI>, OWLFrameSectionRowObjectEditor<IRI> {
 
     private OWLEntitySelectorPanel entitySelectorPanel;
 
     private OWLEditorKit eKit;
+
+    private OWLFrameSectionRowObjectEditorHandler<IRI> handler;
 
 
     public IRIAnnotationValueEditor(OWLEditorKit owlEditorKit) {
@@ -60,9 +63,40 @@ public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI> {
     }
 
 
+    public void setHandler(OWLFrameSectionRowObjectEditorHandler<IRI> iriowlFrameSectionRowObjectEditorHandler) {
+        this.handler = iriowlFrameSectionRowObjectEditorHandler;
+    }
+
+
+    public OWLFrameSectionRowObjectEditorHandler<IRI> getHandler() {
+        return handler;
+    }
+
+
+    public JComponent getEditorComponent() {
+        return entitySelectorPanel;
+    }
+
+
     public IRI getEditedObject() {
         final OWLEntity entity = entitySelectorPanel.getSelectedObject();
         return entity != null ? entity.getIRI() : null;
+    }
+
+
+    public Set<IRI> getEditedObjects() {
+        IRI selObj = getEditedObject();
+        return selObj != null ? Collections.singleton(selObj) : Collections.EMPTY_SET;
+    }
+
+
+    public boolean isMultiEditSupported() {
+        return false;
+    }
+
+
+    public void clear() {
+        setEditedObject(null);
     }
 
 
@@ -91,6 +125,9 @@ public class IRIAnnotationValueEditor implements OWLAnnotationValueEditor<IRI> {
                     break;
                 }
             }
+        }
+        else{
+            entitySelectorPanel.setSelection((OWLEntity)null);
         }
     }
 
