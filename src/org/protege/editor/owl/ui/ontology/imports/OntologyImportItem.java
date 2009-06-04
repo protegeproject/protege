@@ -69,7 +69,7 @@ class OntologyImportItem implements MListItem {
     public List<MListButton> getAdditionalButtons() {
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
         // @@TODO what about anonymous ontologies?
-        if (ont != null && !decl.getIRI().equals(ont.getOntologyID().getOntologyIRI())) {
+        if (ont != null && !decl.getIRI().equals(ont.getOntologyID().getDefaultDocumentIRI())) {
             return Collections.singletonList(fixImportsButton);
         }
         return Collections.EMPTY_LIST;
@@ -89,7 +89,7 @@ class OntologyImportItem implements MListItem {
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
             // @@TODO what about anonymous ontologies?
-            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getOntologyIRI())));
+            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI())));
             mngr.applyChanges(changes);
         }
     }
@@ -107,7 +107,7 @@ class OntologyImportItem implements MListItem {
         sb.append("<font color=\"blue\">");
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
         // @@TODO what about anonymous ontologies?
-        sb.append(ont == null ? "(Not loaded)" : ont.getOntologyID().getOntologyIRI());
+        sb.append(ont == null ? "(Not loaded)" : ont.getOntologyID().getDefaultDocumentIRI());
         sb.append("</font><br><br>");
         sb.append("Do you want to fix the mismatch by modifying the imports statement?");
         sb.append("</body></html>");

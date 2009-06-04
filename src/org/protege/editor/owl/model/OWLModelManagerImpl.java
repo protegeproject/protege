@@ -413,7 +413,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
-        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getOntologyIRI(), physicalURI));
+        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), physicalURI));
         OWLOntology ont = manager.createOntology(ontologyID);
         dirtyOntologies.add(ont);
         setActiveOntology(ont);

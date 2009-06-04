@@ -65,7 +65,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     // @@TODO move this somewhere more appropriate
     // @@TODO what about anonymous ontologies?
     public static String getOntologyLabelText(OWLOntology ont, OWLModelManager mngr){
-        final IRI iri = ont.getOntologyID().getOntologyIRI();
+        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
 
         String shortForm = mngr.getRendering(ont);
 

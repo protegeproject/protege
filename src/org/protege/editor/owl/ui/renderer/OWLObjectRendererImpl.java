@@ -61,11 +61,8 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
             return "<ANONYMOUS ONTOLOGY>";
         }
 
-        // show the version uri or the ont uri if there is no version
-        IRI iri = ontology.getOntologyID().getVersionIRI();
-        if (iri == null){
-            iri = ontology.getOntologyID().getOntologyIRI();
-        }
+        // shows the version uri or the ont uri if there is no version
+        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI();
         return ontURISFP.getShortForm(iri.toURI());
     }
 }

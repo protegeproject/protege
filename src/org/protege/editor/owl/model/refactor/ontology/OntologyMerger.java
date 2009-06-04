@@ -55,7 +55,7 @@ public class OntologyMerger {
                 // move ontology imports
                 for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
                     // @@TODO what about anonymous ontologies?
-                    if (!decl.getIRI().equals(targetOntology.getOntologyID().getOntologyIRI())){
+                    if (!decl.getIRI().equals(targetOntology.getOntologyID().getDefaultDocumentIRI())){
                         changes.add(new AddImport(targetOntology, decl));
                     }
                     else{
