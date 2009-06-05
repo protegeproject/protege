@@ -1,11 +1,8 @@
-package org.protege.editor.owl.ui.frame.editor;
+package org.protege.editor.owl.ui.frame.datatype;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLObjectProperty;
-
-import javax.swing.*;
-import java.util.Set;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
+import org.semanticweb.owl.model.OWLDatatype;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -35,37 +32,12 @@ import java.util.Set;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 6, 2009<br><br>
+ * Date: Jun 5, 2009<br><br>
  */
-public class OWLObjectPropertySetEditor extends AbstractOWLFrameSectionRowObjectEditor<Set<OWLObjectProperty>> {
+public class OWLDatatypeDescriptionFrame extends AbstractOWLFrame<OWLDatatype> {
 
-    private OWLObjectPropertySelectorPanel editor;
-
-
-    public OWLObjectPropertySetEditor(OWLEditorKit owlEditorKit) {
-        editor = new OWLObjectPropertySelectorPanel(owlEditorKit);
-    }
-
-
-    public Set<OWLObjectProperty> getEditedObject() {
-        return editor.getSelectedObjects();
-    }
-
-    public void setEditedObject(Set<OWLObjectProperty> p){
-        editor.setSelection(p);
-    }
-
-    public JComponent getEditorComponent() {
-        return editor;
-    }
-
-
-    public void clear() {
-        editor.setSelection((OWLObjectProperty)null);
-    }
-
-
-    public void dispose() {
-        editor.dispose();
+    public OWLDatatypeDescriptionFrame(OWLEditorKit owlEditorKit) {
+        super(owlEditorKit.getModelManager().getOWLOntologyManager());
+        addSection(new OWLDatatypeDefinitionFrameSection(owlEditorKit, this));
     }
 }

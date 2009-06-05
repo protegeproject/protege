@@ -341,7 +341,12 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLHasKeyAxiom axiom) {
-            //@@TODO
+            //@@TODO implement
+        }
+
+
+        public void visit(OWLDatatypeDefinitionAxiom axiom) {
+            //@@TODO implement
         }
 
 

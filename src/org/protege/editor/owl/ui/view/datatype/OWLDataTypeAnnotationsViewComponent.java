@@ -1,11 +1,12 @@
-package org.protege.editor.owl.ui.frame.editor;
+package org.protege.editor.owl.ui.view.datatype;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLDataProperty;
+import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owl.model.OWLDatatype;
+import org.semanticweb.owl.model.OWLEntity;
 
 import javax.swing.*;
-import java.util.Set;
+import java.awt.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -35,39 +36,27 @@ import java.util.Set;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 6, 2009<br><br>
+ * Date: Jun 5, 2009<br><br>
  */
-public class OWLDataPropertySetEditor extends AbstractOWLFrameSectionRowObjectEditor<Set<OWLDataProperty>> {
+public class OWLDataTypeAnnotationsViewComponent extends AbstractOWLDataTypeViewComponent {
+
+    private OWLFrameList<OWLEntity> list;
 
 
-    private OWLDataPropertySelectorPanel editor;
-
-
-    public OWLDataPropertySetEditor(OWLEditorKit owlEditorKit) {
-        editor = new OWLDataPropertySelectorPanel(owlEditorKit);
+    public void initialiseView() throws Exception {
+        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        setLayout(new BorderLayout());
+        add(new JScrollPane(list));
     }
 
 
-    public Set<OWLDataProperty> getEditedObject() {
-        return editor.getSelectedObjects();
-    }
-
-    public void setEditedObject(Set<OWLDataProperty> p){
-        editor.setSelection(p);
+    public void disposeView() {
+        list.dispose();
     }
 
 
-    public JComponent getEditorComponent() {
-        return editor;
-    }
-
-
-    public void clear() {
-        editor.setSelection((OWLDataProperty)null);
-    }
-
-
-    public void dispose() {
-        editor.dispose();
+    protected OWLDatatype updateView(OWLDatatype datatype) {
+        list.setRootObject(datatype);
+        return datatype;
     }
 }
