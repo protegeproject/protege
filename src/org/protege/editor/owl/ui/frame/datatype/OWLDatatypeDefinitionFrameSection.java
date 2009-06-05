@@ -76,4 +76,11 @@ public class OWLDatatypeDefinitionFrameSection extends AbstractOWLFrameSection<O
     public Comparator<OWLFrameSectionRow<OWLDatatype, OWLDatatypeDefinitionAxiom, OWLDataRange>> getRowComparator() {
         return null;
     }
+
+
+    public void visit(OWLDatatypeDefinitionAxiom axiom) {
+        if (axiom.getDatatype().equals(getRootObject())){
+            reset();
+        }
+    }
 }
