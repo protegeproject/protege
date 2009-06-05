@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.SWRLRuleEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.SWRLRuleEditor;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.SWRLRule;
 
@@ -50,7 +50,7 @@ public class SWRLRulesFrameSection extends AbstractOWLFrameSection<OWLOntology, 
     }
 
 
-    public OWLFrameSectionRowObjectEditor<SWRLRule> getObjectEditor() {
+    public OWLObjectEditor<SWRLRule> getObjectEditor() {
         return new SWRLRuleEditor(getOWLEditorKit());
     }
 

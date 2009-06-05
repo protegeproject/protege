@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLGeneralAxiomEditor;
+import org.protege.editor.owl.ui.editor.OWLGeneralAxiomEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.OWLClassAxiom;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;
@@ -25,7 +25,7 @@ public class OWLGeneralClassAxiomFrameSectionRow extends AbstractOWLFrameSection
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLClassAxiom> getObjectEditor() {
+    protected OWLObjectEditor<OWLClassAxiom> getObjectEditor() {
         OWLGeneralAxiomEditor editor =  new OWLGeneralAxiomEditor(getOWLEditorKit());
         editor.setEditedObject(getAxiom());
         return editor;

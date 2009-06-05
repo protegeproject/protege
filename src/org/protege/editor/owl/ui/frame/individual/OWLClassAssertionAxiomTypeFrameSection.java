@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.frame.individual;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -82,7 +82,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
+    public OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, AxiomType.CLASS_ASSERTION);
     }
 

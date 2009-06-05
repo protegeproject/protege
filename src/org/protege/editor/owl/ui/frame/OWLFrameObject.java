@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLObject;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface OWLFrameObject<R extends Object, A extends OWLAxiom, E> {
 
-    OWLFrameSectionRowObjectEditor<E> getEditor();
+    OWLObjectEditor<E> getEditor();
 
 
     boolean canAcceptDrop(List<OWLObject> objects);

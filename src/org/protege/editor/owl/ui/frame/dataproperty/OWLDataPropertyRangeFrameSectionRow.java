@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.dataproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLDataRangeEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Arrays;
@@ -19,12 +19,9 @@ import java.util.List;
  */
 public class OWLDataPropertyRangeFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDataPropertyRangeAxiom, OWLDataRange> {
 
-    private OWLFrameSection section;
-
     public OWLDataPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                                OWLDataProperty rootObject, OWLDataPropertyRangeAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
-        this.section = section;
     }
 
 
@@ -33,8 +30,8 @@ public class OWLDataPropertyRangeFrameSectionRow extends AbstractOWLFrameSection
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLDataRange> getObjectEditor() {
-        OWLDataRangeEditor editor = (OWLDataRangeEditor)section.getEditor();
+    protected OWLObjectEditor<OWLDataRange> getObjectEditor() {
+        OWLDataRangeEditor editor = new OWLDataRangeEditor(getOWLEditorKit());
         editor.setEditedObject(getAxiom().getRange());
         return editor;
     }

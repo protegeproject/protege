@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.AbstractOWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLClassExpression;
 
 import javax.swing.*;
@@ -21,7 +20,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 15-Feb-2007<br><br>
  */
-public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLClassExpression>
+public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassExpression>
         implements VerifiedInputEditor {
 
     private OWLEditorKit editorKit;
@@ -44,7 +43,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
         }
     };
 
-    private OWLClassExpression description;
+    private OWLClassExpression expression;
 
     private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
         public void verifiedStatusChanged(boolean newState) {
@@ -53,11 +52,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     };
 
 
-    public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLClassExpression description) {
+    public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLClassExpression expression) {
 
         this.editorKit = editorKit;
 
-        this.description = description;
+        this.expression = expression;
 
         editingComponent = new JPanel(new BorderLayout());
 
@@ -75,7 +74,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     public void addPanel(OWLDescriptionEditor editorPanel){
         editors.add(editorPanel);
 
-        if (editorPanel.setDescription(description)){
+        if (editorPanel.setDescription(expression)){
             activeEditors.add(editorPanel);
             tabbedPane.add(editorPanel.getEditorName(), editorPanel.getComponent());
             editorPanel.addStatusChangedListener(inputListener);
@@ -105,6 +104,16 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     }
 
 
+    public String getEditorTypeName() {
+        return "Class expression";
+    }
+
+
+    public boolean canEdit(Object object) {
+        return object instanceof OWLClassExpression;
+    }
+
+
     /**
      * Gets a component that will be used to edit the specified
      * object.
@@ -115,15 +124,28 @@ public class OWLClassDescriptionEditor extends AbstractOWLFrameSectionRowObjectE
     }
 
 
-    public void clear() {
-        for (OWLDescriptionEditor editor : activeEditors){
-            editor.setDescription(null);
-        }
+    public Set<OWLClassExpression> getEditedObjects() {
+        return getSelectedEditor().getClassExpressions();
     }
 
 
-    public Set<OWLClassExpression> getEditedObjects() {
-        return getSelectedEditor().getClassExpressions();
+    public boolean setEditedObject(OWLClassExpression expression) {
+        this.expression = expression;
+
+        activeEditors.clear();
+        tabbedPane.removeAll();
+
+        for (OWLDescriptionEditor editor : editors){
+            if (editor.setDescription(this.expression)){
+                activeEditors.add(editor);
+                tabbedPane.add(editor.getEditorName(), editor.getComponent());
+                editor.addStatusChangedListener(inputListener);
+            }
+        }
+
+        tabbedPane.validate();
+        
+        return !activeEditors.isEmpty(); // then no editors are appropriate for this expression
     }
 
 

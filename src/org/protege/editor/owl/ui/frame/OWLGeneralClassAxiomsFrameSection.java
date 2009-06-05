@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLGeneralAxiomEditor;
+import org.protege.editor.owl.ui.editor.OWLGeneralAxiomEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Comparator;
@@ -26,7 +26,7 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLClassAxiom> getObjectEditor() {
+    public OWLObjectEditor<OWLClassAxiom> getObjectEditor() {
         return new OWLGeneralAxiomEditor(getOWLEditorKit());
     }
 

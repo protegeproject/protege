@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.property;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -53,7 +53,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
+    public OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         AxiomType type;
         if (getRootObject() instanceof OWLObjectProperty){
             type = AxiomType.OBJECT_PROPERTY_DOMAIN;

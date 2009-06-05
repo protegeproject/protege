@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.OWLAnnotation;
 import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owl.model.OWLAnnotationSubject;
@@ -31,9 +31,9 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
+    protected OWLObjectEditor<OWLAnnotation> getObjectEditor() {
         OWLAnnotationEditor editor = new OWLAnnotationEditor(getOWLEditorKit());
-        editor.setAnnotation(getAxiom().getAnnotation());
+        editor.setEditedObject(getAxiom().getAnnotation());
         return editor;
     }
 

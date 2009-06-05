@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLClassDescriptionSetEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -57,8 +57,8 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
     }
 
 
-    public OWLFrameSectionRowObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
-        return new OWLClassDescriptionSetEditor(getOWLEditorKit());
+    public OWLObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
+        return new OWLClassExpressionSetEditor(getOWLEditorKit());
     }
 
 

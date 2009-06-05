@@ -15,11 +15,11 @@ public class OWLClassDescriptionFrame extends AbstractOWLFrame<OWLClass> {
 
     public OWLClassDescriptionFrame(OWLEditorKit editorKit) {
         super(editorKit.getModelManager().getOWLOntologyManager());
-//        addSection(new OWLAnnotationFrameSection(editorKit, this));
         addSection(new OWLEquivalentClassesAxiomFrameSection(editorKit, this));
         addSection(new OWLSubClassAxiomFrameSection(editorKit, this));
         addSection(new InheritedAnonymousClassesFrameSection(editorKit, this));
         addSection(new OWLClassAssertionAxiomMembersSection(editorKit, this));
+        addSection(new OWLKeySection(editorKit, this));
         addSection(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
     }
 }

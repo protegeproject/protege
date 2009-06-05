@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLClassAssertionAxiom;
 import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLNamedIndividual;
@@ -28,7 +28,7 @@ public class OWLClassAssertionAxiomMembersSectionRow extends AbstractOWLFrameSec
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLNamedIndividual> getObjectEditor() {
+    protected OWLObjectEditor<OWLNamedIndividual> getObjectEditor() {
         return null;
     }
 

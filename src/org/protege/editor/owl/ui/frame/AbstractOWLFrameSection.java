@@ -4,8 +4,8 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditorHandler;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owl.inference.OWLReasoner;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -23,7 +23,7 @@ import java.util.*;
  * The visitor methods can be overriden to be notified when an axiom is added or removed
  */
 public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
-        implements OWLFrameSection<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E> {
+        implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
 
     private OWLEditorKit owlEditorKit;
 
@@ -35,7 +35,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private String rowLabel;
 
-    private OWLFrameSectionRowObjectEditor<E> editor;
+    private OWLObjectEditor<E> editor;
 
     private boolean cacheEditor = true;
 
@@ -119,13 +119,13 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     }
 
 
-    final public OWLFrameSectionRowObjectEditor<E> getEditor() {
+    final public OWLObjectEditor<E> getEditor() {
         if (!cacheEditor && editor != null){
             editor.dispose();
             editor = null;
         }
         if (editor == null) {
-            OWLFrameSectionRowObjectEditor<E> ed = getObjectEditor();
+            OWLObjectEditor<E> ed = getObjectEditor();
             if (ed != null) {
                 ed.setHandler(this);
             }
@@ -165,7 +165,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     protected abstract A createAxiom(E object);
 
 
-    public abstract OWLFrameSectionRowObjectEditor<E> getObjectEditor();
+    public abstract OWLObjectEditor<E> getObjectEditor();
 
 
     /**

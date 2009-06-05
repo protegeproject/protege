@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyChainEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertyChainEditor;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
@@ -29,7 +29,7 @@ public class OWLPropertyChainAxiomFrameSectionRow extends AbstractOWLFrameSectio
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<List<OWLObjectPropertyExpression>> getObjectEditor() {
+    protected OWLObjectEditor<List<OWLObjectPropertyExpression>> getObjectEditor() {
         OWLObjectPropertyChainEditor editor = new OWLObjectPropertyChainEditor(getOWLEditorKit());
         editor.setAxiom(getAxiom());
         return editor;

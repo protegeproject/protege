@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertySetEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertySetEditor;
 import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.inference.OWLReasonerException;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -71,7 +69,7 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
     }
 
 
-    public OWLFrameSectionRowObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
+    public OWLObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
         return new OWLObjectPropertySetEditor(getOWLEditorKit());
     }
 

@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLClassDescriptionSetEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owl.model.OWLOntology;
@@ -31,8 +31,8 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
-        return new OWLClassDescriptionSetEditor(getOWLEditorKit(), getManipulatableObjects());
+    protected OWLObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
+        return new OWLClassExpressionSetEditor(getOWLEditorKit(), getManipulatableObjects());
     }
 
 

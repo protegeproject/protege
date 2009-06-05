@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntityCollector;
@@ -179,7 +179,7 @@ public class ExplanationFrameSection extends AbstractOWLFrameSection<OWLAxiom, O
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLAxiom> getObjectEditor() {
+    public OWLObjectEditor<OWLAxiom> getObjectEditor() {
         return null;
     }
 

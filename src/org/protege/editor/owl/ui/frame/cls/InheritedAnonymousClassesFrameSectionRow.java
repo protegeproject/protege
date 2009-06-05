@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.CollectionFactory;
 
@@ -27,7 +27,7 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
+    protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         if (getAxiom() instanceof OWLSubClassOfAxiom) {
             OWLClassExpression superCls = ((OWLSubClassOfAxiom) getAxiom()).getSuperClass();
             return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls, AxiomType.SUBCLASS);

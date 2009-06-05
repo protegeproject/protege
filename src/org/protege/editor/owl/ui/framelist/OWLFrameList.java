@@ -12,8 +12,8 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.*;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
@@ -378,7 +378,7 @@ public class OWLFrameList<R extends Object> extends MList implements
             }
             OWLFrameObject row = (OWLFrameObject) val;
             showEditorDialog(row, new EditHandler() {
-                public void handleEditFinished(OWLFrameSectionRowObjectEditor editor) {
+                public void handleEditFinished(OWLObjectEditor editor) {
                     editor.getHandler().handleEditingFinished(editor.getEditedObjects());
                 }
             });
@@ -416,7 +416,7 @@ public class OWLFrameList<R extends Object> extends MList implements
                                   final EditHandler handler) {
         // If we don't have any editing component then just return
         final boolean isRowEditor = frameObject instanceof OWLFrameSectionRow;
-        final OWLFrameSectionRowObjectEditor editor = frameObject.getEditor();
+        final OWLObjectEditor editor = frameObject.getEditor();
         if (editor == null) {
             return;
         }
@@ -616,7 +616,7 @@ public class OWLFrameList<R extends Object> extends MList implements
 
 
     private interface EditHandler {
-        void handleEditFinished(OWLFrameSectionRowObjectEditor editor);
+        void handleEditFinished(OWLObjectEditor editor);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.ontology.annotation;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.semanticweb.owl.model.*;
 
 import javax.swing.*;
@@ -69,7 +69,7 @@ public class OntologyAnnotationItem implements MListItem {
         if (editor == null){
             editor = new OWLAnnotationEditor(eKit);
         }
-        editor.setAnnotation(annot);
+        editor.setEditedObject(annot);
         UIHelper uiHelper = new UIHelper(eKit);
         int ret = uiHelper.showValidatingDialog("Ontology Annotation", editor.getEditorComponent(), null);
 
