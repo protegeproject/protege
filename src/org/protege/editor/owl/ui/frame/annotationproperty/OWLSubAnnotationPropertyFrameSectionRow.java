@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLAnnotationPropertyEditor;
 import org.semanticweb.owl.model.OWLAnnotationProperty;
 import org.semanticweb.owl.model.OWLObject;
 import org.semanticweb.owl.model.OWLOntology;

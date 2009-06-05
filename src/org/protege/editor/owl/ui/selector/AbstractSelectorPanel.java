@@ -112,6 +112,12 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         });
     }
 
+
+    public void clearSelection(){
+        setSelection((O)null);
+    }
+    
+
     public abstract void setSelection(O entity);
 
 

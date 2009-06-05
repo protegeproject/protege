@@ -21,6 +21,7 @@ import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -135,6 +136,19 @@ public class ExpressionEditor<O> extends JTextPane
             OWLModelManager mngr = getOWLEditorKit().getModelManager();
             String rendering = mngr.getRendering((OWLObject) desc);
             setText(rendering);
+        }
+        else if (desc instanceof Collection){
+            OWLModelManager mngr = getOWLEditorKit().getModelManager();
+            StringBuffer sb = new StringBuffer();
+            for (Object obj : (Collection)desc){
+                if (obj instanceof OWLObject){
+                    if (sb.length() > 0){
+                        sb.append(", ");
+                    }
+                    sb.append(mngr.getRendering((OWLObject)obj));
+                }
+            }
+            setText(sb.toString());
         }
         else {
             setText(desc.toString());

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.IRIAnnotationValueEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.IRIAnnotationValueEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -64,7 +64,7 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
     }
 
 
-    public OWLFrameSectionRowObjectEditor<IRI> getObjectEditor() {
+    public OWLObjectEditor<IRI> getObjectEditor() {
         if (editor == null){
             editor = new IRIAnnotationValueEditor(getOWLEditorKit());
         }

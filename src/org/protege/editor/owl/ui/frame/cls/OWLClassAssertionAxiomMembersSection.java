@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLIndividualEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLIndividualEditor;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
 
@@ -84,7 +84,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 	}
 
 
-    public OWLFrameSectionRowObjectEditor<OWLNamedIndividual> getObjectEditor() {
+    public OWLObjectEditor<OWLNamedIndividual> getObjectEditor() {
 		return new OWLIndividualEditor(getOWLEditorKit(), ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 

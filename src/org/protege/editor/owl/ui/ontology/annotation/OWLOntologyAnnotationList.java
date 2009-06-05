@@ -4,7 +4,7 @@ import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
 import org.semanticweb.owl.model.*;
 

@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.frame.editor.OWLAnnotationEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLAnnotation> getObjectEditor() {
+    public OWLObjectEditor<OWLAnnotation> getObjectEditor() {
         return new OWLAnnotationEditor(getOWLEditorKit());
     }
 

@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.IRIAnnotationValueEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.IRIAnnotationValueEditor;
 import org.semanticweb.owl.model.*;
 
 import java.util.Arrays;

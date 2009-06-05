@@ -4,8 +4,8 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditorHandler;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owl.model.*;
 
 import java.util.*;
@@ -17,7 +17,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
  */
-public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> implements OWLFrameSectionRow<R, A, E>, OWLFrameSectionRowObjectEditorHandler<E> {
+public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWLAxiom, E> implements OWLFrameSectionRow<R, A, E>, OWLObjectEditorHandler<E> {
 
     public static final String DEFAULT_DELIMETER = ", ";
 
@@ -74,8 +74,8 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         return false;
     }
 
-    final public OWLFrameSectionRowObjectEditor<E> getEditor() {
-        OWLFrameSectionRowObjectEditor<E> editor = getObjectEditor();
+    final public OWLObjectEditor<E> getEditor() {
+        OWLObjectEditor<E> editor = getObjectEditor();
         if (editor != null) {
             editor.setHandler(this);
         }
@@ -83,7 +83,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     }
 
 
-    protected abstract OWLFrameSectionRowObjectEditor<E> getObjectEditor();
+    protected abstract OWLObjectEditor<E> getObjectEditor();
 
 
     public void handleEditingFinished(Set<E> editedObjects) {

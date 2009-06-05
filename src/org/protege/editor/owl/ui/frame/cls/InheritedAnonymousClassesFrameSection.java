@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.inference.OWLReasonerAdapter;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.*;
@@ -37,7 +37,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
+    public OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         return null; // canAdd() = false
     }
 

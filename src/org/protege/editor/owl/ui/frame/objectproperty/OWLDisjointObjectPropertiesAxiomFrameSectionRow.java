@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertySetEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertySetEditor;
 import org.semanticweb.owl.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
@@ -24,19 +24,16 @@ import java.util.Set;
  */
 public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectProperty>> {
 
-    private OWLFrameSection section;
 
     public OWLDisjointObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                            OWLOntology ontology, OWLObjectProperty rootObject,
                                                            OWLDisjointObjectPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
-
-        this.section = section;
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
-        OWLObjectPropertySetEditor editor = (OWLObjectPropertySetEditor) section.getEditor();
+    protected OWLObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
+        OWLObjectPropertySetEditor editor = new OWLObjectPropertySetEditor(getOWLEditorKit());
         final Set<OWLObjectPropertyExpression> disjoints = getAxiom().getProperties();
         final Set<OWLObjectProperty> namedDisjoints = new HashSet<OWLObjectProperty>();
         for (OWLObjectPropertyExpression p : disjoints){

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame.individual;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLIndividualSetEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLIndividualSetEditor;
 import org.semanticweb.owl.model.OWLNamedIndividual;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLSameIndividualAxiom;
@@ -58,7 +58,7 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
     }
 
 
-    public OWLFrameSectionRowObjectEditor<Set<OWLNamedIndividual>> getObjectEditor() {
+    public OWLObjectEditor<Set<OWLNamedIndividual>> getObjectEditor() {
         return new OWLIndividualSetEditor(getOWLEditorKit());
     }
 

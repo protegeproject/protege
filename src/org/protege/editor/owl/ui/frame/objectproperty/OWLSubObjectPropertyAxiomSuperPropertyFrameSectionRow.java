@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
-import org.protege.editor.owl.ui.frame.editor.OWLObjectPropertyEditor;
 import org.semanticweb.owl.model.OWLObjectProperty;
 import org.semanticweb.owl.model.OWLObjectPropertyExpression;
 import org.semanticweb.owl.model.OWLOntology;
@@ -22,18 +22,15 @@ import java.util.List;
  */
 public class OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectProperty> {
 
-    private OWLFrameSection section;
-
     public OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                                  OWLOntology ontology, OWLObjectProperty rootObject,
                                                                  OWLSubObjectPropertyOfAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
-        this.section = section;
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLObjectProperty> getObjectEditor() {
-        OWLObjectPropertyEditor editor = (OWLObjectPropertyEditor) section.getEditor();
+    protected OWLObjectEditor<OWLObjectProperty> getObjectEditor() {
+        OWLObjectPropertyEditor editor = new OWLObjectPropertyEditor(getOWLEditorKit());
         OWLObjectPropertyExpression p = getAxiom().getSuperProperty();
         if (!p.isAnonymous()){
             editor.setEditedObject(p.asOWLObjectProperty());

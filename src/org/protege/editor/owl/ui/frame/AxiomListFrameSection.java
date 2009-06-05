@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.inference.OWLReasonerException;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLOntology;
@@ -59,7 +59,7 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
     }
 
 
-    public OWLFrameSectionRowObjectEditor<OWLAxiom> getObjectEditor() {
+    public OWLObjectEditor<OWLAxiom> getObjectEditor() {
         return null;
     }
 

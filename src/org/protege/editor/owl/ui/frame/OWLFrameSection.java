@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.core.ui.list.MListSectionHeader;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owl.model.OWLAxiom;
 
 import java.util.Comparator;
@@ -49,7 +49,7 @@ public interface OWLFrameSection<R, A extends OWLAxiom, E> extends OWLFrameObjec
     int getRowIndex(OWLFrameSectionRow row);
 
 
-    OWLFrameSectionRowObjectEditor<E> getEditor();
+    OWLObjectEditor<E> getEditor();
 
 
     /**

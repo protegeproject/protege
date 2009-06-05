@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.protege.editor.owl.ui.frame.editor.OWLFrameSectionRowObjectEditor;
 import org.semanticweb.owl.model.AxiomType;
 import org.semanticweb.owl.model.OWLClassExpression;
 import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
@@ -38,7 +38,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
     }
 
 
-    protected OWLFrameSectionRowObjectEditor<OWLClassExpression> getObjectEditor() {
+    protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
         descs.remove(getRoot());
         return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES);
