@@ -30,6 +30,8 @@ public class ProtegeProperties extends Properties {
 
     public static final String ANNOTATION_PROPERTY_COLOR_KEY = PROTEGE_PREFIX + "annotationscolor";
 
+    public static final String DATATYPE_COLOR_KEY = PROTEGE_PREFIX + "datatypecolor";
+
     public static final String CLASS_VIEW_CATEGORY = PROTEGE_PREFIX + "classcategory";
 
     public static final String OBJECT_PROPERTY_VIEW_CATEGORY = PROTEGE_PREFIX + "objectpropertycategory";
