@@ -1,10 +1,11 @@
-package org.protege.editor.owl.ui.frame.editor;
+package org.protege.editor.owl.ui.view.datatype;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.protege.editor.owl.ui.frame.datatype.OWLDatatypeDescriptionFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owl.model.OWLDatatype;
 
 import javax.swing.*;
+import java.awt.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -34,38 +35,28 @@ import javax.swing.*;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Jun 4, 2009<br><br>
+ * Date: Jun 5, 2009<br><br>
  */
-public class OWLAnnotationPropertyEditor extends AbstractOWLFrameSectionRowObjectEditor<OWLAnnotationProperty> {
+public class OWLDataTypeDescriptionViewComponent extends AbstractOWLDataTypeViewComponent {
 
-    private OWLAnnotationPropertySelectorPanel editor;
+    private OWLFrameList<OWLDatatype> list;
 
 
-    public OWLAnnotationPropertyEditor(OWLEditorKit owlEditorKit) {
-        editor = new OWLAnnotationPropertySelectorPanel(owlEditorKit);
+    public void initialiseView() throws Exception {
+        list = new OWLFrameList<OWLDatatype>(getOWLEditorKit(),
+                                             new OWLDatatypeDescriptionFrame(getOWLEditorKit()));
+        setLayout(new BorderLayout());
+        add(new JScrollPane(list));
     }
 
 
-    public OWLAnnotationProperty getEditedObject() {
-        return editor.getSelectedObject();
-    }
-
-    public void setEditedObject(OWLAnnotationProperty p){
-        editor.setSelection(p);
+    protected OWLDatatype updateView(OWLDatatype datatype) {
+        list.setRootObject(datatype);
+        return datatype;
     }
 
 
-    public JComponent getEditorComponent() {
-        return editor;
-    }
-
-
-    public void clear() {
-        editor.setSelection((OWLAnnotationProperty)null);
-    }
-
-
-    public void dispose() {
-        editor.dispose();
+    public void disposeView() {
+        list.dispose();
     }
 }

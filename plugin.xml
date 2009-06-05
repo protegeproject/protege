@@ -433,7 +433,7 @@
     </extension>
 
 
-        <extension id="OWLAnnotationPropertyAnnotations"
+    <extension id="OWLAnnotationPropertyAnnotations"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Annotations"/>
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyAnnotationsViewComponent"/>
@@ -448,6 +448,36 @@
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyDescriptionViewComponent"/>
         <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
+    </extension>
+
+
+    <!-- Datatype views -->
+
+    <extension id="OWLDatatypeList"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Datatypes"/>
+        <class value="org.protege.editor.owl.ui.view.datatype.OWLDataTypeViewComponent"/>
+        <headerColor value="@org.protege.datatypecolor"/>
+        <category value="@org.protege.datatypecategory"/>
+        <navigates value="@org.protege.datatypecategory"/>
+    </extension>
+
+
+    <extension id="OWLDatatypeAnnotations"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Annotations"/>
+        <class value="org.protege.editor.owl.ui.view.datatype.OWLDataTypeAnnotationsViewComponent"/>
+        <headerColor value="@org.protege.datatypecolor"/>
+        <category value="@org.protege.datatypecategory"/>
+    </extension>
+
+
+    <extension id="OWLDatatypeDescription"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Description"/>
+        <class value="org.protege.editor.owl.ui.view.datatype.OWLDataTypeDescriptionViewComponent"/>
+        <headerColor value="@org.protege.datatypecolor"/>
+        <category value="@org.protege.datatypecategory"/>
     </extension>
 
 
@@ -632,6 +662,15 @@
         <category value="@org.protege.individualcategory"/>
     </extension>
 
+    <extension id="OWLDatatypeUsageView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Usage"/>
+        <class value="org.protege.editor.owl.ui.view.datatype.OWLDataTypeUsageViewComponent"/>
+        <headerColor value="@org.protege.datatypecolor"/>
+        <category value="@org.protege.datatypecategory"/>
+    </extension>
+
+
     <extension id="ExplanationResultsView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Explanation"/>
@@ -687,7 +726,7 @@
         <accelerator value="shift Z"/>
     </extension>
 
-    
+
     <extension id="gatherontologies"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Gather ontologies..."/>

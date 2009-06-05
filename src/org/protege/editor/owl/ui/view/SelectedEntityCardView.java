@@ -39,7 +39,10 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private static final String INDIVIDUALS_PANEL = "Individual";
 
+    private static final String DATATYPES_PANEL = "Datatypes";
+
     private static final String BLANK_PANEL = "Blank";
+
 
 
     protected void initialiseOWLView() throws Exception {
@@ -87,6 +90,12 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         addPane(INDIVIDUALS_PANEL,
                 "/selected-entity-view-individual-panel.xml",
                 "org.protege.editor.owl.ui.view.selectedentityview.individuals",
+                reset);
+
+
+        addPane(DATATYPES_PANEL,
+                "/selected-entity-view-datatype-panel.xml",
+                "org.protege.editor.owl.ui.view.selectedentityview.datatypes",
                 reset);
     }
 
@@ -148,6 +157,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
 
                 public void visit(OWLDatatype dataType) {
+                    selectPanel(DATATYPES_PANEL);
                 }
             });
         }
