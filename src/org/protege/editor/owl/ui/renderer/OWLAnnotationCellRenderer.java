@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owl.model.IRI;
 import org.semanticweb.owl.model.OWLAnnotation;
+import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,27 +28,40 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
 
     private static final Color LABEL_COLOR = Color.BLUE.darker();
 
+    private OWLOntology ontology;
+
+    private Font normalFont;
+    private Font activeOntologyFont;
+
 
     public OWLAnnotationCellRenderer(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
+
         annotationURILabel = new JLabel();
         annotationURILabel.setForeground(LABEL_COLOR);
+
+        normalFont = annotationURILabel.getFont();
+        activeOntologyFont = normalFont.deriveFont(Font.BOLD);
+
         annotationContentArea = new JTextArea();
         annotationContentArea.setFont(new Font("lucida grande", Font.PLAIN, 12));
         annotationContentArea.setLineWrap(true);
         annotationContentArea.setWrapStyleWord(true);
-        add(annotationURILabel, BorderLayout.NORTH);
-        JPanel contentPanel = new JPanel(new BorderLayout(3, 3));
-        contentPanel.add(annotationContentArea, BorderLayout.CENTER);
-        add(contentPanel, BorderLayout.SOUTH);
         annotationContentArea.setOpaque(false);
+
+        iconLabel = new JLabel();
+        iconLabel.setIcon(OWLIcons.getIcon("individual.png"));
+
+        JPanel contentPanel = new JPanel(new BorderLayout(3, 3));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 2));
         contentPanel.setOpaque(false);
-        iconLabel = new JLabel();
+        contentPanel.add(annotationContentArea, BorderLayout.CENTER);
         contentPanel.add(iconLabel, BorderLayout.WEST);
-        iconLabel.setIcon(OWLIcons.getIcon("individual.png"));
+
+        add(annotationURILabel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.SOUTH);
     }
 
 
@@ -60,6 +74,15 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
 
             annotationURILabel.setText(ren);
             annotationContentArea.setText(val);
+
+            if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() &&
+                owlEditorKit.getOWLModelManager().getActiveOntology().equals(ontology)) {
+                annotationURILabel.setFont(activeOntologyFont);
+            }
+            else {
+                annotationURILabel.setFont(normalFont);
+            }
+
             if (isSelected) {
                 annotationContentArea.setForeground(list.getSelectionForeground());
                 annotationURILabel.setForeground(list.getSelectionForeground());
@@ -82,5 +105,10 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
             setBackground(list.getBackground());
         }
         return this;
+    }
+
+
+    public void setOntology(OWLOntology ontology) {
+        this.ontology = ontology;
     }
 }

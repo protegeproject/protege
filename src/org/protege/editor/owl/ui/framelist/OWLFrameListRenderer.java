@@ -131,10 +131,11 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             return label;
         }
         else {
-            final OWLAxiom axiom = ((AbstractOWLFrameSectionRow) value).getAxiom();
-            if (axiom instanceof OWLAnnotationAssertionAxiom &&
-                    annotationRendererEnabled) {
+            final AbstractOWLFrameSectionRow row = (AbstractOWLFrameSectionRow) value;
+            final OWLAxiom axiom = row.getAxiom();
+            if (axiom instanceof OWLAnnotationAssertionAxiom && annotationRendererEnabled) {
                 OWLAnnotationAssertionAxiom annotationAssertionAxiom = (OWLAnnotationAssertionAxiom) axiom;
+                annotationRenderer.setOntology(row.getOntology());
                 return annotationRenderer.getListCellRendererComponent(list,
                                                                        annotationAssertionAxiom.getAnnotation(),
                                                                        index,
