@@ -103,7 +103,6 @@ public class OWLClassHierarchyCreator {
         OWLClass cls = nameMap.get(name);
         if (cls == null){
             try {
-                // @@TODO what about anonymous ontologies?
                 OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getOntologyID().getOntologyIRI());
                 changes.addAll(creationSet.getOntologyChanges());
                 cls = creationSet.getOWLEntity();

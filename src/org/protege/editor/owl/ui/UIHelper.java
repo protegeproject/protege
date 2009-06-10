@@ -62,55 +62,12 @@ public class UIHelper {
     }
 
 
-    /**
-     * Gets a URI whose base is the URI of the active ontology.  This
-     * method prompts the user to enter a local name (for a new entity
-     * for example) and then derived an absolute URI based on the URI
-     * of the active ontology.
-     * @param title   The title to display on the input dialog.
-     * @param message The message to display on the input dialog
-     * @return A <code>URI</code> or <code>null</code> if there was a
-     *         problem creating the URI.
-     */
-    public URI getURIForActiveOntology(String title, String message) throws URISyntaxException, OWLException {
-        return getURIForActiveOntology(title, message, null);
-    }
-
-
-    public URI getURIForActiveOntology(String title, String message, String initialValue) throws URISyntaxException,
-            OWLException {
-        // Prompt the user for a local name
-        String name = (String) JOptionPane.showInputDialog(getParent(),
-                                                           message,
-                                                           title,
-                                                           JOptionPane.INFORMATION_MESSAGE,
-                                                           null,
-                                                           null,
-                                                           initialValue);
-        if (name == null) {
-            return null;
-        }
-        OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
-        if (activeOntology == null) {
-            return null;
-        }
-        // @@TODO what about anonymous ontologies?
-        String base = activeOntology.getOntologyID().getOntologyIRI().toString();
-        if (!base.endsWith("#") &&
-            !base.endsWith("/")) {
-            base += "#";
-        }
-        return new URI(base + name);
-    }
-
-
     public URI getURI(String title, String message) throws URISyntaxException {
         String uriString = JOptionPane.showInputDialog(getParent(), message, title, JOptionPane.INFORMATION_MESSAGE);
         if (uriString == null) {
             return null;
         }
-        URI uri = new URI(uriString);
-        return uri;
+        return new URI(uriString);
     }
 
 

@@ -54,7 +54,7 @@ class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
 
 
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
-// @@TODO v3 port
+// @@TODO v3 port - currently no parseRule() available in OWL API (it is a rule frame)
         return null;
 //        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
 //        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));

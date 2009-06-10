@@ -52,15 +52,16 @@ public class OntologyMerger {
                     changes.add(new AddOntologyAnnotation(targetOntology, annot));
                 }
 
-                // move ontology imports
-                for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
-                    // @@TODO what about anonymous ontologies?
-                    if (!decl.getIRI().equals(targetOntology.getOntologyID().getDefaultDocumentIRI())){
-                        changes.add(new AddImport(targetOntology, decl));
-                    }
-                    else{
-                        logger.warn("Merge: ignoring import declaration for ontology " + targetOntology.getOntologyID() +
-                                    " (would result in targetOntology importing itself).");
+                if (!targetOntology.getOntologyID().isAnonymous()){
+                    // move ontology imports
+                    for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
+                        if (!decl.getIRI().equals(targetOntology.getOntologyID().getDefaultDocumentIRI())){
+                            changes.add(new AddImport(targetOntology, decl));
+                        }
+                        else{
+                            logger.warn("Merge: ignoring import declaration for ontology " + targetOntology.getOntologyID() +
+                                        " (would result in target ontology importing itself).");
+                        }
                     }
                 }
             }

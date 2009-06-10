@@ -47,10 +47,11 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
     public void setObjectPropertyAxiom(OWLPropertyAssertionAxiom<OWLObjectPropertyExpression, OWLIndividual> ax) {
 
         OWLObjectPropertyExpression p = ax.getProperty();
+        // @@TODO support for inverse properties
         if (p instanceof OWLObjectProperty) {
             objectPropertyPanel.setSelection((OWLObjectProperty) p);
         }
-        // @@TODO v3 port
+        // @@TODO support for anonymous individuals
         if (!ax.getObject().isAnonymous()){
             individualSelectorPanel.setSelection(ax.getObject().asNamedIndividual());
         }

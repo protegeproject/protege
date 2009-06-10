@@ -54,12 +54,12 @@ public class IRIAnnotationValueEditor implements OWLObjectEditor<IRI> {
 
 
     public boolean canEdit(Object object) {
-        return object instanceof OWLIndividual;
+        return object instanceof OWLNamedIndividual;
     }
 
 
     public boolean isPreferred(Object object) {
-        return object instanceof OWLIndividual && !((OWLIndividual) object).isAnonymous();
+        return object instanceof OWLNamedIndividual;
     }
 
 

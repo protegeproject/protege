@@ -14,7 +14,6 @@ import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLObjectDuplicator;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,7 +141,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
     }
 
 
-    class LiteralExtractor extends OWLObjectVisitorAdapter { // @@TODO should be OWLAnnotationValueVisitor (when OWLAPI updated)
+    class LiteralExtractor implements OWLAnnotationValueVisitor {
 
         private String label;
 
