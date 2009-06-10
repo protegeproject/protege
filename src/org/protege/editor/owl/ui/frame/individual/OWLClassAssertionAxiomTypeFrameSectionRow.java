@@ -31,7 +31,7 @@ public class OWLClassAssertionAxiomTypeFrameSectionRow extends AbstractOWLFrameS
 
 
     protected OWLClassAssertionAxiom createAxiom(OWLClassExpression editedObject) {
-        return getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(), editedObject);
+        return getOWLDataFactory().getOWLClassAssertionAxiom(editedObject, getRootObject());
     }
 
 

@@ -26,7 +26,7 @@ public class CreateInstanceOfThingAction extends ProtegeOWLAction {
             return;
         }
         OWLClass thing = getOWLDataFactory().getOWLThing();
-        OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(set.getOWLEntity(), thing);
+        OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(thing, set.getOWLEntity());
         getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
     }
 

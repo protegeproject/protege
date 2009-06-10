@@ -63,23 +63,14 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     }
 
     // @@TODO move this somewhere more appropriate
-    // @@TODO what about anonymous ontologies?
     public static String getOntologyLabelText(OWLOntology ont, OWLModelManager mngr){
-        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
-
-        String shortForm = mngr.getRendering(ont);
-
-        if (shortForm != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<html><body>");
-            sb.append(shortForm);
-            sb.append(" <font color=\"gray\">(");
-            sb.append(iri.toString());
-            sb.append(")</font></body></html>");
-            return sb.toString();
+        if (ont.getOntologyID().isAnonymous()){
+            return ont.getOntologyID().toString();
         }
 
-        return iri.toString();
+        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
+
+        return getOntologyLabelText(iri, mngr);
     }
 
     public static String getOntologyLabelText(IRI iri, OWLModelManager mngr){

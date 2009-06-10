@@ -60,8 +60,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
                     getRootObject(),
                     true))) {
                 if (!added.contains(inferredType)) {
-                    OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(),
-                                                                                              inferredType);
+                    OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
                     addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
                                                                          this,
                                                                          null,
@@ -77,8 +76,8 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
     }
 
 
-    protected OWLClassAssertionAxiom createAxiom(OWLClassExpression object) {
-        return getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(), object);
+    protected OWLClassAssertionAxiom createAxiom(OWLClassExpression classExpression) {
+        return getOWLDataFactory().getOWLClassAssertionAxiom(classExpression, getRootObject());
     }
 
 
@@ -101,8 +100,8 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
-                OWLClassExpression desc = (OWLClassExpression) obj;
-                OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(), desc);
+                OWLClassExpression classExpression = (OWLClassExpression) obj;
+                OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(classExpression, getRootObject());
                 changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             }
             else {

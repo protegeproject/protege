@@ -73,7 +73,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
     protected List<OWLOntologyChange> dofurtherCreateSteps(OWLIndividual newIndividual) {
         OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         if (cls != null){
-            OWLAxiom typeAxiom = getOWLModelManager().getOWLDataFactory().getOWLClassAssertionAxiom(newIndividual, cls);
+            OWLAxiom typeAxiom = getOWLModelManager().getOWLDataFactory().getOWLClassAssertionAxiom(cls, newIndividual);
             OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
             return Collections.singletonList(change);
         }

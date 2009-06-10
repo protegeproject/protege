@@ -178,7 +178,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
-        public void visit(OWLObjectPropertyInverse property) {
+        public void visit(OWLObjectInverseOf property) {
             property.getInverse().accept(this);
         }
 
