@@ -2,11 +2,13 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.frame.OWLAnnotationFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owl.model.OWLAnonymousIndividual;
 import org.semanticweb.owl.model.OWLIndividual;
+import org.semanticweb.owl.model.OWLOntologyID;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,8 +103,11 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
 
     public boolean setEditedObject(OWLAnonymousIndividual object) {
         if (object == null) {
-            // @@TODO what about anonymous ontologies?
-            String id = editorKit.getModelManager().getActiveOntology().getOntologyID().getDefaultDocumentIRI() + "#genid" + System.nanoTime();
+            String id = "genid" + System.nanoTime();
+            final OWLOntologyID ontologyID = editorKit.getModelManager().getActiveOntology().getOntologyID();
+            if (!ontologyID.isAnonymous()){
+                id = ontologyID.getOntologyIRI() + "#" + id;
+            }
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }
         frameList.setRootObject(object);
@@ -149,13 +154,12 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
     }
 
 
-    class OWLAnonymousIndividualPropertyAssertionsFrame extends OWLIndividualPropertyAssertionsFrame{
+    class OWLAnonymousIndividualPropertyAssertionsFrame extends OWLIndividualPropertyAssertionsFrame<OWLAnonymousIndividual>{
 
         public OWLAnonymousIndividualPropertyAssertionsFrame(OWLEditorKit owlEditorKit) {
             super(owlEditorKit);
             addSection(new OWLClassAssertionAxiomTypeFrameSection(owlEditorKit, this), 0);
-// @@TODO OWLAnonymousIndividual should implement OWLAnnotationSubject
-//            addSection(new OWLAnnotationFrameSection(owlEditorKit, this), 0);
+            addSection(new OWLAnnotationFrameSection(owlEditorKit, this), 0);
         }
     }
 }

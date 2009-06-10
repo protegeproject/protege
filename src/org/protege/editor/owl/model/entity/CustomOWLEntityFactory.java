@@ -85,10 +85,10 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         try {
 
             if (baseURI == null){
-                if (useDefaultBaseIRI()){
+                if (useDefaultBaseIRI() || mngr.getActiveOntology().getOntologyID().isAnonymous()){
                     baseURI = getDefaultBaseIRI();
                 }
-                if (baseURI == null){
+                else{
                     baseURI = mngr.getActiveOntology().getOntologyID().getOntologyIRI();
                 }
             }

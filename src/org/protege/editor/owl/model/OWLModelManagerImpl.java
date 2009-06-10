@@ -315,7 +315,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
      *            mechanism.
      */
     public OWLOntology loadOntology(IRI iri) throws OWLOntologyCreationException {
-        // @@TODO review this - what if the ontology has no IRI
         OWLOntology ont = null;
         try{
             ont = manager.loadOntology(iri);
@@ -337,6 +336,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         OWLOntology ontology = null;
 
         // Obtain the actual ontology IRI.
+        // @@TODO handle anonymous ontologies
         IRI ontologyIRI = new OntologyIRIExtractor(uri).getOntologyIRI();
 
         // if the ontology has already been loaded, we cannot have more than one ont with the same URI
