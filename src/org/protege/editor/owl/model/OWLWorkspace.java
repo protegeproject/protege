@@ -169,7 +169,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange chg : changes){
-            if (chg instanceof SetOntologyURI){
+            if (chg instanceof SetOntologyID){
                 rebuildOntologiesMenu();
                 updateTitleBar();
                 break;
