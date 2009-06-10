@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.semanticweb.owl.model.AddAxiom;
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLClass;
 import org.semanticweb.owl.model.OWLIndividual;
+
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -26,7 +26,7 @@ public class CreateInstanceOfSelectedClassAction extends SelectedOWLClassAction 
     public void actionPerformed(ActionEvent e) {
         OWLIndividual ind = getOWLWorkspace().createOWLIndividual().getOWLEntity();
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(ind, selectedClass);
+        OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(selectedClass, ind);
         getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
     }
 }

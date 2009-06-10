@@ -34,7 +34,7 @@ public class OWLClassAssertionAxiomMembersSectionRow extends AbstractOWLFrameSec
 
 
     protected OWLClassAssertionAxiom createAxiom(OWLNamedIndividual editedObject) {
-        return getOWLDataFactory().getOWLClassAssertionAxiom(editedObject, getRoot());
+        return getOWLDataFactory().getOWLClassAssertionAxiom(getRoot(), editedObject);
     }
 
 

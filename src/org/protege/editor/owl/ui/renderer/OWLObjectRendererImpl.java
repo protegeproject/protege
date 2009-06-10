@@ -58,7 +58,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
 
     private String renderOntology(OWLOntology ontology) {
         if (ontology.isAnonymous()){
-            return "<ANONYMOUS ONTOLOGY>";
+            return ontology.getOntologyID().toString();
         }
 
         // shows the version uri or the ont uri if there is no version

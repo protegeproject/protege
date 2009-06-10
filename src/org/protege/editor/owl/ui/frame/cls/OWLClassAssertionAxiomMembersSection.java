@@ -61,14 +61,14 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
 	protected void refillInferred() {
 		try {
+            final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
 			for (OWLIndividual ind : getOWLModelManager().getReasoner().getIndividuals(getRootObject(), false)) {
 				if (!ind.isAnonymous() && !added.contains(ind.asNamedIndividual())) {
-					addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
+                    addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
                                                                        this,
                                                                        null,
                                                                        getRootObject(),
-                                                                       getOWLModelManager().getOWLDataFactory().getOWLClassAssertionAxiom(ind,
-											getRootObject())));
+                                                                       df.getOWLClassAssertionAxiom(getRootObject(), ind)));
 					added.add(ind.asNamedIndividual());
 				}
 			}
@@ -79,8 +79,8 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 	}
 
 
-    protected OWLClassAssertionAxiom createAxiom(OWLNamedIndividual object) {
-		return getOWLDataFactory().getOWLClassAssertionAxiom(object, getRootObject());
+    protected OWLClassAssertionAxiom createAxiom(OWLNamedIndividual individual) {
+		return getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(), individual);
 	}
 
 
@@ -104,7 +104,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 		for (OWLObject obj : objects) {
 			if (obj instanceof OWLIndividual) {
 				OWLIndividual ind = (OWLIndividual) obj;
-				OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(ind, getRootObject());
+				OWLAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(getRootObject(), ind);
 				changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
 			}
 		}
