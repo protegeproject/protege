@@ -1,6 +1,9 @@
 package org.protege.editor.owl.ui.view;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -27,6 +30,8 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class AbstractOWLViewComponent extends ViewComponent {
+
+    private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
 
     private static final Logger logger = Logger.getLogger(AbstractOWLViewComponent.class);
 
@@ -126,12 +131,21 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
 
     private void handleFind() {
         logger.debug("Handling find in " + toString());
-        OWLEntity foundEntity = OWLEntityFindPanel.showDialog(this, getOWLEditorKit(), (Findable) this);
+        Component parent = getDialogParent();
+        OWLEntity foundEntity = OWLEntityFindPanel.showDialog(parent, getOWLEditorKit(), (Findable) this);
         if (foundEntity == null) {
             return;
         }
         ((Findable) this).show(foundEntity);
     }
+
+
+    private Component getDialogParent() {
+        // @@TODO move prefs somewhere more central
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
+        return prefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false) ? SwingUtilities.getAncestorOfClass(Frame.class, getParent()) : getParent();
+    }
+
 
 //    private void setupCopyer() {
 //        if(this instanceof Copyable) {
