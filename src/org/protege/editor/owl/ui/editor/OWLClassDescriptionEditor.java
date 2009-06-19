@@ -133,6 +133,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
         this.expression = expression;
 
         activeEditors.clear();
+        tabbedPane.removeChangeListener(changeListener);
         tabbedPane.removeAll();
 
         for (OWLDescriptionEditor editor : editors){
@@ -144,6 +145,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
         }
 
         tabbedPane.validate();
+        tabbedPane.addChangeListener(changeListener);
         
         return !activeEditors.isEmpty(); // then no editors are appropriate for this expression
     }

@@ -1,16 +1,5 @@
 package org.protege.editor.owl.ui.find;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
@@ -18,6 +7,15 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owl.model.OWLEntity;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
 
 /**
@@ -157,7 +155,7 @@ public class OWLEntityFindPanel extends JPanel {
     }
 
 
-    public static OWLEntity showDialog(JComponent parent, OWLEditorKit owlEditorKit, Findable findable) {
+    public static OWLEntity showDialog(Component parent, OWLEditorKit owlEditorKit, Findable findable) {
         final OWLEntityFindPanel panel = new OWLEntityFindPanel(owlEditorKit, findable);
         int ret = JOptionPaneEx.showConfirmDialog(parent,
                                                   "Find",

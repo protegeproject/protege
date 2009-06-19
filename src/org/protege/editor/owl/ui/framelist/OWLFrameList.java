@@ -1,6 +1,9 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
@@ -71,6 +74,9 @@ import java.util.Set;
 public class OWLFrameList<R extends Object> extends MList implements
                                                            LinkedObjectComponent, DropTargetListener, Copyable, Pasteable,
                                                            Cuttable, Deleteable, RefreshableComponent {
+
+    private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
+
     private static final Logger logger = Logger.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
@@ -455,12 +461,13 @@ public class OWLFrameList<R extends Object> extends MList implements
             ((VerifiedInputEditor) editor)
                     .addStatusChangedListener(verificationListener);
         }
-        final JDialog dlg = optionPane.createDialog(getParent(), null);
+        final Component parent = getDialogParent();
+        final JDialog dlg = optionPane.createDialog(parent, null);
         // The editor shouldn't be modal (or should it?)
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
-        dlg.setLocationRelativeTo(getParent());
+        dlg.setLocationRelativeTo(parent);
         dlg.addComponentListener(new ComponentAdapter() {
 
             public void componentHidden(ComponentEvent e) {
@@ -498,6 +505,12 @@ public class OWLFrameList<R extends Object> extends MList implements
         }
 
         dlg.setVisible(true);
+    }
+
+    private Component getDialogParent() {
+        // @@TODO move prefs somewhere more central
+        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
+        return prefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false) ? SwingUtilities.getAncestorOfClass(Frame.class, getParent()) : getParent();
     }
 
 

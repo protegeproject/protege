@@ -660,8 +660,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
         if (ontology != null) {
-            if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() && getOWLModelManager().getActiveOntology().equals(
-                    ontology)) {
+            if (OWLRendererPreferences.getInstance().isHighlightActiveOntologyStatements() &&
+                getOWLModelManager().getActiveOntology().equals(ontology)) {
                 doc.setParagraphAttributes(0, doc.getLength(), boldStyle, false);
             }
             else {
