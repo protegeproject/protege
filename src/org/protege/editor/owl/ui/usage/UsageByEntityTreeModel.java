@@ -254,13 +254,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDisjointClassesAxiom axiom) {
+            boolean hasBeenIndexed = false;
             if (!isFilterSet(UsageFilter.filterDisjoints)){
                 for (OWLClassExpression desc : axiom.getClassExpressions()) {
                     if (!desc.isAnonymous()) {
                         desc.asOWLClass().accept(this);
+                        hasBeenIndexed = true;
                     }
                 }
             }
+            if (!hasBeenIndexed){
+                additionalAxioms.add(axiom);
+                usageCount++;
+            }            
         }
 
 
