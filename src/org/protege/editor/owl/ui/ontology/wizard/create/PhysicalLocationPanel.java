@@ -11,6 +11,8 @@ import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -69,7 +71,23 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         parent.setLayout(new BorderLayout(10, 10));
         setInstructions("Please specify the file path that points to the location where your ontology will be saved to." + " (Click on a location in the \'recent locations\' list to automatically select that location).");
         JPanel locationPanel = new JPanel(new BorderLayout(3, 3));
+
         locationField = new JTextField();
+        locationField.getDocument().addDocumentListener(new DocumentListener(){
+            public void insertUpdate(DocumentEvent event) {
+                updateState();
+            }
+
+            public void removeUpdate(DocumentEvent event) {
+                updateState();
+            }
+
+            public void changedUpdate(DocumentEvent event) {
+            }
+        });
+
+
+
         JPanel locationFieldPanel = new JPanel(new BorderLayout(3, 3));
         locationFieldPanel.add(locationField, BorderLayout.NORTH);
         locationFieldPanel.add(new JButton(new AbstractAction("Browse...") {
@@ -235,5 +253,21 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public Object getBackPanelDescriptor() {
         return OntologyIDPanel.ID;
+    }
+
+    
+    public void aboutToDisplayPanel() {
+        updateState();
+    }
+
+
+    private void updateState() {
+        getWizard().setNextFinishButtonEnabled(isValidLocation());
+    }
+
+
+    private boolean isValidLocation() {
+        File f = new File(locationField.getText());
+        return f.getName() != null && f.getName().indexOf(".") > 0;
     }
 }
