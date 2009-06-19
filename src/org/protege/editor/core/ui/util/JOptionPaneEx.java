@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.util;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class JOptionPaneEx {
     private static Logger logger = Logger.getLogger(JOptionPaneEx.class);
 
 
-    public static int showConfirmDialog(JComponent parent, String title, JComponent content, int messageType,
+    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType,
                                         int optionType, final JComponent defaultFocusedComponent) {
 
         JOptionPane optionPane = new JOptionPane(content, messageType, optionType);
@@ -31,7 +32,7 @@ public class JOptionPaneEx {
         return getReturnValue(optionPane);
     }
 
-    public static int showConfirmDialog(JComponent parent, String title, JComponent content, int messageType,
+    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType,
                                         int optionType, final JComponent defaultFocusedComponent,
                                         Object[] options, Object defaultOption) {
 
@@ -42,7 +43,7 @@ public class JOptionPaneEx {
     }
 
 
-    public static int showValidatingConfirmDialog(JComponent parent, String title, JComponent component, int messageType,
+    public static int showValidatingConfirmDialog(Component parent, String title, JComponent component, int messageType,
                                                   int optionType, final JComponent defaultFocusedComponent) {
         if (component instanceof VerifiedInputEditor){
             final VerifyingOptionPane optionPane = new VerifyingOptionPane(component, messageType, optionType) {
@@ -64,14 +65,14 @@ public class JOptionPaneEx {
             return getReturnValue(optionPane);
         }
         else{
-            logger.warn("Component should implement InputVerificationStatusChangedListener for validating dialog to work. " +
+            logger.warn("Component should implement VerifiedInputEditor for validating dialog to work. " +
                         "Using normal dialog with no validating");
             return showConfirmDialog(parent, title, component, messageType, optionType, null);
         }
             }
 
 
-    private static JDialog createDialog(JComponent parent, String title, JOptionPane optionPane, final JComponent defaultFocusedComponent) {
+    private static JDialog createDialog(Component parent, String title, JOptionPane optionPane, final JComponent defaultFocusedComponent) {
         JDialog dlg = optionPane.createDialog(parent, title);
         dlg.addWindowListener(new WindowAdapter() {
             public void windowOpened(WindowEvent e) {
