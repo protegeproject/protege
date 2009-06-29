@@ -16,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -137,15 +138,21 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
 
     public JComponent getEditorComponent() {
-        if (editorComponent == null) {
-            createEditor();
-        }
+        ensureEditorExists();
 //        classSelectorPanel.setSelection(owlEditorKit.getWorkspace().getOWLSelectionModel().getLastSelectedClass());
         return editorComponent;
     }
 
 
+    private void ensureEditorExists() {
+        if (editorComponent == null) {
+            createEditor();
+        }
+    }
+
+
     public Set<OWLClassExpression> getEditedObject() {
+        ensureEditorExists();
         if (tabbedPane != null && tabbedPane.getSelectedComponent().equals(classSelectorPanel)) {
             return new HashSet<OWLClassExpression>(classSelectorPanel.getSelectedObjects());
         }
@@ -162,6 +169,11 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
 
     public boolean setEditedObject(Set<OWLClassExpression> expressions) {
+        if (expressions == null){
+            expressions = Collections.emptySet();
+        }
+
+        ensureEditorExists();
         expressionEditor.setExpressionObject(expressions);
         if (containsOnlyNamedClasses(expressions)){
             Set<OWLClass> clses = new HashSet<OWLClass>(expressions.size());
@@ -177,9 +189,11 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
 
     private boolean containsOnlyNamedClasses(Set<OWLClassExpression> expressions) {
-        for (OWLClassExpression expr : expressions){
-            if (expr.isAnonymous()){
-                return false;
+        if (expressions != null){
+            for (OWLClassExpression expr : expressions){
+                if (expr.isAnonymous()){
+                    return false;
+                }
             }
         }
         return true;
