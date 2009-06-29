@@ -4,8 +4,8 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.clshierarchy.DeleteClassAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.clshierarchy.DeleteClassAction;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -147,7 +147,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
                 changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
             }
             mngr.applyChanges(changes);
-            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+            getTree().setSelectedOWLObject(newClass);
         }
     }
 
@@ -157,7 +157,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         if (set != null){
             OWLClass newClass = set.getOWLEntity();
             getOWLModelManager().applyChanges(set.getOntologyChanges());
-            getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(newClass);
+            getTree().setSelectedOWLObject(newClass);
         }
     }
 

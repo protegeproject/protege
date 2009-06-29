@@ -1,17 +1,17 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.semanticweb.owl.model.*;
 import org.semanticweb.owl.util.OWLEntitySetProvider;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyTreeDropHandler;
 
 import javax.swing.*;
-import java.util.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: nickdrummond
@@ -140,7 +140,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             OWLAxiom ax = getSubPropertyAxiom(set.getOWLEntity(), selProp);
             changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             getOWLModelManager().applyChanges(changes);
-            setSelectedEntity(set.getOWLEntity());
+            getTree().setSelectedOWLObject(set.getOWLEntity());
         }
     }
 
@@ -177,7 +177,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
                 changes.add(new AddAxiom(ont, ax));
             }
             getOWLModelManager().applyChanges(changes);
-            setSelectedEntity(creationSet.getOWLEntity());
+            getTree().setSelectedOWLObject(creationSet.getOWLEntity());
         }
     }
 
