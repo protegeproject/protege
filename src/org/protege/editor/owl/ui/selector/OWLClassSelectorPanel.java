@@ -6,9 +6,9 @@ import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent;
 import org.semanticweb.owl.model.OWLClass;
 
 import javax.swing.event.ChangeListener;
@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
 
-    private AbstractOWLEntityHierarchyViewComponent<OWLClass> viewComponent;
+    private AbstractOWLEntityHierarchyViewComponent<OWLClass> vc;
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
@@ -58,7 +58,7 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                viewComponent = new ToldOWLClassHierarchyViewComponent(){
+                vc = new ToldOWLClassHierarchyViewComponent(){
                     public void performExtraInitialisation() throws Exception {
                         if (isEditable()){
                             super.performExtraInitialisation();
@@ -69,8 +69,8 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
                         return getHierarchyProvider();
                     }
                 };
-                viewComponent.setup(this);
-                return viewComponent;
+                vc.setup(this);
+                return vc;
             }
 
 
@@ -81,32 +81,32 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
     }
 
     public void setSelection(OWLClass cls) {
-        viewComponent.setSelectedEntity(cls);
+        vc.setSelectedEntity(cls);
     }
 
 
     public void setSelection(Set<OWLClass> clses) {
-        viewComponent.setSelectedEntities(clses);
+        vc.setSelectedEntities(clses);
     }
 
 
     public OWLClass getSelectedObject() {
-        return viewComponent.getSelectedEntity();
+        return vc.getSelectedEntity();
     }
 
     public Set<OWLClass> getSelectedObjects() {
-        return viewComponent.getSelectedEntities();
+        return vc.getSelectedEntities();
     }
 
     public void dispose() {
-        viewComponent.dispose();
+        vc.dispose();
     }
 
     public void addSelectionListener(ChangeListener listener) {
-        viewComponent.addChangeListener(listener);
+        vc.addChangeListener(listener);
     }
 
     public void removeSelectionListener(ChangeListener listener) {
-        viewComponent.removeChangeListener(listener);
+        vc.removeChangeListener(listener);
     }
 }

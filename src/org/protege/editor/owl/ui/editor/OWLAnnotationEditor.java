@@ -185,6 +185,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
 
     public void dispose() {
+        annotationPropertySelector.dispose();
         for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
             editor.dispose();
         }

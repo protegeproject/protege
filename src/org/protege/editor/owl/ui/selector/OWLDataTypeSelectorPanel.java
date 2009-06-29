@@ -33,7 +33,7 @@ import java.util.*;
  */
 public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype> {
 
-    private AbstractOWLViewComponent view;
+    private AbstractOWLViewComponent vc;
 
     private OWLObjectList<OWLDatatype> list;
 
@@ -87,7 +87,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-                view = new AbstractOWLViewComponent(){
+                vc = new AbstractOWLViewComponent(){
 
                     protected void initialiseOWLView() throws Exception {
                         setLayout(new BorderLayout());
@@ -109,15 +109,15 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
                         // do nothing
                     }
                 };
-                view.setup(this);
-                return view;
+                vc.setup(this);
+                return vc;
             }
         };
     }
 
 
     public void dispose() {
-        view.dispose();
+        vc.dispose();
     }
 
 

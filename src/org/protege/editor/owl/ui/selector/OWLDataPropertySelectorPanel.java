@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLDataProperty> {
 
-    private AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> view;
+    private AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> vc;
 
 
     public OWLDataPropertySelectorPanel(OWLEditorKit eKit) {
@@ -57,7 +57,7 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                view = new OWLDataPropertyHierarchyViewComponent(){
+                vc = new OWLDataPropertyHierarchyViewComponent(){
                     protected void performExtraInitialisation() throws Exception {
                         if (isEditable()){
                             super.performExtraInitialisation();
@@ -68,8 +68,8 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
                         return OWLDataPropertySelectorPanel.this.getHierarchyProvider();
                     }
                 };
-                view.setup(this);
-                return view;
+                vc.setup(this);
+                return vc;
             }
 
 
@@ -81,33 +81,33 @@ public class OWLDataPropertySelectorPanel extends AbstractHierarchySelectorPanel
 
 
     public void setSelection(OWLDataProperty property) {
-        view.setSelectedEntity(property);
+        vc.setSelectedEntity(property);
     }
 
 
     public void setSelection(Set<OWLDataProperty> properties) {
-        view.setSelectedEntities(properties);
+        vc.setSelectedEntities(properties);
     }
 
 
     public OWLDataProperty getSelectedObject() {
-        return view.getSelectedEntity();
+        return vc.getSelectedEntity();
     }
 
     public Set<OWLDataProperty> getSelectedObjects() {
-        return view.getSelectedEntities();
+        return vc.getSelectedEntities();
     }
 
 
     public void addSelectionListener(ChangeListener listener) {
-        view.addChangeListener(listener);
+        vc.addChangeListener(listener);
     }
 
     public void removeSelectionListener(ChangeListener listener) {
-        view.removeChangeListener(listener);
+        vc.removeChangeListener(listener);
     }
 
     public void dispose() {
-        view.dispose();
+        vc.dispose();
     }
 }
