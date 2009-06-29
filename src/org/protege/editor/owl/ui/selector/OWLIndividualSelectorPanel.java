@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIndividual> {
 
-    private OWLIndividualListViewComponent viewComponent;
+    private OWLIndividualListViewComponent vc;
 
     private Set<OWLOntology> ontologies;
 
@@ -60,33 +60,33 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIn
         super(eKit, editable, false);
         this.ontologies = ontologies;
         createUI();
-        this.viewComponent.setSelectionMode(selectionMode);
+        this.vc.setSelectionMode(selectionMode);
     }
 
     public void setSelection(OWLNamedIndividual ind) {
-        if (viewComponent.getView() != null) {
-            viewComponent.getView().setPinned(false);
+        if (vc.getView() != null) {
+            vc.getView().setPinned(false);
         }
-        viewComponent.setSelectedIndividual(ind);
+        vc.setSelectedIndividual(ind);
     }
 
 
     public void setSelection(Set<OWLNamedIndividual> entities) {
-        viewComponent.setSelectedIndividuals(entities);
+        vc.setSelectedIndividuals(entities);
     }
 
 
     public OWLNamedIndividual getSelectedObject() {
-        return viewComponent.getSelectedIndividual();
+        return vc.getSelectedIndividual();
     }
 
     public Set<OWLNamedIndividual> getSelectedObjects() {
-        return viewComponent.getSelectedIndividuals();
+        return vc.getSelectedIndividuals();
     }
 
 
     public void dispose() {
-        viewComponent.dispose();
+        vc.dispose();
     }
 
     protected ViewComponentPlugin getViewComponentPlugin() {
@@ -101,7 +101,7 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIn
 
             public ViewComponent newInstance() throws ClassNotFoundException,
                     IllegalAccessException, InstantiationException {
-                viewComponent = new OWLIndividualListViewComponent(){
+                vc = new OWLIndividualListViewComponent(){
                     protected void setupActions() {
                         if (isEditable()){
                             super.setupActions();
@@ -115,8 +115,8 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIn
                         return super.getOntologies();
                     }
                 };
-                viewComponent.setup(this);
-                return viewComponent;
+                vc.setup(this);
+                return vc;
             }
 
             public Color getBackgroundColor() {
@@ -130,10 +130,10 @@ public class OWLIndividualSelectorPanel extends AbstractSelectorPanel<OWLNamedIn
     }
 
     public void addSelectionListener(ChangeListener listener) {
-        viewComponent.addChangeListener(listener);
+        vc.addChangeListener(listener);
     }
 
     public void removeSelectionListener(ChangeListener listener) {
-        viewComponent.removeChangeListener(listener);
+        vc.removeChangeListener(listener);
     }
 }

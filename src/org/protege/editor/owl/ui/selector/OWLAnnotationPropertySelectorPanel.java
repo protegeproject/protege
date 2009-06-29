@@ -28,7 +28,7 @@ import java.util.Set;
 public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLAnnotationProperty> {
 
 
-    private AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty> viewComponent;
+    private AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty> vc;
 
 
     public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit) {
@@ -59,7 +59,7 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                viewComponent = new OWLAnnotationPropertyHierarchyViewComponent(){
+                vc = new OWLAnnotationPropertyHierarchyViewComponent(){
                     public void performExtraInitialisation() throws Exception {
                         if (isEditable()){
                             super.performExtraInitialisation();
@@ -70,8 +70,8 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
                         return OWLAnnotationPropertySelectorPanel.this.getHierarchyProvider();
                     }
                 };
-                viewComponent.setup(this);
-                return viewComponent;
+                vc.setup(this);
+                return vc;
             }
 
 
@@ -82,32 +82,32 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
     }
 
     public void setSelection(OWLAnnotationProperty cls) {
-        viewComponent.setSelectedEntity(cls);
+        vc.setSelectedEntity(cls);
     }
 
 
     public void setSelection(Set<OWLAnnotationProperty> clses) {
-        viewComponent.setSelectedEntities(clses);
+        vc.setSelectedEntities(clses);
     }
 
 
     public OWLAnnotationProperty getSelectedObject() {
-        return viewComponent.getSelectedEntity();
+        return vc.getSelectedEntity();
     }
 
     public Set<OWLAnnotationProperty> getSelectedObjects() {
-        return viewComponent.getSelectedEntities();
+        return vc.getSelectedEntities();
     }
 
     public void dispose() {
-        viewComponent.dispose();
+        vc.dispose();
     }
 
     public void addSelectionListener(ChangeListener listener) {
-        viewComponent.addChangeListener(listener);
+        vc.addChangeListener(listener);
     }
 
     public void removeSelectionListener(ChangeListener listener) {
-        viewComponent.removeChangeListener(listener);
+        vc.removeChangeListener(listener);
     }
 }
