@@ -210,9 +210,6 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         OWLNamedIndividual ind = set.getOWLEntity();
         if (ind != null) {
             list.setSelectedValue(ind, true);
-            if (!isPinned()) {
-                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(ind);
-            }
         }
     }
 
