@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.selection;
 
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.semanticweb.owlapi.model.*;
 
 
@@ -88,10 +89,17 @@ public interface OWLSelectionModel {
     public void setSelectedEntity(OWLEntity entity);
 
 
-    public void setSelectedAxiom(OWLAxiom axiom);
+    /**
+     * Instances of an axiom wrt the containing ontology
+     * @return and OWLAxiomInstance (an axiom, ontology pair)
+     */
+    public void setSelectedAxiom(OWLAxiomInstance axiomInstance);
 
-
-    public OWLAxiom getLastSelectedAxiom();
+    /**
+     * Instances of an axiom wrt the containing ontology
+     * @return and OWLAxiomInstance (an axiom, ontology pair)
+     */
+    public OWLAxiomInstance getLastSelectedAxiomInstance();
 
 
     public void setSelectedObject(OWLObject object);

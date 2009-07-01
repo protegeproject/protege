@@ -1,10 +1,8 @@
 package org.protege.editor.owl.ui.axiom;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.OWLAxiomAnnotationsFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,9 +39,10 @@ import java.awt.*;
  */
 public class AxiomAnnotationPanel extends JComponent {
 
-    private OWLFrameList<OWLAxiom> axiomAnnotationComponent;
+    private AxiomAnnotationsList annotationsComponent;
 
     private DefaultListModel model;
+
 
     public AxiomAnnotationPanel(OWLEditorKit eKit) {
         setLayout(new BorderLayout(6, 6));
@@ -60,10 +59,9 @@ public class AxiomAnnotationPanel extends JComponent {
         label.setOpaque(true);
         label.setCellRenderer(ren);
 
-        axiomAnnotationComponent = new OWLFrameList<OWLAxiom>(eKit, new OWLAxiomAnnotationsFrame(eKit));
-        axiomAnnotationComponent.setAxiomSelectionSyncronized(false);
+        annotationsComponent = new AxiomAnnotationsList(eKit);
 
-        final JScrollPane scroller = new JScrollPane(axiomAnnotationComponent);
+        final JScrollPane scroller = new JScrollPane(annotationsComponent);
 
         add(label, BorderLayout.NORTH);
         add(scroller, BorderLayout.CENTER);
@@ -72,14 +70,24 @@ public class AxiomAnnotationPanel extends JComponent {
     }
 
 
-    public void setAxiom(OWLAxiom ax){
+    public void setAxiomInstance(OWLAxiomInstance axiomInstance){
         model.clear();
-        model.addElement(ax);
-        axiomAnnotationComponent.setRootObject(ax);
+        if (axiomInstance != null){
+            model.addElement(axiomInstance.getAxiom());
+            annotationsComponent.setRootObject(axiomInstance);
+        }
+        else{
+            annotationsComponent.setRootObject(null);
+        }
+    }
+
+
+    public OWLAxiomInstance getAxiom(){
+        return annotationsComponent.getRoot();
     }
 
 
     public void dispose(){
-        axiomAnnotationComponent.dispose();
+        annotationsComponent.dispose();
     }
 }

@@ -96,7 +96,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         performExtraInitialisation();
         E entity = getSelectedEntity();
         if (entity != null) {
-            setSelectedEntity(entity);
+            setGlobalSelection(entity);
         }
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             public void treeNodesChanged(TreeModelEvent e) {
@@ -148,8 +148,13 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     }
 
 
-    public void setSelectedEntities(Set<E> clses) {
-        tree.setSelectedOWLObjects(clses);
+    public void setSelectedEntity(E entity) {
+        tree.setSelectedOWLObject(entity);
+    }
+
+
+    public void setSelectedEntities(Set<E> entities) {
+        tree.setSelectedOWLObjects(entities);
     }
 
 
@@ -216,11 +221,11 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
             final View view = getView();
             if (view != null && !view.isPinned()){
                 view.setPinned(true); // so that we don't follow the selection
-                setSelectedEntity(selEntity);
+                setGlobalSelection(selEntity);
                 view.setPinned(false);
             }
             else{
-                setSelectedEntity(selEntity);
+                setGlobalSelection(selEntity);
             }
         }
 

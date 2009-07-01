@@ -48,7 +48,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null) {
-                    setSelectedEntity((OWLNamedIndividual)list.getSelectedValue());
+                    setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
             }
@@ -64,7 +64,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         list.addListSelectionListener(listSelectionListener);
         list.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
-                setSelectedEntity((OWLNamedIndividual)list.getSelectedValue());
+                setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
             }
         });
         listener = new OWLOntologyChangeListener() {

@@ -4,6 +4,7 @@ package org.protege.editor.owl.model.selection;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
     private OWLDatatype lastSelectedDatatype;
 
-    private OWLAxiom lastSelectedAxiom;
+    private OWLAxiomInstance lastSelectedAxiomInstance;
+
 
     private final OWLEntityVisitor updateVisitor = new OWLEntityVisitor() {
         public void visit(OWLClass cls) {
@@ -202,8 +204,9 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
-    public void setSelectedAxiom(OWLAxiom axiom) {
-        setSelectedObject(axiom);
+    public void setSelectedAxiom(OWLAxiomInstance axiomInstance) {
+        lastSelectedAxiomInstance = axiomInstance;
+        setSelectedObject(axiomInstance.getAxiom());
     }
 
 
@@ -228,10 +231,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             lastSelectedEntity = (OWLEntity)selectedObject;
 
             lastSelectedEntity.accept(updateVisitor);
-            lastSelectedAxiom = null; // unlikely we will want the axiom selection to still be valid
-        }
-        else if (selectedObject instanceof OWLAxiom){
-            lastSelectedAxiom = (OWLAxiom)selectedObject;
+            lastSelectedAxiomInstance = null; // unlikely we will want the axiom selection to still be valid
         }
     }
 
@@ -266,7 +266,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
-    public OWLAxiom getLastSelectedAxiom() {
-        return lastSelectedAxiom;
+    public OWLAxiomInstance getLastSelectedAxiomInstance() {
+        return lastSelectedAxiomInstance;
     }
 }

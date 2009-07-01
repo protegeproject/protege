@@ -13,6 +13,7 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -397,9 +398,10 @@ public class OWLFrameList<R extends Object> extends MList implements
             if (isAxiomSelectionSyncronized()){
                 final Object sel = getSelectedValue();
                 if (sel instanceof OWLFrameSectionRow){
-                    OWLAxiom ax = ((OWLFrameSectionRow) sel).getAxiom();
+                    final OWLFrameSectionRow row = (OWLFrameSectionRow) sel;
+                    OWLAxiom ax = row.getAxiom();
                     if (ax != null){
-                        editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(ax);
+                        editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(new OWLAxiomInstance(ax, row.getOntology()));
                     }
                 }
             }
@@ -540,7 +542,7 @@ public class OWLFrameList<R extends Object> extends MList implements
         if (axiomAnnotationPanel == null){
             axiomAnnotationPanel = new AxiomAnnotationPanel(editorKit);
         }
-        axiomAnnotationPanel.setAxiom(ax);
+        axiomAnnotationPanel.setAxiomInstance(new OWLAxiomInstance(ax, row.getOntology()));
         new UIHelper(editorKit).showDialog("Annotations for " + ax.getAxiomType().toString(),
                                            axiomAnnotationPanel,
                                            JOptionPane.CLOSED_OPTION);
