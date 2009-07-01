@@ -5,6 +5,7 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -53,7 +54,7 @@ public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLO
 
 
     public boolean setEditedObject(Set<OWLObjectProperty> p){
-        editor.setSelection(p);
+        editor.setSelection(p != null ? p : Collections.EMPTY_SET);
         return true;
     }
 

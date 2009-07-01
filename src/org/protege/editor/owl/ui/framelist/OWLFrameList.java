@@ -443,8 +443,7 @@ public class OWLFrameList<R extends Object> extends MList implements
         // so that the buttons and keyboard actions are what are expected
         // by the user.
         final JComponent editorComponent = editor.getEditorComponent();
-        final VerifyingOptionPane optionPane = new VerifyingOptionPane(
-                editorComponent) {
+        final VerifyingOptionPane optionPane = new VerifyingOptionPane(editorComponent) {
 
             public void selectInitialValue() {
                 // This is overriden so that the option pane dialog default

@@ -33,6 +33,11 @@ public class OWLClassAssertionAxiomMembersSectionRow extends AbstractOWLFrameSec
     }
 
 
+    public boolean isEditable() {
+        return false;
+    }
+
+
     protected OWLClassAssertionAxiom createAxiom(OWLNamedIndividual editedObject) {
         return getOWLDataFactory().getOWLClassAssertionAxiom(getRoot(), editedObject);
     }
