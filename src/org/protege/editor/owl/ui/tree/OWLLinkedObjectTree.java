@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.tree;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;/*

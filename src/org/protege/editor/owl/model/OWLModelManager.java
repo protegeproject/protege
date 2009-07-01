@@ -15,8 +15,8 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactor
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.model.*;
 
 import java.net.URI;
 import java.util.Comparator;
@@ -87,7 +87,7 @@ public interface OWLModelManager extends ModelManager {
      * specific.  For example, some implementations may choose to save the
      * active ontology, other implementations may choose to save all open
      * ontologies etc.
-     * @throws org.semanticweb.owl.model.OWLOntologyStorageException if a problem occurs during the save
+     * @throws org.semanticweb.owlapi.model.OWLOntologyStorageException if a problem occurs during the save
      */
     void save() throws OWLOntologyStorageException;
 
@@ -95,7 +95,7 @@ public interface OWLModelManager extends ModelManager {
     /**
      * Save only the ontology specified
      * @param ont the ontology to save
-     * @throws org.semanticweb.owl.model.OWLOntologyStorageException if a problem occurs during the save
+     * @throws org.semanticweb.owlapi.model.OWLOntologyStorageException if a problem occurs during the save
      */
     void save(OWLOntology ont) throws OWLOntologyStorageException;
 

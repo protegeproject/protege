@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.protege.editor.core.Disposable;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 /*
 * Copyright (C) 2007, University of Manchester
 *

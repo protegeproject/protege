@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.frame.individual;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 
 /**

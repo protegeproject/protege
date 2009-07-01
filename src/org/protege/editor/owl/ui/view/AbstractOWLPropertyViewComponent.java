@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view;
 
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLProperty;
 
 /**
  * User: nickdrummond

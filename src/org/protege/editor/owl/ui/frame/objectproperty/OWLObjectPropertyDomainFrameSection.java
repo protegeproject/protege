@@ -4,11 +4,11 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSection;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Set;
 

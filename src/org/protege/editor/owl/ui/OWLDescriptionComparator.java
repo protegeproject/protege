@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
 

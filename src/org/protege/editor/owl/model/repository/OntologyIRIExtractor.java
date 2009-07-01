@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.repository;
 
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.protege.editor.owl.model.io.SyntaxGuesser;
 import org.protege.editor.owl.model.util.URIUtilities;
-import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owl.io.OWLXMLOntologyFormat;
-import org.semanticweb.owl.io.RDFXMLOntologyFormat;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

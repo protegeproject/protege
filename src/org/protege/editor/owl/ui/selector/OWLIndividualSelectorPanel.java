@@ -7,8 +7,8 @@ import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.individual.OWLIndividualListViewComponent;
-import org.semanticweb.owl.model.OWLNamedIndividual;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

@@ -4,8 +4,8 @@ import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelAdapter;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;

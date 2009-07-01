@@ -6,9 +6,9 @@ import org.protege.editor.owl.ui.frame.OWLAnnotationFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLAnonymousIndividual;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import javax.swing.*;
 import java.awt.*;

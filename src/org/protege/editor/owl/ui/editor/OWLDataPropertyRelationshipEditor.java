@@ -5,10 +5,10 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLDataPropertyExpression;
-import org.semanticweb.owl.model.OWLLiteral;
-import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 
 import javax.swing.*;
 import javax.swing.border.Border;

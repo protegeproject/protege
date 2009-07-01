@@ -4,10 +4,10 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLProperty;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

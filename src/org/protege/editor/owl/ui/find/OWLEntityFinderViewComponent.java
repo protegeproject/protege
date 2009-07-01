@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.find;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 import javax.swing.*;
 import java.util.HashSet;

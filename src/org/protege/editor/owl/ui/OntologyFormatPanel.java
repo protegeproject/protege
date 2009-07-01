@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui;
 
 import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.obo.parser.OBOOntologyFormat;
-import org.coode.owl.latex.LatexOntologyFormat;
-import org.coode.owl.rdf.turtle.TurtleOntologyFormat;
+import org.coode.owlapi.latex.LatexOntologyFormat;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.coode.owlapi.obo.parser.OBOOntologyFormat;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owl.io.OWLXMLOntologyFormat;
-import org.semanticweb.owl.io.RDFXMLOntologyFormat;
-import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
 import javax.swing.*;
 import java.awt.*;

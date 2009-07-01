@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

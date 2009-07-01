@@ -4,11 +4,11 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.CollectionFactory;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.CollectionFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -4,10 +4,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 
 import java.util.Arrays;
 import java.util.List;

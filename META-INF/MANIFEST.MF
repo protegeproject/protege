@@ -106,4 +106,4 @@ Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
  org.protege.editor.core.application,
  org.protege.common,
- org.semanticweb.owl.owlapi
+ org.semanticweb.owlapi.owlapi

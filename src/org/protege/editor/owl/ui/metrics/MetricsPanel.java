@@ -4,10 +4,10 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
-import org.semanticweb.owl.metrics.*;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.metrics.*;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

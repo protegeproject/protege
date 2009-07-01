@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;

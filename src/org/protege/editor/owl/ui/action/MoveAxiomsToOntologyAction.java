@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.action;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsWizard;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import java.awt.event.ActionEvent;
 

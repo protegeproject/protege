@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.model.util.ClosureAxiomFactory;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

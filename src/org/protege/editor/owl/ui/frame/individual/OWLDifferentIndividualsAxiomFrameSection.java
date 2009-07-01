@@ -6,11 +6,11 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLDifferentIndividualsAxiom;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNamedIndividual;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Comparator;
 import java.util.HashSet;

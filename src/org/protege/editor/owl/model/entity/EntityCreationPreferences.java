@@ -3,7 +3,7 @@ package org.protege.editor.owl.model.entity;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 /*
 * Copyright (C) 2007, University of Manchester

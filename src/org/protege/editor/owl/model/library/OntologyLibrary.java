@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.library;
 
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.net.URI;
 import java.util.Set;

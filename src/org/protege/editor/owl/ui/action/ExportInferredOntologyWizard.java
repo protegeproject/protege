@@ -4,10 +4,10 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntologyFormat;
-import org.semanticweb.owl.model.OWLOntologyID;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 
 import java.net.URI;
 import java.util.List;

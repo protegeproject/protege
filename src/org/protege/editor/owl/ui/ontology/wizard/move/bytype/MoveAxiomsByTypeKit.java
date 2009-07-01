@@ -4,9 +4,9 @@ import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.ArrayList;
 import java.util.HashSet;

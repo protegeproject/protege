@@ -2,9 +2,9 @@ package org.protege.editor.owl.ui.view.objectproperty;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.OWLPropertyTreeDropHandler;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLSubPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 
 /**

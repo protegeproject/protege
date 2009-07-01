@@ -3,10 +3,10 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyID;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import javax.swing.*;
 import java.awt.*;

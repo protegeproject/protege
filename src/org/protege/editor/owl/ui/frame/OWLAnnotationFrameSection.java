@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;

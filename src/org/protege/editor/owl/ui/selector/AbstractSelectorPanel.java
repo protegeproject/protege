@@ -6,7 +6,7 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

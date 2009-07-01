@@ -5,7 +5,7 @@ import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

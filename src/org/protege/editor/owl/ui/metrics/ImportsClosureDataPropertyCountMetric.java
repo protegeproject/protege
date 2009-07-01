@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.metrics;
 
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLOntology;
 
 
 /**

@@ -7,11 +7,8 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -60,19 +57,20 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     protected void refillInferred() throws OWLReasonerException {
-        Map<OWLObjectProperty, Set<OWLIndividual>> rels = getReasoner().getObjectPropertyRelationships(getRootObject());
-        for (OWLObjectProperty prop : rels.keySet()) {
-            for (OWLIndividual ind : rels.get(prop)) {
-                OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(
-                        getRootObject(),
-                        prop,
-                        ind);
-                if (!added.contains(ax)) {
-                    addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                              this,
-                                                                              null,
-                                                                              getRootObject(),
-                                                                              ax));
+        if (!getRootObject().isAnonymous()){
+            Map<OWLObjectProperty, Set<OWLNamedIndividual>> rels = getReasoner().getObjectPropertyRelationships(getRootObject().asNamedIndividual());
+            for (OWLObjectProperty prop : rels.keySet()) {
+                for (OWLIndividual ind : rels.get(prop)) {
+                    OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
+                                                                                                                getRootObject(),
+                                                                                                                ind);
+                    if (!added.contains(ax)) {
+                        addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                  this,
+                                                                                  null,
+                                                                                  getRootObject(),
+                                                                                  ax));
+                    }
                 }
             }
         }
@@ -80,8 +78,8 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     protected OWLObjectPropertyAssertionAxiom createAxiom(OWLObjectPropertyIndividualPair object) {
-        return getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(getRootObject(),
-                                                                      object.getProperty(),
+        return getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(object.getProperty(),
+                                                                      getRootObject(),
                                                                       object.getIndividual());
     }
 

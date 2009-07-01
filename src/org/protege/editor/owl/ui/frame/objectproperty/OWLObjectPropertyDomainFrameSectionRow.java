@@ -3,10 +3,10 @@ package org.protege.editor.owl.ui.frame.objectproperty;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyDomainAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

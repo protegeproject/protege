@@ -1,5 +1,8 @@
 package org.protege.editor.owl.model.util;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.io.IOProperties;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,9 +12,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipInputStream;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.io.IOProperties;
 
 public class URIUtilities {
     private static Logger logger = Logger.getLogger(URIUtilities.class);

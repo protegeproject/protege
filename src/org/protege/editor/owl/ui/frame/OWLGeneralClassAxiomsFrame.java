@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
 /**

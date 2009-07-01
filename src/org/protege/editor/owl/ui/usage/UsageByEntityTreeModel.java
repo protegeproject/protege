@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.usage;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -352,11 +352,6 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDatatypeDefinitionAxiom axiom) {
-            //@@TODO implement
-        }
-
-
-        public void visit(OWLDatatypeDefinition axiom) {
             axiom.getDatatype().accept(this);
         }
 

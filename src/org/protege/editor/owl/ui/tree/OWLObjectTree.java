@@ -8,8 +8,8 @@ import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.Timer;

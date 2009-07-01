@@ -7,9 +7,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

@@ -7,10 +7,10 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyID;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import java.util.Set;
 

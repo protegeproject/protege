@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import javax.swing.*;
 

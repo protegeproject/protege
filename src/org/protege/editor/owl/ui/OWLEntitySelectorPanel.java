@@ -8,7 +8,7 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import javax.swing.event.*;

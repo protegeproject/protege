@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDatatype;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
-import org.semanticweb.owl.vocab.XSDVocabulary;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.net.URI;
 import java.util.HashSet;

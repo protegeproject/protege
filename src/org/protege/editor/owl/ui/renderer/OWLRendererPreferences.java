@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.renderer;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.awt.*;
 import java.net.URI;

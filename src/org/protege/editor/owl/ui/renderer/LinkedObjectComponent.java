@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.Point;
-import java.awt.Rectangle;
+import org.semanticweb.owlapi.model.OWLObject;
 
-import javax.swing.JComponent;
-
-import org.semanticweb.owl.model.OWLObject;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

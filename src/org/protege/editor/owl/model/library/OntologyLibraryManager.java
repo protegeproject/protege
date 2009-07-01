@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.library;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.util.ArrayList;
 import java.util.List;

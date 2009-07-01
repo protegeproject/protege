@@ -3,9 +3,9 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import java.util.ArrayList;
 import java.util.List;

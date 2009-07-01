@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.util.SimpleIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.net.URISyntaxException;
 import java.net.URL;

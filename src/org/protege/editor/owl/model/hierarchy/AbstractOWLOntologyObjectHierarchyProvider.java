@@ -1,16 +1,12 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.*;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.model.OWLOntologyManager;
 
 
 /**

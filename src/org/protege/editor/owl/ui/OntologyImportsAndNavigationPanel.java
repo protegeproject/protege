@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLOntologyHierarchyProvider;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

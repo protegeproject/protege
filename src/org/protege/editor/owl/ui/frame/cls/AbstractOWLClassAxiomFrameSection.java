@@ -4,9 +4,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Set;
 /*

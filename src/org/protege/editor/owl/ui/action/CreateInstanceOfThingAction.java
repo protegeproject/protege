@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import java.awt.event.ActionEvent;
 

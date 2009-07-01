@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.selection;
 
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

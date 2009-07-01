@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
-import org.semanticweb.owl.model.OWLDatatype;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLObject;
 /*
 * Copyright (C) 2007, University of Manchester
 *

@@ -4,9 +4,9 @@ import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureDependentSelectionPreviewPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureSelection;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.ArrayList;
 import java.util.HashSet;

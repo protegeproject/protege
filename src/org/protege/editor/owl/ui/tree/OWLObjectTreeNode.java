@@ -1,16 +1,11 @@
 package org.protege.editor.owl.ui.tree;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.OWLObject;
+import java.util.*;
 
 
 /**

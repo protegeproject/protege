@@ -5,8 +5,8 @@ import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

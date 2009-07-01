@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.ui.rename.RenameEntityPanel;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntityRenamer;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
 import java.util.List;
 

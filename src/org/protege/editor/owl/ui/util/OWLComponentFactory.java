@@ -6,8 +6,8 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 /*
 * Copyright (C) 2007, University of Manchester
 *

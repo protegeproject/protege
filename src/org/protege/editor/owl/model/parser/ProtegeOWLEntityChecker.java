@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.parser;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.expression.OWLEntityChecker;
-import org.semanticweb.owl.model.*;/*
+import org.semanticweb.owlapi.expression.OWLEntityChecker;
+import org.semanticweb.owlapi.model.*;/*
 * Copyright (C) 2007, University of Manchester
 *
 * Modifications to the initial code base are copyright of their

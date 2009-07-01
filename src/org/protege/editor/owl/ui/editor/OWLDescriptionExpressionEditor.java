@@ -5,8 +5,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLException;
 
 import javax.swing.*;
 import java.util.Collections;

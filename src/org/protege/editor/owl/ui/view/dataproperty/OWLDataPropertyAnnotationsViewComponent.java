@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;

@@ -9,7 +9,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEntityDisplayProvider;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.util.HashSet;

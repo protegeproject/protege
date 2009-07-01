@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.parser;
 
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.semanticweb.owl.expression.ParserException;
+import org.semanticweb.owlapi.expression.ParserException;
 
 /*
 * Copyright (C) 2007, University of Manchester

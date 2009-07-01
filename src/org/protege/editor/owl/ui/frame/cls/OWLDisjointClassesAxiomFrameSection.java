@@ -5,7 +5,7 @@ import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.*;
 

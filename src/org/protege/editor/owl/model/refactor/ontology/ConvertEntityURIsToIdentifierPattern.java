@@ -4,12 +4,12 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
-import org.semanticweb.owl.util.OWLEntityURIConverter;
-import org.semanticweb.owl.util.OWLEntityURIConverterStrategy;
-import org.semanticweb.owl.util.ShortFormProvider;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
+import org.semanticweb.owlapi.util.OWLEntityURIConverter;
+import org.semanticweb.owlapi.util.OWLEntityURIConverterStrategy;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.*;
 
@@ -139,6 +139,7 @@ public class ConvertEntityURIsToIdentifierPattern {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
         OWLDataFactory df = mngr.getOWLDataFactory();
+        EntityOfSameTypeGenerator gen = new EntityOfSameTypeGenerator(df);
 
         OWLEntityRendererImpl fragmentRenderer = new OWLEntityRendererImpl(); // basic fragment renderer
         fragmentRenderer.setup(mngr);
@@ -152,7 +153,7 @@ public class ConvertEntityURIsToIdentifierPattern {
                 OWLAnnotation annotation = generateLabelAnnotation(uriRendering);
 
                 final IRI newIRI = iriMap.get(entity);
-                final OWLEntity newEntity = getEntityOfSameType(newIRI, entity);
+                final OWLEntity newEntity = gen.getEntityOfSameType(newIRI, entity);
                 final OWLAnnotationAssertionAxiom ax = df.getOWLAnnotationAssertionAxiom(newEntity, annotation);
 
                 for (OWLOntology ont : onts){
@@ -215,26 +216,6 @@ public class ConvertEntityURIsToIdentifierPattern {
     }
 
 
-    private OWLEntity getEntityOfSameType(IRI iri, OWLEntity entity) {
-        if (entity.isOWLClass()){
-            return mngr.getOWLDataFactory().getOWLClass(iri);
-        }
-        else if (entity.isOWLObjectProperty()){
-            return mngr.getOWLDataFactory().getOWLObjectProperty(iri);
-        }
-        else if (entity.isOWLDataProperty()){
-            return mngr.getOWLDataFactory().getOWLDataProperty(iri);
-        }
-        else if (entity.isOWLAnnotationProperty()){
-            return mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
-        }
-        else if (entity.isOWLIndividual()){
-            return mngr.getOWLDataFactory().getOWLNamedIndividual(iri);
-        }
-        return null;
-    }
-
-
     public void dispose() {
         ontologyImportsWalker.dispose();
 
@@ -242,5 +223,56 @@ public class ConvertEntityURIsToIdentifierPattern {
         ontologies.clear();
 
         mngr = null;
+    }
+
+
+    class EntityOfSameTypeGenerator implements OWLEntityVisitor{
+
+        private OWLDataFactory df;
+
+        private IRI iri;
+
+        private OWLEntity entity;
+
+        public EntityOfSameTypeGenerator(OWLDataFactory df) {
+            this.df = df;
+        }
+
+
+        public OWLEntity getEntityOfSameType(IRI iri, OWLEntity entity) {
+            this.iri = iri;
+            entity.accept(this);
+            return this.entity;
+        }
+
+
+        public void visit(OWLClass owlClass) {
+            entity = df.getOWLClass(iri);
+        }
+
+
+        public void visit(OWLObjectProperty owlObjectProperty) {
+            entity = df.getOWLObjectProperty(iri);
+        }
+
+
+        public void visit(OWLDataProperty owlDataProperty) {
+            entity = df.getOWLDataProperty(iri);
+        }
+
+
+        public void visit(OWLNamedIndividual owlNamedIndividual) {
+            entity = df.getOWLNamedIndividual(iri);
+        }
+
+
+        public void visit(OWLDatatype owlDatatype) {
+            entity = df.getOWLDatatype(iri);
+        }
+
+
+        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            entity = df.getOWLAnnotationProperty(iri);
+        }
     }
 }

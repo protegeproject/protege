@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.tree;
 
+import org.semanticweb.owlapi.model.OWLObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import org.semanticweb.owl.model.OWLObject;
 
 
 /**

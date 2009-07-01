@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.core.ui.list.MListItem;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.List;
 

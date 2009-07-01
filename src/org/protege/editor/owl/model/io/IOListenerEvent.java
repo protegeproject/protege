@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.io;
 
-import org.semanticweb.owl.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import java.net.URI;
 /*

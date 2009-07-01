@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

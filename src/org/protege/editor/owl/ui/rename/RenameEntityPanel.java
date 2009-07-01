@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;

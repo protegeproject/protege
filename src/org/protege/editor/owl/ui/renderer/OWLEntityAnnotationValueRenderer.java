@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.AnnotationValueShortFormProvider;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;

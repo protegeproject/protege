@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 import java.util.HashSet;
 import java.util.Set;

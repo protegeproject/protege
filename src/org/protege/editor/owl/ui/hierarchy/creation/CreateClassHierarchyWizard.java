@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.hierarchy.creation;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClass;
 
 
 /**

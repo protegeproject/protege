@@ -5,11 +5,11 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.entity.*;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.util.SimpleURIShortFormProvider;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.util.SimpleURIShortFormProvider;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -5,10 +5,10 @@ import org.protege.editor.owl.ui.editor.OWLIndividualSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNamedIndividual;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLSameIndividualAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 
 import java.util.ArrayList;
 import java.util.List;

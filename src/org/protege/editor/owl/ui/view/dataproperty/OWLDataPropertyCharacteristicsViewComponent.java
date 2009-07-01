@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.FilteringOWLOntologyChangeListener;
 
 import javax.swing.*;
 import java.awt.*;

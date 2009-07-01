@@ -6,9 +6,9 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

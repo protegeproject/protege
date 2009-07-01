@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.frame;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.SWRLRuleEditor;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.SWRLRule;
 
 import java.util.Comparator;
 /*

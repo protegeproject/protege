@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClass;
 
 
 /**

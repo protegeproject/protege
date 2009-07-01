@@ -5,7 +5,7 @@ import org.protege.editor.owl.model.hierarchy.tabbed.Edge;
 import org.protege.editor.owl.model.hierarchy.tabbed.OWLClassHierarchyCreator;
 import org.protege.editor.owl.model.hierarchy.tabbed.TabIndentedHierarchyParser;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateClassHierarchyWizard;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.awt.event.ActionEvent;
 import java.io.StringReader;

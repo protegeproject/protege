@@ -4,10 +4,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectProperty;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
-import org.semanticweb.owl.model.OWLPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 
 import javax.swing.*;
 import java.awt.*;

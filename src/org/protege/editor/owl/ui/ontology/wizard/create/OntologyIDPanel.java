@@ -4,8 +4,8 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

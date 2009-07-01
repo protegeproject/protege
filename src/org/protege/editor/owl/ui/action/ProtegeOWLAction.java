@@ -4,7 +4,7 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 /**
  * Author: Matthew Horridge<br>

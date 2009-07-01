@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerAdapter;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.*;
 
@@ -43,7 +43,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
             for (OWLOntology ont : reasoner.getLoadedOntologies()){
                 for (OWLClass cls : ont.getReferencedClasses()) {
                     try {
-                        final Set<OWLIndividual> inds = reasoner.getIndividuals(cls, showDirect);
+                        final Set<OWLNamedIndividual> inds = reasoner.getIndividuals(cls, showDirect);
                         if (!inds.isEmpty()){
                             typeNodes.put(cls, new HashSet<OWLObject>(inds));
                         }
@@ -83,7 +83,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
             return Collections.emptySet();
         }
         else {
-            OWLIndividual ind = (OWLIndividual) object;
+            OWLNamedIndividual ind = (OWLNamedIndividual) object;
             Set<OWLObject> clses = new HashSet<OWLObject>();
             try {
                 for (OWLClass cls : OWLReasonerAdapter.flattenSetOfSets(reasoner.getTypes(ind, showDirect))) {

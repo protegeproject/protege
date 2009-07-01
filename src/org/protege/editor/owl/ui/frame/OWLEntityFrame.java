@@ -11,7 +11,7 @@ import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.dataproperty.*;
 import org.protege.editor.owl.ui.frame.individual.*;
 import org.protege.editor.owl.ui.frame.objectproperty.*;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

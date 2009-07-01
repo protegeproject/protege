@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.semanticweb.owl.model.OWLOntology;
-import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxRenderer;
+import org.semanticweb.owlapi.model.OWLOntology;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxRenderer;
 
 import java.io.Writer;
 /*

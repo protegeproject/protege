@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.framelist;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import javax.swing.*;
 import java.util.ArrayList;

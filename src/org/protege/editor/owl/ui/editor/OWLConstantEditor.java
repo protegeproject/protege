@@ -5,9 +5,9 @@ import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLDatatype;
-import org.semanticweb.owl.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.swing.*;
 import java.awt.*;

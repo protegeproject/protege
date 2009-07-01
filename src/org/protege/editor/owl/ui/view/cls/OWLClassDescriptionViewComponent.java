@@ -6,8 +6,8 @@ import org.protege.editor.owl.ui.framelist.CreateClosureAxiomAction;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameListPopupMenuAction;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.CollectionFactory;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.CollectionFactory;
 
 import javax.swing.*;
 import java.awt.*;

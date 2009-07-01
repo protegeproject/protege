@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatype;
 
 import java.awt.*;
 

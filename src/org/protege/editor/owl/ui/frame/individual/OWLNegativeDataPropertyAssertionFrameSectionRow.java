@@ -6,9 +6,9 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ public class OWLNegativeDataPropertyAssertionFrameSectionRow extends AbstractOWL
 
 
     protected OWLNegativeDataPropertyAssertionAxiom createAxiom(OWLDataPropertyConstantPair editedObject) {
-        return getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(getRootObject(),
-                                                                            editedObject.getProperty(),
+        return getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(editedObject.getProperty(),
+                                                                            getRootObject(),
                                                                             editedObject.getConstant());
     }
 

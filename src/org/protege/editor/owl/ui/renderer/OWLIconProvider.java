@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.swing.Icon;
+import org.semanticweb.owlapi.model.OWLObject;
 
-import org.semanticweb.owl.model.OWLObject;
+import javax.swing.*;
 
 
 /**

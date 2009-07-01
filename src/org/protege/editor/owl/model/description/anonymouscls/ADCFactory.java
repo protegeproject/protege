@@ -3,8 +3,8 @@ package org.protege.editor.owl.model.description.anonymouscls;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.parser.OWLParseException;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;

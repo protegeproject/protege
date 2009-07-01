@@ -6,7 +6,7 @@ import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.Findable;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

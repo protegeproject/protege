@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.byprofile;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owl.profiles.ELPlusPlusProfile;
-import org.semanticweb.owl.profiles.OWL2Profile;
-import org.semanticweb.owl.profiles.OWLDLProfile;
-import org.semanticweb.owl.profiles.OWLProfile;
+import org.semanticweb.owlapi.profiles.ELPlusPlusProfile;
+import org.semanticweb.owlapi.profiles.OWL2Profile;
+import org.semanticweb.owlapi.profiles.OWLDLProfile;
+import org.semanticweb.owlapi.profiles.OWLProfile;
 
 import javax.swing.*;
 /*

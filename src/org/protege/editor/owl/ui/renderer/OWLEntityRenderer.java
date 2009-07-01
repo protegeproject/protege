@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 
 
 /**
@@ -12,7 +13,7 @@ import org.semanticweb.owl.model.OWLEntity;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface OWLEntityRenderer {
+public interface OWLEntityRenderer extends ShortFormProvider {
 
 //    public void setup(OWLModelManager owlModelManager);
 

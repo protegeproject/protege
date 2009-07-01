@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owl.AmalgamateSubClassAxioms;
+import org.semanticweb.owlapi.AmalgamateSubClassAxioms;
 
 import java.awt.event.ActionEvent;
 /*

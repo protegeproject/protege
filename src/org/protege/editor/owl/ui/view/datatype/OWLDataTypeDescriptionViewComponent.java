@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.owl.ui.frame.datatype.OWLDatatypeDescriptionFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatype;
 
 import javax.swing.*;
 import java.awt.*;

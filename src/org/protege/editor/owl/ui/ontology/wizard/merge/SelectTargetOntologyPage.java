@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.ontology.wizard.merge;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

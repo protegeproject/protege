@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.parser;
 
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owlapi.model.OWLException;
 
 
 /**

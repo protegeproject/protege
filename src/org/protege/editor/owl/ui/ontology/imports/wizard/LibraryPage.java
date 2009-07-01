@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

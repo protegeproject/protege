@@ -1,15 +1,15 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
-import org.semanticweb.owl.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.net.URI;
 /*
 * Copyright (C) 2007, University of Manchester
 *

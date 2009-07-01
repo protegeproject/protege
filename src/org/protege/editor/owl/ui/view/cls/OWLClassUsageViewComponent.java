@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClass;
 
 import java.awt.*;
 

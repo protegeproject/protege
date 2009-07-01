@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: Matthew Horridge<br>

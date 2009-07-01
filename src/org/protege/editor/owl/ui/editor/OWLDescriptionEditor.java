@@ -4,8 +4,8 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.AxiomType;
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 import javax.swing.*;
 import java.util.Set;

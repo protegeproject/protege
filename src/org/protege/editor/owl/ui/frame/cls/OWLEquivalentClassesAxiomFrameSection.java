@@ -4,10 +4,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.inference.UnsupportedReasonerOperationException;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.CollectionFactory;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.inference.UnsupportedReasonerOperationException;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.CollectionFactory;
 
 import java.util.*;
 

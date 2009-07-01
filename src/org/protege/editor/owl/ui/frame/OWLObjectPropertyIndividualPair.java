@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
 
 /**

@@ -4,7 +4,7 @@ import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.util.ArrayList;

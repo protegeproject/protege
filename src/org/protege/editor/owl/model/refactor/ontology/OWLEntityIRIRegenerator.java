@@ -6,8 +6,8 @@ import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 /*
 * Copyright (C) 2007, University of Manchester
 *

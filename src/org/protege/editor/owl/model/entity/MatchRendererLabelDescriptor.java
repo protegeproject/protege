@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.entity;
 
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.util.List;
 /*

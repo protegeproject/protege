@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.description;
 
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owlapi.model.OWLException;
 
 import java.util.Set;
 

@@ -4,10 +4,10 @@ import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.OWLEntityRemover;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

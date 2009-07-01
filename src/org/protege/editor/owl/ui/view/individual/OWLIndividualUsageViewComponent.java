@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import java.awt.*;
 

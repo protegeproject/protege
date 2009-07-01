@@ -2,12 +2,12 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.wizard.Wizard;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
-import org.semanticweb.owl.util.InferredAxiomGeneratorException;
-import org.semanticweb.owl.util.InferredOntologyGenerator;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
+import org.semanticweb.owlapi.util.InferredAxiomGeneratorException;
+import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

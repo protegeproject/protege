@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model;
 
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 
 /**

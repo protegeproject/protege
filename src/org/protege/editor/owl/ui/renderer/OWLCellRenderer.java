@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.renderer;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -867,7 +867,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                                                   int tokenLength) {
         try {
             OWLObjectProperty prop = (OWLObjectProperty) entity;
-            OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(prop, 1);
+            OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(1, prop);
             if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
                 doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
             }

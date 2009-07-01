@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.OntologyURIShortFormProvider;
-import org.semanticweb.owl.util.ShortFormProvider;
-import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 
 /**
@@ -26,7 +26,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
 
     private final OWLModelManager mngr;
 
-    private org.semanticweb.owl.io.OWLObjectRenderer delegate;
+    private org.semanticweb.owlapi.io.OWLObjectRenderer delegate;
 
     private OntologyURIShortFormProvider ontURISFP;
 

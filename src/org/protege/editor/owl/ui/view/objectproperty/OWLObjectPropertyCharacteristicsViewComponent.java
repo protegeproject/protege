@@ -1,17 +1,14 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.FilteringOWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.FilteringOWLOntologyChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**

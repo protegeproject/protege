@@ -4,9 +4,9 @@ import org.protege.editor.core.OntologyRepository;
 import org.protege.editor.core.OntologyRepositoryEntry;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
-import org.semanticweb.owl.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;

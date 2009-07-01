@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import java.util.Collections;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import java.util.Collections;
 
 
 /**

@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 
 /**

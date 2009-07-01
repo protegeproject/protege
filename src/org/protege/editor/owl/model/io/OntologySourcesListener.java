@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.io;
 
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Set;
 /*

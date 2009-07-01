@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.ontology.OWLOntologyFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.metrics.MetricsPanel;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

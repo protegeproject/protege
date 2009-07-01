@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.Color;
-
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
+
+import java.awt.*;
 
 
 /**

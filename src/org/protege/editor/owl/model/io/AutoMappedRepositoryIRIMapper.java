@@ -3,9 +3,9 @@ package org.protege.editor.owl.model.io;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
-import org.semanticweb.owl.util.SimpleIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.net.URI;
 import java.util.HashSet;

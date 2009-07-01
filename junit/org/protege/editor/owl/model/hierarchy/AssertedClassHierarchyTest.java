@@ -3,9 +3,9 @@ package org.protege.editor.owl.model.hierarchy;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.util.JunitUtil;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.io.OWLRendererException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLRendererException;
+import org.semanticweb.owlapi.model.*;
 
 import java.io.File;
 import java.net.URI;

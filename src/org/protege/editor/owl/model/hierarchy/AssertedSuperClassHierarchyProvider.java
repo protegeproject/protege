@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Collections;
 import java.util.Set;

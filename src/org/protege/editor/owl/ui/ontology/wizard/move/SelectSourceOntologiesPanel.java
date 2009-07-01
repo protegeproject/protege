@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.awt.*;
 import java.util.Set;

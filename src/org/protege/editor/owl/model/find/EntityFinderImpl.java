@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Collections;
 import java.util.HashSet;

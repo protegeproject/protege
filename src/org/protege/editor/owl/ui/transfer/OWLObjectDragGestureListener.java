@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.transfer;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;

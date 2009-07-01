@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 import java.net.URI;
 /*

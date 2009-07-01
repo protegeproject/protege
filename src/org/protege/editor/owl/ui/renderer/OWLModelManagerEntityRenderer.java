@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 
 /**

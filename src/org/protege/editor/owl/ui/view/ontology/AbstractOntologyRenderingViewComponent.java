@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.ontology;
 
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

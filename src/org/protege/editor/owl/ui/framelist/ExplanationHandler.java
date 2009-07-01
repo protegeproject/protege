@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.semanticweb.owl.model.OWLAxiom;
 import org.protege.editor.core.Disposable;
+import org.semanticweb.owlapi.model.OWLAxiom;
 /*
  * Copyright (C) 2007, University of Manchester
  *

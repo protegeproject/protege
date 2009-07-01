@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.Disposable;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.util.ProgressMonitor;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.ProgressMonitor;
 
 import java.util.Set;
 

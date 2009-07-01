@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Set;
 

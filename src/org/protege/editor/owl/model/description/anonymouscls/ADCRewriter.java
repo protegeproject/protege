@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.description.anonymouscls;
 
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectDuplicator;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 
 import java.util.ArrayList;
 import java.util.List;

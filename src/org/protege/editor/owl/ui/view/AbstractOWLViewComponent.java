@@ -9,9 +9,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;

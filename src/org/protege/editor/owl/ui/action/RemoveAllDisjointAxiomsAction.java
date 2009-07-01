@@ -5,7 +5,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

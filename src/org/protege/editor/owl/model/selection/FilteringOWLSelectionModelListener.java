@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.selection;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 
 /**

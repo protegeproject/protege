@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 import java.util.Set;
 /*

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.semanticweb.owl.model.OWLOntology;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.awt.event.ActionEvent;
 /*

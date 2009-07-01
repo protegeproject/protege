@@ -1,20 +1,20 @@
 package org.protege.editor.owl.ui.metrics;
 
-import java.awt.BorderLayout;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
-import org.semanticweb.owl.util.DLExpressivityChecker;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.util.DLExpressivityChecker;
+
+import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.util.List;
 
 
 /**

@@ -8,8 +8,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.border.Border;

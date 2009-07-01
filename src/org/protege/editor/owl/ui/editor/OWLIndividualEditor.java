@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
 import java.util.Set;

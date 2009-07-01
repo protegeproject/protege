@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.clshierarchy;
 
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
-import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClass;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

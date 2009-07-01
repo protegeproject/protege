@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.action;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.AddAxiom;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLClassExpression;
-import org.semanticweb.owl.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
 import java.awt.event.ActionEvent;
 import java.util.Set;

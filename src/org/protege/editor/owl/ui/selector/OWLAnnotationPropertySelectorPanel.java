@@ -9,7 +9,7 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 
 import javax.swing.event.ChangeListener;
 import java.awt.*;

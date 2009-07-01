@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.util.Comparator;
 import java.util.HashSet;

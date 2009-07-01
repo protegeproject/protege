@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 /*
 * Copyright (C) 2007, University of Manchester
 *

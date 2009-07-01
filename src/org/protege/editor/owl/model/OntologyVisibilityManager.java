@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model;
 
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLOntology;
 
-import org.semanticweb.owl.model.OWLOntology;
+import java.util.Set;
 
 
 /**

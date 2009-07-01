@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.rename.RenameEntitiesPanel;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

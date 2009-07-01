@@ -9,7 +9,7 @@ import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 import org.protege.editor.owl.ui.selector.*;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.awt.*;

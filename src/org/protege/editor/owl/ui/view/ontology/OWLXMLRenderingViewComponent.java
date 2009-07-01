@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.ontology;
 
 import org.coode.owlapi.owlxml.renderer.OWLXMLRenderer;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.io.Writer;
 

@@ -35,10 +35,10 @@ import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.CollectionFactory;
-import org.semanticweb.owl.util.OWLEntityCollectingOntologyChangeListener;
-import org.semanticweb.owl.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.CollectionFactory;
+import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
 import java.awt.*;

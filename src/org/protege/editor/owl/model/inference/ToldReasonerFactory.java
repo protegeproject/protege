@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import java.util.Set;
 

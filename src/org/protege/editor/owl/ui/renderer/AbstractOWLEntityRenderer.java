@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLOntologyChange;
-import org.semanticweb.owl.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,11 @@ public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntity
 
     public void removeListener(OWLEntityRendererListener listener) {
         listeners.remove(listener);
+    }
+
+    // just wrap the render method
+    public final String getShortForm(OWLEntity owlEntity) {
+        return render(owlEntity);
     }
 
 

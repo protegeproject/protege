@@ -13,9 +13,9 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.SaveConfirmationPanel;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
-import org.semanticweb.owl.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

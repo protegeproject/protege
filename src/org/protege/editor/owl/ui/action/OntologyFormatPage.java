@@ -5,7 +5,7 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
 import javax.swing.*;
 /*

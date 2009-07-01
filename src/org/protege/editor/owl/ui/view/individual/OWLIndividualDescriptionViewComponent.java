@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.view.individual;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualFrame;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,13 @@
 package org.protege.editor.owl.ui.transfer;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.tree.TreePath;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.util.List;
 
 
 /**

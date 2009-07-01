@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.semanticweb.owl.model.OWLDataProperty;
-import org.semanticweb.owl.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 /*
  * Copyright (C) 2007, University of Manchester
  *

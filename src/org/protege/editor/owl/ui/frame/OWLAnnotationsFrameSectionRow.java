@@ -3,10 +3,10 @@ package org.protege.editor.owl.ui.frame;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owl.model.OWLAnnotation;
-import org.semanticweb.owl.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owl.model.OWLAnnotationSubject;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Arrays;
 import java.util.List;
