@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /*
  * Copyright (C) 2007, University of Manchester

@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AxiomListFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;

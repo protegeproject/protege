@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.List;
 import java.util.Set;

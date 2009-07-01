@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.util.*;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.util.*;
 
 import javax.swing.*;
 import java.awt.*;

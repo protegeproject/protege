@@ -5,7 +5,7 @@ import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.AxiomType;
+import org.semanticweb.owlapi.model.AxiomType;
 /*
 * Copyright (C) 2007, University of Manchester
 *

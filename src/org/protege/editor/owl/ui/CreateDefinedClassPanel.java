@@ -6,7 +6,7 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

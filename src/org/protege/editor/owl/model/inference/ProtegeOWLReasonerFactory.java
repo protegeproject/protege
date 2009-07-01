@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerFactory;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.inference.OWLReasonerFactory;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
 /**

@@ -5,9 +5,9 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
-import org.semanticweb.owl.model.OWLException;
-import org.semanticweb.owl.model.OWLRuntimeException;
-import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.SWRLRule;
 
 import javax.swing.*;
 import java.awt.*;

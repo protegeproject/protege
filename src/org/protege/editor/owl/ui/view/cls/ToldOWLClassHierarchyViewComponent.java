@@ -10,8 +10,8 @@ import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

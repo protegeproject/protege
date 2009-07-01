@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 
 import javax.swing.*;
 

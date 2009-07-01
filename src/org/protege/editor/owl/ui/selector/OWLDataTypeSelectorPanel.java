@@ -9,8 +9,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owl.model.OWLDatatype;
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

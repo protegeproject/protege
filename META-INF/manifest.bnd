@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.equinox.registry, \
                 org.eclipse.equinox.common, \
                 org.protege.editor.core.application, \
                 org.protege.common, \
-                org.semanticweb.owl.owlapi
+                org.semanticweb.owlapi.owlapi
 Import-Package: !com.sun.*,!junit.framework.*,!org.eclipse.core.runtime,\
                  javax.swing.plaf.basic,javax.swing.plaf.metal,\
                  javax.swing.plaf.multi,javax.swing.plaf.synth,\

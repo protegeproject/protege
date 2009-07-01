@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 
 /**

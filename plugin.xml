@@ -230,14 +230,14 @@
     </extension>
 
 
-    <extension id="AnonymousClassesView"
+    <!--extension id="AnonymousClassesView"
                point="org.protege.editor.core.application.ViewComponent">
         <label value="Anonymous defined classes"/>
         <class value="org.protege.editor.owl.ui.view.AnonymousClassesView"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
-    </extension>
+    </extension-->
 
 
     <!-- Object property views -->

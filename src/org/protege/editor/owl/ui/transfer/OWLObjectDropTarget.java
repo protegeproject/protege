@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.transfer;
 
-import java.awt.Point;
-import java.util.List;
-
-import javax.swing.JComponent;
-
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 
 /**

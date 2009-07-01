@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.usage;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLLinkedObjectTree;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

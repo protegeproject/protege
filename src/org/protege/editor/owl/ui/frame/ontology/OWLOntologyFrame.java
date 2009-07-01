@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.frame.ontology;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
 import org.protege.editor.owl.ui.frame.InferredAxiomsFrameSection;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 /*
  * Copyright (C) 2007, University of Manchester
  *

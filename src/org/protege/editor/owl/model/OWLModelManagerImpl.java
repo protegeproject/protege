@@ -42,10 +42,10 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionChe
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.*;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.SimpleIRIMapper;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.io.File;
 import java.io.IOException;

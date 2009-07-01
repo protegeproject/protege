@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
+import org.semanticweb.owlapi.model.OWLObject;
+
 import java.util.Set;
-import org.semanticweb.owl.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>

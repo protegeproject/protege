@@ -5,11 +5,11 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owl.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owl.io.OWLXMLOntologyFormat;
-import org.semanticweb.owl.io.RDFXMLOntologyFormat;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
 import javax.swing.*;
 import java.awt.*;

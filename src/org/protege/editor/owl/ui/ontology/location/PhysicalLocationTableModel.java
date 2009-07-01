@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.ontology.location;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import javax.swing.table.AbstractTableModel;
 import java.net.URI;

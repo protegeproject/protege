@@ -7,9 +7,9 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Comparator;
 
@@ -25,7 +25,7 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
     public static final String LABEL = "Negative data property assertions";
 
     private OWLDataPropertyRelationshipEditor editor;
-    
+
 
     public OWLNegativeDataPropertyAssertionFrameSection(OWLEditorKit editorKit,
                                                         OWLFrame<? extends OWLIndividual> frame) {
@@ -54,8 +54,8 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
 
 
     protected OWLNegativeDataPropertyAssertionAxiom createAxiom(OWLDataPropertyConstantPair object) {
-        return getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(getRootObject(),
-                                                                            object.getProperty(),
+        return getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(object.getProperty(),
+                                                                            getRootObject(),
                                                                             object.getConstant());
     }
 

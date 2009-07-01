@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
 /**

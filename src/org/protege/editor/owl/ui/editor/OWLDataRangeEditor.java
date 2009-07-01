@@ -4,9 +4,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDataRangeChecker;
 import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
-import org.semanticweb.owl.model.OWLDataRange;
-import org.semanticweb.owl.model.OWLDatatype;
-import org.semanticweb.owl.model.OWLException;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLException;
 
 import javax.swing.*;
 import java.awt.*;

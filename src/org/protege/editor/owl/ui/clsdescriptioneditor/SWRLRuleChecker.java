@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.clsdescriptioneditor;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
-import org.semanticweb.owl.model.SWRLRule;
+import org.semanticweb.owlapi.model.SWRLRule;
 /*
 * Copyright (C) 2007, University of Manchester
 *

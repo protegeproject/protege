@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.description;
 
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 
 /**

@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntityRemover;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.*;
 import java.util.Set;

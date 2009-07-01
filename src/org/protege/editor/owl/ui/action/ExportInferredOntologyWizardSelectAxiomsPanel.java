@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.semanticweb.owl.util.InferredAxiomGenerator;
-import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 
 import javax.swing.*;
 import java.awt.*;

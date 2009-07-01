@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.util.ProgressMonitor;
+import org.semanticweb.owlapi.util.ProgressMonitor;
 
 
 /**

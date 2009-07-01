@@ -4,9 +4,9 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.util.OWLEntityRemover;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;
 import java.awt.*;

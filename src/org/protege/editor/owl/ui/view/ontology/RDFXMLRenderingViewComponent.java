@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.coode.owl.rdf.rdfxml.RDFXMLRenderer;
-import org.semanticweb.owl.model.OWLOntology;
+import org.coode.owlapi.rdf.rdfxml.RDFXMLRenderer;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.io.Writer;
 
@@ -14,7 +14,7 @@ import java.io.Writer;
  */
 public class RDFXMLRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
 
-    protected void renderOntology(OWLOntology ontology, Writer writer) {
+    protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         RDFXMLRenderer renderer = new RDFXMLRenderer(getOWLModelManager().getOWLOntologyManager(),
                                                      getOWLModelManager().getActiveOntology(),
                                                      writer);

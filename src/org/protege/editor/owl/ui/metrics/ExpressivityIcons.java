@@ -1,25 +1,12 @@
 package org.protege.editor.owl.ui.metrics;
 
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.AL;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.C;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.D;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.E;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.F;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.H;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.I;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.N;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.O;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.Q;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.S;
-import static org.semanticweb.owl.util.DLExpressivityChecker.Construct.U;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.semanticweb.owlapi.util.DLExpressivityChecker;
+import static org.semanticweb.owlapi.util.DLExpressivityChecker.Construct.*;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.Icon;
-
-import org.protege.editor.owl.ui.OWLIcons;
-import org.semanticweb.owl.util.DLExpressivityChecker;
 
 
 /**

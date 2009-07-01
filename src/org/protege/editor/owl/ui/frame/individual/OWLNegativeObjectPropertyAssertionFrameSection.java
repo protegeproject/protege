@@ -7,10 +7,10 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLNegativeObjectPropertyAssertionAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Comparator;
 
@@ -53,8 +53,8 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
 
 
     protected OWLNegativeObjectPropertyAssertionAxiom createAxiom(OWLObjectPropertyIndividualPair object) {
-        return getOWLDataFactory().getOWLNegativeObjectPropertyAssertionAxiom(getRootObject(),
-                                                                              object.getProperty(),
+        return getOWLDataFactory().getOWLNegativeObjectPropertyAssertionAxiom(object.getProperty(),
+                                                                              getRootObject(),
                                                                               object.getIndividual());
     }
 

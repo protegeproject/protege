@@ -6,8 +6,8 @@ import org.protege.editor.owl.model.refactor.ontology.ConvertEntityURIsToIdentif
 import org.protege.editor.owl.model.refactor.ontology.OntologyTargetResolver;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

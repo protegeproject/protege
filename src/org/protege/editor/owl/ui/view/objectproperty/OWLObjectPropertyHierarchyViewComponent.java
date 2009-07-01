@@ -1,22 +1,13 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
-import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.DeleteObjectPropertyAction;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**

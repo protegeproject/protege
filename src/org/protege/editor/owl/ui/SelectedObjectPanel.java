@@ -10,8 +10,8 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.frame.OWLEntityFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import javax.swing.*;
 import java.awt.*;

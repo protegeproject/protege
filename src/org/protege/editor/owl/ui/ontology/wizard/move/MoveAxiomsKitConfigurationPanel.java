@@ -1,12 +1,8 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsWizard;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsModel;
-import org.semanticweb.owl.model.OWLOntology;
 
 import javax.swing.*;
-import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *

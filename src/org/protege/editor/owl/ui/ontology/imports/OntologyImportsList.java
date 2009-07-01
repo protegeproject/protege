@@ -10,7 +10,7 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.awt.*;

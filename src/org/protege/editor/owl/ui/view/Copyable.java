@@ -1,11 +1,10 @@
 package org.protege.editor.owl.ui.view;
 
-import java.util.List;
+import org.protege.editor.owl.ui.action.ActionTarget;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.event.ChangeListener;
-
-import org.protege.editor.owl.ui.action.ActionTarget;
-import org.semanticweb.owl.model.OWLObject;
+import java.util.List;
 
 
 /**

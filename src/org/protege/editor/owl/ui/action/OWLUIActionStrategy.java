@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 
 /**

@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 
 import javax.swing.*;
 /*

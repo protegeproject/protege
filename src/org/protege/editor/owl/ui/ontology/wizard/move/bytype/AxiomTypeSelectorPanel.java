@@ -5,7 +5,7 @@ import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owl.model.AxiomType;
+import org.semanticweb.owlapi.model.AxiomType;
 
 import javax.swing.*;
 import java.awt.*;

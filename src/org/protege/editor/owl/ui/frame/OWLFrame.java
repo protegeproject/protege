@@ -2,8 +2,6 @@ package org.protege.editor.owl.ui.frame;
 
 import java.util.List;
 
-import org.semanticweb.owl.model.OWLObject;
-
 
 /**
  * Author: Matthew Horridge<br>

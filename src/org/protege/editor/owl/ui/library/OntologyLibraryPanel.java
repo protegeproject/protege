@@ -14,7 +14,7 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.clshierarchy;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 
 /**

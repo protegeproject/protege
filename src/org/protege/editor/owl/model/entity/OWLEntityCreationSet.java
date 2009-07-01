@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.util.ArrayList;
 import java.util.List;

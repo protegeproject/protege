@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.inference.MonitorableOWLReasonerAdapter;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.inference.MonitorableOWLReasonerAdapter;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +121,7 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
     }
 
 
-    public Set<OWLClass> getInconsistentClasses() throws OWLReasonerException {
+    public Set<OWLClass> getUnsatisfiableClasses() throws OWLReasonerException {
         return Collections.emptySet();
     }
 
@@ -131,23 +131,23 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
     }
 
 
-    public Set<Set<OWLClass>> getTypes(OWLIndividual individual, boolean direct) throws OWLReasonerException {
+    public Set<Set<OWLClass>> getTypes(OWLNamedIndividual individual, boolean direct) throws OWLReasonerException {
         return Collections.emptySet();
     }
 
 
-    public Set<OWLIndividual> getIndividuals(OWLClassExpression clsC, boolean direct) throws OWLReasonerException {
+    public Set<OWLNamedIndividual> getIndividuals(OWLClassExpression clsC, boolean direct) throws OWLReasonerException {
         return Collections.emptySet();
     }
 
 
-    public Map<OWLObjectProperty, Set<OWLIndividual>> getObjectPropertyRelationships(OWLIndividual individual) throws
+    public Map<OWLObjectProperty, Set<OWLNamedIndividual>> getObjectPropertyRelationships(OWLNamedIndividual individual) throws
                                                                                                                OWLReasonerException {
         return Collections.emptyMap();
     }
 
 
-    public Map<OWLDataProperty, Set<OWLLiteral>> getDataPropertyRelationships(OWLIndividual individual) throws
+    public Map<OWLDataProperty, Set<OWLLiteral>> getDataPropertyRelationships(OWLNamedIndividual individual) throws
                                                                                                               OWLReasonerException {
         return Collections.emptyMap();
     }
@@ -158,30 +158,30 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
     * changed to an OWLClass parameter.
     *
     */
-    public boolean hasType(OWLIndividual individual, OWLClassExpression type, boolean direct) throws OWLReasonerException {
+    public boolean hasType(OWLNamedIndividual individual, OWLClassExpression type, boolean direct) throws OWLReasonerException {
         return false;
     }
 
 
-    public boolean hasObjectPropertyRelationship(OWLIndividual subject, OWLObjectPropertyExpression property,
-                                                 OWLIndividual object) throws OWLReasonerException {
+    public boolean hasObjectPropertyRelationship(OWLNamedIndividual subject, OWLObjectPropertyExpression property,
+                                                 OWLNamedIndividual object) throws OWLReasonerException {
         return false;
     }
 
 
-    public boolean hasDataPropertyRelationship(OWLIndividual subject, OWLDataPropertyExpression property,
+    public boolean hasDataPropertyRelationship(OWLNamedIndividual subject, OWLDataPropertyExpression property,
                                                OWLLiteral object) throws OWLReasonerException {
         return false;
     }
 
 
-    public Set<OWLIndividual> getRelatedIndividuals(OWLIndividual subject, OWLObjectPropertyExpression property) throws
+    public Set<OWLNamedIndividual> getRelatedIndividuals(OWLNamedIndividual subject, OWLObjectPropertyExpression property) throws
                                                                                                                  OWLReasonerException {
         return Collections.emptySet();
     }
 
 
-    public Set<OWLLiteral> getRelatedValues(OWLIndividual subject, OWLDataPropertyExpression property) throws
+    public Set<OWLLiteral> getRelatedValues(OWLNamedIndividual subject, OWLDataPropertyExpression property) throws
                                                                                                         OWLReasonerException {
         return Collections.emptySet();
     }

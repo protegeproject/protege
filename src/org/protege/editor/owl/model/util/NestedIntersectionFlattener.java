@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.HashSet;
 import java.util.Set;

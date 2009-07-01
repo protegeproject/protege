@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.history;
 
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 
 /**
@@ -26,11 +26,6 @@ public class ReverseChangeGenerator implements OWLOntologyChangeVisitor {
 
     public void visit(RemoveAxiom change) {
         reverseChange = new AddAxiom(change.getOntology(), change.getAxiom());
-    }
-
-
-    public void visit(SetOntologyURI change) {
-        reverseChange = new SetOntologyURI(change.getOntology(), change.getOriginalOntologyID().getOntologyIRI().toURI());
     }
 
 

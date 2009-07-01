@@ -2,9 +2,9 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;

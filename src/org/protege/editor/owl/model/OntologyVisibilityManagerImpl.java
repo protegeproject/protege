@@ -1,12 +1,8 @@
 package org.protege.editor.owl.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLOntology;
 
-import org.semanticweb.owl.model.OWLOntology;
+import java.util.*;
 
 
 /**

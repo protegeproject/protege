@@ -2,11 +2,11 @@ package org.protege.editor.owl.ui.ontology.wizard.move.byprofile;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.profiles.ConstructNotAllowed;
-import org.semanticweb.owl.profiles.OWLProfile;
-import org.semanticweb.owl.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.profiles.ConstructNotAllowed;
+import org.semanticweb.owlapi.profiles.OWLProfile;
+import org.semanticweb.owlapi.profiles.OWLProfileReport;
 
 import java.util.ArrayList;
 import java.util.HashSet;

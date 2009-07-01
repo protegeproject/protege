@@ -7,8 +7,8 @@ import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.io.OntologySourcesListener;
 import org.protege.editor.owl.model.io.OntologySourcesManager;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;

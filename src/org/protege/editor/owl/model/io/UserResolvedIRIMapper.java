@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.io;
 
 import org.protege.editor.owl.model.MissingImportHandler;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 import java.net.URI;
 import java.util.HashMap;

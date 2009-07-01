@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import java.awt.*;
 

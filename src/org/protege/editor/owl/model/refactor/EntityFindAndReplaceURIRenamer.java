@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.refactor;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLObjectDuplicator;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 
 import java.net.URI;
 import java.net.URISyntaxException;

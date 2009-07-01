@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

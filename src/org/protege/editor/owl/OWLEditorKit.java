@@ -21,8 +21,8 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.VersionInfo;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.VersionInfo;
 
 import java.io.File;
 import java.net.ProtocolException;

@@ -1,26 +1,22 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.CreateNewChildTarget;
-import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
-import org.protege.editor.owl.ui.view.OWLPropertyTreeDropHandler;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.core.ui.view.DisposableAction;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.CreateNewChildTarget;
+import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.awt.event.ActionEvent;
 /*
 * Copyright (C) 2007, University of Manchester
 *

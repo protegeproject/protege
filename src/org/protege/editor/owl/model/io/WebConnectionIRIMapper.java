@@ -2,8 +2,8 @@ package org.protege.editor.owl.model.io;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 import java.io.IOException;
 import java.io.InputStream;

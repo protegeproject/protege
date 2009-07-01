@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owl.expression.ParserException;
-import org.semanticweb.owl.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
 
 import java.util.Set;
 

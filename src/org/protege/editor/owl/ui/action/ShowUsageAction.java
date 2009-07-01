@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 
 /**

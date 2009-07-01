@@ -4,8 +4,8 @@ import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,17 +86,17 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         });
         types.add(min = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Min (min cardinality)") {
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectMinCardinality(prop, card, filler);
+                return getDataFactory().getOWLObjectMinCardinality(card, prop, filler);
             }
         });
         types.add(exactly = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Exactly (exact cardinality)") {
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectExactCardinality(prop, card, filler);
+                return getDataFactory().getOWLObjectExactCardinality(card, prop, filler);
             }
         });
         types.add(max = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Max (max cardinality)") {
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
-                return getDataFactory().getOWLObjectMaxCardinality(prop, card, filler);
+                return getDataFactory().getOWLObjectMaxCardinality(card, prop, filler);
             }
         });
 

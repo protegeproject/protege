@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyViewComponent;
-import org.semanticweb.owl.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 
 
 /**

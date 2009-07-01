@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.ontology.imports.wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.util.HashSet;
 import java.util.Set;

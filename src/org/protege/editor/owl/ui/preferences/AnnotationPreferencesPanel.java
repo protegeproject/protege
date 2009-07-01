@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.preferences;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.NamespaceUtil;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.NamespaceUtil;
 
 import javax.swing.*;
 import java.awt.*;

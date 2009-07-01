@@ -2,10 +2,10 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.*;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -68,7 +68,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
 
     protected void refillInferred() throws OWLReasonerException {
        try {
-           for (OWLClass cls : getReasoner().getInconsistentClasses()) {
+           for (OWLClass cls : getReasoner().getUnsatisfiableClasses()) {
                if (!cls.isOWLNothing()) {
                    OWLAxiom unsatAx = getOWLDataFactory().getOWLSubClassOfAxiom(cls,
                                                                               getOWLDataFactory().getOWLNothing());

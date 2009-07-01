@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.net.URI;
 import java.util.HashSet;

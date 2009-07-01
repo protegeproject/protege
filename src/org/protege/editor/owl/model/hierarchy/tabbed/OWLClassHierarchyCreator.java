@@ -4,7 +4,7 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.*;
 

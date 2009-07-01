@@ -6,13 +6,13 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerAdapter;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyManager;
-import org.semanticweb.owl.model.OWLRuntimeException;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -83,11 +83,11 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
         try {
             Set<OWLClass> subs = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSubClasses(object));
             // Add in owl:Nothing if there are inconsistent classes
-            if (object.isOWLThing() && !owlModelManager.getReasoner().getInconsistentClasses().isEmpty()) {
+            if (object.isOWLThing() && !owlModelManager.getReasoner().getUnsatisfiableClasses().isEmpty()) {
                 subs.add(owlNothing);
             }
             else if (object.isOWLNothing()) {
-                subs.addAll(getReasoner().getInconsistentClasses());
+                subs.addAll(getReasoner().getUnsatisfiableClasses());
                 subs.remove(owlNothing);
             }
             else {

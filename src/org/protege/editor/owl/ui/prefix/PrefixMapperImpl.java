@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.prefix;
 
-import org.semanticweb.owl.vocab.Namespaces;
+import org.semanticweb.owlapi.vocab.Namespaces;
 
 import java.net.URI;
 import java.util.*;

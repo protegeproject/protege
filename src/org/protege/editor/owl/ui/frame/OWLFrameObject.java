@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owl.model.OWLAxiom;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerException;
-import org.semanticweb.owl.model.OWLClassExpression;
+import org.semanticweb.owlapi.inference.OWLReasoner;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 import java.util.HashSet;
 import java.util.Set;

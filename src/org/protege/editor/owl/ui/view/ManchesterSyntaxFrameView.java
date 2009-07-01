@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLObject;
-import uk.ac.manchester.cs.owl.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.*;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,6 +66,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
             StringWriter w = new StringWriter();
             try {
                 renderOWLEntity(owlEntity, new BufferedWriter(w));
+                w.flush();
                 textArea.setText(w.getBuffer().toString());
                 SwingUtilities.invokeLater(new Runnable(){
                     public void run() {
@@ -83,26 +84,55 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
 
 
     private void renderOWLEntity(OWLEntity entity, Writer writer) throws Exception {
-        ManchesterOWLSyntaxFrameRenderer ren = new ManchesterOWLSyntaxFrameRenderer(getOWLModelManager().getOWLOntologyManager(),
-                                                                                    getOWLModelManager().getActiveOntology(),
-                                                                                    writer);
-        if (entity.isOWLClass()){
-            ren.write(entity.asOWLClass());
-        }
-        else if (entity.isOWLObjectProperty()){
-            ren.write(entity.asOWLObjectProperty());
-        }
-        else if (entity.isOWLDataProperty()){
-            ren.write(entity.asOWLDataProperty());
-        }
-        else if (entity.isOWLIndividual()){
-            ren.write(entity.asOWLIndividual());
-        }
-        writer.flush();
+        OWLEntityFrameRendererAdapter adapter = new OWLEntityFrameRendererAdapter(getOWLModelManager(), writer);
+        entity.accept(adapter);
     }
 
 
     public void disposeView() {
         // do nothing
+    }
+
+
+    class OWLEntityFrameRendererAdapter implements OWLEntityVisitor {
+
+        private ManchesterOWLSyntaxFrameRenderer ren;
+
+        OWLEntityFrameRendererAdapter(OWLModelManager mngr, Writer writer) {
+            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getOWLOntologyManager(),
+                                                       mngr.getActiveOntology(),
+                                                       writer,
+                                                       mngr.getOWLEntityRenderer());
+        }
+
+
+        public void visit(OWLClass owlClass) {
+            ren.write(owlClass);
+        }
+
+
+        public void visit(OWLObjectProperty owlObjectProperty) {
+            ren.write(owlObjectProperty);
+        }
+
+
+        public void visit(OWLDataProperty owlDataProperty) {
+            ren.write(owlDataProperty);
+        }
+
+
+        public void visit(OWLNamedIndividual owlNamedIndividual) {
+            ren.write(owlNamedIndividual);
+        }
+
+
+        public void visit(OWLDatatype owlDatatype) {
+            ren.write(owlDatatype);
+        }
+
+
+        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            ren.write(owlAnnotationProperty);
+        }
     }
 }

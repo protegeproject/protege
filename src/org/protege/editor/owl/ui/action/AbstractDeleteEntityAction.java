@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

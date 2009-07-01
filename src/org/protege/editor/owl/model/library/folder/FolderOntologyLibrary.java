@@ -2,8 +2,8 @@ package org.protege.editor.owl.model.library.folder;
 
 import org.protege.editor.owl.model.library.AbstractOntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryMemento;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.util.AutoIRIMapper;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 import java.io.File;
 import java.io.IOException;

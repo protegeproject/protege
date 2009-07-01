@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.history;
 
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.util.List;
 

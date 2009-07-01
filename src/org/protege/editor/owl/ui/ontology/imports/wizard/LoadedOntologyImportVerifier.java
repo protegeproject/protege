@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.HashSet;
 import java.util.Set;

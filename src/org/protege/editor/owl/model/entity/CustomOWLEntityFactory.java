@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.entity;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -185,7 +185,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLLiteral con = df.getOWLStringLiteral(value, lang);
         OWLAnnotationProperty prop = df.getOWLAnnotationProperty(iri);
-        OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(owlEntity, prop, con);
+        OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(prop, owlEntity, con);
         return Collections.singletonList(new AddAxiom(mngr.getActiveOntology(), ax));
     }
 

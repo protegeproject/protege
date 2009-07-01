@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
 /*
  * Copyright (C) 2007, University of Manchester
  *

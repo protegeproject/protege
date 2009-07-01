@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
+
+import java.awt.event.ActionEvent;
 
 
 /**

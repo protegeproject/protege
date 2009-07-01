@@ -5,7 +5,7 @@ import org.protege.editor.core.ui.util.CheckTableModel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

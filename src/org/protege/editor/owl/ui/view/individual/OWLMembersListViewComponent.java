@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Collections;
 import java.util.List;

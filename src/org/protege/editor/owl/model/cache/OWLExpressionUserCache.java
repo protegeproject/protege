@@ -7,7 +7,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import java.net.URI;
 import java.util.*;
@@ -338,6 +338,16 @@ public class OWLExpressionUserCache implements Disposable {
 
         public void visit(OWLAnnotationProperty entity) {
             cf = OWLANNOTATIONPROPERTY + DELIMITER + entity.getURI();
+        }
+
+
+        public String getShortForm(OWLEntity owlEntity) {
+            return render(owlEntity);
+        }
+
+
+        public void dispose() {
+            // do nothing
         }
     }
 }

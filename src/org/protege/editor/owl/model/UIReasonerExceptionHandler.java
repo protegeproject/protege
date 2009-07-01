@@ -2,7 +2,7 @@ package org.protege.editor.owl.model;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
-import org.semanticweb.owl.inference.OWLReasonerException;
+import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import javax.swing.*;
 /*

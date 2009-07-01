@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.view.individual;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameListRenderer;
-import org.semanticweb.owl.model.OWLIndividual;
-import org.semanticweb.owl.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
 import java.awt.*;

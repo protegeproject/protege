@@ -1,25 +1,20 @@
 package org.protege.editor.owl.ui.table;
 
-import java.awt.Cursor;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JComponent;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
-import org.semanticweb.owl.model.OWLObject;
-import org.semanticweb.owl.util.OWLObjectDuplicator;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

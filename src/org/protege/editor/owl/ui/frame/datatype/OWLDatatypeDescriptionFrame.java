@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.frame.datatype;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
-import org.semanticweb.owl.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatype;
 /*
 * Copyright (C) 2007, University of Manchester
 *

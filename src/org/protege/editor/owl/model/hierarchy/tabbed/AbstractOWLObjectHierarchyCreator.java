@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
 import org.protege.editor.core.ProtegeApplication;
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLDataFactory;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.net.URI;
 import java.util.ArrayList;

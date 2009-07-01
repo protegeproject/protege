@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.CollectionFactory;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.CollectionFactory;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

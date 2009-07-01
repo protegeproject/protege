@@ -2,9 +2,9 @@ package org.protege.editor.owl.model.hierarchy;
 
 import org.protege.editor.owl.model.hierarchy.roots.Relation;
 import org.protege.editor.owl.model.hierarchy.roots.TerminalElementFinder;
-import org.semanticweb.owl.model.*;
-import org.semanticweb.owl.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owl.util.OWLClassExpressionVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.*;
 

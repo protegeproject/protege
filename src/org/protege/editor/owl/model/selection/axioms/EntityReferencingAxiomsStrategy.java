@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import java.util.Collections;
 import java.util.HashSet;

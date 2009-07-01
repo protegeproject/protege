@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.semanticweb.owl.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClass;
 
 
 /**

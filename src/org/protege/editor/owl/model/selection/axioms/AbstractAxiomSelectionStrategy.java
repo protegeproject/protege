@@ -1,13 +1,9 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owl.model.OWLOntology;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;/*
+import java.util.List;/*
 * Copyright (C) 2007, University of Manchester
 *
 * Modifications to the initial code base are copyright of their

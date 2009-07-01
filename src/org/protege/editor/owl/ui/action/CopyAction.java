@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.Copyable;
 import org.protege.editor.owl.ui.view.ViewClipboard;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;

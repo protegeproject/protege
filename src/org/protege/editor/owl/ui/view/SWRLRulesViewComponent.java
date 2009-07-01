@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.ui.frame.SWRLRulesFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owl.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;

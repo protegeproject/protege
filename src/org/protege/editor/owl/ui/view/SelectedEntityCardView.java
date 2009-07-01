@@ -4,7 +4,7 @@ import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.*;
+import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.awt.*;

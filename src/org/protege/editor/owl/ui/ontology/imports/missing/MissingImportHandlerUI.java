@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owl.model.IRI;
+import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 import java.io.File;

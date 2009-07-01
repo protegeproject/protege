@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.semanticweb.owl.metrics.OWLMetric;
-import org.semanticweb.owl.metrics.OWLMetricManager;
+import org.semanticweb.owlapi.metrics.OWLMetric;
+import org.semanticweb.owlapi.metrics.OWLMetricManager;
 
 import javax.swing.table.AbstractTableModel;
 /*

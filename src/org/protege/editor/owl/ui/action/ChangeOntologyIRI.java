@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owl.model.IRI;
-import org.semanticweb.owl.model.OWLOntology;
-import org.semanticweb.owl.util.OWLOntologyURIChanger;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OWLOntologyURIChanger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

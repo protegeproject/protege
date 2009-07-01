@@ -8,10 +8,10 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeCellRenderer;
-import org.semanticweb.owl.model.OWLClass;
-import org.semanticweb.owl.model.OWLEntity;
-import org.semanticweb.owl.model.OWLNamedIndividual;
-import org.semanticweb.owl.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

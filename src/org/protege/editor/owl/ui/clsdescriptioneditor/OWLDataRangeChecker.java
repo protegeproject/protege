@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.coode.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owl.expression.ParserException;
-import org.semanticweb.owl.model.OWLDataRange;
+import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.model.OWLDataRange;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -57,7 +57,7 @@ public class OWLDataRangeChecker implements OWLExpressionChecker<OWLDataRange>{
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
         try {
-            return parser.parseDataRange(true);
+            return parser.parseDataRange();
         }
         catch (ParserException e) {
             throw ParserUtil.convertException(e);

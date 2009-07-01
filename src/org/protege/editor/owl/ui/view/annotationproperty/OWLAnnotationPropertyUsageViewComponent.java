@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
 import org.protege.editor.owl.ui.usage.UsagePanel;
-import org.semanticweb.owl.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 
 import java.awt.*;
 

@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owl.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.util.ArrayList;
