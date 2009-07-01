@@ -128,8 +128,10 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLObjectEditor<O
         if (editedObject == null){
             constantEditorComponent.setEditedObject(null);
         }
-        dataPropertySelectorPanel.setSelection(editedObject.getProperty());
-        constantEditorComponent.setEditedObject(editedObject.getConstant());
+        else{
+            dataPropertySelectorPanel.setSelection(editedObject.getProperty());
+            constantEditorComponent.setEditedObject(editedObject.getConstant());
+        }
         return true;
     }
 
