@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import org.protege.editor.owl.model.OntologyAnnotationContainer;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -30,7 +31,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
         list = new OWLOntologyAnnotationList(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.setOntology(getOWLModelManager().getActiveOntology());
+        list.setRootObject(new OntologyAnnotationContainer(getOWLModelManager().getActiveOntology()));
         listener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
@@ -43,7 +44,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
 
     private void updateView() {
-        list.setOntology(getOWLModelManager().getActiveOntology());
+        list.setRootObject(new OntologyAnnotationContainer(getOWLModelManager().getActiveOntology()));
     }
 
 

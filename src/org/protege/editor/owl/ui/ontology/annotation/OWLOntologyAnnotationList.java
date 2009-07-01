@@ -1,18 +1,13 @@
 package org.protege.editor.owl.ui.ontology.annotation;
 
-import org.protege.editor.core.ui.list.MList;
-import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
-import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.model.OntologyAnnotationContainer;
+import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -46,113 +41,44 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Jun 1, 2009<br><br>
  */
-public class OWLOntologyAnnotationList extends MList {
-
-    private OWLEditorKit eKit;
-
-    private OWLAnnotationEditor editor;
-
-    private OWLOntology ont;
-
-    private MListSectionHeader header = new MListSectionHeader() {
-
-        public String getName() {
-            return "Annotations";
-        }
-
-        public boolean canAdd() {
-            return true;
-        }
-    };
-
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleOntologyChanges(changes);
-        }
-    };
-
-    private MouseListener mouseListener = new MouseAdapter(){
-        public void mouseReleased(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                handleEdit();
-            }
-        }
-    };
-
-    private ListCellRenderer delegate;
-
+public class OWLOntologyAnnotationList extends AbstractAnnotationsList<OntologyAnnotationContainer> {
 
     public OWLOntologyAnnotationList(OWLEditorKit eKit) {
-        this.eKit = eKit;
-
-        delegate = getCellRenderer();
-
-        setCellRenderer(new OWLAnnotationCellRenderer(eKit){
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if (value instanceof OntologyAnnotationItem){
-                    value = ((OntologyAnnotationItem)value).getAnnotation();
-                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                }
-                return delegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            }
-        });
-        
-        addMouseListener(mouseListener);
-
-        eKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
+        super(eKit);
     }
 
 
-    protected void handleAdd() {
-        // don't need to check the section as only the direct imports can be added
-        if (editor == null){
-            editor = new OWLAnnotationEditor(eKit);
-        }
-        UIHelper uiHelper = new UIHelper(eKit);
-        int ret = uiHelper.showValidatingDialog("Ontology Annotation", editor.getEditorComponent(), null);
-
-        if (ret == JOptionPane.OK_OPTION) {
-            OWLAnnotation annot = editor.getEditedObject();
-            eKit.getModelManager().applyChange(new AddOntologyAnnotation(ont, annot));
-        }
+    protected List<OWLOntologyChange> getAddChanges(OWLAnnotation annot) {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        changes.add(new AddOntologyAnnotation(getRoot().getOntology(), annot));
+        return changes;
     }
 
 
-    public void setOntology(OWLOntology ont){
-        this.ont = ont;
-
-        java.util.List<Object> data = new ArrayList<Object>();
-
-        data.add(header);
-
-        // @@TODO ordering
-        for (OWLAnnotation annot : ont.getAnnotations()){
-            data.add(new OntologyAnnotationItem(ont, annot, eKit));
-        }
-
-        setListData(data.toArray());
+    protected List<OWLOntologyChange> getReplaceChanges(OWLAnnotation oldAnnotation, OWLAnnotation newAnnotation) {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        changes.add(new RemoveOntologyAnnotation(getRoot().getOntology(), oldAnnotation));
+        changes.add(new AddOntologyAnnotation(getRoot().getOntology(), newAnnotation));
+        return changes;
     }
 
 
-    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
+    protected List<OWLOntologyChange> getDeleteChanges(OWLAnnotation annot) {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        changes.add(new RemoveOntologyAnnotation(getRoot().getOntology(), annot));
+        return changes;
+    }
+
+
+    protected void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange change : changes){
             if (change instanceof AddOntologyAnnotation ||
                 change instanceof RemoveOntologyAnnotation){
-                if (change.getOntology().equals(ont)){
+                if (change.getOntology().equals(getRoot().getOntology())){
                     refresh();
                     return;
                 }
             }
         }
-    }
-
-
-    private void refresh() {
-        setOntology(ont);
-    }
-
-
-    public void dispose() {
-        eKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
     }
 }

@@ -3,9 +3,9 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelAdapter;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLObject;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
@@ -46,9 +46,8 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
     private OWLSelectionModelListener selListener = new OWLSelectionModelAdapter(){
         public void selectionChanged() throws Exception {
             final OWLSelectionModel selModel = getOWLWorkspace().getOWLSelectionModel();
-            OWLObject lastSelection = selModel.getSelectedObject();
-            
-            if (lastSelection instanceof OWLAxiom || selModel.getLastSelectedAxiom() == null){
+            if (selModel.getLastSelectedAxiomInstance() == null || 
+                !selModel.getLastSelectedAxiomInstance().equals(axiomAnnotationPanel.getAxiom())){
                 updateViewContentAndHeader();
             }
         }
@@ -112,11 +111,11 @@ public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
 
 
     private OWLAxiom updateView() {
-        OWLAxiom ax = getOWLWorkspace().getOWLSelectionModel().getLastSelectedAxiom();
+        OWLAxiomInstance axiomInstance = getOWLWorkspace().getOWLSelectionModel().getLastSelectedAxiomInstance();
 
-        axiomAnnotationPanel.setAxiom(ax);
+        axiomAnnotationPanel.setAxiomInstance(axiomInstance);
 
-        return ax;
+        return axiomInstance != null ? axiomInstance.getAxiom() : null;
     }
 
 

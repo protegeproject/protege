@@ -116,7 +116,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
             OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
             changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
             getOWLModelManager().applyChanges(changes);
-            setSelectedEntity(set.getOWLEntity());
+            setGlobalSelection(set.getOWLEntity());
         }
     }
 
@@ -147,7 +147,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
                 changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
             }
             mngr.applyChanges(changes);
-            setSelectedEntity(creationSet.getOWLEntity());
+            setGlobalSelection(creationSet.getOWLEntity());
         }
     }
 
