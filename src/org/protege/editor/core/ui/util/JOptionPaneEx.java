@@ -69,7 +69,7 @@ public class JOptionPaneEx {
                         "Using normal dialog with no validating");
             return showConfirmDialog(parent, title, component, messageType, optionType, null);
         }
-            }
+    }
 
 
     private static JDialog createDialog(Component parent, String title, JOptionPane optionPane, final JComponent defaultFocusedComponent) {
