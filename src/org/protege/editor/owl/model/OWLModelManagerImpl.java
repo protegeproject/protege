@@ -4,7 +4,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
-import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -481,29 +480,18 @@ public class OWLModelManagerImpl extends AbstractModelManager
         try{
             fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
 
-            if (isTempFileSavingActive()){ // save to a temp file
-                try {
-                    if (!physicalURI.getScheme().equals("file")){
-                        throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
-                    }
-                    final File targetFile = new File(physicalURI);
-
-                    // we use the temp directory as storing in the current directory would only cause
-                    // problems for loading later on
-                    final File tempFile = FileUtils.createTempFile(targetFile);
-                    logger.info("Saving " + getRendering(ont) + " to temp file: " + tempFile);
-                    tempFile.deleteOnExit();
-                    manager.saveOntology(ont, manager.getOntologyFormat(ont), tempFile.toURI());
-
-                    FileUtils.copyFile(tempFile, targetFile);
-                    manager.setPhysicalURIForOntology(ont, physicalURI);
+            try {
+                if (!physicalURI.getScheme().equals("file")){
+                    throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
                 }
-                catch (IOException e) {
-                    throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);
-                }
-            }
-            else{
+
+                // the OWLAPI v3 saves to a temp file now
                 manager.saveOntology(ont, manager.getOntologyFormat(ont), physicalURI);
+
+                manager.setPhysicalURIForOntology(ont, physicalURI);
+            }
+            catch (IOException e) {
+                throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);
             }
 
             logger.info("Saved " + getRendering(ont) + " to " + physicalURI);
