@@ -5,6 +5,7 @@ import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.Set;
 
 
@@ -30,7 +31,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
 
     public boolean setEditedObject(Set<OWLNamedIndividual> individuals) {
-        panel.setSelection(individuals);
+        panel.setSelection(individuals != null ? individuals : Collections.EMPTY_SET);
         return true;
     }
 

@@ -224,7 +224,7 @@ public class UIHelper {
         for (OWLOntology ont : ontologies) {
             if (getOWLModelManager().getActiveOntology().equals(ont)) {
                 result += "<font color=\"0000ff\"><b>";
-                result += ont.getOntologyID();
+                result += ont.getOntologyID().getDefaultDocumentIRI();
                 result += "</font></b>";
             }
             else {
