@@ -69,12 +69,11 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br>
  * <br>
- * <p/> An OWLFrameList2 is a common component that displays sections and
+ * <p/> An OWLFrameList is a common component that displays sections and
  * section content. Most of the standard component in protege use this.
  */
-public class OWLFrameList<R extends Object> extends MList implements
-                                                           LinkedObjectComponent, DropTargetListener, Copyable, Pasteable,
-                                                           Cuttable, Deleteable, RefreshableComponent {
+public class OWLFrameList<R> extends MList
+    implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
 
     private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
 
