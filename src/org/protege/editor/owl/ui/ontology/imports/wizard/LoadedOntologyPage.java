@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.ontology.imports.wizard;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -40,11 +41,31 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
 
 
     private List<OWLOntology> getOntologies() {
-        List<OWLOntology> ontologies = new ArrayList<OWLOntology>();
-        ontologies.addAll(getOWLModelManager().getOntologies());
-        ontologies.removeAll(getOWLModelManager().getActiveOntologies());
-        Collections.sort(ontologies, getOWLModelManager().getOWLObjectComparator());
+        final OWLModelManager mngr = getOWLModelManager();
+
+        List<OWLOntology> ontologies = new ArrayList<OWLOntology>(mngr.getOntologies());
+
+        ontologies.removeAll(mngr.getOWLOntologyManager().getImportsClosure(mngr.getActiveOntology()));
+
+        // you cannot import an ontology from the same series
+        ontologies.removeAll(getOntologiesInSeries(mngr.getActiveOntology(), ontologies));
+
+        Collections.sort(ontologies, mngr.getOWLObjectComparator());
         return ontologies;
+    }
+
+
+    private Set<OWLOntology> getOntologiesInSeries(OWLOntology ontology, Collection<OWLOntology> ontologies) {
+        Set<OWLOntology> ontologiesInSeries = new HashSet<OWLOntology>();
+        if (!ontology.getOntologyID().isAnonymous()){
+            for (OWLOntology ont : ontologies){
+                if (!ont.getOntologyID().isAnonymous() &&
+                    ont.getOntologyID().getOntologyIRI().equals(ontology.getOntologyID().getOntologyIRI())){
+                    ontologiesInSeries.add(ont);
+                }
+            }
+        }
+        return ontologiesInSeries;
     }
 
 
