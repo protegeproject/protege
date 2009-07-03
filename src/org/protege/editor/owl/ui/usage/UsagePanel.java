@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLProperty;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,6 +71,7 @@ public class UsagePanel extends JPanel {
         box.add(new JLabel("Show: "));
         box.add(showAllCheckbox);
         box.add(showDisjointsCheckbox);
+        box.add(showDifferentCheckbox);
         box.add(showNamedSubSuperclassesCheckbox);
 
         add(box, BorderLayout.NORTH);
@@ -80,7 +82,7 @@ public class UsagePanel extends JPanel {
     public void setOWLEntity(OWLEntity entity) {
         currentSelection = entity;
         showNamedSubSuperclassesCheckbox.setVisible(entity != null && entity instanceof OWLClass);
-        showDisjointsCheckbox.setVisible(entity != null && !(entity instanceof OWLIndividual));
+        showDisjointsCheckbox.setVisible(entity != null && (entity instanceof OWLProperty || entity instanceof OWLClass));
         showDifferentCheckbox.setVisible(entity != null && entity instanceof OWLIndividual);
         tree.setOWLEntity(entity);
     }
