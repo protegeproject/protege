@@ -55,7 +55,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
             prefs = PreferencesManager.getInstance().getApplicationPreferences(DuplicateSelectedClassAction.class);
 
-            DuplicateClassPreferencesPanel panel = new DuplicateClassPreferencesPanel();
+            DuplicateClassPreferencesPanel panel = new DuplicateClassPreferencesPanel(selectedClass);
             UIHelper uiHelper = new UIHelper(getOWLEditorKit());
 
             if (uiHelper.showValidatingDialog("Duplicate Class",
@@ -70,9 +70,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
                     replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
                     OWLModelManager mngr = getOWLModelManager();
                     OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
-                    List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-
-                    changes.addAll(set.getOntologyChanges());
+                    List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>(set.getOntologyChanges());
 
                     changes.addAll(duplicateClassAxioms(selectedClass, dup));
 
@@ -183,10 +181,11 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         private OWLEntityCreationPanel<OWLClass> entityNamePanel;
 
 
-        DuplicateClassPreferencesPanel() {
+        DuplicateClassPreferencesPanel(OWLClass selectedClass) {
             setLayout(new BorderLayout(6, 6));
 
             entityNamePanel = new OWLEntityCreationPanel<OWLClass>(getOWLEditorKit(), "Class name", OWLClass.class);
+            entityNamePanel.setName(getOWLModelManager().getRendering(selectedClass));
 
             final boolean duplicateIntoActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 

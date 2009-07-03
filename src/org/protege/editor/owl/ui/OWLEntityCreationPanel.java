@@ -74,6 +74,11 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
 
+    public void setName(String name){
+        textField.setText(name);
+    }
+
+
     private void createUI(String message) {
         setLayout(new BorderLayout());
 
