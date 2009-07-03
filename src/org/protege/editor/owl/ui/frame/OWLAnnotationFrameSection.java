@@ -103,8 +103,14 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         return true;
     }
 
+
     public void visit(OWLAnnotationAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
+        final OWLAnnotationSubject root = getRootObject();
+        if (axiom.getSubject().equals(root)){
+            reset();
+        }
+        else if (root instanceof OWLEntity &&
+                 axiom.getSubject().equals(((OWLEntity)root).getIRI())){
             reset();
         }
     }
