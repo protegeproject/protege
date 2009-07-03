@@ -177,8 +177,8 @@ public class PluginManager {
             public void run() {
                 UpdatesProvider updatesProvider = new UpdatesProvider();
                 List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
-                ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
                 if (!updates.isEmpty()) {
+                    ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
                     Map<String, DownloadsProvider> map = new LinkedHashMap<String, DownloadsProvider>();
                     map.put("Updates", updatesProvider);
                     map.put("Downloads", new RemotePluginRegistry(getPluginRegistryLocation()));
@@ -187,6 +187,7 @@ public class PluginManager {
                 else{
                     DownloadsProvider registry = getPluginRegistry();
                     final List<PluginInfo> downloads = registry.getAvailableDownloads();
+                    ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
                     if (!downloads.isEmpty()){
                         Map<String, DownloadsProvider> map = new LinkedHashMap<String, DownloadsProvider>();
                         map.put("Downloads", registry);
@@ -206,7 +207,7 @@ public class PluginManager {
 
 
     public void showUpdatesDialog(Map<String, DownloadsProvider> downloadsProviders) {
-        List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders);
+        List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders, null);
         if (selUpdates != null){
             PluginInstaller installer = new PluginInstaller(selUpdates);
             installer.run();
