@@ -689,6 +689,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    public OWLEntityCreationSet<OWLDatatype> createOWLDatatype() {
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a datatype name", OWLDatatype.class);
+    }
+
+
     public OWLComponentFactory getOWLComponentFactory() {
         return owlComponentFactory;
     }

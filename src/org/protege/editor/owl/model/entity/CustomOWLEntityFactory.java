@@ -81,6 +81,11 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
+    public OWLEntityCreationSet<OWLDatatype> createOWLDatatype(String shortName, IRI baseIRI) throws OWLEntityCreationException {
+        return createOWLEntity(OWLDatatype.class, shortName, baseIRI);
+    }
+
+
     public <T extends OWLEntity> OWLEntityCreationSet<T> createOWLEntity(Class<T> type, String shortName, IRI baseURI) throws OWLEntityCreationException {
         try {
 
@@ -230,7 +235,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyReference(iri.toURI())) ||
                 (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyReference(iri.toURI())) ||
                 (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualReference(iri.toURI())) ||
-                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyReference(iri.toURI()))){
+                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyReference(iri.toURI())) ||
+                (OWLDatatype.class.isAssignableFrom(type) && ont.containsDatatypeReference(iri.toURI()))){
                 return true;
             }
         }
@@ -263,6 +269,9 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         }
         else if (OWLAnnotationProperty.class.isAssignableFrom(type)){
             return (T)mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
+        }
+        else if (OWLDatatype.class.isAssignableFrom(type)){
+            return (T)mngr.getOWLDataFactory().getOWLDatatype(iri);
         }
         return null;
     }

@@ -126,7 +126,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                                                        OWLObjectProperty.class.isAssignableFrom(type),
                                                        OWLDataProperty.class.isAssignableFrom(type),
                                                        OWLIndividual.class.isAssignableFrom(type),
-                                                       false,
+                                                       OWLDatatype.class.isAssignableFrom(type),
                                                        new HashSet<String>());
             }
 
@@ -210,10 +210,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             String warningMessage = null;
 
             for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsClassReference(uri) ||
-                    ont.containsDataPropertyReference(uri) ||
-                    ont.containsObjectPropertyReference(uri) ||
-                    ont.containsIndividualReference(uri)){
+                if (ont.containsEntityReference(uri)){
                     warningMessage = "Warning: this is a pun for an existing entity.";
                     break;
                 }
