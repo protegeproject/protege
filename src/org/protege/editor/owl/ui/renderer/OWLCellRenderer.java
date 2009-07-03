@@ -415,6 +415,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
         public void visit(OWLDatatype dataType) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(dataType).isEmpty()) {
+                ontology = getOWLModelManager().getActiveOntology();
+            }
         }
 
 

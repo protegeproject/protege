@@ -191,6 +191,10 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         if (entity != null) {
             return entity;
         }
+        entity = getOWLAnnotationProperty(rendering);
+        if (entity != null) {
+            return entity;
+        }
         return null;
     }
 
