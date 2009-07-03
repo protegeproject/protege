@@ -203,7 +203,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                                                                                                              name,
                                                                                                              getBaseIRI());
             URI uri = changeSet.getOWLEntity().getURI();
-            uriPreviewLabel.setText("uri: " + uri);
+            uriPreviewLabel.setText(uri.toString());
 
             currentlyValid = true;
 
