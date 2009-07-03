@@ -1,17 +1,23 @@
 package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -61,29 +67,104 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent {
         }
     };
 
+    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+            handleChanges(changes);
+        }
+    };
+
 
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
 
         changeListenerMediator = new ChangeListenerMediator();
 
-        // Add all known datatypes including built in ones
-        final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
-        Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
-
         list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
-        list.setListData(datatypeList.toArray());
-        list.setSelectedIndex(0);
-
         list.addListSelectionListener(selListener);
+
+        reload();
+
+        setupActions();
+
+        getOWLModelManager().addOntologyChangeListener(ontChangeListener);
 
         add(ComponentFactory.createScrollPane(list));
     }
 
 
-    public void disposeView() {
+    private void setupActions() {
+        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", OWLIcons.getIcon("datarange.add.png")) {
+            public void actionPerformed(ActionEvent event) {
+                createNewDatatype();
+            }
 
+            public void dispose() {
+                // do nothing
+            }
+        };
+
+        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", OWLIcons.getIcon("datarange.remove.png")) {
+
+            public void actionPerformed(ActionEvent event) {
+                deleteDatatype();
+            }
+
+
+            public void updateState() {
+                // @@TODO should check if this is a built in datatype
+                setEnabled(list.getSelectedIndex() != -1);
+            }
+
+
+            public void dispose() {
+                // do nothing
+            }
+        };
+
+        addAction(addDatatypeAction, "A", "A");
+        addAction(deleteDatatypeAction, "B", "A");
+    }
+
+
+    private void deleteDatatype() {
+        OWLEntityRemover remover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
+                                                        getOWLModelManager().getOntologies());
+        for (OWLDatatype datatype : list.getSelectedOWLObjects()) {
+            datatype.accept(remover);
+        }
+        getOWLModelManager().applyChanges(remover.getChanges());
+    }
+
+
+    private void createNewDatatype() {
+        OWLEntityCreationSet<OWLDatatype> set = getOWLWorkspace().createOWLDatatype();
+        if (set == null) {
+            return;
+        }
+        getOWLModelManager().applyChanges(set.getOntologyChanges());
+        OWLDatatype datatype = set.getOWLEntity();
+        if (datatype != null) {
+            list.setSelectedValue(datatype, true);
+        }
+    }
+
+
+    private void handleChanges(List<? extends OWLOntologyChange> changes) {
+        for (OWLOntologyChange change : changes){
+            if (change.isAxiomChange()){
+                for (OWLEntity entity : change.getAxiom().getReferencedEntities()){
+                    if (entity.isOWLDatatype()){
+                        reload();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void disposeView() {
+        getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
     }
 
 
@@ -95,5 +176,19 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent {
             list.clearSelection();
         }
         return dt;
+    }
+
+
+    private void reload(){
+        // Add all known datatypes including built in ones
+        final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
+        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
+        Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
+
+        list.setListData(datatypeList.toArray());
+        final OWLDatatype sel = getOWLWorkspace().getOWLSelectionModel().getLastSelectedDatatype();
+        if (datatypeList.contains(sel)){
+            list.setSelectedValue(sel, true);
+        }
     }
 }

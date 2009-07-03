@@ -61,9 +61,20 @@ public interface OWLEntityFactory {
      */
     public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual(String shortName, IRI baseIRI) throws OWLEntityCreationException;
 
+
     /**
      *
-     * @param type OWLClass, OWLObjectProperty, OWLDataProperty or OWLIndividual
+     * @param shortName user supplied name
+     * @param baseIRI specify a base or leave as null to let the factory decide
+     * @return an object wrapping the changes that need to be applied
+     * @throws OWLEntityCreationException if the entity could not be created because of bad input/name clashes/auto ID etc
+     */
+    public OWLEntityCreationSet<OWLDatatype> createOWLDatatype(String shortName, IRI baseIRI) throws OWLEntityCreationException;
+
+
+    /**
+     *
+     * @param type OWLClass, OWLObjectProperty, OWLDataProperty, OWLIndividual, OWLDatatype
      * @param shortName user supplied name
      * @param baseIRI specify a base or leave as null to let the factory decide
      * @return an object wrapping the changes that need to be applied
