@@ -280,10 +280,10 @@ public class PluginPanel extends JPanel {
     }
 
 
-    public static List<PluginInfo> showDialog(Map<String, DownloadsProvider> downloadsProviders) {
+    public static List<PluginInfo> showDialog(Map<String, DownloadsProvider> downloadsProviders, Component parent) {
         PluginPanel panel = new PluginPanel(downloadsProviders);
         Object [] options = new String []{"Install", "Not now"};
-        int ret = JOptionPaneEx.showConfirmDialog(null,
+        int ret = JOptionPaneEx.showConfirmDialog(parent,
                                                   "Automatic Update",
                                                   panel,
                                                   JOptionPane.PLAIN_MESSAGE,
