@@ -257,7 +257,7 @@ public class EntityFinderImpl implements EntityFinder {
             return (T)renderingCache.getOWLIndividual(rendering);
         }
         else if (type.equals(OWLAnnotationProperty.class)){
-            return (T)renderingCache.getOWLDataProperty(rendering);
+            return (T)renderingCache.getOWLAnnotationProperty(rendering);
         }
         else if (type.equals(OWLDatatype.class)){
             return (T)renderingCache.getOWLDatatype(rendering);

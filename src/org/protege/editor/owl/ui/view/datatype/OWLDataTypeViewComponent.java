@@ -7,6 +7,7 @@ import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
+import org.protege.editor.owl.ui.view.Findable;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
@@ -49,7 +50,8 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Jun 5, 2009<br><br>
  */
-public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent {
+public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
+        implements Findable<OWLDatatype> {
 
     private OWLObjectList<OWLDatatype> list;
 
@@ -190,5 +192,15 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent {
         if (datatypeList.contains(sel)){
             list.setSelectedValue(sel, true);
         }
+    }
+
+
+    public List<OWLDatatype> find(String match) {
+        return new ArrayList<OWLDatatype>(getOWLModelManager().getEntityFinder().getMatchingOWLDatatypes(match));
+    }
+
+
+    public void show(OWLDatatype dt) {
+        updateView(dt);
     }
 }

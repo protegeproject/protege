@@ -5,7 +5,10 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import java.net.URI;
 import java.util.*;
 
 
@@ -88,20 +91,28 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
             for (OWLDataProperty prop : ont.getReferencedDataProperties()) {
                 addRendering(prop, owlDataPropertyMap);
             }
-            for (OWLAnnotationProperty prop : ont.getReferencedAnnotationProperties()) {
-                addRendering(prop, owlAnnotationPropertyMap);
-            }
             for (OWLIndividual ind : ont.getReferencedIndividuals()) {
                 if (!ind.isAnonymous()){
                     addRendering(ind.asNamedIndividual(), owlIndividualMap);
                 }
             }
-
-            // datatypes
-            final OWLDataTypeUtils datatypeUtils = new OWLDataTypeUtils(owlModelManager.getOWLOntologyManager());
-            for (OWLDatatype dt : datatypeUtils.getKnownDatatypes(owlModelManager.getActiveOntologies())) {
-                addRendering(dt, owlDatatypeMap);
+            for (OWLAnnotationProperty prop : ont.getReferencedAnnotationProperties()) {
+                addRendering(prop, owlAnnotationPropertyMap);
             }
+        }
+
+        // standard annotation properties        
+        for (URI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTIES){
+            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+        }
+        for (URI uri : DublinCoreVocabulary.ALL_URIS){
+            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+        }
+
+        // datatypes
+        final OWLDataTypeUtils datatypeUtils = new OWLDataTypeUtils(owlModelManager.getOWLOntologyManager());
+        for (OWLDatatype dt : datatypeUtils.getKnownDatatypes(owlModelManager.getActiveOntologies())) {
+            addRendering(dt, owlDatatypeMap);
         }
     }
 
