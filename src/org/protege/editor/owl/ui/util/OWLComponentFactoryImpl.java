@@ -86,7 +86,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
                     editor.addPanel(editorPanel);
                 }
             }
-            catch (Exception e) {
+            catch (Throwable e) { // be harsh if any problems with a plugin
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
