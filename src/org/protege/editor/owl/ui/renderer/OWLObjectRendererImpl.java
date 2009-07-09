@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
@@ -28,7 +28,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
 
     private org.semanticweb.owlapi.io.OWLObjectRenderer delegate;
 
-    private OntologyURIShortFormProvider ontURISFP;
+    private OntologyIRIShortFormProvider ontURISFP;
 
 
     public OWLObjectRendererImpl(OWLModelManager mngr) {
@@ -44,7 +44,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
             }
         });
 
-        ontURISFP = new OntologyURIShortFormProvider();
+        ontURISFP = new OntologyIRIShortFormProvider();
     }
 
 

@@ -125,6 +125,16 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLHasKeyAxiom owlHasKeyAxiom) {
+        icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLDatatypeDefinitionAxiom owlDatatypeDefinitionAxiom) {
+        icon = dataTypeIcon;
+    }
+
+
     public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         icon = objectPropertyIcon;
     }
@@ -140,8 +150,18 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLNegativeDataPropertyAssertionAxiom owlNegativeDataPropertyAssertionAxiom) {
+        icon = individualIcon;
+    }
+
+
     public void visit(OWLObjectPropertyRangeAxiom axiom) {
         icon = objectPropertyIcon;
+    }
+
+
+    public void visit(OWLObjectPropertyAssertionAxiom owlObjectPropertyAssertionAxiom) {
+        icon = individualIcon;
     }
 
 
@@ -230,8 +250,18 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLDeclarationAxiom owlDeclarationAxiom) {
+        owlDeclarationAxiom.getEntity().accept(this);
+    }
+
+
     public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
         icon = primitiveClassIcon;
+    }
+
+
+    public void visit(OWLNegativeObjectPropertyAssertionAxiom owlNegativeObjectPropertyAssertionAxiom) {
+        icon = individualIcon;
     }
 
 
@@ -285,6 +315,11 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
 
 
+    public void visit(OWLDataPropertyAssertionAxiom owlDataPropertyAssertionAxiom) {
+        icon = individualIcon;
+    }
+
+
     public void visit(OWLTransitiveObjectPropertyAxiom owlTransitiveObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
@@ -332,6 +367,26 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+        icon = annotationPropertyIcon;
+    }
+
+
+    public void visit(OWLAnnotationAssertionAxiom owlAnnotationAssertionAxiom) {
+        icon = annotationPropertyIcon;
+    }
+
+
+    public void visit(OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
+        icon = annotationPropertyIcon;
+    }
+
+
+    public void visit(OWLAnnotationPropertyDomainAxiom owlAnnotationPropertyDomainAxiom) {
+        icon = annotationPropertyIcon;
+    }
+
+
+    public void visit(OWLAnnotationPropertyRangeAxiom owlAnnotationPropertyRangeAxiom) {
         icon = annotationPropertyIcon;
     }
 }
