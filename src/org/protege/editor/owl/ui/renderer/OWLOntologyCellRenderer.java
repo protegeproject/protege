@@ -4,7 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,7 +75,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
 
     public static String getOntologyLabelText(IRI iri, OWLModelManager mngr){
 
-        String shortForm = new OntologyURIShortFormProvider().getShortForm(iri.toURI());
+        String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri.toURI());
 
         if (shortForm != null) {
             StringBuilder sb = new StringBuilder();

@@ -153,6 +153,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.setSilentMissingImportsHandling(true);
         manager.addOntologyChangeListener(this);
         manager.addOntologyLoaderListener(this);
+        
 
         // URI mappers for loading - added in reverse order
         autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);

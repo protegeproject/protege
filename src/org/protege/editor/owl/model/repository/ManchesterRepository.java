@@ -6,7 +6,7 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.semanticweb.owlapi.util.OntologyURIShortFormProvider;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -133,7 +133,7 @@ public class ManchesterRepository implements OntologyRepository {
 
         public RepositoryEntry(URI ontologyIRI) {
             this.ontologyURI = ontologyIRI;
-            OntologyURIShortFormProvider sfp = new OntologyURIShortFormProvider();
+            OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
             shortName = sfp.getShortForm(ontologyIRI);
             physicalURI = URI.create(repositoryLocation + "/download?ontology=" + ontologyIRI);
         }
