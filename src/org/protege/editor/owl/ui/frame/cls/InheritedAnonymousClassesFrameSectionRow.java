@@ -7,10 +7,7 @@ import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -58,6 +55,10 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
         else {
             Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
             descs.remove(getRootObject());
+            if (descs.isEmpty()){
+                // in the weird case that something is asserted equiv to itself
+                return Collections.singletonList(getRootObject());
+            }
             return Arrays.asList(descs.iterator().next());
         }
     }
