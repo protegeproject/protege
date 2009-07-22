@@ -32,7 +32,15 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
         else {
             Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
             descs.remove(getRootObject());
-            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES);
+            OWLClassExpression desc;
+            if (descs.isEmpty()){
+                // in the weird case that something is asserted equiv to itself
+                desc = getRootObject();
+            }
+            else{
+                desc = descs.iterator().next();
+            }
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(desc, AxiomType.EQUIVALENT_CLASSES);
         }
     }
 

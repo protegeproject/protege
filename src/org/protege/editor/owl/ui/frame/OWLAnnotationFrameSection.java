@@ -37,22 +37,19 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
     protected void refill(OWLOntology ontology) {
         boolean hidden = false;
         final OWLAnnotationSubject annotationSubject = getRootObject();
-        // @@TODO this should also work for anon individuals but the OWLAPI is currently incorrect
-        if (annotationSubject instanceof OWLEntity){
-            for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms((OWLEntity)annotationSubject)) {
-                if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
-                    addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
-                }
-                else {
-                    hidden = true;
-                }
-            }
-            if (hidden) {
-                setLabel(LABEL + " (some annotations are hidden)");
+        for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(annotationSubject)) {
+            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
+                addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
             }
             else {
-                setLabel(LABEL);
+                hidden = true;
             }
+        }
+        if (hidden) {
+            setLabel(LABEL + " (some annotations are hidden)");
+        }
+        else {
+            setLabel(LABEL);
         }
     }
 
@@ -107,10 +104,6 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
     public void visit(OWLAnnotationAssertionAxiom axiom) {
         final OWLAnnotationSubject root = getRootObject();
         if (axiom.getSubject().equals(root)){
-            reset();
-        }
-        else if (root instanceof OWLEntity &&
-                 axiom.getSubject().equals(((OWLEntity)root).getIRI())){
             reset();
         }
     }

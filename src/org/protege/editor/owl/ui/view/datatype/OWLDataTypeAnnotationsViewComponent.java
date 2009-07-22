@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
 import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,11 +40,11 @@ import java.awt.*;
  */
 public class OWLDataTypeAnnotationsViewComponent extends AbstractOWLDataTypeViewComponent {
 
-    private OWLFrameList<OWLEntity> list;
+    private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
@@ -56,7 +56,7 @@ public class OWLDataTypeAnnotationsViewComponent extends AbstractOWLDataTypeView
 
 
     protected OWLDatatype updateView(OWLDatatype datatype) {
-        list.setRootObject(datatype);
+        list.setRootObject(datatype.getIRI());
         return datatype;
     }
 }

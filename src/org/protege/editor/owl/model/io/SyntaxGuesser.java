@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.io;
 
-import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
+import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.coode.owlapi.obo.parser.OBOOntologyFormat;
 import org.coode.owlapi.turtle.TurtleOntologyFormat;

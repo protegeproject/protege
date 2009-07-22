@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.error;
 
-import de.uulm.ecs.ai.owl.krssparser.KRSS2OWLParser;
-import de.uulm.ecs.ai.owl.krssparser.KRSS2OntologyFormat;
-import edu.unika.aifb.rdf.api.syntax.RDFParserException;
+import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OWLParser;
+import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
 import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
 import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParserException;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
@@ -22,6 +21,7 @@ import org.semanticweb.owlapi.expression.ParserException;
 import org.semanticweb.owlapi.io.*;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.rdf.syntax.RDFParserException;
 import uk.ac.manchester.cs.owl.owlapi.turtle.parser.TurtleParser;
 
 import javax.swing.*;

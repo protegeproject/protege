@@ -39,9 +39,9 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
                     for (OWLDataPropertyAssertionAxiom ax : ont.getDataPropertyAssertionAxioms(pun)) {
                         if (!ax.getProperty().isAnonymous()) {
                             changes.add(new RemoveAxiom(ont, ax));
-                            OWLAnnotationProperty aProp = df.getOWLAnnotationProperty(ax.getProperty().asOWLDataProperty().getURI());
+                            OWLAnnotationProperty aProp = df.getOWLAnnotationProperty(ax.getProperty().asOWLDataProperty().getIRI());
                             OWLAnnotation anno = df.getOWLAnnotation(aProp, ax.getObject());
-                            OWLAnnotationAssertionAxiom annoAx = df.getOWLAnnotationAssertionAxiom(df.getOWLClass(pun.getURI()), anno);
+                            OWLAnnotationAssertionAxiom annoAx = df.getOWLAnnotationAssertionAxiom(pun.getIRI(), anno);
                             changes.add(new AddAxiom(ont, annoAx));
                             props.add((OWLDataProperty) ax.getProperty());
                         }

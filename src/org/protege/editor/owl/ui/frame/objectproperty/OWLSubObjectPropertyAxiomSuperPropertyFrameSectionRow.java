@@ -49,7 +49,7 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow extends Abstr
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<OWLObjectPropertyExpression> getManipulatableObjects() {
         return Arrays.asList(getAxiom().getSuperProperty());
     }
 }

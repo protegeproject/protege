@@ -190,7 +190,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLLiteral con = df.getOWLStringLiteral(value, lang);
         OWLAnnotationProperty prop = df.getOWLAnnotationProperty(iri);
-        OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(prop, owlEntity, con);
+        OWLAxiom ax = df.getOWLAnnotationAssertionAxiom(prop, owlEntity.getIRI(), con);
         return Collections.singletonList(new AddAxiom(mngr.getActiveOntology(), ax));
     }
 
