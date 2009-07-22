@@ -35,7 +35,7 @@ class OWLPropertyChainChecker implements OWLExpressionChecker<List<OWLObjectProp
 
     public List<OWLObjectPropertyExpression> createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
-        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr));
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getEntityFinder()));
         try {
             return parser.parseObjectPropertyChain();
         }

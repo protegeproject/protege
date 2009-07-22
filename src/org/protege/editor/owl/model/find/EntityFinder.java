@@ -16,6 +16,31 @@ import java.util.Set;
  */
 public interface EntityFinder {
 
+    // exact match
+    OWLClass getOWLClass(String rendering);
+
+
+    OWLObjectProperty getOWLObjectProperty(String rendering);
+
+
+    OWLDataProperty getOWLDataProperty(String rendering);
+
+
+    OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
+
+
+    OWLNamedIndividual getOWLIndividual(String rendering);
+
+
+    OWLDatatype getOWLDatatype(String rendering);
+
+
+    OWLEntity getOWLEntity(String rendering);
+
+
+    Set<String> getOWLEntityRenderings();
+
+
     /**
      * Gets the entities that match the specified string.
      */

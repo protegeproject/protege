@@ -750,7 +750,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         else {
             // Not a keyword, so might be an entity (or delim)
-            OWLEntity curEntity = getOWLModelManager().getOWLEntity(curToken);
+            OWLEntity curEntity = getOWLModelManager().getEntityFinder().getOWLEntity(curToken);
             if (curEntity != null) {
                 if (focusedEntity != null) {
                     if (curEntity.equals(focusedEntity)) {
@@ -763,7 +763,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     try {
                         if (highlightUnsatisfiableClasses &&
 //                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
-!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+                            !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                             // Paint red because of inconsistency
                             doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                         }
