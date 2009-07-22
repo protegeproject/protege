@@ -56,14 +56,14 @@ public class SyntaxGuesser {
             while (true){
                 line = reader.readLine().trim();
                 if (line.length() > 0){
-                    if (line.contains("<!ENTITY") || line.contains("<!DOCTYPE") || line.contains("]>")){
-
-                    }
-                    else if (line.contains("<rdf:RDF")){
+                    if (line.contains("<rdf:RDF")){
                         return new RDFXMLOntologyFormat();
                     }
                     else if (line.contains("<Ontology") || line.contains("<owl2xml:Ontology")){
                         return new OWLXMLOntologyFormat();
+                    }
+                    else if (line.contains("<!ENTITY") || line.contains("<!DOCTYPE") || line.contains("]")){
+
                     }
                     else{
                         return null;
