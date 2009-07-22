@@ -48,19 +48,6 @@ public interface OWLModelManager extends ModelManager {
 
     void removeIOListener(IOListener listener);
 
-// This should really be an ontologyID
-//    /**
-//     * Loads the ontology that has the specified ontology URI.
-//     * <p/>
-//     * @param uri The URI of the ontology to be loaded.  Note
-//     *            that this is <b>not</b> the physical URI of a document
-//     *            that contains a representation of the ontology.  The
-//     *            physical location of any concrete representation of the
-//     *            ontology is determined by the resolving mechanism.
-//     */
-//    OWLOntology loadOntology(URI uri) throws OWLOntologyCreationException;
-
-
     /**
      * Creates a new, empty ontology that has the specified
      * ontology ID - i.e. the name of the ontology.
@@ -243,30 +230,6 @@ public interface OWLModelManager extends ModelManager {
     OWLExpressionCheckerFactory getOWLExpressionCheckerFactory();
 
 
-    public OWLClass getOWLClass(String rendering);
-
-
-    public OWLObjectProperty getOWLObjectProperty(String rendering);
-
-
-    public OWLDataProperty getOWLDataProperty(String rendering);
-
-
-    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
-
-
-    public OWLNamedIndividual getOWLIndividual(String rendering);
-
-
-    public OWLDatatype getOWLDatatype(String rendering);
-
-
-    public OWLEntity getOWLEntity(String rendering);
-
-
-    public Set<String> getOWLEntityRenderings();
-
-
     EntityFinder getEntityFinder();
 
 
@@ -301,14 +264,6 @@ public interface OWLModelManager extends ModelManager {
 
 
     String getRendering(OWLObject object);
-
-
-//    /**
-//     * Get a human readable version of the URI
-//     * @param uri annotation or ontology URI
-//     * @return String the short form of the URI
-//     */
-//    String getURIRendering(URI uri);
 
 
     void setMissingImportHandler(MissingImportHandler handler);

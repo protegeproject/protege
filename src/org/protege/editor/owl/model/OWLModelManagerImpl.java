@@ -5,10 +5,7 @@ import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.OWLModelManagerDescriptor;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
@@ -22,7 +19,6 @@ import org.protege.editor.owl.model.find.EntityFinder;
 import org.protege.editor.owl.model.find.EntityFinderImpl;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManagerImpl;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
@@ -72,14 +68,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private static final Logger logger = Logger.getLogger(OWLModelManagerImpl.class);
 
-    private List<OWLModelManagerListener> modelManagerChangeListeners;
-
-    private ListenerManager<OWLModelManagerListener> modelManagerListenerManager;
-
-    private ListenerManager<OWLOntologyChangeListener> changeListenerManager;
-
-    private List<IOListener> ioListeners;
-
     private HistoryManager historyManager;
 
     private OWLModelManagerEntityRenderer entityRenderer;
@@ -103,8 +91,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private OWLReasonerManager owlReasonerManager;
 
-    private OWLModelManagerDescriptor owlModelManagerDescriptor;
-
     /**
      * Dirty ontologies are ontologies that have been edited
      * and not saved.
@@ -116,6 +102,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
      * ontologies.
      */
     private OWLOntologyManager manager;
+
+    private OntologyLibraryManager ontologyLibraryManager;
 
     private OWLEntityFactory entityFactory;
 
@@ -144,6 +132,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
     private UserResolvedIRIMapper userResolvedIRIMapper;
 
 
+    // listeners
+
+    private List<OWLModelManagerListener> modelManagerChangeListeners;
+
+    private ListenerManager<OWLModelManagerListener> modelManagerListenerManager;
+
+    private ListenerManager<OWLOntologyChangeListener> changeListenerManager;
+
+    private List<IOListener> ioListeners;
+
+
     public OWLModelManagerImpl() {
         super();
 
@@ -153,7 +152,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.setSilentMissingImportsHandling(true);
         manager.addOntologyChangeListener(this);
         manager.addOntologyLoaderListener(this);
-        
+
 
         // URI mappers for loading - added in reverse order
         autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
@@ -175,7 +174,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
         objectRenderer = new OWLObjectRendererImpl(this);
-//        uriShortFormProvider = new SimpleURIShortFormProvider();
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
         owlObjectRenderingCache = new OWLObjectRenderingCache(this);
@@ -243,19 +241,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OWLModelManagerDescriptor getOWLModelManagerDescriptor() {
-        return owlModelManagerDescriptor;
-    }
-
-
-    public String getId() {
-        return "OWLModelManager";
-    }
-
-
-    private OntologyLibraryManager ontologyLibraryManager;
-
-
     public OntologyLibraryManager getOntologyLibraryManager() {
         if (ontologyLibraryManager == null) {
             ontologyLibraryManager = new OntologyLibraryManager();
@@ -278,6 +263,39 @@ public class OWLModelManagerImpl extends AbstractModelManager
     // Loading
     //
     ///////////////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * A convenience method that loads an ontology from a file
+     * The location of the file is specified by the URI argument.
+     */
+    public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
+        OWLOntology ontology = null;
+
+        // Obtain the actual ontology IRI.
+        // @@TODO handle anonymous ontologies
+        IRI ontologyIRI = new OntologyIRIExtractor(uri).getOntologyIRI();
+
+        // if the ontology has already been loaded, we cannot have more than one ont with the same URI
+        // in this ontology manager (and therefore workspace)
+        if (manager.getOntology(ontologyIRI) != null){
+            throw new OWLOntologyCreationException("Not loaded." +
+                                                   "\nWorkspace already contains ontology: " + ontologyIRI +
+                                                   ".\nPlease open the ontology in a new frame.");
+        }
+        else{
+            // Set up a mapping from the ontology URI to the physical URI
+            manager.addIRIMapper(new SimpleIRIMapper(ontologyIRI, uri));
+            if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
+                // Load the URIs of other ontologies that are contained in the same folder.
+                addRootFolder(uri);
+            }
+            // Delegate to the load method using the IRI of the ontology
+            ontology = loadOntology(ontologyIRI);
+        }
+        return ontology != null;
+    }
+
 
     public void startedLoadingOntology(LoadingStartedEvent event) {
         System.out.println("loading " + event.getOntologyID() + " from " + event.getPhysicalURI());
@@ -305,7 +323,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     /**
-     * Loads the ontology that has the specified ontology URI.
+     * Loads the ontology that has the specified ontology IRI.
      * <p/>
      * @param iri The IRI of the ontology to be loaded.  Note
      *            that this is <b>not</b> the physical URI of a document
@@ -314,7 +332,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      *            ontology is determined by the <code>Repository</code>
      *            mechanism.
      */
-    public OWLOntology loadOntology(IRI iri) throws OWLOntologyCreationException {
+    private OWLOntology loadOntology(IRI iri) throws OWLOntologyCreationException {
         OWLOntology ont = null;
         try{
             ont = manager.loadOntology(iri);
@@ -326,48 +344,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         }
         return ont;
     }
-
-
-    /**
-     * A convenience method that loads an ontology from a file
-     * The location of the file is specified by the URI argument.
-     */
-    public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
-        OWLOntology ontology = null;
-
-        // Obtain the actual ontology IRI.
-        // @@TODO handle anonymous ontologies
-        IRI ontologyIRI = new OntologyIRIExtractor(uri).getOntologyIRI();
-
-        // if the ontology has already been loaded, we cannot have more than one ont with the same URI
-        // in this ontology manager (and therefore workspace)
-        if (manager.getOntology(ontologyIRI) != null){
-            throw new OWLOntologyCreationException("Not loaded." +
-                                                   "\nWorkspace already contains ontology: " + ontologyIRI +
-                                                   ".\nPlease open the ontology in a new frame.");
-        }
-        else{
-            // Set up a mapping from the ontology URI to the physical URI
-            manager.addIRIMapper(new SimpleIRIMapper(ontologyIRI, uri));
-            if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
-                // Load the URIs of other ontologies that are contained in the
-                // same folder.
-                addRootFolder(uri);
-                //loadOntologyURIMap(new File(uri).getParentFile());
-            }
-            // Delegate to the load method using the IRI of the ontology
-            ontology = loadOntology(ontologyIRI);
-
-            owlModelManagerDescriptor = new OWLModelManagerDescriptor(uri);
-        }
-        return ontology != null;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Ontology URI to Physical URI mapping
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////
 
 
     private void addRootFolder(URI uri) {
@@ -384,6 +360,37 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
+    private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Ontology URI to Physical URI mapping
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
         return manager.getPhysicalURIForOntology(ontology);
     }
@@ -391,24 +398,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void setPhysicalURI(OWLOntology ontology, URI physicalURI) {
         manager.setPhysicalURIForOntology(ontology, physicalURI);
-    }
-
-
-    /**
-     * Loads the ontology URI map with the ontologies that
-     * are found in the specified folder.
-     * @param folder The folder that contains documents that
-     *               contain ontologies.
-     */
-    protected void loadOntologyURIMap(File folder) {
-        // Search through the files to get any ontologies
-        for (File curFile : folder.listFiles(new OntologyFileFilter())) {
-            OntologyIRIExtractor ext = new OntologyIRIExtractor(curFile.toURI());
-            manager.addIRIMapper(new SimpleIRIMapper(ext.getOntologyIRI(), curFile.toURI()));
-            if (logger.isInfoEnabled()) {
-                logger.info("Adding auto-mapping: " + ext.getOntologyIRI() + " -> " + curFile.toURI());
-            }
-        }
     }
 
 
@@ -518,14 +507,40 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    private boolean isTempFileSavingActive() {
-        return PreferencesManager.getInstance().getApplicationPreferences(UIUtil.FILE_PREFERENCES_KEY).getBoolean(UIUtil.ENABLE_TEMP_DIRECTORIES_KEY, true);
-    }
-
-
     public void saveAs() throws OWLOntologyStorageException {
         save();
     }
+
+
+    private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
+        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+            try {
+                listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
+            }
+            catch (Throwable e) {
+                ProtegeApplication.getErrorLog().logError(e);
+            }
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Ontology Management
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
 
 
     public Set<OWLOntology> getOntologies() {
@@ -578,14 +593,27 @@ public class OWLModelManagerImpl extends AbstractModelManager
         return true;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Various hierarchies
-    //
-    //////////////////////////////////////////////////////////////////////////////////////////
+
+    public void setActiveOntology(OWLOntology activeOntology) {
+        setActiveOntology(activeOntology, false);
+    }
 
 
+    public void setActiveOntologiesStrategy(OntologySelectionStrategy strategy) {
+        activeOntologiesStrategy = strategy;
+        setActiveOntology(getActiveOntology(), true);
+        fireEvent(EventType.ONTOLOGY_VISIBILITY_CHANGED);
+    }
 
+
+    public OntologySelectionStrategy getActiveOntologiesStrategy() {
+        return activeOntologiesStrategy;
+    }
+
+
+    public Set<OntologySelectionStrategy> getActiveOntologiesStrategies() {
+        return ontSelectionStrategies;
+    }
 
 
     /**
@@ -615,32 +643,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public void setActiveOntology(OWLOntology activeOntology) {
-        setActiveOntology(activeOntology, false);
-    }
-
-
-    public void setActiveOntologiesStrategy(OntologySelectionStrategy strategy) {
-        activeOntologiesStrategy = strategy;
-        setActiveOntology(getActiveOntology(), true);
-        fireEvent(EventType.ONTOLOGY_VISIBILITY_CHANGED);
-    }
-
-
-    public OntologySelectionStrategy getActiveOntologiesStrategy() {
-        return activeOntologiesStrategy;
-    }
-
-
-    public Set<OntologySelectionStrategy> getActiveOntologiesStrategies() {
-        return ontSelectionStrategies;
-    }
-
-
-    public void registerOntologySelectionStrategy(OntologySelectionStrategy strategy) {
+    private void registerOntologySelectionStrategy(OntologySelectionStrategy strategy) {
         ontSelectionStrategies.add(strategy);
     }
-
 
 
     private void rebuildActiveOntologiesCache() {
@@ -648,18 +653,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
         activeOntologies.addAll(activeOntologiesStrategy.getOntologies());
     }
 
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //
     //  Ontology history management
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    protected void reactToOntologyChange(OWLOntologyChange change) {
-        // Reset the dirty flag
-        dirtyOntologies.add(change.getOntology());
-        // Log the history in the history history
-    }
 
 
     public void applyChange(OWLOntologyChange change) {
@@ -767,51 +766,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         ioListeners.remove(listener);
     }
 
-    private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
-            try {
-                listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-        }
-    }
-
-    private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
-            try {
-                listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-        }
-    }
-
-
-    private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
-            try {
-                listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-        }
-    }
-
-
-    private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {
-            try {
-                listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-        }
-    }
 
     //////////////////////////////////////////////////////////////////////////////////////
     //
@@ -847,7 +801,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public String getRendering(OWLObject object) {
-        // Look for a cached version of the rending first!
+        // Look for a cached version of the rendering first!
         if (object instanceof OWLEntity) {
             AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
             if (adcManager != null &&
@@ -909,74 +863,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         return owlExpressionCheckerFactory;
     }
 
-    private static final String ESCAPE_CHAR = "'";
 
-    public OWLClass getOWLClass(String rendering) {
-        OWLClass cls = owlEntityRenderingCache.getOWLClass(rendering);
-        if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            cls = owlEntityRenderingCache.getOWLClass(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return cls;
-    }
-
-
-    public OWLObjectProperty getOWLObjectProperty(String rendering) {
-        OWLObjectProperty prop = owlEntityRenderingCache.getOWLObjectProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = owlEntityRenderingCache.getOWLObjectProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return prop;
-    }
-
-
-    public OWLDataProperty getOWLDataProperty(String rendering) {
-        OWLDataProperty prop = owlEntityRenderingCache.getOWLDataProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = owlEntityRenderingCache.getOWLDataProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return prop;
-    }
-
-
-    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
-        OWLAnnotationProperty prop = owlEntityRenderingCache.getOWLAnnotationProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = owlEntityRenderingCache.getOWLAnnotationProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return prop;
-    }
-
-
-    public OWLNamedIndividual getOWLIndividual(String rendering) {
-        OWLNamedIndividual individual = owlEntityRenderingCache.getOWLIndividual(rendering);
-        if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            individual = owlEntityRenderingCache.getOWLIndividual(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return individual;
-    }
-
-
-    public OWLDatatype getOWLDatatype(String rendering) {
-        OWLDatatype dataType = owlEntityRenderingCache.getOWLDatatype(rendering);
-        if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            dataType = owlEntityRenderingCache.getOWLDatatype(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return dataType;
-    }
-
-
-    public OWLEntity getOWLEntity(String rendering) {
-        OWLEntity entity = owlEntityRenderingCache.getOWLEntity(rendering);
-        if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            entity = owlEntityRenderingCache.getOWLEntity(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
-        }
-        return entity;
-    }
-
-
-    public Set<String> getOWLEntityRenderings() {
-        return owlEntityRenderingCache.getOWLEntityRenderings();
-    }
 
 
     public OWLEntityFactory getOWLEntityFactory() {
@@ -1000,15 +887,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public void rebuildEntityIndices() {
-        logger.info("Rebuilding entity indices...");
-        long t0 = System.currentTimeMillis();
-        owlEntityRenderingCache.rebuild();
-        owlObjectRenderingCache.clear();
-        logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
-    }
-
-
     public <T extends OWLObject> Comparator<T> getOWLObjectComparator(){
         OWLObjectComparator<T> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
         if (comparator == null){
@@ -1018,6 +896,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
         return comparator;
     }
 
+
+    private void rebuildEntityIndices() {
+        logger.info("Rebuilding entity indices...");
+        long t0 = System.currentTimeMillis();
+        owlEntityRenderingCache.rebuild();
+        owlObjectRenderingCache.clear();
+        logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////
     //
@@ -1058,85 +944,5 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
-    }
-
-
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    //
-    //  Deprecated
-    //
-    //////////////////////////////////////////////////////////////////////////////////////
-
-
-    public OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-        return getOWLHierarchyManager().getOWLClassHierarchyProvider();
-    }
-
-
-    public OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider() {
-        return getOWLHierarchyManager().getInferredOWLClassHierarchyProvider();
-    }
-
-
-    public OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider() {
-        return getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider();
-    }
-
-
-    public OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider() {
-        return getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider();
-    }
-
-
-    public void rebuildOWLClassHierarchy() {
-        throw new RuntimeException("mngr.rebuildOWLClassHierarchy not implemented");
-    }
-
-
-    public void rebuildOWLObjectPropertyHierarchy() {
-        throw new RuntimeException("mngr.rebuildOWLObjectPropertyHierarchy not implemented");
-    }
-
-
-    public void rebuildOWLDataPropertyHierarchy() {
-        throw new RuntimeException("mngr.rebuildOWLDataPropertyHierarchy not implemented");
-    }
-
-
-    public List<OWLClass> getMatchingOWLClasses(String renderingStart) {
-        List<OWLClass> orderedResults = new ArrayList<OWLClass>(getEntityFinder().getMatchingOWLClasses(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLObjectProperty> getMatchingOWLObjectProperties(String renderingStart) {
-        List<OWLObjectProperty> orderedResults = new ArrayList<OWLObjectProperty>(getEntityFinder().getMatchingOWLObjectProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLDataProperty> getMatchingOWLDataProperties(String renderingStart) {
-        List<OWLDataProperty> orderedResults = new ArrayList<OWLDataProperty>(getEntityFinder().getMatchingOWLDataProperties(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLIndividual> getMatchingOWLIndividuals(String renderingStart) {
-        List<OWLIndividual> orderedResults = new ArrayList<OWLIndividual>(getEntityFinder().getMatchingOWLIndividuals(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
-    }
-
-
-    public List<OWLDatatype> getMatchingOWLDatatypes(String renderingStart) {
-        List<OWLDatatype> orderedResults = new ArrayList<OWLDatatype>(getEntityFinder().getMatchingOWLDatatypes(renderingStart + "*", false));
-        Collections.sort(orderedResults, getOWLObjectComparator());
-        return orderedResults;
     }
 }
