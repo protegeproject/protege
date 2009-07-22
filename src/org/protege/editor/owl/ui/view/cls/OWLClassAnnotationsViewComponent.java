@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewComponent {
 
-    private OWLFrameList<OWLEntity> list;
+    private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
@@ -42,7 +42,7 @@ public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewCompon
      *         (may be <code>null</code>)
      */
     protected OWLClass updateView(OWLClass selectedClass) {
-        list.setRootObject(selectedClass);
+        list.setRootObject(selectedClass.getIRI());
         return selectedClass;
     }
 }

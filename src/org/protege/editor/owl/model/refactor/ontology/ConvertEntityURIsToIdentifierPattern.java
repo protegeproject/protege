@@ -154,7 +154,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
                 final IRI newIRI = iriMap.get(entity);
                 final OWLEntity newEntity = gen.getEntityOfSameType(newIRI, entity);
-                final OWLAnnotationAssertionAxiom ax = df.getOWLAnnotationAssertionAxiom(newEntity, annotation);
+                final OWLAnnotationAssertionAxiom ax = df.getOWLAnnotationAssertionAxiom(newEntity.getIRI(), annotation);
 
                 for (OWLOntology ont : onts){
                     changes.add(new AddAxiom(ont, ax));

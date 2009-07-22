@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLIndividualAnnotationsViewComponent extends AbstractOWLIndividualViewComponent {
 
-    private OWLFrameList<OWLEntity> list;
+    private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseIndividualsView() throws Exception {
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
@@ -33,7 +33,7 @@ public class OWLIndividualAnnotationsViewComponent extends AbstractOWLIndividual
 
 
     protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
-        list.setRootObject(selelectedIndividual);
+        list.setRootObject(selelectedIndividual.getIRI());
         return selelectedIndividual;
     }
 }

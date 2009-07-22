@@ -2,8 +2,8 @@ package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,11 @@ import java.awt.*;
  */
 public class OWLDataPropertyAnnotationsViewComponent extends AbstractOWLDataPropertyViewComponent {
 
-    private OWLFrameList<OWLEntity> list;
+    private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
@@ -33,7 +33,7 @@ public class OWLDataPropertyAnnotationsViewComponent extends AbstractOWLDataProp
 
 
     protected OWLDataProperty updateView(OWLDataProperty property) {
-        list.setRootObject(property);
+        list.setRootObject(property.getIRI());
         return property;
     }
 }
