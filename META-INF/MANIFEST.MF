@@ -34,7 +34,9 @@ Export-Package: org.protege.editor.core,
  org.protege.editor.core.ui.workspace,
  org.protege.editor.core.ui.workspace.views,
  org.protege.editor.core.update
-Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common,org.protege.common
+Require-Bundle: org.eclipse.equinox.registry,
+ org.eclipse.equinox.common,
+ org.protege.common
 Import-Package: org.osgi.framework,
  org.osgi.service.packageadmin,org.osgi.util.tracker,
  org.eclipse.core.runtime; registry="split",
