@@ -42,7 +42,7 @@ public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewCompon
      *         (may be <code>null</code>)
      */
     protected OWLClass updateView(OWLClass selectedClass) {
-        list.setRootObject(selectedClass.getIRI());
+        list.setRootObject(selectedClass == null ? null : selectedClass.getIRI());
         return selectedClass;
     }
 }

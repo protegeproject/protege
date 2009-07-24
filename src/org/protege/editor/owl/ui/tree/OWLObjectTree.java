@@ -530,11 +530,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         N dropTargetObj = ((OWLObjectTreeNode<N>) dropPath.getLastPathComponent()).getOWLObject();
         for (final OWLObject owlObject : owlObjects) {
-            if (!dropTargetObj.getClass().equals(owlObject.getClass())) {
-                // If the object being dropped isn't the same class as the thing it
-                // is being dropped on to then return.
-                return false;
-            }
+//            if (!dropTargetObj.getClass().equals(owlObject.getClass())) {
+//                // If the object being dropped isn't the same class as the thing it
+//                // is being dropped on to then return.
+//                return false;
+//            }
             if (dropTargetObj.equals(owlObject)) {
                 // Don't drop on top of self
                 return false;

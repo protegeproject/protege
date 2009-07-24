@@ -56,7 +56,7 @@ public class OWLAnnotationPropertyAnnotationsViewComponent extends AbstractOWLAn
 
 
     protected OWLAnnotationProperty updateView(OWLAnnotationProperty property) {
-        list.setRootObject(property.getIRI());
+        list.setRootObject(property == null ? null : property.getIRI());
         return property;
     }
 }

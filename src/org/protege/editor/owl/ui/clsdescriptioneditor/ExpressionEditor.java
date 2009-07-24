@@ -115,7 +115,7 @@ public class ExpressionEditor<O> extends JTextPane
 
         refreshComponent();
 
-        new OWLDescriptionAutoCompleter(owlEditorKit, this, checker);
+        new OWLAutoCompleter(owlEditorKit, this, checker);
 
         new OWLExpressionHistoryCompleter(owlEditorKit, this);
 

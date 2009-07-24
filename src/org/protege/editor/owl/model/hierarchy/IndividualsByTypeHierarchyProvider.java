@@ -33,34 +33,55 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         final Set<OWLClass> changedNodes = new HashSet<OWLClass>();
         final Set<OWLObject> newRoots = new HashSet<OWLObject>(roots);
 
+        Set<OWLNamedIndividual> checkIndividuals = new HashSet<OWLNamedIndividual>();
+
         for (OWLOntologyChange chg : changes){
-            if (chg instanceof AddAxiom){
-                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                    public void visit(OWLClassAssertionAxiom ax) {
-                        if (!ax.getClassExpression().isAnonymous()){
-                            if (roots.contains(ax.getClassExpression().asOWLClass())){
-                                changedNodes.add(ax.getClassExpression().asOWLClass());
-                            }
-                            else{
-                                newRoots.add(ax.getClassExpression().asOWLClass());
+
+            if (chg.isAxiomChange()){
+                for (OWLEntity ref : chg.getAxiom().getReferencedEntities()){
+                    if (ref.isOWLNamedIndividual()){
+                        checkIndividuals.add(ref.asOWLNamedIndividual());
+                    }
+                }
+
+                if (chg instanceof AddAxiom){
+                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                        public void visit(OWLClassAssertionAxiom ax) {
+                            if (!ax.getClassExpression().isAnonymous()){
+                                if (roots.contains(ax.getClassExpression().asOWLClass())){
+                                    changedNodes.add(ax.getClassExpression().asOWLClass());
+                                }
+                                else{
+                                    newRoots.add(ax.getClassExpression().asOWLClass());
+                                }
                             }
                         }
-                    }
-                });
-            }
-            else if (chg instanceof RemoveAxiom){
-                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                    public void visit(OWLClassAssertionAxiom ax) {
-                        if (!ax.getClassExpression().isAnonymous()){
-                            if (roots.contains(ax.getClassExpression().asOWLClass())){
-                                changedNodes.add(ax.getClassExpression().asOWLClass());
-                                // @@TODO should remove the type node if no other members remain
+                    });
+                }
+                else if (chg instanceof RemoveAxiom){
+                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                        public void visit(OWLClassAssertionAxiom ax) {
+                            if (!ax.getClassExpression().isAnonymous()){
+                                if (roots.contains(ax.getClassExpression().asOWLClass())){
+                                    changedNodes.add(ax.getClassExpression().asOWLClass());
+                                    // @@TODO should remove the type node if no other members remain
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
+
+        for (OWLNamedIndividual ind : checkIndividuals){
+            if (isTyped(ind) || !isReferenced(ind)){
+                newRoots.remove(ind);
+            }
+            else {
+                newRoots.add(ind);
+            }
+        }
+
         if (!newRoots.equals(roots)){
             roots = newRoots;
             fireHierarchyChanged();
@@ -70,6 +91,26 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
                 fireNodeChanged(cls);
             }
         }
+    }
+
+
+    private boolean isTyped(OWLNamedIndividual ind) {
+        for (OWLOntology ont : ontologies) {
+            if (!ont.getClassAssertionAxioms(ind).isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean isReferenced(OWLNamedIndividual ind) {
+        for (OWLOntology ont : ontologies){
+            if (ont.containsIndividualReference(ind.getURI())){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -91,15 +132,23 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     private void rebuild() {
         roots.clear();
+        Set<OWLNamedIndividual> allIndividuals = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> typedIndividuals = new HashSet<OWLNamedIndividual>();
         for (OWLOntology ont : ontologies) {
-            for (OWLIndividual ind : ont.getReferencedIndividuals()) {
+            for (OWLNamedIndividual ind : ont.getReferencedIndividuals()) {
+                allIndividuals.add(ind);
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
                     if (!ax.getClassExpression().isAnonymous()) {
                         roots.add(ax.getClassExpression());
+                        typedIndividuals.add(ind);
                     }
                 }
             }
         }
+        allIndividuals.removeAll(typedIndividuals);
+
+        roots.addAll(allIndividuals);
+
         fireHierarchyChanged();
     }
 
@@ -110,12 +159,14 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLObject> getChildren(OWLObject object) {
-        if (roots.contains(object)) {
+        if (object instanceof OWLClass && roots.contains(object)) {
             OWLClass cls = (OWLClass) object;
             Set<OWLObject> individuals = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(cls)) {
-                    individuals.add(ax.getIndividual());
+                    if (!ax.getIndividual().isAnonymous()){
+                        individuals.add(ax.getIndividual());
+                    }
                 }
             }
             return individuals;
@@ -127,8 +178,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLObject> getParents(OWLObject object) {
-        if (object instanceof OWLIndividual) {
-            OWLIndividual ind = (OWLIndividual) object;
+        if (object instanceof OWLNamedIndividual) {
+            OWLIndividual ind = (OWLNamedIndividual) object;
             Set<OWLObject> clses = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
@@ -149,7 +200,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public boolean containsReference(OWLObject object) {
-        return true;
+        return object instanceof OWLNamedIndividual || roots.contains(object);
     }
 
 

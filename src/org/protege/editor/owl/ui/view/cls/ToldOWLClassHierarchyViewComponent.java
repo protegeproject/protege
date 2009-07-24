@@ -5,7 +5,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.clshierarchy.DeleteClassAction;
+import org.protege.editor.owl.ui.action.DeleteClassAction;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -33,7 +33,8 @@ import java.util.Set;
  * hierarchy of OWLClasses. The class hierarchy
  * is derived from told information.
  */
-public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget {
+public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
+        implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget {
 
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track

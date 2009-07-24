@@ -8,7 +8,7 @@ import org.protege.editor.owl.model.description.OWLExpressionParserException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLDescriptionAutoCompleter;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.*;
 
@@ -122,7 +122,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         add(previewPanel, BorderLayout.CENTER);
         add(errorLabel, BorderLayout.SOUTH);
 
-        OWLDescriptionAutoCompleter completer = new OWLDescriptionAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
+        OWLAutoCompleter completer = new OWLAutoCompleter(owlEditorKit, textField, new OWLExpressionChecker() {
             public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text,
                                                        0,
