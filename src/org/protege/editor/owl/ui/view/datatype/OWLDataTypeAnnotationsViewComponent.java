@@ -56,7 +56,7 @@ public class OWLDataTypeAnnotationsViewComponent extends AbstractOWLDataTypeView
 
 
     protected OWLDatatype updateView(OWLDatatype datatype) {
-        list.setRootObject(datatype.getIRI());
+        list.setRootObject(datatype == null ? null : datatype.getIRI());
         return datatype;
     }
 }

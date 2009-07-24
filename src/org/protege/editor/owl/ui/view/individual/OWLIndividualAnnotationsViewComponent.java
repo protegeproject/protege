@@ -32,8 +32,8 @@ public class OWLIndividualAnnotationsViewComponent extends AbstractOWLIndividual
     }
 
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
-        list.setRootObject(selelectedIndividual.getIRI());
-        return selelectedIndividual;
+    protected OWLNamedIndividual updateView(OWLNamedIndividual selectedIndividual) {
+        list.setRootObject(selectedIndividual == null ? null : selectedIndividual.getIRI());
+        return selectedIndividual;
     }
 }

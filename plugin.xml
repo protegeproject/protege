@@ -362,10 +362,10 @@
     </extension>
 
 
-    <extension id="OWLIndividualsByClass"
+    <extension id="OWLIndividualsByType"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Individuals by class"/>
-        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualsByClassViewComponent"/>
+        <label value="Individuals by type"/>
+        <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualsByTypeViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.classcategory"/>

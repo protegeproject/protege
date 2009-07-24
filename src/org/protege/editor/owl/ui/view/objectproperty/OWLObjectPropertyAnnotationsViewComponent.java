@@ -33,7 +33,7 @@ public class OWLObjectPropertyAnnotationsViewComponent extends AbstractOWLObject
 
 
     protected OWLObjectProperty updateView(OWLObjectProperty property) {
-        list.setRootObject(property.getIRI());
+        list.setRootObject(property == null ? null : property.getIRI());
         return property;
     }
 }

@@ -17,8 +17,8 @@
                 <Component label="Data property hierarchy">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyTree"/>
                 </Component>
-                <Component label="Individuals">
-                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
+                <Component label="Individuals by type">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsByType"/>
                 </Component>
             </CNode>
         </HSNode>
