@@ -34,6 +34,10 @@ package org.protege.editor.owl.ui.tree;
  */
 public interface OWLTreeDragAndDropHandler<N> {
 
+
+    public boolean canDrop(Object child, Object parent);
+
+
     public void move(N child, N fromParent, N toParent);
 
 

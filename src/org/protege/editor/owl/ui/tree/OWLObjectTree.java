@@ -518,7 +518,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
 
-    public boolean dropOWLObjects(List<OWLObject> owlObjects, Point pt, int type) {
+    public boolean dropOWLObjects(final List<OWLObject> owlObjects, Point pt, int type) {
         if (dragAndDropHandler == null) {
             return false;
         }
@@ -528,50 +528,63 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             // If the object hasn't been dropped on a node, then don't accept drop
             return false;
         }
-        N dropTargetObj = ((OWLObjectTreeNode<N>) dropPath.getLastPathComponent()).getOWLObject();
-        for (final OWLObject owlObject : owlObjects) {
-//            if (!dropTargetObj.getClass().equals(owlObject.getClass())) {
-//                // If the object being dropped isn't the same class as the thing it
-//                // is being dropped on to then return.
-//                return false;
-//            }
-            if (dropTargetObj.equals(owlObject)) {
-                // Don't drop on top of self
-                return false;
-            }
-            TreePath selPath = getSelectionPath();
-            N selObj = null;
-            N selObjParent = null;
-            if (selPath != null) {
-                OWLObjectTreeNode<N> selNode = ((OWLObjectTreeNode<N>) selPath.getLastPathComponent());
-                selObj = selNode.getOWLObject();
-                OWLObjectTreeNode<N> parentNode = (OWLObjectTreeNode<N>) selNode.getParent();
-                if (parentNode != null) {
-                    selObjParent = parentNode.getOWLObject();
-                }
-            }
 
-            if (selObj == null) {
-                // In ADD operation (We can only add here)
-                dragAndDropHandler.add((N) owlObject, dropTargetObj);
-            }
-            else {
-                if (selObj.equals(owlObject)) {
-                    if (selObjParent != null) {
-                        dragAndDropHandler.move((N) owlObject, selObjParent, dropTargetObj);
+        N dropTargetObj = ((OWLObjectTreeNode<N>) dropPath.getLastPathComponent()).getOWLObject();
+
+        final Set<OWLObject> droppedObjects = new HashSet<OWLObject>();
+
+        for (final OWLObject owlObject : owlObjects) {
+            if (!dropTargetObj.equals(owlObject) && // don't drop on self
+                dragAndDropHandler.canDrop(owlObject, dropTargetObj)){
+
+                droppedObjects.add(owlObject);
+
+                TreePath selPath = getSelectionPath();
+                N selObj = null;
+                N selObjParent = null;
+                if (selPath != null) {
+                    OWLObjectTreeNode<N> selNode = ((OWLObjectTreeNode<N>) selPath.getLastPathComponent());
+                    selObj = selNode.getOWLObject();
+                    OWLObjectTreeNode<N> parentNode = (OWLObjectTreeNode<N>) selNode.getParent();
+                    if (parentNode != null) {
+                        selObjParent = parentNode.getOWLObject();
+                    }
+                }
+
+                if (selObj == null) {
+                    // In ADD operation (We can only add here)
+                    dragAndDropHandler.add((N) owlObject, dropTargetObj);
+                }
+                else {
+                    if (selObj.equals(owlObject)) {
+                        if (selObjParent != null) {
+                            dragAndDropHandler.move((N) owlObject, selObjParent, dropTargetObj);
+                        }
+                        else {
+                            dragAndDropHandler.add((N) owlObject, dropTargetObj);
+                        }
                     }
                     else {
+                        // ADD op
                         dragAndDropHandler.add((N) owlObject, dropTargetObj);
                     }
                 }
-                else {
-                    // ADD op
-                    dragAndDropHandler.add((N) owlObject, dropTargetObj);
-                }
             }
+        }
+
+        if (droppedObjects.isEmpty()){
+            return false;
+        }
+        else{
             SwingUtilities.invokeLater(new Runnable(){
                 public void run() {
-                    setSelectedOWLObject((N) owlObject);
+                    Set<N> nodes = new HashSet<N>();
+                    for (OWLObject drop : droppedObjects){
+                        if (getNodes(drop) != null){ // if this node exists in the tree
+                            nodes.add((N)drop);
+                        }
+                    }
+                    setSelectedOWLObjects(nodes);
                 }
             });
         }

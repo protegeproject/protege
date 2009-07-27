@@ -33,6 +33,11 @@ public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLProperty
     }
 
 
+    protected boolean canAcceptDrop(Object child, Object parent) {
+        return child instanceof OWLObjectProperty;
+    }
+
+
     protected OWLEntityCreationSet<OWLObjectProperty> createProperty() {
         return getOWLWorkspace().createOWLObjectProperty();
     }
