@@ -101,6 +101,12 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         tree.addTreeSelectionListener(listener);
 
         tree.setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLObject>() {
+
+            public boolean canDrop(Object child, Object parent) {
+                return child instanceof OWLNamedIndividual &&
+                       parent instanceof OWLClass;
+            }
+
             public void move(OWLObject child, OWLObject fromParent, OWLObject toParent) {
                 handleMove(child, fromParent, toParent);
             }

@@ -24,6 +24,9 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
     protected abstract OWLSubPropertyAxiom getSubPropertyAxiom(O child, O parent);
 
 
+    protected abstract boolean canAcceptDrop(Object child, Object parent);
+
+
     protected abstract OWLEntityCreationSet<O> createProperty();
 
 
@@ -76,6 +79,11 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         getTree().setDragAndDropHandler(new OWLPropertyTreeDropHandler<O>(getOWLModelManager()){
             protected OWLAxiom getAxiom(OWLDataFactory df, O child, O parent) {
                 return getSubPropertyAxiom(child, parent);
+            }
+
+
+            public boolean canDrop(Object child, Object parent) {
+                return canAcceptDrop(child, parent);
             }
         });
     }

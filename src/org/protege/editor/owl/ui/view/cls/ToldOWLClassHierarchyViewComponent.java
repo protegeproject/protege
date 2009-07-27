@@ -69,6 +69,11 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         }), "B", "A");
 
         getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
+            public boolean canDrop(Object child, Object parent) {
+                return child instanceof OWLClass;
+            }
+
+
             public void move(OWLClass child, OWLClass fromParent, OWLClass toParent) {
                 handleMove(child, fromParent, toParent);
             }
