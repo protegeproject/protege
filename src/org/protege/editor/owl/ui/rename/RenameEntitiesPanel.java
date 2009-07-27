@@ -6,7 +6,7 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.find.EntityFinderPreferences;
+import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
@@ -192,7 +192,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
             for (OWLOntology ont : getOntologies()){
                 ents.addAll(ont.getReferencedEntities());
             }
-            EntityFinderPreferences prefs = EntityFinderPreferences.getInstance();
+            OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
             String matchingVal = getFindValue();
             if (!prefs.isUseRegularExpressions()){
                 matchingVal = "(?i).*" + matchingVal + ".*";

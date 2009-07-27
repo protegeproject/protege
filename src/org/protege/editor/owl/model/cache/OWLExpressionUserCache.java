@@ -212,7 +212,7 @@ public class OWLExpressionUserCache implements Disposable {
 
             int startIndex = input.indexOf(token, endIndex);
 
-            OWLEntity entity = mngr.getEntityFinder().getOWLEntity(token); // what if the wrong type is returned????
+            OWLEntity entity = mngr.getOWLEntityFinder().getOWLEntity(token); // what if the wrong type is returned????
             if (entity != null){
                 sb.append(ren.render(entity));
             }

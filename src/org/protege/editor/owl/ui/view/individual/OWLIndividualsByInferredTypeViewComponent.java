@@ -4,10 +4,9 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.IndividualsByInferredTypeHierarchyProvider;
+import org.protege.editor.owl.ui.tree.CountingOWLObjectTreeCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLObjectTreeCellRenderer;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -16,7 +15,6 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,20 +64,7 @@ public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndivi
 
         provider = new IndividualsByInferredTypeHierarchyProvider(getOWLModelManager().getOWLOntologyManager());
         tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), provider);
-        final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
-        tree.setOWLObjectComparator(comp);
-        tree.setCellRenderer(new OWLObjectTreeCellRenderer(getOWLEditorKit()){
-            protected String getRendering(Object object) {
-                StringBuilder label = new StringBuilder(super.getRendering(object));
-                if (object instanceof OWLClass){
-                    int size = provider.getChildren((OWLClass)object).size();
-                    label.append(" (");
-                    label.append(size);
-                    label.append(")");
-                }
-                return label.toString();
-            }
-        });
+        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<OWLObject>(getOWLEditorKit(), tree));
 
         add(new JScrollPane(tree));
 

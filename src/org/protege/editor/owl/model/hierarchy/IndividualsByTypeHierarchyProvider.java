@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,9 +18,11 @@ import java.util.Set;
  */
 public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLObject> {
 
-    private Set<OWLObject> roots;
+    private Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
 
-    private Set<OWLOntology> ontologies;
+    private Set<OWLClass> classes = new HashSet<OWLClass>();
+
+    private Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 
     private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
 
@@ -29,96 +32,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     };
 
 
-    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
-        final Set<OWLClass> changedNodes = new HashSet<OWLClass>();
-        final Set<OWLObject> newRoots = new HashSet<OWLObject>(roots);
-
-        Set<OWLNamedIndividual> checkIndividuals = new HashSet<OWLNamedIndividual>();
-
-        for (OWLOntologyChange chg : changes){
-
-            if (chg.isAxiomChange()){
-                for (OWLEntity ref : chg.getAxiom().getReferencedEntities()){
-                    if (ref.isOWLNamedIndividual()){
-                        checkIndividuals.add(ref.asOWLNamedIndividual());
-                    }
-                }
-
-                if (chg instanceof AddAxiom){
-                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                        public void visit(OWLClassAssertionAxiom ax) {
-                            if (!ax.getClassExpression().isAnonymous()){
-                                if (roots.contains(ax.getClassExpression().asOWLClass())){
-                                    changedNodes.add(ax.getClassExpression().asOWLClass());
-                                }
-                                else{
-                                    newRoots.add(ax.getClassExpression().asOWLClass());
-                                }
-                            }
-                        }
-                    });
-                }
-                else if (chg instanceof RemoveAxiom){
-                    chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                        public void visit(OWLClassAssertionAxiom ax) {
-                            if (!ax.getClassExpression().isAnonymous()){
-                                if (roots.contains(ax.getClassExpression().asOWLClass())){
-                                    changedNodes.add(ax.getClassExpression().asOWLClass());
-                                    // @@TODO should remove the type node if no other members remain
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        for (OWLNamedIndividual ind : checkIndividuals){
-            if (isTyped(ind) || !isReferenced(ind)){
-                newRoots.remove(ind);
-            }
-            else {
-                newRoots.add(ind);
-            }
-        }
-
-        if (!newRoots.equals(roots)){
-            roots = newRoots;
-            fireHierarchyChanged();
-        }
-        else{
-            for (OWLClass cls : changedNodes){
-                fireNodeChanged(cls);
-            }
-        }
-    }
-
-
-    private boolean isTyped(OWLNamedIndividual ind) {
-        for (OWLOntology ont : ontologies) {
-            if (!ont.getClassAssertionAxioms(ind).isEmpty()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    private boolean isReferenced(OWLNamedIndividual ind) {
-        for (OWLOntology ont : ontologies){
-            if (ont.containsIndividualReference(ind.getURI())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     public IndividualsByTypeHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
-        this.roots = new HashSet<OWLObject>();
-        this.ontologies = new HashSet<OWLOntology>();
-
         owlOntologyManager.addOntologyChangeListener(ontChangeListener);
     }
 
@@ -131,35 +46,37 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     private void rebuild() {
-        roots.clear();
-        Set<OWLNamedIndividual> allIndividuals = new HashSet<OWLNamedIndividual>();
+        classes.clear();
+        untypedIndividuals.clear();
+
         Set<OWLNamedIndividual> typedIndividuals = new HashSet<OWLNamedIndividual>();
         for (OWLOntology ont : ontologies) {
             for (OWLNamedIndividual ind : ont.getReferencedIndividuals()) {
-                allIndividuals.add(ind);
+                untypedIndividuals.add(ind);
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
                     if (!ax.getClassExpression().isAnonymous()) {
-                        roots.add(ax.getClassExpression());
+                        classes.add(ax.getClassExpression().asOWLClass());
                         typedIndividuals.add(ind);
                     }
                 }
             }
         }
-        allIndividuals.removeAll(typedIndividuals);
 
-        roots.addAll(allIndividuals);
+        untypedIndividuals.removeAll(typedIndividuals);
 
         fireHierarchyChanged();
     }
 
 
     public Set<OWLObject> getRoots() {
+        Set<OWLObject> roots = new HashSet<OWLObject>(classes);
+        roots.addAll(untypedIndividuals);
         return roots;
     }
 
 
     public Set<OWLObject> getChildren(OWLObject object) {
-        if (object instanceof OWLClass && roots.contains(object)) {
+        if (object instanceof OWLClass && classes.contains((OWLClass)object)) {
             OWLClass cls = (OWLClass) object;
             Set<OWLObject> individuals = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
@@ -200,12 +117,157 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public boolean containsReference(OWLObject object) {
-        return object instanceof OWLNamedIndividual || roots.contains(object);
+        return object instanceof OWLNamedIndividual ||
+               (object instanceof OWLClass && classes.contains((OWLClass)object));
     }
 
 
     public void dispose() {
         getManager().removeOntologyChangeListener(ontChangeListener);
         super.dispose();
+    }
+
+
+    public Set<OWLClass> getRootClasses() {
+        return new HashSet<OWLClass>(classes);
+    }
+
+
+    public Set<OWLNamedIndividual> getUntypedIndividuals(){
+        return new HashSet<OWLNamedIndividual>(untypedIndividuals);
+    }
+
+
+    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
+
+        TypesChangeVisitor changeVisitor = new TypesChangeVisitor();
+
+        for (OWLOntologyChange chg : changes){
+            chg.accept(changeVisitor);
+        }
+
+        for (OWLObject node : changeVisitor.getNodes()){
+            fireNodeChanged(node);
+        }
+    }
+
+
+    /**
+     * Scans changes for nodes that have changed in the tree
+     */
+    class TypesChangeVisitor extends OWLOntologyChangeVisitorAdapter {
+
+        private Set<OWLObject> changedNodes = new HashSet<OWLObject>();
+
+        Set<OWLNamedIndividual> checkIndividuals = new HashSet<OWLNamedIndividual>();
+
+        private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitorAdapter(){
+            public void visit(OWLClassAssertionAxiom ax) {
+                handleAddClassAssertionAxiom(ax);
+            }
+        };
+
+        private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitorAdapter(){
+            public void visit(OWLClassAssertionAxiom ax) {
+                handleRemoveClassAssertionAxiom(ax);
+            }
+        };
+
+
+        public Set<OWLObject> getNodes(){
+            for (OWLNamedIndividual ind : checkIndividuals){
+                if (untypedIndividuals.contains(ind)){
+                    if (isTyped(ind) || !isReferenced(ind)){
+                        untypedIndividuals.remove(ind);
+                        changedNodes.add(ind);
+                    }
+                }
+                else if (isReferenced(ind) && !isTyped(ind)){
+                    untypedIndividuals.add(ind);
+                    changedNodes.add(ind);
+                }
+            }
+
+            checkIndividuals.clear(); // only do this once
+
+            return changedNodes;
+        }
+
+
+        public void visit(AddAxiom addAxiom) {
+            if (ontologies.contains(addAxiom.getOntology())){
+
+                handleAxiomChange(addAxiom);
+
+                addAxiom.getAxiom().accept(addAxiomVisitor);
+            }
+        }
+
+
+        public void visit(RemoveAxiom removeAxiom) {
+            if (ontologies.contains(removeAxiom.getOntology())){
+
+                handleAxiomChange(removeAxiom);
+
+                removeAxiom.getAxiom().accept(removeAxiomVisitor);
+            }
+        }
+
+
+        private void handleAxiomChange(OWLAxiomChange chg) {
+            for (OWLEntity ref : chg.getAxiom().getReferencedEntities()){
+                if (ref.isOWLNamedIndividual()){
+                    checkIndividuals.add(ref.asOWLNamedIndividual());
+                }
+            }
+        }
+
+
+        private void handleAddClassAssertionAxiom(OWLClassAssertionAxiom ax) {
+            if (!ax.getClassExpression().isAnonymous()){
+                final OWLClass type = ax.getClassExpression().asOWLClass();
+                if (classes.contains(type)){
+                    changedNodes.add(type);
+                }
+                else{
+                    classes.add(type);
+                    changedNodes.add(type);
+                }
+            }
+        }
+
+
+        private void handleRemoveClassAssertionAxiom(OWLClassAssertionAxiom ax) {
+            if (!ax.getClassExpression().isAnonymous()){
+                final OWLClass type = ax.getClassExpression().asOWLClass();
+                if (classes.contains(type)){
+                    if (getChildren(type).isEmpty()){
+                        classes.remove(type);
+                    }
+                    changedNodes.add(type);
+                }
+            }
+        }
+
+
+
+        private boolean isTyped(OWLNamedIndividual ind) {
+            for (OWLOntology ont : ontologies) {
+                if (!ont.getClassAssertionAxioms(ind).isEmpty()){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        private boolean isReferenced(OWLNamedIndividual ind) {
+            for (OWLOntology ont : ontologies){
+                if (ont.containsIndividualReference(ind.getURI())){
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

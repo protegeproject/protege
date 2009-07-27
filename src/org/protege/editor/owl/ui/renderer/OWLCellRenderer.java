@@ -750,7 +750,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         else {
             // Not a keyword, so might be an entity (or delim)
-            OWLEntity curEntity = getOWLModelManager().getEntityFinder().getOWLEntity(curToken);
+            OWLEntity curEntity = getOWLModelManager().getOWLEntityFinder().getOWLEntity(curToken);
             if (curEntity != null) {
                 if (focusedEntity != null) {
                     if (curEntity.equals(focusedEntity)) {

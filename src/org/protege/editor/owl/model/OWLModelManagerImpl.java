@@ -15,8 +15,8 @@ import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.find.EntityFinder;
-import org.protege.editor.owl.model.find.EntityFinderImpl;
+import org.protege.editor.owl.model.find.OWLEntityFinder;
+import org.protege.editor.owl.model.find.OWLEntityFinderImpl;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManagerImpl;
 import org.protege.editor.owl.model.history.HistoryManager;
@@ -87,7 +87,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      */
     private OWLObjectRenderingCache owlObjectRenderingCache;
 
-    private EntityFinder entityFinder;
+    private OWLEntityFinder entityFinder;
 
     private OWLReasonerManager owlReasonerManager;
 
@@ -879,18 +879,18 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public EntityFinder getEntityFinder() {
+    public OWLEntityFinder getOWLEntityFinder() {
         if (entityFinder == null){
-            entityFinder = new EntityFinderImpl(this, owlEntityRenderingCache);
+            entityFinder = new OWLEntityFinderImpl(this, owlEntityRenderingCache);
         }
         return entityFinder;
     }
 
 
-    public <T extends OWLObject> Comparator<T> getOWLObjectComparator(){
-        OWLObjectComparator<T> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
+    public Comparator<OWLObject> getOWLObjectComparator(){
+        OWLObjectComparator<OWLObject> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
         if (comparator == null){
-            comparator = new OWLObjectComparator<T>(this);
+            comparator = new OWLObjectComparator<OWLObject>(this);
             put(OWL_OBJECT_COMPARATOR_KEY, comparator);
         }
         return comparator;

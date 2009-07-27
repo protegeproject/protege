@@ -94,7 +94,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     public List<OWLAnnotationProperty> find(String match) {
-        return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getEntityFinder().getMatchingOWLAnnotationProperties(match));
+        return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLAnnotationProperties(match));
     }
 
 

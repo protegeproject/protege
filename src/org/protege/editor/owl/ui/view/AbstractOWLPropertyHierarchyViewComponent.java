@@ -115,10 +115,10 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
     public java.util.List<O> find(String match) {
         if (isOWLDataPropertyView()){
-            return new ArrayList<O>((Set<O>)getOWLModelManager().getEntityFinder().getMatchingOWLDataProperties(match));
+            return new ArrayList<O>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLDataProperties(match));
         }
         else if (isOWLObjectPropertyView()){
-            return new ArrayList<O>((Set<O>)getOWLModelManager().getEntityFinder().getMatchingOWLObjectProperties(match));
+            return new ArrayList<O>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLObjectProperties(match));
         }
         return Collections.emptyList();
     }

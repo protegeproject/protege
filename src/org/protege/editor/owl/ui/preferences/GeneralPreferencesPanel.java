@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.preferences;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.owl.model.find.EntityFinderPreferences;
+import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     public void applyChanges() {
         ExpressionEditorPreferences.getInstance().setCheckDelay((Integer) checkDelaySpinner.getModel().getValue());
 
-        EntityFinderPreferences prefs = EntityFinderPreferences.getInstance();
+        OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         prefs.setSearchDelay(((Double) findDelaySpinner.getModel().getValue()).intValue());
         prefs.setUseRegularExpressions(regularExpressionSearchButton.isSelected());
 
@@ -70,7 +70,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
         // search box
 
-        EntityFinderPreferences prefs = EntityFinderPreferences.getInstance();
+        OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         findDelaySpinner = new JSpinner(new SpinnerNumberModel(prefs.getSearchDelay(), 0, 10000, 50));
         findDelaySpinner.setToolTipText(SECOND_TOOL_TIP);
 

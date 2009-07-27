@@ -105,8 +105,7 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
 
     public int getChildCount() {
         loadChildrenIfNecessary();
-        int count = super.getChildCount();
-        return count;
+        return super.getChildCount();
     }
 
 

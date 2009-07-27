@@ -55,6 +55,9 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
     private OWLAnnotationPropertyHierarchyProvider assertedAnnotationPropertyHierarchyProvider;
 
+    private IndividualsByTypeHierarchyProvider individualsByTypeHierarchyProvider;
+
+
     private OWLModelManager mngr;
 
     private OWLModelManagerListener listener = new OWLModelManagerListener(){
@@ -117,6 +120,15 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
     }
 
 
+    public IndividualsByTypeHierarchyProvider getOWLIndividualsByTypeHierarchyProvider() {
+        if (individualsByTypeHierarchyProvider == null){
+            individualsByTypeHierarchyProvider = new IndividualsByTypeHierarchyProvider(mngr.getOWLOntologyManager());
+            individualsByTypeHierarchyProvider.setOntologies(mngr.getActiveOntologies());
+        }
+        return individualsByTypeHierarchyProvider;
+    }
+
+
     public OWLObjectHierarchyProvider<OWLObjectProperty> getInferredOWLObjectPropertyHierarchyProvider() {
         if (inferredObjectPropertyHierarchyProvider == null){
             inferredObjectPropertyHierarchyProvider = new InferredObjectPropertyHierarchyProvider(mngr);
@@ -145,6 +157,9 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
         if (assertedDataPropertyHierarchyProvider != null) {
             assertedDataPropertyHierarchyProvider.dispose();
         }
+        if (individualsByTypeHierarchyProvider != null) {
+            individualsByTypeHierarchyProvider.dispose();
+        }
     }
 
 
@@ -158,6 +173,9 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
         }
         if (assertedDataPropertyHierarchyProvider != null) {
             getOWLDataPropertyHierarchyProvider().setOntologies(mngr.getActiveOntologies());
+        }
+        if (individualsByTypeHierarchyProvider != null) {
+            getOWLIndividualsByTypeHierarchyProvider().setOntologies(mngr.getActiveOntologies());
         }
     }
 }

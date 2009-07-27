@@ -36,7 +36,7 @@ class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
     public OWLClassAxiom createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
-        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getEntityFinder()));
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return parser.parseClassAxiom();
         }

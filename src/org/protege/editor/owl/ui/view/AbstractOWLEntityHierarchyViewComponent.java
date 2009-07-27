@@ -70,7 +70,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider());
 
         // ordering based on default, but putting Nothing at the top
-        final Comparator<E> comp = getOWLModelManager().getOWLObjectComparator();
+        final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
         tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<E>(comp) {
             public int compare(E o1, E o2) {
                 if (isNothing(o1)) {

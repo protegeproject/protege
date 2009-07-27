@@ -46,11 +46,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
-    private OWLEditorKit owlEditorKit;
+    private OWLEditorKit eKit;
 
     private OWLObjectHierarchyProvider<N> provider;
 
-    private OWLObjectHierarchyProviderListener listener;
+    private OWLObjectHierarchyProviderListener<N> listener;
 
     private Comparator<? super N> comparator;
 
@@ -63,25 +63,32 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     private Point mouseDownPos;
 
 
-    public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
-        this(owlEditorKit, provider, null);
+    public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider) {
+        this(eKit, provider, null);
     }
 
 
-    public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider,
+    public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider,
                          Comparator<? super N> objectComparator) {
-        this(owlEditorKit, provider, provider.getRoots(), objectComparator);
+        this(eKit, provider, provider.getRoots(), objectComparator);
     }
 
 
-    public OWLObjectTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
+    public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
                          Comparator<? super N> owlObjectComparator) {
-        this.owlEditorKit = owlEditorKit;
+        this.eKit = eKit;
 
         ToolTipManager.sharedInstance().registerComponent(this);
-        this.comparator = owlObjectComparator;
+
+        if (owlObjectComparator != null){
+            comparator = owlObjectComparator;
+        }
+        else{
+            comparator = eKit.getOWLModelManager().getOWLObjectComparator();
+        }
         this.provider = provider;
-        this.nodeMap = new HashMap<OWLObject, Set<OWLObjectTreeNode<N>>>();
+
+        nodeMap = new HashMap<OWLObject, Set<OWLObjectTreeNode<N>>>();
         listener = new OWLObjectHierarchyProviderListener<N>() {
             public void hierarchyChanged() {
                 reload();
@@ -104,7 +111,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         DragSource dragSource = DragSource.getDefaultDragSource();
         dragSource.createDefaultDragGestureRecognizer(this,
                                                       DnDConstants.ACTION_COPY_OR_MOVE,
-                                                      new OWLObjectTreeDragGestureListener(owlEditorKit, this));
+                                                      new OWLObjectTreeDragGestureListener(eKit, this));
 
         // A temp fix incase the tree somehow becomes unsynchronised
         addMouseListener(new MouseAdapter() {
@@ -183,7 +190,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 // update the nodeMap to remove this parent from the child
                 final Set<OWLObjectTreeNode<N>> childNodes = getNodes(nodeToRemove.getOWLObject());
                 final Set<OWLObjectTreeNode<N>> updatedChildNodes = new HashSet<OWLObjectTreeNode<N>>();
-                for (OWLObjectTreeNode childNode : childNodes){
+                for (OWLObjectTreeNode<N> childNode : childNodes){
                     if (!treeNodes.contains(childNode.getParent())){
                         updatedChildNodes.add(childNode);
                     }
@@ -263,7 +270,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         nodeMap.clear();
         // TODO: getRoots needs to be changed - the user might have specified specific roots
         Set<N> roots = provider.getRoots();
-        OWLObjectTreeRootNode<N> rootNode = new OWLObjectTreeRootNode(this, roots);
+        OWLObjectTreeRootNode<N> rootNode = new OWLObjectTreeRootNode<N>(this, roots);
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
     }
 
@@ -286,8 +293,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     /**
-     * Gets the hierarchy provider that this tree uses
-     * to generate its branches.
+     * @return the hierarchy provider that this tree uses to generate its branches
      */
     public OWLObjectHierarchyProvider<N> getProvider() {
         return provider;
@@ -295,7 +301,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     /**
-     * Gets the comparator used to order sibling tree nodes.
+     * @return the comparator used to order sibling tree nodes
      */
     public Comparator<? super N> getOWLObjectComparator() {
         return comparator;
@@ -303,21 +309,22 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     /**
-     * Sets the comparator that is used to order sibling tree nodes.
+     * Sets the tree ordering and reloads the tree contents.
+     * @param owlObjectComparator the comparator that is used to order sibling tree nodes
      */
-    public void setOWLObjectComparator(Comparator<N> owlObjectComparator) {
+    public void setOWLObjectComparator(Comparator<? super N> owlObjectComparator) {
         this.comparator = owlObjectComparator;
         reload();
     }
 
 
-    private void removeDescendantNodesFromMap(OWLObjectTreeNode<N> parentNode) {
-        Enumeration e = parentNode.depthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            OWLObjectTreeNode<N> curNode = (OWLObjectTreeNode<N>) e.nextElement();
-            getNodes(curNode.getOWLObject()).remove(curNode);
-        }
-    }
+//    private void removeDescendantNodesFromMap(OWLObjectTreeNode<N> parentNode) {
+//        Enumeration e = parentNode.depthFirstEnumeration();
+//        while (e.hasMoreElements()) {
+//            OWLObjectTreeNode<N> curNode = (OWLObjectTreeNode<N>) e.nextElement();
+//            getNodes(curNode.getOWLObject()).remove(curNode);
+//        }
+//    }
 
 
     protected List<OWLObjectTreeNode<N>> getChildNodes(OWLObjectTreeNode<N> parent) {
@@ -385,8 +392,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     /**
-     * Sets the selected object.  If the object is contained
-     * in a collapsed branch then the branch is expanded.
+     * If the object is contained in a collapsed branch then the branch is expanded.
+     * @param selObject the object to select if it exists in the tree
      */
     public void setSelectedOWLObject(N selObject) {
         setSelectedOWLObject(selObject, false);
@@ -531,13 +538,16 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
         N dropTargetObj = ((OWLObjectTreeNode<N>) dropPath.getLastPathComponent()).getOWLObject();
 
-        final Set<OWLObject> droppedObjects = new HashSet<OWLObject>();
+        final Set<N> droppedObjects = new HashSet<N>();
 
         for (final OWLObject owlObject : owlObjects) {
             if (!dropTargetObj.equals(owlObject) && // don't drop on self
                 dragAndDropHandler.canDrop(owlObject, dropTargetObj)){
 
-                droppedObjects.add(owlObject);
+                // the object must be in the acceptable bounds for the handler by now
+                N dropObject = (N) owlObject;
+
+                droppedObjects.add(dropObject);
 
                 TreePath selPath = getSelectionPath();
                 N selObj = null;
@@ -553,20 +563,20 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
                 if (selObj == null) {
                     // In ADD operation (We can only add here)
-                    dragAndDropHandler.add((N) owlObject, dropTargetObj);
+                    dragAndDropHandler.add(dropObject, dropTargetObj);
                 }
                 else {
                     if (selObj.equals(owlObject)) {
                         if (selObjParent != null) {
-                            dragAndDropHandler.move((N) owlObject, selObjParent, dropTargetObj);
+                            dragAndDropHandler.move(dropObject, selObjParent, dropTargetObj);
                         }
                         else {
-                            dragAndDropHandler.add((N) owlObject, dropTargetObj);
+                            dragAndDropHandler.add(dropObject, dropTargetObj);
                         }
                     }
                     else {
                         // ADD op
-                        dragAndDropHandler.add((N) owlObject, dropTargetObj);
+                        dragAndDropHandler.add(dropObject, dropTargetObj);
                     }
                 }
             }
@@ -579,9 +589,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             SwingUtilities.invokeLater(new Runnable(){
                 public void run() {
                     Set<N> nodes = new HashSet<N>();
-                    for (OWLObject drop : droppedObjects){
-                        if (getNodes(drop) != null){ // if this node exists in the tree
-                            nodes.add((N)drop);
+                    for (N droppedObject : droppedObjects){
+                        if (getNodes(droppedObject) != null){ // if this node exists in the tree
+                            nodes.add(droppedObject);
                         }
                     }
                     setSelectedOWLObjects(nodes);
@@ -594,7 +604,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getModelManager();
+        return eKit.getModelManager();
     }
 
 

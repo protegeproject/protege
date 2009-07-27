@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.parser;
 
-import org.protege.editor.owl.model.find.EntityFinder;
+import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.semanticweb.owlapi.expression.OWLEntityChecker;
 import org.semanticweb.owlapi.model.*;/*
 * Copyright (C) 2007, University of Manchester
@@ -35,10 +35,10 @@ import org.semanticweb.owlapi.model.*;/*
  */
 public class ProtegeOWLEntityChecker implements OWLEntityChecker {
 
-    private EntityFinder finder;
+    private OWLEntityFinder finder;
 
 
-    public ProtegeOWLEntityChecker(EntityFinder finder) {
+    public ProtegeOWLEntityChecker(OWLEntityFinder finder) {
         this.finder = finder;
     }
 

@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
@@ -107,7 +108,7 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
 
     private class RowComparator implements Comparator<OWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom>> {
 
-        private Comparator<OWLAxiom> objComparator;
+        private Comparator<OWLObject> objComparator;
 
         public RowComparator(){
             this.objComparator = getOWLModelManager().getOWLObjectComparator();

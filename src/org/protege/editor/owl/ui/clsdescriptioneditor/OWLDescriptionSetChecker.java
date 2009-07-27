@@ -38,7 +38,7 @@ class OWLDescriptionSetChecker implements OWLExpressionChecker<Set<OWLClassExpre
 
     public Set<OWLClassExpression> createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
-        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getEntityFinder()));
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return parser.parseClassExpressionList();
         }
