@@ -196,7 +196,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     public List<OWLDatatype> find(String match) {
-        return new ArrayList<OWLDatatype>(getOWLModelManager().getEntityFinder().getMatchingOWLDatatypes(match));
+        return new ArrayList<OWLDatatype>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLDatatypes(match));
     }
 
 

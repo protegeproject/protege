@@ -124,7 +124,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLClassExpression>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLClassExpression>>() {
 
-            private Comparator<OWLClassExpression> comparator = getOWLModelManager().getOWLObjectComparator();
+            private Comparator<OWLObject> comparator = getOWLModelManager().getOWLObjectComparator();
 
             public int compare(OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLClassExpression> o1,
                                OWLFrameSectionRow<OWLIndividual, OWLClassAssertionAxiom, OWLClassExpression> o2) {

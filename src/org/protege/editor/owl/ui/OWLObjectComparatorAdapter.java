@@ -19,9 +19,9 @@ import java.util.Comparator;
  */
 public class OWLObjectComparatorAdapter<E extends OWLObject> implements Comparator<E> {
 
-    private Comparator<E> comp;
+    private Comparator<? super E> comp;
 
-    public OWLObjectComparatorAdapter(Comparator<E> comp) {
+    public OWLObjectComparatorAdapter(Comparator<? super E> comp) {
         this.comp = comp;
     }
 

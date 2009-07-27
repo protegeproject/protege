@@ -3,16 +3,12 @@ package org.protege.editor.owl.ui.view.individual;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
+import org.protege.editor.owl.ui.tree.CountingOWLObjectTreeCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLObjectTreeCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
@@ -42,13 +38,10 @@ import java.util.Set;
 public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewComponent
         implements Findable<OWLNamedIndividual>, CreateNewTarget, RefreshableComponent {
 
-    private OWLObjectHierarchyProvider<OWLObject> provider;
-
     private OWLObjectTree<OWLObject> tree;
 
     private ChangeListenerMediator changeListenerMediator;
 
-    private Set<EventType> updateEvents = new HashSet<EventType>();
 
     private TreeSelectionListener listener = new TreeSelectionListener() {
         public void valueChanged(TreeSelectionEvent e) {
@@ -56,45 +49,14 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         }
     };
 
-    private OWLModelManagerListener managerListener = new OWLModelManagerListener(){
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (updateEvents.contains(event.getType())){
-                provider.setOntologies(getOWLModelManager().getActiveOntologies()); // forces refresh
-            }
-        }
-    };
-
 
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
 
-        updateEvents.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
-        updateEvents.add(EventType.ONTOLOGY_LOADED);
-        updateEvents.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
-        updateEvents.add(EventType.ENTITY_RENDERER_CHANGED);
-
-        getOWLModelManager().addListener(managerListener);
-
-        provider = new IndividualsByTypeHierarchyProvider(getOWLModelManager().getOWLOntologyManager());
-
-        tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), provider);
-        tree.setOWLObjectComparator(getOWLModelManager().getOWLObjectComparator());
-        tree.setCellRenderer(new OWLObjectTreeCellRenderer(getOWLEditorKit()){
-            protected String getRendering(Object object) {
-                StringBuilder label = new StringBuilder(super.getRendering(object));
-                if (object instanceof OWLClass){
-                    int size = provider.getChildren((OWLClass)object).size();
-                    label.append(" (");
-                    label.append(size);
-                    label.append(")");
-                }
-                return label.toString();
-            }
-        });
+        tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), getProvider());
+        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<OWLObject>(getOWLEditorKit(), tree));
 
         add(new JScrollPane(tree));
-
-        provider.setOntologies(getOWLModelManager().getActiveOntologies());
 
         changeListenerMediator = new ChangeListenerMediator();
 
@@ -117,6 +79,11 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         });
 
         setupActions();
+    }
+
+
+    private IndividualsByTypeHierarchyProvider getProvider(){
+        return getOWLModelManager().getOWLHierarchyManager().getOWLIndividualsByTypeHierarchyProvider();
     }
 
 
@@ -184,7 +151,6 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     public void disposeView() {
         tree.dispose();
-        getOWLModelManager().removeListener(managerListener);
     }
 
 
@@ -251,7 +217,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
     //////// Findable
 
     public List<OWLNamedIndividual> find(String match) {
-        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
     public void show(OWLNamedIndividual owlEntity) {

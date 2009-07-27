@@ -232,7 +232,7 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     public java.util.List<OWLIndividual> find(String match) {
-        return new ArrayList<OWLIndividual>(getOWLModelManager().getEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<OWLIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
 

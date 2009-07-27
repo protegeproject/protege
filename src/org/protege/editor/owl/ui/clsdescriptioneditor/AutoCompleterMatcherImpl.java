@@ -33,19 +33,19 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
         fragment = fragment + "*"; // look for strings that start with the given fragment
 
         if (classes) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLClasses(fragment, false));
+            set.addAll(owlModelManager.getOWLEntityFinder().getMatchingOWLClasses(fragment, false));
         }
         if (objectProperties) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLObjectProperties(fragment, false));
+            set.addAll(owlModelManager.getOWLEntityFinder().getMatchingOWLObjectProperties(fragment, false));
         }
         if (dataProperties) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLDataProperties(fragment, false));
+            set.addAll(owlModelManager.getOWLEntityFinder().getMatchingOWLDataProperties(fragment, false));
         }
         if (individuals) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLIndividuals(fragment, false));
+            set.addAll(owlModelManager.getOWLEntityFinder().getMatchingOWLIndividuals(fragment, false));
         }
         if (datatypes) {
-            set.addAll(owlModelManager.getEntityFinder().getMatchingOWLDatatypes(fragment, false));
+            set.addAll(owlModelManager.getOWLEntityFinder().getMatchingOWLDatatypes(fragment, false));
         }
         return set;
     }

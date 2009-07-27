@@ -224,7 +224,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     public List<OWLNamedIndividual> find(String match) {
-        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
     public void show(OWLNamedIndividual owlEntity) {

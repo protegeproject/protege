@@ -111,7 +111,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
 
     private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
 
-        private Comparator<OWLAnnotationAxiom> owlObjectComparator;
+        private Comparator<OWLObject> owlObjectComparator;
 
         public OWLAnnotationSectionRowComparator(OWLModelManager owlModelManager) {
             owlObjectComparator = owlModelManager.getOWLObjectComparator();

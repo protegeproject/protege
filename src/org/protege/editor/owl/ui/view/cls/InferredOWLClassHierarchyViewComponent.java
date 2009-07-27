@@ -31,7 +31,7 @@ public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHie
     }
 
     public List<OWLClass> find(String match) {
-        return new ArrayList<OWLClass>(getOWLModelManager().getEntityFinder().getMatchingOWLClasses(match));
+        return new ArrayList<OWLClass>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLClasses(match));
     }
 
 

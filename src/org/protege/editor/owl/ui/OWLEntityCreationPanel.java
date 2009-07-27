@@ -221,7 +221,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 }
             }
             if (warningMessage == null){
-                OWLEntity entity = owlEditorKit.getModelManager().getEntityFinder().getOWLEntity(name);
+                OWLEntity entity = owlEditorKit.getModelManager().getOWLEntityFinder().getOWLEntity(name);
                 if(entity != null){
                     warningMessage = "Warning: an entity with that name already exists.";
                 }

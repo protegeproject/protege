@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.find;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.find.EntityFinderPreferences;
+import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
@@ -137,7 +137,7 @@ public class EntityFinderField extends JTextField {
 
     private void executeFind() {
         if (getText().trim().length() > 0) {
-            Set<OWLEntity> results = editorKit.getModelManager().getEntityFinder().getEntities(getText());
+            Set<OWLEntity> results = editorKit.getModelManager().getOWLEntityFinder().getMatchingOWLEntities(getText());
             showResults(results);
         }
         else {
@@ -147,7 +147,7 @@ public class EntityFinderField extends JTextField {
 
 
     private void performFind() {
-        timer.setDelay((int) EntityFinderPreferences.getInstance().getSearchDelay());
+        timer.setDelay((int) OWLEntityFinderPreferences.getInstance().getSearchDelay());
         timer.restart();
     }
 

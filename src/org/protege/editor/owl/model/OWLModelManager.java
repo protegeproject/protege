@@ -4,7 +4,7 @@ import org.protege.editor.core.ModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.find.EntityFinder;
+import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
@@ -230,10 +230,10 @@ public interface OWLModelManager extends ModelManager {
     OWLExpressionCheckerFactory getOWLExpressionCheckerFactory();
 
 
-    EntityFinder getEntityFinder();
+    OWLEntityFinder getOWLEntityFinder();
 
 
-    <T extends OWLObject> Comparator<T> getOWLObjectComparator();
+    Comparator<OWLObject> getOWLObjectComparator();
 
 
     OWLReasonerManager getOWLReasonerManager();

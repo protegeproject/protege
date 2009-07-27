@@ -1,9 +1,7 @@
-package org.protege.editor.owl.model.hierarchy;
+package org.protege.editor.owl.ui.tree;
 
-import org.protege.editor.core.Disposable;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.OWLObject;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,33 +31,26 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Nov 27, 2008<br><br>
+ * Date: Jul 27, 2009<br><br>
  */
-public interface OWLHierarchyManager extends Disposable {
+public class CountingOWLObjectTreeCellRenderer<N extends OWLObject> extends OWLObjectTreeCellRenderer {
 
-    String ID = OWLHierarchyManager.class.toString();
-
-    /**
-     * This returns the class hierarchy provider whose hierarchy is
-     * generated from told information about the active ontologies.
-     */
-    OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider();
+    private OWLObjectTree<N> tree;
 
 
-    OWLObjectHierarchyProvider<OWLClass> getInferredOWLClassHierarchyProvider();
+    public CountingOWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit, OWLObjectTree<N> tree) {
+        super(owlEditorKit);
+        this.tree = tree;
+    }
 
-
-    OWLObjectHierarchyProvider<OWLObjectProperty> getOWLObjectPropertyHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLObjectProperty> getInferredOWLObjectPropertyHierarchyProvider();
-
-
-    OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider();
-
-
-    OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider();
-
-
-    IndividualsByTypeHierarchyProvider getOWLIndividualsByTypeHierarchyProvider();    
+    protected String getRendering(Object object) {
+        StringBuilder label = new StringBuilder(super.getRendering(object));
+        int size = tree.getProvider().getChildren((N)object).size();
+        if (size > 0){
+            label.append(" (");
+            label.append(size);
+            label.append(")");
+        }
+        return label.toString();
+    }
 }
