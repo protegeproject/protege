@@ -183,6 +183,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                                        true,
                                                        true,
                                                        true,
+                                                       true,
                                                        new HashSet<String>());
             }
 

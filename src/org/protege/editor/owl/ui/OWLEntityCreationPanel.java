@@ -132,6 +132,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                                                        OWLDataProperty.class.isAssignableFrom(type),
                                                        OWLIndividual.class.isAssignableFrom(type),
                                                        OWLDatatype.class.isAssignableFrom(type),
+                                                       OWLAnnotationProperty.class.isAssignableFrom(type),
                                                        new HashSet<String>());
             }
 

@@ -44,11 +44,6 @@ public interface OWLEntityFinder {
 
     // pattern matches
 
-    Set<OWLEntity> getMatchingOWLEntities(String match);
-
-    Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp);
-
-
     Set<OWLClass> getMatchingOWLClasses(String match);
 
     Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp);
@@ -77,4 +72,14 @@ public interface OWLEntityFinder {
     Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match);
 
     Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp);
+
+
+    Set<OWLEntity> getMatchingOWLEntities(String match);
+
+    Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp);
+
+
+    // IRI
+
+    Set<OWLEntity> getEntities(IRI iri);
 }

@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
-        private static final String ESCAPE_CHAR = "'";
+    private static final String ESCAPE_CHAR = "'";
 
     public OWLClass getOWLClass(String rendering) {
         OWLClass cls = renderingCache.getOWLClass(rendering);
@@ -176,6 +177,36 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp) {
         return getEntities(match, OWLEntity.class, fullRegExp);
+    }
+
+
+    public Set<OWLEntity> getEntities(IRI iri) {
+
+        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+
+        URI subjectURI = iri.toURI();
+
+        for (OWLOntology ont : mngr.getActiveOntologies()){
+            if (ont.containsClassReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLClass(subjectURI));
+            }
+            if (ont.containsObjectPropertyReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLObjectProperty(subjectURI));
+            }
+            if (ont.containsDataPropertyReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLDataProperty(subjectURI));
+            }
+            if (ont.containsIndividualReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLNamedIndividual(subjectURI));
+            }
+            if (ont.containsAnnotationPropertyReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLAnnotationProperty(subjectURI));
+            }
+            if (ont.containsDatatypeReference(subjectURI)){
+                entities.add(mngr.getOWLDataFactory().getOWLDatatype(subjectURI));
+            }
+        }
+        return entities;
     }
 
 

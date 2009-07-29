@@ -28,14 +28,20 @@ public class OWLExpressionParserException extends OWLException {
 
     private boolean owlIndividualExpected;
 
-    private boolean dataTypeExpected;
+    private boolean owlDatatypeExpected;
+
+    private boolean owlAnnotationPropertyExpected;
 
     private Set<String> expectedKeyWords;
 
 
-    public OWLExpressionParserException(String string, int startIndex, int endIndex, boolean owlClassExpected,
-                                        boolean owlObjectPropertyExpected, boolean owlDataPropertyExpected,
-                                        boolean owlIndividualExpected, boolean dataTypeExpected,
+    public OWLExpressionParserException(String string, int startIndex, int endIndex,
+                                        boolean owlClassExpected,
+                                        boolean owlObjectPropertyExpected,
+                                        boolean owlDataPropertyExpected,
+                                        boolean owlIndividualExpected,
+                                        boolean owlDatatypeExpected,
+                                        boolean owlAnnotationPropertyExpected,
                                         Set<String> expectedKeyWords) {
         super(string);
         this.startIndex = startIndex;
@@ -44,7 +50,8 @@ public class OWLExpressionParserException extends OWLException {
         this.owlObjectPropertyExpected = owlObjectPropertyExpected;
         this.owlDataPropertyExpected = owlDataPropertyExpected;
         this.owlIndividualExpected = owlIndividualExpected;
-        this.dataTypeExpected = dataTypeExpected;
+        this.owlDatatypeExpected = owlDatatypeExpected;
+        this.owlAnnotationPropertyExpected = owlAnnotationPropertyExpected;
         this.expectedKeyWords = expectedKeyWords;
     }
 
@@ -85,7 +92,12 @@ public class OWLExpressionParserException extends OWLException {
 
 
     public boolean isDatatypeExpected() {
-        return dataTypeExpected;
+        return owlDatatypeExpected;
+    }
+
+
+    public boolean isAnnotationPropertyExpected() {
+        return owlAnnotationPropertyExpected;
     }
 
 
