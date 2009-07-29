@@ -68,7 +68,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
     private void createEditor() {
         editorComponent = new JPanel(new BorderLayout());
 
-        final OWLExpressionChecker<Set<OWLClassExpression>> checker = owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionSetChecker();
+        final OWLExpressionChecker<Set<OWLClassExpression>> checker = owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLClassExpressionSetChecker();
         expressionEditor = new ExpressionEditor<Set<OWLClassExpression>>(owlEditorKit, checker);
         JPanel holderPanel = new JPanel(new BorderLayout());
         holderPanel.add(expressionEditor);

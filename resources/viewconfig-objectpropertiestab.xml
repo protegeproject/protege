@@ -4,7 +4,7 @@
     <VSNode splits="0.375 0.625">
 
         <CNode>
-            <Component label="Object properties">
+            <Component label="Object property hierarchy">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyTree"/>
             </Component>
         </CNode>
@@ -15,7 +15,7 @@
                 <Component label="Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyAnnotations"/>
                 </Component>
-                <Component label="Object Property Usage">
+                <Component label="Usage">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyUsageView"/>
                 </Component>
             </CNode>

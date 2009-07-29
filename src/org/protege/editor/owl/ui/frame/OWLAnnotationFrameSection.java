@@ -84,6 +84,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         return true;
     }
 
+
     public boolean dropObjects(List<OWLObject> objects) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLObject obj : objects) {

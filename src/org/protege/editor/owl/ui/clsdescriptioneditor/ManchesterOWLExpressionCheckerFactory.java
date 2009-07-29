@@ -46,13 +46,13 @@ public class ManchesterOWLExpressionCheckerFactory implements OWLExpressionCheck
     }
 
 
-    public OWLExpressionChecker<OWLClassExpression> getOWLDescriptionChecker() {
-        return new OWLDescriptionChecker(mngr);
+    public OWLExpressionChecker<OWLClassExpression> getOWLClassExpressionChecker() {
+        return new OWLClassExpressionChecker(mngr);
     }
 
 
-    public OWLExpressionChecker<Set<OWLClassExpression>> getOWLDescriptionSetChecker() {
-        return new OWLDescriptionSetChecker(mngr);
+    public OWLExpressionChecker<Set<OWLClassExpression>> getOWLClassExpressionSetChecker() {
+        return new OWLClassExpressionSetChecker(mngr);
     }
 
 

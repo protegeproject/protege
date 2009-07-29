@@ -38,7 +38,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public class OWLClassSelectorWrapper extends AbstractOWLDescriptionEditor {
+public class OWLClassSelectorWrapper extends AbstractOWLClassExpressionEditor {
 
 
     private OWLClassSelectorPanel component;

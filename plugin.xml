@@ -48,17 +48,17 @@
 
     <!-- Class Description Editors -->
 
-    <extension id="OWLDescriptionExpressionEditor"
+    <extension id="OWLClassExpressionExpressionEditor"
                point="org.protege.editor.owl.ui.editor.description">
         <label value="Class expression editor"/>
-        <class value="org.protege.editor.owl.ui.editor.OWLDescriptionExpressionEditor"/>
+        <class value="org.protege.editor.owl.ui.editor.OWLClassExpressionExpressionEditor"/>
         <index value="A"/>
     </extension>
 
 
     <extension id="OWLClassSelectorWrapper"
                point="org.protege.editor.owl.ui.editor.description">
-        <label value="Asserted class hierarchy"/>
+        <label value="Class hierarchy"/>
         <class value="org.protege.editor.owl.ui.editor.OWLClassSelectorWrapper"/>
         <index value="B"/>
     </extension>
@@ -175,17 +175,25 @@
 
     <extension id="OWLAssertedClassHierarchy"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Asserted class hierarchy"/>
+        <label value="Class hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
     </extension>
 
+    <extension id="InferredOWLClassHierarchy"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Class hierarchy (inferred)"/>
+        <class value="org.protege.editor.owl.ui.view.cls.InferredOWLClassHierarchyViewComponent"/>
+        <headerColor value="@org.protege.classcolor"/>
+        <category value="@org.protege.classcategory"/>
+    </extension>
+
     <extension
             id="OWLAssertedSuperClassHierarchy"
             point="org.protege.editor.core.application.ViewComponent">
-        <label value="Asserted superclass hierarchy"/>
+        <label value="Superclass hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.cls.ToldSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
@@ -195,7 +203,7 @@
     <extension
             id="OWLInferredSuperClassHierarchy"
             point="org.protege.editor.core.application.ViewComponent">
-        <label value="Inferred superclass hierarchy"/>
+        <label value="Superclass hierarchy (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.cls.InferredSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
@@ -244,7 +252,7 @@
 
     <extension id="OWLObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Object properties"/>
+        <label value="Object property hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
@@ -254,7 +262,7 @@
 
     <extension id="InferredObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Inferred object property hierarchy"/>
+        <label value="Object property hierarchy (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.objectproperty.InferredObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
@@ -305,7 +313,7 @@
 
     <extension id="OWLDataPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Data properties"/>
+        <label value="Data property hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
@@ -375,7 +383,7 @@
 
     <extension id="OWLIndividualsByInferredType"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Individuals by inferred type"/>
+        <label value="Individuals by type (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualsByInferredTypeViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
@@ -425,7 +433,7 @@
 
     <extension id="OWLAnnotationPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Annotation properties"/>
+        <label value="Annotation property hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
@@ -1003,14 +1011,6 @@
         <accelerator value="R"/>
     </extension>
 
-
-    <extension id="InferredOWLClassHierarchy"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Inferred class hierarchy"/>
-        <class value="org.protege.editor.owl.ui.view.cls.InferredOWLClassHierarchyViewComponent"/>
-        <headerColor value="@org.protege.classcolor"/>
-        <category value="@org.protege.classcategory"/>
-    </extension>
 
     <!-- Refactor menu -->
 

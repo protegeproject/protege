@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;

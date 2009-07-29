@@ -9,7 +9,7 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
