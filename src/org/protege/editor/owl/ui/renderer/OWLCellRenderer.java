@@ -699,7 +699,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    private void highlightText(StyledDocument doc) {
+    protected void highlightText(StyledDocument doc) {
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
         linkRendered = false;

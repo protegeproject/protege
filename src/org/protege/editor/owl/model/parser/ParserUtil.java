@@ -49,6 +49,7 @@ public class ParserUtil {
                                                 ex.isDataPropertyNameExpected(),
                                                 ex.isIndividualNameExpected(),
                                                 ex.isDatatypeNameExpected(),
+                                                ex.isAnnotationPropertyNameExpected(),
                                                 ex.getExpectedKeywords());
     }
 
