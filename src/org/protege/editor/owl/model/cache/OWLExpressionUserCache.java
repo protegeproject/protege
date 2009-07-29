@@ -151,7 +151,7 @@ public class OWLExpressionUserCache implements Disposable {
 //            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
 //                String external = fromInternalForm(internal);
 //                try {
-//                    OWLClassExpression descr = mngr.getOWLExpressionCheckerFactory().getOWLDescriptionChecker().createObject(external);
+//                    OWLClassExpression descr = mngr.getOWLExpressionCheckerFactory().getOWLClassExpressionChecker().createObject(external);
 //                    renderingsCache.put(descr, internal);
 //                    cacheInternalForm.add(internal);
 //                    cacheExternalForm.add(external);

@@ -37,9 +37,9 @@ import java.util.Set;
  */
 public interface OWLExpressionCheckerFactory {
 
-    OWLExpressionChecker<OWLClassExpression> getOWLDescriptionChecker();
+    OWLExpressionChecker<OWLClassExpression> getOWLClassExpressionChecker();
 
-    OWLExpressionChecker<Set<OWLClassExpression>> getOWLDescriptionSetChecker();
+    OWLExpressionChecker<Set<OWLClassExpression>> getOWLClassExpressionSetChecker();
 
     OWLExpressionChecker<OWLClassAxiom> getClassAxiomChecker();
 

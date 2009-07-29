@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 
 
 /**

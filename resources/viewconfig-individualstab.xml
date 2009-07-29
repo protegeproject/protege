@@ -7,18 +7,18 @@
             <Component label="Individuals">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
             </Component>
-            <Component label="Individuals By Class">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsByClass"/>
+            <Component label="Individuals by type">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsByType"/>
             </Component>            
         </CNode>
 
         <HSNode splits="0.375 0.625">
 
             <CNode>
-                <Component label="Individual Annotations">
+                <Component label="Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualAnnotations"/>
                 </Component>
-                <Component label="Individual Usage">
+                <Component label="Usage">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualUsageView"/>
                 </Component>
             </CNode>
@@ -32,7 +32,7 @@
 
 
                 <CNode>
-                    <Component label="Individual Relationships">
+                    <Component label="Relationships">
                         <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualRelationships"/>
                     </Component>
                 </CNode>

@@ -4,7 +4,7 @@
     <VSNode splits="0.375 0.625">
 
         <CNode>
-            <Component label="Data properties">
+            <Component label="Data property hierarchy">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyTree"/>
             </Component>
         </CNode>
@@ -12,22 +12,22 @@
         <HSNode splits="0.375 0.625">
 
             <CNode>
-                <Component label="Data Property Annotations">
+                <Component label="Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyAnnotations"/>
                 </Component>
-                <Component label="Data Property Usage">
+                <Component label="Usage">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyUsageView"/>
                 </Component>
             </CNode>
 
             <VSNode splits="0.3 0.7">
                 <CNode>
-                    <Component label="Data Property Characteristics">
+                    <Component label="Characteristics">
                         <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyCharacteristics"/>
                     </Component>
                 </CNode>
                 <CNode>
-                    <Component label="Data Property Description">
+                    <Component label="Description">
                         <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyDescription"/>
                     </Component>
                 </CNode>

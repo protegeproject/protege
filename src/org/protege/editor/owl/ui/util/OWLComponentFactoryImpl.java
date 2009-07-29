@@ -3,9 +3,9 @@ package org.protege.editor.owl.ui.util;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
-import org.protege.editor.owl.ui.editor.OWLDescriptionEditor;
-import org.protege.editor.owl.ui.editor.OWLDescriptionEditorPlugin;
-import org.protege.editor.owl.ui.editor.OWLDescriptionEditorPluginLoader;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionEditor;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionEditorPlugin;
+import org.protege.editor.owl.ui.editor.OWLClassExpressionEditorPluginLoader;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
@@ -60,7 +60,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
 
     private OWLIndividualSelectorPanel individualSelectorPanel;
 
-    private List<OWLDescriptionEditorPlugin> descriptionEditorPlugins;
+    private List<OWLClassExpressionEditorPlugin> descriptionEditorPlugins;
 
 
     public OWLComponentFactoryImpl(OWLEditorKit eKit) {
@@ -75,10 +75,10 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
 
     public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
-        for (OWLDescriptionEditorPlugin plugin : getDescriptionEditorPlugins()) {
+        for (OWLClassExpressionEditorPlugin plugin : getDescriptionEditorPlugins()) {
             try {
                 if (type == null || plugin.isSuitableFor(type)){
-                    OWLDescriptionEditor editorPanel = plugin.newInstance();
+                    OWLClassExpressionEditor editorPanel = plugin.newInstance();
                     if (type != null){
                         editorPanel.setAxiomType(type);
                     }
@@ -143,12 +143,12 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     }
 
 
-    private List<OWLDescriptionEditorPlugin> getDescriptionEditorPlugins() {
+    private List<OWLClassExpressionEditorPlugin> getDescriptionEditorPlugins() {
         if (descriptionEditorPlugins == null){
-            OWLDescriptionEditorPluginLoader loader = new OWLDescriptionEditorPluginLoader(eKit);
-            descriptionEditorPlugins = new ArrayList<OWLDescriptionEditorPlugin>(loader.getPlugins());
-            Comparator<OWLDescriptionEditorPlugin> clsDescrPluginComparator = new Comparator<OWLDescriptionEditorPlugin>(){
-                public int compare(OWLDescriptionEditorPlugin p1, OWLDescriptionEditorPlugin p2) {
+            OWLClassExpressionEditorPluginLoader loader = new OWLClassExpressionEditorPluginLoader(eKit);
+            descriptionEditorPlugins = new ArrayList<OWLClassExpressionEditorPlugin>(loader.getPlugins());
+            Comparator<OWLClassExpressionEditorPlugin> clsDescrPluginComparator = new Comparator<OWLClassExpressionEditorPlugin>(){
+                public int compare(OWLClassExpressionEditorPlugin p1, OWLClassExpressionEditorPlugin p2) {
                     return p1.getIndex().compareTo(p2.getIndex());
                 }
             };

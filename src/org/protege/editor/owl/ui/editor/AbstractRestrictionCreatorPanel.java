@@ -50,7 +50,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Sep 11, 2008<br><br>
  */
-public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject> extends AbstractOWLDescriptionEditor {
+public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F extends OWLObject> extends AbstractOWLClassExpressionEditor {
 
     private JPanel panel;
 

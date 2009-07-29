@@ -29,9 +29,9 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
     private JTabbedPane tabbedPane;
 
-    private java.util.List<OWLDescriptionEditor> activeEditors = new ArrayList<OWLDescriptionEditor>();
+    private java.util.List<OWLClassExpressionEditor> activeEditors = new ArrayList<OWLClassExpressionEditor>();
 
-    private Set<OWLDescriptionEditor> editors = new HashSet<OWLDescriptionEditor>();
+    private Set<OWLClassExpressionEditor> editors = new HashSet<OWLClassExpressionEditor>();
 
     private boolean currentStatus = false;
 
@@ -71,7 +71,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
     }
 
 
-    public void addPanel(OWLDescriptionEditor editorPanel){
+    public void addPanel(OWLClassExpressionEditor editorPanel){
         editors.add(editorPanel);
 
         if (editorPanel.setDescription(expression)){
@@ -94,12 +94,12 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
 
     private boolean isValidated() {
-            OWLDescriptionEditor editor = getSelectedEditor();
+            OWLClassExpressionEditor editor = getSelectedEditor();
             return editor.isValidInput();
     }
 
 
-    private OWLDescriptionEditor getSelectedEditor() {
+    private OWLClassExpressionEditor getSelectedEditor() {
         return activeEditors.get(tabbedPane.getSelectedIndex());
     }
 
@@ -136,7 +136,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
         tabbedPane.removeChangeListener(changeListener);
         tabbedPane.removeAll();
 
-        for (OWLDescriptionEditor editor : editors){
+        for (OWLClassExpressionEditor editor : editors){
             if (editor.setDescription(this.expression)){
                 activeEditors.add(editor);
                 tabbedPane.add(editor.getEditorName(), editor.getComponent());
@@ -163,7 +163,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
 
     public void dispose() {
-        for (OWLDescriptionEditor editor : editors){
+        for (OWLClassExpressionEditor editor : editors){
             try {
                 editor.dispose();
             }

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.description.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.semanticweb.owlapi.model.OWLAxiom;

@@ -4,28 +4,28 @@
         <HSNode splits="0.625 0.375">
 
             <CNode>
-                <Component label="Ontology Annotations">
+                <Component label="Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyAnnotationsView"/>
                 </Component>
-                <Component label="Inferred Axioms">
+                <Component label="Selected entailments">
                     <Property id="pluginId" value="org.protege.editor.owl.InferredAxioms"/>
                 </Component>
             </CNode>
 
             <CNode>
-                <Component label="Ontology Imports">
+                <Component label="Ontology imports">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
                 </Component>
                 <Component label="General axioms">
                     <Property id="pluginId" value="org.protege.editor.owl.GeneralClassAxioms"/>
                 </Component>
-                <Component label="RDF/XML Rendering">
+                <Component label="RDF/XML rendering">
                     <Property id="pluginId" value="org.protege.editor.owl.RDFXML"/>
                 </Component>
-                <Component label="OWL/XML Rendering">
+                <Component label="OWL/XML rendering">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLXML"/>
                 </Component>
-                <Component label="OWL Functional Syntax Rendering">
+                <Component label="OWL functional syntax rendering">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLFunctionalSyntax"/>
                 </Component>
             </CNode>
@@ -34,7 +34,7 @@
 
 
         <CNode>
-            <Component label="Ontology Metrics">
+            <Component label="Ontology metrics">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyMetricsView"/>
             </Component>
         </CNode>

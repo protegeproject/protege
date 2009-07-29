@@ -3,10 +3,10 @@
     <VSNode splits="0.375 0.625">
         <HSNode splits="0.625 0.375">
             <CNode>
-                <Component label="Asserted class hierarchy">
+                <Component label="Class hierarchy">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
                 </Component>
-                <Component label="Inferred class hierarchy">
+                <Component label="Class hierarchy (inferred)">
                     <Property id="pluginId" value="org.protege.editor.owl.InferredOWLClassHierarchy"/>
                 </Component>
             </CNode>
@@ -19,6 +19,12 @@
                 </Component>
                 <Component label="Individuals by type">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsByType"/>
+                </Component>
+                <Component label="Annotation property hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyTree"/>
+                </Component>
+                <Component label="Datatypes">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDatatypeList"/>
                 </Component>
             </CNode>
         </HSNode>
