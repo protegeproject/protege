@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.net.URI;
 import java.util.*;
 
 
@@ -155,6 +156,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDatatype dataType) {
+            add(dataType);
         }
 
 
@@ -189,8 +191,28 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLAnnotationAssertionAxiom axiom) {
-            if (axiom.getSubject() instanceof OWLEntity){
-                ((OWLEntity)axiom.getSubject()).accept(this);
+            if (axiom.getSubject() instanceof IRI){
+                URI subjectURI = ((IRI)axiom.getSubject()).toURI();
+                for (OWLOntology ont : owlModelManager.getActiveOntologies()){
+                    if (ont.containsClassReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLClass(subjectURI));
+                    }
+                    if (ont.containsObjectPropertyReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectURI));
+                    }
+                    if (ont.containsDataPropertyReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectURI));
+                    }
+                    if (ont.containsIndividualReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectURI));
+                    }
+                    if (ont.containsAnnotationPropertyReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectURI));
+                    }
+                    if (ont.containsDatatypeReference(subjectURI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectURI));
+                    }
+                }
             }
         }
 
