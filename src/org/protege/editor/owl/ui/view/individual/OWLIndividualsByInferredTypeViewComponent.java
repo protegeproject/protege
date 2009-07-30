@@ -78,7 +78,7 @@ public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndivi
     }
 
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
+    public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
         OWLObject selObj = tree.getSelectedOWLObject();
         if (selelectedIndividual != null && selObj != null) {
             if (selelectedIndividual.equals(selObj)) {

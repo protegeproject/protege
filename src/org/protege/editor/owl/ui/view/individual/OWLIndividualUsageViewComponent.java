@@ -24,7 +24,7 @@ public class OWLIndividualUsageViewComponent extends AbstractOWLIndividualViewCo
     }
 
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual individual) {
+    public OWLNamedIndividual updateView(OWLNamedIndividual individual) {
         usagePanel.setOWLEntity(individual);
         return individual;
     }

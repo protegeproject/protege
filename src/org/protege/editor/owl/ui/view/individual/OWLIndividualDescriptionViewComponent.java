@@ -33,7 +33,7 @@ public class OWLIndividualDescriptionViewComponent extends AbstractOWLIndividual
     }
 
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
+    public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
         list.setRootObject(selelectedIndividual);
         return selelectedIndividual;
     }

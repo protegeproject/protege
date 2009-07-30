@@ -136,7 +136,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         list.setSelectedValue(individual, true);
     }
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
+    public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
         if (!isPinned()) {
             list.setSelectedValue(selelectedIndividual, true);
         }
