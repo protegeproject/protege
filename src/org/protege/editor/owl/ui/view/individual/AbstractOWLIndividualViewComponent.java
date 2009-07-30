@@ -43,7 +43,7 @@ public abstract class AbstractOWLIndividualViewComponent extends AbstractOWLSele
     }
 
 
-    protected abstract OWLNamedIndividual updateView(OWLNamedIndividual individual);
+    public abstract OWLNamedIndividual updateView(OWLNamedIndividual individual);
 
 
     public abstract void initialiseIndividualsView() throws Exception;

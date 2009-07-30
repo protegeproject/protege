@@ -37,7 +37,7 @@ public class OWLIndividualPropertyAssertionsViewComponent extends AbstractOWLInd
     }
 
 
-    protected OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
+    public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
         list.setRootObject(selelectedIndividual);
         return selelectedIndividual;
     }
