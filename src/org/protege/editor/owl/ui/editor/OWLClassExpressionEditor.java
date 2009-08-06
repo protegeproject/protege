@@ -40,7 +40,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Dec 23, 2008<br><br>
  */
-public interface OWLDescriptionEditor extends ProtegePluginInstance, VerifiedInputEditor, Disposable {
+public interface OWLClassExpressionEditor extends ProtegePluginInstance, VerifiedInputEditor, Disposable {
 
     String getEditorName();
 

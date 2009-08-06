@@ -54,6 +54,7 @@ public class RenameEntityAction extends SelectedOWLEntityAction {
             }
 
             public void visit(OWLDatatype dataType) {
+                ensureSelected(getOWLDataFactory().getOWLDatatype(iri));
             }
         });
     }

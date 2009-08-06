@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.description;
+package org.protege.editor.owl.model.classexpression;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -32,14 +32,14 @@ package org.protege.editor.owl.model.description;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionNodePossibly extends AbstractQueryNode {
+public class OWLClassExpressionNodePossibly extends AbstractQueryNode {
 
-    public OWLDescriptionNodePossibly(OWLDescriptionNode leftNode, OWLDescriptionNode rightNode) {
+    public OWLClassExpressionNodePossibly(OWLClassExpressionNode leftNode, OWLClassExpressionNode rightNode) {
         super(leftNode, rightNode);
     }
 
 
-    public void accept(OWLDescriptionNodeVisitor visitor) {
+    public void accept(OWLClassExpressionNodeVisitor visitor) {
         visitor.visit(this);
     }
 }

@@ -33,9 +33,9 @@ import org.semanticweb.owlapi.model.AxiomType;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public interface OWLDescriptionEditorPlugin extends ProtegePlugin<OWLDescriptionEditor> {
+public interface OWLClassExpressionEditorPlugin extends ProtegePlugin<OWLClassExpressionEditor> {
 
-    public static final String ID = "ui.editor.description";
+    public static final String ID = "ui.editor.classexpression";
 
     boolean isSuitableFor(AxiomType type);
 

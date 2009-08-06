@@ -15,7 +15,7 @@ import java.util.Comparator;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionComparator implements Comparator<OWLClassExpression> {
+public class OWLClassExpressionComparator implements Comparator<OWLClassExpression> {
 
     private TypeVisitor typeVisitor;
 
@@ -24,7 +24,7 @@ public class OWLDescriptionComparator implements Comparator<OWLClassExpression> 
     private OWLClassExpression focusedDescription;
 
 
-    public OWLDescriptionComparator(OWLModelManager owlModelManager) {
+    public OWLClassExpressionComparator(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         this.typeVisitor = new TypeVisitor();
     }

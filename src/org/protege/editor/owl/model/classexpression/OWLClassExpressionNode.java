@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.description;
+package org.protege.editor.owl.model.classexpression;
 
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
@@ -12,16 +12,16 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface OWLDescriptionNode {
+public interface OWLClassExpressionNode {
 
     OWLClassExpression getClassExpression();
 
 
-    void accept(OWLDescriptionNodeVisitor visitor);
+    void accept(OWLClassExpressionNodeVisitor visitor);
 
 
-    OWLDescriptionNode getLeftNode();
+    OWLClassExpressionNode getLeftNode();
 
 
-    OWLDescriptionNode getRightNode();
+    OWLClassExpressionNode getRightNode();
 }

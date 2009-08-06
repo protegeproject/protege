@@ -1,7 +1,12 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.AxiomType;
+import org.protege.editor.owl.ProtegeOWL;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -33,37 +38,22 @@ import org.semanticweb.owlapi.model.AxiomType;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public abstract class AbstractOWLDescriptionEditor implements OWLDescriptionEditor {
+public class OWLClassExpressionEditorPluginLoader extends AbstractPluginLoader<OWLClassExpressionEditorPlugin> {
 
-    private OWLEditorKit eKit;
+    private OWLEditorKit editorKit;
 
-    private String label;
-
-    private AxiomType type = null;
-
-
-    public final void setup(String id, String name, OWLEditorKit eKit) {
-        this.eKit = eKit;
-        this.label = name;
+    public OWLClassExpressionEditorPluginLoader(OWLEditorKit editorKit) {
+        super(ProtegeOWL.ID, OWLClassExpressionEditorPlugin.ID);
+        this.editorKit = editorKit;
     }
 
 
-    public final void setAxiomType(AxiomType type) {
-        this.type = type;
+    protected PluginExtensionMatcher getExtensionMatcher() {
+        return new DefaultPluginExtensionMatcher();
     }
 
 
-    public final String getEditorName() {
-        return label;
-    }
-
-
-    protected final OWLEditorKit getOWLEditorKit(){
-        return eKit;
-    }
-
-
-    protected final AxiomType getAxiomType(){
-        return type;
+    protected OWLClassExpressionEditorPlugin createInstance(IExtension extension) {
+        return new OWLClassExpressionEditorPluginImpl(editorKit, extension);
     }
 }

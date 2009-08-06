@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.description.OWLExpressionParserException;
+import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -27,9 +27,9 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionAutoCompleter {
+public class OWLAutoCompleter {
 
-    private static Logger logger = Logger.getLogger(OWLDescriptionAutoCompleter.class);
+    private static Logger logger = Logger.getLogger(OWLAutoCompleter.class);
 
     public static final int DEFAULT_MAX_ENTRIES = 100;
 
@@ -117,7 +117,7 @@ public class OWLDescriptionAutoCompleter {
     };
 
 
-    public OWLDescriptionAutoCompleter(OWLEditorKit owlEditorKit, JTextComponent tc,
+    public OWLAutoCompleter(OWLEditorKit owlEditorKit, JTextComponent tc,
                                        OWLExpressionChecker checker) {
         this.owlEditorKit = owlEditorKit;
         this.checker = checker;

@@ -42,7 +42,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public class OWLDescriptionExpressionEditor extends AbstractOWLDescriptionEditor{
+public class OWLClassExpressionExpressionEditor extends AbstractOWLClassExpressionEditor{
 
     private ExpressionEditor<OWLClassExpression> editor;
 
@@ -50,7 +50,7 @@ public class OWLDescriptionExpressionEditor extends AbstractOWLDescriptionEditor
 
     public void initialise() throws Exception {
         final OWLEditorKit eKit = getOWLEditorKit();
-        final OWLExpressionChecker<OWLClassExpression> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLDescriptionChecker();
+        final OWLExpressionChecker<OWLClassExpression> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLClassExpressionChecker();
         editor = new ExpressionEditor<OWLClassExpression>(eKit, checker);
 
         scroller = new JScrollPane(editor);
