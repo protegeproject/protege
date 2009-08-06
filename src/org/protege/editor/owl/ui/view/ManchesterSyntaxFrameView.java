@@ -65,9 +65,11 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
         if (owlEntity != null){
             StringWriter w = new StringWriter();
             try {
-                renderOWLEntity(owlEntity, new BufferedWriter(w));
-                w.flush();
+                final BufferedWriter bw = new BufferedWriter(w);
+                renderOWLEntity(owlEntity, bw);
+                bw.close();
                 textArea.setText(w.getBuffer().toString());
+
                 SwingUtilities.invokeLater(new Runnable(){
                     public void run() {
                         scroller.getViewport().setViewPosition(new Point(0, 0));
