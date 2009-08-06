@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.description;
+package org.protege.editor.owl.model.classexpression;
 
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
@@ -12,12 +12,12 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionLeafNode implements OWLDescriptionNode {
+public class OWLClassExpressionLeafNode implements OWLClassExpressionNode {
 
     private OWLClassExpression description;
 
 
-    public OWLDescriptionLeafNode(OWLClassExpression description) {
+    public OWLClassExpressionLeafNode(OWLClassExpression description) {
         this.description = description;
     }
 
@@ -27,25 +27,25 @@ public class OWLDescriptionLeafNode implements OWLDescriptionNode {
     }
 
 
-    public void accept(OWLDescriptionNodeVisitor visitor) {
+    public void accept(OWLClassExpressionNodeVisitor visitor) {
         visitor.visit(this);
     }
 
 
-    public OWLDescriptionNode getLeftNode() {
+    public OWLClassExpressionNode getLeftNode() {
         return null;
     }
 
 
-    public OWLDescriptionNode getRightNode() {
+    public OWLClassExpressionNode getRightNode() {
         return null;
     }
 
 
-    public void setLeftNode(OWLDescriptionNode node) {
+    public void setLeftNode(OWLClassExpressionNode node) {
     }
 
 
-    public void setRightNode(OWLDescriptionNode node) {
+    public void setRightNode(OWLClassExpressionNode node) {
     }
 }

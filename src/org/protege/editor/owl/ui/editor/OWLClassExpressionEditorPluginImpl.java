@@ -37,13 +37,13 @@ import org.semanticweb.owlapi.model.AxiomType;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public class OWLDescriptionEditorPluginImpl implements OWLDescriptionEditorPlugin {
+public class OWLClassExpressionEditorPluginImpl implements OWLClassExpressionEditorPlugin {
 
     private IExtension extension;
 
     private OWLEditorKit editorKit;
 
-    public OWLDescriptionEditorPluginImpl(OWLEditorKit editorKit, IExtension extension) {
+    public OWLClassExpressionEditorPluginImpl(OWLEditorKit editorKit, IExtension extension) {
         this.extension = extension;
         this.editorKit = editorKit;
     }
@@ -82,9 +82,9 @@ public class OWLDescriptionEditorPluginImpl implements OWLDescriptionEditorPlugi
     }
 
 
-    public OWLDescriptionEditor newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        ExtensionInstantiator<OWLDescriptionEditor> instantiator = new ExtensionInstantiator<OWLDescriptionEditor>(extension);
-        OWLDescriptionEditor editor =  instantiator.instantiate();
+    public OWLClassExpressionEditor newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
+        ExtensionInstantiator<OWLClassExpressionEditor> instantiator = new ExtensionInstantiator<OWLClassExpressionEditor>(extension);
+        OWLClassExpressionEditor editor =  instantiator.instantiate();
         editor.setup(extension.getUniqueIdentifier(), PluginUtilities.getAttribute(extension, "label"), editorKit);
         return editor;
     }

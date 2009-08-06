@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.description;
+package org.protege.editor.owl.model.classexpression;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -32,14 +32,16 @@ package org.protege.editor.owl.model.description;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLDescriptionNodeUnion extends AbstractQueryNode {
+public interface OWLClassExpressionNodeVisitor {
 
-    public OWLDescriptionNodeUnion(OWLDescriptionNode leftNode, OWLDescriptionNode rightNode) {
-        super(leftNode, rightNode);
-    }
+    public void visit(OWLClassExpressionNodeDifference node);
 
 
-    public void accept(OWLDescriptionNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+    public void visit(OWLClassExpressionNodeUnion node);
+
+
+    public void visit(OWLClassExpressionLeafNode node);
+
+
+    public void visit(OWLClassExpressionNodePossibly node);
 }
