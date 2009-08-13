@@ -78,6 +78,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
             activeEditors.add(editorPanel);
             tabbedPane.add(editorPanel.getEditorName(), editorPanel.getComponent());
             editorPanel.addStatusChangedListener(inputListener);
+            tabbedPane.setSelectedIndex(0);
         }
     }
 
