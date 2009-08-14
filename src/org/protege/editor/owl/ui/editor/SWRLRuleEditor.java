@@ -47,12 +47,16 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
 
     private OWLEditorKit editorKit;
 
+    private JScrollPane scrollpane;
+
 
     public SWRLRuleEditor(final OWLEditorKit editorKit) {
         this.editorKit = editorKit;
         final OWLExpressionCheckerFactory fac = editorKit.getModelManager().getOWLExpressionCheckerFactory();
         editor = new ExpressionEditor<SWRLRule>(editorKit, fac.getSWRLChecker());
-        editor.setPreferredSize(new Dimension(300, 200));
+
+        scrollpane = new JScrollPane(editor);
+        scrollpane.setPreferredSize(new Dimension(500, 200));
     }
 
 
@@ -67,7 +71,7 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
 
 
     public JComponent getEditorComponent() {
-        return editor;
+        return scrollpane;
     }
 
 
