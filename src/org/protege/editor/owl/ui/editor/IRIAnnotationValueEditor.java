@@ -104,23 +104,23 @@ public class IRIAnnotationValueEditor implements OWLObjectEditor<IRI> {
         if (object != null){
             final OWLDataFactory df = eKit.getOWLModelManager().getOWLDataFactory();
             for (OWLOntology ont : eKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsClassReference(object.toURI())){
+                if (ont.containsClassReference(object)){
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLClass(object.toURI())));
                     break;
                 }
-                else if (ont.containsObjectPropertyReference(object.toURI())){
+                else if (ont.containsObjectPropertyReference(object)){
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLObjectProperty(object.toURI())));
                     break;
                 }
-                else if (ont.containsDataPropertyReference(object.toURI())){
+                else if (ont.containsDataPropertyReference(object)){
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLDataProperty(object.toURI())));
                     break;
                 }
-                else if (ont.containsIndividualReference(object.toURI())){
+                else if (ont.containsIndividualReference(object)){
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLNamedIndividual(object.toURI())));
                     break;
                 }
-                else if (ont.containsAnnotationPropertyReference(object.toURI())){
+                else if (ont.containsAnnotationPropertyReference(object)){
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLAnnotationProperty(object.toURI())));
                     break;
                 }

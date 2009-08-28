@@ -153,7 +153,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
             }
         });
         data.add(new TypeItem(AxiomType.EQUIVALENT_CLASSES));
-        data.add(new TypeItem(AxiomType.SUBCLASS));
+        data.add(new TypeItem(AxiomType.SUBCLASS_OF));
         data.add(new TypeItem(AxiomType.DISJOINT_CLASSES));
 
         data.add(new MListSectionHeader(){

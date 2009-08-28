@@ -263,7 +263,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
         private boolean isReferenced(OWLNamedIndividual ind) {
             for (OWLOntology ont : ontologies){
-                if (ont.containsIndividualReference(ind.getURI())){
+                if (ont.containsIndividualReference(ind.getIRI())){
                     return true;
                 }
             }

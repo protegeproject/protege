@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.frame;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.SWRLRuleEditor;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.SWRLRule;
 
@@ -61,7 +62,7 @@ public class SWRLRulesFrameSection extends AbstractOWLFrameSection<OWLOntology, 
 
 
     protected void refill(OWLOntology ontology) {
-        for (SWRLRule rule : ontology.getRules()) {
+        for (SWRLRule rule : ontology.getAxioms(AxiomType.SWRL_RULE)) {
             addRow(new SWRLRuleFrameSectionRow(getOWLEditorKit(), this, ontology, ontology, rule));
         }
     }

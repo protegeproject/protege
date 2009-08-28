@@ -86,7 +86,7 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
             return false;
         }
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            if (ont.containsClassReference(ind.asNamedIndividual().getURI())) {
+            if (ont.containsClassReference(ind.asNamedIndividual().getIRI())) {
                 return true;
             }
         }

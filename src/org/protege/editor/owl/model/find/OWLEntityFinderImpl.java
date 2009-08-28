@@ -6,7 +6,6 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -184,26 +183,24 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
 
-        URI subjectURI = iri.toURI();
-
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsClassReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLClass(subjectURI));
+            if (ont.containsClassReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLClass(iri));
             }
-            if (ont.containsObjectPropertyReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLObjectProperty(subjectURI));
+            if (ont.containsObjectPropertyReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLObjectProperty(iri));
             }
-            if (ont.containsDataPropertyReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLDataProperty(subjectURI));
+            if (ont.containsDataPropertyReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLDataProperty(iri));
             }
-            if (ont.containsIndividualReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLNamedIndividual(subjectURI));
+            if (ont.containsIndividualReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLNamedIndividual(iri));
             }
-            if (ont.containsAnnotationPropertyReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLAnnotationProperty(subjectURI));
+            if (ont.containsAnnotationPropertyReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLAnnotationProperty(iri));
             }
-            if (ont.containsDatatypeReference(subjectURI)){
-                entities.add(mngr.getOWLDataFactory().getOWLDatatype(subjectURI));
+            if (ont.containsDatatypeReference(iri)){
+                entities.add(mngr.getOWLDataFactory().getOWLDatatype(iri));
             }
         }
         return entities;

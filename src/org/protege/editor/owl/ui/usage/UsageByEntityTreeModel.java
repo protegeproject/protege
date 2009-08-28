@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.model.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.net.URI;
 import java.util.*;
 
 
@@ -192,25 +191,25 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLAnnotationAssertionAxiom axiom) {
             if (axiom.getSubject() instanceof IRI){
-                URI subjectURI = ((IRI)axiom.getSubject()).toURI();
+                IRI subjectIRI = (IRI)axiom.getSubject();
                 for (OWLOntology ont : owlModelManager.getActiveOntologies()){
-                    if (ont.containsClassReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLClass(subjectURI));
+                    if (ont.containsClassReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLClass(subjectIRI));
                     }
-                    if (ont.containsObjectPropertyReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectURI));
+                    if (ont.containsObjectPropertyReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectIRI));
                     }
-                    if (ont.containsDataPropertyReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectURI));
+                    if (ont.containsDataPropertyReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectIRI));
                     }
-                    if (ont.containsIndividualReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectURI));
+                    if (ont.containsIndividualReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectIRI));
                     }
-                    if (ont.containsAnnotationPropertyReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectURI));
+                    if (ont.containsAnnotationPropertyReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectIRI));
                     }
-                    if (ont.containsDatatypeReference(subjectURI)){
-                        add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectURI));
+                    if (ont.containsDatatypeReference(subjectIRI)){
+                        add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectIRI));
                     }
                 }
             }

@@ -79,16 +79,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     }
 
 
-    public void setSize(final long size) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                progressBar.setValue(0);
-                progressBar.setMaximum((int) size);
-            }
-        });
-    }
-
-
     public void setStarted() {
         label.setText("Classifying ontology                    ");
         currentClass = null;
@@ -97,14 +87,12 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     }
 
 
-    public void setProgress(final long progress) {
+    public void setProgress(final String message, final long progress, final long total) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 progressBar.setValue((int) progress);
-                double percentDone = (progress * 100.0) / progressBar.getMaximum();
-//                if(percentDone / 100.0 == 0) {
-                label.setText("Classifying ontology " + ((int) percentDone) + " %");
-//                }
+                double percentDone = (progress * 100.0) / total;
+                label.setText(message + ((int) percentDone) + " %");
             }
         });
     }

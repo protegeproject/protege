@@ -199,7 +199,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 
     public boolean containsReference(OWLClass object) {
         for (OWLOntology ont : ontologies) {
-            if (ont.containsClassReference(object.getURI())) {
+            if (ont.containsClassReference(object.getIRI())) {
                 return true;
             }
         }
