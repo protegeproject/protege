@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.byprofile;
 
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owlapi.profiles.ELPlusPlusProfile;
+import org.semanticweb.owlapi.profiles.OWL2DLProfile;
+import org.semanticweb.owlapi.profiles.OWL2ELProfile;
 import org.semanticweb.owlapi.profiles.OWL2Profile;
-import org.semanticweb.owlapi.profiles.OWLDLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfile;
 
 import javax.swing.*;
@@ -102,10 +102,10 @@ public class ProfileSelectorPanel extends MoveAxiomsKitConfigurationPanel {
             return new OWL2Profile();
         }
         else if (owlDLButton.isSelected()){
-            return new OWLDLProfile();
+            return new OWL2DLProfile();
         }
         else if (elPPButton.isSelected()){
-            return new ELPlusPlusProfile();
+            return new OWL2ELProfile();
         }
         return null;
     }

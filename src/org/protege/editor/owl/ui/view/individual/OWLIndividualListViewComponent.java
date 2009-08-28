@@ -185,7 +185,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             if (ent instanceof OWLIndividual) {
                 boolean stillReferenced = false;
                 for (OWLOntology ont : getOntologies()) {
-                    if (ont.containsIndividualReference(ent.getURI())) {
+                    if (ont.containsIndividualReference(ent.getIRI())) {
                         stillReferenced = true;
                         break;
                     }

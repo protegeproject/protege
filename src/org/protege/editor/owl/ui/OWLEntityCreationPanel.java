@@ -18,7 +18,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -208,15 +207,15 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
                                                                                                              name,
                                                                                                              getBaseIRI());
-            URI uri = changeSet.getOWLEntity().getURI();
-            uriPreviewLabel.setText(uri.toString());
+            IRI iri = changeSet.getOWLEntity().getIRI();
+            uriPreviewLabel.setText(iri.toString());
 
             currentlyValid = true;
 
             String warningMessage = null;
 
             for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsEntityReference(uri)){
+                if (ont.containsEntityReference(iri)){
                     warningMessage = "Warning: this is a pun for an existing entity.";
                     break;
                 }

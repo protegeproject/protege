@@ -4,9 +4,9 @@ import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.profiles.ConstructNotAllowed;
 import org.semanticweb.owlapi.profiles.OWLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.profiles.OWLProfileViolation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -64,10 +64,8 @@ public class MoveAxiomsByProfileKit extends MoveAxiomsKit {
         }
         for (OWLOntology ont : sourceOntologies){
             OWLProfileReport report = profile.checkOntology(ont, getOWLModelManager().getOWLOntologyManager());
-            for (ConstructNotAllowed disConstr : report.getDisallowedConstructs()){
-                if (disConstr.getConstruct() instanceof OWLAxiom){
-                    axioms.remove(disConstr.getConstruct());
-                }
+            for (OWLProfileViolation disConstr : report.getViolations()){
+                axioms.remove(disConstr.getAxiom());
             }
         }
         return axioms;

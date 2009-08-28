@@ -28,7 +28,7 @@ public class OWLSubClassAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<
 
 
     protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getSuperClass(), AxiomType.SUBCLASS);        
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(getAxiom().getSuperClass(), AxiomType.SUBCLASS_OF);
     }
 
 

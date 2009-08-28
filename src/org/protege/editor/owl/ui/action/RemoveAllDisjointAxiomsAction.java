@@ -51,10 +51,8 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
             }
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             for (OWLOntology ont : ontologies) {
-                for (OWLClassAxiom ax : ont.getClassAxioms()) {
-                    if (ax instanceof OWLDisjointClassesAxiom) {
-                        changes.add(new RemoveAxiom(ont, ax));
-                    }
+                for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)) {
+                    changes.add(new RemoveAxiom(ont, ax));
                 }
             }
             getOWLModelManager().applyChanges(changes);

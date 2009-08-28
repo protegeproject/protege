@@ -48,7 +48,7 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
 
 
     protected boolean containsReference(OWLOntology ont, OWLDataProperty prop) {
-        return ont.containsDataPropertyReference(prop.getURI());
+        return ont.containsDataPropertyReference(prop.getIRI());
     }
 
 

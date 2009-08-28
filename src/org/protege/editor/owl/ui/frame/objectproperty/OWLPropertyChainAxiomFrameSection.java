@@ -6,10 +6,7 @@ import org.protege.editor.owl.ui.editor.OWLObjectPropertyChainEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
+import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -41,7 +38,7 @@ public class OWLPropertyChainAxiomFrameSection extends AbstractOWLFrameSection<O
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
-        for (OWLSubPropertyChainOfAxiom ax : ontology.getPropertyChainSubPropertyAxioms()) {
+        for (OWLSubPropertyChainOfAxiom ax : ontology.getAxioms(AxiomType.SUB_PROPERTY_CHAIN_OF)) {
             if (ax.getSuperProperty().equals(getRootObject())) {
                 addRow(new OWLPropertyChainAxiomFrameSectionRow(getOWLEditorKit(),
                                                                 this,

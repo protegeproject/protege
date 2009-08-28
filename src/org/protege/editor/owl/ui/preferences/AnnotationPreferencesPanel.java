@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.preferences;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.NamespaceUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,24 +46,15 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        Set<URI> annotationURIs = new TreeSet<URI>();
+        Set<OWLAnnotationProperty> annotationProperties = new TreeSet<OWLAnnotationProperty>();
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            annotationURIs.addAll(ont.getAnnotationURIs());
+            annotationProperties.addAll(ont.getReferencedAnnotationProperties());
         }
         checkBoxURIMap = new HashMap<JCheckBox, URI>();
-        for (URI uri : annotationURIs) {
-            NamespaceUtil nsUtil = new NamespaceUtil();
-            String[] res = nsUtil.split(uri.toString(), null);
-            String presentationText;
-            if (res != null) {
-                presentationText = nsUtil.getPrefix(res[0]) + ":" + res[1];
-            }
-            else {
-                presentationText = uri.toString();
-            }
-            JCheckBox cb = new JCheckBox(presentationText,
-                                         getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(uri));
-            checkBoxURIMap.put(cb, uri);
+        for (OWLAnnotationProperty property : annotationProperties) {
+            JCheckBox cb = new JCheckBox(getOWLModelManager().getRendering(property),
+                                         getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(property.getURI()));
+            checkBoxURIMap.put(cb, property.getURI());
             box.add(cb);
             box.add(Box.createVerticalStrut(4));
             cb.setOpaque(false);

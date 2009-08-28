@@ -102,7 +102,7 @@ public class AnonymousDefinedClassManager implements Disposable {
     public boolean isAnonymous(OWLClass cls){
         if(cls.getURI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX)){
             for (OWLOntology ont : mngr.getActiveOntologies()){
-                if (ont.containsClassReference(cls.getURI())){
+                if (ont.containsClassReference(cls.getIRI())){
                     return true;
                 }
             }
@@ -122,24 +122,24 @@ public class AnonymousDefinedClassManager implements Disposable {
     }
 
 
-    private URI getNextID() {
-        URI uri;
+    private IRI getNextID() {
+        IRI iri;
         do{
             try {
-                uri = URI.create(DEFAULT_ANON_CLASS_URI_PREFIX + idGen.getNextID(OWLClass.class));
+                iri = IRI.create(DEFAULT_ANON_CLASS_URI_PREFIX + idGen.getNextID(OWLClass.class));
             }
             catch (AutoIDException e) {
                 throw new RuntimeException(e);
             }
         }
-        while (entityExists(uri));
-        return uri;
+        while (entityExists(iri));
+        return iri;
     }
 
 
-    private boolean entityExists(URI uri) {
+    private boolean entityExists(IRI iri) {
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsClassReference(uri)){
+            if (ont.containsClassReference(iri)){
                 return true;
             }
         }

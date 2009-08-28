@@ -219,7 +219,7 @@ public class MetricsPanel extends JPanel {
 
     private void createClassAxiomMetrics() {
         List<OWLMetric> metrics = new ArrayList<OWLMetric>();
-        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUBCLASS));
+        metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUBCLASS_OF));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.EQUIVALENT_CLASSES));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.DISJOINT_CLASSES));
         metrics.add(new GCICount(getOWLModelManager().getOWLOntologyManager()));

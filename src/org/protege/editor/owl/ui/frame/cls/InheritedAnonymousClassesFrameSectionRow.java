@@ -27,7 +27,7 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
     protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         if (getAxiom() instanceof OWLSubClassOfAxiom) {
             OWLClassExpression superCls = ((OWLSubClassOfAxiom) getAxiom()).getSuperClass();
-            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls, AxiomType.SUBCLASS);
+            return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls, AxiomType.SUBCLASS_OF);
         }
         else {
             Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
