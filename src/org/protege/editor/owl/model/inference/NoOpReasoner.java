@@ -300,6 +300,10 @@ public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
     public boolean isFunctional(OWLDataProperty property) throws OWLReasonerException {
         return false;
     }
+    
+    public boolean isAsymmetric(OWLObjectProperty property) throws OWLReasonerException {
+        return false;
+    }
 
 
     public boolean isDefined(OWLClass cls) throws OWLReasonerException {

@@ -246,7 +246,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
                     runningReasoner.classify();
                     if (runningReasoner.isClassified()){
                         String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                        reasonerProgressMonitor.setProgress(s, 100, 100);
+                        reasonerProgressMonitor.setSize(101);
+                        reasonerProgressMonitor.setProgress(100);
                         logger.info(s);
                         currentReasoner = runningReasoner;
                         fireReclassified();
