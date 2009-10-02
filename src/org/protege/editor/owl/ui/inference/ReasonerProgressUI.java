@@ -37,6 +37,8 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     private static final int CANCEL_TIMEOUT_MS = 5000;
 
     private Timer cancelTimeout;
+    
+    private long progressEndMarker;
 
 
     public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
@@ -86,13 +88,14 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         showWindow();
     }
 
+    public void setSize(long size) {
+        progressEndMarker = size - 1;
+    }
 
-    public void setProgress(final String message, final long progress, final long total) {
+    public void setProgress(final long progress) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 progressBar.setValue((int) progress);
-                double percentDone = (progress * 100.0) / total;
-                label.setText(message + ((int) percentDone) + " %");
             }
         });
     }
