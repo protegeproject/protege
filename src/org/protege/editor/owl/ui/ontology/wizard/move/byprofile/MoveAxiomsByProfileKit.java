@@ -63,7 +63,7 @@ public class MoveAxiomsByProfileKit extends MoveAxiomsKit {
             axioms.addAll(ont.getAxioms());
         }
         for (OWLOntology ont : sourceOntologies){
-            OWLProfileReport report = profile.checkOntology(ont, getOWLModelManager().getOWLOntologyManager());
+            OWLProfileReport report = profile.checkOntology(ont);
             for (OWLProfileViolation disConstr : report.getViolations()){
                 axioms.remove(disConstr.getAxiom());
             }
