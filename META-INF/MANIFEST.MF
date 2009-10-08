@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: owleditor
+Bundle-Name: The Protege 4 OWL Editor
 Bundle-SymbolicName: org.protege.editor.owl;singleton:=true
 Bundle-Category: protege
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
