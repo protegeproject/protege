@@ -54,6 +54,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private OWLModelManager modelManager;
 
     private Set<URI> newPhysicalURIs;
+    
+    private OntologyLoadErrorHandlerUI loadErrorHandler;
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
@@ -72,7 +74,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 handleSaveError(ont, physicalURIForOntology, e);
             }
         });
-        modelManager.setLoadErrorHandler(new OntologyLoadErrorHandlerUI(this));
+        loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
+        modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
     }
 
@@ -139,9 +142,14 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     public boolean handleLoadFrom(URI uri) throws Exception {
-        final boolean success = ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
+        loadErrorHandler.setReloadFlag(false);
+        boolean success = ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
+        
         if (success){
             addRecent(uri);
+        }
+        else if (loadErrorHandler.getReloadFlag()) {
+            success = handleLoadFrom(uri);
         }
         return success;
     }
