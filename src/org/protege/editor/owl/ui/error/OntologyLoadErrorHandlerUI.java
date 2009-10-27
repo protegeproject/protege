@@ -67,6 +67,19 @@ import java.util.Map;
  * Date: Aug 28, 2008<br><br>
  */
 public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
+    private enum OPTIONS {
+        OK("OK"), RELOAD("Reload");
+
+        private String name;
+        private OPTIONS(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return name;
+        }
+    }
+
 
     private OWLEditorKit eKit;
 
@@ -74,34 +87,52 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
     private ErrorExplainer errorExplainer;
 
+    private boolean reload = false;
 
     public OntologyLoadErrorHandlerUI(OWLEditorKit owlEditorKit) {
         eKit = owlEditorKit;
     }
 
+    public boolean getReloadFlag() {
+        return reload;
+    }
+
+    public void setReloadFlag(boolean reload) {
+        this.reload = reload;
+    }
+
 
     public <T extends Throwable> void handleErrorLoadingOntology(OWLOntologyID ontologyID, URI loc, T e) throws Throwable {
-
+        int retVal;
+        Object[] options = OPTIONS.values();
+        
         if (e instanceof UnparsableOntologyException){
             errorExplainer = createErrorExplainer();
             ParseErrorsPanel errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
-            JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                            "Load Error: " + ontologyID,
-                                            errorPanel,
-                                            JOptionPane.ERROR_MESSAGE,
-                                            JOptionPane.DEFAULT_OPTION,
-                                            null);
+            retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                                     "Load Error: "  + ontologyID,
+                                                     errorPanel,
+                                                     JOptionPane.ERROR_MESSAGE,
+                                                     JOptionPane.DEFAULT_OPTION,
+                                                     null,
+                                                     options,
+                                                     OPTIONS.OK);
             lastSelectedParser = errorPanel.tabs.getTitleAt(errorPanel.tabs.getSelectedIndex());
         }
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
             ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
-            JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                            "Load Error: " + ontologyID,
-                                            errorPanel,
-                                            JOptionPane.ERROR_MESSAGE,
-                                            JOptionPane.DEFAULT_OPTION,
-                                            null);
+            retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                                     "Load Error: " + ontologyID,
+                                                     errorPanel,
+                                                     JOptionPane.ERROR_MESSAGE,
+                                                     JOptionPane.DEFAULT_OPTION,
+                                                     null,
+                                                     options,
+                                                     OPTIONS.OK);
+        }
+        if (retVal == OPTIONS.RELOAD.ordinal()) {
+            setReloadFlag(true);
         }
     }
 
