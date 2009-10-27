@@ -1,5 +1,23 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
@@ -7,14 +25,7 @@ import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.clarkparsia.explanation.util.OntologyUtils;
 
 
 /**
@@ -32,6 +43,8 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
     private JTextField ontologyIRIField;
 
+    private JCheckBox enableVersionCheckBox;
+    
     private JTextField versionIRIField;
 
 
@@ -69,9 +82,11 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
     protected void createUI(JComponent parent) {
         setInstructions("Please specify the ontology IRI.  \n\nThe ontology IRI is used to identify" +
-                        " the ontology in the context of the world wide web. Additionally, ontologies that" +
-                        " import this ontology will use the IRI for the import.  It is recommended that you " +
-                        " set the ontology IRI to be the URL where the ontology will be published.");
+                        " the ontology in the context of the world wide web. It is recommended that you " +
+                        " set the ontology IRI to be the URL where the latest version of the ontology" +
+                        " will be published.  If you use a version IRI, then it is recommended that you" +
+                        " set the version IRI to be the URL where this version of the ontology" +
+                        " will be published.");
 
         ontologyIRIField = new JTextField(OntologyPreferences.getInstance().generateURI().toString());
         ontologyIRIField.setSelectionStart(ontologyIRIField.getText().lastIndexOf("/") + 1);
@@ -81,18 +96,27 @@ public class OntologyIDPanel extends AbstractWizardPanel {
             }
 
             public void insertUpdate(DocumentEvent e) {
-                versionIRIField.setText(ontologyIRIField.getText());
                 updateState();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                versionIRIField.setText(ontologyIRIField.getText());
                 updateState();
             }
         });
 
+        enableVersionCheckBox = new JCheckBox("Enable Version Iri");
+        enableVersionCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                versionIRIField.setEnabled(enableVersionCheckBox.isSelected());
+                if (versionIRIField.isEnabled()) {
+                    versionIRIField.setText(ontologyIRIField.getText());
+                }
+            }
+        });
+        
         versionIRIField = new JTextField(ontologyIRIField.getText());
-        ontologyIRIField.getDocument().addDocumentListener(new DocumentListener() {
+        versionIRIField.setEnabled(false);
+        versionIRIField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
 
@@ -122,6 +146,7 @@ public class OntologyIDPanel extends AbstractWizardPanel {
         holderPanel.add(Box.createVerticalStrut(12));
         holderPanel.add(new JLabel("Version IRI"));
         holderPanel.add(versionIRIField);
+        holderPanel.add(enableVersionCheckBox);
 
         parent.setLayout(new BorderLayout());
         parent.add(holderPanel, BorderLayout.NORTH);
@@ -133,17 +158,21 @@ public class OntologyIDPanel extends AbstractWizardPanel {
         try {
             URI ontologyURI = new URI(ontologyIRIField.getText());
             IRI ontologyIRI = IRI.create(ontologyURI);
+            
+            if (enableVersionCheckBox.isSelected()) {
+                URI versionURI = new URI(versionIRIField.getText());
+                IRI versionIRI = IRI.create(versionURI);
 
-            URI versionURI = new URI(versionIRIField.getText());
-            IRI versionIRI = IRI.create(versionURI);
-
-            return new OWLOntologyID(ontologyIRI, versionIRI);
+                return new OWLOntologyID(ontologyIRI, versionIRI);
+            }
+            else {
+                return new OWLOntologyID(ontologyIRI);
+            }
         }
         catch (URISyntaxException e) {
             return null;
         }
     }
-
 
     public Object getNextPanelDescriptor() {
         return PhysicalLocationPanel.ID;
