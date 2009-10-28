@@ -76,6 +76,7 @@ public class TerminalElementFinder<X> {
     private Relation<X> r;
     private Set<X> terminalElements = new HashSet<X>();
     private EquivalenceRelation<X> equivalence = new EquivalenceRelation<X>();
+    private Set<X> equivalenceAlreadyCalculated = new HashSet<X>();
     
     public TerminalElementFinder(Relation<X> r) {
         this.r = r;
@@ -98,6 +99,7 @@ public class TerminalElementFinder<X> {
      * terminal elements and the new candidates and call findTerminalElements again.
      */
     public void appendTerminalElements(Set<X> candidates) {
+        equivalenceAlreadyCalculated.clear();
         for (X candidate : candidates) {
             if (log.isDebugEnabled()) {
                 log.debug("calling build equivs at " + candidate + " with null path");
@@ -108,6 +110,7 @@ public class TerminalElementFinder<X> {
                 equivalence.logEquivalences(log, Level.DEBUG);
             }
         }
+        equivalenceAlreadyCalculated.clear();
     }
         
     public void finish() {
@@ -119,6 +122,9 @@ public class TerminalElementFinder<X> {
     }
     
     private void buildEquivalenceMapping(X x, Path<X> p) {
+        if (equivalenceAlreadyCalculated.contains(x)) {
+            return;
+        }
         if (p != null && p.contains(x)) {
             equivalence.merge(p.getLoop(x));
             if (log.isDebugEnabled()) {
@@ -130,6 +136,7 @@ public class TerminalElementFinder<X> {
         Collection<X> relatedToX = r.getR(x);
         if (relatedToX == null || relatedToX.isEmpty()) {
             terminalElements.add(x);
+            equivalenceAlreadyCalculated.add(x);
             return;
         }
         Path<X> newPath  = new Path<X>(p, x);
@@ -154,6 +161,7 @@ public class TerminalElementFinder<X> {
         if (terminal) {
             terminalElements.add(x);
         }
+        equivalenceAlreadyCalculated.add(x);
     }
     
     public boolean removeTerminalElement(X x) {
