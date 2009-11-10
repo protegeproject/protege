@@ -134,7 +134,7 @@ public class ManchesterRepository implements OntologyRepository {
         public RepositoryEntry(URI ontologyIRI) {
             this.ontologyURI = ontologyIRI;
             OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
-            shortName = sfp.getShortForm(ontologyIRI);
+            shortName = sfp.getShortForm(IRI.create(ontologyIRI));
             physicalURI = URI.create(repositoryLocation + "/download?ontology=" + ontologyIRI);
         }
 

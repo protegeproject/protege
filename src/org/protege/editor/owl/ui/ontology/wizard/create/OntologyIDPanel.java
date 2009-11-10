@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
@@ -24,8 +23,6 @@ import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-
-import com.clarkparsia.explanation.util.OntologyUtils;
 
 
 /**
