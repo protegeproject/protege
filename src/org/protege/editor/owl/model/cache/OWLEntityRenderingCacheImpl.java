@@ -102,7 +102,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         }
 
         // standard annotation properties        
-        for (URI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTIES){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
             addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
         for (URI uri : DublinCoreVocabulary.ALL_URIS){

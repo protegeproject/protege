@@ -229,7 +229,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
             }
         }
 
-        for (URI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTIES){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
             roots.add(df.getOWLAnnotationProperty(uri));
         }
         for (URI uri : DublinCoreVocabulary.ALL_URIS){

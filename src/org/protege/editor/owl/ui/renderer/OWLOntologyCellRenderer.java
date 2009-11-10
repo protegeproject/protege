@@ -75,7 +75,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
 
     public static String getOntologyLabelText(IRI iri, OWLModelManager mngr){
 
-        String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri.toURI());
+        String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri);
 
         if (shortForm != null) {
             StringBuilder sb = new StringBuilder();
