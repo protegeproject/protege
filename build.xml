@@ -10,8 +10,7 @@
    <property environment="env"/>
    <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
    <property file="local.properties"/>
-
-
+	
    <!-- 
         This setting defines the name of the plugin.
         This may be the only setting that the developer needs to
@@ -30,7 +29,8 @@
    <!-- 
         these properties probably don't need changing
         -->
-   <property name = "src"               location = "./src"/>  
+   <property name = "src"               location = "./src"/>
+   <property name = "junit.src"         location = "./junit"/>
    <property name = "build"             location = "./build"/>
    <property name = "bundle.dir"        location = "${build}"/>
    <property name = "classes"           location = "${build}/classes"/>
@@ -42,12 +42,17 @@
    <property name = "protege.common"    location="${protege.home}/bundles"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
 
+   <property name = "junit.filtertrace"   value = "false"/>
+   <property name = "junit.showoutput"    value = "true"/>
+   <property name = "junit.haltonerror"   value = "true"/>
+   <property name = "junit.haltonfailure" value = "true"/>
 
    <target name = "init">
      <tstamp>
        <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
      </tstamp>
      <mkdir dir = "${build}"/>
+   	 <mkdir dir = "${junit.classes}"/>
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
      <mkdir dir = "${genlib}"/>
@@ -197,7 +202,39 @@
            overwrite = "true"/>
    </target>
 
-   <target name = "junit"/>
+   <target name = "junit.compile" depends="compile">
+    <javac srcdir = "${junit.src}"
+           destdir = "${junit.classes}" 
+           debug="on"
+           includeAntRuntime="false">
+    	<classpath>
+    		<path        refid    = "project.classpath"/>
+    		<pathelement location = "${classes}"/>
+    		<pathelement location = "${junit.lib}"/>
+    	</classpath> 
+    </javac>
+   </target>
+	
+   <target name = "junit" depends="junit.compile">
+       <junit printsummary  = "withOutAndErr" 
+   	      filtertrace   = "${junit.filtertrace}"
+   	      showoutput    = "${junit.showoutput}"
+   	      fork          = "true" 
+   	      haltonerror   = "${junit.haltonerror}" 
+   	      haltonfailure = "${junit.haltonfailure}">
+   	   <jvmarg value="-Dlog4j.configuration=file:log4j.xml"/>
+   	   <batchtest>
+   	       <fileset dir="${junit.src}">
+   	  	   <include name="**/*Test.java"/>
+   	       </fileset>
+   	   </batchtest>
+    	   <classpath>
+    	       <path        refid    = "project.classpath"/>
+    	       <pathelement location = "${classes}"/>
+    	       <pathelement location = "${junit.lib}"/>
+    	   </classpath> 
+       </junit>
+   </target>
 	
    <target name = "clean">
      <delete dir = "${build}"/>
@@ -207,10 +244,14 @@
    <target name = "usage">
      <echo message = "To run this script set the PROTEGE_HOME environment"/>
      <echo message = "variable and use one of the following targets"/>
-     <echo message = "jar - builds the jar (bundle) file for this project"/>
-     <echo message = "install - installs  the bundle into the Protege distribution"/>
-     <echo message = "copy.resources - copyies resources into the classes directory"/>
-     <echo message = "    this can  be useful for ide developers - see the wiki"/>
+   	 <echo message = ""/>
+     <echo message = "jar            - builds the jar (bundle) file for this project"/>
+     <echo message = "install        - installs  the bundle into the Protege distribution"/>
+     <echo message = "copy.resources - copies resources into the classes directory"/>
+     <echo message = "                 this can  be useful for ide developers - "/>
+     <echo message = "                 see the wiki for more details."/>
+   	 <echo message = "junit          - runs the junits but requires local.properties"/>
+   	 <echo message = "                 to find junit.jar"/>
    </target>
 
 
