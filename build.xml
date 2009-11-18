@@ -216,12 +216,14 @@
    </target>
 	
    <target name = "junit" depends="junit.compile">
-       <junit printsummary  = "withOutAndErr" 
+       <junit dir           = "."
+              printsummary  = "withOutAndErr" 
    	      filtertrace   = "${junit.filtertrace}"
    	      showoutput    = "${junit.showoutput}"
    	      fork          = "true" 
    	      haltonerror   = "${junit.haltonerror}" 
    	      haltonfailure = "${junit.haltonfailure}">
+           <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y"/> -->
    	   <jvmarg value="-Dlog4j.configuration=file:log4j.xml"/>
    	   <batchtest>
    	       <fileset dir="${junit.src}">
@@ -231,6 +233,7 @@
     	   <classpath>
     	       <path        refid    = "project.classpath"/>
     	       <pathelement location = "${classes}"/>
+    	       <pathelement location = "${junit.classes}"/>
     	       <pathelement location = "${junit.lib}"/>
     	   </classpath> 
        </junit>
