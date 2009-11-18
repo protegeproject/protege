@@ -34,6 +34,7 @@
    <property name = "build"             location = "./build"/>
    <property name = "bundle.dir"        location = "${build}"/>
    <property name = "classes"           location = "${build}/classes"/>
+   <property name = "junit.classes"     location = "${build}/junit.classes"/>
    <property name = "lib"               location = "./lib"/>
    <property name = "genlib"            location = "${build}/lib"/>
    <property name = "manifest"          location = "${build}/manifest.mf"/>
@@ -97,8 +98,6 @@
 
 
    <!-- 
-        **** CHANGE ME ****
-
         The following target only needs to be modified if the
         developer needs to obtain some jar files that are contained in
         the Protege bundles.  The contents of these jar files are
@@ -118,8 +117,6 @@
 
 
    <!-- 
-        **** CHANGE ME ****
-
         Here is the copy.resources target.  It may need modification
         to copy the right resources into the classes directory.  By
         default it already copies non-java files found in the source
