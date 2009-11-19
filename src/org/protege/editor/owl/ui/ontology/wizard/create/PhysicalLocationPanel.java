@@ -194,9 +194,14 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         list = prefs.getStringList(RECENT_LOCATIONS_KEY, list);
         DefaultListModel model = new DefaultListModel();
         for (String s : list) {
-            File file = new File(URI.create(s));
-            if (file.exists()) {
-                model.add(0, file);
+            try {
+                File file = new File(URI.create(s));
+                if (file.exists()) {
+                    model.add(0, file);
+                }
+            }
+            catch (Throwable t) {
+                // this is not important enough to warrant any action.
             }
         }
         recentLocations.setModel(model);
