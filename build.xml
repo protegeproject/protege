@@ -9,6 +9,8 @@
 
    <property environment="env"/>
    <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
+   <property file = "${protege.home}/build.properties"/>
+
    <property file="local.properties"/>
 	
    <!-- 
@@ -19,13 +21,6 @@
    <property name = "plugin"          value = "org.protege.editor.owl"/>
 
    
-   <!-- 
-        these can be overridden in the local.properties for different
-        distributions 
-     -->
-   <property name = "protege.osgi"      location="${protege.home}/org.eclipse.osgi.jar"/>
-
-
    <!-- 
         these properties probably don't need changing
         -->
