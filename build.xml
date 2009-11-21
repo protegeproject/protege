@@ -1,201 +1,63 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <project name = "protege" default = "run" basedir = ".">
 
+   <property environment="env"/>
+   <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
+
    <property file="local.properties"/>
-
-   <property name = "build"             location = "./build"/>
-   <property name = "dist"              location = "${build}/dist"/>
-   <property name = "bundle.dir"        location = "${dist}/bundles"/>
-   <property name = "classes.head"      location = "${build}/classes"/>
-
-   <property name = "equinox.home"      location = "${dist}/equinox"/>
-   <property name = "felix.home"        location = "${dist}/felix"/>
-   <property name = "knopflerfish.home" location = "${dist}/knopflerfish"/>
-   <property name = "osx.home"          location = "${dist}/Protege.app"/>
-
-   <property name = "javadoc.dir"       location = "${dist}/javadoc"/>
-
-   <target name="init">
-     <mkdir dir="${dist}"/>
-     <mkdir dir="${classes.head}"/>
-     <mkdir dir="${bundle.dir}"/>
-   </target>
-
-
-    <!-- ===================================================================  -->
-    <!-- Run the plugin build files -->
-    <!-- ===================================================================  -->
-
-   <target name="add.plugin.sources">
-     <antcall target="run.plugin.build.files">
-         <param name="target" value="add.source"/>
-     </antcall>
-   </target>
-
-   <target name="install.plugins">
-     <antcall target="run.plugin.build.files">
-       <param name="target" value="install"/>
-     </antcall>
-   </target>
-
-   <target name = "junit" depends="equinox">
-       <antcall target="run.plugin.build.files">
-           <param name="target"       value="junit"/>
-           <param name="protege.home" value="${equinox.home}"/>
-           <param name="junit.lib"    location = "./lib/junit.jar"/>
-       </antcall>
-   </target>
-
-   <target name="run.plugin.build.files">
-     <echo message="       ********** Building Protege Common"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.protege.common"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.protege.common"/>
-     </ant>
-
-     <echo message="       ********** Building Protege Core Editor Support"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.protege.editor.core.application"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.protege.editor.core.application"/>
-     </ant>
-
-     <echo message="       ********** Building OWL API Bundle"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.semanticweb.owl.owlapi"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.semanticweb.owlapi"/>
-
-     </ant>
-     <echo message="       ********** Building Core OWL Editing Support"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.protege.editor.owl"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.protege.editor.owl"/>
-     </ant>
-
-     <echo message="       ********** Building DL Query Plugin"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.coode.dlquery"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.coode.dlquery"/>
-     </ant>
-
-     <echo message="       ********** Building OWL Viz Plugin"/>
-     <ant antfile="build.xml"
-          dir="./plugins/org.coode.owlviz"
-          target="${target}">
-       <property name="classes" value="${classes.head}/org.coode.owlviz"/>
-     </ant>
-
-     <!--echo message="       ********** Building the Fact++ plugin"/>
-     <ant antfile="build.xml"
-          dir="./plugins/uk.ac.manchester.cs.owl.owlapi.factplusplus"
-          target="${target}">
-       <property name="classes" value="${classes.head}/uk.ac.manchester.cs.owl.owlapi.factplusplus"/>
-     </ant-->
-
-   </target>
 
 
     <!-- ===================================================================  -->
     <!-- OSGI Targets -->
     <!-- ===================================================================  -->
 
-    <target name="install.with.sources">
-      <mkdir dir="${equinox.home}"/>
-      <ant antfile="osgi/build-equinox.xml" target="install">
-        <property name="protege.home" value="${equinox.home}"/>
-      </ant>
-      <antcall target="add.plugin.sources">
-        <param name="protege.home" value="${equinox.home}"/>
-      </antcall>
-      <antcall target="install.plugins">
-        <param name="protege.home" value="${equinox.home}"/>
-      </antcall>
-    </target>
-
     <target name="equinox">
-      <mkdir dir="${equinox.home}"/>
-      <ant antfile="osgi/build-equinox.xml" target="install">
-        <property name="protege.home" value="${equinox.home}"/>
-      </ant>
-      <antcall target="install.plugins">
-        <param name="protege.home" value="${equinox.home}"/>
-      </antcall>
+      <delete  dir="${protege.home}"/>
+      <mkdir dir="${protege.home}"/>
+      <ant antfile="osgi/build-equinox.xml" target="install"/>
     </target>
 
     <target name="run.equinox" depends="equinox">
-      <ant antfile="osgi/build-equinox.xml" target="run">
-        <property name="protege.home" value="${equinox.home}"/>
-      </ant>
+      <ant antfile="osgi/build-equinox.xml" target="run"/>
     </target>
 
     <target name="debug.equinox" depends="equinox">
-      <ant antfile="osgi/build-equinox.xml" target="debug">
-        <property name="protege.home" value="${equinox.home}"/>
-      </ant>
+      <ant antfile="osgi/build-equinox.xml" target="debug"/>
     </target>
 
 
     <target name="felix">
-      <mkdir dir="${felix.home}"/>
-      <ant antfile="osgi/build-felix.xml" target="install">
-          <property name="protege.home"   location="${felix.home}"/>
-      </ant>
-      <antcall target="install.plugins">
-        <param name="protege.home" location="${felix.home}"/>
-        <param name="protege.osgi" location="${felix.home}/bin/felix.jar"/>
-      </antcall>
+      <delete  dir="${protege.home}"/>
+      <mkdir dir="${protege.home}"/>
+      <ant antfile="osgi/build-felix.xml" target="install"/>
     </target>
 
     <target name="run.felix" depends="felix">
-      <ant antfile="osgi/build-felix.xml" target="run">
-          <property name="protege.home"   location="${felix.home}"/>
-      </ant>
+      <ant antfile="osgi/build-felix.xml" target="run"/>
     </target>
 
     <target name="debug.felix" depends="felix">
-      <ant antfile="osgi/build-felix.xml" target="debug">
-          <property name="protege.home" value="${felix.home}"/>
-      </ant>
+      <ant antfile="osgi/build-felix.xml" target="debug"/>
     </target>
 
     <target name="knopflerfish">
-      <mkdir dir="${knopflerfish.home}"/>
-      <ant antfile="osgi/build-knopflerfish.xml" target="install">
-          <property name="protege.home"   location="${knopflerfish.home}"/>
-      </ant>
-      <antcall target="install.plugins">
-        <param name="protege.home" location="${knopflerfish.home}"/>
-        <param name="protege.osgi" location="${knopflerfish.home}/framework.jar"/>
-      </antcall>
+      <delete  dir="${protege.home}"/>
+      <mkdir dir="${protege.home}"/>
+      <ant antfile="osgi/build-knopflerfish.xml" target="install"/>
     </target>
 
     <target name="run.knopflerfish" depends="knopflerfish">
-      <ant antfile="osgi/build-knopflerfish.xml" target="run">
-          <property name="protege.home"   location="${knopflerfish.home}"/>
-      </ant>
+      <ant antfile="osgi/build-knopflerfish.xml" target="run"/>
     </target>
 
     <target name="debug.knopflerfish" depends="knopflerfish">
-      <ant antfile="osgi/build-knopflerfish.xml" target="debug">
-          <property name="protege.home" value="${knopflerfish.home}"/>
-      </ant>
+      <ant antfile="osgi/build-knopflerfish.xml" target="debug"/>
     </target>
 
     <target name="osx">
-      <mkdir dir="${osx.home}"/>
-      <ant antfile="osgi/build-osx.xml" target="install">
-          <property name="protege.home"   location="${osx.home}"/>
-      </ant>
-      <antcall target="install.plugins">
-        <param name="protege.home"    location="${osx.home}"/>
-        <param name="protege.osgi"    location="${osx.home}/Contents/Resources/Java/felix.jar"/>
-        <param name="protege.common"  location="${osx.home}/Contents/Resources/Java/bundle"/>
-        <param name="protege.plugins" location="${osx.home}/Contents/Resources/Java/plugins"/>
-      </antcall>
+      <delete  dir="${protege.home}"/>
+      <mkdir dir="${protege.home}"/>
+      <ant antfile="osgi/build-osx.xml" target="install"/>
     </target>
 
 
@@ -241,13 +103,6 @@
         </javadoc>
     </target>
 
-    <!-- ===================================================================  -->
-    <!-- Clean -->
-    <!-- ===================================================================  -->
-
-    <target name="clean">
-        <delete dir="${build}"/>
-    </target>
 
     <!-- ===================================================================  -->
     <!-- USAGE -->
@@ -261,7 +116,5 @@
       <echo message = "felix - build a felix based distribution"/>
       <echo message = "knopflerfish - build a knopflerfish distribution"/>
       <echo message = "osx - build a standalone os x application (based on felix)"/>
-      <echo message = "install.with.src - build the default distribution with sources included"/>
-      <echo message = "javadoc - build the java doc"/>
     </target>
 </project>
