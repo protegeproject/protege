@@ -1,0 +1,94 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Developer-only Distribution Build File" default = "run" basedir = ".">
+
+    <!-- =================================================================== -->
+    <!-- IDE - A non-standard OSGi setup to make life easier for developers using IDEs.  --> 
+    <!-- For debug purposes only.  Not for distribution.  -->
+    <!-- =================================================================== -->
+    <target name = "ide">
+        <!-- flush cache -->
+        <delete dir = "${dist.dir}/ide/configuration"/>
+
+        <copy todir = "${dist.dir}/ide">
+            <fileset dir = "./osgi/equinox"/>
+            <fileset dir = "." includes = "log4j.xml"/>
+        </copy>
+        <copy tofile = "${dist.dir}/ide/configuration/config.ini" file = "./osgi/ide/configuration/config.ini" overwrite = "true"/>
+
+           <mkdir dir = "${dist.dir}/ide/logs"/>
+
+        <chmod file = "${dist.dir}/ide/run.sh" perm = "u+x"/>
+        <chmod file = "${dist.dir}/ide/run.command" perm = "u+x"/>
+
+        <copy todir = "${dist.dir}/ide" file = "${commonlibs.jar}"/>
+
+        <copy todir = "${dist.dir}/ide/${core.name}">
+            <fileset dir = "${core.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/${core.name}/META-INF">
+            <fileset dir = "${core.dir}/META-INF"/>
+        </copy>
+
+        <copy todir = "${dist.dir}/ide/plugins" file = "${owlapi.jar}"/>
+
+        <copy todir = "${dist.dir}/ide/plugins/${owleditor.name}">
+            <fileset dir ="${owleditor.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/plugins/${owleditor.name}/META-INF">
+            <fileset dir = "${owleditor.dir}/META-INF"/>
+        </copy>
+
+        <copy todir = "${dist.dir}/ide/plugins/${dlquery.name}">
+            <fileset dir = "${dlquery.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/plugins/${dlquery.name}/META-INF">
+            <fileset dir = "${dlquery.dir}/META-INF"/>
+        </copy>
+
+        <copy todir = "${dist.dir}/ide/plugins/${pellet.name}">
+            <fileset dir = "${pellet.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/plugins/${pellet.name}/META-INF">
+            <fileset dir = "${pellet.dir}/META-INF"/>
+        </copy>
+
+        <copy todir = "${dist.dir}/ide/plugins/${factpp.name}"> 
+            <fileset dir = "${factpp.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/plugins/${factpp.name}/META-INF">
+            <fileset dir = "${factpp.dir}/META-INF"/>
+        </copy>
+
+        <copy todir = "${dist.dir}/ide/plugins/${owlviz.name}" >
+            <fileset dir = "${owlviz.classes}"/>
+        </copy>
+        <copy todir = "${dist.dir}/ide/plugins/${owlviz.name}/META-INF">
+            <fileset dir = "${owlviz.dir}/META-INF"/>
+        </copy>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN.IDE -->
+    <!-- ===================================================================  -->
+    <target name = "run.ide">
+        <java fork = "true" dir = "${dist.dir}/ide" jar = "${dist.dir}/ide/org.eclipse.osgi.jar">
+            <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG.IDE -->
+    <!-- ===================================================================  -->
+    <target name = "debug.ide">
+        <java fork = "true" dir = "${dist.dir}/ide" jar = "${dist.dir}/ide/org.eclipse.osgi.jar">
+            <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dlog4j.debug"/>
+            <jvmarg value = "-Xdebug"/>
+            <jvmarg value = "-Xrunjdwp:transport=dt_socket,address=8500,server=y,suspend=y"/> 
+            <arg value = "-console"/>
+        </java>
+    </target>
+
+</project>

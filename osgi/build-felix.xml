@@ -1,0 +1,52 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Protege Felix Distribution Build File" default = "run" basedir = ".">
+
+
+    <!-- ===================================================================  -->
+    <!-- FELIX - create a felix-based distribution -->
+    <!-- ===================================================================  -->
+    <target name = "install">
+        <copy todir = "${protege.home}">
+            <fileset dir = "./osgi/felix"/>
+        </copy>
+        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.common.jar"/>
+        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.registry.jar"/>
+        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.supplement.jar"/>
+        <chmod file = "${protege.home}/run.sh" perm = "u+x"/>
+        <chmod file = "${protege.home}/run.command" perm = "u+x"/>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN.FELIX -->
+    <!-- ===================================================================  -->
+    <target name = "run">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.apache.felix.main.Main">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dorg.protege.plugin.dir=plugins"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.home}/bin/felix.jar"/>
+              <pathelement path="${protege.home}/bin/crimson.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG.FELIX -->
+    <!-- ===================================================================  -->
+    <target name = "debug">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.apache.felix.main.Main">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dorg.protege.plugin.dir=plugins"/>
+            <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=n"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.home}/bin/felix.jar"/>
+              <pathelement path="${protege.home}/bin/crimson.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>

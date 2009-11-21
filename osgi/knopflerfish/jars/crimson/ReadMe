@@ -1,0 +1,19 @@
+
+This bundle has been modified from the knopflerfish original so that I
+can turn off bootdelegation.  The problem is that various bundles
+(e.g. the equinox registry) do xml parsing.  This jar sets up a class
+from the crimson parser as  the xml parser to use.  If the other
+bundles can't load this class (they don't have it on their imports
+list) then their parse will fail.
+
+There may be another way to get this to work but what I have done is
+to 
+
+   1. remove the crimson.jar from this bundle.
+   2. add the removed crimson.jar to the system classpath
+   3. added a boot delegation item for org.apache.crimson.jaxp
+   4. removed all the exports from this bundle.
+
+Items 1, 2 and 3 allow any bundle to do xml parsing.  Item 4 prevents
+the problem that bundles will import org.w3c.dom from this bundle but
+this bundle no longer has them to export (because of item 2).
