@@ -37,6 +37,7 @@
    <property name = "protege.common"    location="${protege.home}/bundles"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
 
+   <property name = "junit.lib"           location = "./lib/junit.jar"/>
    <property name = "junit.filtertrace"   value = "false"/>
    <property name = "junit.showoutput"    value = "true"/>
    <property name = "junit.haltonerror"   value = "true"/>
