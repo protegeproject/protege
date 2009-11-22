@@ -217,43 +217,6 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
                 tabs.addTab(parser.getClass().getSimpleName(), errorPanel);
             }
 
-            SwingUtilities.invokeLater(new Runnable(){
-                public void run() {
-                    InputStream is = null;
-                    try {
-                        is = URIUtilities.getInputStream(loc);
-                        SyntaxGuesser syntaxGuesser = new SyntaxGuesser();
-                        OWLOntologyFormat syntax = syntaxGuesser.getSyntax(is);
-                        if (syntax != null){
-                            String parserName = format2ParserMap.get(syntax.getClass());
-                            if (parserName != null){
-                                lastSelectedParser = parserName;
-                            }
-
-                            for (int i=0; i<tabs.getTabCount(); i++){
-                                if (lastSelectedParser.equals(tabs.getTitleAt(i))){
-                                    tabs.setSelectedIndex(i);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    catch (IOException e1) {
-                        throw new RuntimeException(e1);
-                    }
-                    finally{
-                        if (is != null){
-                            try {
-                                is.close();
-                            }
-                            catch (IOException e1) {
-                                throw new RuntimeException(e1);
-                            }
-                        }
-                    }
-                }
-            });
-
             add(new JLabel("<html>Could not parse the ontology found at: " + loc +
                            "<p>The following parsers were tried:</html>"), BorderLayout.NORTH);
 

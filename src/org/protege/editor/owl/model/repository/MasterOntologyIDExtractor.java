@@ -6,14 +6,22 @@ import java.util.List;
 
 import org.protege.editor.owl.model.repository.extractors.LastResortExtractor;
 import org.protege.editor.owl.model.repository.extractors.OntologyIdExtractor;
+import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     
     private List<OntologyIdExtractor> extractors = new ArrayList<OntologyIdExtractor>();
     
-    public MasterOntologyIDExtractor() {
+    // TODO - all the callers of this method have problems which need fixing.
+    public MasterOntologyIDExtractor() { 
+        extractors.add(new RdfXmlExtractor());
         extractors.add(new LastResortExtractor());
+    }
+    
+    public MasterOntologyIDExtractor(URI location) {
+        this();
+        setPhysicalAddress(location);
     }
 
     public OWLOntologyID getOntologyId() {

@@ -1,15 +1,16 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.repository.OntologyIRIExtractor;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
-import org.semanticweb.owlapi.util.SimpleIRIMapper;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 
 /**
@@ -35,19 +36,17 @@ public class LocalFileImportVerifier implements ImportVerifier {
 
 
     public ImportParameters checkImports() {
-        OntologyIRIExtractor extractor = new OntologyIRIExtractor(file.toURI());
-        final IRI ontologyURI = extractor.getOntologyIRI();
-        if (!extractor.isStartElementPresent() || ontologyURI == null) {
+        MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
+        extractor.setPhysicalAddress(file.toURI());
+        final OWLOntologyID id = extractor.getOntologyId();
+        if (id == null) {
             String msg = "The ontology contained in " + file.toString() + " could " + "not be imported. ";
-            if (!extractor.isStartElementPresent()) {
-                msg += " The file does not appear to contain a valid RDF/XML representation" + "of an ontology.";
-            }
             throw new OWLRuntimeException(msg);
         }
         else {
             return new ImportParameters() {
                 public Set<IRI> getOntologiesToBeImported() {
-                    return Collections.singleton(ontologyURI);
+                    return Collections.singleton(id.getOntologyIRI());
                 }
 
 
@@ -60,7 +59,7 @@ public class LocalFileImportVerifier implements ImportVerifier {
                     final OWLOntologyManager mngr = owlEditorKit.getModelManager().getOWLOntologyManager();
 
                     // We need to copy the file to the root ontology folder
-                    mngr.addIRIMapper(new SimpleIRIMapper(ontologyURI, file.toURI()));
+                    mngr.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), file.toURI()));
                     // If this fails then we can only add a direct mapping
                 }
             };
