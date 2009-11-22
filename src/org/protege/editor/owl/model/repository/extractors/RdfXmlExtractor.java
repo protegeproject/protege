@@ -15,7 +15,9 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
         RdfExtractorConsumer consumer = new RdfExtractorConsumer();
         RDFParser parser = new RDFParser();
         try {
-            parser.parse(new InputSource(location.toURL().openStream()), consumer);
+            InputSource is = new InputSource(location.toURL().openStream());
+            is.setSystemId(location.toURL().toString());
+            parser.parse(is, consumer);
         }
         catch (StopParseEarlyException e) {
             ;
