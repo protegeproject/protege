@@ -74,8 +74,8 @@
      <condition property="libs.found">
        <and>
          <available file="${protege.osgi}" type = "file"/>
-	     <available file="${equinox.common}" type = "file"/>
-	     <available file="${equinox.registry}" type = "file"/>
+         <available file="${equinox.common}" type = "file"/>
+         <available file="${equinox.registry}" type = "file"/>
        </and>
      </condition>
      <path id = "project.classpath">    
@@ -134,7 +134,7 @@
        </fileset>
        <fileset dir="./icons"/>
      </copy>
-   	 <!-- the manifest doesn't belong here but this is good for IDE's -->
+        <!-- the manifest doesn't belong here but this is good for IDE's -->
      <mkdir dir="${classes}/META-INF"/>  
      <copy todir="${classes}/META-INF"   
            file = "${manifest}"/>
@@ -166,10 +166,12 @@
    <target name="build.manifest">
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
-     <manifest file="${manifest}" 
-               mode = "update">
+     <manifest file="${manifest}"
+               mode="update">
         <attribute name="Built-By" value = "${user.name}"/>
         <attribute name="Build-Date" value = "${build.time}"/>
+        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}"/>
+        <attribute name="Build-Number" value="${build.number}"/>   
      </manifest>
    </target>
 
@@ -189,7 +191,7 @@
    </target>
 
    <target name = "junit"/>
-	
+    
    <target name = "clean">
      <delete dir = "${build}"/>
    </target>
@@ -221,7 +223,7 @@
              location="${protege.plugins}/org.semanticweb.owl.owlapi.jar"/>
 
    <property name="owl.editor.jar"
-	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+         location="${protege.plugins}/org.protege.editor.owl.jar"/>
 
 
 
