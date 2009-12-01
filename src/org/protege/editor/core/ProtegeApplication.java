@@ -1,11 +1,22 @@
 package org.protege.editor.core;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JFrame;
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -26,16 +37,11 @@ import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
 
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.List;
-import java.util.Locale;
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -137,7 +143,11 @@ public class ProtegeApplication implements BundleActivator {
     @SuppressWarnings("unchecked")
     private void displayPlatform() {
         Dictionary manifest = context.getBundle().getHeaders();
-        logger.info("Starting Protege 4 OWL Editor (Version "  + manifest.get("Bundle-Version") + ")");
+        Bundle b = context.getBundle();
+        // PluginUtilities methods don't work here for some reason !!? (equinox bug??)
+        logger.info("Starting Protege 4 OWL Editor (Version "  
+                    + PluginUtilities.getBundleVersion(b) 
+                    + ", Build = " + PluginUtilities.getBuildNumber(b) + ")");
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
                     " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
