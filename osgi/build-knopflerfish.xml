@@ -1,0 +1,53 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Protege Knopflerfish Distribution Build File" default = "run" basedir = ".">
+
+    <!-- ===================================================================  -->
+    <!-- KNOPFLERFISH - create a knopflerfish-based distribution -->
+    <!-- ===================================================================  -->
+    <target name = "install">
+
+        <copy todir = "${protege.home}">
+            <fileset dir = "./osgi/knopflerfish"/>
+            <fileset dir = "." includes = "log4j.xml"/>
+        </copy>
+
+        <copy todir = "${protege.home}/bundles">
+            <fileset dir = "./osgi/common" includes = "*.jar"/>
+        </copy>
+        
+        <mkdir dir = "${protege.home}/logs"/>
+
+        <chmod file = "${protege.home}/run.sh" perm = "u+x"/>
+        <chmod file = "${protege.home}/run.command" perm = "u+x"/>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN.KNOPFLERFISH -->
+    <!-- ===================================================================  -->
+    <target name = "run">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.knopflerfish.framework.Main">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dorg.protege.plugin.dir=plugins"/>
+            <classpath>
+              <pathelement path="${protege.home}/framework.jar"/>
+              <pathelement path="${protege.home}/crimson.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG.KNOPFLERFISH -->
+    <!-- ===================================================================  -->
+    <target name = "debug">
+        <java fork = "true" dir = "${protege.home}" jar = "${protege.home}/framework.jar">
+            <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dlog4j.debug"/>
+            <jvmarg value = "-Xdebug"/>
+            <jvmarg value = "-Xrunjdwp:transport=dt_socket,address=8500,server=y,suspend=y"/> 
+        </java>
+    </target>
+
+</project>

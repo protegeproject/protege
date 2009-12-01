@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Protege Felix Distribution Build File" default = "run" basedir = ".">
+
+
+    <!-- ===================================================================  -->
+    <!-- osx - create an os x application bundle based on felix -->
+    <!-- ===================================================================  -->
+    <target name = "install">
+
+        <copy todir = "${protege.home}">
+            <fileset dir = "./osgi/Protege.app"/>
+        </copy>
+        <copy todir = "${protege.home}/Contents/Resources/Java">
+            <fileset dir = "./osgi/felix/bin" includes="*.jar"/>
+        </copy>
+
+        <copy todir = "${protege.home}/Contents/Resources/Java/bundle">
+            <fileset dir="./osgi/felix/bundles" includes="*.jar"/>
+            <fileset dir = "./osgi/common" includes = "*.jar"/>
+        </copy>
+
+        <chmod file="${protege.home}/Contents/MacOS/JavaApplicationStub" perm="u+x"/>
+    </target>
+
+</project>
