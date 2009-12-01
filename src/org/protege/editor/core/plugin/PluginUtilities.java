@@ -137,10 +137,13 @@ public class PluginUtilities {
         // return config.createExecutableExtension(property);
     }
     
+    // ToDo - update osgi so we can use b.getVersion();
     public static Version getBundleVersion(Bundle b) {
-        String vn = (String) b.getHeaders().get(Constants.BUNDLE_VERSION);
-        if (vn == null) return null;
-        return new Version(vn);
+        return  new Version((String) b.getHeaders().get("Bundle-Version"));
+    }
+    
+    public static String getBuildNumber(Bundle b) {
+        return (String) b.getHeaders().get("Build-Number");
     }
     
     public String getDocumentation(IExtension extension) {
