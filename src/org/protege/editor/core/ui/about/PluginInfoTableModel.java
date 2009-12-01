@@ -27,7 +27,7 @@ public class PluginInfoTableModel extends AbstractTableModel {
     private List<Bundle> bundles;
     
     public enum Columns  {
-        NAME("Name/ID"), VERSION("Version"), BUILD("Build");
+        NAME("Name/ID"), VERSION("Version");
         
         private String name;
         
@@ -71,9 +71,7 @@ public class PluginInfoTableModel extends AbstractTableModel {
         	}
             return name;
         case VERSION:
-            return v == null ? "" : "" + v.getMajor() + "." + v.getMinor();
-        case BUILD:
-            return v== null ? "" : ""+ v.getMicro();
+            return v == null ? "" : "" + v;
         default:
             throw new RuntimeException("Programmer error - missed a case");
         }
