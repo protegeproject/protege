@@ -1252,6 +1252,15 @@
 
     <!-- Preferences -->
 
+    <!-- Repository preferences -->
+
+    <extension id="ui.ontology.RepositoryPreferencesPanel"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Repositories"/>
+        <class value="org.protege.editor.owl.ui.preferences.RepositoryPreferencesPanel"/>
+    </extension>
+    
+
     <!-- Ontology prefs -->
 
     <extension id="ui.ontology.OntologyPreferencesPanel"
@@ -1283,8 +1292,6 @@
         <label value="Tree preferences"/>
         <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
     </extension>
-
-
 
 
 
