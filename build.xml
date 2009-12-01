@@ -180,6 +180,8 @@
                mode = "update">
         <attribute name="Built-By" value = "${user.name}"/>
         <attribute name="Build-Date" value = "${build.time}"/>
+        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}"/>
+        <attribute name="Build-Number" value="${build.number}"/>   
      </manifest>
    </target>
 
