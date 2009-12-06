@@ -82,7 +82,7 @@
        <pathelement location="${protege.lib}"/>
        <pathelement location="${equinox.common}"/>
        <pathelement location="${equinox.registry}"/>
-       <fileset dir="${lib}"/>
+       <fileset dir="${lib}" includes="*.jar"/>
      </path>
    </target>
 
