@@ -32,7 +32,12 @@ public class ProtegeRotatingAppender extends FileAppender {
     }
     
     public void setDirectory(String dirName) {
-        this.directory = new File(ProtegeProperties.getApplicationDirectory(), dirName);
+        this.directory = new File(System.getProperty("user.home") + File.separator + ".Protege", dirName);
+        if (!directory.exists()) {
+            if (!directory.mkdir()) {
+                directory = null;
+            }
+        }
         initializeIfReady();
     }
     
