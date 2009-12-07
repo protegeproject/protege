@@ -8,6 +8,7 @@
     <target name = "install">
         <copy todir = "${protege.home}">
             <fileset dir = "./osgi/felix"/>
+            <fileset dir = "." includes = "log4j.xml"/>
         </copy>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.common.jar"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.registry.jar"/>

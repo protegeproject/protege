@@ -35,7 +35,6 @@
 -initlevel 4
 
 #-install jars/http/http_all-2.0.0.jar
-#-install jars/protege/org.protege.osgi.debug.jar
 -install bundles/org.eclipse.equinox.supplement.jar
 -install bundles/org.eclipse.equinox.common.jar
 -install bundles/org.eclipse.equinox.registry.jar
