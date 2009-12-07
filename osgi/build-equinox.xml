@@ -12,10 +12,11 @@
             <fileset dir = "./osgi/equinox"/>
             <fileset dir = "." includes = "log4j.xml"/>
         </copy>
+        <copy todir="${protege.home}/bundles">
+          <fileset dir="./osgi/common" 
+                   includes="org.eclipse.equinox.common.jar,org.eclipse.equinox.registry.jar"/>
+        </copy>
 
-        <mkdir dir = "${protege.home}/logs"/>
-        <mkdir dir="${protege.home}/bundles"/>
-        <mkdir dir="${protege.home}/plugins"/>
 
         <chmod file = "${protege.home}/run.sh" perm = "a+x"/>
         <chmod file = "${protege.home}/run.command" perm = "a+x"/>
