@@ -1,14 +1,29 @@
 package org.protege.editor.owl.ui.frame.property;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLPropertyDomainAxiom;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -98,7 +113,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     protected abstract Set<A> getAxioms(OWLOntology ontology);
 
 
-    protected abstract Set<Set<OWLClassExpression>> getInferredDomains() throws OWLReasonerException;
+    protected abstract NodeSet<OWLClass> getInferredDomains();
 
 
     protected void clear() {
@@ -115,18 +130,13 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
 
     protected final void refillInferred() {
-        try {
-            for (Set<OWLClassExpression> domains : getInferredDomains()) {
-                for (OWLClassExpression domain : domains){
-                    if (!addedDomains.contains(domain)) {
-                        addRow(createFrameSectionRow(createAxiom(domain), null));
-                        addedDomains.add(domain);
-                    }
+        for (Node<OWLClass> domains : getInferredDomains()) {
+            for (OWLClassExpression domain : domains){
+                if (!addedDomains.contains(domain)) {
+                    addRow(createFrameSectionRow(createAxiom(domain), null));
+                    addedDomains.add(domain);
                 }
             }
-        }
-        catch (OWLReasonerException e) {
-            e.printStackTrace();
         }
     }
 

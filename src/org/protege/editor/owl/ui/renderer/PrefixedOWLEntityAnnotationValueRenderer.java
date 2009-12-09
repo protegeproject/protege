@@ -18,7 +18,7 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
     public String render(OWLEntity entity) {
         String shortForm = getProvider().getShortForm(entity);
         if (OWLRendererPreferences.getInstance().isRenderPrefixes()){
-            final String uriStr = entity.getURI().toString();
+            final String uriStr = entity.getIRI().toString();
 
             PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
             for (String base : mapper.getValues()){

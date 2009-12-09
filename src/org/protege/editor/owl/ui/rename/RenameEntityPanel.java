@@ -91,7 +91,7 @@ public class RenameEntityPanel extends JPanel {
      *         is no fragment.
      */
     private String getFragment() {
-        String fragment = owlEntity.getURI().getFragment();
+        String fragment = owlEntity.getIRI().getFragment();
         if (fragment != null) {
             return fragment;
         }

@@ -1,13 +1,30 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owlapi.inference.MonitorableOWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.reasoner.AxiomNotInProfileException;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.ClassExpressionNotInProfileException;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
+import org.semanticweb.owlapi.reasoner.TimeOutException;
+import org.semanticweb.owlapi.reasoner.UndeclaredEntitiesException;
+import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 
 
 /**
@@ -16,312 +33,146 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public class NoOpReasoner extends MonitorableOWLReasonerAdapter {
+public class NoOpReasoner implements OWLReasoner {
+    private OWLOntology rootOntology;
 
-    public NoOpReasoner(OWLOntologyManager manager) {
-        super(manager);
+    public NoOpReasoner(OWLOntology rootOntology) {
+        this.rootOntology = rootOntology;
     }
 
-
-    public boolean isConsistent(OWLOntology ontology) throws OWLReasonerException {
-        return true;
+    public void dispose() {
     }
 
-
-    public void loadOntologies(Set<OWLOntology> ontologies) throws OWLReasonerException {
+    public void flush() {
     }
 
+    public BufferingMode getBufferingMode() {
+        return BufferingMode.NON_BUFFERING;
+    }
 
-    public OWLEntity getCurrentEntity() {
+    public NodeSet<OWLClass> getDataPropertyDomains(OWLDataProperty pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
         return null;
     }
 
-
-    public boolean isClassified() throws OWLReasonerException {
-        return false;
+    public Set<OWLLiteral> getDataPropertyValues(OWLNamedIndividual ind, OWLDataProperty pe) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public void classify() throws OWLReasonerException {
-
-
+    public Node<OWLClass> getEquivalentClasses(OWLClassExpression ce) throws InconsistentOntologyException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public boolean isRealised() throws OWLReasonerException {
-        return false;
+    public Node<OWLDataProperty> getEquivalentDataProperties(OWLDataProperty pe) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public void realise() throws OWLReasonerException {
+    public Node<OWLObjectProperty> getEquivalentObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    protected void disposeReasoner() {
+    public NodeSet<OWLNamedIndividual> getInstances(OWLClassExpression ce, boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    protected void ontologiesCleared() throws OWLReasonerException {
+    public Node<OWLObjectProperty> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    protected void ontologiesChanged() throws OWLReasonerException {
+    public NodeSet<OWLClass> getObjectPropertyDomains(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    protected void handleOntologyChanges(List<OWLOntologyChange> changes) throws OWLException {
+    public NodeSet<OWLClass> getObjectPropertyRanges(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<OWLOntology> getLoadedOntologies() {
-        return Collections.emptySet();
+    public NodeSet<OWLNamedIndividual> getObjectPropertyValues(OWLNamedIndividual ind, OWLObjectPropertyExpression pe) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public void unloadOntologies(Set<OWLOntology> ontologies) throws OWLReasonerException {
+    public Set<OWLAxiom> getPendingAxiomAdditions() {
+        return null;
     }
 
-
-    public void clearOntologies() throws OWLReasonerException {
+    public Set<OWLAxiom> getPendingAxiomRemovals() {
+        return null;
     }
 
-
-    public boolean isSubClassOf(OWLClassExpression clsC, OWLClassExpression clsD) throws OWLReasonerException {
-        return false;
+    public List<OWLOntologyChange> getPendingChanges() {
+        return null;
     }
 
-
-    public boolean isEquivalentClass(OWLClassExpression clsC, OWLClassExpression clsD) throws OWLReasonerException {
-        return false;
+    public OWLOntology getRootOntology() {
+        return rootOntology;
     }
 
-
-    public Set<Set<OWLClass>> getSuperClasses(OWLClassExpression clsC) throws OWLReasonerException {
-        return Collections.emptySet();
+    public Node<OWLNamedIndividual> getSameIndividuals(OWLNamedIndividual ind) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<Set<OWLClass>> getAncestorClasses(OWLClassExpression clsC) throws OWLReasonerException {
-        return Collections.emptySet();
+    public NodeSet<OWLClass> getSubClasses(OWLClassExpression ce, boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<Set<OWLClass>> getSubClasses(OWLClassExpression clsC) throws OWLReasonerException {
-        return Collections.emptySet();
+    public NodeSet<OWLDataProperty> getSubDataProperties(OWLDataProperty pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<Set<OWLClass>> getDescendantClasses(OWLClassExpression clsC) throws OWLReasonerException {
-        return Collections.emptySet();
+    public NodeSet<OWLObjectProperty> getSubObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<OWLClass> getEquivalentClasses(OWLClassExpression clsC) throws OWLReasonerException {
-        return Collections.emptySet();
+    public NodeSet<OWLClass> getSuperClasses(OWLClassExpression ce, boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
-
-    public Set<OWLClass> getUnsatisfiableClasses() throws OWLReasonerException {
-        return Collections.emptySet();
+    public NodeSet<OWLDataProperty> getSuperDataProperties(OWLDataProperty pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
     }
 
+    public NodeSet<OWLObjectProperty> getSuperObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
+    }
 
-    public boolean isSatisfiable(OWLClassExpression description) throws OWLReasonerException {
+    public long getTimeOut() {
+        return 0;
+    }
+
+    public NodeSet<OWLClass> getTypes(OWLNamedIndividual ind, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        return null;
+    }
+
+    public Node<OWLClass> getUnsatisfiableClasses() throws ReasonerInterruptedException, TimeOutException {
+        return null;
+    }
+
+    public void interrupt() {
+        
+    }
+
+    public boolean isConsistent() throws ReasonerInterruptedException, TimeOutException {
         return true;
     }
 
-
-    public Set<Set<OWLClass>> getTypes(OWLNamedIndividual individual, boolean direct) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<OWLNamedIndividual> getIndividuals(OWLClassExpression clsC, boolean direct) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Map<OWLObjectProperty, Set<OWLNamedIndividual>> getObjectPropertyRelationships(OWLNamedIndividual individual) throws
-                                                                                                               OWLReasonerException {
-        return Collections.emptyMap();
-    }
-
-
-    public Map<OWLDataProperty, Set<OWLLiteral>> getDataPropertyRelationships(OWLNamedIndividual individual) throws
-                                                                                                              OWLReasonerException {
-        return Collections.emptyMap();
-    }
-
-
-    /*
-    * I have modified the signature of this method.  The OWLClassExpression parameter was
-    * changed to an OWLClass parameter.
-    *
-    */
-    public boolean hasType(OWLNamedIndividual individual, OWLClassExpression type, boolean direct) throws OWLReasonerException {
+    public boolean isEntailed(OWLAxiom axiom) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, UndeclaredEntitiesException, InconsistentOntologyException {
         return false;
     }
 
-
-    public boolean hasObjectPropertyRelationship(OWLNamedIndividual subject, OWLObjectPropertyExpression property,
-                                                 OWLNamedIndividual object) throws OWLReasonerException {
+    public boolean isEntailed(Set<? extends OWLAxiom> axioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, UndeclaredEntitiesException, InconsistentOntologyException {
         return false;
     }
 
-
-    public boolean hasDataPropertyRelationship(OWLNamedIndividual subject, OWLDataPropertyExpression property,
-                                               OWLLiteral object) throws OWLReasonerException {
+    public boolean isEntailmentCheckingSupported(AxiomType<?> axiomType) {
         return false;
     }
 
-
-    public Set<OWLNamedIndividual> getRelatedIndividuals(OWLNamedIndividual subject, OWLObjectPropertyExpression property) throws
-                                                                                                                 OWLReasonerException {
-        return Collections.emptySet();
+    public boolean isSatisfiable(OWLClassExpression classExpression) throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, InconsistentOntologyException {
+        return true;
     }
 
-
-    public Set<OWLLiteral> getRelatedValues(OWLNamedIndividual subject, OWLDataPropertyExpression property) throws
-                                                                                                        OWLReasonerException {
-        return Collections.emptySet();
+    public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException {
+        
     }
 
-
-    public Set<Set<OWLObjectProperty>> getSuperProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLObjectProperty>> getSubProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLObjectProperty>> getAncestorProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLObjectProperty>> getDescendantProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLObjectProperty>> getInverseProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<OWLObjectProperty> getEquivalentProperties(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLClassExpression>> getDomains(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<OWLClassExpression> getRanges(OWLObjectProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public boolean isFunctional(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isInverseFunctional(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isSymmetric(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isTransitive(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isReflexive(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isIrreflexive(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isAntiSymmetric(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public Set<Set<OWLDataProperty>> getSuperProperties(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLDataProperty>> getSubProperties(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLDataProperty>> getAncestorProperties(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLDataProperty>> getDescendantProperties(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<OWLDataProperty> getEquivalentProperties(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<Set<OWLClassExpression>> getDomains(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public Set<OWLDataRange> getRanges(OWLDataProperty property) throws OWLReasonerException {
-        return Collections.emptySet();
-    }
-
-
-    public boolean isFunctional(OWLDataProperty property) throws OWLReasonerException {
-        return false;
-    }
     
-    public boolean isAsymmetric(OWLObjectProperty property) throws OWLReasonerException {
-        return false;
-    }
-
-
-    public boolean isDefined(OWLClass cls) throws OWLReasonerException {
-        return true;
-    }
-
-
-    public boolean isDefined(OWLObjectProperty prop) throws OWLReasonerException {
-        return true;
-    }
-
-
-    public boolean isDefined(OWLDataProperty prop) throws OWLReasonerException {
-        return true;
-    }
-
-
-    public boolean isDefined(OWLIndividual ind) throws OWLReasonerException {
-        return true;
-    }
 }

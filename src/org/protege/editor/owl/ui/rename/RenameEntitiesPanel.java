@@ -1,5 +1,41 @@
 package org.protege.editor.owl.ui.rename;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.Timer;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
@@ -11,31 +47,9 @@ import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.Timer;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Author: drummond<br>
@@ -199,7 +213,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
             }
             Pattern p = Pattern.compile(matchingVal);
             for (OWLEntity ent : ents){
-                if (p.matcher(ent.getURI().toString()).matches()){
+                if (p.matcher(ent.getIRI().toString()).matches()){
                     matches.add(ent);
                 }
             }
@@ -235,7 +249,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
     private void extractNSFromEntity(OWLEntity entity) {
-        String ns = getBase(entity.getURI());
+        String ns = getBase(entity.getIRI());
         Set<OWLEntity> matchingEntities = nsMap.get(ns);
         if (matchingEntities == null){
             matchingEntities = new HashSet<OWLEntity>();
@@ -245,7 +259,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
 
 
-    private String getBase(URI uri){
+    private String getBase(IRI uri){
 
         String frag = getShortForm(uri);
         final String uriStr;
@@ -262,16 +276,16 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
 
     
-    private String getShortForm(URI uri){
+    private String getShortForm(IRI uri){
         try {
             String rendering = uri.getFragment();
             if (rendering == null) {
                 // Get last bit of path
-                String path = uri.getPath();
+                String path = uri.toURI().getPath();
                 if (path == null) {
                     return uri.toString();
                 }
-                return uri.getPath().substring(path.lastIndexOf("/") + 1);
+                return uri.toURI().getPath().substring(path.lastIndexOf("/") + 1);
             }
             return RenderingEscapeUtils.getEscapedRendering(rendering);
         }
@@ -373,7 +387,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         protected String getRendering(Object object) {
             if (object instanceof OWLEntity){
-                return super.getRendering(object) + " (" + ((OWLEntity)object).getURI() + ")";
+                return super.getRendering(object) + " (" + ((OWLEntity)object).getIRI() + ")";
             }
             return super.getRendering(object);
         }

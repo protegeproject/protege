@@ -100,7 +100,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
     public boolean isAnonymous(OWLClass cls){
-        if(cls.getURI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX)){
+        if(cls.getIRI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX)){
             for (OWLOntology ont : mngr.getActiveOntologies()){
                 if (ont.containsClassReference(cls.getIRI())){
                     return true;

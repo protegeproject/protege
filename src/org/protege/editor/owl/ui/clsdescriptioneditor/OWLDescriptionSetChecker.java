@@ -40,7 +40,7 @@ class OWLClassExpressionSetChecker implements OWLExpressionChecker<Set<OWLClassE
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
-            return parser.parseClassExpressionList();
+            return parser.parseClassExpressionList(true);
         }
         catch (ParserException e) {
             throw ParserUtil.convertException(e);

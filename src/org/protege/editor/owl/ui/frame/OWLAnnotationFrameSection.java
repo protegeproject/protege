@@ -38,7 +38,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         boolean hidden = false;
         final OWLAnnotationSubject annotationSubject = getRootObject();
         for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(annotationSubject)) {
-            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getURI())) {
+            if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getIRI().toURI())) {
                 addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
             }
             else {

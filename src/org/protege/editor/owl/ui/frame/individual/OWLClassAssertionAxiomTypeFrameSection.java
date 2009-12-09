@@ -6,8 +6,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.*;
@@ -56,23 +54,16 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
     protected void refillInferred() {
         if (!getRootObject().isAnonymous()){
-            try {
-                for (OWLClass inferredType : OWLReasonerAdapter.flattenSetOfSets(getOWLModelManager().getReasoner().getTypes(
-                        getRootObject().asNamedIndividual(),
-                        true))) {
-                    if (!added.contains(inferredType)) {
-                        OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
-                        addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
-                                                                             this,
-                                                                             null,
-                                                                             getRootObject(),
-                                                                             ax));
-                        added.add(inferredType);
-                    }
+            for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asNamedIndividual(), true).getFlattened()) {
+                if (!added.contains(inferredType)) {
+                    OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
+                    addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
+                                                                         this,
+                                                                         null,
+                                                                         getRootObject(),
+                                                                         ax));
+                    added.add(inferredType);
                 }
-            }
-            catch (OWLReasonerException e) {
-                throw new OWLRuntimeException(e);
             }
         }
     }

@@ -7,9 +7,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.inference.UnsupportedReasonerOperationException;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
@@ -60,25 +57,15 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
 
 
     protected void refillInferred() {
-        try {
-            for (OWLObjectPropertyExpression infSup : OWLReasonerAdapter.flattenSetOfSets(getOWLModelManager().getReasoner().getSuperProperties(
-                    getRootObject()))) {
-                if (!added.contains(infSup)) {
-                    addRow(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
-                                                                                     this,
-                                                                                     null,
-                                                                                     getRootObject(),
-                                                                                     getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(
-                                                                                             getRootObject(),
-                                                                                             infSup)));
-                }
+        for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
+            if (!added.contains(infSup)) {
+                addRow(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                                                                                 this,
+                                                                                 null,
+                                                                                 getRootObject(),
+                                                                                 getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(),
+                                                                                                                                    infSup)));
             }
-        }
-        catch (UnsupportedReasonerOperationException e) {
-            log.error(e.getMessage());
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
         }
     }
 

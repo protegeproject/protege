@@ -41,7 +41,7 @@ public class OWLObjectList<O extends OWLObject> extends JList {
         if (index >= 0){
             Object element = getModel().getElementAt(index);
             if (element != null && element instanceof OWLEntity){
-                return ((OWLEntity)element).getURI().toString();
+                return ((OWLEntity)element).getIRI().toString();
             }
         }
         return null;

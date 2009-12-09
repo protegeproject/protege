@@ -1,5 +1,10 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor;
@@ -7,13 +12,12 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -56,11 +60,11 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     }
 
 
-    protected void refillInferred() throws OWLReasonerException {
+    protected void refillInferred() {
         if (!getRootObject().isAnonymous()){
-            Map<OWLObjectProperty, Set<OWLNamedIndividual>> rels = getReasoner().getObjectPropertyRelationships(getRootObject().asNamedIndividual());
-            for (OWLObjectProperty prop : rels.keySet()) {
-                for (OWLIndividual ind : rels.get(prop)) {
+            for (OWLObjectProperty prop : getReasoner().getRootOntology().getReferencedObjectProperties(true)) {
+                NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asNamedIndividual(), prop);
+                for (OWLNamedIndividual ind : values.getFlattened()) {
                     OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
                                                                                                                 getRootObject(),
                                                                                                                 ind);

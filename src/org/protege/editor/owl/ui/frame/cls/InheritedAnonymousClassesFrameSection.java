@@ -1,17 +1,20 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
 
 /**
@@ -60,45 +63,39 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     protected void refillInferred() {
-        try {
-            if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
-                return;
-            }
-            Set<OWLClass> clses = OWLReasonerAdapter.flattenSetOfSets(getOWLModelManager().getReasoner().getAncestorClasses(
-                    getRootObject()));
-            clses.remove(getRootObject());
-            for (OWLClass cls : clses) {
-                if (!processedClasses.contains(cls)) {
-                    for (OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
-                        for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(cls)) {
-                            if (ax.getSuperClass().isAnonymous()) {
-                                addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
-                                                                                    this,
-                                                                                    null,
-                                                                                    cls,
-                                                                                    ax));
-                            }
+        if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
+            return;
+        }
+        Set<OWLClass> clses = getReasoner().getSuperClasses(getRootObject(), true).getFlattened();
+        clses.remove(getRootObject());
+        for (OWLClass cls : clses) {
+            if (!processedClasses.contains(cls)) {
+                for (OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
+                    for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(cls)) {
+                        if (ax.getSuperClass().isAnonymous()) {
+                            addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
+                                                                                this,
+                                                                                null,
+                                                                                cls,
+                                                                                ax));
                         }
-                        for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(cls)) {
-                            Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(ax.getClassExpressions());
-                            descs.remove(getRootObject());
-                            OWLClassExpression superCls = descs.iterator().next();
-                            if (superCls.isAnonymous()) {
-                                addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
-                                                                                    this,
-                                                                                    null,
-                                                                                    cls,
-                                                                                    getOWLDataFactory().getOWLSubClassOfAxiom(
-                                                                                            getRootObject(),
-                                                                                            superCls)));
-                            }
+                    }
+                    for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(cls)) {
+                        Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(ax.getClassExpressions());
+                        descs.remove(getRootObject());
+                        OWLClassExpression superCls = descs.iterator().next();
+                        if (superCls.isAnonymous()) {
+                            addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
+                                                                                this,
+                                                                                null,
+                                                                                cls,
+                                                                                getOWLDataFactory().getOWLSubClassOfAxiom(
+                                                                                                                          getRootObject(),
+                                                                                                                          superCls)));
                         }
                     }
                 }
             }
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
         }
     }
 

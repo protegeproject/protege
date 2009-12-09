@@ -6,8 +6,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -58,8 +56,8 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
     }
 
 
-    protected void refillInferred() throws OWLReasonerException {
-        final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(OWLReasonerAdapter.flattenSetOfSets(getReasoner().getInverseProperties(getRootObject())));
+    protected void refillInferred() {
+        final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
         infInverses.removeAll(added);
         for (OWLObjectProperty invProp : infInverses) {
             final OWLInverseObjectPropertiesAxiom ax = getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(

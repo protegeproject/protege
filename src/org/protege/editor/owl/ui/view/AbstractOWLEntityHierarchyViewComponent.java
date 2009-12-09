@@ -169,7 +169,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     private boolean isNothing(E o1) {
-        return o1.getURI().equals(OWLRDFVocabulary.OWL_NOTHING.getURI());
+        return o1.getIRI().equals(OWLRDFVocabulary.OWL_NOTHING.getIRI());
     }
 
 

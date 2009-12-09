@@ -193,7 +193,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     public void visit(OWLDatatype node) {
-        write(node.getURI().getFragment());
+        write(node.getIRI().getFragment());
     }
 
 

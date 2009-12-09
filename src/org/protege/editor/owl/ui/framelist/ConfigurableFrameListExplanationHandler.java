@@ -1,8 +1,9 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.inference.OWLReasoner;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *

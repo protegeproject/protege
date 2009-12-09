@@ -312,32 +312,32 @@ public class OWLExpressionUserCache implements Disposable {
 
 
         public void visit(OWLClass entity) {
-            cf = OWLCLASS + DELIMITER + entity.getURI();
+            cf = OWLCLASS + DELIMITER + entity.getIRI();
         }
 
 
         public void visit(OWLObjectProperty entity) {
-            cf = OWLOBJECTPROPERTY + DELIMITER + entity.getURI();
+            cf = OWLOBJECTPROPERTY + DELIMITER + entity.getIRI();
         }
 
 
         public void visit(OWLDataProperty entity) {
-            cf = OWLDATAPROPERTY + DELIMITER + entity.getURI();
+            cf = OWLDATAPROPERTY + DELIMITER + entity.getIRI();
         }
 
 
         public void visit(OWLNamedIndividual entity) {
-            cf = OWLINDIVIDUAL + DELIMITER + entity.getURI();
+            cf = OWLINDIVIDUAL + DELIMITER + entity.getIRI();
         }
 
 
         public void visit(OWLDatatype entity) {
-            cf = OWLDATATYPE + DELIMITER + entity.getURI();
+            cf = OWLDATATYPE + DELIMITER + entity.getIRI();
         }
 
 
         public void visit(OWLAnnotationProperty entity) {
-            cf = OWLANNOTATIONPROPERTY + DELIMITER + entity.getURI();
+            cf = OWLANNOTATIONPROPERTY + DELIMITER + entity.getIRI();
         }
 
 

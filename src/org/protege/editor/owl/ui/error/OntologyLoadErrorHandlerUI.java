@@ -16,7 +16,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
-import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParserException;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyParser;
 import org.coode.owlapi.obo.parser.OBOOntologyFormat;
@@ -139,7 +138,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
                 return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
             }
         };
-        errorFilter.addExplanationFactory(OWLFunctionalSyntaxParserException.class, owlParserExceptionExplanationFac);
+        errorFilter.addExplanationFactory(OWLParserException.class, owlParserExceptionExplanationFac);
         errorFilter.addExplanationFactory(OBOParserException.class, owlParserExceptionExplanationFac);
 
         // Manchester Syntax

@@ -1,12 +1,26 @@
 package org.protege.editor.owl.ui.inference;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.inference.ReasonerProgressMonitor;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
 /**
@@ -55,7 +69,7 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
                              true);
         cancelledAction = new AbstractAction("Cancel") {
             public void actionPerformed(ActionEvent e) {
-                setCancelled(true);
+                setCancelled();
             }
         };
         JButton cancelledButton = new JButton(cancelledAction);
@@ -79,75 +93,36 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         });
         cancelTimeout.setRepeats(false);
     }
-
-
-    public void setStarted() {
-        label.setText("Classifying ontology                    ");
-        currentClass = null;
-        setCancelled(false);
-        showWindow();
+    
+    public void setCancelled() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    public void setSize(long size) {
-        progressEndMarker = size - 1;
-    }
-
-    public void setProgress(final long progress) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                progressBar.setValue((int) progress);
-            }
-        });
+    public void reasonerTaskBusy() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 
-    public void setIndeterminate(boolean b) {
-        progressBar.setIndeterminate(b);
+
+
+    public void reasonerTaskProgressChanged(int value, int max) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 
-    private void setCancelled(boolean b) {
-        cancelled = b;
-        if (currentClass != null) {
-            JOptionPane.showMessageDialog(window,
-                                          "Cancelled while classifying " + currentClass,
-                                          "Cancelled classification",
-                                          JOptionPane.INFORMATION_MESSAGE);
-        }
-        if (b){
-            label.setText("Cancelling...");
-            cancelTimeout.start();
-        }
-        else{
-            cancelTimeout.stop();
-        }
+
+
+    public void reasonerTaskStarted(String taskName) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 
-    public void setMessage(final String message) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                label.setText(message);
-            }
-        });
+
+
+    public void reasonerTaskStopped() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
-
-    public void setProgressIndeterminate(boolean b) {
-        progressBar.setIndeterminate(b);
-    }
-
-
-    public void setFinished() {
-        cancelTimeout.stop();
-        hideWindow();
-        currentClass = null;
-    }
-
-
-    public boolean isCancelled() {
-        return cancelled;
-    }
 
 
     private void showWindow() {
@@ -176,4 +151,9 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
             }
         });
     }
+
+
+
+
+
 }
