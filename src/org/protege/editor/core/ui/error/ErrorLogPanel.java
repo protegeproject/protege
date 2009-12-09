@@ -30,10 +30,12 @@ public class ErrorLogPanel extends JPanel {
         contentPane.add(new JScrollPane(textArea));
         if (handler != null) {
             JPanel buttonPanel = new JPanel(new BorderLayout());
-            buttonPanel.add(new JButton(new AbstractAction("Send bug report") {
+            buttonPanel.add(new JButton(new AbstractAction("Clear Errors") {
                 public void actionPerformed(ActionEvent e) {
                     if (handleSendErrorReport()) {
                         ErrorLogPanel.this.errorLog.clear();
+                        fillLog();
+                        repaint();
                     }
                 }
             }), BorderLayout.WEST);
