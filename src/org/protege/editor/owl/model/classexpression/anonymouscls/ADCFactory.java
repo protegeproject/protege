@@ -92,7 +92,7 @@ public class ADCFactory extends OWLObjectVisitorAdapter {
 
 
     public void visit(OWLAnnotation annotation) {
-        if (annotation.getProperty().getURI().equals(adcManager.getURI())){
+        if (annotation.getProperty().getIRI().equals(adcManager.getURI())){
             annotation.getValue().accept(this);
         }
     }

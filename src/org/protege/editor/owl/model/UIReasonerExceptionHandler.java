@@ -2,7 +2,6 @@ package org.protege.editor.owl.model;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import javax.swing.*;
 /*
@@ -46,7 +45,7 @@ public class UIReasonerExceptionHandler implements OWLReasonerExceptionHandler {
     }
 
 
-    public void handle(OWLReasonerException e) {
+    public void handle(Throwable e) {
         ProtegeApplication.getErrorLog().logError(e);
         Throwable cause = e;
         while(cause.getCause() != null) {

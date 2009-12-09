@@ -7,7 +7,6 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
@@ -60,12 +59,12 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
     }
 
 
-    protected void refillInferred() throws OWLReasonerException {
+    protected void refillInferred() {
         if (!getRootObject().isAnonymous()){
-            Map<OWLDataProperty, Set<OWLLiteral>> rels = getReasoner().getDataPropertyRelationships(getRootObject().asNamedIndividual());
-            for (OWLDataProperty prop : rels.keySet()) {
-                for (OWLLiteral constant : rels.get(prop)) {
-                    OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(prop,
+            for (OWLDataProperty dp : getReasoner().getRootOntology().getReferencedDataProperties(true)) {
+                Set<OWLLiteral> values = getReasoner().getDataPropertyValues(getRootObject().asNamedIndividual(), dp);
+                for (OWLLiteral constant : values) {
+                    OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(dp,
                                                                                                             getRootObject(),
                                                                                                             constant);
                     if (!added.contains(ax)) {

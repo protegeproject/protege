@@ -2,9 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import java.net.URI;
 
 
 /**
@@ -27,13 +26,13 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
     public String render(OWLEntity entity) {
         try {
             PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
-            String s = mapper.getShortForm(entity.getURI());
+            String s = mapper.getShortForm(entity.getIRI().toURI());
             if (s != null) {
                 return s;
             }
             else {
                 // No mapping
-                URI uri = entity.getURI();
+                IRI uri = entity.getIRI();
                 if (uri.getFragment() != null) {
                     return uri.getFragment();
                 }

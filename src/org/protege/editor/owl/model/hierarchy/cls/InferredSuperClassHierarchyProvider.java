@@ -1,17 +1,15 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-
-import java.util.Collections;
-import java.util.Set;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -40,38 +38,28 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     protected Set<? extends OWLClassExpression> getEquivalentClasses(OWLClass cls) {
-        try {
-            // Get the equivalent classes from the reasoner
-            if (reasoner == null) {
-                return Collections.emptySet();
-            }
-            if (!reasoner.isSatisfiable(cls)) {
-                // We don't want every class in the ontology
-                return Collections.emptySet();
-            }
-            return reasoner.getEquivalentClasses(cls);
+        // Get the equivalent classes from the reasoner
+        if (reasoner == null) {
+            return Collections.emptySet();
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+        if (!reasoner.isSatisfiable(cls)) {
+            // We don't want every class in the ontology
+            return Collections.emptySet();
         }
+        return reasoner.getEquivalentClasses(cls).getEntities();
     }
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-        try {
-            // Simply get the superclasses from the reasoner
-            if (reasoner == null) {
-                return Collections.emptySet();
-            }
-            if (!reasoner.isSatisfiable(object)) {
-                // We don't want every class in the ontology!!
-                return Collections.emptySet();
-            }
-            return OWLReasonerAdapter.flattenSetOfSets(reasoner.getSuperClasses(object));
+        // Simply get the superclasses from the reasoner
+        if (reasoner == null) {
+            return Collections.emptySet();
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+        if (!reasoner.isSatisfiable(object)) {
+            // We don't want every class in the ontology!!
+            return Collections.emptySet();
         }
+        return reasoner.getSuperClasses(object, true).getFlattened();
     }
 
 
@@ -81,20 +69,15 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     public Set<OWLClass> getParents(OWLClass object) {
-        try {
-            // Simply get the superclasses from the reasoner
-            if (reasoner == null) {
-                return Collections.emptySet();
-            }
-            if (!reasoner.isSatisfiable(object)) {
-                // We don't want every class in the ontology!!
-                return Collections.emptySet();
-            }
-            return OWLReasonerAdapter.flattenSetOfSets(reasoner.getSubClasses(object));
+        // Simply get the superclasses from the reasoner
+        if (reasoner == null) {
+            return Collections.emptySet();
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+        if (!reasoner.isSatisfiable(object)) {
+            // We don't want every class in the ontology!!
+            return Collections.emptySet();
         }
+        return reasoner.getSubClasses(object, true).getFlattened();
     }
 
 

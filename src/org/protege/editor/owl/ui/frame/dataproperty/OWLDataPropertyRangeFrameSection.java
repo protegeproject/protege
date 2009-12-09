@@ -6,7 +6,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.Comparator;
@@ -56,30 +55,25 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
 
     protected void refillInferred() {
-        try {
-            // Inferred stuff
-            for (OWLDataRange inferredRange : getInferredRanges()) {
-                if (!addedRanges.contains(inferredRange)) {
-                    OWLDataPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLDataPropertyRangeAxiom(
-                            getRootObject(),
-                            inferredRange);
-                    addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(),
-                                                                     this,
-                                                                     null,
-                                                                     getRootObject(),
-                                                                     inferredAxiom));
-                }
-                addedRanges.add(inferredRange);
+        // Inferred stuff
+        for (OWLDataRange inferredRange : getInferredRanges()) {
+            if (!addedRanges.contains(inferredRange)) {
+                OWLDataPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLDataPropertyRangeAxiom(
+                                                                                                           getRootObject(),
+                                                                                                           inferredRange);
+                addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(),
+                                                               this,
+                                                               null,
+                                                               getRootObject(),
+                                                               inferredAxiom));
             }
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+            addedRanges.add(inferredRange);
         }
     }
 
 
-    private Set<OWLDataRange> getInferredRanges() throws OWLReasonerException {
-        return getOWLModelManager().getReasoner().getRanges(getRootObject());
+    private Set<OWLDataRange> getInferredRanges() {
+        throw  new UnsupportedOperationException("Needs to be implemented...");
     }
 
 

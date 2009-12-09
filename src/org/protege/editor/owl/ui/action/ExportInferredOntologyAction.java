@@ -1,40 +1,27 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredAxiomGeneratorException;
-import org.semanticweb.owlapi.util.InferredOntologyGenerator;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+import javax.swing.JOptionPane;
 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLLogicalAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeException;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
+import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 
 
 /**
@@ -64,14 +51,14 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             if (wizard.isIncludeAnnotations()) {
-                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
+                for (OWLOntology o : getOWLModelManager().getReasoner().getRootOntology().getImportsClosure()) {
                     for (OWLAnnotation annot : o.getAnnotations()) {
                         changes.add(new AddOntologyAnnotation(ont, annot));
                     }
                 }
             }
             if (wizard.isIncludeAssertedLogicalAxioms()) {
-                for (OWLOntology o : getOWLModelManager().getReasoner().getLoadedOntologies()) {
+                for (OWLOntology o : getOWLModelManager().getReasoner().getRootOntology().getImportsClosure()) {
                     for (OWLLogicalAxiom ax : o.getLogicalAxioms()) {
                         changes.add(new AddAxiom(ont, ax));
                     }
@@ -92,19 +79,10 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
                                           "Error",
                                           JOptionPane.ERROR_MESSAGE);
         }
-        catch (InferredAxiomGeneratorException e1) {
-            JOptionPane.showMessageDialog(getWorkspace(), e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        catch (OWLOntologyStorageException e2) {
+            ProtegeApplication.getErrorLog().logError(e2);
         }
         catch (OWLOntologyChangeException e1) {
-            ProtegeApplication.getErrorLog().logError(e1);
-        }
-        catch (OWLReasonerException e1) {
-            JOptionPane.showMessageDialog(getWorkspace(),
-                                          "The selected reasoner does not support the following queries: " + e1.getMessage(),
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-        }
-        catch (OWLOntologyStorageException e1) {
             ProtegeApplication.getErrorLog().logError(e1);
         }
     }

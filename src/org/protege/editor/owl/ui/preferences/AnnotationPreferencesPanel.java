@@ -53,8 +53,8 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
         checkBoxURIMap = new HashMap<JCheckBox, URI>();
         for (OWLAnnotationProperty property : annotationProperties) {
             JCheckBox cb = new JCheckBox(getOWLModelManager().getRendering(property),
-                                         getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(property.getURI()));
-            checkBoxURIMap.put(cb, property.getURI());
+                                         getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(property.getIRI().toURI()));
+            checkBoxURIMap.put(cb, property.getIRI().toURI());
             box.add(cb);
             box.add(Box.createVerticalStrut(4));
             cb.setOpaque(false);

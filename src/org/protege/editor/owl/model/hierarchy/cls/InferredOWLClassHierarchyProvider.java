@@ -1,22 +1,20 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -80,83 +78,58 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-        try {
-            Set<OWLClass> subs = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSubClasses(object));
-            // Add in owl:Nothing if there are inconsistent classes
-            if (object.isOWLThing() && !owlModelManager.getReasoner().getUnsatisfiableClasses().isEmpty()) {
-                subs.add(owlNothing);
-            }
-            else if (object.isOWLNothing()) {
-                subs.addAll(getReasoner().getUnsatisfiableClasses());
-                subs.remove(owlNothing);
-            }
-            else {
-                // Class which is not Thing or Nothing
-                subs.remove(owlNothing);
-                for (Iterator<OWLClass> it = subs.iterator(); it.hasNext();) {
-                    if (!getReasoner().isSatisfiable(it.next())) {
-                        it.remove();
-                    }
+        Set<OWLClass> subs = getReasoner().getSubClasses(object, true).getFlattened();
+        // Add in owl:Nothing if there are inconsistent classes
+        if (object.isOWLThing() && !owlModelManager.getReasoner().getUnsatisfiableClasses().isSingleton()) {
+            subs.add(owlNothing);
+        }
+        else if (object.isOWLNothing()) {
+            subs.addAll(getReasoner().getUnsatisfiableClasses().getEntities());
+            subs.remove(owlNothing);
+        }
+        else {
+            // Class which is not Thing or Nothing
+            subs.remove(owlNothing);
+            for (Iterator<OWLClass> it = subs.iterator(); it.hasNext();) {
+                if (!getReasoner().isSatisfiable(it.next())) {
+                    it.remove();
                 }
             }
-            return subs;
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
+        return subs;
     }
 
 
     public Set<OWLClass> getDescendants(OWLClass object) {
-        try {
-            return OWLReasonerAdapter.flattenSetOfSets(getReasoner().getDescendantClasses(object));
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
+        return getReasoner().getSubClasses(object, false).getFlattened();
     }
 
 
     public Set<OWLClass> getParents(OWLClass object) {
-        try {
-            if (object.isOWLNothing()){
-                return Collections.singleton(owlThing);
-            }
-            else if (!getReasoner().isSatisfiable(object)){
-                return Collections.singleton(owlNothing);
-            }
-            Set<OWLClass> parents = OWLReasonerAdapter.flattenSetOfSets(getReasoner().getSuperClasses(object));
-            parents.remove(object);
-            return parents;
+        if (object.isOWLNothing()){
+            return Collections.singleton(owlThing);
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
+        else if (!getReasoner().isSatisfiable(object)){
+            return Collections.singleton(owlNothing);
         }
+        Set<OWLClass> parents = getReasoner().getSuperClasses(object, true).getFlattened();
+        parents.remove(object);
+        return parents;
     }
 
 
     public Set<OWLClass> getAncestors(OWLClass object) {
-        try {
-            return OWLReasonerAdapter.flattenSetOfSets(getReasoner().getAncestorClasses(object));
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
+        return getReasoner().getSuperClasses(object, false).getFlattened();
     }
 
 
     public Set<OWLClass> getEquivalents(OWLClass object) {
-        try {
-            if (!getReasoner().isSatisfiable(object)) {
-                return Collections.emptySet();
-            }
-            Set<OWLClass> equivalents = getReasoner().getEquivalentClasses(object);
-            equivalents.remove(object);
-            return equivalents;
+        if (!getReasoner().isSatisfiable(object)) {
+            return Collections.emptySet();
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
+        Set<OWLClass> equivalents = getReasoner().getEquivalentClasses(object).getEntities();
+        equivalents.remove(object);
+        return equivalents;
     }
 
 
@@ -174,7 +147,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
 
     protected Set<OWLClass> getOrphanRoots(OWLClass object) {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
 

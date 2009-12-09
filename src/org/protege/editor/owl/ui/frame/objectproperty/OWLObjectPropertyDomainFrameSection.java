@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSection;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
+import org.semanticweb.owlapi.reasoner.NodeSet;
 
 
 /**
@@ -41,8 +42,8 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractPropertyDomainF
     }
 
 
-    protected Set<Set<OWLClassExpression>> getInferredDomains() throws OWLReasonerException {
-        return getOWLModelManager().getReasoner().getDomains(getRootObject());
+    protected NodeSet<OWLClass> getInferredDomains() {
+        return getOWLModelManager().getReasoner().getObjectPropertyDomains(getRootObject(), true);
     }
 
 

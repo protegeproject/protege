@@ -1,9 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
 /**
@@ -12,8 +14,16 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance, OWLReasonerFactory {
+public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
 
+    /**
+     * This is called by Protege to configure the factory during the initialization of the 
+     * reasoner plugins.
+     * 
+     * @param manager
+     * @param id
+     * @param name
+     */
     void setup(OWLOntologyManager manager, String id, String name);
 
 
@@ -27,14 +37,15 @@ public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance, OWLRea
      * Gets the name of the reasoner that this factory creates.
      */
     String getReasonerName();
-
-
+   
     /**
      * Creates an instance of an <code>OWLReasoner</code>.  This method will
      * create a <i>new</i> instance.
-     * @param owlOntologyManager The manager to be used by the reaoner.
+     * 
+     * @param owlOntologyManager The manager to be used by the reasoner.
+     * @param monitor  A progress monitor to be used by the reasoner if possible.
+     *
      */
-    OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager);
-
-    
+    OWLReasoner createReasoner(OWLOntology ontology, 
+                               ReasonerProgressMonitor monitor);
 }

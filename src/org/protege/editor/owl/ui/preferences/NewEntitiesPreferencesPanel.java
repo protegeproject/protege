@@ -209,7 +209,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     private String generateExampleURI() {
         try {
             OWLEntityCreationSet<OWLClass> entityCreationSet = getOWLModelManager().getOWLEntityFactory().preview(OWLClass.class, "TestName", null);
-            return entityCreationSet.getOWLEntity().getURI().toString();
+            return entityCreationSet.getOWLEntity().getIRI().toString();
         }
         catch (OWLEntityCreationException e) {
             return "No URI could be created: " + e.getMessage();

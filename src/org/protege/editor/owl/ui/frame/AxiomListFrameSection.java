@@ -1,17 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -76,7 +75,7 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
     }
 
 
-    protected void refillInferred() throws OWLReasonerException {
+    protected void refillInferred() {
         Set<OWLAxiom> axs = getRootObject();
         for(OWLAxiom ax : axs) {
             if (!added.contains(ax)) {

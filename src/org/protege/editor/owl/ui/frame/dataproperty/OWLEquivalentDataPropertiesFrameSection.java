@@ -6,7 +6,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -63,8 +62,8 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
     }
 
 
-    protected void refillInferred() throws OWLReasonerException {
-        Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentProperties(getRootObject()));
+    protected void refillInferred() {
+        Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
         equivs.remove(getRootObject());
         if (!equivs.isEmpty()){
             OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);

@@ -1,33 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-
 import java.util.HashSet;
 import java.util.Set;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
 
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
  * Author: drummond<br>
@@ -40,14 +18,16 @@ import java.util.Set;
 public class OWLReasonerUtils {
 
     private OWLReasoner r;
+    private OWLDataFactory factory;
 
 
     public OWLReasonerUtils(OWLReasoner r) {
         this.r = r;
+        factory = r.getRootOntology().getOWLOntologyManager().getOWLDataFactory();
     }
 
 
-    public Set<Set<OWLClassExpression>> getMostSpecificSets(Set<Set<OWLClassExpression>> setOfSets) throws OWLReasonerException {
+    public Set<Set<OWLClassExpression>> getMostSpecificSets(Set<Set<OWLClassExpression>> setOfSets) {
         Set<Set<OWLClassExpression>> results = new HashSet<Set<OWLClassExpression>>();
         for(Set<OWLClassExpression> descrs : setOfSets) {
             if (results.isEmpty()){
@@ -55,12 +35,12 @@ public class OWLReasonerUtils {
             }
             else{
                 for (Set<OWLClassExpression> result : results){
-                    if (getReasoner().isSubClassOf(descrs.iterator().next(), result.iterator().next())){
+                    if (getReasoner().isEntailed(factory.getOWLSubClassOfAxiom(descrs.iterator().next(), result.iterator().next()))) {
                         // if the new set is more specific than an existing one, replace the existing one
                         results.remove(result);
                         results.add(descrs);
                     }
-                    else if (!getReasoner().isSubClassOf(result.iterator().next(), descrs.iterator().next())){
+                    else if (!getReasoner().isEntailed(factory.getOWLSubClassOfAxiom(result.iterator().next(), descrs.iterator().next()))){
                         // if the new set is not more general than an existing one, add to the set
                         results.add(descrs);
                     }
@@ -76,7 +56,7 @@ public class OWLReasonerUtils {
     }
 
 
-    public Set<OWLClassExpression> getMostSpecific(Set<OWLClassExpression> descriptions) throws OWLReasonerException {
+    public Set<OWLClassExpression> getMostSpecific(Set<OWLClassExpression> descriptions)  {
         Set<OWLClassExpression> results = new HashSet<OWLClassExpression>();
         for(OWLClassExpression descr : descriptions) {
             if (results.isEmpty()){
@@ -84,12 +64,12 @@ public class OWLReasonerUtils {
             }
             else{
                 for (OWLClassExpression result : results){
-                    if (getReasoner().isSubClassOf(descr, result)){
+                    if (getReasoner().isEntailed(factory.getOWLSubClassOfAxiom(descr, result))){
                         // if the new descr is more specific than an existing one, replace the existing one
                         results.remove(result);
                         results.add(descr);
                     }
-                    else if (!getReasoner().isSubClassOf(result, descr)){
+                    else if (!getReasoner().isEntailed(factory.getOWLSubClassOfAxiom(result, descr))){
                         // if the new set is not more general than an existing one, add to the set
                         results.add(descr);
                     }

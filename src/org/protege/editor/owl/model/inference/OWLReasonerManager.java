@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
-import org.protege.editor.core.Disposable;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.ProgressMonitor;
-
 import java.util.Set;
+
+import org.protege.editor.core.Disposable;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
 /**
@@ -24,7 +24,7 @@ import java.util.Set;
 public interface OWLReasonerManager extends Disposable {
 
 
-    public void setReasonerProgressMonitor(ProgressMonitor progressMonitor);
+    public void setReasonerProgressMonitor(ReasonerProgressMonitor progressMonitor);
 
 
     /**
@@ -58,9 +58,6 @@ public interface OWLReasonerManager extends Disposable {
      * Gets the current reasoner.
      */
     public OWLReasoner getCurrentReasoner();
-
-
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager);
 
 
     public void classifyAsynchronously();

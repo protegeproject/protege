@@ -1,13 +1,26 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.reasoner.Node;
 
 
 /**
@@ -56,27 +69,21 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
 
     protected void refillInferred() {
-        try {
-            if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
+        if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
 
-                for (Set<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject())) {
-                    for (OWLClassExpression desc : descs) {
-                        if (!added.contains(desc) && !getRootObject().equals(desc)) {
-                            addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                       this,
-                                                                       null,
-                                                                       getRootObject(),
-                                                                       getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(
-                                                                               getRootObject(),
-                                                                               desc)));
-                            added.add(desc);
-                        }
+            for (Node<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
+                for (OWLClassExpression desc : descs) {
+                    if (!added.contains(desc) && !getRootObject().equals(desc)) {
+                        addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                   this,
+                                                                   null,
+                                                                   getRootObject(),
+                                                                   getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
+                                                                                                                                  desc)));
+                        added.add(desc);
                     }
                 }
             }
-        }
-        catch (OWLReasonerException e) {
-            throw new RuntimeException(e);
         }
     }
 

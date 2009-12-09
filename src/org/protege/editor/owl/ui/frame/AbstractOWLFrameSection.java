@@ -1,17 +1,31 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-import java.util.*;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 
 /**
@@ -216,12 +230,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             for (OWLOntology ontology : getOntologies()) {
                 refill(ontology);
             }
-            try {
-                refillInferred();
-            }
-            catch (OWLReasonerException e) {
-                throw new OWLRuntimeException(e);
-            }
+            refillInferred();
         }
 
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
@@ -252,7 +261,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     protected abstract void clear();
 
 
-    protected void refillInferred() throws OWLReasonerException {
+    protected void refillInferred() {
         // Do nothing by default
     }
 

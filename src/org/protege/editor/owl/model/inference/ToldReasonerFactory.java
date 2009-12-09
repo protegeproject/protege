@@ -1,10 +1,9 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
 /**
@@ -15,12 +14,8 @@ import java.util.Set;
  */
 public class ToldReasonerFactory extends ProtegeOWLReasonerFactoryAdapter {
 
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager, Set<OWLOntology> owlOntologies) {
-        return null;
-    }
-    
 
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) {
+    public OWLReasoner createReasoner(OWLOntology ontology, ReasonerProgressMonitor monitor) {
         return null;
     }
 

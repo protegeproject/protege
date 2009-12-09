@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.inference.OWLReasoner;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -49,10 +48,6 @@ public class OWLFrameListExplanationHandler implements ExplanationHandler {
         return editorKit.getModelManager().getOWLDataFactory();
     }
 
-    protected OWLReasoner getReasoner() {
-        return editorKit.getModelManager().getOWLReasonerManager().createReasoner(editorKit.getModelManager().getOWLOntologyManager());
-        //return editorKit.getModelManager().getReasoner();
-    }
 
     protected OWLOntology getOntology() {
         return editorKit.getModelManager().getActiveOntology();

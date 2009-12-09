@@ -154,7 +154,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     public String getToolTipText(MouseEvent event) {
         N obj = getOWLObjectAtMousePosition(event);
         if (obj instanceof OWLEntity) {
-            return ((OWLEntity) obj).getURI().toString();
+            return ((OWLEntity) obj).getIRI().toString();
         }
         return null;
     }

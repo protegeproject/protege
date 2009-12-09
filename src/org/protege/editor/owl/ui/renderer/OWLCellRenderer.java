@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.renderer;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
@@ -760,16 +759,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 else if (curEntity instanceof OWLClass) {
                     // If it is a class then paint the word red if the class
                     // is inconsistent
-                    try {
-                        if (highlightUnsatisfiableClasses &&
-//                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
+                    if (highlightUnsatisfiableClasses &&
+                            //                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
                             !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
-                            // Paint red because of inconsistency
-                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                        }
-                    }
-                    catch (OWLReasonerException e) {
-                        e.printStackTrace();
+                        // Paint red because of inconsistency
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                     }
                 }
                 else if(highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
@@ -868,15 +862,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                                   int tokenLength) {
-        try {
-            OWLObjectProperty prop = (OWLObjectProperty) entity;
-            OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(1, prop);
-            if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
-                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-            }
-        }
-        catch (OWLReasonerException e) {
-            // do nothing
+        OWLObjectProperty prop = (OWLObjectProperty) entity;
+        OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(1, prop);
+        if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+            doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
         }
     }
 

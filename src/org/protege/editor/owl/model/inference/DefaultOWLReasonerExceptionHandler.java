@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.inference;
 
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -35,7 +34,7 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 public class DefaultOWLReasonerExceptionHandler implements OWLReasonerExceptionHandler {
 
 
-    public void handle(OWLReasonerException e) {
-        throw new OWLRuntimeException(e);
+    public void handle(Throwable t) {
+        throw new OWLRuntimeException(t);
     }
 }

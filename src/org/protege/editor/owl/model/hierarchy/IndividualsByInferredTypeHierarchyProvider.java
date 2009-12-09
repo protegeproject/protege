@@ -1,12 +1,18 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -40,16 +46,12 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
     private void rebuild() {
         typeNodes.clear();
         if (reasoner != null){
-            for (OWLOntology ont : reasoner.getLoadedOntologies()){
+            Set<OWLOntology> importsClosure = reasoner.getRootOntology().getImportsClosure();
+            for (OWLOntology ont : importsClosure){
                 for (OWLClass cls : ont.getReferencedClasses()) {
-                    try {
-                        final Set<OWLNamedIndividual> inds = reasoner.getIndividuals(cls, showDirect);
-                        if (!inds.isEmpty()){
-                            typeNodes.put(cls, new HashSet<OWLObject>(inds));
-                        }
-                    }
-                    catch (OWLReasonerException e) {
-                        logger.error(e);
+                    final Set<OWLNamedIndividual> inds = reasoner.getInstances(cls, showDirect).getFlattened();
+                    if (!inds.isEmpty()){
+                        typeNodes.put(cls, new HashSet<OWLObject>(inds));
                     }
                 }
             }
@@ -85,13 +87,8 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
         else {
             OWLNamedIndividual ind = (OWLNamedIndividual) object;
             Set<OWLObject> clses = new HashSet<OWLObject>();
-            try {
-                for (OWLClass cls : OWLReasonerAdapter.flattenSetOfSets(reasoner.getTypes(ind, showDirect))) {
-                    clses.add(cls);
-                }
-            }
-            catch (OWLReasonerException e) {
-                logger.error(e);
+            for (OWLClass cls : reasoner.getTypes(ind, showDirect).getFlattened()) {
+                clses.add(cls);
             }
             return clses;
         }

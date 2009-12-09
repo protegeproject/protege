@@ -1,24 +1,21 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.semanticweb.owlapi.inference.MonitorableOWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
-import org.semanticweb.owlapi.util.NullProgressMonitor;
-import org.semanticweb.owlapi.util.ProgressMonitor;
-
-import javax.swing.*;
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
 /**
@@ -30,41 +27,31 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManagerListener {
+public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private static Logger logger = Logger.getLogger(OWLReasonerManager.class);
-
-    public static boolean AUTO_RELOAD_ON_ACTIVE_ONTOLOGY_CHANGE = false;
-
-    public static boolean AUTO_CLASSIFY_ON_ACTIVE_ONTOLOGY_CHANGE = false;
-
+    
     private OWLModelManager owlModelManager;
-
+    
     private Set<ProtegeOWLReasonerFactory> reasonerFactories;
 
     private ProtegeOWLReasonerFactory currentReasonerFactory;
 
-    private OWLReasoner currentReasoner;
-
+    private Map<OWLOntology, OWLReasoner> currentReasonerMap = new HashMap<OWLOntology, OWLReasoner>();
+    private OWLReasoner runningReasoner;
+    
     public static final String DEFAULT_REASONER_ID = "NoOpReasoner";
 
-    private ProgressMonitor reasonerProgressMonitor;
+    private ReasonerProgressMonitor reasonerProgressMonitor;
 
-    private boolean reload;
 
     private OWLReasonerExceptionHandler exceptionHandler;
-
-    private Thread currentReasonerThread;
-
-    private OWLReasoner runningReasoner;
 
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         reasonerFactories = new HashSet<ProtegeOWLReasonerFactory>();
-        reasonerProgressMonitor = new NullProgressMonitor();
+        reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
-        owlModelManager.addListener(this);
-        reload = true;
         exceptionHandler = new DefaultOWLReasonerExceptionHandler();
     }
 
@@ -80,38 +67,17 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
 
     public void dispose() {
-        try {
-            owlModelManager.removeListener(this);
-            currentReasoner.dispose();
-            currentReasoner = null;
+        clearAndDisposeReasoners();
+    }
+
+    private void clearAndDisposeReasoners() {
+        for (OWLReasoner reasoner : currentReasonerMap.values()) {
+            reasoner.dispose();
         }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
+        currentReasonerMap.clear();
     }
 
 
-    public void handleChange(OWLModelManagerChangeEvent event) {
-        // If the active ontology changes then we essentially need to clear
-        // the reasoner.
-        if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-            handleActiveOntologyChange();
-        }
-    }
-
-
-    private void handleActiveOntologyChange() {
-        reload = true;
-
-        try {
-            // The ontology closure is potentially wrong now. Clear
-            // all ontologies.
-            currentReasoner.clearOntologies();
-        }
-        catch (OWLReasonerException e) {
-            throw new OWLRuntimeException(e);
-        }
-    }
 
 
     public String getCurrentReasonerName() {
@@ -124,22 +90,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
     }
 
 
-    /**
-     * Loads the active ontologies into the current reasoner
-     */
-    private void loadOntologies(OWLReasoner reasoner) throws OWLReasonerException {
-        reasoner.clearOntologies();
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>(owlModelManager.getActiveOntologies());
-        reasoner.loadOntologies(ontologies);
-        reload = false;
-    }
-
-
-    public void setReasonerProgressMonitor(ProgressMonitor progressMonitor) {
+    public void setReasonerProgressMonitor(ReasonerProgressMonitor progressMonitor) {
         this.reasonerProgressMonitor = progressMonitor;
-        if (currentReasoner instanceof MonitorableOWLReasoner) {
-            ((MonitorableOWLReasoner) currentReasoner).setProgressMonitor(progressMonitor);
-        }
     }
 
 
@@ -183,9 +135,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
         for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
             if (reasonerFactory.getReasonerId().equals(id)) {
                 currentReasonerFactory = reasonerFactory;
-                createCurrentReasoner();
+                clearAndDisposeReasoners();
                 owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                classifyAsynchronously();
                 return;
             }
         }
@@ -193,38 +144,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
     }
 
 
-    private void createCurrentReasoner() {
-        try {
-            if (currentReasoner != null) {
-                currentReasoner.dispose();
-            }
-            currentReasoner = currentReasonerFactory.createReasoner(owlModelManager.getOWLOntologyManager());
-            if (currentReasoner instanceof MonitorableOWLReasoner) {
-                MonitorableOWLReasoner monReasoner = (MonitorableOWLReasoner) currentReasoner;
-                monReasoner.setProgressMonitor(reasonerProgressMonitor);
-            }
-            reload = true;
-        }
-        catch (OWLException e) {
-            throw new OWLRuntimeException(e);
-        }
-    }
-
-
     public OWLReasoner getCurrentReasoner() {
-        if (currentReasoner == null) {
-            throw new OWLRuntimeException("Reasoner manager has been disposed of!");
-        }
-        return currentReasoner;
-    }
-
-
-    public OWLReasoner createReasoner(OWLOntologyManager owlOntologyManager) {
-        try {
-            return currentReasonerFactory.createReasoner(owlOntologyManager);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
+        synchronized (currentReasonerMap)  {
+            return currentReasonerMap.get(owlModelManager.getActiveOntology());
         }
     }
 
@@ -234,33 +156,35 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
      */
     public void classifyAsynchronously() {
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
-        runningReasoner = currentReasoner;
-        currentReasoner = new NoOpReasoner(owlModelManager.getOWLOntologyManager());
-        currentReasonerThread = new Thread(new Runnable() {
+        final OWLOntology currentOntology = owlModelManager.getActiveOntology();
+        synchronized (currentReasonerMap) {
+            runningReasoner = currentReasonerMap.get(currentOntology);
+            currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
+        }
+        Thread currentReasonerThread = new Thread(new Runnable() {
             public void run() {
                 try {
-                    if (reload) {
-                        loadOntologies(runningReasoner);
-                    }
                     long start = System.currentTimeMillis();
-                    runningReasoner.classify();
-                    if (runningReasoner.isClassified()){
-                        String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                        reasonerProgressMonitor.setSize(101);
-                        reasonerProgressMonitor.setProgress(100);
-                        logger.info(s);
-                        currentReasoner = runningReasoner;
-                        fireReclassified();
+                    if (runningReasoner == null) {
+                        runningReasoner = currentReasonerFactory.createReasoner(currentOntology, reasonerProgressMonitor);
+                        runningReasoner.prepareReasoner();
                     }
-                }
-                catch (ReasonerException e) {
-                    exceptionHandler.handle(e);
-                }
-                catch (Exception e) {
-                    exceptionHandler.handle(new ReasonerException(e));
+                    else {
+                        if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
+                            runningReasoner.flush();
+                        }
+                    }
+
+                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
+                    logger.info(s);
+
                 }
                 finally{
-                    runningReasoner = null;
+                    synchronized (currentReasonerMap) {
+                        runningReasoner = null;
+                        currentReasonerMap.put(currentOntology, runningReasoner);
+                    }
+                    fireReclassified();
                 }
             }
         }, "Classify Thread");
@@ -274,19 +198,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
 
 
     public void killCurrentClassification() {
-        currentReasonerThread.stop();
-        currentReasonerThread = null;
-        if (runningReasoner != null){
-            try {
-                runningReasoner.dispose();
-                runningReasoner = null;
-            }
-            catch (OWLReasonerException e) {
-                exceptionHandler.handle(new ReasonerException(e));
+        synchronized (currentReasonerMap) {
+            if (runningReasoner != null){
+                runningReasoner.interrupt();
             }
         }
-        createCurrentReasoner();
-        reasonerProgressMonitor.setFinished();
     }
 
 
@@ -307,4 +223,5 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager, OWLModelManag
             SwingUtilities.invokeLater(r);
         }
     }
+    
 }

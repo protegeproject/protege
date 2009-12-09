@@ -8,7 +8,8 @@ Bundle-DocURL: http://protege.stanford.edu
 Bundle-Description: An OWL plugin for the Protege Editor Framework
 Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/xmlcatalog.jar
 Import-Package: org.osgi.framework,
  org.apache.log4j,
  org.apache.commons.lang,
