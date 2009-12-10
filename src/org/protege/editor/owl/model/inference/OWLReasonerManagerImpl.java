@@ -39,7 +39,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private Map<OWLOntology, OWLReasoner> currentReasonerMap = new HashMap<OWLOntology, OWLReasoner>();
     private OWLReasoner runningReasoner;
     
-    public static final String DEFAULT_REASONER_ID = "NoOpReasoner";
+    public static final String DEFAULT_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
 
     private ReasonerProgressMonitor reasonerProgressMonitor;
 
@@ -109,17 +109,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 factory.initialise();
                 reasonerFactories.add(factory);
             }
-            catch (ClassNotFoundException e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-            catch (IllegalAccessException e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-            catch (InstantiationException e) {
-                ProtegeApplication.getErrorLog().logError(e);
-            }
-            catch (Exception e) {
-                ProtegeApplication.getErrorLog().logError(e);
+            catch (Throwable t) {
+                ProtegeApplication.getErrorLog().logError(t);
             }
         }
         setCurrentReasonerFactoryId(DEFAULT_REASONER_ID);
@@ -145,9 +136,14 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
 
     public OWLReasoner getCurrentReasoner() {
+        OWLReasoner reasoner;
         synchronized (currentReasonerMap)  {
-            return currentReasonerMap.get(owlModelManager.getActiveOntology());
+            reasoner = currentReasonerMap.get(owlModelManager.getActiveOntology());
         }
+        if (reasoner == null) {
+            reasoner = new NoOpReasoner(owlModelManager.getActiveOntology());
+        }
+        return reasoner;
     }
 
 
