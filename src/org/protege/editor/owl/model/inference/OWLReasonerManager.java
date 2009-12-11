@@ -24,7 +24,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 public interface OWLReasonerManager extends Disposable {
 
 
-    public void setReasonerProgressMonitor(ReasonerProgressMonitor progressMonitor);
+    void setReasonerProgressMonitor(ReasonerProgressMonitor progressMonitor);
 
 
     /**
@@ -32,11 +32,11 @@ public interface OWLReasonerManager extends Disposable {
      * @return A <code>String</code> representation of the current
      *         reasoner id.
      */
-    public String getCurrentReasonerFactoryId();
+    String getCurrentReasonerFactoryId();
 
-    public ProtegeOWLReasonerFactory getCurrentReasonerFactory();
+    ProtegeOWLReasonerFactory getCurrentReasonerFactory();
 
-    public String getCurrentReasonerName();
+    String getCurrentReasonerName();
 
 
     /**
@@ -45,24 +45,26 @@ public interface OWLReasonerManager extends Disposable {
      * @param id The reasoner id that specified the reasoner that should
      *           be set as the current reasoner.
      */
-    public void setCurrentReasonerFactoryId(String id);
+    void setCurrentReasonerFactoryId(String id);
 
 
     /**
      * Gets the installed reasoner plugins.
      */
-    public Set<ProtegeOWLReasonerFactory> getInstalledReasonerFactories();
+    Set<ProtegeOWLReasonerFactory> getInstalledReasonerFactories();
 
 
+    
     /**
      * Gets the current reasoner.
      */
-    public OWLReasoner getCurrentReasoner();
+    OWLReasoner getCurrentReasoner();
 
+    boolean isClassified();
 
-    public void classifyAsynchronously();
+    void classifyAsynchronously();
 
-    public void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
+    void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
 
 
     void killCurrentClassification();

@@ -39,7 +39,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private Map<OWLOntology, OWLReasoner> currentReasonerMap = new HashMap<OWLOntology, OWLReasoner>();
     private OWLReasoner runningReasoner;
     
-    public static final String DEFAULT_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
+    public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
 
     private ReasonerProgressMonitor reasonerProgressMonitor;
 
@@ -113,7 +113,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 ProtegeApplication.getErrorLog().logError(t);
             }
         }
-        setCurrentReasonerFactoryId(DEFAULT_REASONER_ID);
+        setCurrentReasonerFactoryId(NULL_REASONER_ID);
     }
 
 
@@ -145,7 +145,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         return reasoner;
     }
-
+    
+    public boolean isClassified() {
+        OWLReasoner reasoner = getCurrentReasoner();
+        return reasoner instanceof NoOpReasoner || !reasoner.getPendingChanges().isEmpty();
+    }
 
     /**
      * Classifies the current active ontologies.
