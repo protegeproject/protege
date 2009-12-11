@@ -7,30 +7,27 @@
    <property file="local.properties"/>
    <property file="version.properties"/>
 	
-	<target name="add.version">
-		<echo append="true"
-			  file="${protege.home}/build.properties"
-		      message="major.version=${major.version}${line.separator}"/>
-		<echo append="true"
-			  file="${protege.home}/build.properties"
-		      message="minor.version=${minor.version}${line.separator}"/>
-		<echo append="true"
-			  file="${protege.home}/build.properties"
-		      message="micro.version=${micro.version}${line.separator}"/>
-		<echo append="true"
-			  file="${protege.home}/build.properties"
-		      message="build.number=${build.number}${line.separator}"/>
-	</target>
+   <target name="add.version">
+       <echo append="true"
+	     file="${protege.home}/build.properties"
+	     message="core.major.version=${core.major.version}${line.separator}"/>
+       <echo append="true"
+	     file="${protege.home}/build.properties"
+	     message="core.minor.version=${core.minor.version}${line.separator}"/>
+       <echo append="true"
+	     file="${protege.home}/build.properties"
+	     message="core.micro.version=${core.micro.version}${line.separator}"/>
+   </target>
 
     <!-- ===================================================================  -->
     <!-- OSGI Targets -->
     <!-- ===================================================================  -->
 
     <target name="equinox">
-      <delete  dir="${protege.home}"/>
-      <mkdir dir="${protege.home}"/>
-      <ant antfile="osgi/build-equinox.xml" target="install"/>
-      <antcall target="add.version"/>
+        <delete  dir="${protege.home}"/>
+        <mkdir dir="${protege.home}"/>
+        <ant antfile="osgi/build-equinox.xml" target="install"/>
+        <antcall target="add.version"/>
     </target>
 
     <target name="run.equinox" depends="equinox">

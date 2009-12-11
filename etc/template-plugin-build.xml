@@ -16,6 +16,10 @@
    <property file="${protege.home}/build.properties"/>
    <property file="local.properties"/>
 
+   <property file="${version.properties}"/>
+   <property major.version="1"/>
+   <property minor.version="0"/>
+   <property micro.version="0"/>
 
    <!-- 
         **** CHANGE ME ****
@@ -44,7 +48,7 @@
 
    <target name = "init">
      <tstamp>
-       <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+       <format property="build.time" pattern="yyyy-MM-dd-hh:mm"/>
      </tstamp>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
@@ -177,7 +181,7 @@
      <manifest file="${manifest}" 
                mode = "update">
         <attribute name="Built-By" value = "${user.name}"/>
-        <attribute name="Build-Date" value = "${build.time}"/>
+        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}.${build.time}"/>
      </manifest>
    </target>
 
