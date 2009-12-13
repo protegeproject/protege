@@ -16,7 +16,7 @@
    <property file="${protege.home}/build.properties"/>
    <property file="local.properties"/>
 
-   <property file="${version.properties}"/>
+   <property file="version.properties"/>
    <property major.version="1"/>
    <property minor.version="0"/>
    <property micro.version="0"/>
