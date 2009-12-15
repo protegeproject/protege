@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import java.awt.*;
@@ -54,7 +55,7 @@ public class InferredObjectPropertyHierarchyViewComponent extends OWLObjectPrope
 
     protected void performExtraInitialisation() throws Exception {
         getOWLModelManager().addListener(l);
-        getTree().setBackground(new Color(255, 255, 215));
+        getTree().setBackground(OWLFrameList.INFERRED_BG_COLOR);
     }
 
 
