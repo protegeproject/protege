@@ -144,8 +144,9 @@
            file="META-INF/MANIFEST.MF" overwrite="true"/>
      <manifest file="${manifest}" 
                mode = "update">
-        <attribute name="Built-By" value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.${build.time}"/>
+        <attribute name="Built-By"       value = "${user.name}"/>
+        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}-${build.time}"/>
+        <attribute name="Build-Number"   value="${core.build.number}"/>
      </manifest>
    </target>
 
