@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: commonlibs
 Bundle-SymbolicName: org.protege.common
-Bundle-Version: 3.1.0
+Bundle-Version: 4.1.0
 Bundle-Description: Some common libraries
 Bundle-Vendor: Protege Development Team
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
