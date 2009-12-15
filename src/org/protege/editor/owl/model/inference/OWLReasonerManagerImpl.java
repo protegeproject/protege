@@ -181,8 +181,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 }
                 finally{
                     synchronized (currentReasonerMap) {
-                        runningReasoner = null;
                         currentReasonerMap.put(currentOntology, runningReasoner);
+                        runningReasoner = null;
                     }
                     fireReclassified();
                 }
