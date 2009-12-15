@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -22,7 +23,7 @@ import java.util.List;
 public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLClass> {
 
     protected void performExtraInitialisation() throws Exception {
-        getTree().setBackground(new Color(255, 255, 215));
+        getTree().setBackground(OWLFrameList.INFERRED_BG_COLOR);
     }
 
 
