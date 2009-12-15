@@ -285,4 +285,8 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             list.setSelectionMode(selectionMode);
         }
     }
+    
+    public void setIndividualListColor(Color c) {
+        list.setBackground(c);
+    }
 }
