@@ -19,6 +19,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
@@ -33,26 +34,28 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ReasonerProgressUI implements ReasonerProgressMonitor {
+	private static final Logger log = Logger.getLogger(ReasonerProgressUI.class);
+	public static final long CLOSE_PROGRESS_TIMEOUT = 1000;
 
     private OWLEditorKit owlEditorKit;
 
     private JLabel label;
+    
+    private JLabel taskLabel;
 
     private JProgressBar progressBar;
 
     private JDialog window;
 
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     private Action cancelledAction;
-
-    private String currentClass;
 
     private static final int CANCEL_TIMEOUT_MS = 5000;
 
     private Timer cancelTimeout;
     
-    private long progressEndMarker;
+    private boolean running = false;
 
 
     public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
@@ -63,6 +66,8 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         label = new JLabel("Classifying...");
         panel.add(label, BorderLayout.NORTH);
+        taskLabel = new JLabel();
+        panel.add(taskLabel, BorderLayout.NORTH);
 
         window = new JDialog((Frame) (SwingUtilities.getAncestorOfClass(Frame.class, owlEditorKit.getWorkspace())),
                              "Reasoner progress",
@@ -95,61 +100,96 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     }
     
     public void setCancelled() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    	synchronized (this) {
+    		cancelled = true;
+    		running = false;
+    	}
+    	hideWindow();
     }
 
     public void reasonerTaskBusy() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    	progressBar.setIndeterminate(true);
     }
 
 
 
 
     public void reasonerTaskProgressChanged(int value, int max) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    	progressBar.setIndeterminate(false);
+    	progressBar.setMaximum(max);
+    	progressBar.setValue(value);
     }
 
 
 
 
     public void reasonerTaskStarted(String taskName) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    	synchronized (this) {
+    		running = true;
+    	}
+    	progressBar.setIndeterminate(false);
+    	progressBar.setValue(0);
+    	showWindow();
+    	taskLabel.setText(taskName);
     }
 
 
 
 
     public void reasonerTaskStopped() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    	synchronized (this) {
+    		running = false;
+    	}
+    	hideWindow();
+    	taskLabel.setText("");
     }
 
 
 
     private void showWindow() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
-                                   screenSize.height / 2 - window.getHeight() / 2);
-                window.setVisible(true);
-            }
-        });
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			if (!window.isVisible()) {
+    				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    				window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
+    						screenSize.height / 2 - window.getHeight() / 2);
+    				window.setVisible(true);
+    			}
+    		}
+    	});
     }
 
 
     private void hideWindow() {
-
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (cancelled && currentClass != null) {
-                    JOptionPane.showMessageDialog(window,
-                                                  "Cancelled while classifying " + currentClass,
-                                                  "Cancelled classification",
-                                                  JOptionPane.INFORMATION_MESSAGE);
-                }
-                window.setVisible(false);
-            }
-        });
+    	new Thread() {  // ToDo probably can be written better with an executor and rescheduling
+    		@Override
+    		public void run() {
+    			try {
+					Thread.sleep(CLOSE_PROGRESS_TIMEOUT);
+				} catch (InterruptedException e) {
+					log.error("ow, ow, ow.  Don't prod me with that stick", e);
+				}
+    			boolean localRunning;
+    			final boolean localCancelled;
+    			synchronized (ReasonerProgressUI.this) {
+    				localRunning = running;
+    				localCancelled = cancelled;
+    			}
+    			if (!localRunning) {
+    				SwingUtilities.invokeLater(new Runnable() {
+    					public void run() {
+    						if (localCancelled) {
+    							JOptionPane.showMessageDialog(window,
+    									null,
+    									"Reasoning Task Cancelled",
+    									JOptionPane.INFORMATION_MESSAGE);
+    						}
+    						window.setVisible(false);
+    					}
+    				});
+    			}
+    		}
+    	}.start();
     }
 
 
