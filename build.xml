@@ -17,6 +17,9 @@
        <echo append="true"
 	     file="${protege.home}/build.properties"
 	     message="core.micro.version=${core.micro.version}${line.separator}"/>
+       <echo append="true"
+	     file="${protege.home}/build.properties"
+	     message="core.build.number=${core.build.number}${line.separator}"/>
    </target>
 
     <!-- ===================================================================  -->
