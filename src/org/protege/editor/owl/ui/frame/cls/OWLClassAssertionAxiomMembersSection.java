@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -76,15 +77,18 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
     protected void refillInferred() {
         final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-        for (OWLIndividual ind : getOWLModelManager().getReasoner().getInstances(getRootObject(), false).getFlattened()) {
-            if (!ind.isAnonymous() && !added.contains(ind.asNamedIndividual())) {
-                addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
-                                                                   this,
-                                                                   null,
-                                                                   getRootObject(),
-                                                                   df.getOWLClassAssertionAxiom(getRootObject(), ind)));
-                added.add(ind.asNamedIndividual());
-            }
+        NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
+        if (instances != null) {
+        	for (OWLIndividual ind : instances.getFlattened()) {
+        		if (!ind.isAnonymous() && !added.contains(ind.asNamedIndividual())) {
+        			addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
+        					this,
+        					null,
+        					getRootObject(),
+        					df.getOWLClassAssertionAxiom(getRootObject(), ind)));
+        			added.add(ind.asNamedIndividual());
+        		}
+        	}
         }
     }
 
