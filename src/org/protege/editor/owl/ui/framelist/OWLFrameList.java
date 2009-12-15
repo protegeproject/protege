@@ -80,7 +80,7 @@ public class OWLFrameList<R> extends MList
     private static final Logger logger = Logger.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
-    private static final Color INFERRED_ROW_BG_COLOR = new Color(255, 255, 215);
+    public static final Color INFERRED_BG_COLOR = new Color(255, 255, 215);
 
     public static final int BUTTON_DIMENSION = 14;
     public static final int BUTTON_MARGIN = 3;
@@ -242,7 +242,7 @@ public class OWLFrameList<R> extends MList
     protected Color getItemBackgroundColor(MListItem item) {
         if (item instanceof AbstractOWLFrameSectionRow) {
             if (((AbstractOWLFrameSectionRow) item).isInferred()) {
-                return INFERRED_ROW_BG_COLOR;
+                return INFERRED_BG_COLOR;
             }
         }
         return super.getItemBackgroundColor(item);
