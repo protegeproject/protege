@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 
 import java.awt.*;
 
@@ -33,7 +34,7 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
 
     protected void performExtraInitialisation() throws Exception {
         getOWLModelManager().addListener(l);
-        getTree().setBackground(new Color(255, 255, 215));
+        getTree().setBackground(OWLFrameList.INFERRED_BG_COLOR);
     }
 
 
