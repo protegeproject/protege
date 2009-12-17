@@ -1,4 +1,4 @@
-package org.protege.editor.core.ui.util;
+package org.protege.editor.core.platform;
 /*
 * Copyright (C) 2007, University of Manchester
 *

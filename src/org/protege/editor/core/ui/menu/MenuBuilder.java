@@ -4,13 +4,13 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionFilter;
 import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
-import org.protege.editor.core.ui.util.OSUtils;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;

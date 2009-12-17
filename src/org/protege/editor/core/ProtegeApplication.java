@@ -25,6 +25,7 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
@@ -32,7 +33,6 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
-import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
@@ -120,7 +120,7 @@ public class ProtegeApplication implements BundleActivator {
 
 
     // Called when the application is finally completely shutting down
-    public void stop(BundleContext arg0) throws Exception {
+    public void stop(BundleContext context) throws Exception {
         BookMarkedURIManager.getInstance().dispose();
         RecentEditorKitManager.getInstance().save();
         RecentEditorKitManager.getInstance().dispose();
@@ -379,8 +379,7 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
         try {
-            ProtegeApplication.context.getBundle().uninstall();
-            System.exit(0);
+        	context.getBundle(0).stop();
         }
         catch (BundleException e) {
             logger.error("Failed to correctly shutdown Protege:", e);
