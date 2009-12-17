@@ -12,6 +12,7 @@ Bundle-Activator: org.protege.editor.core.ProtegeApplication
 Export-Package: org.protege.editor.core,
  org.protege.editor.core.editorkit,
  org.protege.editor.core.editorkit.plugin,
+ org.protege.editor.core.platform,
  org.protege.editor.core.plugin,
  org.protege.editor.core.prefs,
  org.protege.editor.core.ui,
