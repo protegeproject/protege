@@ -1,12 +1,12 @@
 package org.protege.editor.core.ui.workspace;
 
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.util.Icons;
-import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
 

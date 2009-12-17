@@ -10,12 +10,12 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.split.ViewSplitPane;
-import org.protege.editor.core.ui.util.OSUtils;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.view.*;
 
