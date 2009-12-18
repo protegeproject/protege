@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.library.auto;
 
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
