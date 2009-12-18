@@ -383,8 +383,27 @@ public class ProtegeApplication implements BundleActivator {
         catch (Throwable t) {
             logger.fatal("Exception caught trying to shut down Protege.", t);
         }
-        System.exit(0);  // ToDo: OSGi is gone but Protege is still running. Unknown uncaught exceptions follow.
-                         //       Probably an insufficient cleanup issue (threads?)
+        
+        /*
+         * OSGi is gone or going at this point. Felix is about to close the jvm but equinox does not.
+         * But exiting is a bit tricky at this point.  If I don't call System.exit below then an equinox Protege 
+         * will continue and throw lots of exceptions.  (TODO - this probably shouldn't work this way...)
+         * Felix throws an exception without the sleep call below:
+         * 
+         * org.osgi.framework.BundleException: Bundle org.apache.felix.framework [0] cannot be stopped since it is already stopping.
+         *
+         * Indeed a printout of the state right after the stop call shows the system bundle in the STOPPING state
+         * which seems to be counter to the specification.  Felix has a shutdown hook in that causes System.exit to 
+         * stop the framework bundle again.
+         * 
+         * Knopflerish behavior not yet tested.
+         */
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // we will exit anyway...
+        }
+        System.exit(0);
         return true;
     }
 
