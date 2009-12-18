@@ -41,26 +41,8 @@ public class BundleManager {
 	 */
     public void loadPlugins() {
         installPlugins();
-        removeExtraPlugins();
         startPlugins();
     }
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
-	public void disposePlugins() {
-	    if (Boolean.getBoolean(CLEAN_BUNDLES_ON_EXIT)) {
-	        for (Bundle b : plugins) {
-	            try {
-                    b.uninstall();
-                } catch (BundleException e) {
-                    logger.info("could not uninstall " + getNiceBundleName(b) + "plugin");
-                }
-	        }
-	    }
-	}
-	
 
     private Map<String, Bundle> makeBundleMap() {
         Map<String, Bundle> bundleMap = new HashMap<String, Bundle>();
@@ -91,12 +73,6 @@ public class BundleManager {
                     b = context.installBundle(location);
                     logger.info("Installed plugin " + getNiceBundleName(b));
                 }
-                else if (alreadyInstalled.getLastModified() < plugin.lastModified()) {
-                    logger.info("Updating plugin " + getNiceBundleName(alreadyInstalled));
-                    b = alreadyInstalled;
-                    b.stop();
-                    b.update(new FileInputStream(plugin));
-                }
                 else {
                     b = alreadyInstalled;
                     logger.info("Loading plugin " + getNiceBundleName(b));
@@ -112,26 +88,6 @@ public class BundleManager {
                 }
                 else {
                     logger.error("Could not install plugin in file/directory named " + plugin, t);
-                }
-            }
-        }
-    }
-    
-    private void removeExtraPlugins() {
-        if (!Boolean.getBoolean(CLEAN_DELETED_PLUGINS)) {
-            return;
-        }
-        String dir_name = System.getProperty(BUNDLE_DIR_PROP);
-        if  (dir_name == null) {
-            return;
-        }
-        for (Bundle b : context.getBundles()) {
-            if (b.getLocation().startsWith("file:" + dir_name) && !plugins.contains(b)) {
-                try {
-                    b.uninstall();
-                    logger.info("Uninstalled plugin " + getNiceBundleName(b) + "which was not found in the plugin directory");
-                } catch (BundleException e) {
-                    logger.warn("Could not uninstall bundle " + getNiceBundleName(b));
                 }
             }
         }
