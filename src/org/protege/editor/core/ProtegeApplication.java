@@ -126,7 +126,6 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
-        bundleManager.disposePlugins();
         logger.info("Thank you for using Protege. Goodbye.");
     }
 
@@ -161,9 +160,9 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     protected ProtegeApplication initApplication() throws Exception {
+        loadPreferences();
         PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
-        loadPreferences();
         setupExceptionHandler();
         loadPlugins();
         processCommandLineURIs();  // plugins may set arguments
@@ -379,11 +378,13 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
         try {
-        	context.getBundle(0).stop();
+            context.getBundle(0).stop();
         }
-        catch (BundleException e) {
-            logger.error("Failed to correctly shutdown Protege:", e);
+        catch (Throwable t) {
+            logger.fatal("Exception caught trying to shut down Protege.", t);
         }
+        System.exit(0);  // ToDo: OSGi is gone but Protege is still running. Unknown uncaught exceptions follow.
+                         //       Probably an insufficient cleanup issue (threads?)
         return true;
     }
 
