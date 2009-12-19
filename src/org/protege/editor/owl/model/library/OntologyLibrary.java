@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.library;
 
-import org.semanticweb.owlapi.model.IRI;
-
+import java.io.IOException;
 import java.net.URI;
-import java.util.Set;
+
+import org.protege.xmlcatalog.XMLCatalog;
+import org.semanticweb.owlapi.model.IRI;
 
 
 /**
@@ -26,16 +27,21 @@ public interface OntologyLibrary {
      * Gets a description of the library, which can be
      * used in user interfaces.
      */
-    public String getClassExpression();
-
+     String getClassExpression();
+     
+     /**
+      * Get the physical local of the xml catalog.  Needed for
+      * including the xml catalog in other catalogs.
+      * @return
+      */
+     URI getXmlCatalogName();
 
     /**
-     * Gets the ontologies that this library contains.
-     * @return A <code>Set</code> of ontology IRIs that
-     *         identify the ontologies that this library contains.
+     * Get the xml catalog associated with this ontology
+     * library.
      */
-    public Set<IRI> getOntologyIRIs();
 
+     XMLCatalog getXmlCatalog();
 
     /**
      * Determines whether or not the library contains an
@@ -45,7 +51,7 @@ public interface OntologyLibrary {
      * @return <code>true</code> if the library contains the ontology,
      *         <code>false</code> if the library doesn't contain the ontology.
      */
-    public boolean contains(IRI ontologyIRI);
+     boolean contains(IRI ontologyIRI);
 
 
     /**
@@ -54,18 +60,18 @@ public interface OntologyLibrary {
      * @param ontologyIRI The ontology IRI (not physical URI) that
      *                    identifies the ontology whose physical URI is to be obtained.
      */
-    public URI getPhysicalURI(IRI ontologyIRI);
+     URI getPhysicalURI(IRI ontologyIRI);
 
 
     /**
      * If the library caches information, then this method rebuilds
      * the cache and refreshes the library.
      */
-    public void rebuild();
+     void rebuild() throws IOException;
 
 
     /**
      * Gets a memento that can be used to persist the library.
      */
-    public OntologyLibraryMemento getMemento();
+     OntologyLibraryMemento getMemento();
 }

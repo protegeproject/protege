@@ -33,7 +33,7 @@ public class LibraryOntologiesList extends JList {
         Set<IRI> ontologyIRIs = new TreeSet<IRI>();
         OntologyLibraryManager libraryManager = owlModelManager.getOntologyLibraryManager();
         for (OntologyLibrary lib : libraryManager.getLibraries()) {
-            ontologyIRIs.addAll(lib.getOntologyIRIs());
+            throw new UnsupportedOperationException();
         }
         setListData(ontologyIRIs.toArray());
     }

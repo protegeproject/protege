@@ -314,8 +314,15 @@ public class OWLModelManagerImpl extends AbstractModelManager
                                                    ".\nPlease open the ontology in a new frame.");
         }
         else{
+        	
             // Set up a mapping from the ontology URI to the physical URI
-            manager.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), uri));
+        	if (id.getVersionIRI() != null) {
+        		manager.addIRIMapper(new SimpleIRIMapper(id.getVersionIRI(), uri));
+        	}
+        	else {
+        		manager.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), uri));
+        	}
+            
             if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
                 // Load the URIs of other ontologies that are contained in the same folder.
                 addRootFolder(uri);
@@ -385,7 +392,13 @@ public class OWLModelManagerImpl extends AbstractModelManager
         // Add the parent file which will be the folder
         if (ontologyRootFolders.add(file.getParentFile())) {
             // Add automapped library
-            autoMappedRepositoryIRIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
+            try {
+                autoMappedRepositoryIRIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
+            }
+            catch (IOException ioe) {
+                ProtegeApplication.getErrorLog().logError(ioe);
+                logger.error("Could not look for possible imports in the directory containing " + uri.toString());
+            }
         }
     }
 

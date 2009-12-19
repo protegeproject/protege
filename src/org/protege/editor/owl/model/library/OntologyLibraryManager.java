@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.library;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.IRI;
-
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 
 /**
@@ -56,14 +57,22 @@ public class OntologyLibraryManager {
         loader.saveLibraries();
     }
 
-
-    public OntologyLibrary getLibrary(IRI ontologyIRI) {
+    public URI getPhysicalURI(IRI ontologyIRI) {
         ensureLoaded();
+        List<OntologyLibrary> toRemove = new ArrayList<OntologyLibrary>();
+        URI physicalUri = null;
         for (OntologyLibrary library : libraries) {
-            if (library.contains(ontologyIRI)) {
-                return library;
+            if ((physicalUri = library.getPhysicalURI(ontologyIRI)) != null) {
+                break;
             }
         }
-        return null;
+        if (!toRemove.isEmpty()) {
+            ensureLoaded();
+            libraries.removeAll(toRemove);
+            loader.saveLibraries();
+        }
+        return physicalUri;
     }
+
+
 }

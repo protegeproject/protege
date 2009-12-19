@@ -1,8 +1,36 @@
 package org.protege.editor.owl.ui.library;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreePath;
+
 import org.apache.log4j.Logger;
-import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.PropertyUtil;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
@@ -14,22 +42,19 @@ import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owlapi.model.IRI;
-
-import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import org.protege.xmlcatalog.EntryVisitor;
+import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.DelegatePublicEntry;
+import org.protege.xmlcatalog.entry.DelegateSystemEntry;
+import org.protege.xmlcatalog.entry.DelegateUriEntry;
+import org.protege.xmlcatalog.entry.Entry;
+import org.protege.xmlcatalog.entry.GroupEntry;
+import org.protege.xmlcatalog.entry.NextCatalogEntry;
+import org.protege.xmlcatalog.entry.PublicEntry;
+import org.protege.xmlcatalog.entry.RewriteSystemEntry;
+import org.protege.xmlcatalog.entry.RewriteUriEntry;
+import org.protege.xmlcatalog.entry.SystemEntry;
+import org.protege.xmlcatalog.entry.UriEntry;
 
 
 /**
@@ -61,7 +86,6 @@ public class OntologyLibraryPanel extends JPanel {
     private Set<OntologyLibrary> addedLibraries = new HashSet<OntologyLibrary>();
 
     private Set<OntologyLibrary> removedLibraries = new HashSet<OntologyLibrary>();
-
 
     public OntologyLibraryPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
@@ -132,40 +156,56 @@ public class OntologyLibraryPanel extends JPanel {
 
 
     private void showPopupMenu(MouseEvent e) {
-        TreePath selPath = tree.getSelectionPath();
-        if (selPath == null) {
+        TreePath selectionPath = tree.getSelectionPath();
+        if (selectionPath == null) {
             return;
         }
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
         if (node.getUserObject() instanceof OntologyLibrary) {
             return;
         }
-        IRI iri = ((IRI) node.getUserObject());
-        OntologyLibrary lib = (OntologyLibrary) ((DefaultMutableTreeNode) node.getParent()).getUserObject();
-        try {
-            final URI physicalURI = lib.getPhysicalURI(iri);
-            if (!physicalURI.getScheme().equals("file")) {
-                return;
-            }
+        else if (node.getUserObject() instanceof Entry) {
+            Entry entry = (Entry) node.getUserObject();
             JPopupMenu popupMenu = new JPopupMenu();
-            popupMenu.add(new AbstractAction("Show file...") {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        FileUtils.showFile(new File(physicalURI));
-                    }
-                    catch (IOException ex) {
-                        logger.error(ex);
-                    }
-                }
-            });
+            
+            popupMenu.add(new DeleteRedirectAction(selectionPath));
+            
             popupMenu.show(tree, e.getX(), e.getY());
-        }
-        catch (Exception ex) {
-            logger.error(ex);
         }
     }
 
-
+    private class DeleteRedirectAction extends AbstractAction {
+        private TreePath selectionPath;
+        
+        public DeleteRedirectAction(TreePath selectionPath) {
+            super("Delete Library Entry");
+            this.selectionPath = selectionPath;
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            DefaultMutableTreeNode nodeToDelete = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+            boolean deleteFromTree = false;
+            Entry toDelete = (Entry) nodeToDelete.getUserObject();
+            Object o = ((DefaultMutableTreeNode) selectionPath.getParentPath().getLastPathComponent()).getUserObject();
+            
+            if (o instanceof OntologyLibrary) {
+                OntologyLibrary lib = (OntologyLibrary) o;
+                lib.getXmlCatalog().removeEntry(toDelete);
+                deleteFromTree = true;
+            }
+            else if (o instanceof GroupEntry) {
+                GroupEntry group = (GroupEntry) o;
+                group.removeEntry(toDelete);
+                deleteFromTree = true;
+            }
+            if (deleteFromTree)  {
+                ((DefaultTreeModel) tree.getModel()).removeNodeFromParent(nodeToDelete);
+                tree.repaint();
+            }
+        }
+    }
+    
+    
     private OWLModelManager getOWLModelManager() {
         return owlEditorKit.getModelManager();
     }
@@ -174,7 +214,14 @@ public class OntologyLibraryPanel extends JPanel {
     private void handleAddLibrary() {
         File f = UIUtil.chooseFolder(OntologyLibraryPanel.this, "Please select a folder containing ontologies");
         if (f != null) {
-            OntologyLibrary lib = new FolderOntologyLibrary(f);
+            OntologyLibrary lib;
+            try {
+                lib = new FolderOntologyLibrary(f);
+            }
+            catch (IOException ioe) {
+                ProtegeApplication.getErrorLog().logError(ioe);
+                return;
+            }
             if (!removedLibraries.remove(lib)){ // just in case of re-insertion
                 addedLibraries.add(lib);
             }
@@ -235,18 +282,35 @@ public class OntologyLibraryPanel extends JPanel {
 
     private void insertLibraryIntoTree(OntologyLibrary lib) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        XMLCatalog catalog = lib.getXmlCatalog();
         DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
         model.insertNodeInto(libNode, rootNode, rootNode.getChildCount());
-        TreeSet<IRI> iris = new TreeSet<IRI>(lib.getOntologyIRIs());
-        int uriIndex = 0;
-        for (IRI iri : iris) {
-            model.insertNodeInto(new DefaultMutableTreeNode(iri), libNode, uriIndex);
-            uriIndex++;
+        for (Entry entry : catalog.getEntries()) {
+            insertEntryIntoTree(libNode, entry, null);
         }
         tree.expandPath(new TreePath(libNode.getPath()));
     }
     
-
+    private void insertEntryIntoTree(DefaultMutableTreeNode parent, Entry entry, Set<Entry> traversed) {
+        if (traversed == null) {
+            traversed = new HashSet<Entry>();
+        }
+        if (traversed.contains(entry)) {
+            logger.error("Cycle found in xmlcatalog.  Entry " + entry + " recursively  repeated.");
+            return;
+        }
+        traversed.add(entry);
+        
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode entryNode = new DefaultMutableTreeNode(entry);
+        model.insertNodeInto(entryNode, parent, parent.getChildCount());
+        if (entry instanceof GroupEntry) {
+            for (Entry groupEntry : ((GroupEntry) entry).getEntries()) {
+                insertEntryIntoTree(entryNode, groupEntry, traversed);
+            }
+        }
+    }
+    
     public Dimension getPreferredSize() {
         return new Dimension(800, 600);
     }
@@ -262,7 +326,7 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
 
-    public class OntologyLibraryCellRenderer extends DefaultTreeCellRenderer {
+    private class OntologyLibraryCellRenderer extends DefaultTreeCellRenderer {
 
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
                                                       boolean leaf, int row, boolean hasFocus) {
@@ -278,18 +342,82 @@ public class OntologyLibraryPanel extends JPanel {
             else {
                 DefaultMutableTreeNode parentNode = ((DefaultMutableTreeNode) node.getParent());
                 if (parentNode != null) {
-                    IRI iri = ((IRI) node.getUserObject());
-                    OntologyLibrary lib = (OntologyLibrary) parentNode.getUserObject();
-                    URI physicalURI = lib.getPhysicalURI(iri);
-                    label.setText("<html><body><b>" + iri + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<font color=\"gray\">" + physicalURI + "</font></body></html>");
-                    label.setIcon(null);
+                    Entry entry = (Entry) node.getUserObject();
+                    EntryRendererVisitor  visitor = new EntryRendererVisitor(label);
+                    entry.accept(visitor);
+                    label = visitor.getLabel();
                 }
                 label.setBorder(BorderFactory.createEmptyBorder(2, 20, 8, 0));
             }
             return label;
         }
     }
+    
+    
+    public class EntryRendererVisitor implements EntryVisitor {
+        private JLabel label;
+        
+        public EntryRendererVisitor(JLabel label) {
+            this.label = label;
+        }
+        
+        public JLabel getLabel() {
+            return label;
+        }
+        
+        
+        public void visit(UriEntry entry) {   
+            label.setText("<html><body><b>Imported Location: " + entry.getName() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
+                          + "<font color=\"gray\">Redirected To: " + entry.getUri() + "</font></body></html>");
+            label.setIcon(null);
+        }
+        
+        
+        public void visit(GroupEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
 
+        
+        public void visit(PublicEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(SystemEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(RewriteSystemEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(DelegatePublicEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(DelegateSystemEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(RewriteUriEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(DelegateUriEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+
+        
+        public void visit(NextCatalogEntry entry) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+        
+    }
 
     public static void showDialog(OWLEditorKit owlEditorKit) {
         UIHelper helper = new UIHelper(owlEditorKit);

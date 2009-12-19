@@ -1,15 +1,19 @@
 package org.protege.editor.owl.model.io;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
-
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -68,19 +72,21 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
 
 
     public URI getPhysicalURI(IRI logicalURI) {
-        URI uri;
-        // Search auto mapped libraries
-        for (OntologyLibrary lib : automappedLibraries) {
-            if (lib.contains(logicalURI)) {
-                uri = lib.getPhysicalURI(logicalURI);
-                // Map the URI
-                mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, uri));
-                if (logger.isInfoEnabled()) {
-                    logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
-                }
-                return uri;
-            }
-        }
+    	List<OntologyLibrary> toRemove = new ArrayList<OntologyLibrary>();
+    	URI uri;
+    	// Search auto mapped libraries
+    	for (OntologyLibrary lib : automappedLibraries) {
+    	    if (lib.contains(logicalURI)) {
+    	        uri = lib.getPhysicalURI(logicalURI);
+    	        // Map the URI
+    	        mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, uri));
+    	        if (logger.isInfoEnabled()) {
+    	            logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
+    	        }
+    	        return uri;
+    	    }
+    	}
+    	automappedLibraries.removeAll(toRemove);
         return null;
     }
 

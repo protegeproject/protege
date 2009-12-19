@@ -40,8 +40,7 @@ public class LibraryVerifier implements ImportVerifier {
 
 
             public String getOntologyLocationDescription(IRI ontologyIRI) {
-                OntologyLibrary lib = owlModelManager.getOntologyLibraryManager().getLibrary(ontologyIRI);
-                return lib.getPhysicalURI(ontologyIRI).toString();
+                return owlModelManager.getOntologyLibraryManager().getPhysicalURI(ontologyIRI).toString();
             }
 
 
