@@ -160,9 +160,9 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     protected ProtegeApplication initApplication() throws Exception {
-        loadPreferences();
         PluginUtilities.getInstance().initialise(this, context);
         loadDefaults();
+        loadPreferences();
         setupExceptionHandler();
         loadPlugins();
         processCommandLineURIs();  // plugins may set arguments
