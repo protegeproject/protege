@@ -113,9 +113,15 @@
                <include name = "**/looks.jar"/>
            </patternset>
        </unjar>
+       <!-- this is a temporary hack because xmlcatalog library is in flux -->
+       <!-- to revert remember to undo the svn:externals on . and svn:ignore in lib -->
+       <ant antfile="./xmlcatalog/build.xml" 
+            inheritAll="false">
+           <property name="build"   location="${build}"/>
+           <property name="classes" location="${build}/classes.xmlcatalog"/>
+       </ant>
+       <copy todir="${lib}" file="${build}/xmlcatalog.jar"/>
    </target>
-
-
 
    <!-- 
         Here is the copy.resources target.  It may need modification
