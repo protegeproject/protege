@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.library;
 
+import java.io.IOException;
+
 import org.semanticweb.owlapi.model.IRI;
 
 
@@ -13,18 +15,14 @@ import org.semanticweb.owlapi.model.IRI;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class AbstractOntologyLibrary implements OntologyLibrary {
+	
+    public boolean contains(IRI ontologyIRI) {
+    	return getPhysicalURI(ontologyIRI) != null;
+    }
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(getClassExpression());
-        builder.append("\n");
-        for (IRI iri : getOntologyIRIs()) {
-            builder.append("    ");
-            builder.append(iri);
-            builder.append(" --> ");
-            builder.append(getPhysicalURI(iri));
-            builder.append("\n");
-        }
         return builder.toString();
     }
 }

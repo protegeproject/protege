@@ -1,7 +1,9 @@
 package org.protege.editor.owl.model.library.folder;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryFactory;
 import org.protege.editor.owl.model.library.OntologyLibraryMemento;
@@ -26,7 +28,13 @@ public class FolderOntologyLibraryFactory implements OntologyLibraryFactory {
     public OntologyLibrary createLibrary(OntologyLibraryMemento memento) {
         File file = memento.getFile(FolderOntologyLibrary.FILE_KEY);
         if (file.exists() && file.isDirectory()) {
-            return new FolderOntologyLibrary(file);
+            try {
+                return new FolderOntologyLibrary(file);
+            }
+            catch (IOException ioe) {
+                ProtegeApplication.getErrorLog().logError(ioe);
+                return null;
+            }
         }
         else {
             return null;
