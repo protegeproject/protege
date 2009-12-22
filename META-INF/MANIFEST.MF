@@ -35,6 +35,9 @@ Import-Package: org.osgi.framework,
  org.xml.sax.helpers,
  javax.xml.parsers
 Export-Package: org.apache.commons.lang,
+ org.apache.commons.logging,
+ org.apache.commons.logging.impl,
+ org.apache.log4j.spi,
  org.apache.log4j,
  com.jgoodies.looks,
  com.jgoodies.looks.common,
@@ -43,8 +46,5 @@ Export-Package: org.apache.commons.lang,
  com.jgoodies.looks.plastic.theme,
  com.jgoodies.looks.windows,
  com.jgoodies.looks.windows.icons,
- org.apache.commons.logging,
- org.apache.commons.logging.impl,
- org.apache.log4j.spi,
  org.protege.common
 
