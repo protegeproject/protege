@@ -20,9 +20,6 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
             is.setSystemId(location.toURL().toString());
             parser.parse(is, consumer);
         }
-        catch (StopParseEarlyException e) {
-            ;
-        }
         catch (Throwable t) {
             if (log.isDebugEnabled()) {
                 log.debug("Exception caught trying to extract ontology from rdf file at  " + location, t);
