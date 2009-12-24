@@ -1,6 +1,9 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import java.awt.Frame;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
@@ -19,10 +22,8 @@ import org.protege.editor.owl.OWLEditorKit;
 public class OntologyImportWizard extends Wizard {
 
     private static final Logger logger = Logger.getLogger(OntologyImportWizard.class);
-
-    private ImportVerifier importVerifier;
-
-
+    Set<ImportInfo> imports = new HashSet<ImportInfo>();
+    
     public OntologyImportWizard(Frame owner, OWLEditorKit owlEditorKit) {
         super(owner);
         setTitle("Import ontology wizard");
@@ -31,18 +32,26 @@ public class OntologyImportWizard extends Wizard {
         registerWizardPanel(URLPage.ID, new URLPage(owlEditorKit));
         registerWizardPanel(LoadedOntologyPage.ID, new LoadedOntologyPage(owlEditorKit));
         registerWizardPanel(LibraryPage.ID, new LibraryPage(owlEditorKit));
-        registerWizardPanel(ImportVerificationPage.ID, new ImportVerificationPage(owlEditorKit));
+        registerWizardPanel(AnticipateOntologyIdPage.ID, new AnticipateOntologyIdPage(owlEditorKit));
+        registerWizardPanel(SelectImportLocationPage.ID, new SelectImportLocationPage(owlEditorKit));
         registerWizardPanel(ImportConfirmationPage.ID, new ImportConfirmationPage(owlEditorKit));
         setCurrentPanel(ImportTypePage.ID);
     }
-
-
-    protected void setImportVerifier(ImportVerifier importVerifier) {
-        this.importVerifier = importVerifier;
+    
+    public void clearImports() {
+    	imports.clear();
+    }
+    
+    public void addImport(ImportInfo parameters) {
+    	imports.add(parameters);
+	}
+    
+    public void removeImport(ImportInfo parameters) {
+    	imports.remove(parameters);
+    }
+    
+    public Set<ImportInfo> getImports() {
+    	return Collections.unmodifiableSet(imports);
     }
 
-
-    public ImportVerifier getImportVerifier() {
-        return importVerifier;
-    }
 }

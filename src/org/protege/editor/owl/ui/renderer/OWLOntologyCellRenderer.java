@@ -52,12 +52,12 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
                                                   boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        if (value instanceof OWLOntology){
-        label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getModelManager()));
-            label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
+        if (value instanceof OWLOntology) {
+        	label.setText(getOntologyLabelText((OWLOntology)value, editorKit.getModelManager()));
+        	label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
         }
-        else if (value instanceof IRI){
-            label.setText(getOntologyLabelText((IRI)value, editorKit.getModelManager()));
+        else if (value instanceof IRI) {
+        	label.setText(getOntologyLabelText((IRI)value, editorKit.getModelManager()));
         }
         return label;
     }

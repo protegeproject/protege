@@ -1,43 +1,36 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JList;
+import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.ui.ontology.imports.wizard.ImportParameters;
-import org.protege.editor.owl.ui.ontology.imports.wizard.ImportVerifier;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.RemoveImport;
+import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 /**
  * Author: drummond<br>
@@ -48,7 +41,8 @@ import java.util.List;
  * Date: May 28, 2009<br><br>
  */
 public class OntologyImportsList extends MList {
-
+	private static final Logger logger = Logger.getLogger(OntologyImportsList.class);
+	
     private OWLEditorKit eKit;
 
     private OWLOntology ont;
@@ -106,32 +100,43 @@ public class OntologyImportsList extends MList {
 
     protected void handleAdd() {
         // don't need to check the section as only the direct imports can be added
-        if (wizard == null){
-            wizard = new OntologyImportWizard((Frame) SwingUtilities.getAncestorOfClass(Frame.class, eKit.getWorkspace()), eKit);
-        }
+    	wizard = new OntologyImportWizard((Frame) SwingUtilities.getAncestorOfClass(Frame.class, eKit.getWorkspace()), eKit);
         int ret = wizard.showModalDialog();
 
         if (ret == Wizard.FINISH_RETURN_CODE) {
-            ImportVerifier verifier = wizard.getImportVerifier();
-            ImportParameters params = verifier.checkImports();
-            params.performImportSetup(eKit);
-
-            final OWLModelManager mngr = eKit.getOWLModelManager();
-            OWLOntology ont = eKit.getModelManager().getActiveOntology();
-
+            OWLOntologyManager manager = eKit.getModelManager().getOWLOntologyManager();
+            OWLOntology activeOntology = eKit.getModelManager().getActiveOntology();
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            for (IRI iri : params.getOntologiesToBeImported()) {
-                OWLImportsDeclaration decl = mngr.getOWLDataFactory().getOWLImportsDeclaration(iri);
+
+        	for (ImportInfo importParameters : wizard.getImports()) {
+        		IRI importLocation = importParameters.getImportLocation();
+        		URI physicalLocation = importParameters.getPhysicalLocation();
+        		if (!importLocation.equals(physicalLocation)) {
+        			manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
+        		}
+                OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
                 changes.add(new AddImport(ont, decl));
+                if (manager.contains(importParameters.getOntologyID())) {
+                	continue;
+                }
                 try {
-                    OWLOntology importedOnt = mngr.getOWLOntologyManager().loadOntology(iri);
-                    eKit.addRecent(mngr.getOWLOntologyManager().getPhysicalURIForOntology(importedOnt));
-                    mngr.fireEvent(EventType.ONTOLOGY_LOADED);
+                	manager.makeLoadImportRequest(decl);
+                	OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+                	if (importedOnt == null) {
+                		logger.warn("Imported ontology has id " + importedOnt.getOntologyID() + 
+                				" but during imports processing we anticipated " + importParameters.getOntologyID());
+                		logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+                		continue;
+                	}
+                	eKit.addRecent(manager.getPhysicalURIForOntology(importedOnt));
+                	eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
                 }
-                catch (OWLException e) {
-                    // do nothing - error already reported to user
+                catch (OWLOntologyCreationException ooce) {
+                	if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
+                		logger.debug("Exception caught importing ontologies", ooce);
+                	}
                 }
-            }
+        	}
             eKit.getModelManager().applyChanges(changes);
         }
     }
