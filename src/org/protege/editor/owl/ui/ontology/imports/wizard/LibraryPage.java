@@ -1,18 +1,20 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
-import org.semanticweb.owlapi.model.IRI;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -24,7 +26,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class LibraryPage extends AbstractImportSourcePage {
+public class LibraryPage extends AbstractOWLWizardPanel {
 
     private static final Logger logger = Logger.getLogger(LibraryPage.class);
 
@@ -63,16 +65,6 @@ public class LibraryPage extends AbstractImportSourcePage {
     }
 
 
-    public ImportVerifier getImportVerifier() {
-        Set<IRI> selectedIRIs = new HashSet<IRI>();
-        Object [] selObjs = list.getSelectedValues();
-        for (Object o : selObjs) {
-            selectedIRIs.add((IRI) o);
-        }
-        return new LibraryVerifier(getOWLModelManager(), selectedIRIs);
-    }
-
-
     public void displayingPanel() {
         getWizard().setNextFinishButtonEnabled(false);
         list.rebuildList();
@@ -86,6 +78,6 @@ public class LibraryPage extends AbstractImportSourcePage {
 
 
     public Object getNextPanelDescriptor() {
-        return ImportVerificationPage.ID;
+        return AnticipateOntologyIdPage.ID;
     }
 }

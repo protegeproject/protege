@@ -1,13 +1,22 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.semanticweb.owlapi.model.IRI;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**
@@ -27,6 +36,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
     public static final String ID = "ImportConfirmationPage";
 
     private JComponent importedOntologiesComponent;
+    private TitledBorder titledBorder;
 
 
     public ImportConfirmationPage(OWLEditorKit owlEditorKit) {
@@ -50,14 +60,17 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
     private void fillImportList() {
         Box box = new Box(BoxLayout.Y_AXIS);
-        box.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY),
+        /* box.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY),
                                                          BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        ImportVerifier verifier = ((OntologyImportWizard) getWizard()).getImportVerifier();
-        ImportParameters param = verifier.checkImports();
-        for (IRI iri : param.getOntologiesToBeImported()) {
-            box.add(new ImportEntryPanel(iri, param.getOntologyLocationDescription(iri)));
-        }
+         */
+        Set<ImportInfo> parameters = ((OntologyImportWizard) getWizard()).getImports();
+        for (ImportInfo parameter : parameters) {
+        	if (parameter.isReady()) {
+        		ImportEntryPanel importPanel = new ImportEntryPanel(parameter);
+        		box.add(importPanel);
 
+        	}
+        }
         importedOntologiesComponent.add(box, BorderLayout.NORTH);
     }
 
@@ -69,17 +82,32 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
     private class ImportEntryPanel extends JPanel {
 
-        public ImportEntryPanel(IRI ontologyIRI, String locationDescription) {
+        public ImportEntryPanel(ImportInfo parameter) {
             setBorder(BorderFactory.createEmptyBorder(1, 0, 4, 0));
             setLayout(new BorderLayout(1, 1));
-            setBackground(Color.WHITE);
-            JLabel ontologyURILabel = new JLabel(ontologyIRI.toString());
-            add(ontologyURILabel, BorderLayout.NORTH);
-            JLabel physicalLocationLabel = new JLabel(locationDescription);
-            add(physicalLocationLabel, BorderLayout.SOUTH);
-            physicalLocationLabel.setForeground(Color.GRAY);
-            physicalLocationLabel.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
+            JPanel center = new JPanel();
+            center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
+            
+            JLabel physicalLocationLabel = new JLabel("Load import from " + parameter.getPhysicalLocation().toString());
             physicalLocationLabel.setFont(physicalLocationLabel.getFont().deriveFont(10.0f));
+            physicalLocationLabel.setAlignmentX(LEFT_ALIGNMENT);
+            center.add(physicalLocationLabel);
+            
+            JLabel ontologyNameLabel = new JLabel("Imported Ontology Name " + parameter.getOntologyID().getOntologyIRI().toString());
+            ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
+            center.add(ontologyNameLabel);
+            
+            if (parameter.getOntologyID().getVersionIRI() != null) {
+            	JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI());
+            	ontologyVersionLabel.setAlignmentX(LEFT_ALIGNMENT);
+            	center.add(ontologyVersionLabel);
+            }
+            
+            center.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
+            Border lineBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+            titledBorder = BorderFactory.createTitledBorder(lineBorder, "Import Declaration: " + parameter.getImportLocation().toString());
+            setBorder(titledBorder);
+            add(center, BorderLayout.CENTER);
         }
     }
 }

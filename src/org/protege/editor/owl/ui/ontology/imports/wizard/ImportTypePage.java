@@ -44,8 +44,8 @@ public class ImportTypePage extends AbstractWizardPanel {
         setInstructions("Please choose an option:");
         parent.setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        box.add(libraryRadioButton = new JRadioButton(
-                "Import an ontology that is contained in one of the ontology libraries."));
+        /* box.add(libraryRadioButton = new JRadioButton(
+                "Import an ontology that is contained in one of the ontology libraries.")); */
         box.add(loadedOntologyButton = new JRadioButton("Import an ontology that has already been loaded/created."));
         box.add(webRadioButton = new JRadioButton("Import an ontology contained in a document located on the web."));
         box.add(localFileRadioButton = new JRadioButton("Import an ontology contained in a specific file."));
@@ -53,9 +53,10 @@ public class ImportTypePage extends AbstractWizardPanel {
         ButtonGroup bg = new ButtonGroup();
         bg.add(webRadioButton);
         bg.add(localFileRadioButton);
-        bg.add(libraryRadioButton);
+        /* bg.add(libraryRadioButton); */
         bg.add(loadedOntologyButton);
-        libraryRadioButton.setSelected(true);
+        webRadioButton.setSelected(true);
+        // libraryRadioButton.setSelected(true);
     }
 
 
@@ -66,9 +67,9 @@ public class ImportTypePage extends AbstractWizardPanel {
         else if (localFileRadioButton.isSelected()) {
             return LocalFilePage.ID;
         }
-        else if (libraryRadioButton.isSelected()) {
+        /* else if (libraryRadioButton.isSelected()) {
             return LibraryPage.ID;
-        }
+        } */
         else {
             return LoadedOntologyPage.ID;
         }

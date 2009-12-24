@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.BorderLayout;
+import java.net.MalformedURLException;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.core.ui.OpenFromURLPanel;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.MalformedURLException;
 
 
 /**
@@ -18,7 +20,7 @@ import java.net.MalformedURLException;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class URLPage extends AbstractImportSourcePage {
+public class URLPage extends AbstractWizardPanel {
 
     public static final String ID = "URLPage";
 
@@ -31,7 +33,7 @@ public class URLPage extends AbstractImportSourcePage {
         super(ID, "Import from URL", owlEditorKit);
     }
 
-
+    @Override
     protected void createUI(JComponent parent) {
         setInstructions("Please specify the URL that points to the file that contains the " + "ontology.  (Please note that this should be the physical URL, rather than the " + "ontology URI)");
         parent.setLayout(new BorderLayout());
@@ -58,7 +60,7 @@ public class URLPage extends AbstractImportSourcePage {
 
 
     public Object getNextPanelDescriptor() {
-        return ImportVerificationPage.ID;
+        return AnticipateOntologyIdPage.ID;
     }
 
 
@@ -66,25 +68,24 @@ public class URLPage extends AbstractImportSourcePage {
         urlPanel.requestFocus();
         getWizard().setNextFinishButtonEnabled(urlPanel.isValid());
         if (!displayed){
-        urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
-            public void verifiedStatusChanged(boolean newState) {
-                getWizard().setNextFinishButtonEnabled(newState);
-            }
-        });
+        	urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
+        		public void verifiedStatusChanged(boolean newState) {
+        			getWizard().setNextFinishButtonEnabled(newState);
+        		}
+        	});
         }
         displayed = true;
     }
 
-
-    public ImportVerifier getImportVerifier() {
-        try {
-            return new URLImportFileVerifier(urlPanel.getURI().toURL());
-        }
-        catch (MalformedURLException e) {
-            return null;
-        }
-        catch (IllegalArgumentException e) {
-            return null;
-        }
+    @Override
+    public void aboutToHidePanel() {
+    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	wizard.clearImports();
+    	ImportInfo parameters = new ImportInfo();
+    	parameters.setPhysicalLocation(urlPanel.getURI());
+    	wizard.addImport(parameters);
+    	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+    	super.aboutToHidePanel();
     }
+
 }

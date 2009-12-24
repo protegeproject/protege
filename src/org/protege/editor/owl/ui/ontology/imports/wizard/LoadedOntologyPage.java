@@ -1,19 +1,26 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 
 /**
@@ -25,7 +32,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class LoadedOntologyPage extends AbstractImportSourcePage {
+public class LoadedOntologyPage extends AbstractOWLWizardPanel {
 
     private static final Logger logger = Logger.getLogger(LoadedOntologyPage.class);
 
@@ -67,14 +74,21 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
         }
         return ontologiesInSeries;
     }
-
-
-    public ImportVerifier getImportVerifier() {
+    
+    @Override
+    public void aboutToHidePanel() {
+    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	wizard.clearImports();
         Set<OWLOntology> sel = new HashSet<OWLOntology>();
         for (Object o : ontologyList.getSelectedValues()){
-            sel.add((OWLOntology)o);
+        	OWLOntology ontology = (OWLOntology) o;
+        	ImportInfo parameter = new ImportInfo();
+        	parameter.setOntologyID(ontology.getOntologyID());
+        	parameter.setPhysicalLocation(getOWLModelManager().getOWLOntologyManager().getPhysicalURIForOntology(ontology));
+        	parameter.setImportLocation(ontology.getOntologyID().getDefaultDocumentIRI());
+        	wizard.addImport(parameter);
         }
-        return new LoadedOntologyImportVerifier(sel);
+    	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
     }
 
 
@@ -100,7 +114,7 @@ public class LoadedOntologyPage extends AbstractImportSourcePage {
 
 
     public Object getNextPanelDescriptor() {
-        return ImportVerificationPage.ID;
+        return SelectImportLocationPage.ID;
     }
 
 

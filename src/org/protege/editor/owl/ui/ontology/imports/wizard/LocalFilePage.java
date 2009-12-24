@@ -1,20 +1,27 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.FilePathPanel;
-import org.protege.editor.owl.OWLEditorKit;
+import java.awt.BorderLayout;
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.util.Collections;
+
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.FilePathPanel;
+import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
+import org.protege.editor.owl.OWLEditorKit;
 
 
 /**
@@ -26,7 +33,7 @@ import java.util.Collections;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class LocalFilePage extends AbstractImportSourcePage {
+public class LocalFilePage extends AbstractWizardPanel {
 
     public static final String ID = "LocalFilePage";
 
@@ -59,6 +66,16 @@ public class LocalFilePage extends AbstractImportSourcePage {
         parent.add(recentListHolder, BorderLayout.CENTER);
     }
 
+    @Override
+    public void aboutToHidePanel() {
+    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	wizard.clearImports();
+    	ImportInfo parameters = new ImportInfo();
+    	parameters.setPhysicalLocation(filePathPanel.getFile().toURI());
+    	wizard.addImport(parameters);
+    	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+    	super.aboutToHidePanel();
+    }
 
     private JList createRecentList() {
         DefaultListModel model = new DefaultListModel();
@@ -88,17 +105,12 @@ public class LocalFilePage extends AbstractImportSourcePage {
 
 
     public Object getNextPanelDescriptor() {
-        return ImportVerificationPage.ID;
+        return AnticipateOntologyIdPage.ID;
     }
 
 
     public void displayingPanel() {
         getWizard().setNextFinishButtonEnabled(false);
         filePathPanel.requestFocus();
-    }
-
-
-    public ImportVerifier getImportVerifier() {
-        return new LocalFileImportVerifier(getOWLEditorKit(), filePathPanel.getFile());
     }
 }
