@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
-import org.protege.common.ProtegeProperties;
 
 public class ProtegeRotatingAppender extends FileAppender {
     private static final String ROTATION_COUNT_MARKER = "%u";
