@@ -32,65 +32,10 @@ public class WizardPanel extends JPanel {
 
     }
 
-//    /**
-//     * Default constructor. The id and the Component panel must be set separately.
-//     */
-//    public WizardPanel() {
-//        panelIdentifier = DEFAULT_PANEL_IDENTIFIER;
-//        targetPanel = new JPanel();
-//    }
-//
-//    /**
-//     * Constructor which accepts both the Object-based identifier and a reference to
-//     * the Component class which makes up the panel.
-//     * @param id Object-based identifier
-//     * @param panel A class which extends java.awt.Component that will be inserted as a
-//     * panel into the wizard dialog.
-//     */
-//    public WizardPanel(Object id, Component panel) {
-//        panelIdentifier = id;
-//        targetPanel = panel;
-//    }
-
-//    /**
-//     * Returns to java.awt.Component that serves as the actual panel.
-//     * @return A reference to the java.awt.Component that serves as the panel
-//     */
-//    public final Component getPanelComponent() {
-//        return targetPanel;
-//    }
-
-//    /**
-//     * Sets the panel's component as a class that extends java.awt.Component
-//     * @param panel java.awt.Component which serves as the wizard panel
-//     */
-//    public final void setPanelComponent(Component panel) {
-//        targetPanel = panel;
-//    }
-
 
     public Object getIdentifier() {
         return panelIdentifier;
     }
-
-//    /**
-//     * Returns the unique Object-based identifier for this panel descriptor.
-//     * @return The Object-based identifier
-//     */
-//    public final Object getPanelDescriptorIdentifier() {
-//        return panelIdentifier;
-//    }
-
-//    /**
-//     * Sets the Object-based identifier for this panel. The identifier must be unique
-//     * from all the other identifiers in the panel.
-//     * @param id Object-based identifier for this panel.
-//     */
-//    public final void setPanelDescriptorIdentifier(Object id) {
-//        panelIdentifier = id;
-//    }
-
-
     final void setWizard(Wizard w) {
         wizard = w;
     }
