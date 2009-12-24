@@ -105,17 +105,22 @@ public class ProtegeApplication implements BundleActivator {
 
     private static boolean quitting = false;
 
-    public void start(BundleContext context) throws Exception {
-        ProtegeApplication.context = context;
-        displayPlatform();
-        initApplication();
+    public void start(BundleContext context) {
+    	try {
+    		ProtegeApplication.context = context;
+    		displayPlatform();
+    		initApplication();
 
-        if (OSUtils.isOSX()){
-            ProtegeAppleApplication.getInstance();
-        }
+    		if (OSUtils.isOSX()){
+    			ProtegeAppleApplication.getInstance();
+    		}
 
-        ProtegeManager.getInstance().initialise(this);
-        startApplication();
+    		ProtegeManager.getInstance().initialise(this);
+    		startApplication();
+    	}
+    	catch (Throwable t) {
+    		logger.error("Exception caught starting Protege", t);
+    	}
     }
 
 
