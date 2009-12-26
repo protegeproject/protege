@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.ontology.imports.wizard;
+package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 

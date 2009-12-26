@@ -8,6 +8,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.AnticipateOntologyIdPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.ImportConfirmationPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.ImportTypePage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.LibraryPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.LoadedOntologyPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.LocalFilePage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.SelectImportLocationPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.URLPage;
 
 
 /**
