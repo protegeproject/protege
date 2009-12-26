@@ -27,7 +27,6 @@ public class GetImportsVisitor implements EntryVisitor {
         return imports;
     }
 
-    @Override
     public void visit(UriEntry entry) {
         try {
             ImportInfo myImport = new ImportInfo();
@@ -40,7 +39,6 @@ public class GetImportsVisitor implements EntryVisitor {
         }
     }
 
-    @Override
     public void visit(NextCatalogEntry entry) {
         try {
             XMLCatalog catalog = entry.getParsedCatalog();
@@ -53,35 +51,27 @@ public class GetImportsVisitor implements EntryVisitor {
         }
     }
 
-    @Override
     public void visit(GroupEntry entry) {
     }
 
-    @Override
     public void visit(PublicEntry entry) {
     }
 
-    @Override
     public void visit(SystemEntry entry) {
     }
 
-    @Override
     public void visit(RewriteSystemEntry entry) {
     }
 
-    @Override
     public void visit(DelegatePublicEntry entry) {
     }
 
-    @Override
     public void visit(DelegateSystemEntry entry) {
     }
 
-    @Override
     public void visit(RewriteUriEntry entry) {
     }
 
-    @Override
     public void visit(DelegateUriEntry entry) {
     }
 }
