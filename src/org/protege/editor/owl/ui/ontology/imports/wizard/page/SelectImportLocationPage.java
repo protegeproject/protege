@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.ontology.imports.wizard;
+package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +14,9 @@ import javax.swing.border.Border;
 
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportLocationOptionsPanel;
+import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 public class SelectImportLocationPage extends AbstractWizardPanel {

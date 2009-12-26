@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.ontology.imports.wizard;
+package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,7 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
+import org.protege.editor.owl.ui.ontology.imports.wizard.LibraryOntologiesList;
 
 
 /**

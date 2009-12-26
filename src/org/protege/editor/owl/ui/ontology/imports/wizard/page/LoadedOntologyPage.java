@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.ontology.imports.wizard;
+package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -19,6 +19,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
+import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 

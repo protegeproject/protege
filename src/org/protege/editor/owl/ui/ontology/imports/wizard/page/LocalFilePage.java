@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.ontology.imports.wizard;
+package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -22,6 +22,8 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.FilePathPanel;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
+import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 
 
 /**
