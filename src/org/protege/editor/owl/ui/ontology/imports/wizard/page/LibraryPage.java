@@ -1,21 +1,25 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
+import java.awt.Component;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
-import org.protege.editor.owl.ui.ontology.imports.wizard.LibraryOntologiesList;
+import org.protege.editor.owl.ui.ontology.imports.wizard.GetImportsVisitor;
+import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
+import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+import org.protege.xmlcatalog.entry.Entry;
 
 
 /**
@@ -31,10 +35,10 @@ public class LibraryPage extends AbstractOWLWizardPanel {
 
     private static final Logger logger = Logger.getLogger(LibraryPage.class);
 
-
     public static final String ID = "LibraryPage";
 
-    private LibraryOntologiesList list;
+    private JList importList;
+    private DefaultListModel importListModel;
 
 
     public LibraryPage(OWLEditorKit owlEditorKit) {
@@ -43,35 +47,50 @@ public class LibraryPage extends AbstractOWLWizardPanel {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("The list below shows ontologies that are contained in the available ontology " + "libraries.  To add or remove an ontology library, click the \"Ontology libraries...\" button.");
+        setInstructions("The list below shows ontologies that are contained in the available ontology libaries.  Select the ones you want to import.");;
         parent.setLayout(new BorderLayout());
-        list = new LibraryOntologiesList(getOWLModelManager());
-        JPanel listPanel = new JPanel(new BorderLayout(7, 7));
-        listPanel.add(ComponentFactory.createScrollPane(list), BorderLayout.NORTH);
-        listPanel.add(new JButton(new AbstractAction("Ontology libraries...") {
-            public void actionPerformed(ActionEvent e) {
-                OntologyLibraryPanel.showDialog(getOWLEditorKit());
-                // Rebuild the list
-                list.rebuildList();
-            }
-        }), BorderLayout.EAST);
-        parent.add(listPanel, BorderLayout.NORTH);
-        list.addListSelectionListener(new ListSelectionListener() {
+        importListModel = new DefaultListModel();
+        importList = new JList(importListModel);
+        importList.setCellRenderer(new Renderer());
+        calculatePossibleImports();
+        parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
+        importList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    getWizard().setNextFinishButtonEnabled(list.getSelectedIndex() != -1);
+                    getWizard().setNextFinishButtonEnabled(importList.getSelectedIndex() != -1);
                 }
             }
         });
+    }
+    
+    private void calculatePossibleImports() {
+        GetImportsVisitor getter = new GetImportsVisitor();
+        for (OntologyLibrary library : getOWLEditorKit().getOWLModelManager().getOntologyLibraryManager().getLibraries()) {
+            for (Entry e : library.getXmlCatalog().getEntries()) {
+                e.accept(getter);
+            }
+        }
+        importListModel.clear();
+        for (ImportInfo ii : getter.getImports()) {
+            importListModel.addElement(ii);
+        }
     }
 
 
     public void displayingPanel() {
         getWizard().setNextFinishButtonEnabled(false);
-        list.rebuildList();
-        list.requestFocus();
+        calculatePossibleImports();
     }
 
+    @Override
+    public void aboutToHidePanel() {
+        OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        wizard.clearImports();
+        for (int index : importList.getSelectedIndices()) {
+            wizard.addImport((ImportInfo) importListModel.getElementAt(index));
+        }
+        ((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+    }
 
     public Object getBackPanelDescriptor() {
         return ImportTypePage.ID;
@@ -80,5 +99,18 @@ public class LibraryPage extends AbstractOWLWizardPanel {
 
     public Object getNextPanelDescriptor() {
         return AnticipateOntologyIdPage.ID;
+    }
+    
+    private class Renderer extends DefaultListCellRenderer {
+        
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof ImportInfo) {
+                ImportInfo ii = (ImportInfo) value;
+                label.setText("<html>Import Declaration " + ii.getImportLocation() + "<p>from file " + ii.getPhysicalLocation() + "</p><br/></html>");
+            }
+            return label;
+        }
+        
     }
 }
