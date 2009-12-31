@@ -161,50 +161,22 @@ public class OntologyLibraryPanel extends JPanel {
             return;
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-        if (node.getUserObject() instanceof OntologyLibrary) {
+        Object o = node.getUserObject();
+        if (o instanceof OntologyLibrary) {
             return;
         }
-        else if (node.getUserObject() instanceof Entry) {
-            Entry entry = (Entry) node.getUserObject();
+        else if (o instanceof Entry) {
+            Entry entry = (Entry) o;
             JPopupMenu popupMenu = new JPopupMenu();
             
-            popupMenu.add(new DeleteRedirectAction(selectionPath));
+            if (o instanceof UriEntry) {
+                popupMenu.add(new EditUriAction(tree, selectionPath));
+            }
+            popupMenu.add(new DeleteRedirectAction(tree, selectionPath));
             
             popupMenu.show(tree, e.getX(), e.getY());
         }
     }
-
-    private class DeleteRedirectAction extends AbstractAction {
-        private TreePath selectionPath;
-        
-        public DeleteRedirectAction(TreePath selectionPath) {
-            super("Delete Library Entry");
-            this.selectionPath = selectionPath;
-        }
-        
-        public void actionPerformed(ActionEvent e) {
-            DefaultMutableTreeNode nodeToDelete = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-            boolean deleteFromTree = false;
-            Entry toDelete = (Entry) nodeToDelete.getUserObject();
-            Object o = ((DefaultMutableTreeNode) selectionPath.getParentPath().getLastPathComponent()).getUserObject();
-            
-            if (o instanceof OntologyLibrary) {
-                OntologyLibrary lib = (OntologyLibrary) o;
-                lib.getXmlCatalog().removeEntry(toDelete);
-                deleteFromTree = true;
-            }
-            else if (o instanceof GroupEntry) {
-                GroupEntry group = (GroupEntry) o;
-                group.removeEntry(toDelete);
-                deleteFromTree = true;
-            }
-            if (deleteFromTree)  {
-                ((DefaultTreeModel) tree.getModel()).removeNodeFromParent(nodeToDelete);
-                tree.repaint();
-            }
-        }
-    }
-    
     
     private OWLModelManager getOWLModelManager() {
         return owlEditorKit.getModelManager();
@@ -307,6 +279,18 @@ public class OntologyLibraryPanel extends JPanel {
         if (entry instanceof GroupEntry) {
             for (Entry groupEntry : ((GroupEntry) entry).getEntries()) {
                 insertEntryIntoTree(entryNode, groupEntry, traversed);
+            }
+        }
+        else if (entry instanceof NextCatalogEntry) {
+            try {
+                NextCatalogEntry subCatalog = (NextCatalogEntry) entry;
+                for (Entry subCatalogEntry : subCatalog.getParsedCatalog().getEntries()){
+                    insertEntryIntoTree(entryNode, subCatalogEntry, traversed);
+                }
+            }
+            catch (IOException ioe) {
+                ProtegeApplication.getErrorLog().logError(ioe);
+                logger.error("Found problem with sub catalog of ontology library");
             }
         }
     }
