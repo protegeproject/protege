@@ -52,7 +52,6 @@ public class EditUriAction extends AbstractAction {
         this.selectionPath = selectionPath;
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         XMLCatalog catalog = null;
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
@@ -104,17 +103,14 @@ public class EditUriAction extends AbstractAction {
             physicalLocation = new JTextField(entry.getAbsoluteURI().toString());
             panel1.add(physicalLocation);
             physicalLocation.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
                 public void insertUpdate(DocumentEvent e) {
                     invalidateOntologyName();
                 }
                 
-                @Override
                 public void removeUpdate(DocumentEvent e) {
                     invalidateOntologyName();
                 }
                 
-                @Override
                 public void changedUpdate(DocumentEvent e) {
                     invalidateOntologyName();
                 }
@@ -134,7 +130,6 @@ public class EditUriAction extends AbstractAction {
             JButton recalculateName = new JButton("Calculate Ontology Name");
             recalculateName.addActionListener(new ActionListener() {
                 
-                @Override
                 public void actionPerformed(ActionEvent e) {
                     updateOntologyName();
                 }
@@ -153,7 +148,6 @@ public class EditUriAction extends AbstractAction {
             add(useOntologyName = new JButton("Use Ontology Name for import declaration"));
             useOntologyName.addActionListener(new ActionListener() {
                 
-                @Override
                 public void actionPerformed(ActionEvent e) {
                     importedUri.setText(ontologyNameField.getText());
                 }
@@ -161,7 +155,6 @@ public class EditUriAction extends AbstractAction {
             add(useOntologyVersion = new JButton("Use Ontology Version for import declaration"));
             useOntologyVersion.addActionListener(new ActionListener() {
                 
-                @Override
                 public void actionPerformed(ActionEvent e) {
                     importedUri.setText(ontologyVersionField.getText());
                 }
@@ -232,7 +225,6 @@ public class EditUriAction extends AbstractAction {
             this.physicalLocation = physicalLocation;
         }
 
-        @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooser fileChooser = new JFileChooser();
             URI base = CatalogUtilities.resolveXmlBase(original);
