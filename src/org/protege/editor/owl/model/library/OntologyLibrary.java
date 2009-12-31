@@ -74,4 +74,6 @@ public interface OntologyLibrary {
      * Gets a memento that can be used to persist the library.
      */
      OntologyLibraryMemento getMemento();
+     
+     void save() throws IOException;
 }
