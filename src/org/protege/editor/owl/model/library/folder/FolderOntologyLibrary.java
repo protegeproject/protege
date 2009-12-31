@@ -73,11 +73,6 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
     }
 
 
-    public URI getPhysicalURI(IRI ontologyIRI) {
-        return CatalogUtilities.getRedirect(ontologyIRI.toURI(), getXmlCatalog());
-    }
-
-
     public void rebuild() throws IOException {
     	File catalogFile = new File(folder, CATALOG_NAME);
     	boolean existed = catalogFile.exists();
@@ -106,5 +101,4 @@ public class FolderOntologyLibrary extends AbstractOntologyLibrary {
         memento.putFile(FILE_KEY, folder);
         return memento;
     }
-
 }
