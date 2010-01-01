@@ -1,6 +1,9 @@
 package org.protege.editor.owl.ui.library;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,7 +11,6 @@ import java.io.IOException;
 import java.net.URI;
 
 import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -16,11 +18,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -60,7 +59,7 @@ public class EditUriAction extends AbstractAction {
         UriEntry entry = (UriEntry) node.getUserObject();
         EditPanel panel = new EditPanel(entry);
         JOptionPane pane = new JOptionPane(panel, JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-        JDialog dialog = pane.createDialog("Edit URI Redirect");
+        JDialog dialog = pane.createDialog(parent, "Edit URI Redirect");
         dialog.setVisible(true);
         Object value = pane.getValue();
         if (value != null && value.equals(new Integer(JOptionPane.OK_OPTION))) {
@@ -85,124 +84,39 @@ public class EditUriAction extends AbstractAction {
         private JTextField importedUri;
         private JTextField physicalLocation;
         
-        private JTextField ontologyNameField;
-        private JTextField ontologyVersionField;
-        private JButton useOntologyName;
-        private JButton useOntologyVersion;
-        
         public EditPanel(UriEntry entry) {
             original = entry;
-            setLayout(new BoxLayout(EditPanel.this, BoxLayout.Y_AXIS));
+            setLayout(new GridLayout(0,2));
             
-            JPanel panel1 = new JPanel(new GridLayout(0,2));
-            panel1.add(new JLabel("Imported Declaration: "));
+            add(new JLabel("Imported Declaration: "));
             importedUri = new JTextField(entry.getName());
-            panel1.add(importedUri);
-
-            panel1.add(new JLabel("Physical Location: "));
-            physicalLocation = new JTextField(entry.getAbsoluteURI().toString());
-            panel1.add(physicalLocation);
-            physicalLocation.getDocument().addDocumentListener(new DocumentListener() {
-                public void insertUpdate(DocumentEvent e) {
-                    invalidateOntologyName();
-                }
+            add(importedUri);
+            
+            add(new JLabel());
+            JButton updateImportedDeclaration = new JButton("Update Import Declaration Using Ontology Name");
+            add(updateImportedDeclaration);
+            updateImportedDeclaration.addActionListener(new ActionListener() {
                 
-                public void removeUpdate(DocumentEvent e) {
-                    invalidateOntologyName();
-                }
-                
-                public void changedUpdate(DocumentEvent e) {
-                    invalidateOntologyName();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JDialog panel = new GetOntologyNamePanel(EditPanel.this, importedUri, URI.create(physicalLocation.getText()));
+                    panel.setModalityType(ModalityType.APPLICATION_MODAL);
+                    panel.pack();
+                    panel.setVisible(true);
                 }
             });
+
+            add(new JLabel("Physical Location: "));
+            physicalLocation = new JTextField(entry.getAbsoluteURI().toString());
+            add(physicalLocation);
             
-            panel1.add(new JLabel());
+            add(new JLabel());
             JButton fileButton = new JButton("Browse");
             fileButton.addActionListener(new ChooseFileAction(EditPanel.this, original, physicalLocation));
-            panel1.add(fileButton);
-            
-            add(panel1);
-            
-            add(new JSeparator());
-            
-            JPanel panel2 = new JPanel(new GridLayout(0,2));
-            
-            JButton recalculateName = new JButton("Calculate Ontology Name");
-            recalculateName.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    updateOntologyName();
-                }
-            });
-            panel2.add(recalculateName);
-            panel2.add(new JLabel());
-            
-            panel2.add(new JLabel("Ontology Name:"));
-            panel2.add(ontologyNameField = new JTextField());
-            
-            panel2.add(new JLabel("Ontology Version: "));
-            panel2.add(ontologyVersionField = new JTextField());
-            
-            add(panel2);
+            add(fileButton);
+        }
+        
 
-            add(useOntologyName = new JButton("Use Ontology Name for import declaration"));
-            useOntologyName.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    importedUri.setText(ontologyNameField.getText());
-                }
-            });
-            add(useOntologyVersion = new JButton("Use Ontology Version for import declaration"));
-            useOntologyVersion.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    importedUri.setText(ontologyVersionField.getText());
-                }
-            });
-        }
-        
-        private void invalidateOntologyName() {
-            ontologyNameField.setText(UNKNOWN);
-            ontologyVersionField.setText(UNKNOWN);
-            useOntologyName.setEnabled(false);
-            useOntologyVersion.setEnabled(false);
-        }
-
-        
-        private void updateOntologyName() {
-            try {
-                ontologyNameField.setText(CALCULATING); // if it becomes multi-threaded
-                ontologyVersionField.setText(CALCULATING);
-                MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-                extractor.setPhysicalAddress(URI.create(physicalLocation.getText()));
-                OWLOntologyID id = extractor.getOntologyId();
-                ontologyNameField.setText(id.getOntologyIRI().toString());
-                if (id.getVersionIRI() != null) {
-                    ontologyVersionField.setText(id.getVersionIRI().toString());
-                }
-                else {
-                    ontologyVersionField.setText(NO_VERSION);
-                }
-            }
-            catch (Throwable t) {
-                ontologyNameField.setText(NO_PARSE);
-                ontologyVersionField.setText(NO_PARSE);
-            }
-            updateUseOntologyNameButtonsEnabled();
-        }
-        
-        private void updateUseOntologyNameButtonsEnabled() {
-            useOntologyName.setEnabled(isValidOntologyNameOrVersion(ontologyNameField.getText()));
-            useOntologyVersion.setEnabled(isValidOntologyNameOrVersion(ontologyVersionField.getText()));
-        }
-        
-        private boolean isValidOntologyNameOrVersion(String name) {
-            return !(name == null 
-                     || name.equals(UNKNOWN) 
-                     || name.equals(CALCULATING)
-                     || name.equals(NO_PARSE)
-                     || name.equals(NO_VERSION));
-        }
         
         public UriEntry getUriEntry() {
             URI base = CatalogUtilities.resolveXmlBase(original);
@@ -237,6 +151,96 @@ public class EditUriAction extends AbstractAction {
                 physicalLocation.setText(fileChooser.getSelectedFile().toURI().toString());
             }
         }
+    }
+    
+    private class GetOntologyNamePanel extends JDialog {        
+        private JTextField ontologyNameField;
+        private JTextField ontologyVersionField;
+        private JButton useOntologyName;
+        private JButton useOntologyVersion;
+        
+        public GetOntologyNamePanel(JComponent parent, final JTextField importedUri, URI physicalLocation) {
+            super(JOptionPane.getFrameForComponent(parent), "Update Import Declaration Using Ontology Name");
+            
+            getContentPane().setLayout(new BorderLayout());
+            JPanel centerPanel = new JPanel(new GridLayout(0,2));
+
+            centerPanel.add(new JLabel("Ontology Name:"));
+            centerPanel.add(ontologyNameField = new JTextField());
+
+            centerPanel.add(new JLabel("Ontology Version: "));
+            centerPanel.add(ontologyVersionField = new JTextField());
+
+            getContentPane().add(centerPanel, BorderLayout.CENTER);
+
+            JPanel southPanel = new JPanel(new FlowLayout());
+            southPanel.add(useOntologyName = new JButton("Use Ontology Name"));
+            useOntologyName.addActionListener(new ActionListener() {
+                
+                public void actionPerformed(ActionEvent e) {
+                    importedUri.setText(ontologyNameField.getText());
+                    setVisible(false);
+                }
+            });
+            southPanel.add(useOntologyVersion = new JButton("Use Ontology Version"));
+            useOntologyVersion.addActionListener(new ActionListener() {
+                
+                public void actionPerformed(ActionEvent e) {
+                    importedUri.setText(ontologyVersionField.getText());
+                    setVisible(false);
+                }
+            });
+            
+            JButton cancel = new JButton("Cancel");
+            southPanel.add(cancel);
+            cancel.addActionListener(new ActionListener() {
+                
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                }
+            });
+            
+            getContentPane().add(southPanel, BorderLayout.SOUTH);
+
+            updateOntologyName(physicalLocation);
+        }
+
+        
+        private void updateOntologyName(URI physicalLocation) {
+            try {
+                ontologyNameField.setText(CALCULATING); // if it becomes multi-threaded
+                ontologyVersionField.setText(CALCULATING);
+                MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
+                extractor.setPhysicalAddress(physicalLocation);
+                OWLOntologyID id = extractor.getOntologyId();
+                ontologyNameField.setText(id.getOntologyIRI().toString());
+                if (id.getVersionIRI() != null) {
+                    ontologyVersionField.setText(id.getVersionIRI().toString());
+                }
+                else {
+                    ontologyVersionField.setText(NO_VERSION);
+                }
+            }
+            catch (Throwable t) {
+                ontologyNameField.setText(NO_PARSE);
+                ontologyVersionField.setText(NO_PARSE);
+            }
+            updateUseOntologyNameButtonsEnabled();
+        }
+        
+        private void updateUseOntologyNameButtonsEnabled() {
+            useOntologyName.setEnabled(isValidOntologyNameOrVersion(ontologyNameField.getText()));
+            useOntologyVersion.setEnabled(isValidOntologyNameOrVersion(ontologyVersionField.getText()));
+        }
+        
+        private boolean isValidOntologyNameOrVersion(String name) {
+            return !(name == null 
+                     || name.equals(UNKNOWN) 
+                     || name.equals(CALCULATING)
+                     || name.equals(NO_PARSE)
+                     || name.equals(NO_VERSION));
+        }
+
     }
 }
 
