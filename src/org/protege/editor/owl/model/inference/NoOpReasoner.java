@@ -210,72 +210,58 @@ public class NoOpReasoner implements OWLReasoner {
         return true;
     }
 
-    @Override
     public Node<OWLClass> getBottomClassNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Node<OWLDataProperty> getBottomDataPropertyNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Node<OWLObjectProperty> getBottomObjectPropertyNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public NodeSet<OWLNamedIndividual> getDifferentIndividuals(OWLNamedIndividual ind) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce, boolean direct) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public NodeSet<OWLObjectProperty> getDisjointObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public IndividualNodeSetPolicy getIndividualNodeSetPolicy() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public String getReasonerName() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Version getReasonerVersion() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Node<OWLClass> getTopClassNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Node<OWLDataProperty> getTopDataPropertyNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public Node<OWLObjectProperty> getTopObjectPropertyNode() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
     public UndeclaredEntityPolicy getUndeclaredEntityPolicy() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
