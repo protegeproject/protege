@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.library;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -97,10 +96,8 @@ public class EditUriAction extends AbstractAction {
             add(updateImportedDeclaration);
             updateImportedDeclaration.addActionListener(new ActionListener() {
                 
-                @Override
                 public void actionPerformed(ActionEvent e) {
                     JDialog panel = new GetOntologyNamePanel(EditPanel.this, importedUri, URI.create(physicalLocation.getText()));
-                    panel.setModalityType(ModalityType.APPLICATION_MODAL);
                     panel.pack();
                     panel.setVisible(true);
                 }
