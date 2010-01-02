@@ -2,8 +2,6 @@ package org.protege.editor.owl.model;
 
 import org.semanticweb.owlapi.model.IRI;
 
-import java.net.URI;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -18,9 +16,9 @@ import java.net.URI;
  */
 public class MissingImportHandlerImpl implements MissingImportHandler {
 
-    public URI getPhysicalURI(IRI ontologyIRI) {
+    public IRI getDocumentIRI(IRI ontologyIRI) {
         // Do nothing - just pass back the ontology URI and
         // hope that it can be resolved.
-        return ontologyIRI.toURI();
+        return ontologyIRI;
     }
 }

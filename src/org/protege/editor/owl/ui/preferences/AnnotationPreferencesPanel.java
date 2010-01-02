@@ -48,7 +48,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
         Box box = new Box(BoxLayout.Y_AXIS);
         Set<OWLAnnotationProperty> annotationProperties = new TreeSet<OWLAnnotationProperty>();
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            annotationProperties.addAll(ont.getReferencedAnnotationProperties());
+            annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
         }
         checkBoxURIMap = new HashMap<JCheckBox, URI>();
         for (OWLAnnotationProperty property : annotationProperties) {

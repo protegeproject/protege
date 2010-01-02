@@ -53,7 +53,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
         }
         // @@TODO support for anonymous individuals
         if (!ax.getObject().isAnonymous()){
-            individualSelectorPanel.setSelection(ax.getObject().asNamedIndividual());
+            individualSelectorPanel.setSelection(ax.getObject().asOWLNamedIndividual());
         }
     }
 
@@ -86,7 +86,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
             if (!editedObject.getProperty().isAnonymous() &&
                 !editedObject.getIndividual().isAnonymous()){
                 objectPropertyPanel.setSelection(editedObject.getProperty().asOWLObjectProperty());
-                individualSelectorPanel.setSelection(editedObject.getIndividual().asNamedIndividual());
+                individualSelectorPanel.setSelection(editedObject.getIndividual().asOWLNamedIndividual());
             }
             else{
                 return false;

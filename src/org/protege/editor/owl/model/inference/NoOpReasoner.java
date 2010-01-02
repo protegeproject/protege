@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
@@ -20,12 +21,14 @@ import org.semanticweb.owlapi.reasoner.AxiomNotInProfileException;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.ClassExpressionNotInProfileException;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 import org.semanticweb.owlapi.reasoner.UndeclaredEntitiesException;
+import org.semanticweb.owlapi.reasoner.UndeclaredEntityPolicy;
 import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;
@@ -35,6 +38,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
+import org.semanticweb.owlapi.util.Version;
 
 
 /**
@@ -204,6 +208,76 @@ public class NoOpReasoner implements OWLReasoner {
 
     public boolean isSatisfiable(OWLClassExpression classExpression) throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, UndeclaredEntitiesException, InconsistentOntologyException {
         return true;
+    }
+
+    @Override
+    public Node<OWLClass> getBottomClassNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Node<OWLDataProperty> getBottomDataPropertyNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Node<OWLObjectProperty> getBottomObjectPropertyNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public NodeSet<OWLNamedIndividual> getDifferentIndividuals(OWLNamedIndividual ind) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce, boolean direct) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public NodeSet<OWLObjectProperty> getDisjointObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, UndeclaredEntitiesException, ReasonerInterruptedException, TimeOutException {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public IndividualNodeSetPolicy getIndividualNodeSetPolicy() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public String getReasonerName() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Version getReasonerVersion() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Node<OWLClass> getTopClassNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Node<OWLDataProperty> getTopDataPropertyNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public Node<OWLObjectProperty> getTopObjectPropertyNode() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public UndeclaredEntityPolicy getUndeclaredEntityPolicy() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 }

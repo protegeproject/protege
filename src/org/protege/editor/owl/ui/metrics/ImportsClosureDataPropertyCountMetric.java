@@ -23,7 +23,7 @@ public class ImportsClosureDataPropertyCountMetric extends AbstractIntegerMetric
     protected int getIntMetric() {
         Set<OWLDataProperty> clses = new HashSet<OWLDataProperty>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            clses.addAll(ont.getReferencedDataProperties());
+            clses.addAll(ont.getDataPropertiesInSignature());
         }
         return clses.size();
     }

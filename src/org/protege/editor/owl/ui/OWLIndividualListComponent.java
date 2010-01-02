@@ -133,7 +133,7 @@ public class OWLIndividualListComponent extends JPanel {
     private void refill() {
         individualsInList.clear();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            individualsInList.addAll(ont.getReferencedIndividuals());
+            individualsInList.addAll(ont.getIndividualsInSignature());
         }
         reset();
     }

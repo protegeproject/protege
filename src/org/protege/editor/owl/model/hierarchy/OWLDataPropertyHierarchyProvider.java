@@ -43,12 +43,12 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
      * @param ont The ontology
      */
     protected Set<? extends OWLDataProperty> getReferencedProperties(OWLOntology ont) {
-        return ont.getReferencedDataProperties();
+        return ont.getDataPropertiesInSignature();
     }
 
 
     protected boolean containsReference(OWLOntology ont, OWLDataProperty prop) {
-        return ont.containsDataPropertyReference(prop.getIRI());
+        return ont.containsDataPropertyInSignature(prop.getIRI());
     }
 
 

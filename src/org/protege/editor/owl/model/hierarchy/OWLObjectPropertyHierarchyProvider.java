@@ -44,7 +44,7 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
      * @param ont The ontology
      */
     protected Set<? extends OWLObjectProperty> getReferencedProperties(OWLOntology ont) {
-        return ont.getReferencedObjectProperties();
+        return ont.getObjectPropertiesInSignature();
     }
 
 
@@ -59,6 +59,6 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
 
 
     protected boolean containsReference(OWLOntology ont, OWLObjectProperty prop) {
-        return ont.containsObjectPropertyReference(prop.getIRI());
+        return ont.containsObjectPropertyInSignature(prop.getIRI());
     }
 }

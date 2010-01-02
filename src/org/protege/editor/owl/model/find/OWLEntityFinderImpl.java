@@ -184,22 +184,22 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
 
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsClassReference(iri)){
+            if (ont.containsClassInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLClass(iri));
             }
-            if (ont.containsObjectPropertyReference(iri)){
+            if (ont.containsObjectPropertyInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLObjectProperty(iri));
             }
-            if (ont.containsDataPropertyReference(iri)){
+            if (ont.containsDataPropertyInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLDataProperty(iri));
             }
-            if (ont.containsIndividualReference(iri)){
+            if (ont.containsIndividualInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLNamedIndividual(iri));
             }
-            if (ont.containsAnnotationPropertyReference(iri)){
+            if (ont.containsAnnotationPropertyInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLAnnotationProperty(iri));
             }
-            if (ont.containsDatatypeReference(iri)){
+            if (ont.containsDatatypeInSignature(iri)){
                 entities.add(mngr.getOWLDataFactory().getOWLDatatype(iri));
             }
         }
@@ -319,22 +319,22 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             Set<T> entities = new HashSet<T>();
             for (OWLOntology ont: mngr.getActiveOntologies()){
                 if (type.equals(OWLClass.class)){
-                    entities.addAll((Set<T>)ont.getReferencedClasses());
+                    entities.addAll((Set<T>)ont.getClassesInSignature());
                 }
                 else if (type.equals(OWLObjectProperty.class)){
-                    entities.addAll((Set<T>)ont.getReferencedObjectProperties());
+                    entities.addAll((Set<T>)ont.getObjectPropertiesInSignature());
                 }
                 else if (type.equals((OWLDataProperty.class))){
-                    entities.addAll((Set<T>)ont.getReferencedDataProperties());
+                    entities.addAll((Set<T>)ont.getDataPropertiesInSignature());
                 }
                 else if (type.equals(OWLIndividual.class)){
-                    entities.addAll((Set<T>)ont.getReferencedIndividuals());
+                    entities.addAll((Set<T>)ont.getIndividualsInSignature());
                 }
                 else if (type.equals(OWLAnnotationProperty.class)){
-                    entities.addAll((Set<T>)ont.getReferencedAnnotationProperties());
+                    entities.addAll((Set<T>)ont.getAnnotationPropertiesInSignature());
                 }
                 else if (type.equals(OWLDatatype.class)){
-                    entities.addAll((Set<T>)ont.getReferencedDatatypes());
+                    entities.addAll((Set<T>)ont.getDatatypesInSignature());
                 }
             }
             return entities;

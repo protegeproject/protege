@@ -204,7 +204,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
             matches = new HashSet<OWLEntity>();
             Set<OWLEntity> ents = new HashSet<OWLEntity>();
             for (OWLOntology ont : getOntologies()){
-                ents.addAll(ont.getReferencedEntities());
+                ents.addAll(ont.getSignature());
             }
             OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
             String matchingVal = getFindValue();
@@ -241,7 +241,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private void refreshMap() {
         for (OWLOntology ont : getOntologies()){
-            for (OWLEntity entity : ont.getReferencedEntities()){
+            for (OWLEntity entity : ont.getSignature()){
                 extractNSFromEntity(entity);
             }
         }

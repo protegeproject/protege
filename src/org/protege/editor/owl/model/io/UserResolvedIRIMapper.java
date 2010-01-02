@@ -60,10 +60,10 @@ public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
     }
 
 
-    public URI getPhysicalURI(IRI ontologyIRI) {
+    public IRI getDocumentIRI(IRI ontologyIRI) {
         if (resolvedMissingImports.containsKey(ontologyIRI)) {
             // Already resolved the missing import - don't ask again
-            return resolvedMissingImports.get(ontologyIRI);
+            return IRI.create(resolvedMissingImports.get(ontologyIRI));
         }
         else {
 
@@ -71,12 +71,12 @@ public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
             if (resolvedURI != null) {
                 resolvedMissingImports.put(ontologyIRI, resolvedURI);
             }
-            return resolvedURI;
+            return IRI.create(resolvedURI);
         }
     }
 
     private URI resolveMissingImport(IRI ontologyIRI) {
-        return missingImportHandler.getPhysicalURI(ontologyIRI);
+        return missingImportHandler.getDocumentIRI(ontologyIRI).toURI();
     }
 
 

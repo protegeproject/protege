@@ -70,7 +70,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         splitPane.setRightComponent(tabbedPane);
         splitPane.setBorder(null);
         loadEditors();
-        lastSelectedProperty = mngr.getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getURI());
+        lastSelectedProperty = mngr.getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI());
 
         annotationPropertySelector.addSelectionListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event) {

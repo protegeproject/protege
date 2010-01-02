@@ -42,7 +42,7 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
         	if (individuals != null) {
         		for (OWLIndividual ind : individuals.getFlattened()){
         			if (!ind.isAnonymous()){
-        				individualsInList.add(ind.asNamedIndividual());
+        				individualsInList.add(ind.asOWLNamedIndividual());
         			}
         		}
         	}

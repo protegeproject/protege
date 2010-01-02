@@ -82,21 +82,21 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         owlClassMap.put(entityRenderer.render(nothing), nothing);
 
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
-            for (OWLClass cls : ont.getReferencedClasses()) {
+            for (OWLClass cls : ont.getClassesInSignature()) {
                 addRendering(cls, owlClassMap);
             }
-            for (OWLObjectProperty prop : ont.getReferencedObjectProperties()) {
+            for (OWLObjectProperty prop : ont.getObjectPropertiesInSignature()) {
                 addRendering(prop, owlObjectPropertyMap);
             }
-            for (OWLDataProperty prop : ont.getReferencedDataProperties()) {
+            for (OWLDataProperty prop : ont.getDataPropertiesInSignature()) {
                 addRendering(prop, owlDataPropertyMap);
             }
-            for (OWLIndividual ind : ont.getReferencedIndividuals()) {
+            for (OWLIndividual ind : ont.getIndividualsInSignature()) {
                 if (!ind.isAnonymous()){
-                    addRendering(ind.asNamedIndividual(), owlIndividualMap);
+                    addRendering(ind.asOWLNamedIndividual(), owlIndividualMap);
                 }
             }
-            for (OWLAnnotationProperty prop : ont.getReferencedAnnotationProperties()) {
+            for (OWLAnnotationProperty prop : ont.getAnnotationPropertiesInSignature()) {
                 addRendering(prop, owlAnnotationPropertyMap);
             }
         }
@@ -106,7 +106,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
             addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
         for (URI uri : DublinCoreVocabulary.ALL_URIS){
-            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(uri)), owlAnnotationPropertyMap);
         }
 
         // datatypes
@@ -273,7 +273,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     public void updateRendering(final OWLEntity ent) {
         boolean updateRendering = false;
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
-            if (ont.containsEntityReference(ent)) {
+            if (ont.containsEntityInSignature(ent)) {
                 updateRendering = true;
                 break;
             }

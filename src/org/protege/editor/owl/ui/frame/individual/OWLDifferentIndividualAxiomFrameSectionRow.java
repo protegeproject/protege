@@ -52,7 +52,7 @@ public class OWLDifferentIndividualAxiomFrameSectionRow extends AbstractOWLFrame
         List<OWLNamedIndividual> results = new ArrayList<OWLNamedIndividual>();
         for (OWLIndividual ind : individuals){
             if (!ind.isAnonymous() && !ind.equals(getRootObject())){
-                results.add(ind.asNamedIndividual());
+                results.add(ind.asOWLNamedIndividual());
             }
         }
         return results;

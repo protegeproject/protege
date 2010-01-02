@@ -193,22 +193,22 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
             if (axiom.getSubject() instanceof IRI){
                 IRI subjectIRI = (IRI)axiom.getSubject();
                 for (OWLOntology ont : owlModelManager.getActiveOntologies()){
-                    if (ont.containsClassReference(subjectIRI)){
+                    if (ont.containsClassInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLClass(subjectIRI));
                     }
-                    if (ont.containsObjectPropertyReference(subjectIRI)){
+                    if (ont.containsObjectPropertyInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectIRI));
                     }
-                    if (ont.containsDataPropertyReference(subjectIRI)){
+                    if (ont.containsDataPropertyInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectIRI));
                     }
-                    if (ont.containsIndividualReference(subjectIRI)){
+                    if (ont.containsIndividualInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectIRI));
                     }
-                    if (ont.containsAnnotationPropertyReference(subjectIRI)){
+                    if (ont.containsAnnotationPropertyInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectIRI));
                     }
-                    if (ont.containsDatatypeReference(subjectIRI)){
+                    if (ont.containsDatatypeInSignature(subjectIRI)){
                         add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectIRI));
                     }
                 }
@@ -233,14 +233,14 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLClassAssertionAxiom axiom) {
             if (!axiom.getIndividual().isAnonymous()){
-                axiom.getIndividual().asNamedIndividual().accept(this);
+                axiom.getIndividual().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLDataPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
-                axiom.getSubject().asNamedIndividual().accept(this);
+                axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
@@ -268,7 +268,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         public void visit(OWLDifferentIndividualsAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
                 if (!ind.isAnonymous()){
-                    ind.asNamedIndividual().accept(this);
+                    ind.asOWLNamedIndividual().accept(this);
                 }
             }
         }
@@ -384,21 +384,21 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
-                axiom.getSubject().asNamedIndividual().accept(this);
+                axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
-                axiom.getSubject().asNamedIndividual().accept(this);
+                axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLObjectPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
-                axiom.getSubject().asNamedIndividual().accept(this);
+                axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
@@ -431,7 +431,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         public void visit(OWLSameIndividualAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
                 if (!ind.isAnonymous()){
-                    ind.asNamedIndividual().accept(this);
+                    ind.asOWLNamedIndividual().accept(this);
                 }
             }
         }
