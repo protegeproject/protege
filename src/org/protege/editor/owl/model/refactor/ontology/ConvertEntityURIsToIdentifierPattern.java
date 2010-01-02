@@ -209,7 +209,7 @@ public class ConvertEntityURIsToIdentifierPattern {
     private Set<OWLEntity> getAllReferencedEntities() {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         for(OWLOntology ont : ontologies) {
-            entities.addAll(ont.getReferencedEntities());
+            entities.addAll(ont.getSignature());
         }
         entities.remove(mngr.getOWLDataFactory().getOWLThing());
         return entities;

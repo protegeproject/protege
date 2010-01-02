@@ -38,6 +38,6 @@ public class ClassCountMetric extends AbstractIntegerMetric {
 
 
     protected int getIntMetric() {
-        return getOWLModelManager().getActiveOntology().getReferencedClasses().size();
+        return getOWLModelManager().getActiveOntology().getClassesInSignature().size();
     }
 }

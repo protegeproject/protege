@@ -1,5 +1,12 @@
 package org.protege.editor.owl;
 
+import java.io.File;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ProtegeApplication;
@@ -21,15 +28,14 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLOntologyStorerNotFoundException;
 import org.semanticweb.owlapi.util.VersionInfo;
-
-import java.io.File;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -218,7 +224,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         File file = getSaveAsOWLFile(ont);
         if (file != null){
             man.setOntologyFormat(ont, format);
-            man.setPhysicalURIForOntology(ont, file.toURI());
+            man.setOntologyDocumentIRI(ont, IRI.create(file));
             getModelManager().save(ont);
             addRecent(file.toURI());
             return true;

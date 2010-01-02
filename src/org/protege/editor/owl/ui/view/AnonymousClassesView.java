@@ -102,7 +102,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
         Set<AnonymousClassItem> clses = new HashSet<AnonymousClassItem>();
         AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
         if (ADCManager != null){
-            for (OWLClass cls : activeOntology.getReferencedClasses()){
+            for (OWLClass cls : activeOntology.getClassesInSignature()){
                 if (ADCManager.isAnonymous(cls)){
                     clses.add(new AnonymousClassItem(cls));
                 }

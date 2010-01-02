@@ -86,7 +86,7 @@ public class LoadedOntologyPage extends AbstractOWLWizardPanel {
         	OWLOntology ontology = (OWLOntology) o;
         	ImportInfo parameter = new ImportInfo();
         	parameter.setOntologyID(ontology.getOntologyID());
-        	parameter.setPhysicalLocation(getOWLModelManager().getOWLOntologyManager().getPhysicalURIForOntology(ontology));
+        	parameter.setPhysicalLocation(getOWLModelManager().getOWLOntologyManager().getOntologyDocumentIRI(ontology).toURI());
         	parameter.setImportLocation(ontology.getOntologyID().getDefaultDocumentIRI());
         	wizard.addImport(parameter);
         }

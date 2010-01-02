@@ -104,24 +104,24 @@ public class IRIAnnotationValueEditor implements OWLObjectEditor<IRI> {
         if (object != null){
             final OWLDataFactory df = eKit.getOWLModelManager().getOWLDataFactory();
             for (OWLOntology ont : eKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsClassReference(object)){
-                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLClass(object.toURI())));
+                if (ont.containsClassInSignature(object)){
+                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLClass(object)));
                     break;
                 }
-                else if (ont.containsObjectPropertyReference(object)){
-                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLObjectProperty(object.toURI())));
+                else if (ont.containsObjectPropertyInSignature(object)){
+                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLObjectProperty(object)));
                     break;
                 }
-                else if (ont.containsDataPropertyReference(object)){
-                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLDataProperty(object.toURI())));
+                else if (ont.containsDataPropertyInSignature(object)){
+                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLDataProperty(object)));
                     break;
                 }
-                else if (ont.containsIndividualReference(object)){
-                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLNamedIndividual(object.toURI())));
+                else if (ont.containsIndividualInSignature(object)){
+                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLNamedIndividual(object)));
                     break;
                 }
-                else if (ont.containsAnnotationPropertyReference(object)){
-                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLAnnotationProperty(object.toURI())));
+                else if (ont.containsAnnotationPropertyInSignature(object)){
+                    entitySelectorPanel.setSelection(Collections.singleton(df.getOWLAnnotationProperty(object)));
                     break;
                 }
             }

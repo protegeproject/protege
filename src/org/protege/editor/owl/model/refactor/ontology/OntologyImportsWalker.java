@@ -62,7 +62,7 @@ public class OntologyImportsWalker {
     private Set<OWLOntology> getReferencingOntologies(OWLEntity entity) {
         Set<OWLOntology> referencingOntologies = new HashSet<OWLOntology>();
         for (OWLOntology ont : ontologies){
-            if (ont.containsEntityReference(entity)){
+            if (ont.containsEntityInSignature(entity)){
                 referencingOntologies.add(ont);
             }
         }

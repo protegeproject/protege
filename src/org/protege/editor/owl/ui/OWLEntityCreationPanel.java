@@ -215,7 +215,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             String warningMessage = null;
 
             for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsEntityReference(iri)){
+                if (ont.containsEntityInSignature(iri)){
                     warningMessage = "Warning: this is a pun for an existing entity.";
                     break;
                 }

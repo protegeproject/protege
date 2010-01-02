@@ -71,7 +71,7 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
     }
 
 
-    public URI getPhysicalURI(IRI logicalURI) {
+    public IRI getDocumentIRI(IRI logicalURI) {
     	List<OntologyLibrary> toRemove = new ArrayList<OntologyLibrary>();
     	URI uri;
     	// Search auto mapped libraries
@@ -79,11 +79,11 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
     	    if (lib.contains(logicalURI)) {
     	        uri = lib.getPhysicalURI(logicalURI);
     	        // Map the URI
-    	        mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, uri));
+    	        mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, IRI.create(uri)));
     	        if (logger.isInfoEnabled()) {
     	            logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
     	        }
-    	        return uri;
+    	        return IRI.create(uri);
     	    }
     	}
     	automappedLibraries.removeAll(toRemove);

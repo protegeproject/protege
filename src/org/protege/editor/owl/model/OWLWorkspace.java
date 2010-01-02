@@ -283,7 +283,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         for (OWLEntity entity : entities) {
             if (entity != null) {
                 for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-                    if (ont.containsEntityReference(entity)) {
+                    if (ont.containsEntityInSignature(entity)) {
                         unreferencedEntities.remove(entity);
                         break;
                     }

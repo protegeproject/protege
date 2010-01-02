@@ -38,6 +38,6 @@ public class DataPropertyCountMetric extends AbstractIntegerMetric {
 
 
     protected int getIntMetric() {
-        return getOWLModelManager().getActiveOntology().getReferencedDataProperties().size();
+        return getOWLModelManager().getActiveOntology().getDataPropertiesInSignature().size();
     }
 }

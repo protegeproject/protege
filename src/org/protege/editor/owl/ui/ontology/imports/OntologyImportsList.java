@@ -112,7 +112,7 @@ public class OntologyImportsList extends MList {
         		IRI importLocation = importParameters.getImportLocation();
         		URI physicalLocation = importParameters.getPhysicalLocation();
         		if (!importLocation.equals(physicalLocation)) {
-        			manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
+        			manager.addIRIMapper(new SimpleIRIMapper(importLocation, IRI.create(physicalLocation)));
         		}
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
                 changes.add(new AddImport(ont, decl));
@@ -128,7 +128,7 @@ public class OntologyImportsList extends MList {
                 		logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
                 		continue;
                 	}
-                	eKit.addRecent(manager.getPhysicalURIForOntology(importedOnt));
+                	eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                 	eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
                 }
                 catch (OWLOntologyCreationException ooce) {

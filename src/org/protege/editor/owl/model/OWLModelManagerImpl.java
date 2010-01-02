@@ -317,10 +317,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
         	
             // Set up a mapping from the ontology URI to the physical URI
         	if (id.getVersionIRI() != null) {
-        		manager.addIRIMapper(new SimpleIRIMapper(id.getVersionIRI(), uri));
+        		manager.addIRIMapper(new SimpleIRIMapper(id.getVersionIRI(), IRI.create(uri)));
         	}
         	else {
-        		manager.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), uri));
+        		manager.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), IRI.create(uri)));
         	}
             
             if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
@@ -335,8 +335,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public void startedLoadingOntology(LoadingStartedEvent event) {
-        System.out.println("loading " + event.getOntologyID() + " from " + event.getPhysicalURI());
-        fireBeforeLoadEvent(event.getOntologyID(), event.getPhysicalURI());
+        logger.info("loading " + event.getOntologyID() + " from " + event.getDocumentIRI());
+        fireBeforeLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
 
@@ -346,7 +346,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             if (loadErrorHandler != null){
                 try {
                     loadErrorHandler.handleErrorLoadingOntology(event.getOntologyID(),
-                                                                event.getPhysicalURI(),
+                                                                event.getDocumentIRI().toURI(),
                                                                 e);
                 }
                 catch (Throwable e1) {
@@ -355,7 +355,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 }
             }
         }
-        fireAfterLoadEvent(event.getOntologyID(), event.getPhysicalURI());
+        fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
 
@@ -435,17 +435,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
-        return manager.getPhysicalURIForOntology(ontology);
+        return manager.getOntologyDocumentIRI(ontology).toURI();
     }
 
 
     public void setPhysicalURI(OWLOntology ontology, URI physicalURI) {
-        manager.setPhysicalURIForOntology(ontology, physicalURI);
+        manager.setOntologyDocumentIRI(ontology, IRI.create(physicalURI));
     }
 
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
-        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), physicalURI));
+        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
         OWLOntology ont = manager.createOntology(ontologyID);
         dirtyOntologies.add(ont);
         setActiveOntology(ont);
@@ -456,7 +456,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
         manager.removeOntology(ont);
-        ont = manager.loadOntologyFromPhysicalURI(getOntologyPhysicalURI(ont));
+        ont = manager.loadOntologyFromOntologyDocument(IRI.create(getOntologyPhysicalURI(ont)));
 
         fireEvent(EventType.ONTOLOGY_RELOADED);
         setActiveOntology(ont, true);
@@ -508,7 +508,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public void save(OWLOntology ont) throws OWLOntologyStorageException {
-        final URI physicalURI = manager.getPhysicalURIForOntology(ont);
+        final URI physicalURI = manager.getOntologyDocumentIRI(ont).toURI();
 
         try{
             fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
@@ -519,9 +519,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 }
 
                 // the OWLAPI v3 saves to a temp file now
-                manager.saveOntology(ont, manager.getOntologyFormat(ont), physicalURI);
+                manager.saveOntology(ont, manager.getOntologyFormat(ont), IRI.create(physicalURI));
 
-                manager.setPhysicalURIForOntology(ont, physicalURI);
+                manager.setOntologyDocumentIRI(ont, IRI.create(physicalURI));
             }
             catch (IOException e) {
                 throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);

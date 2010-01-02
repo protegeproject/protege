@@ -54,7 +54,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
     protected void addAxiom(OWLClassAssertionAxiom ax, OWLOntology ont) {
         addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(), this, ont, getRootObject(), ax));
         if (!ax.getIndividual().isAnonymous()){
-            added.add(ax.getIndividual().asNamedIndividual());
+            added.add(ax.getIndividual().asOWLNamedIndividual());
         }
     }
 
@@ -80,13 +80,13 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
         NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
         if (instances != null) {
         	for (OWLIndividual ind : instances.getFlattened()) {
-        		if (!ind.isAnonymous() && !added.contains(ind.asNamedIndividual())) {
+        		if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
         			addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
         					this,
         					null,
         					getRootObject(),
         					df.getOWLClassAssertionAxiom(getRootObject(), ind)));
-        			added.add(ind.asNamedIndividual());
+        			added.add(ind.asOWLNamedIndividual());
         		}
         	}
         }

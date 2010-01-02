@@ -35,7 +35,7 @@ public class AllDifferentCreator {
     public List<OWLOntologyChange> getChanges() {
         Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
         for(OWLOntology ont : ontologies) {
-            individuals.addAll(ont.getReferencedIndividuals());
+            individuals.addAll(ont.getIndividualsInSignature());
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         if(!individuals.isEmpty()) {

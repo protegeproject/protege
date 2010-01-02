@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.ui.GatherOntologiesPanel;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -36,7 +37,7 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
             if (format == null) {
                 format = man.getOntologyFormat(ont);
             }
-            URI originalPhysicalURI = man.getPhysicalURIForOntology(ont);
+            URI originalPhysicalURI = man.getOntologyDocumentIRI(ont).toURI();
             String originalPath = originalPhysicalURI.getPath();
             if (originalPath == null) {
                 originalPath = System.currentTimeMillis() + ".owl";
@@ -45,7 +46,7 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
             String originalFileName = originalFile.getName();
             File saveAsFile = new File(saveAsLocation, originalFileName);
             try {
-                man.saveOntology(ont, format, saveAsFile.toURI());
+                man.saveOntology(ont, format, IRI.create(saveAsFile));
             }
             catch (OWLOntologyStorageException e1) {
                 ProtegeApplication.getErrorLog().handleError(Thread.currentThread(), e1);

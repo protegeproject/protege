@@ -48,7 +48,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
         if (reasoner != null){
             Set<OWLOntology> importsClosure = reasoner.getRootOntology().getImportsClosure();
             for (OWLOntology ont : importsClosure){
-                for (OWLClass cls : ont.getReferencedClasses()) {
+                for (OWLClass cls : ont.getClassesInSignature()) {
                     final Set<OWLNamedIndividual> inds = reasoner.getInstances(cls, showDirect).getFlattened();
                     if (!inds.isEmpty()){
                         typeNodes.put(cls, new HashSet<OWLObject>(inds));

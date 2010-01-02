@@ -33,7 +33,7 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
     private Logger logger = Logger.getLogger(WebConnectionIRIMapper.class);
 
 
-    public URI getPhysicalURI(IRI ontologyIRI) {
+    public IRI getDocumentIRI(IRI ontologyIRI) {
         // We can't find a local version of the ontology. Can we resolve the URI?
         try {
             // First check that the URI can be resolved.
@@ -47,7 +47,7 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
             
             if (ext.getOntologyId() != null) {
                 // There is an ontology at the URI!
-                return potentialPhysicalURI;
+                return IRI.create(potentialPhysicalURI);
             }
         }
         catch (IOException e) {

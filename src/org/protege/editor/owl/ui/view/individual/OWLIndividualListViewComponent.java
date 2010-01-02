@@ -114,7 +114,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         // Initial fill
         individualsInList.clear();
         for (OWLOntology ont : getOntologies()) {
-            individualsInList.addAll(ont.getReferencedIndividuals());
+            individualsInList.addAll(ont.getIndividualsInSignature());
         }
         reset();
     }
@@ -185,7 +185,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             if (ent instanceof OWLIndividual) {
                 boolean stillReferenced = false;
                 for (OWLOntology ont : getOntologies()) {
-                    if (ont.containsIndividualReference(ent.getIRI())) {
+                    if (ont.containsIndividualInSignature(ent.getIRI())) {
                         stillReferenced = true;
                         break;
                     }

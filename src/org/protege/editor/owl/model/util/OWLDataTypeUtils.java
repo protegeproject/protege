@@ -1,15 +1,16 @@
 package org.protege.editor.owl.model.util;
 
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
-
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -57,9 +58,9 @@ public class OWLDataTypeUtils {
 
         datatypes.add(df.getTopDatatype());
         for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            datatypes.add(df.getOWLDatatype(uri));
+            datatypes.add(df.getOWLDatatype(IRI.create(uri)));
         }
-        datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getURI()));
+        datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getIRI()));
 
         return datatypes;
     }
@@ -68,7 +69,7 @@ public class OWLDataTypeUtils {
     public Set<OWLDatatype> getReferencedDatatypes(Set<OWLOntology> onts){
         Set<OWLDatatype> referencedTypes = new HashSet<OWLDatatype>();
         for (OWLOntology ont : onts){
-            referencedTypes.addAll(ont.getReferencedDatatypes());
+            referencedTypes.addAll(ont.getDatatypesInSignature());
         }
         return referencedTypes;
     }
@@ -77,7 +78,7 @@ public class OWLDataTypeUtils {
     public Set<OWLDatatype> getKnownDatatypes(Set<OWLOntology> onts){
         Set<OWLDatatype> knownTypes = getBuiltinDatatypes();
         for (OWLOntology ont : onts){
-            knownTypes.addAll(ont.getReferencedDatatypes());
+            knownTypes.addAll(ont.getDatatypesInSignature());
         }
         return knownTypes;
     }

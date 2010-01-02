@@ -27,14 +27,14 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
 
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLOntology ont : onts) {
-            inds.addAll(ont.getReferencedIndividuals());
+            inds.addAll(ont.getIndividualsInSignature());
         }
 
         Set<OWLDataProperty> props = new HashSet<OWLDataProperty>();
         for (OWLIndividual ind : inds) {
 
             if (isPunForClass(ind)){
-                OWLNamedIndividual pun = ind.asNamedIndividual();
+                OWLNamedIndividual pun = ind.asOWLNamedIndividual();
                 for (OWLOntology ont : onts) {
                     for (OWLDataPropertyAssertionAxiom ax : ont.getDataPropertyAssertionAxioms(pun)) {
                         if (!ax.getProperty().isAnonymous()) {
@@ -70,7 +70,7 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
         }
         getOWLModelManager().applyChanges(changes);
         for (OWLOntology ont : onts) {
-            for (OWLDataProperty prop : ont.getReferencedDataProperties()) {
+            for (OWLDataProperty prop : ont.getDataPropertiesInSignature()) {
                 for (OWLOntology o : onts) {
                     for (OWLAxiom ax : o.getReferencingAxioms(prop)) {
                         log.info(ax);
@@ -86,7 +86,7 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
             return false;
         }
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            if (ont.containsClassReference(ind.asNamedIndividual().getIRI())) {
+            if (ont.containsClassInSignature(ind.asOWLNamedIndividual().getIRI())) {
                 return true;
             }
         }

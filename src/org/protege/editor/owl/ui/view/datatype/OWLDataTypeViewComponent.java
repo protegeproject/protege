@@ -154,7 +154,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange change : changes){
             if (change.isAxiomChange()){
-                for (OWLEntity entity : change.getAxiom().getReferencedEntities()){
+                for (OWLEntity entity : change.getAxiom().getSignature()){
                     if (entity.isOWLDatatype()){
                         reload();
                         return;

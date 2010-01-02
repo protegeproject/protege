@@ -32,7 +32,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     }
 
 
-    public URI getPhysicalURI(IRI ontologyIRI) {
+    public IRI getDocumentIRI(IRI ontologyIRI) {
 
         int ret = JOptionPane.showConfirmDialog(null,
                                                 "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyIRI.toString() + "</font><br><br>" +
@@ -47,13 +47,13 @@ public class MissingImportHandlerUI implements MissingImportHandler {
         UIHelper helper = new UIHelper(owlEditorKit);
         File file = helper.chooseOWLFile("Please select an ontology file");
         if (file == null) {
-            return ontologyIRI.toURI();
+            return ontologyIRI;
         }
         // Add a mapping from the ontology to the file.  If the user wants the ontology
         // to be editable, then they should have the option to copy the file into the
         // base folder.
 //        owlEditorKit.getModelManager().add(ontologyURI, file.toURI());
-        return file.toURI();
+        return IRI.create(file);
 
         //"<font color=\"gray\">Cause: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")</font><br><br>"
     }

@@ -51,7 +51,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
         Set<OWLNamedIndividual> typedIndividuals = new HashSet<OWLNamedIndividual>();
         for (OWLOntology ont : ontologies) {
-            for (OWLNamedIndividual ind : ont.getReferencedIndividuals()) {
+            for (OWLNamedIndividual ind : ont.getIndividualsInSignature()) {
                 untypedIndividuals.add(ind);
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
                     if (!ax.getClassExpression().isAnonymous()) {
@@ -215,7 +215,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
         private void handleAxiomChange(OWLAxiomChange chg) {
-            for (OWLEntity ref : chg.getAxiom().getReferencedEntities()){
+            for (OWLEntity ref : chg.getAxiom().getSignature()){
                 if (ref.isOWLNamedIndividual()){
                     checkIndividuals.add(ref.asOWLNamedIndividual());
                 }
@@ -263,7 +263,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
         private boolean isReferenced(OWLNamedIndividual ind) {
             for (OWLOntology ont : ontologies){
-                if (ont.containsIndividualReference(ind.getIRI())){
+                if (ont.containsIndividualInSignature(ind.getIRI())){
                     return true;
                 }
             }

@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -15,7 +16,7 @@ public class LastResortExtractor implements OntologyIdExtractor {
     public OWLOntologyID getOntologyId() {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         try {
-            OWLOntology ontology = manager.loadOntologyFromPhysicalURI(location);
+            OWLOntology ontology = manager.loadOntologyFromOntologyDocument(IRI.create(location));
             return ontology.getOntologyID();
         }
         catch (Throwable t) {

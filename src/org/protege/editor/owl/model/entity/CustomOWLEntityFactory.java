@@ -231,12 +231,12 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private <T extends OWLEntity> boolean isIRIAlreadyUsed(Class<T> type, IRI iri) {
         for (OWLOntology ont : mngr.getOntologies()){
-            if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassReference(iri)) ||
-                (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyReference(iri)) ||
-                (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyReference(iri)) ||
-                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualReference(iri)) ||
-                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyReference(iri)) ||
-                (OWLDatatype.class.isAssignableFrom(type) && ont.containsDatatypeReference(iri))){
+            if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassInSignature(iri)) ||
+                (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyInSignature(iri)) ||
+                (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyInSignature(iri)) ||
+                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualInSignature(iri)) ||
+                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyInSignature(iri)) ||
+                (OWLDatatype.class.isAssignableFrom(type) && ont.containsDatatypeInSignature(iri))){
                 return true;
             }
         }
@@ -246,7 +246,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private boolean isIRIAlreadyUsed(IRI iri) {
         for (OWLOntology ont : mngr.getOntologies()){
-            if (ont.containsEntityReference(iri)){
+            if (ont.containsEntityInSignature(iri)){
                 return true;
             }
         }

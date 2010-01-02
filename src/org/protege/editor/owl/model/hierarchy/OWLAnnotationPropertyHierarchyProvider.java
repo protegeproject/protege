@@ -1,15 +1,24 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -85,7 +94,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
     public boolean containsReference(OWLAnnotationProperty object) {
         for (OWLOntology ont : ontologies) {
-            if (ont.getReferencedAnnotationProperties().contains(object)) {
+            if (ont.getAnnotationPropertiesInSignature().contains(object)) {
                 return true;
             }
         }
@@ -221,7 +230,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         final Set<OWLAnnotationProperty> annotationProperties = new HashSet<OWLAnnotationProperty>();
 
         for (OWLOntology ont : ontologies) {
-            annotationProperties.addAll(ont.getReferencedAnnotationProperties());
+            annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
         }
         for (OWLAnnotationProperty prop : annotationProperties) {
             if (isRoot(prop)) {
@@ -233,7 +242,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
             roots.add(df.getOWLAnnotationProperty(uri));
         }
         for (URI uri : DublinCoreVocabulary.ALL_URIS){
-            roots.add(df.getOWLAnnotationProperty(uri));
+            roots.add(df.getOWLAnnotationProperty(IRI.create(uri)));
         }
     }
 }

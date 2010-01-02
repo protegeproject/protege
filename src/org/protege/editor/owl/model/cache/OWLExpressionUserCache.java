@@ -268,7 +268,7 @@ public class OWLExpressionUserCache implements Disposable {
 
     private boolean containsEntity(OWLEntity entity) {
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsEntityReference(entity)){
+            if (ont.containsEntityInSignature(entity)){
                 return true;
             }
         }
@@ -279,22 +279,22 @@ public class OWLExpressionUserCache implements Disposable {
     private OWLEntity parseOWLEntity(String name) {
         String[] s = name.split(DELIMITER);
         if (s[0].equals(OWLCLASS)){
-            return mngr.getOWLDataFactory().getOWLClass(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLClass(IRI.create(s[1]));
         }
         else if (s[0].equals(OWLOBJECTPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLObjectProperty(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLObjectProperty(IRI.create(s[1]));
         }
         else if (s[0].equals(OWLDATAPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLDataProperty(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLDataProperty(IRI.create(s[1]));
         }
         else if (s[0].equals(OWLANNOTATIONPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLAnnotationProperty(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(s[1]));
         }
         else if (s[0].equals(OWLINDIVIDUAL)){
-            return mngr.getOWLDataFactory().getOWLNamedIndividual(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLNamedIndividual(IRI.create(s[1]));
         }
         else if (s[0].equals(OWLDATATYPE)){
-            return mngr.getOWLDataFactory().getOWLDatatype(URI.create(s[1]));
+            return mngr.getOWLDataFactory().getOWLDatatype(IRI.create(s[1]));
         }
         return null;
     }

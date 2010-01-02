@@ -87,7 +87,7 @@ public class ProtegeOrphanFinder  {
     public void rebuildImplicitRoots() {
         rootFinder.clear();
         for (OWLOntology ont : ontologies) {
-            Set<OWLClass> ref = ont.getReferencedClasses();
+            Set<OWLClass> ref = ont.getClassesInSignature();
             rootFinder.appendTerminalElements(ref);
         }
         rootFinder.finish();
@@ -98,7 +98,7 @@ public class ProtegeOrphanFinder  {
         OWLAxiom axiom = change.getAxiom();
         Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>();
         Set<OWLClass> notInOntologies = new HashSet<OWLClass>();
-        for (OWLEntity entity : axiom.getReferencedEntities()) {
+        for (OWLEntity entity : axiom.getSignature()) {
             if (!(entity instanceof OWLClass) || entity.equals(root)) {
                 continue;
             }
@@ -116,7 +116,7 @@ public class ProtegeOrphanFinder  {
     
     public boolean containsReference(OWLClass object) {
         for (OWLOntology ont : ontologies) {
-            if (ont.containsClassReference(object.getIRI())) {
+            if (ont.containsClassInSignature(object.getIRI())) {
                 return true;
             }
         }

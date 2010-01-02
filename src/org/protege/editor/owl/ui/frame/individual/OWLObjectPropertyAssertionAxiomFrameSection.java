@@ -62,8 +62,8 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
     protected void refillInferred() {
         if (!getRootObject().isAnonymous()){
-            for (OWLObjectProperty prop : getReasoner().getRootOntology().getReferencedObjectProperties(true)) {
-                NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asNamedIndividual(), prop);
+            for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
+                NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asOWLNamedIndividual(), prop);
                 for (OWLNamedIndividual ind : values.getFlattened()) {
                     OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
                                                                                                                 getRootObject(),

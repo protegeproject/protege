@@ -11,6 +11,7 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLLogicalAxiom;
@@ -66,7 +67,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
             }
             tempMan.applyChanges(changes);
 
-            tempMan.saveOntology(ont, wizard.getFormat(), wizard.getPhysicalURL());
+            tempMan.saveOntology(ont, wizard.getFormat(), IRI.create(wizard.getPhysicalURL()));
 
             JOptionPane.showMessageDialog(getWorkspace(),
                                           "The inferred axioms have been exported as an ontology to \n" + wizard.getPhysicalURL(),

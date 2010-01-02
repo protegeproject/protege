@@ -62,7 +62,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
         if (cls != null){
             for (OWLIndividual ind : cls.getIndividuals(getOntologies())){
                 if (!ind.isAnonymous()){
-                    individualsInList.add(ind.asNamedIndividual());
+                    individualsInList.add(ind.asOWLNamedIndividual());
                 }
             }
         }

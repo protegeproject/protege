@@ -38,6 +38,6 @@ public class IndividualCountMetric extends AbstractIntegerMetric {
 
 
     protected int getIntMetric() {
-        return getOWLModelManager().getActiveOntology().getReferencedIndividuals().size();
+        return getOWLModelManager().getActiveOntology().getIndividualsInSignature().size();
     }
 }
