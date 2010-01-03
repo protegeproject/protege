@@ -63,6 +63,12 @@ public class UserRepositoryIRIMapper implements OWLOntologyIRIMapper {
 
     public IRI getDocumentIRI(IRI ontologyIRI) {
         // Search user defined libraries
-        return IRI.create(mngr.getOntologyLibraryManager().getPhysicalURI(ontologyIRI));
+        URI uri = mngr.getOntologyLibraryManager().getPhysicalURI(ontologyIRI);
+        if (uri != null) {
+            return IRI.create(uri);
+        }
+        else {
+            return null;
+        }
     }
 }
