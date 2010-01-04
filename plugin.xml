@@ -1266,7 +1266,7 @@
     <extension id="ui.ontology.RepositoryPreferencesPanel"
                point="org.protege.editor.core.application.preferencespanel">
         <label value="Repositories"/>
-        <class value="org.protege.editor.owl.ui.library.auto.RepositoryPreferencesPanel"/>
+        <class value="org.protege.editor.owl.model.library.auto.RepositoryPreferencesPanel"/>
     </extension>
     
 

@@ -42,7 +42,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         // need to dispose of these actions.0
 
         addAction(new AbstractOWLTreeAction<OWLClass>("Add subclass", OWLIcons.getIcon("class.add.sub.png"),
-                                                 getTree().getSelectionModel()){
+                                                       getTree().getSelectionModel()){
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }

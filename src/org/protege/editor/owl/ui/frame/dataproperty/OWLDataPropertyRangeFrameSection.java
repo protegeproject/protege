@@ -1,16 +1,20 @@
 package org.protege.editor.owl.ui.frame.dataproperty;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -73,7 +77,7 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
 
     private Set<OWLDataRange> getInferredRanges() {
-        throw  new UnsupportedOperationException("Needs to be implemented...");
+        return Collections.emptySet();  // inferred data ranges are not implemented in the owl api...
     }
 
 

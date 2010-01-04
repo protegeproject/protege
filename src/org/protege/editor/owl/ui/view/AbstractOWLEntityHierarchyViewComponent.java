@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.View;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
@@ -80,7 +81,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
                     return 1;
                 }
                 else {
-                    return super.compare(o1, o2);
+                    String rendering1 = getOWLModelManager().getRendering(o1);
+                    String rendering2 = getOWLModelManager().getRendering(o2);
+                    return rendering1.compareTo(rendering2);
                 }
             }
         });
