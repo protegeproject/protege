@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+import org.osgi.framework.Version;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
@@ -148,9 +148,9 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Dictionary manifest = context.getBundle().getHeaders();
         Bundle b = context.getBundle();
-        // PluginUtilities methods don't work here for some reason !!? (equinox bug??)
+        Version v = PluginUtilities.getBundleVersion(b);
         logger.info("Starting Protege 4 OWL Editor (Version "  
-                    + PluginUtilities.getBundleVersion(b) 
+                    +  v.getMajor() + "." + v.getMinor() + "." + v.getMicro()
                     + ", Build = " + PluginUtilities.getBuildNumber(b) + ")");
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
