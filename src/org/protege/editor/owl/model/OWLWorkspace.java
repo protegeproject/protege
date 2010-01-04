@@ -784,7 +784,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
             public URL getDefaultViewConfigFile() {
                 try {
-                    return new File(getId() + "-config.xml").toURL();
+                    return new File(getId() + "-config.xml").toURI().toURL();
                 }
                 catch (MalformedURLException uriex) {
                     ProtegeApplication.getErrorLog().logError(uriex);
