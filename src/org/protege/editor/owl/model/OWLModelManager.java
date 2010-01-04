@@ -100,6 +100,7 @@ public interface OWLModelManager extends ModelManager {
      * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
      * @throws OWLOntologyStorageException if a problem occurs during the save
      */
+    @Deprecated
     void saveAs() throws OWLOntologyStorageException;
 
 

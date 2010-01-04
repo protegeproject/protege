@@ -548,8 +548,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
             }
         }
     }
-
-
+    
+    /**
+     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
+     * @throws OWLOntologyStorageException if a problem occurs during the save
+     */
+    @Deprecated
     public void saveAs() throws OWLOntologyStorageException {
         save();
     }
