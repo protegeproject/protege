@@ -35,7 +35,7 @@ import org.semanticweb.owlapi.model.AxiomType;
  */
 public interface OWLClassExpressionEditorPlugin extends ProtegePlugin<OWLClassExpressionEditor> {
 
-    public static final String ID = "ui.editor.description";
+    public static final String ID = "ui_editor_description";
 
     boolean isSuitableFor(AxiomType type);
 
