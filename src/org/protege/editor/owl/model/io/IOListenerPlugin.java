@@ -34,6 +34,6 @@ import org.eclipse.core.runtime.IExtension;
  */
 public interface IOListenerPlugin extends ProtegePlugin<IOListenerPluginInstance> {
 
-    public static final String ID = "io.listener";
+    public static final String ID = "io_listener";
 
 }
