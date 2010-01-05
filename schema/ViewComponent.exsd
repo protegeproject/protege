@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.protege.editor.core.application">
+<schema targetNamespace="org.protege.editor.core.application" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.protege.editor.core.application" id="ViewComponent" name="ViewComponent"/>
@@ -13,14 +13,20 @@ docking system that is present in the core system
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="label"/>
             <element ref="class"/>
             <element ref="headerColor" minOccurs="0" maxOccurs="1"/>
             <element ref="userCreatable" minOccurs="0" maxOccurs="1"/>
-            <element ref="category"/>
+            <element ref="category" minOccurs="0" maxOccurs="1"/>
             <element ref="documentation" minOccurs="0" maxOccurs="1"/>
+            <element ref="navigates" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -151,7 +157,7 @@ how they should be displayed in the Views menu.
       </complexType>
    </element>
 
-       <element name="navigates">
+   <element name="navigates">
       <annotation>
          <documentation>
             The categories of thing that this view can display. This is used by global selection
@@ -170,13 +176,11 @@ how they should be displayed in the Views menu.
 @org.protege.annotationpropertycategory
 @org.protege.individualcategory
 @org.protege.datatypecategory
-
                </documentation>
             </annotation>
          </attribute>
       </complexType>
    </element>
-
 
    <element name="document">
       <complexType>
@@ -189,5 +193,10 @@ how they should be displayed in the Views menu.
          </attribute>
       </complexType>
    </element>
+
+
+
+
+
 
 </schema>
