@@ -14,5 +14,5 @@ import org.protege.editor.core.plugin.ProtegePlugin;
  */
 public interface OntologyLibraryFactoryPlugin extends ProtegePlugin<OntologyLibraryFactory> {
 
-    public static final String ID = "model.libraryfactory";
+    public static final String ID = "model_libraryfactory";
 }
