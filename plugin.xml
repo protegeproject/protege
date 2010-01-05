@@ -3,25 +3,25 @@
 
 <plugin>
 
-    <extension-point id="inference.reasonerfactory"
+    <extension-point id="inference_reasonerfactory"
                      name="Reasoner Factory"
                      schema="schema/ReasonerFactory.exsd"/>
 
-    <extension-point id="ui.renderer.entitycolorprovider"
+    <extension-point id="ui_renderer_entitycolorprovider"
                      name="Entity Color Provider"
                      schema="schema/EntityColorProvider.exsd"/>
 
-    <extension-point id="model.libraryfactory"
+    <extension-point id="model_libraryfactory"
                      name="Library Factory"
                      schema="schema/LibraryFactory.exsd"/>
 
     <extension-point id="moveaxiomskit"
                      name="Move Axioms Kit"/>
 
-    <extension-point id="io.listener"
+    <extension-point id="io_listener"
                      name="IO Listener"/>
 
-    <extension-point id="ui.editor.description"
+    <extension-point id="ui_editor_description"
                      name="OWL Description Editor"/>
 
 
@@ -29,7 +29,7 @@
     <!-- PLUGINS -->
 
     <extension id="FolderLibrary"
-               point="org.protege.editor.owl.model.libraryfactory">
+               point="org.protege.editor.owl.model_libraryfactory">
         <class value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
     </extension>
 
@@ -49,7 +49,7 @@
     <!-- Class Description Editors -->
 
     <extension id="OWLClassExpressionExpressionEditor"
-               point="org.protege.editor.owl.ui.editor.description">
+               point="org.protege.editor.owl.ui_editor_description">
         <label value="Class expression editor"/>
         <class value="org.protege.editor.owl.ui.editor.OWLClassExpressionExpressionEditor"/>
         <index value="A"/>
@@ -57,7 +57,7 @@
 
 
     <extension id="OWLClassSelectorWrapper"
-               point="org.protege.editor.owl.ui.editor.description">
+               point="org.protege.editor.owl.ui_editor_description">
         <label value="Class hierarchy"/>
         <class value="org.protege.editor.owl.ui.editor.OWLClassSelectorWrapper"/>
         <index value="B"/>
@@ -65,7 +65,7 @@
 
 
     <extension id="OWLObjectRestrictionCreatorPanel"
-               point="org.protege.editor.owl.ui.editor.description">
+               point="org.protege.editor.owl.ui_editor_description">
         <label value="Object restriction creator"/>
         <class value="org.protege.editor.owl.ui.editor.OWLObjectRestrictionCreatorPanel"/>
         <index value="C"/>
@@ -73,7 +73,7 @@
 
 
     <extension id="OWLDataRestrictionCreatorPanel"
-               point="org.protege.editor.owl.ui.editor.description">
+               point="org.protege.editor.owl.ui_editor_description">
         <label value="Data restriction creator"/>
         <class value="org.protege.editor.owl.ui.editor.OWLDataRestrictionCreatorPanel"/>
         <index value="D"/>
@@ -688,15 +688,6 @@
     </extension>
 
 
-    <extension id="ExplanationResultsView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Explanation"/>
-        <class value="org.protege.editor.owl.ui.view.ExplanationResultsViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.ontologycategory"/>
-    </extension>
-
-
 
     <!-- Menu items -->
     <!-- File menu -->
@@ -1249,7 +1240,7 @@
 
 
     <extension id="NoOpReasoner"
-               point="org.protege.editor.owl.inference.reasonerfactory">
+               point="org.protege.editor.owl.inference_reasonerfactory">
         <name value="None"/>
         <class value="org.protege.editor.owl.model.inference.NoOpReasonerFactory"/>
         <defaultReasoner value="true"/>
