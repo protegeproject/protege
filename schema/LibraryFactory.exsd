@@ -3,7 +3,7 @@
 <schema targetNamespace="org.protege.editor.owl">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.protege.editor.owl" id="model.libraryfactory" name="Library Factory"/>
+         <meta.schema plugin="org.protege.editor.owl" id="model_libraryfactory" name="Library Factory"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
