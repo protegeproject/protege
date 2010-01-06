@@ -40,6 +40,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
     private JComponent importedOntologiesComponent;
     private TitledBorder titledBorder;
 
+    private Object backPanelDescriptor;
 
     public ImportConfirmationPage(OWLEditorKit owlEditorKit) {
         super(ID, "Confirm imports", owlEditorKit);
@@ -78,7 +79,20 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
         importedOntologiesComponent.add(box, BorderLayout.NORTH);
     }
 
-
+    public void setBackPanelDescriptor(Object backPanelDescriptor) {
+        this.backPanelDescriptor = backPanelDescriptor;
+    }
+    
+    @Override
+    public Object getBackPanelDescriptor() {
+        if (((OntologyImportWizard) getWizard()).isCustomizeImports()) {
+            return SelectImportLocationPage.ID;
+        }
+        else {
+            return backPanelDescriptor;
+        }
+    }
+    
     public Object getNextPanelDescriptor() {
         return WizardPanel.FINISH;
     }
