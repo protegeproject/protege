@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.protege.editor.core.application">
+<schema targetNamespace="org.protege.editor.core.application" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
          <meta.schema plugin="org.protege.editor.core.application" id="EditorKitMenuAction" name="EditorKitMenuAction"/>
@@ -11,6 +11,11 @@
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence>
             <element ref="name"/>
@@ -101,15 +106,15 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute kind="java" basedOn="org.protege.editor.core.ui.action.ProtegeAction:"/>
                </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
-    <element name="url">
-        <annotation>
+   <element name="url">
+      <annotation>
          <documentation>
             If the url is set and no class is specified then this action will
             open a browser at the specified location.
@@ -118,6 +123,11 @@
       </annotation>
       <complexType>
          <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
          </attribute>
       </complexType>
    </element>
@@ -206,13 +216,5 @@
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="copyright"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
 </schema>
