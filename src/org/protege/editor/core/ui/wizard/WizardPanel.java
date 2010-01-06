@@ -8,9 +8,7 @@ import javax.swing.JPanel;
  * well as provide general rules as to how the panel should behave.
  */
 public class WizardPanel extends JPanel {
-
-    private static final String DEFAULT_PANEL_IDENTIFIER = "defaultPanelIdentifier";
-
+    private static final long serialVersionUID = 3018237002289836978L;
 
     /**
      * Identifier returned by getNextPanelDescriptor() to indicate that this is the
@@ -36,7 +34,9 @@ public class WizardPanel extends JPanel {
     public Object getIdentifier() {
         return panelIdentifier;
     }
-    final void setWizard(Wizard w) {
+    
+    
+    /* package */ final void setWizard(Wizard w) {
         wizard = w;
     }
 
