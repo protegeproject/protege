@@ -1,11 +1,14 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URI;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -16,6 +19,8 @@ public class ImportLocationOptionsPanel extends JPanel {
 	private JRadioButton ontologyIDButton;
 	private JRadioButton versionIDButton;
 	private JRadioButton physicalIDButton;
+	private JRadioButton userInputButton;
+	private JTextField uriField;
 	private int optionsCount;
 	
 	
@@ -26,12 +31,15 @@ public class ImportLocationOptionsPanel extends JPanel {
 		ButtonGroup bg = new ButtonGroup();
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		optionsCount = 0;
 		
-		ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI());
-		ontologyIDButton.setAlignmentX(LEFT_ALIGNMENT);
-    	add(ontologyIDButton);
-    	bg.add(ontologyIDButton);
-    	optionsCount = 1;
+		if (id != null && !id.isAnonymous()) {
+		    ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI());
+		    ontologyIDButton.setAlignmentX(LEFT_ALIGNMENT);
+		    add(ontologyIDButton);
+		    bg.add(ontologyIDButton);
+		    optionsCount++;
+		}
 
     	boolean useVersionButton = (id.getVersionIRI() != null && !id.getVersionIRI().equals(id.getOntologyIRI()));
     	if (useVersionButton) {
@@ -50,12 +58,35 @@ public class ImportLocationOptionsPanel extends JPanel {
     		bg.add(physicalIDButton);
     		optionsCount++;
     	}
+    	if (optionsCount <= 1) {
+    	    userInputButton = new JRadioButton("Import using the usr supplied URI (Discouraged)");
+    	    userInputButton.setAlignmentX(LEFT_ALIGNMENT);
+    	    add(userInputButton);
+    	    bg.add(userInputButton);
+    	    uriField = new JTextField();
+    	    uriField.setAlignmentX(LEFT_ALIGNMENT);
+    	    uriField.setEnabled(false);
+    	    userInputButton.addActionListener(new ActionListener() {
+    	       
+    	        public void actionPerformed(ActionEvent e) {
+    	            uriField.setEnabled(userInputButton.isSelected());
+    	        }
+    	    });
+    	    add(uriField);
+    	}
 
-    	if (useVersionButton) {
-    		versionIDButton.setSelected(true);
+    	if (versionIDButton != null) {
+    	    versionIDButton.setSelected(true);
+    	}
+    	else if (ontologyIDButton != null) {
+    	    ontologyIDButton.setSelected(true);
+    	}
+    	else if (physicalIDButton != null) {
+    	    physicalIDButton.setSelected(true);
     	}
     	else {
-    		ontologyIDButton.setSelected(true);
+    	    userInputButton.setSelected(true);
+    	    uriField.setEnabled(true);
     	}
 	}
 	

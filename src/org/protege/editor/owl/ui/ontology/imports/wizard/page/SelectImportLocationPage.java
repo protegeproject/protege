@@ -50,16 +50,11 @@ public class SelectImportLocationPage extends AbstractWizardPanel {
     			continue;
     		}
     		ImportLocationOptionsPanel optionsPanel = new ImportLocationOptionsPanel(parameter);
-    		if (optionsPanel.isPanelNeeded()) {
-    			Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-    			Border titledBorder = BorderFactory.createTitledBorder(lineBorder, "Physical Location: " + parameter.getPhysicalLocation().toString());
-    			optionsPanel.setBorder(titledBorder);
-    			mainBox.add(optionsPanel);
-    			optionsPanels.add(optionsPanel);
-    		}
-    		else {
-    			optionsPanel.setImportLocation();
-    		}
+    		Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
+    		Border titledBorder = BorderFactory.createTitledBorder(lineBorder, "Physical Location: " + parameter.getPhysicalLocation().toString());
+    		optionsPanel.setBorder(titledBorder);
+    		mainBox.add(optionsPanel);
+    		optionsPanels.add(optionsPanel);
     	}
     }
     

@@ -1,9 +1,17 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
@@ -30,7 +38,8 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.page.URLPage;
 public class OntologyImportWizard extends Wizard {
 
     private static final Logger logger = Logger.getLogger(OntologyImportWizard.class);
-    Set<ImportInfo> imports = new HashSet<ImportInfo>();
+    private Set<ImportInfo> imports = new HashSet<ImportInfo>();
+    private boolean customizeImports = false;
     
     public OntologyImportWizard(Frame owner, OWLEditorKit owlEditorKit) {
         super(owner);
@@ -60,6 +69,14 @@ public class OntologyImportWizard extends Wizard {
     
     public Set<ImportInfo> getImports() {
     	return Collections.unmodifiableSet(imports);
+    }
+    
+    public boolean isCustomizeImports() {
+        return customizeImports;
+    }
+    
+    public void setCustomizeImports(boolean customizeImports) {
+        this.customizeImports = customizeImports;
     }
 
 }
