@@ -1,7 +1,11 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JComponent;
@@ -16,6 +20,8 @@ import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+import org.protege.xmlcatalog.owl.update.XmlBaseAlgorithm;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 /**
@@ -30,8 +36,6 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
 
     public static final String ID = "AnticipateOntologyIdPage";
-
-    private JLabel label;
 
     private JProgressBar progressBar;
 
@@ -53,37 +57,48 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     public Object getNextPanelDescriptor() {
         return needsImportPage() ? SelectImportLocationPage.ID : ImportConfirmationPage.ID;
     }
-
+    
     private boolean needsImportPage() {
-    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
-    	Set<ImportInfo> imports = wizard.getImports();
-    	if (imports == null || imports.size() != 1) {
-    		return false;
-    	}
-    	ImportInfo parameters = imports.iterator().next();
+        OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        Set<ImportInfo> imports = wizard.getImports();
+        if (imports == null || imports.size() != 1) { /* size > 1 means  we are in the library imports - no manual step */
+            return false;
+        }
+        ImportInfo parameters = imports.iterator().next();
+        
+        List<IRI> importOptions = new ArrayList<IRI>();
+            
     	OWLOntologyID id = parameters.getOntologyID();
-    	if (id == null) {
-    		return true;
+    	if (id != null && !id.isAnonymous()) {
+    	    importOptions.add(id.getOntologyIRI());
+    	    if (id.getVersionIRI() != null && !importOptions.contains(id.getVersionIRI())) {
+    	        importOptions.add(id.getVersionIRI());
+    	    }
     	}
-    	else if (parameters.getImportLocation() != null) {
-    		return false;
+    	if (!parameters.getPhysicalLocation().getScheme().equals("file") && !importOptions.contains(parameters.getPhysicalLocation())) {
+    	    importOptions.add(IRI.create(parameters.getPhysicalLocation()));
     	}
-    	else if (id.getVersionIRI() != null &&	 !id.getVersionIRI().equals(id.getOntologyIRI())) {
-    		return true;
+    	if (parameters.getPhysicalLocation().getScheme().equals("file") && importOptions.isEmpty()) {
+    	    File f = new File(parameters.getPhysicalLocation());
+    	    
+    	    Set<URI> bases = new XmlBaseAlgorithm().getSuggestions(f);
+    	    if (bases.size()  == 1) {
+    	        importOptions.add(IRI.create(bases.iterator().next()));
+    	    }
     	}
-    	else if (parameters.getPhysicalLocation().equals(id.getOntologyIRI().toURI()) 
-    				|| parameters.getPhysicalLocation().getScheme().equals("file")){
-    		parameters.setImportLocation(id.getOntologyIRI());
-    		return false;
+    	
+    	if (!wizard.isCustomizeImports() && importOptions.size() >  0) {
+    	    parameters.setImportLocation(importOptions.get(0));
+    	    return false;
     	}
     	else {
-    		return true;
+    	    return true;
     	}
     }
 
     protected void createUI(final JComponent parent) {
         JPanel panel = new JPanel(new BorderLayout(7, 7));
-        panel.add(label = new JLabel("Please wait.  Verifying import..."), BorderLayout.NORTH);
+        panel.add(new JLabel("Please wait.  Verifying import..."), BorderLayout.NORTH);
         progressBar = new JProgressBar(0, 100);
         progressBar.setIndeterminate(true);
         panel.add(progressBar, BorderLayout.SOUTH);
@@ -101,7 +116,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     		try {
     			MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor(parameters.getPhysicalLocation());
     			OWLOntologyID id = extractor.getOntologyId();
-    			if (id != null) {
+    			if (id != null && !id.isAnonymous()) {
     				parameters.setOntologyID(id);
     			}
     			else {

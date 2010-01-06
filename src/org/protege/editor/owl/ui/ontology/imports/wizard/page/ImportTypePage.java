@@ -44,19 +44,17 @@ public class ImportTypePage extends AbstractWizardPanel {
         setInstructions("Please choose an option:");
         parent.setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        box.add(libraryRadioButton = new JRadioButton(
-                "Import an ontology that is contained in one of the ontology libraries."));
-        box.add(loadedOntologyButton = new JRadioButton("Import an ontology that has already been loaded/created."));
-        box.add(webRadioButton = new JRadioButton("Import an ontology contained in a document located on the web."));
         box.add(localFileRadioButton = new JRadioButton("Import an ontology contained in a specific file."));
+        box.add(webRadioButton = new JRadioButton("Import an ontology contained in a document located on the web."));
+        box.add(loadedOntologyButton = new JRadioButton("Import an ontology that is already loaded in the workspace."));
+        box.add(libraryRadioButton = new JRadioButton("Import an ontology that is contained in one of the ontology libraries."));
         parent.add(box, BorderLayout.NORTH);
         ButtonGroup bg = new ButtonGroup();
         bg.add(webRadioButton);
         bg.add(localFileRadioButton);
         bg.add(libraryRadioButton);
         bg.add(loadedOntologyButton);
-        webRadioButton.setSelected(true);
-        libraryRadioButton.setSelected(true);
+        localFileRadioButton.setSelected(true);
     }
 
 

@@ -15,14 +15,12 @@
                      name="Library Factory"
                      schema="schema/LibraryFactory.exsd"/>
 
-    <extension-point id="moveaxiomskit"
-                     name="Move Axioms Kit"/>
+    <extension-point id="moveaxiomskit" name="Move Axioms Kit" schema="schema/MoveAxiomsKit.exsd"/>
 
     <extension-point id="io_listener"
                      name="IO Listener"/>
 
-    <extension-point id="ui_editor_description"
-                     name="OWL Description Editor"/>
+    <extension-point id="ui_editor_description" name="OWL Description Editor" schema="schema/UI_Editor_Description.exsd"/>
 
 
 
@@ -1313,12 +1311,6 @@
                point="org.protege.editor.owl.moveaxiomskit">
         <name value="Axioms by profile (select axioms in a sublanguage of OWL)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.byprofile.MoveAxiomsByProfileKit" />
-    </extension>
-
-    <extension id="MoveAnnotationAxiomsByURIKit"
-               point="org.protege.editor.owl.moveaxiomskit">
-        <name value="Annotation axioms by URI (select the URIs of annotations you wish to move)" />
-        <class value="org.protege.editor.owl.ui.ontology.wizard.move.byannotation.MoveAnnotationAxiomsByURIKit" />
     </extension>
 
 

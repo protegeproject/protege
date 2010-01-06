@@ -62,15 +62,17 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
     private void fillImportList() {
         Box box = new Box(BoxLayout.Y_AXIS);
-        /* box.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY),
-                                                         BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-         */
+        boolean advanced = ((OntologyImportWizard) getWizard()).isCustomizeImports();
         Set<ImportInfo> parameters = ((OntologyImportWizard) getWizard()).getImports();
         for (ImportInfo parameter : parameters) {
         	if (parameter.isReady()) {
-        		ImportEntryPanel importPanel = new ImportEntryPanel(parameter);
-        		box.add(importPanel);
-
+        	    if (advanced) {
+        	        ImportEntryPanel importPanel = new ImportEntryPanel(parameter);
+        	        box.add(importPanel);
+        	    }
+        	    else {
+        	        box.add(new JLabel(parameter.getPhysicalLocation().toString()));
+        	    }
         	}
         }
         importedOntologiesComponent.add(box, BorderLayout.NORTH);
