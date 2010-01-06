@@ -6,6 +6,7 @@ import java.net.URI;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -58,7 +59,10 @@ public class ImportLocationOptionsPanel extends JPanel {
     		bg.add(physicalIDButton);
     		optionsCount++;
     	}
-    	if (optionsCount <= 1) {
+    	if (optionsCount == 1) {
+    	    add(new JLabel("Only the one option is available - nothing to select."));
+    	}
+    	if (optionsCount == 0) {
     	    userInputButton = new JRadioButton("Import using the usr supplied URI (Discouraged)");
     	    userInputButton.setAlignmentX(LEFT_ALIGNMENT);
     	    add(userInputButton);
@@ -73,6 +77,7 @@ public class ImportLocationOptionsPanel extends JPanel {
     	        }
     	    });
     	    add(uriField);
+    	    optionsCount++;
     	}
 
     	if (versionIDButton != null) {
