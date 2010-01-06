@@ -3,7 +3,7 @@
 <schema targetNamespace="org.protege.editor.core.application" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.protege.editor.core.application" id="preferencespanel" name="preferencespanel"/>
+         <meta.schema plugin="org.protege.editor.core.application" id="OntologyRepositoryFactory" name="Ontology Repository Factory"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,10 +17,6 @@
          </appInfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="label"/>
-            <element ref="class"/>
-         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -48,27 +44,15 @@
       </complexType>
    </element>
 
-   <element name="label">
-      <complexType>
-         <attribute name="value" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
    <element name="class">
       <complexType>
-         <attribute name="value" type="string" use="required">
+         <attribute name="value" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.protege.editor.core.ui.preferences.PreferencesPanel:"/>
+                  <meta.attribute kind="java" basedOn="org.protege.editor.core.OntologyRepositoryFactory:"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -95,7 +79,7 @@
 
    <annotation>
       <appInfo>
-         <meta.section type="apiInfo"/>
+         <meta.section type="apiinfo"/>
       </appInfo>
       <documentation>
          [Enter API information here.]
