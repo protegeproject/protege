@@ -37,7 +37,7 @@ public abstract class OntologyImportPage extends AbstractOWLWizardPanel {
         panel.add(customizeImports = new JCheckBox("Manually specify import declarations."));
         customizeImports.setAlignmentX(LEFT_ALIGNMENT);
         customizeImports.addActionListener(new ActionListener() {
-            @Override
+
             public void actionPerformed(ActionEvent e) {
                 getWizard().setCustomizeImports(customizeImports.isSelected());
             }
