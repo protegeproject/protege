@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.ontology.imports;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +11,18 @@ import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
+import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLException;
@@ -111,8 +116,8 @@ public class OntologyImportsList extends MList {
         	for (ImportInfo importParameters : wizard.getImports()) {
         		IRI importLocation = importParameters.getImportLocation();
         		URI physicalLocation = importParameters.getPhysicalLocation();
-        		if (!importLocation.equals(physicalLocation)) {
-        			manager.addIRIMapper(new SimpleIRIMapper(importLocation, IRI.create(physicalLocation)));
+        		if (!importLocation.equals(IRI.create(physicalLocation))) {
+        		    addImportMapping(activeOntology, importLocation, IRI.create(physicalLocation));
         		}
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
                 changes.add(new AddImport(ont, decl));
@@ -138,6 +143,24 @@ public class OntologyImportsList extends MList {
                 }
         	}
             eKit.getModelManager().applyChanges(changes);
+        }
+    }
+    
+    private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
+        OWLOntologyManager manager = ontology.getOWLOntologyManager();
+        manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
+        try {
+            IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
+            if (importersDocumentLocation.getScheme().equals("file")) {
+                File f = new File(importersDocumentLocation.toURI());
+                FolderOntologyLibrary lib = eKit.getModelManager().addRootFolder(f.getParentFile());
+                XMLCatalog catalog = lib.getXmlCatalog();
+                catalog.addEntry(new UriEntry("Imports Wizard Entry", catalog, importersDocumentLocation.toURI().toString(), physicalLocation.toURI(), null));
+                lib.save();
+            }
+        }
+        catch (Throwable t) {
+            ProtegeApplication.getErrorLog().logError(t);
         }
     }
 
