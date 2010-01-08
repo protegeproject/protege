@@ -6,8 +6,10 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Level;
@@ -106,7 +108,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private OWLOntology activeOntology;
 
-    private Set<File> ontologyRootFolders;
+    private Map<File, FolderOntologyLibrary> ontologyRootFolders;
 
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
@@ -195,7 +197,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
         dirtyOntologies = new HashSet<OWLOntology>();
-        ontologyRootFolders = new HashSet<File>();
+        ontologyRootFolders = new HashMap<File, FolderOntologyLibrary>();
         ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
 
 
@@ -325,7 +327,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             
             if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
                 // Load the URIs of other ontologies that are contained in the same folder.
-                addRootFolder(uri);
+                addRootFolder(new File(uri).getParentFile());
             }
             // Delegate to the load method using the IRI of the ontology
             ontology = loadOntology(id.getOntologyIRI());
@@ -383,23 +385,30 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    private void addRootFolder(URI uri) {
-        // Ensure that the URI is a file URI
-        if (!uri.getScheme().equals("file")) {
-            return;
-        }
-        File file = new File(uri);
+    public FolderOntologyLibrary addRootFolder(File dir) {
+        FolderOntologyLibrary lib = ontologyRootFolders.get(dir);
         // Add the parent file which will be the folder
-        if (ontologyRootFolders.add(file.getParentFile())) {
+        if (lib == null) {
             // Add automapped library
             try {
-                autoMappedRepositoryIRIMapper.addLibrary(new FolderOntologyLibrary(file.getParentFile()));
+                lib = new FolderOntologyLibrary(dir);
+                autoMappedRepositoryIRIMapper.addLibrary(lib);
+                ontologyRootFolders.put(dir, lib);
             }
             catch (IOException ioe) {
                 ProtegeApplication.getErrorLog().logError(ioe);
-                logger.error("Could not look for possible imports in the directory containing " + uri.toString());
+                logger.error("Could not look for possible imports in the directory " + dir);
             }
         }
+        return lib;
+    }
+    
+    public FolderOntologyLibrary removeRootFolder(File dir) {
+        FolderOntologyLibrary lib = ontologyRootFolders.get(dir);
+        if (lib != null) {
+            autoMappedRepositoryIRIMapper.removeLibrary(lib);
+        }
+        return lib;
     }
 
 
