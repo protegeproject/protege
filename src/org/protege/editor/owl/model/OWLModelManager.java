@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
+import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
@@ -283,4 +285,8 @@ public interface OWLModelManager extends ModelManager {
 
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
+    
+    FolderOntologyLibrary addRootFolder(File dir);
+    
+    FolderOntologyLibrary removeRootFolder(File dir);
 }
