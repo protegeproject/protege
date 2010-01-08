@@ -86,6 +86,8 @@ public class LocalFilePage extends OntologyImportPage {
     	parameters.setPhysicalLocation(filePathPanel.getFile().toURI());
     	wizard.addImport(parameters);
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+        ((ImportConfirmationPage) getWizardModel().getPanel(ImportConfirmationPage.ID)).setBackPanelDescriptor(ID);
+
     	super.aboutToHidePanel();
     }
 
