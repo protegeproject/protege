@@ -867,7 +867,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Add covering axiom"/>
         <class value="org.protege.editor.owl.ui.action.AddCoveringAxiomAction"/>
-        <toolTip value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D              then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one              of its subclasses."/>
+        <toolTip value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one of its subclasses."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-D"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -885,7 +885,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make primitive siblings disjoint"/>
         <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
-        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added             to the current ontology."/>
+        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added to the current ontology."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-F"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="J"/>
@@ -1092,9 +1092,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Split subclass axioms"/>
         <class value="org.protege.editor.owl.ui.action.SplitSubClassAxiomsAction"/>
-        <toolTip value="Splits subclass axioms in the active ontologies into more fine
-        grained axioms.  For example, A subClassOf (B and C) would be split into A subClassOf B, and
-        A subClassOf C"/>
+        <toolTip value="Splits subclass axioms in the active ontologies into more fine grained axioms.  For example, A subClassOf (B and C) would be split into A subClassOf B, and A subClassOf C"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotC-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
