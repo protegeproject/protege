@@ -71,12 +71,13 @@ public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
             if (resolvedURI != null) {
                 resolvedMissingImports.put(ontologyIRI, resolvedURI);
             }
-            return IRI.create(resolvedURI);
+            return resolvedURI != null ? IRI.create(resolvedURI) : null;
         }
     }
 
     private URI resolveMissingImport(IRI ontologyIRI) {
-        return missingImportHandler.getDocumentIRI(ontologyIRI).toURI();
+        IRI iri = missingImportHandler.getDocumentIRI(ontologyIRI);
+        return iri != null ? iri.toURI() : null;
     }
 
 
