@@ -1,16 +1,19 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
+import org.protege.editor.owl.ui.renderer.SWRLRuleRenderer;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.SWRLRule;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -45,18 +48,18 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
 
     private ExpressionEditor<SWRLRule> editor;
 
-    private OWLEditorKit editorKit;
-
     private JScrollPane scrollpane;
 
+    private SWRLRuleRenderer renderer;
 
-    public SWRLRuleEditor(final OWLEditorKit editorKit) {
-        this.editorKit = editorKit;
+    public SWRLRuleEditor(OWLEditorKit editorKit) {
         final OWLExpressionCheckerFactory fac = editorKit.getModelManager().getOWLExpressionCheckerFactory();
         editor = new ExpressionEditor<SWRLRule>(editorKit, fac.getSWRLChecker());
 
         scrollpane = new JScrollPane(editor);
         scrollpane.setPreferredSize(new Dimension(500, 200));
+        
+        renderer = new SWRLRuleRenderer(editorKit.getModelManager());
     }
 
 
@@ -84,13 +87,17 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
         }
     }
 
-
+  /*
+   * Workaround for owlapi feature request 2896097.  Remove this fix when 
+   * the simple rule renderer and parser is implemented.  Svn at time of 
+   * commit is approximately 16831
+   */
     public boolean setEditedObject(SWRLRule rule) {
         if (rule == null){
             editor.setText("");
         }
         else{
-            editor.setText(editorKit.getModelManager().getRendering(rule));
+            editor.setText(renderer.render(rule));
         }
         return true;
     }
