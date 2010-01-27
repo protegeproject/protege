@@ -80,6 +80,8 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -301,36 +303,20 @@ public class OWLModelManagerImpl extends AbstractModelManager
      * A convenience method that loads an ontology from a file
      * The location of the file is specified by the URI argument.
      */
-    public boolean loadOntologyFromPhysicalURI(URI uri) throws OWLOntologyCreationException {
-        OWLOntology ontology = null;
-
-        // Obtain the actual ontology IRI.
-        // @@TODO handle anonymous ontologies
-        OWLOntologyID id = new MasterOntologyIDExtractor(uri).getOntologyId();
-
-        // if the ontology has already been loaded, we cannot have more than one ont with the same URI
-        // in this ontology manager (and therefore workspace)
-        if (manager.getOntology(id) != null){
-            throw new OWLOntologyCreationException("Not loaded." +
-                                                   "\nWorkspace already contains ontology: " + id +
-                                                   ".\nPlease open the ontology in a new frame.");
+    public boolean loadOntologyFromPhysicalURI(URI uri) {
+        if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
+            // Load the URIs of other ontologies that are contained in the same folder.
+            addRootFolder(new File(uri).getParentFile());
         }
-        else{
-        	
-            // Set up a mapping from the ontology URI to the physical URI
-        	if (id.getVersionIRI() != null) {
-        		manager.addIRIMapper(new SimpleIRIMapper(id.getVersionIRI(), IRI.create(uri)));
-        	}
-        	else {
-        		manager.addIRIMapper(new SimpleIRIMapper(id.getOntologyIRI(), IRI.create(uri)));
-        	}
-            
-            if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
-                // Load the URIs of other ontologies that are contained in the same folder.
-                addRootFolder(new File(uri).getParentFile());
-            }
-            // Delegate to the load method using the IRI of the ontology
-            ontology = loadOntology(id.getOntologyIRI());
+        OWLOntology ontology = null;
+        try {
+            ontology = manager.loadOntologyFromOntologyDocument(IRI.create(uri));
+            setActiveOntology(ontology);
+            fireEvent(EventType.ONTOLOGY_LOADED);
+            manager.addIRIMapper(new SimpleIRIMapper(ontology.getOntologyID().getDefaultDocumentIRI(), IRI.create(uri)));
+        }
+        catch (OWLOntologyCreationException ooce) {
+            ;             // will be handled by the loadErrorHandler, so ignore
         }
         return ontology != null;
     }
@@ -359,31 +345,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         }
         fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
-
-
-    /**
-     * Loads the ontology that has the specified ontology IRI.
-     * <p/>
-     * @param iri The IRI of the ontology to be loaded.  Note
-     *            that this is <b>not</b> the physical URI of a document
-     *            that contains a representation of the ontology.  The
-     *            physical location of any concrete representation of the
-     *            ontology is determined by the <code>Repository</code>
-     *            mechanism.
-     */
-    private OWLOntology loadOntology(IRI iri) throws OWLOntologyCreationException {
-        OWLOntology ont = null;
-        try{
-            ont = manager.loadOntology(iri);
-            setActiveOntology(ont);
-            fireEvent(EventType.ONTOLOGY_LOADED);
-        }
-        catch (OWLOntologyCreationException e){
-            // will be handled by the loadErrorHandler, so ignore
-        }
-        return ont;
-    }
-
 
     public FolderOntologyLibrary addRootFolder(File dir) {
         FolderOntologyLibrary lib = ontologyRootFolders.get(dir);
@@ -464,9 +425,16 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
+        IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
         manager.removeOntology(ont);
-        ont = manager.loadOntologyFromOntologyDocument(IRI.create(getOntologyPhysicalURI(ont)));
-
+        try {
+            ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
+        }
+        catch (Throwable t) {
+            ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
+            manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
+            throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
+        }
         fireEvent(EventType.ONTOLOGY_RELOADED);
         setActiveOntology(ont, true);
         return ont;
