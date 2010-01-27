@@ -215,7 +215,7 @@ public class ExpressionEditor<O> extends JTextPane
         catch (OWLExpressionParserException e) {
             setError(e);
         }
-        catch (OWLException e) {
+        catch (Throwable e) {
             logger.error(e);
         }
     }
