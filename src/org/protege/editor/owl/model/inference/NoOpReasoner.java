@@ -268,7 +268,8 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLObjectPropertyNode(factory.getOWLTopObjectProperty());
     }
 
-    public FreshEntityPolicy getUndeclaredEntityPolicy() {
+
+    public FreshEntityPolicy getFreshEntityPolicy() {
         return FreshEntityPolicy.ALLOW;
     }
 }
