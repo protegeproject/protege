@@ -32,8 +32,6 @@ public class PluginUtilities {
     private static final Logger log = Logger.getLogger(PluginUtilities.class.getName());
 
     private static PluginUtilities instance;
-
-    private ProtegeApplication protegeApplication;
     
     private BundleContext context;
     
@@ -75,8 +73,7 @@ public class PluginUtilities {
      * This method is called by the system to initialise the
      * plugin utilities.  Users should <b>not</b> call this method.
      */
-    public void initialise(ProtegeApplication protegeApplication, BundleContext context) {
-        this.protegeApplication = protegeApplication;
+    public void initialise(BundleContext context) {
         this.context = context;
     }
     
