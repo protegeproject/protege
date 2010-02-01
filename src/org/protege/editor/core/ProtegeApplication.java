@@ -165,9 +165,9 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     protected ProtegeApplication initApplication() throws Exception {
-        PluginUtilities.getInstance().initialise(this, context);
+        PluginUtilities.getInstance().initialise(context);
         loadDefaults();
-        loadPreferences();
+        initializeLookAndFeel();
         setupExceptionHandler();
         loadPlugins();
         processCommandLineURIs();  // plugins may set arguments
@@ -200,11 +200,11 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    private static void loadPreferences() {
+    private static void initializeLookAndFeel() {
         // Just the look and feel
 
         // command line look and feel overrides the protege-specific one
-        if (System.getProperty("swing.defaultlaf") == null){
+        if (System.getProperty("swing.defaultlaf") == null) {
             // If the OS is a Mac then the Mac L&F is set by default.  I've had too many complaints
             // from Mac users that the first thing they do is switch the L&F over to OS X - the Protege
             // L&F might be nicer on other platforms with L&Fs like motif, but the OS X L&F looks much better
