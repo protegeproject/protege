@@ -46,29 +46,32 @@ public class UIUtil {
 
     public static File openFile(Window parent, String title, final Set<String> extensions) {
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
-        fileDialog.setFileFilter(new FileFilter() {
-            
-            @Override
-            public String getDescription() {
-                return null;
-            }
-            
-            @Override
-            public boolean accept(File f) {
-                if (extensions.isEmpty()) {
-                    return true;
+        if (extensions != null && !extensions.isEmpty()) {
+            fileDialog.setFileFilter(new FileFilter() {
+
+                @Override
+                public String getDescription() {
+                    return "";
                 }
-                else {
-                    String name = f.getName();
-                    for (String ext : extensions) {
-                        if (name.toLowerCase().endsWith(ext.toLowerCase())) {
-                            return true;
-                        }
+
+                @Override
+                public boolean accept(File f) {
+                    if (extensions.isEmpty() || f.isDirectory()) {
+                        return true;
                     }
-                    return false;
+                    else {
+                        String name = f.getName();
+                        for (String ext : extensions) {
+                            if (name.toLowerCase().endsWith(ext.toLowerCase())) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
                 }
-            }
-        });
+            });
+        }
+        fileDialog.setDialogType(JFileChooser.OPEN_DIALOG);
         fileDialog.showOpenDialog(parent);
         File f = fileDialog.getSelectedFile();
         if (f != null) {
