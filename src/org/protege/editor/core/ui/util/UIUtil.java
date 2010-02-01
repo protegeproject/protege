@@ -4,6 +4,8 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -43,19 +45,21 @@ public class UIUtil {
 
 
     public static File openFile(Window parent, String title, final Set<String> extensions) {
-        FileDialog fileDialog;
-        if (parent instanceof Frame) {
-            fileDialog = new FileDialog((Frame) parent, title, FileDialog.LOAD);
-        }
-        else {
-            fileDialog = new FileDialog((Dialog) parent, title, FileDialog.LOAD);
-        }
-        fileDialog.setFilenameFilter(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
+        JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
+        fileDialog.setFileFilter(new FileFilter() {
+            
+            @Override
+            public String getDescription() {
+                return null;
+            }
+            
+            @Override
+            public boolean accept(File f) {
                 if (extensions.isEmpty()) {
                     return true;
                 }
                 else {
+                    String name = f.getName();
                     for (String ext : extensions) {
                         if (name.toLowerCase().endsWith(ext.toLowerCase())) {
                             return true;
@@ -65,12 +69,13 @@ public class UIUtil {
                 }
             }
         });
-        fileDialog.setDirectory(getCurrentFileDirectory());
-        fileDialog.setVisible(true);
-        String fileName = fileDialog.getFile();
-        if (fileName != null) {
-            setCurrentFileDirectory(fileDialog.getDirectory());
-            return new File(fileDialog.getDirectory() + fileName);
+        fileDialog.showOpenDialog(parent);
+        File f = fileDialog.getSelectedFile();
+        if (f != null) {
+            if (f.getParent() != null) {
+                setCurrentFileDirectory(f.getParent());
+            }
+            return f;
         }
         else {
             return null;
