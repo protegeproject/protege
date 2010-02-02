@@ -128,7 +128,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         Set<String> exts = new HashSet<String>();
         exts.add(".owl");
         exts.add(".rdf");
-        File file = UIUtil.saveFile(new JFrame(), "Select a file", exts, getOntologyLocalName());
+        File file = UIUtil.saveFile(new JFrame(), "Select a file", "OWL File", exts, getOntologyLocalName());
         if (file != null) {
             locationField.setText(file.toString());
         }
