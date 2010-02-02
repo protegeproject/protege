@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.util;
 
+import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -44,14 +46,15 @@ public class UIUtil {
     }
 
 
-    public static File openFile(Window parent, String title, final Set<String> extensions) {
+    public static File openFile(Window parent, String title, final String description, final Set<String> extensions) {
+        // if there are complaints consider MacUIUtil.openFile() when OSUtils.isOSX() is true
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
 
                 @Override
                 public String getDescription() {
-                    return "";
+                    return description;
                 }
 
                 @Override
@@ -86,39 +89,46 @@ public class UIUtil {
     }
 
 
-    public static File saveFile(Window parent, String title, final Set<String> extensions, String initialName) {
-        FileDialog fileDialog;
-        if (parent instanceof Frame) {
-            fileDialog = new FileDialog((Frame) parent, title, FileDialog.SAVE);
-        }
-        else {
-            fileDialog = new FileDialog((Dialog) parent, title, FileDialog.SAVE);
-        }
-        fileDialog.setFilenameFilter(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (extensions.isEmpty()) {
-                    return true;
-                }
-                else {
-                    for (String ext : extensions) {
-                        if (name.toLowerCase().endsWith(ext.toLowerCase())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            }
-        });
-        fileDialog.setDirectory(getCurrentFileDirectory());
-        if (initialName != null) {
-            fileDialog.setFile(initialName);
-        }
-        fileDialog.setVisible(true);
+    public static File saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName) {
+        // if there are complaints consider MacUIUtil.saveFile() when OSUtils.isOSX() is true
+        JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
+        if (extensions != null && !extensions.isEmpty()) {
+            fileDialog.setFileFilter(new FileFilter() {
 
-        String fileName = fileDialog.getFile();
-        if (fileName != null) {
-            setCurrentFileDirectory(fileDialog.getDirectory());
-            return new File(fileDialog.getDirectory() + fileName);
+                @Override
+                public String getDescription() {
+                    return description;
+                }
+
+                @Override
+                public boolean accept(File f) {
+                    if (extensions.isEmpty() || f.isDirectory()) {
+                        return true;
+                    }
+                    else {
+                        String name = f.getName();
+                        for (String ext : extensions) {
+                            if (name.toLowerCase().endsWith(ext.toLowerCase())) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            });
+        }
+        fileDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+        if (initialName != null) {
+            fileDialog.setSelectedFile(new File(initialName));
+        }
+        fileDialog.showOpenDialog(parent);
+
+        File f = fileDialog.getSelectedFile();
+        if (f != null) {
+            if (f.getParent() != null) {
+                setCurrentFileDirectory(f.getParent());
+            }
+            return f;
         }
         else {
             return null;
@@ -126,8 +136,8 @@ public class UIUtil {
     }
 
 
-    public static File saveFile(Window parent, String title, final Set<String> extensions) {
-        return saveFile(parent, title, extensions, null);
+    public static File saveFile(Window parent, String title, String description, Set<String> extensions) {
+        return saveFile(parent, title, description, extensions, null);
     }
 
 
@@ -154,6 +164,7 @@ public class UIUtil {
             System.setProperty(prop, "true");
             file = openFile((Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent),
                             title,
+                            "Folder",
                             Collections.singleton(""));
         }
         finally {

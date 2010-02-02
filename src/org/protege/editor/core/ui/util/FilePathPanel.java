@@ -115,10 +115,8 @@ public class FilePathPanel extends JPanel {
 
     public void browseForFile() {
         Window f = (Window) SwingUtilities.getAncestorOfClass(Window.class, this);
-        File file = dialogMode == OPEN_DIALOG_MODE ? UIUtil.openFile(f, fileChooserText, extensions) : UIUtil.saveFile(
-                new JFrame(),
-                fileChooserText,
-                extensions);
+        File file = dialogMode == OPEN_DIALOG_MODE ? UIUtil.openFile(f, fileChooserText, "OWL File", extensions) : 
+                                                     UIUtil.saveFile(new JFrame(),fileChooserText, "OWL File", extensions);
         if (file != null) {
             textField.setText(file.toString());
         }
@@ -158,17 +156,5 @@ public class FilePathPanel extends JPanel {
     public void requestFocus() {
         // Pass on
         textField.requestFocus();
-    }
-
-
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        JPanel pan = new JPanel(new BorderLayout());
-        Set<String> ext = new HashSet<String>();
-        ext.add("owl");
-        pan.add(new FilePathPanel("Select a file!", ext), BorderLayout.NORTH);
-        f.setContentPane(pan);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
     }
 }

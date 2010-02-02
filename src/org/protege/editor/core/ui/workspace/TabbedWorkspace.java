@@ -306,6 +306,7 @@ public abstract class TabbedWorkspace extends Workspace {
             String fileName = getSelectedTab().getLabel().replace(' ', '_') + ".layout.xml";
             File f = UIUtil.saveFile((Window) SwingUtilities.getAncestorOfClass(Window.class, this),
                                      "Save layout to",
+                                     "XML Layout",
                                      extensions,
                                      fileName);
             if (f == null) {
@@ -333,6 +334,7 @@ public abstract class TabbedWorkspace extends Workspace {
             extensions.add("xml");
             File f = UIUtil.openFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this),
                                      "Save layout to",
+                                     "XML Layout File",
                                      extensions);
             if (f == null) {
                 return;
