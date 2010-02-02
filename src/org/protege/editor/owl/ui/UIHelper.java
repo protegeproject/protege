@@ -250,24 +250,19 @@ public class UIHelper {
         if (f == null) {
             f = new JFrame();
         }
-        return UIUtil.openFile(f, title, extensions);
+        return UIUtil.openFile(f, title, "OWL File", extensions);
     }
 
 
     public File saveOWLFile(String title) {
         return UIUtil.saveFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getParent()),
                                title,
+                               "OWL File", 
                                extensions);
     }
 
 
     public OWLLiteral createConstant() {
-//        DataValueCreationPanel dataValuePanel = new DataValueCreationPanel(owlEditorKit);
-//        if (showDialog("Create a data value", dataValuePanel) == JOptionPane.OK_OPTION) {
-//            return dataValuePanel.getDataValue();
-//        } else {
-//            return null;
-//        }
         return null;
     }
 
