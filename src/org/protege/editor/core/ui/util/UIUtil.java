@@ -45,7 +45,19 @@ public class UIUtil {
         p.putString(CURRENT_FILE_DIRECTORY_KEY, dir);
     }
 
-
+    /**
+     * 
+     * @param parent
+     * @param title
+     * @param extensions
+     * @return
+     * @deprecated Use openFile(Window parent, String title, final String description, final Set<String> extensions)
+     */
+    @Deprecated
+    public static File openFile(Window parent, String title, Set<String> extensions) {
+        return openFile(parent, title, null, extensions);
+    }
+    
     public static File openFile(Window parent, String title, final String description, final Set<String> extensions) {
         // if there are complaints consider MacUIUtil.openFile() when OSUtils.isOSX() is true
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
@@ -88,6 +100,19 @@ public class UIUtil {
         }
     }
 
+    /**
+     * 
+     * @param parent
+     * @param title
+     * @param extensions
+     * @param initialName
+     * @return
+     * @deprecated Use saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName)
+     */
+    @Deprecated
+    public static File saveFile(Window parent, String title, Set<String> extensions, String initialName) {
+        return saveFile(parent, title, null, extensions, initialName);
+    }
 
     public static File saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName) {
         // if there are complaints consider MacUIUtil.saveFile() when OSUtils.isOSX() is true
