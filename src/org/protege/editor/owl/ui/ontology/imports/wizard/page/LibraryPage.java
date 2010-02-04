@@ -31,7 +31,7 @@ import org.protege.xmlcatalog.entry.Entry;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class LibraryPage extends AbstractOWLWizardPanel {
+public class LibraryPage extends OntologyImportPage {
 
     private static final Logger logger = Logger.getLogger(LibraryPage.class);
 
@@ -53,14 +53,15 @@ public class LibraryPage extends AbstractOWLWizardPanel {
         importList = new JList(importListModel);
         importList.setCellRenderer(new Renderer());
         calculatePossibleImports();
-        parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
         importList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    getWizard().setNextFinishButtonEnabled(importList.getSelectedIndex() != -1);
+                    updateNextButtonEnabled();
                 }
             }
         });
+        parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
+        parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
     
     private void calculatePossibleImports() {
@@ -78,7 +79,7 @@ public class LibraryPage extends AbstractOWLWizardPanel {
 
 
     public void displayingPanel() {
-        getWizard().setNextFinishButtonEnabled(false);
+        updateNextButtonEnabled();
         calculatePossibleImports();
     }
 
@@ -90,6 +91,8 @@ public class LibraryPage extends AbstractOWLWizardPanel {
             wizard.addImport((ImportInfo) importListModel.getElementAt(index));
         }
         ((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+        ((ImportConfirmationPage) getWizardModel().getPanel(ImportConfirmationPage.ID)).setBackPanelDescriptor(ID);
+        super.aboutToHidePanel();
     }
 
     public Object getBackPanelDescriptor() {
@@ -99,6 +102,10 @@ public class LibraryPage extends AbstractOWLWizardPanel {
 
     public Object getNextPanelDescriptor() {
         return AnticipateOntologyIdPage.ID;
+    }
+    
+    private void updateNextButtonEnabled() {
+        getWizard().setNextFinishButtonEnabled(importList.getSelectedIndex() != -1);
     }
     
     private class Renderer extends DefaultListCellRenderer {
