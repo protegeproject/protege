@@ -61,8 +61,7 @@ public class LocalFilePage extends OntologyImportPage {
         filePathPanel = new FilePathPanel("Please select a file", possibleExtensions);
         filePathPanel.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                File f = filePathPanel.getFile();
-                getWizard().setNextFinishButtonEnabled(f.exists() && f.isDirectory() == false);
+                updateFinishEnabled();
             }
         });
         filePathPanel.setBorder(ComponentFactory.createTitledBorder("Path"));
@@ -77,6 +76,12 @@ public class LocalFilePage extends OntologyImportPage {
         parent.add(recentListHolder, BorderLayout.CENTER);
         parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
+    
+    @Override
+    public void aboutToDisplayPanel() {
+        updateFinishEnabled();
+        super.aboutToDisplayPanel();
+    }
 
     @Override
     public void aboutToHidePanel() {
@@ -89,6 +94,11 @@ public class LocalFilePage extends OntologyImportPage {
         ((ImportConfirmationPage) getWizardModel().getPanel(ImportConfirmationPage.ID)).setBackPanelDescriptor(ID);
 
     	super.aboutToHidePanel();
+    }
+    
+    private void updateFinishEnabled() {
+        File f = filePathPanel.getFile();
+        getWizard().setNextFinishButtonEnabled(f.exists() && f.isDirectory() == false);
     }
 
     private JList createRecentList() {

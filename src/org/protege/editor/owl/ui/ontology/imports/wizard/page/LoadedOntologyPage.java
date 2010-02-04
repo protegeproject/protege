@@ -34,7 +34,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class LoadedOntologyPage extends AbstractOWLWizardPanel {
+public class LoadedOntologyPage extends OntologyImportPage {
 
     private static final Logger logger = Logger.getLogger(LoadedOntologyPage.class);
 
@@ -91,6 +91,8 @@ public class LoadedOntologyPage extends AbstractOWLWizardPanel {
         	wizard.addImport(parameter);
         }
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+        ((ImportConfirmationPage) getWizardModel().getPanel(ImportConfirmationPage.ID)).setBackPanelDescriptor(ID);
+    	super.aboutToHidePanel();
     }
 
 
@@ -106,7 +108,8 @@ public class LoadedOntologyPage extends AbstractOWLWizardPanel {
             }
         });
         parent.setLayout(new BorderLayout());
-        parent.add(ComponentFactory.createScrollPane(ontologyList));
+        parent.add(ComponentFactory.createScrollPane(ontologyList), BorderLayout.CENTER);
+        parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
 
 
@@ -116,7 +119,7 @@ public class LoadedOntologyPage extends AbstractOWLWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return SelectImportLocationPage.ID;
+        return getWizard().isCustomizeImports() ? SelectImportLocationPage.ID : ImportConfirmationPage.ID;
     }
 
 

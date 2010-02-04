@@ -22,7 +22,7 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class URLPage extends AbstractWizardPanel {
+public class URLPage extends OntologyImportPage {
 
     public static final String ID = "URLPage";
 
@@ -52,7 +52,8 @@ public class URLPage extends AbstractWizardPanel {
                 }
                 return false;
             }
-        });
+        }, BorderLayout.CENTER);
+        parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
 
 
@@ -87,6 +88,7 @@ public class URLPage extends AbstractWizardPanel {
     	parameters.setPhysicalLocation(urlPanel.getURI());
     	wizard.addImport(parameters);
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
+        ((ImportConfirmationPage) getWizardModel().getPanel(ImportConfirmationPage.ID)).setBackPanelDescriptor(ID);
     	super.aboutToHidePanel();
     }
 

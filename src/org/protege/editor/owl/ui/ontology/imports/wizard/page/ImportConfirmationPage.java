@@ -62,6 +62,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
 
     private void fillImportList() {
+        importedOntologiesComponent.removeAll();
         Box box = new Box(BoxLayout.Y_AXIS);
         boolean advanced = ((OntologyImportWizard) getWizard()).isCustomizeImports();
         Set<ImportInfo> parameters = ((OntologyImportWizard) getWizard()).getImports();
