@@ -93,14 +93,6 @@ public class PluginManager {
     }
 
 
-    public UpdatesProvider getUpdatesProvider() {
-        if (updatesProvider == null){
-            updatesProvider = new UpdatesProvider();
-        }
-        return updatesProvider;
-    }
-
-
     public void checkForUpdates(){
         final BackgroundTask task = ProtegeApplication.getBackgroundTaskManager().startTask("searching for updates");
         Runnable runnable = new Runnable() {
