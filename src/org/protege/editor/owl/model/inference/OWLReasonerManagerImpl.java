@@ -72,7 +72,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     private void clearAndDisposeReasoners() {
         for (OWLReasoner reasoner : currentReasonerMap.values()) {
-            reasoner.dispose();
+            if (reasoner != null) {
+                reasoner.dispose();
+            }
         }
         currentReasonerMap.clear();
     }
