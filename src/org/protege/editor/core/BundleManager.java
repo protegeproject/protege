@@ -25,8 +25,6 @@ public class BundleManager {
     public static final String BUNDLE_EXTRA_PROP = "org.protege.plugin.extra";
     public final static char   BUNDLE_EXTRA_SEPARATOR = ':';
     public static final String OSGI_READS_DIRECTORIES = "org.protege.allow.directory.bundles";
-    public static final String CLEAN_BUNDLES_ON_EXIT = "org.protege.clean.plugins.on.exit";
-    public static final String CLEAN_DELETED_PLUGINS = "org.protege.remove.extra.plugins";
 
     private BundleContext context;
     private List<Bundle> plugins = new ArrayList<Bundle>();
