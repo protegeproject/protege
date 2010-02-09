@@ -5,6 +5,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.protege.editor.core.plugin.PluginUtilities;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,22 +49,34 @@ public class UpdatesProvider implements DownloadsProvider{
     List<PluginInfo> updates = new ArrayList<PluginInfo>();
 
     public UpdatesProvider() {
+        DownloadsProvider downloadsRegistry = PluginManager.getInstance().getPluginRegistry();
         BundleContext context = PluginUtilities.getInstance().getApplicationContext();
         for (final Bundle b : context.getBundles()) {
             try {
                 String updateLocation = (String) b.getHeaders().get(UPDATE_URL);
                 if (updateLocation != null) {
                     URL url = new URL(updateLocation);
-                    UpdateChecker checker = new UpdateChecker(url, b);
-                    PluginInfo info = checker.run();
-                    if (info != null) {
-                        updates.add(info);
+                    testUrl(b, url);
+                }
+                else {
+                    for (PluginInfo pluginInfo : downloadsRegistry.getAvailableDownloads()) {
+                        if (b.getSymbolicName().equals(pluginInfo.getId())) {
+                            testUrl(b, pluginInfo.getDownloadURL());
+                        }
                     }
                 }
             }
             catch (Exception e) {
                 logger.debug(b.getHeaders().get("Bundle-Name") + ": " + e.getMessage());
             }
+        }
+    }
+    
+    public void testUrl(Bundle b, URL url) throws IOException, UpdateException {
+        UpdateChecker checker = new UpdateChecker(url, b);
+        PluginInfo info = checker.run();
+        if (info != null) {
+            updates.add(info);
         }
     }
 
