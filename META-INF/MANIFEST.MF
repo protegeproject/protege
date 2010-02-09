@@ -47,4 +47,5 @@ Export-Package: org.apache.commons.lang,
  com.jgoodies.looks.windows,
  com.jgoodies.looks.windows.icons,
  org.protege.common
+Bundle-Activator: org.protege.common.Activator
 
