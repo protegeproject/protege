@@ -38,6 +38,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     private Map<OWLOntology, OWLReasoner> currentReasonerMap = new HashMap<OWLOntology, OWLReasoner>();
     private OWLReasoner runningReasoner;
+    private boolean classificationInProgress = false;
     
     public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
 
@@ -156,46 +157,25 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     /**
      * Classifies the current active ontologies.
      */
-    public void classifyAsynchronously() {
+    public boolean classifyAsynchronously() {
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         final OWLOntology currentOntology = owlModelManager.getActiveOntology();
         synchronized (currentReasonerMap) {
+            if (classificationInProgress) {
+                return false;
+            }
             runningReasoner = currentReasonerMap.get(currentOntology);
             currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
+            classificationInProgress = true;
         }
-        Thread currentReasonerThread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    long start = System.currentTimeMillis();
-                    if (runningReasoner == null) {
-                        runningReasoner = currentReasonerFactory.createReasoner(currentOntology, reasonerProgressMonitor);
-                        runningReasoner.prepareReasoner();
-                    }
-                    else {
-                        if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
-                            runningReasoner.flush();
-                        }
-                    }
-
-                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                    logger.info(s);
-
-                }
-                finally{
-                    synchronized (currentReasonerMap) {
-                        currentReasonerMap.put(currentOntology, runningReasoner);
-                        runningReasoner = null;
-                    }
-                    fireReclassified();
-                }
-            }
-        }, "Classify Thread");
+        Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
-                logger.info("Classification interrupted");
+                ProtegeApplication.getErrorLog().logError(throwable);
             }
         });
         currentReasonerThread.start();
+        return true;
     }
 
 
@@ -223,6 +203,41 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         else {
             SwingUtilities.invokeLater(r);
+        }
+    }
+    
+    private class ClassificationRunner implements Runnable {
+        private OWLOntology ontology;
+        
+        public ClassificationRunner(OWLOntology ontology) {
+            this.ontology = ontology;
+        }
+        
+        public void run() {
+            try {
+                long start = System.currentTimeMillis();
+                if (runningReasoner == null) {
+                    runningReasoner = currentReasonerFactory.createReasoner(ontology, reasonerProgressMonitor);
+                    runningReasoner.prepareReasoner();
+                }
+                else {
+                    if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
+                        runningReasoner.flush();
+                    }
+                }
+
+                String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
+                logger.info(s);
+
+            }
+            finally{
+                synchronized (currentReasonerMap) {
+                    currentReasonerMap.put(ontology, runningReasoner);
+                    runningReasoner = null;
+                    classificationInProgress = false;
+                }
+                fireReclassified();
+            }
         }
     }
     
