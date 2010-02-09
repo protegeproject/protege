@@ -28,7 +28,6 @@
             <jvmarg value = "-Xmx1500M"/>
             <classpath>
               <pathelement path="${protege.home}/bin/felix.jar"/>
-              <pathelement path="${protege.home}/bin/crimson.jar"/>
             </classpath>
         </java>
     </target>
@@ -45,7 +44,6 @@
             <jvmarg value = "-Xmx1500M"/>
             <classpath>
               <pathelement path="${protege.home}/bin/felix.jar"/>
-              <pathelement path="${protege.home}/bin/crimson.jar"/>
             </classpath>
         </java>
     </target>
