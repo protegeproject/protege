@@ -62,7 +62,7 @@ public interface OWLReasonerManager extends Disposable {
 
     boolean isClassified();
 
-    void classifyAsynchronously();
+    boolean classifyAsynchronously();
 
     void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
 
