@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
-
-import java.awt.event.ActionEvent;
 
 
 /**
@@ -29,7 +31,21 @@ public class ClassifyAction extends ProtegeOWLAction {
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        getOWLModelManager().getOWLReasonerManager().classifyAsynchronously();
+        if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously()) {
+            Object[] options = {"OK", "Interrupt Current Classification"};
+            int ret = JOptionPane.showOptionDialog(null,
+                                                   "Classification already in progress.  New classification can't be started",
+                                                   "Classification in progress",
+                                                   JOptionPane.YES_NO_CANCEL_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE,
+                                                   null,
+                                                   options,
+                                                   options[0]);
+            if (ret == 1) { 
+                getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
+            }
+
+        }
     }
 
 
