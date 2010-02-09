@@ -148,7 +148,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     public boolean isClassified() {
         OWLReasoner reasoner = getCurrentReasoner();
-        return reasoner instanceof NoOpReasoner || !reasoner.getPendingChanges().isEmpty();
+        return !(reasoner instanceof NoOpReasoner) && reasoner.getPendingChanges().isEmpty();
     }
 
     /**
