@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.inference;
 import java.util.Set;
 
 import org.protege.editor.core.Disposable;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
