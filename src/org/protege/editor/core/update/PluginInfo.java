@@ -113,4 +113,8 @@ public class PluginInfo {
         }
         return label;
     }
+    
+    public String toString() {
+        return "<PluginInfo: " + id + ">";
+    }
 }
