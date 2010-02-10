@@ -41,6 +41,19 @@ public class BundleManager {
         installPlugins();
         startPlugins();
     }
+    
+    public void uninstallPlugins() {
+        for (Bundle bundle : plugins) {
+            try {
+                bundle.uninstall();
+            }
+            catch (Throwable t) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception caught uninstalling the bundle", t);
+                }
+            }
+        }
+    }
 
     private Map<String, Bundle> makeBundleMap() {
         Map<String, Bundle> bundleMap = new HashMap<String, Bundle>();
