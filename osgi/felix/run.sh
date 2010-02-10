@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd `dirname $0`
+
 java -Dlog4j.configuration=file:log4j.xml \
      -Dorg.protege.plugin.dir=plugins \
      -DentityExpansionLimit=100000000 \
