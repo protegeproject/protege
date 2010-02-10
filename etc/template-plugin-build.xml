@@ -17,9 +17,9 @@
    <property file="local.properties"/>
 
    <property file="version.properties"/>
-   <property major.version="1"/>
-   <property minor.version="0"/>
-   <property micro.version="0"/>
+   <property name="major.version" value="1"/>
+   <property name="minor.version" value="0"/>
+   <property name="micro.version" value="0"/>
 
    <!-- 
         **** CHANGE ME ****
@@ -45,10 +45,25 @@
    <property name = "protege.common"    location="${protege.home}/bundles"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
 
+   <property name="equinox.common" 
+             location="${protege.common}/org.eclipse.equinox.common.jar"/>
+   <property name="equinox.registry"
+             location="${protege.common}/org.eclipse.equinox.registry.jar"/>
+   <property name="protege.lib" 
+             location="${protege.common}/org.protege.editor.core.application.jar"/>
+   <property name="common.lib"
+             location="${protege.common}/org.protege.common.jar"/>
+
+   <property name="owl.lib"
+             location="${protege.plugins}/org.semanticweb.owl.owlapi.jar"/>
+
+   <property name="owl.editor.jar"
+	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+
 
    <target name = "init">
      <tstamp>
-       <format property="build.time" pattern="yyyy-MM-dd-hh:mm"/>
+       <format property="build.time" pattern="yyyy-MM-dd-hhmm"/>
      </tstamp>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
@@ -78,7 +93,9 @@
         The following target only needs to be modified if the user
         needs to change the classpath.  It is preconfigured to use
         the common protege 4 jars, the lib directory and the
-        libraries that have been uncovered in buildlibs. 
+        libraries that have been uncovered in buildlibs. Also note
+        that the lib entry needs to be removed from the class path if
+        you do not have a lib directory.
      -->
    <target name = "checkProtegeLibs" depends="init">
      <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
@@ -124,6 +141,29 @@
    </target>
 
 
+   <target name="build.manifest">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <!-- 
+             **** CHANGE ME ****
+
+             Do you want the bundle version to be set by the build
+             file/version.properties file?  This is good in situations
+             where there is an automatic build with version updates.
+             It also automatically guarantees that a fresh build is
+             later than the latest released version even if the major,
+             minor and micro version are the same.  Finally it will
+             guarantee the creation of a update.properties file that
+             can be used for automatic updates.  The disadvantage
+             is that the copy run in an ide will often have an old
+             version number.
+         -->
+        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}.${build.time}"/>
+     </manifest>
+   </target>
 
    <!-- 
         **** CHANGE ME ****
@@ -133,7 +173,8 @@
         default it already copies non-java files found in the source
         directory, the libraries needed by the project and the
         viewconfig and the plugin.xml.  This will be sufficient in
-        many cases. 
+        many cases.  Also if you have no lib directory, you will need
+        to delete the line involving the lib directory.
      -->
    <target name="copy.resources" depends="build.manifest">
      <copy todir="${classes}">
@@ -158,13 +199,29 @@
            file = "${manifest}"/>
    </target>
 
-
    <!-- 
-        It is less likely that the developer will want to make changes
-        below this line 
-        -->
-   <!-- ============================================================= -->
+        **** CHANGE ME ****
 
+     This will probably only need to be setup relatively late in a
+     project.  It arranges the automatic build of an update.properties
+     file for use with the Protege 4 automatic update feature.  The
+     various fields in this properties file will need to be configured
+     by the developer.  The setting of the version id will only work
+     if the build file sets the version of the bundle in the manifest.
+     -->
+   <target name = "create.update.properties">
+       <property name="update.properties.file"
+                 location="${build}/update.properties"/>
+       <echo file="${update.properties.file}" append="false">
+id=${plugin}
+version=${major.version}.${minor.version}.${micro.version}.${build.time}
+download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
+name=DL Query Plugin
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/dlquery-readme.txt
+license=http://www.gnu.org/licenses/lgpl.html
+author=Matthew Horridge for the CO-ODE project
+       </echo>
+   </target>
 
    <target name = "compile" depends = "buildlibs, checkProtegeLibsAndReport">
      <javac srcdir = "${src}"
@@ -175,17 +232,7 @@
      </javac>
    </target>
 
-   <target name="build.manifest">
-     <copy tofile="${manifest}" 
-           file="META-INF/MANIFEST.MF" overwrite="true"/>
-     <manifest file="${manifest}" 
-               mode = "update">
-        <attribute name="Built-By" value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}.${build.time}"/>
-     </manifest>
-   </target>
-
-   <target name = "jar" depends = "compile, copy.resources">
+   <target name = "jar" depends = "compile, copy.resources, create.update.properties">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
@@ -213,26 +260,6 @@
      <echo message = "copy.resources - copyies resources into the classes directory"/>
      <echo message = "    this can  be useful for ide developers - see the wiki"/>
    </target>
-
-
-   <!-- 
-        Standard properties that should not require changing
-        -->
-   <property name="equinox.common" 
-             location="${protege.common}/org.eclipse.equinox.common.jar"/>
-   <property name="equinox.registry"
-             location="${protege.common}/org.eclipse.equinox.registry.jar"/>
-   <property name="protege.lib" 
-             location="${protege.common}/org.protege.editor.core.application.jar"/>
-   <property name="common.lib"
-             location="${protege.common}/org.protege.common.jar"/>
-
-   <property name="owl.lib"
-             location="${protege.plugins}/org.semanticweb.owlapi.owlapi.jar"/>
-
-   <property name="owl.editor.jar"
-	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
-
 
 
 </project>
