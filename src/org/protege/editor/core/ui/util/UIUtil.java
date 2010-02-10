@@ -54,11 +54,11 @@ public class UIUtil {
      * @deprecated Use openFile(Window parent, String title, final String description, final Set<String> extensions)
      */
     @Deprecated
-    public static File openFile(Window parent, String title, Set<String> extensions) {
+    public static File openFile(Component parent, String title, Set<String> extensions) {
         return openFile(parent, title, null, extensions);
     }
     
-    public static File openFile(Window parent, String title, final String description, final Set<String> extensions) {
+    public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
         // if there are complaints consider MacUIUtil.openFile() when OSUtils.isOSX() is true
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
@@ -110,11 +110,11 @@ public class UIUtil {
      * @deprecated Use saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName)
      */
     @Deprecated
-    public static File saveFile(Window parent, String title, Set<String> extensions, String initialName) {
+    public static File saveFile(Component parent, String title, Set<String> extensions, String initialName) {
         return saveFile(parent, title, null, extensions, initialName);
     }
 
-    public static File saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName) {
+    public static File saveFile(Component parent, String title, final String description, final Set<String> extensions, String initialName) {
         // if there are complaints consider MacUIUtil.saveFile() when OSUtils.isOSX() is true
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
@@ -160,6 +160,13 @@ public class UIUtil {
         }
     }
 
+    /**
+     * @deprecated Use saveFile(Window parent, String title, String description, Set<String> extensions)
+     */
+    @Deprecated
+    public static File saveFile(Window parent, String title, Set<String> extensions) {
+        return saveFile(parent, title, null, extensions, null);
+    }
 
     public static File saveFile(Window parent, String title, String description, Set<String> extensions) {
         return saveFile(parent, title, description, extensions, null);
