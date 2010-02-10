@@ -32,7 +32,7 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Nov 6, 2008<br><br>
  */
-public interface DownloadsProvider {
+public interface PluginRegistry {
 
     List<PluginInfo> getAvailableDownloads();
 

@@ -68,7 +68,7 @@ public class PluginPanel extends JPanel {
     private JCheckBox alwaysShow;
 
 
-    public PluginPanel(Map<String, DownloadsProvider> downloadsProviders) {
+    public PluginPanel(Map<String, PluginRegistry> downloadsProviders) {
         setLayout(new BorderLayout(2, 2));
 
 
@@ -280,7 +280,7 @@ public class PluginPanel extends JPanel {
     }
 
 
-    public static List<PluginInfo> showDialog(Map<String, DownloadsProvider> downloadsProviders, Component parent) {
+    public static List<PluginInfo> showDialog(Map<String, PluginRegistry> downloadsProviders, Component parent) {
         PluginPanel panel = new PluginPanel(downloadsProviders);
         Object [] options = new String []{"Install", "Not now"};
         int ret = JOptionPaneEx.showConfirmDialog(parent,

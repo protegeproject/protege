@@ -52,7 +52,7 @@ public class PluginTable extends JPanel {
 
     private PluginUpdateTableModel tableModel;
 
-    private DownloadsProvider provider;
+    private PluginRegistry provider;
 
     private List<ListSelectionListener> pendingListeners = new ArrayList<ListSelectionListener>();
 
@@ -66,7 +66,7 @@ public class PluginTable extends JPanel {
     private JLabel waitLabel;
 
 
-    public PluginTable(DownloadsProvider provider) {
+    public PluginTable(PluginRegistry provider) {
         setOpaque(false);
         this.provider = provider;
         addComponentListener(componentAdapter);
@@ -151,10 +151,10 @@ public class PluginTable extends JPanel {
 
         private final String[] colNames = {"Install", "Name", "Current version", "Available version"};
 
-        private DownloadsProvider provider;
+        private PluginRegistry provider;
 
 
-        public PluginUpdateTableModel(DownloadsProvider provider) {
+        public PluginUpdateTableModel(PluginRegistry provider) {
             this.provider = provider;
             getInstallList();
         }
