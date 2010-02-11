@@ -6,7 +6,6 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +19,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.Version;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
@@ -146,7 +147,6 @@ public class ProtegeApplication implements BundleActivator {
     // It helps with diagnosing problems with the FaCT++ plugin.
     @SuppressWarnings("unchecked")
     private void displayPlatform() {
-        Dictionary manifest = context.getBundle().getHeaders();
         Bundle b = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(b);
         logger.info("Starting Protege 4 OWL Editor (Version "  
@@ -329,9 +329,18 @@ public class ProtegeApplication implements BundleActivator {
         
         if (PluginManager.getInstance().isAutoUpdateEnabled()){
             PluginManager.getInstance().performAutoUpdate();
+
+            context.addFrameworkListener(new FrameworkListener() {
+               public void frameworkEvent(FrameworkEvent event) {
+                   if (event.getType() == FrameworkEvent.STARTED) {
+                       context.removeFrameworkListener(this);
+                   }
+                } 
+            });
+
         }
     }
-
+    
     private void showWelcomeFrame(){
         if (welcomeFrame == null){
             welcomeFrame = new ProtegeWelcomeFrame();
