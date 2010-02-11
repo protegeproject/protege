@@ -134,7 +134,15 @@ public class PluginUtilities {
         // return config.createExecutableExtension(property);
     }
     
-    // ToDo - update osgi so we can use b.getVersion();
+    /*
+     *  ToDo - remove this!
+     *  
+     *  Something strange happens here -
+     *  Even though I have 
+     *      org.osgi.framework.storage.clean=onFirstInit
+     *  (which seems to work) the bundle version is not read from the manifest.
+     *  Deleting the cache means that the bundle id is back but this is impractical.
+     */
     public static Version getBundleVersion(Bundle b) {
         return  new Version((String) b.getHeaders().get("Bundle-Version"));
     }
