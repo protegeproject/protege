@@ -1,10 +1,5 @@
 package org.protege.editor.core.update;
 
-import org.apache.log4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.protege.editor.core.plugin.PluginUtilities;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +7,18 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.plugin.PluginUtilities;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -46,21 +50,17 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Nov 5, 2008<br><br>
  */
-
-/*
- * TODO - this is going to take about three more refactors to straighten up.
- */
 public class PluginRegistryImpl implements PluginRegistry {
     private static final Logger logger = Logger.getLogger(PluginRegistryImpl.class);
 
     public static final String UPDATE_URL = "Update-Url";
     
-    public enum PluginType {
-        PLUGIN_UPDATES("Updates"), PLUGIN_DOWNLOADS("Downloads");
+    public enum PluginRegistryType {
+        PLUGIN_UPDATE_REGISTRY("Updates"), PLUGIN_DOWNLOAD_REGISTRY("Downloads");
        
         private String label;
         
-        private PluginType(String label) { 
+        private PluginRegistryType(String label) { 
             this.label = label;
         }
         
@@ -70,12 +70,12 @@ public class PluginRegistryImpl implements PluginRegistry {
     }
 
     private URL root;
-    private PluginType pluginType;
+    private PluginRegistryType pluginType;
 
     private List<PluginInfo> plugins = null;
 
 
-    public PluginRegistryImpl(URL root, PluginType pluginType) {
+    public PluginRegistryImpl(URL root, PluginRegistryType pluginType) {
         this.root = root;
         this.pluginType = pluginType;
     }
@@ -94,11 +94,12 @@ public class PluginRegistryImpl implements PluginRegistry {
 
 
     public boolean isSelected(PluginInfo download) {
-        return pluginType == PluginType.PLUGIN_UPDATES;
+        return pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
     }
     
     private class Calculator implements Runnable {
-        private Set<String> bundleIds = new HashSet<String>();
+        private BundleContext context = PluginUtilities.getInstance().getApplicationContext();
+        private Map<String, Bundle> bundleByIds = new HashMap<String, Bundle>();
         private Set<String> selfUpdatingBundleIds = new HashSet<String>();
         private Set<URL> visitedURLs = new HashSet<URL>();
 
@@ -111,18 +112,17 @@ public class PluginRegistryImpl implements PluginRegistry {
         }
         
         private void checkBundles() {
-            PluginRegistry downloadsRegistry = PluginManager.getInstance().getPluginRegistry();
-            BundleContext context = PluginUtilities.getInstance().getApplicationContext();
             for (Bundle bundle : context.getBundles()) {
-                bundleIds.add(bundle.getSymbolicName());
-                if (pluginType == PluginType.PLUGIN_UPDATES) {
+                bundleByIds.put(bundle.getSymbolicName(), bundle);
+                if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY) {
                     try {
                         String updateLocation = (String) bundle.getHeaders().get(UPDATE_URL);
                         if (updateLocation != null) {
                             URL url = new URL(updateLocation);
                             UpdateChecker checker = new UpdateChecker(url, bundle);
                             PluginInfo info = checker.run();
-                            if (info != null) {
+                            if (info != null && info.getAvailableVersion().compareTo(bundle.getVersion()) > 0) {
+                                info.setPluginDescriptor(bundle);
                                 plugins.add(info);
                                 selfUpdatingBundleIds.add(info.getId());
                                 if (logger.isDebugEnabled()) {
@@ -156,15 +156,18 @@ public class PluginRegistryImpl implements PluginRegistry {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Node " + node + "has valid Plugin Info: " + info.getId());
                         }
-                        if (pluginType == PluginType.PLUGIN_DOWNLOADS && !bundleIds.contains(info.getId())) {
+                        if (pluginType == PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY && !bundleByIds.containsKey(info.getId())) {
                             plugins.add(info);
                             if (logger.isDebugEnabled()) {
                                 logger.debug("Node " + node + " is a download");
                             }
                         }
-                        else if (pluginType == PluginType.PLUGIN_UPDATES
-                                      && bundleIds.contains(info.getId())
+                        Bundle bundle = bundleByIds.get(info.getId());
+                        if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY
+                                      && bundle != null
+                                      && bundle.getVersion().compareTo(info.getAvailableVersion()) < 0
                                       && !selfUpdatingBundleIds.contains(info.getId())) {
+                            info.setPluginDescriptor(bundle);
                             plugins.add(info);
                             if (logger.isDebugEnabled()) {
                                 logger.debug("Node " + node + " is a update");
