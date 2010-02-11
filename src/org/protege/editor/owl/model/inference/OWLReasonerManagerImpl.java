@@ -104,9 +104,14 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
 
     private void installFactories() {
-
+        
         ProtegeOWLReasonerFactoryPluginLoader loader = new ProtegeOWLReasonerFactoryPluginLoader(owlModelManager);
-        for (ProtegeOWLReasonerFactoryPlugin plugin : loader.getPlugins()) {
+        addReasonerFactories(loader.getPlugins());
+        setCurrentReasonerFactoryId(NULL_REASONER_ID);
+    }
+
+    public void addReasonerFactories(Set<ProtegeOWLReasonerFactoryPlugin> plugins) {
+        for (ProtegeOWLReasonerFactoryPlugin plugin : plugins) {
             try {
                 ProtegeOWLReasonerFactory factory = plugin.newInstance();
                 factory.initialise();
@@ -116,9 +121,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 ProtegeApplication.getErrorLog().logError(t);
             }
         }
-        setCurrentReasonerFactoryId(NULL_REASONER_ID);
     }
-
 
     public String getCurrentReasonerFactoryId() {
         return currentReasonerFactory.getReasonerId();
@@ -158,7 +161,6 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * Classifies the current active ontologies.
      */
     public boolean classifyAsynchronously() {
-        owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         final OWLOntology currentOntology = owlModelManager.getActiveOntology();
         synchronized (currentReasonerMap) {
             if (classificationInProgress) {
@@ -168,6 +170,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
             classificationInProgress = true;
         }
+        owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
