@@ -1,19 +1,28 @@
 package org.protege.editor.core.update;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.BundleManager;
-import org.protege.editor.core.FileUtils;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.progress.BackgroundTask;
-
-import javax.swing.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
+import org.protege.editor.core.BundleManager;
+import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.progress.BackgroundTask;
 
 
 /**
@@ -58,58 +67,64 @@ public class PluginInstaller {
         BackgroundTask downloading = ProtegeApplication.getBackgroundTaskManager().startTask("downloading " + info.getLabel());
         logger.info("Downloading " + info.getLabel());
         try {
-            URL downloadURL = info.getDownloadURL();
-            final String[] path = downloadURL.getFile().split("/");
-            String downloadFileName = path[path.length-1];
-
-            String tmpPath = System.getProperty("java.io.tmpdir");
-            File tempPluginFile = new File(tmpPath, downloadFileName);
-            tempPluginFile.deleteOnExit();
-            URLConnection conn = downloadURL.openConnection();
-//                int len = conn.getContentLength();
-            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
-//                int totalRead = 0;
-            while (true) {
-                byte [] buffer = new byte [4068];
-                int read = bis.read(buffer);
-                if (read == -1) {
-                    break;
-                }
-//                    totalRead += read;
-//                    logger.info("Downloading " + ((int) (((totalRead * 100.0) / len)) + "%"));
-                bos.write(buffer, 0, read);
+            File tempPluginFile = downloadPlugin(info);
+            if (tempPluginFile == null) {
+                return;
             }
-            bis.close();
-            bos.flush();
-            bos.close();
-
-            // Extract if a zip file
-            if (downloadURL.getFile().endsWith(".zip")){
-                tempPluginFile = extractPlugin(tempPluginFile, info);
+            File installedPluginFile = copyPluginToInstallLocation(tempPluginFile, info);
+            if (installedPluginFile == null) {
+                return;
             }
-
-            copyPluginToInstallLocation(tempPluginFile, info);
+            installPlugin(installedPluginFile, info);
         }
-        catch (URISyntaxException e) {
-            logger.error(e);
-        }
-        catch (IOException e) {
-            logger.error(e);
+        catch (Throwable t) {
+            logger.error("Exception caught installing plugins",  t);
         }
         finally{
             ProtegeApplication.getBackgroundTaskManager().endTask(downloading);
         }        
     }
+    
+    private File downloadPlugin(PluginInfo info) throws IOException {
+        URL downloadURL = info.getDownloadURL();
+        final String[] path = downloadURL.getFile().split("/");
+        String downloadFileName = path[path.length-1];
+
+        String tmpPath = System.getProperty("java.io.tmpdir");
+        File tempPluginFile = new File(tmpPath, downloadFileName);
+        tempPluginFile.deleteOnExit();
+        URLConnection conn = downloadURL.openConnection();
+        BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
+        while (true) {
+            byte [] buffer = new byte [4068];
+            int read = bis.read(buffer);
+            if (read == -1) {
+                break;
+            }
+            bos.write(buffer, 0, read);
+        }
+        bis.close();
+        bos.flush();
+        bos.close();
+
+        // Extract if a zip file
+        if (downloadURL.getFile().endsWith(".zip")){
+            tempPluginFile = extractPlugin(tempPluginFile, info);
+        }
+        return tempPluginFile;
+    }
 
 
-    private static void copyPluginToInstallLocation(File pluginFile, PluginInfo info) throws URISyntaxException {
+    private static File copyPluginToInstallLocation(File pluginFile, PluginInfo info) throws URISyntaxException {
         logger.info("Copying " + info.getLabel());
         boolean doCopy = true;
 
+
         File oldPluginFile = null;
         File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
-
+        final File newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
+        
         if (info.getPluginDescriptor() != null){
             String location = info.getPluginDescriptor().getLocation();
             location = location.substring(location.indexOf(":")+1, location.length());
@@ -120,17 +135,21 @@ public class PluginInstaller {
         }
 
         if (doCopy){
-            final File newPluginFile = new File(pluginsFolder, pluginFile.getName());
             try{
-                FileUtils.copyFileToDirectory(pluginFile, pluginsFolder);
+                FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
                 if (oldPluginFile != null && oldPluginFile.exists()){
                     FileUtils.deleteRecursively(oldPluginFile);
                 }
+                return newPluginFile;
             }
             catch(IOException e){
                 logger.error("Could not create plugin: " + newPluginFile, e);
             }
         }
+        else {
+            logger.error("Could not safely install new version of the plugin.");
+        }
+        return null;
     }
 
 
@@ -187,12 +206,6 @@ public class PluginInstaller {
             }
             return null;
         }
-        else{
-            File pluginXMLFile = new File(startDir, "plugin.xml");
-            if (pluginXMLFile.exists()) {
-                return startDir;
-            }
-        }
         for (File f : startDir.listFiles()) {
             File pluginDir = getPluginDir(f);
             if (pluginDir != null) {
@@ -200,5 +213,16 @@ public class PluginInstaller {
             }
         }
         return null;
+    }
+    
+    private void installPlugin(File pluginLocation, PluginInfo info) throws BundleException {
+        if (info.getPluginDescriptor() == null) {  // download not an update...
+            logger.info("Loading " + info.getLabel());
+            Bundle b = ProtegeApplication.getContext().installBundle("file:" + pluginLocation.getPath());
+            b.start();
+        }
+        else {
+            logger.info("Plugin " + info.getLabel() + " will be loaded when Protege is restarted");
+        }
     }
 }
