@@ -45,9 +45,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IRegistryEventListener;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
@@ -59,11 +64,15 @@ import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPlugin;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPluginJPFImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -367,7 +376,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         ontologiesMenu = getOntologiesMenu(menuBar);
         rebuildOntologiesMenu();
         rebuildReasonerMenu(menuBar);
-
+        addReasonerListener(menuBar);
         updateTitleBar();
 
         JMenu windowMenu = getWindowMenu(menuBar);
@@ -455,6 +464,33 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
     }
 
+    private void addReasonerListener(final JMenuBar menuBar) {
+        final IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
+        final IExtensionPoint point = registry.getExtensionPoint(ProtegeOWL.ID, ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
+        
+        registry.addListener(new IRegistryEventListener() {
+            
+            public void added(IExtension[] extensions) {
+                OWLReasonerManagerImpl reasonerManager = (OWLReasonerManagerImpl) getOWLModelManager().getOWLReasonerManager();
+                Set<ProtegeOWLReasonerFactoryPlugin> plugins = new HashSet<ProtegeOWLReasonerFactoryPlugin>();
+                for (IExtension extension : extensions) {
+                    plugins.add(new ProtegeOWLReasonerFactoryPluginJPFImpl(getOWLModelManager(), extension));
+                }
+                reasonerManager.addReasonerFactories(plugins);
+                rebuildReasonerMenu(menuBar);
+                menuBar.repaint();
+            }
+            public void added(IExtensionPoint[] extensionPoints) {
+            }
+
+            public void removed(IExtension[] extensions) {
+            }
+            public void removed(IExtensionPoint[] extensionPoints) {
+            }
+            
+        }, point.getUniqueIdentifier());
+        
+    }
 
     private JMenu getOntologiesMenu(JMenuBar menuBar) {
         return getMenu(menuBar, "Ontologies");
