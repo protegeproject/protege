@@ -39,7 +39,7 @@
 
    <target name = "init">
      <tstamp>
-       <format property="build.time" pattern="yyyy-MM-dd-hhmm"/>
+       <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
      </tstamp>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
@@ -169,7 +169,7 @@
      <manifest file="${manifest}"
                mode="update">
         <attribute name="Built-By"       value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}-${build.time}"/>
+        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
         <attribute name="Build-Number"   value="${core.build.number}"/>
      </manifest>
    </target>
