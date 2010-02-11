@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -71,6 +72,7 @@ import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrate
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
+import org.protege.editor.owl.ui.inference.ClassifyAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
@@ -362,32 +364,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
 
-        final OWLModelManager mngr = getOWLModelManager();
-
         ontologiesMenu = getOntologiesMenu(menuBar);
         rebuildOntologiesMenu();
+        rebuildReasonerMenu(menuBar);
 
-        JMenu reasonerMenu = getReasonerMenu(menuBar);
-        reasonerMenu.addSeparator();
-        ButtonGroup bg = new ButtonGroup();
-        Set<ProtegeOWLReasonerFactory> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
-        List<ProtegeOWLReasonerFactory> factoriesList = new ArrayList<ProtegeOWLReasonerFactory>(factories);
-        Collections.sort(factoriesList, new Comparator<ProtegeOWLReasonerFactory>() {
-            public int compare(ProtegeOWLReasonerFactory o1, ProtegeOWLReasonerFactory o2) {
-                return o1.getReasonerName().compareTo(o2.getReasonerName());
-            }
-        });
-        for (final ProtegeOWLReasonerFactory plugin : factoriesList) {
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(plugin.getReasonerName());
-            item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
-            reasonerMenu.add(item);
-            bg.add(item);
-            item.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
-                }
-            });
-        }
         updateTitleBar();
 
         JMenu windowMenu = getWindowMenu(menuBar);
@@ -437,6 +417,41 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 ontButtons.add(item);
                 ontologiesMenu.add(item);
             }
+        }
+    }
+    
+    private void rebuildReasonerMenu(JMenuBar menuBar) {
+        final OWLModelManager mngr = getOWLModelManager();
+
+        JMenu reasonerMenu = getReasonerMenu(menuBar);
+        
+        reasonerMenu.removeAll();
+        ClassifyAction classifyAction = new ClassifyAction();
+        classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
+        classifyAction.setEditorKit(getOWLEditorKit());
+        classifyAction.putValue(Action.NAME, "Classify...");
+        reasonerMenu.add(classifyAction);
+        
+        reasonerMenu.addSeparator();
+        
+        ButtonGroup bg = new ButtonGroup();
+        Set<ProtegeOWLReasonerFactory> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
+        List<ProtegeOWLReasonerFactory> factoriesList = new ArrayList<ProtegeOWLReasonerFactory>(factories);
+        Collections.sort(factoriesList, new Comparator<ProtegeOWLReasonerFactory>() {
+            public int compare(ProtegeOWLReasonerFactory o1, ProtegeOWLReasonerFactory o2) {
+                return o1.getReasonerName().compareTo(o2.getReasonerName());
+            }
+        });
+        for (final ProtegeOWLReasonerFactory plugin : factoriesList) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(plugin.getReasonerName());
+            item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
+            reasonerMenu.add(item);
+            bg.add(item);
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
+                }
+            });
         }
     }
 

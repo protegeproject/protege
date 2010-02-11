@@ -988,7 +988,7 @@
         <editorKitId value="OWLEditorKit"/>
     </extension-->
 
-    <!-- Reasoner menu -->
+    <!-- Reasoner menu - built automatically -->
 
     <extension id="menu.Reasoner"
                point="org.protege.editor.core.application.EditorKitMenuAction">
@@ -996,17 +996,6 @@
         <toolTip value="Invoke and configure reasoners"/>
         <path value="/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <extension
-            id="inference.computeinconsistentclasses"
-            point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Classify..."/>
-        <class value="org.protege.editor.owl.ui.inference.ClassifyAction"/>
-        <toolTip value="Classify ontology and show results"/>
-        <path value="org.protege.editor.owl.menu.Reasoner/SlotA-A"/>
-        <editorKitId value="OWLEditorKit"/>
-        <accelerator value="R"/>
     </extension>
 
 
