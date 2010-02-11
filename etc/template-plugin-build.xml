@@ -63,8 +63,10 @@
 
    <target name = "init">
      <tstamp>
-       <format property="build.time" pattern="yyyy-MM-dd-hhmm"/>
+       <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
      </tstamp>
+     <property name="bundle.version"
+               value="${major.version}.${minor.version}.${micro.version}.${build.time}"/>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
@@ -161,7 +163,7 @@
              is that the copy run in an ide will often have an old
              version number.
          -->
-        <attribute name="Bundle-Version" value="${major.version}.${minor.version}.${micro.version}.${build.time}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
      </manifest>
    </target>
 
@@ -214,7 +216,7 @@
                  location="${build}/update.properties"/>
        <echo file="${update.properties.file}" append="false">
 id=${plugin}
-version=${major.version}.${minor.version}.${micro.version}.${build.time}
+version=${bundle.version}
 download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
 name=DL Query Plugin
 readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/dlquery-readme.txt
