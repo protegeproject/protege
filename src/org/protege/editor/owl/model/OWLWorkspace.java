@@ -873,7 +873,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return true;
     }
     
-    @Override
     public JComponent getStatusArea() {
         if (statusArea == null) {
             statusArea = new JPanel();
