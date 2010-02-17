@@ -59,6 +59,8 @@ public interface OWLReasonerManager extends Disposable {
      */
     OWLReasoner getCurrentReasoner();
 
+    boolean isClassificationInProgress();
+    
     boolean isClassified();
 
     boolean classifyAsynchronously();
