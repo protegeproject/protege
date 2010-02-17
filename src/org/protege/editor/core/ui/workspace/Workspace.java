@@ -283,6 +283,8 @@ public abstract class Workspace extends JComponent implements Disposable {
     public WorkspaceViewManager getViewManager() {
         return viewManager;
     }
+    
+    public abstract JComponent getStatusArea();
 
 
     public void showResultsView(String id, String headerLabel, Color headerColor, ViewComponent viewComponent,

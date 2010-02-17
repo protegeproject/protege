@@ -143,6 +143,11 @@ public class WorkspaceFrame extends JFrame {
             setTitle(title);
         }
         setIconImage(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
+
+        JComponent statusArea = workspace.getStatusArea();
+        if (statusArea != null) {
+            contentPane.add(statusArea, BorderLayout.SOUTH);
+        }
     }
 
 
@@ -178,7 +183,6 @@ public class WorkspaceFrame extends JFrame {
             }
         });
         menuActions.addAll(menuBuilder.getActions());
-        //getJMenuBar().add(viewMenu);
     }
 
 
