@@ -206,6 +206,13 @@ author=Protege Development Team (First working version by Matthew Horridge)
           manifest = "${build}/manifest.mf"/>
    </target>
 
+   <target name = "orphanAlg" depends="compile">
+     <jar jarfile  = "${build}/orphanNodesAlg.jar"
+          basedir  = "${classes}" 
+          manifest = "${build}/manifest.mf"
+          includes = "org/protege/editor/owl/model/hierarchy/roots/*.class"/>
+   </target>
+
    <target name = "install" depends = "jar">
      <!-- flush cache -->
      <delete dir = "${protege.home}/configuration/org.eclipse.core.runtime"/>
