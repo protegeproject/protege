@@ -47,7 +47,6 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     private OWLReasonerExceptionHandler exceptionHandler;
 
-
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
         reasonerFactories = new HashSet<ProtegeOWLReasonerFactory>();
@@ -129,11 +128,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
 
     public void setCurrentReasonerFactoryId(String id) {
+        if (currentReasonerFactory != null && currentReasonerFactory.getReasonerId().equals(id)) {
+            return;
+        }
         for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
             if (reasonerFactory.getReasonerId().equals(id)) {
                 currentReasonerFactory = reasonerFactory;
                 clearAndDisposeReasoners();
                 owlModelManager.fireEvent(EventType.REASONER_CHANGED);
+                classifyAsynchronously();
                 return;
             }
         }
@@ -152,9 +155,17 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         return reasoner;
     }
     
+    public boolean isClassificationInProgress() {
+        synchronized (currentReasonerMap) {
+            return classificationInProgress;
+        }
+    }
+    
     public boolean isClassified() {
-        OWLReasoner reasoner = getCurrentReasoner();
-        return !(reasoner instanceof NoOpReasoner) && reasoner.getPendingChanges().isEmpty();
+        synchronized (currentReasonerMap) {
+            OWLReasoner reasoner = getCurrentReasoner();
+            return !(reasoner instanceof NoOpReasoner) && reasoner.getPendingChanges().isEmpty();
+        }
     }
 
     /**
@@ -174,6 +185,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
+                exceptionHandler.handle(throwable);
                 ProtegeApplication.getErrorLog().logError(throwable);
             }
         });
@@ -219,14 +231,18 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         public void run() {
             try {
                 long start = System.currentTimeMillis();
+                if (runningReasoner != null && 
+                        (runningReasoner.getBufferingMode() == null 
+                                || (runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING && !runningReasoner.getPendingChanges().isEmpty()))) {
+                    runningReasoner.dispose();
+                    runningReasoner = null;
+                }
                 if (runningReasoner == null) {
                     runningReasoner = currentReasonerFactory.createReasoner(ontology, reasonerProgressMonitor);
                     runningReasoner.prepareReasoner();
                 }
-                else {
-                    if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
-                        runningReasoner.flush();
-                    }
+                else if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
+                    runningReasoner.flush();
                 }
 
                 String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
