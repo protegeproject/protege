@@ -29,6 +29,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -69,6 +70,8 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.inference.NoOpReasoner;
+import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPlugin;
@@ -93,7 +96,9 @@ import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
+import org.semanticweb.owlapi.model.ImportChange;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
@@ -104,6 +109,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.SetOntologyID;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -119,6 +126,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHandler {
+    private static final long serialVersionUID = 2340234247624617932L;
 
     private Logger logger = Logger.getLogger(OWLWorkspace.class);
 
@@ -156,7 +164,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private OWLComponentFactory owlComponentFactory;
 
-
+    private JPanel statusArea;
+    
+    private boolean reasonerManagerStarted = false;
+    private JLabel reasonerStatus = new JLabel();
+    
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
     }
@@ -217,7 +229,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         mngr.getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
         mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
-
+        reasonerManagerStarted = true;
+        updateReasonerStatus(false);
 
         new OntologySourcesChangedHandlerUI(this);
     }
@@ -229,6 +242,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 rebuildOntologiesMenu();
                 updateTitleBar();
                 break;
+            }
+            else if (chg instanceof ImportChange) {
+                updateReasonerStatus(true);
+            }
+            else if (chg instanceof OWLAxiomChange && chg.getAxiom().isLogicalAxiom()) {
+                updateReasonerStatus(true);
             }
         }
 
@@ -250,25 +269,43 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             verifySelection();
         }
 
-        if (type.equals(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+        switch (type) {
+        case ACTIVE_ONTOLOGY_CHANGED:
             updateTitleBar();
+            updateReasonerStatus(false);
             rebuildList();
             rebuildOntologiesMenu();
             ontologiesList.repaint();
-        }
-        else if (type.equals(EventType.ONTOLOGY_CLASSIFIED)) {
+            break;
+        case ONTOLOGY_CLASSIFIED:
+            updateReasonerStatus(false);
             verifySelection();
-        }
-        else if (type.equals(EventType.ONTOLOGY_LOADED) || type.equals(EventType.ONTOLOGY_CREATED)) {
+            updateReasonerStatus(false);
+            break;
+        case ABOUT_TO_CLASSIFY:
+        case REASONER_CHANGED:
+            updateReasonerStatus(false);
+            break;
+        case ONTOLOGY_LOADED:
+        case ONTOLOGY_CREATED:
             if (getTabCount() > 0) {
                 setSelectedTab(0);
             }
-        }
-        else if(type.equals(EventType.ENTITY_RENDERER_CHANGED)) {
+            break;
+        case ENTITY_RENDERER_CHANGED:
             refreshComponents();
-        }
-        else if(type.equals(EventType.ONTOLOGY_SAVED)) {
+            break;
+        case ONTOLOGY_SAVED:
             updateDirtyFlag();
+            break;
+        case ENTITY_RENDERING_CHANGED:
+            break;
+        case ONTOLOGY_RELOADED:
+            break;
+        case ONTOLOGY_VISIBILITY_CHANGED:
+            break;
+        default:
+            ProtegeApplication.getErrorLog().logError(new RuntimeException("Programmer Error - missed a case"));
         }
     }
 
@@ -644,6 +681,33 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             f.setTitle(getTitle());
         }
     }
+    
+    private void updateReasonerStatus(boolean changesInProgress) {
+        if (!reasonerManagerStarted) {
+            return;
+        }
+        OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
+        if (reasonerManager.isClassificationInProgress()) {
+            reasonerStatus.setText("Classification In Progress");
+            return;
+        }
+        OWLReasoner currentReasoner = reasonerManager.getCurrentReasoner();
+        if (currentReasoner instanceof NoOpReasoner) {
+            reasonerStatus.setText("No Reasoner set");
+        }
+        else if (currentReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ok");
+        }
+        else if (changesInProgress) {
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
+        }
+        else if (reasonerManager.isClassified()) {
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ok");
+        }
+        else {
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
+        }
+    }
 
 
     public void displayOWLEntity(OWLEntity owlEntity) {
@@ -807,6 +871,21 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     public boolean sendErrorReport(ErrorLog errorLog) {
         return true;
+    }
+    
+    @Override
+    public JComponent getStatusArea() {
+        if (statusArea == null) {
+            statusArea = new JPanel();
+            statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
+            statusArea.add(Box.createHorizontalGlue());
+            statusArea.add(reasonerStatus);
+        }
+        return statusArea;
+    }
+    
+    public JLabel getReasonerStatusLabel() {
+        return reasonerStatus;
     }
 
 
