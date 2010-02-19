@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.error;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -24,6 +26,7 @@ import org.coode.owlapi.obo.parser.OBOParserException;
 import org.coode.owlapi.owlxmlparser.OWLXMLParser;
 import org.coode.owlapi.rdfxml.parser.RDFXMLParser;
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -64,6 +67,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         }
     }
 
+    public static final int SMALL_ONTOLOGY = 1024 * 1024;
 
     private OWLEditorKit eKit;
 
@@ -178,21 +182,17 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             SourcePanel sourcePanel = null;
             try {
                 URL physicalLoc = loc.toURL();
-                sourcePanel = new SourcePanel(physicalLoc);
-                sourcePanel.setBorder(new EmptyBorder(0, 7, 0, 7));
+                if (isSmallOntology(physicalLoc)) {
+                    sourcePanel = new SourcePanel(physicalLoc);
+                    sourcePanel.setBorder(new EmptyBorder(0, 7, 0, 7));
+                }
             }
-            catch (MalformedURLException e1) {
-                throw new RuntimeException(e1);
+            catch (Throwable e1) {
+                ProtegeApplication.getErrorLog().logError(e1);
             }
 
 
             final java.util.List<OWLParser> parsers = new ArrayList<OWLParser>(e.getExceptions().keySet());
-// sort
-//            Collections.sort(parsers, new Comparator<OWLParser>(){
-//                public int compare(OWLParser p1, OWLParser p2) {
-//                    return p1.getClass().getSimpleName().compareTo(p2.getClass().getSimpleName());
-//                }
-//            });
 
             for (OWLParser parser : parsers){
                 Throwable parseError = e.getExceptions().get(parser);
@@ -206,5 +206,21 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
             add(tabs, BorderLayout.CENTER);
         }
+    }
+    
+    private boolean isSmallOntology(URL location) throws IOException {
+        InputStream is = location.openStream();
+        int counter = SMALL_ONTOLOGY;
+        try {
+            while (is.read() >= 0) {
+                if (--counter <= 0) {
+                    return false;
+                }
+            }
+        }
+        finally {
+            is.close();
+        }
+        return true;
     }
 }
