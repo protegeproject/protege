@@ -178,6 +178,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 return false;
             }
             runningReasoner = currentReasonerMap.get(currentOntology);
+            if (runningReasoner instanceof NoOpReasoner){
+                return true;
+            }
             currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
             classificationInProgress = true;
         }
