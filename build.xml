@@ -206,7 +206,7 @@ author=Protege Development Team (First working version by Matthew Horridge)
           manifest = "${build}/manifest.mf"/>
    </target>
 
-   <target name = "orphanAlg" depends="compile">
+   <target name = "orphanAlg" depends="compile, build.manifest">
      <jar jarfile  = "${build}/orphanNodesAlg.jar"
           basedir  = "${classes}" 
           manifest = "${build}/manifest.mf"
