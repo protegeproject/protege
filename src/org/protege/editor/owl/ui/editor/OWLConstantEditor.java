@@ -45,6 +45,7 @@ import java.util.Set;
  * Date: 01-Aug-2007<br><br>
  */
 public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLiteral> {
+    private static final long serialVersionUID = 3199534896795886986L;
 
     private JTextArea annotationContent;
 
@@ -120,7 +121,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         if (constant != null) {
             annotationContent.setText(constant.getLiteral());
             if (constant.isOWLTypedLiteral()) {
-                datatypeComboBox.setSelectedItem(constant.asOWLStringLiteral().getDatatype());
+                datatypeComboBox.setSelectedItem(constant.asOWLTypedLiteral().getDatatype());
             }
             else {
                 langComboBox.setSelectedItem(constant.getLang());
@@ -293,11 +294,10 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
 
     public void setHandler(OWLObjectEditorHandler<OWLLiteral> owlLiteralOWLObjectEditorHandler) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 
     public OWLObjectEditorHandler<OWLLiteral> getHandler() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; 
     }
 }
