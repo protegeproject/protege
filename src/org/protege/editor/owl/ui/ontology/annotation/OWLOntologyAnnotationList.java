@@ -42,6 +42,8 @@ import java.util.List;
  * Date: Jun 1, 2009<br><br>
  */
 public class OWLOntologyAnnotationList extends AbstractAnnotationsList<OntologyAnnotationContainer> {
+    private static final long serialVersionUID = -639600900445260658L;
+
 
     public OWLOntologyAnnotationList(OWLEditorKit eKit) {
         super(eKit);
