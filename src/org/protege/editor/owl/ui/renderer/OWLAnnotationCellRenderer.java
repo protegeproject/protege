@@ -17,6 +17,7 @@ import java.awt.*;
  * Date: 27-Feb-2007<br><br>
  */
 public class OWLAnnotationCellRenderer extends JPanel implements ListCellRenderer {
+    private static final long serialVersionUID = 324857847551294897L;
 
     private JLabel annotationURILabel;
 
