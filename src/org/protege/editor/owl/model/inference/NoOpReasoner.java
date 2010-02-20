@@ -97,7 +97,7 @@ public class NoOpReasoner implements OWLReasoner {
     }
 
     public NodeSet<OWLClass> getDataPropertyDomains(OWLDataProperty pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
-        return new OWLClassNodeSet(OWLClassNode.getTopNode());
+        return new OWLClassNodeSet();
     }
 
     public Set<OWLLiteral> getDataPropertyValues(OWLNamedIndividual ind, OWLDataProperty pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
@@ -136,20 +136,15 @@ public class NoOpReasoner implements OWLReasoner {
     }
 
     public Node<OWLObjectProperty> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
-        if (pe instanceof OWLObjectInverseOf && !((OWLObjectInverseOf) pe).getInverse().isAnonymous()) {
-            return new OWLObjectPropertyNode(((OWLObjectInverseOf) pe).getInverse().asOWLObjectProperty());
-        }
-        else {
-            return new OWLObjectPropertyNode();
-        }
+        return new OWLObjectPropertyNode();
     }
 
     public NodeSet<OWLClass> getObjectPropertyDomains(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
-        return new OWLClassNodeSet(OWLClassNode.getTopNode());
+        return new OWLClassNodeSet();
     }
 
     public NodeSet<OWLClass> getObjectPropertyRanges(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
-        return new OWLClassNodeSet(OWLClassNode.getTopNode());
+        return new OWLClassNodeSet();
     }
 
     public NodeSet<OWLNamedIndividual> getObjectPropertyValues(OWLNamedIndividual ind, OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
