@@ -48,10 +48,12 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Jun 8, 2009<br><br>
  *
- * Don't want to write this again - MAtthew is adding an interface that Axiom and OWLOntology can implement
+ * Don't want to write this again - Matthew is adding an interface that Axiom and OWLOntology can implement
  * that allows us to get the annotations.
  */
 public abstract class AbstractAnnotationsList<O extends AnnotationContainer> extends MList {
+    private static final long serialVersionUID = -2246627783362209148L;
+
 
     private static final String HEADER_TEXT = "Annotations";
 
@@ -96,7 +98,10 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
         delegate = getCellRenderer();
 
-        setCellRenderer(new OWLAnnotationCellRenderer(eKit){
+        setCellRenderer(new OWLAnnotationCellRenderer(eKit) {
+            private static final long serialVersionUID = 3416003052933247552L;
+
+            @SuppressWarnings("unchecked")
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value instanceof AbstractAnnotationsList.AnnotationsListItem){
                     value = ((AbstractAnnotationsList.AnnotationsListItem)value).getAnnotation();
