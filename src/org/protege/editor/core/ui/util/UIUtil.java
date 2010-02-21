@@ -62,9 +62,7 @@ public class UIUtil {
     }
     
     public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
-        if (OSUtils.isOSX()) { // mac users are picky
-            return MacUIUtil.openFile((Window) SwingUtilities.getAncestorOfClass(Window.class, parent), title, extensions);
-        }
+        // use MacUIUtil.openFile if OSX somehow here?
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
