@@ -13,8 +13,6 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 import java.util.Set;
-import java.net.URL;
-
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 

@@ -16,8 +16,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Version;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 /*
 * Copyright (C) 2007, University of Manchester

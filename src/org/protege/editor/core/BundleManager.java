@@ -7,7 +7,6 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 
 /*

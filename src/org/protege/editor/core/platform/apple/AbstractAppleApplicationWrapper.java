@@ -1,6 +1,5 @@
 package org.protege.editor.core.platform.apple;
 
-import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -28,7 +27,6 @@ import java.lang.reflect.Proxy;
 */
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.ProtegeManager;
 
 /**
  * Author: drummond<br>

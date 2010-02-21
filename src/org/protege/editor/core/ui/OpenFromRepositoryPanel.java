@@ -5,7 +5,6 @@ import org.protege.editor.core.OntologyRepositoryEntry;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 
 import javax.swing.*;
-import java.net.URI;
 import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
