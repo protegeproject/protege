@@ -10,13 +10,11 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.AbstractOntologyLibrary;
 import org.protege.editor.owl.model.library.OntologyLibraryMemento;
-import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.exception.CatalogParseException;
 import org.protege.xmlcatalog.owl.update.Algorithm;
 import org.protege.xmlcatalog.owl.update.XMLCatalogUpdater;
 import org.protege.xmlcatalog.owl.update.XmlBaseAlgorithm;
-import org.semanticweb.owlapi.model.IRI;
 
 
 /**
