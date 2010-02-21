@@ -51,6 +51,11 @@ import java.awt.event.ActionEvent;
  */
 public class SelectedObjectPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1836316447338285493L;
+
     private OWLEditorKit owlEditorKit;
 
     private OWLEntityFrame entityFrame;
@@ -82,6 +87,11 @@ public class SelectedObjectPanel extends JPanel {
         headerPanel.add(objectDisplayLabel, BorderLayout.WEST);
         add(headerPanel, BorderLayout.NORTH);
         showUsageCheckBox = new JCheckBox(new AbstractAction("Show usage") {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -8105770102874054033L;
 
             public void actionPerformed(ActionEvent e) {
                 showUsagePanel(showUsageCheckBox.isSelected());

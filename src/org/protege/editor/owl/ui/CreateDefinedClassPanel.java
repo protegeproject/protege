@@ -48,6 +48,11 @@ import java.util.List;
  */
 public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEditor {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6715907571161404126L;
+
     private OWLEntityCreationPanel<OWLClass> entityCreatePanel;
 
     private JRadioButton anonymousButton;

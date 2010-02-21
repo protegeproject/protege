@@ -16,6 +16,12 @@ import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
  */
 public abstract class OWLViewAction extends ViewAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3898833228164161418L;
+
+
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
     }

@@ -36,6 +36,12 @@ import java.awt.*;
  */
 public class ObjectSelectorPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7757831439570646936L;
+
+
     private OWLEditorKit owlEditorKit;
 
 

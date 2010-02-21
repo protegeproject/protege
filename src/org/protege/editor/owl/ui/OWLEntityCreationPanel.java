@@ -34,6 +34,11 @@ import java.util.HashSet;
  */
 public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implements VerifiedInputEditor {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2790553738912229896L;
+
     private final int INTERNAL_PADDING = 5;
 
     private OWLEditorKit owlEditorKit;

@@ -43,6 +43,11 @@ import java.awt.*;
  */
 public class OWLOntologyDisplayPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -807382490474755622L;
+
     private OWLEditorKit owlEditorKit;
 
     private JLabel ontologyURILabel;
