@@ -24,6 +24,11 @@ import org.protege.editor.core.ui.workspace.Workspace;
  */
 public abstract class ViewComponent extends JComponent implements ProtegePluginInstance {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3219436558092741068L;
+
     private Workspace workspace;
 
     private View view;

@@ -192,6 +192,10 @@ public class CustomWorkspaceTabsManager {
 
         private class CustomTab extends WorkspaceViewsTab{
 
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -4411850900268388198L;
             private String label;
 
             public CustomTab(String label) {

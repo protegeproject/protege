@@ -28,6 +28,10 @@ import org.protege.editor.core.ui.split.ViewSplitPane;
  */
 public class ViewContainer extends JComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1833840751733500882L;
     // Debugging can be turned on (requires recompile)
     // to show borders around the containers
     public static final boolean DEBUG = false;
@@ -132,6 +136,11 @@ public class ViewContainer extends JComponent {
 
 
     private static class TabViewContainerSplitPane extends ViewSplitPane {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 2614735582419262419L;
 
         public TabViewContainerSplitPane(int orientation) {
             super(orientation);

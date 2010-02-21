@@ -14,6 +14,11 @@ import java.util.Properties;
  */
 public class ProtegeProperties extends Properties {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -225880915589492822L;
+
     public static final String PROTEGE_PREFIX = "org.protege.";
 
     public static final String CLASS_COLOR_KEY = PROTEGE_PREFIX + "classcolor";

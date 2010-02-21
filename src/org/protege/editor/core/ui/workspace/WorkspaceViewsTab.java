@@ -24,6 +24,11 @@ import org.protege.editor.core.ui.view.ViewsPaneMemento;
  */
 public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6574948332071917250L;
+
     public static final Logger logger = Logger.getLogger(WorkspaceViewsTab.class);
 
     private ViewsPane viewsPane;

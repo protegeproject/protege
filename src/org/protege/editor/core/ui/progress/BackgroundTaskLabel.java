@@ -41,6 +41,11 @@ import java.util.List;
  */
 public class BackgroundTaskLabel extends JLabel implements BackgroundTaskListener {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5229610259844307503L;
+
     private BackgroundTaskManager mngr;
 
     private static final int DELAY_MILLIS = 1000;

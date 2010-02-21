@@ -27,6 +27,11 @@ import java.util.Set;
  */
 public class ViewsPane extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8919347949244067211L;
+
     public static final Logger logger = Logger.getLogger(ViewsPane.class);
 
     private ViewsPaneMemento memento;

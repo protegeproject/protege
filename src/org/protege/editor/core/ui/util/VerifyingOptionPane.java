@@ -40,6 +40,11 @@ import java.awt.*;
  */
 public class VerifyingOptionPane extends JOptionPane {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6308201481924625979L;
+
     private static final Logger logger = Logger.getLogger(VerifyingOptionPane.class);
 
     private JButton okButton;

@@ -38,6 +38,11 @@ import java.util.Collections;
  */
 public class RepositoryTableModel extends AbstractTableModel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7543477174882794254L;
+
     private OntologyRepository repository;
 
     private List<OntologyRepositoryEntry> entries;

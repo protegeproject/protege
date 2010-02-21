@@ -38,6 +38,10 @@ import java.util.Vector;
  */
 public class RemovableObjectList<O> extends MList {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 531442360907676404L;
     private ListCellRenderer rendererDelegate;
 
 
@@ -45,6 +49,11 @@ public class RemovableObjectList<O> extends MList {
         super.setModel(new MutableObjectListModel());
         final MListCellRenderer ren = (MListCellRenderer) getCellRenderer();
         ren.setContentRenderer(new DefaultListCellRenderer() {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -4512962926323639137L;
 
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                           boolean cellHasFocus) {
@@ -148,6 +157,12 @@ public class RemovableObjectList<O> extends MList {
 
 
     private class MutableObjectListModel extends DefaultListModel {
+
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1902205916588877553L;
 
 
         public MutableObjectListModel() {
@@ -257,6 +272,11 @@ public class RemovableObjectList<O> extends MList {
         });
 
         list.setCellRenderer(new DefaultListCellRenderer() {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -1377455227330849109L;
 
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                           boolean cellHasFocus) {

@@ -27,6 +27,10 @@ import javax.swing.JSplitPane;
  */
 public class ViewSplitPane extends JSplitPane {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1459313580478275977L;
     private static final int DEFAULT_DIVIDER_SIZE = 6;
 
 

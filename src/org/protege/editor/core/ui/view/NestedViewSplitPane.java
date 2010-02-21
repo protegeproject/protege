@@ -20,6 +20,11 @@ import org.protege.editor.core.ui.split.ViewSplitPane;
 public class NestedViewSplitPane extends ViewSplitPane {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6670708338163244319L;
+
     private static final int ZERO_CONTENT_COUNT = 1;
 
     private JSplitPane parentComponent;

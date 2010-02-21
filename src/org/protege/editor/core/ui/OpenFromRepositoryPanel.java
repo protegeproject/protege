@@ -37,6 +37,11 @@ import java.awt.*;
  */
 public class OpenFromRepositoryPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -328358981641882683L;
+
     private OntologyRepository repository;
 
     private RepositoryTable table;

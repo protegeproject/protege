@@ -25,6 +25,10 @@ package org.protege.editor.core.ui.wizard;
 
 public class WizardPanelNotFoundException extends RuntimeException {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -967700880863172861L;
     private Object id;
 
     public WizardPanelNotFoundException(Object id) {

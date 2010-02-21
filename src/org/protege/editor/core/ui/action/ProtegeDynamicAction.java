@@ -14,5 +14,10 @@ import javax.swing.JMenu;
  */
 public abstract class ProtegeDynamicAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8038803274995974199L;
+
     public abstract void rebuildChildMenuItems(JMenu thisMenuItem);
 }

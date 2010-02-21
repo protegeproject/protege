@@ -31,6 +31,11 @@ import java.util.TreeSet;
  * Date: 12-May-2007<br><br>
  */
 public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8869065983080068694L;
+
     private static Logger log = Logger.getLogger(OpenFromURLPanel.class);
 
     private JTextField uriField;
@@ -68,6 +73,12 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
         bookmarksHolder.setBorder(ComponentFactory.createTitledBorder("Bookmarks"));
         add(bookmarksHolder);
         bookmarksList = new MList() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 6590889767286900162L;
+
+
             protected void handleAdd() {
                 addURI();
             }
@@ -192,6 +203,11 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
 
 
     private class BookmarkedItemListRenderer extends DefaultListCellRenderer {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -833970269120392171L;
 
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                       boolean cellHasFocus) {

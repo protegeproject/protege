@@ -38,7 +38,11 @@ import javax.swing.border.Border;
  * <br>
  */
 public class MList extends JList {
-	private MListCellRenderer ren;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7803414142701944703L;
+    private MListCellRenderer ren;
 	private MListDeleteButton deleteButton;
 	private MListEditButton editButton;
 	private MListAddButton addButton;

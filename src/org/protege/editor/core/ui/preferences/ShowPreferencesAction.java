@@ -16,6 +16,12 @@ import org.protege.editor.core.ui.action.ProtegeAction;
  */
 public class ShowPreferencesAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8689829614868877045L;
+
+
     public void actionPerformed(ActionEvent e) {
         PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
     }

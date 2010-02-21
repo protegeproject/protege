@@ -53,6 +53,11 @@ import java.util.List;
 public class PluginPanel extends JPanel {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4791943048258319472L;
+
     private JLabel authorLabel;
 
     private JLabel licenseLabel;

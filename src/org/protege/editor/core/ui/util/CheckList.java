@@ -40,6 +40,11 @@ import java.beans.PropertyChangeEvent;
  */
 public class CheckList extends JComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -358732140734918547L;
+
     private JList list;
 
     private Map<Object, JCheckBox> item2CheckBoxMap;

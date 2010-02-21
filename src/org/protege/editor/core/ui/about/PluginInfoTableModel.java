@@ -24,6 +24,10 @@ import org.protege.editor.core.ProtegeApplication;
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 231294024758489767L;
     private List<Bundle> bundles;
     
     public enum Columns  {

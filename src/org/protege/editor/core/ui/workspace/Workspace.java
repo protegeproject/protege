@@ -64,6 +64,11 @@ import java.util.Set;
  */
 public abstract class Workspace extends JComponent implements Disposable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1737700990946291204L;
+
     public static final int BOTTOM_RESULTS_VIEW = 0;
 
     public static final int LEFT_RESULTS_VIEW = 1;
@@ -151,6 +156,11 @@ public abstract class Workspace extends JComponent implements Disposable {
             else if (menu.getText().equals(FILE_MENU_NAME)){
                 if (!OSUtils.isOSX()){
                     final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences..."){
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = -4897769796985728041L;
+
                         public void actionPerformed(ActionEvent event) {
                             PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
                         }
@@ -161,6 +171,11 @@ public abstract class Workspace extends JComponent implements Disposable {
                     menu.add(menuItem);
                     menu.addSeparator();
                     menu.add(new AbstractAction("Exit"){
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = -3497054762240815779L;
+
                         public void actionPerformed(ActionEvent event) {
                             ProtegeApplication.handleQuit();
                         }
@@ -171,6 +186,11 @@ public abstract class Workspace extends JComponent implements Disposable {
                 if (!OSUtils.isOSX()){
                     menu.addSeparator();
                     menu.add(new AbstractAction("About"){
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 3773470646910947172L;
+
                         public void actionPerformed(ActionEvent event) {
                             AboutPanel.showDialog();
                         }
@@ -192,6 +212,11 @@ public abstract class Workspace extends JComponent implements Disposable {
         String lafName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
 
         JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -1460075802676626382L;
+
             public void actionPerformed(ActionEvent arg0) {
                 setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
             }
@@ -204,6 +229,11 @@ public abstract class Workspace extends JComponent implements Disposable {
             final String className = info.getClassName();
             JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(
                     new AbstractAction(info.getName()) {
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 2912631603213508312L;
+
                         public void actionPerformed(ActionEvent e) {
                             setLookAndFeel(className);
                         }
@@ -214,6 +244,11 @@ public abstract class Workspace extends JComponent implements Disposable {
         }
 
         JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 6933202663872017353L;
+
             public void actionPerformed(ActionEvent e) {
                 setLookAndFeel(ProtegeProperties.PLASTIC_3D_LAF);
             }

@@ -16,6 +16,11 @@ import java.awt.event.MouseEvent;
  */
 public class ErrorNotificationLabel extends JLabel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1816375999125772505L;
+
     private ErrorLogPanel panel;
 
     private SendErrorReportHandler handler;

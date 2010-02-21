@@ -34,6 +34,11 @@ package org.protege.editor.core.ui.action;
  */
 public class IncreaseFontSizeAction extends AbstractFontSizeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8515128029951047595L;
+
     protected int getDelta() {
         return 1;
     }

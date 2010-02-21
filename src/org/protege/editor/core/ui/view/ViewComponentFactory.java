@@ -56,6 +56,11 @@ public class ViewComponentFactory implements ComponentFactory {
                 public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
                     return new ViewComponent(){
 
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = -4964511834485031332L;
+
                         public void initialise() throws Exception {
                             setLayout(new BorderLayout());
                             add(new JLabel(message), BorderLayout.CENTER);

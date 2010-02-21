@@ -14,6 +14,12 @@ import java.awt.event.ActionEvent;
  */
 public abstract class AbstractFontSizeAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2557130094572814442L;
+
+
     public void actionPerformed(ActionEvent e) {
 //        Object[] objs = UIManager.getLookAndFeel().getDefaults().keySet().toArray();
 //        for (Object obj : objs) {

@@ -13,6 +13,11 @@ import java.awt.event.ActionEvent;
  */
 public class ErrorLogPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8745982593246886108L;
+
     private ErrorLog errorLog;
 
     private JTextArea textArea;
@@ -31,6 +36,11 @@ public class ErrorLogPanel extends JPanel {
         if (handler != null) {
             JPanel buttonPanel = new JPanel(new BorderLayout());
             buttonPanel.add(new JButton(new AbstractAction("Clear Errors") {
+                /**
+                 * 
+                 */
+                private static final long serialVersionUID = 6061428199099888086L;
+
                 public void actionPerformed(ActionEvent e) {
                     if (handleSendErrorReport()) {
                         ErrorLogPanel.this.errorLog.clear();

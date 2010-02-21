@@ -25,6 +25,11 @@ import java.net.URI;
  */
 public class ProtegeWelcomeFrame extends JFrame {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3174444631540765155L;
+
     private static final Logger logger = Logger.getLogger(ProtegeWelcomeFrame.class);
 
     private ProtegeWelcomeFrame.ProtegeWelcomePanel welcomePanel;
@@ -58,6 +63,11 @@ public class ProtegeWelcomeFrame extends JFrame {
 
 
     private class ProtegeWelcomePanel extends JPanel {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 6744371623503619618L;
 
         private Icon background;
 
