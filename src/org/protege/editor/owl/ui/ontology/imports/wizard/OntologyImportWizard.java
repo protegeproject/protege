@@ -1,17 +1,9 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;

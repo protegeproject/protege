@@ -6,7 +6,6 @@ import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,8 +2,6 @@ package org.protege.editor.owl.model.io;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 

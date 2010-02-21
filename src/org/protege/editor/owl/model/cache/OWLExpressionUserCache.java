@@ -9,7 +9,6 @@ import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.semanticweb.owlapi.model.*;
 
-import java.net.URI;
 import java.util.*;
 
 /*

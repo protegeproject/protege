@@ -9,7 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.JRadioButton;
 
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
-import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 
 

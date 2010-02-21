@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 import java.io.File;
-import java.net.URI;
 
 
 /**

@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.net.URI;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

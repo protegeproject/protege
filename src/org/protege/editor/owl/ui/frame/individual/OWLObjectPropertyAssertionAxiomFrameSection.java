@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.frame.individual;
 
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
