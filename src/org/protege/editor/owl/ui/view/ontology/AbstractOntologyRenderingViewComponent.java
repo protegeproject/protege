@@ -17,7 +17,7 @@ import java.io.Writer;
  * Date: 20-Mar-2007<br><br>
  */
 public abstract class AbstractOntologyRenderingViewComponent extends AbstractActiveOntologyViewComponent {
-
+    private static final long serialVersionUID = 496671619048384054L;
     private JTextArea textArea;
 
 

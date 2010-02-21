@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.view.individual;
 
-import java.awt.Color;
-
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLClass;

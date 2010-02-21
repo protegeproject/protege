@@ -35,7 +35,7 @@ import java.io.Writer;
  * Date: 13-Aug-2007<br><br>
  */
 public class ManchesterSyntaxRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
-
+    private static final long serialVersionUID = 5547044902285761296L;
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         ManchesterOWLSyntaxRenderer ren = new ManchesterOWLSyntaxRenderer(getOWLModelManager().getOWLOntologyManager());
