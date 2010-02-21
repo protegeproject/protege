@@ -17,6 +17,11 @@ import java.util.*;
  */
 public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTreeModel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2530774548488512609L;
+
     private OWLModelManager owlModelManager;
 
     private DefaultMutableTreeNode rootNode;
@@ -468,6 +473,11 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
     protected class UsageTreeNode extends DefaultMutableTreeNode {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -53617232488795863L;
 
         private OWLOntology ont;
 
