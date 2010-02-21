@@ -39,6 +39,10 @@ import java.awt.event.MouseEvent;
  */
 public class RepositoryTable extends JTable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 343836249221539974L;
     private OntologyRepository repository;
 
 

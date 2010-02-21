@@ -21,6 +21,12 @@ import java.awt.event.ActionEvent;
  */
 public class NewAction extends ProtegeAction implements OpenRequestHandler {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1988481517621170444L;
+
+
     public void actionPerformed(ActionEvent e) {
         try {
             UIUtil.openRequest(this);

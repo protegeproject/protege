@@ -34,6 +34,11 @@ import org.protege.editor.core.ui.util.Icons;
  */
 public abstract class AbstractWizardPanel extends WizardPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8512811313733522394L;
+
     private JTextArea instructionArea;
 
     private JPanel marginPanel;
@@ -187,6 +192,10 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private class HolderPanel extends JPanel {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 5476717953072456842L;
         private Color color;
 
 

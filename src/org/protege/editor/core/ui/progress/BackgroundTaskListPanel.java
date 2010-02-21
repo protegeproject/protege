@@ -35,6 +35,11 @@ import java.awt.*;
  */
 public class BackgroundTaskListPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3923645519834624950L;
+
     private JTextArea textArea;
 
     private BackgroundTaskManager mngr;

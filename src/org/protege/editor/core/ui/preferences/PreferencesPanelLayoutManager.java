@@ -174,11 +174,21 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
         panel.add(new JCheckBox("Include month"));
         panel.add(new JCheckBox("Include day"));
         panel.add(new JPanel() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 458183481480038217L;
+
             public Dimension getPreferredSize() {
                 return new Dimension(20, 20);
             }
         });
         panel.add(new JSeparator() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 147186206224716146L;
+
             public Dimension getPreferredSize() {
                 return new Dimension(100, 5);
             }

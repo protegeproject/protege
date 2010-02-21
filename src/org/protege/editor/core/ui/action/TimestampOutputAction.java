@@ -16,6 +16,10 @@ import java.text.DateFormat;
  */
 public class TimestampOutputAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6250513189027502206L;
     private Logger logger = Logger.getLogger(TimestampOutputAction.class);
 
     public void actionPerformed(ActionEvent event) {

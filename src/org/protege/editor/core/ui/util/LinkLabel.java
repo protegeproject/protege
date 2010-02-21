@@ -29,6 +29,11 @@ import org.protege.editor.core.ProtegeProperties;
  */
 public class LinkLabel extends JLabel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4294549567545547816L;
+
     private Color linkColor;
 
     private Color hoverColor;

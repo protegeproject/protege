@@ -42,6 +42,12 @@ import java.util.Set;
 public class View extends JComponent implements NodeComponent {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2974633149164991481L;
+
+
     private Logger logger = Logger.getLogger(View.class);
 
 
@@ -306,6 +312,11 @@ public class View extends JComponent implements NodeComponent {
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Split vertically",
                                                                                    Icons.getIcon(
                                                                                            SPLIT_VERTICALLY_ICON_NAME)) {
+            /**
+                                                                                             * 
+                                                                                             */
+                                                                                            private static final long serialVersionUID = 8586844910392022364L;
+
             public void actionPerformed(ActionEvent e) {
                 splitVertically();
             }
@@ -314,18 +325,33 @@ public class View extends JComponent implements NodeComponent {
                                                                                    Icons.getIcon(
                                                                                            SPLIT_HORIZONTALLY_ICON_NAME)) {
 
+            /**
+                                                                                             * 
+                                                                                             */
+                                                                                            private static final long serialVersionUID = 650343120768163122L;
+
             public void actionPerformed(ActionEvent e) {
                 splitHorizontally();
             }
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Float",
                                                                                    Icons.getIcon(FLOAT_ICON_NAME)) {
+            /**
+                                                                                     * 
+                                                                                     */
+                                                                                    private static final long serialVersionUID = 680867093090160266L;
+
             public void actionPerformed(ActionEvent e) {
                 copyAndFloatView();
             }
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Close",
                                                                                    Icons.getIcon(CLOSE_ICON_NAME)) {
+            /**
+                                                                                     * 
+                                                                                     */
+                                                                                    private static final long serialVersionUID = 7953501606173990976L;
+
             public void actionPerformed(ActionEvent e) {
                 closeView();
             }
@@ -499,6 +525,11 @@ public class View extends JComponent implements NodeComponent {
         checkBoxHolder.setBorder(BorderFactory.createEmptyBorder(1, 4, 4, 2));
         holder.add(checkBoxHolder, BorderLayout.SOUTH);
         cb.setAction(new AbstractAction("Synchronising") {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -4131922452059512538L;
 
             public void actionPerformed(ActionEvent e) {
                 view.setSyncronizing(cb.isSelected());

@@ -23,6 +23,11 @@ import java.util.*;
  */
 public class PreferencesDialogPanel extends JPanel implements Disposable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6338996558666619642L;
+
     private Map<String, PreferencesPanel> map;
 
     private Map<String, JComponent> scrollerMap;

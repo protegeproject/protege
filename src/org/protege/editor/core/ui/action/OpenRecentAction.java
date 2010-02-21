@@ -24,6 +24,10 @@ import java.awt.event.ActionEvent;
  */
 public class OpenRecentAction extends ProtegeDynamicAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -133653855034080882L;
     private static final Logger logger = Logger.getLogger(OpenRecentAction.class);
 
 
@@ -42,6 +46,11 @@ public class OpenRecentAction extends ProtegeDynamicAction {
         }
         thisMenuItem.addSeparator();
         thisMenuItem.add(new AbstractAction("Clear Menu") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -6081855130809186763L;
+
             public void actionPerformed(ActionEvent e) {
                 RecentEditorKitManager.getInstance().clear();
             }
@@ -55,6 +64,10 @@ public class OpenRecentAction extends ProtegeDynamicAction {
 
     private class RecentEditorKitAction extends AbstractAction implements OpenRequestHandler {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -7627096089060707842L;
         private EditorKitDescriptor descriptor;
 
 

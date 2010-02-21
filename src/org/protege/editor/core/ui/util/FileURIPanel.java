@@ -34,7 +34,17 @@ import javax.swing.event.DocumentListener;
  */
 public class FileURIPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9037381161423211140L;
+
     private Action browseAction = new AbstractAction("Browse...") {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 7684199291744099622L;
+
         public void actionPerformed(ActionEvent e) {
             handleBrowse();
         }

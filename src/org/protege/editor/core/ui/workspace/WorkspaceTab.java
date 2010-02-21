@@ -23,6 +23,11 @@ import org.protege.editor.core.plugin.ProtegePluginInstance;
 public abstract class WorkspaceTab extends JComponent implements ProtegePluginInstance {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -8243398072263923882L;
+
+    /**
      * The ID of this particular plugin extension.
      */
     private String id;

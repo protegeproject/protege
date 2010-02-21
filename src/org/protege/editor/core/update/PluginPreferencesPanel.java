@@ -18,6 +18,11 @@ import java.net.URL;
  */
 public class PluginPreferencesPanel extends PreferencesPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3990983369055447871L;
+
     private JCheckBox checkForUpdatesAtStartupCheckBox;
 
     private JTextField pluginRegistryEditor;
@@ -61,6 +66,11 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         checkForUpdatesAtStartupCheckBox.setAlignmentX(0.0f);
 
         JButton checkForUpdatesNow = new JButton(new AbstractAction("Check for updates now") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -1489049180196552810L;
+
             public void actionPerformed(ActionEvent e) {
                 PluginManager.getInstance().checkForUpdates();
             }
@@ -84,12 +94,22 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         pluginRegistryEditor.setColumns(30);
 
         JButton resetToDefaultRegistry = new JButton(new AbstractAction("Reset to default"){
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 2060172556249616568L;
+
             public void actionPerformed(ActionEvent event) {
                 pluginRegistryEditor.setText(PluginManager.DEFAULT_REGISTRY);
             }
         });
 
         JButton checkForDownloadsNow = new JButton(new AbstractAction("Check for downloads now"){
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 6345676228776716764L;
 
             public void actionPerformed(ActionEvent event) {
                 PluginManager.getInstance().checkForDownloads();

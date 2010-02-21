@@ -14,6 +14,12 @@ import javax.swing.JTabbedPane;
  */
 public class ViewTabbedPane extends JTabbedPane {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2680625953922313629L;
+
+
     public ViewTabbedPane() {
         setUI(new ViewTabbedPaneUI());
         setBorder(null);

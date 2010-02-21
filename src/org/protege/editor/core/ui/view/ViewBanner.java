@@ -34,6 +34,11 @@ import org.protege.editor.core.ui.view.button.ViewButtonUI;
  */
 public class ViewBanner extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2607019846677273073L;
+
     private JPanel toolBarPanel;
 
     private JPanel labelPanel;
@@ -159,6 +164,11 @@ public class ViewBanner extends JPanel {
         action.putValue(AbstractAction.NAME, "");
         action.putValue(AbstractAction.SHORT_DESCRIPTION, name);
         JButton button = new JButton(action) {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -5577350824168578334L;
+
             public void updateUI() {
 //                super.updateUI();
             }

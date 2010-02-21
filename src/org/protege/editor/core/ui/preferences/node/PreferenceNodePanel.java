@@ -26,6 +26,10 @@ import javax.swing.JPanel;
  */
 public class PreferenceNodePanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7132664017712650993L;
     private List<JLabel> labels;
 
 

@@ -17,6 +17,12 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 public class NullMenuAction extends ProtegeAction {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = 6742889462492952439L;
+
+
+    /**
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {

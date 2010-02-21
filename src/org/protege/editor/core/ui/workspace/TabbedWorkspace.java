@@ -25,6 +25,11 @@ import java.util.List;
  */
 public abstract class TabbedWorkspace extends Workspace {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 9179999766960877420L;
+
     public static final String TABS_MENU_NAME = "Tabs";
 
     private JTabbedPane tabbedPane;
@@ -154,12 +159,22 @@ public abstract class TabbedWorkspace extends Workspace {
 
         tabMenu.addSeparator();
         tabMenu.add(new AbstractAction("Create new tab...") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -7132697671260798375L;
+
             public void actionPerformed(ActionEvent event) {
                 handleCreateNewTab();
             }
         });
 
         final AbstractAction deleteTabsAction = new AbstractAction("Delete custom tabs...") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -8494460295926125637L;
+
             public void actionPerformed(ActionEvent event) {
                 handleDeleteTabs();
             }
@@ -170,11 +185,21 @@ public abstract class TabbedWorkspace extends Workspace {
         tabMenu.addSeparator();
         tabMenu.add(new AbstractAction("Export current tab...") {
 
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -748421763759728334L;
+
             public void actionPerformed(ActionEvent e) {
                 handleExportLayout();
             }
         });
         tabMenu.add(new AbstractAction("Import tab...") {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -5443941753304706932L;
 
             public void actionPerformed(ActionEvent e) {
                 handleImportLayout();
@@ -183,11 +208,21 @@ public abstract class TabbedWorkspace extends Workspace {
 
         tabMenu.addSeparator();
         tabMenu.add(new AbstractAction("Store current layout") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 4652025148163232701L;
+
             public void actionPerformed(ActionEvent e) {
                 save();
             }
         });
         tabMenu.add(resetTabAction = new AbstractAction("Reset selected tab to default state") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -7004839148872266389L;
+
             public void actionPerformed(ActionEvent e) {
                 handleReset();
             }
@@ -227,6 +262,11 @@ public abstract class TabbedWorkspace extends Workspace {
 
     private void addMenuItem(final WorkspaceTabPlugin plugin) {
         JCheckBoxMenuItem item = new JCheckBoxMenuItem(new AbstractAction(plugin.getLabel()) {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 2331248705801798457L;
+
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!containsTab(plugin.getId())) {
@@ -464,12 +504,21 @@ public abstract class TabbedWorkspace extends Workspace {
 
     private class LoadedTabsSelector extends JPanel {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 4063978799949163657L;
         private CheckTable<WorkspaceTabPlugin> table;
 
         private LoadedTabsSelector() {
             super(new BorderLayout());
             table = new CheckTable<WorkspaceTabPlugin>("Custom tabs");
             table.setDefaultRenderer(new DefaultTableCellRenderer(){
+                /**
+                 * 
+                 */
+                private static final long serialVersionUID = -7161202195746696063L;
+
                 public Component getTableCellRendererComponent(JTable jTable, Object o, boolean b, boolean b1, int i, int i1) {
                     if (o instanceof WorkspaceTabPlugin){
                         o = ((WorkspaceTabPlugin)o).getLabel();

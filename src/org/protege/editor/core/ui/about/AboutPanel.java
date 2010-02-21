@@ -28,6 +28,12 @@ import org.protege.editor.core.ui.util.Icons;
  */
 public class AboutPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6652956832712711211L;
+
+
     public AboutPanel() {
         setLayout(new BorderLayout());
         JPanel pluginPanel = new JPanel(new BorderLayout());

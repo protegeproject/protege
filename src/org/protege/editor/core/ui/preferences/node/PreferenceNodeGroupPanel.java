@@ -22,6 +22,10 @@ import javax.swing.JPanel;
  */
 public class PreferenceNodeGroupPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6992474303814825147L;
     private List<PreferenceNodeGroup> nodes;
 
 

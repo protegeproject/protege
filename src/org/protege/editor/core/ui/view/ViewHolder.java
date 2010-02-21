@@ -26,6 +26,11 @@ import org.protege.editor.core.ui.tabbedpane.ViewTabbedPane;
  */
 public class ViewHolder extends JComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5192903791732587041L;
+
     private JSplitPane splitPane;
 
     private String loc;

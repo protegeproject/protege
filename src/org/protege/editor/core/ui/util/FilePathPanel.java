@@ -33,6 +33,11 @@ import javax.swing.event.DocumentListener;
  */
 public class FilePathPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8238154511092480343L;
+
     private String fileChooserText;
 
     private Set<String> extensions;
@@ -74,6 +79,11 @@ public class FilePathPanel extends JPanel {
             }
         });
         add(new JButton(browseAction = new AbstractAction("Browse...") {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -392303565634614444L;
+
             public void actionPerformed(ActionEvent e) {
                 if (selectFolders) {
                     browseForFolder();

@@ -414,6 +414,11 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
 
         ActionMap am = cardPanel.getActionMap();
         am.put("NEXT", new AbstractAction() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -3864632637556035283L;
+
             public void actionPerformed(ActionEvent e) {
                 if (nextButton.isEnabled()) {
                     wizardController.next();
@@ -421,6 +426,11 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
             }
         });
         am.put("CANCEL", new AbstractAction() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -8452940328933517427L;
+
             public void actionPerformed(ActionEvent e) {
                 wizardController.cancel();
             }

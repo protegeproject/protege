@@ -48,6 +48,11 @@ import java.util.List;
  */
 public class PluginTable extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6305532687611320179L;
+
     private JTable table;
 
     private PluginUpdateTableModel tableModel;
@@ -146,6 +151,11 @@ public class PluginTable extends JPanel {
 
 
     private class PluginUpdateTableModel extends AbstractTableModel {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 7766791162497899167L;
 
         private List<Boolean> install;
 

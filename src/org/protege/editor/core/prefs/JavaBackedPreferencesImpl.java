@@ -33,6 +33,11 @@ import java.util.prefs.BackingStoreException;
  */
 public class JavaBackedPreferencesImpl implements Preferences {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1974522185816507186L;
+
     private String PROTEGE_PREFS_KEY = "PROTEGE_PREFERENCES";
 
     private java.util.prefs.Preferences preferences;

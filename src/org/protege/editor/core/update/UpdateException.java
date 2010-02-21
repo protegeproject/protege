@@ -34,6 +34,11 @@ import java.net.URL;
  */
 public class UpdateException extends Exception{
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6812551693275528899L;
+
     public UpdateException(String id, URL url, String message) {
         super(id + ": problem with update file (" + url + "). " + message);
     }

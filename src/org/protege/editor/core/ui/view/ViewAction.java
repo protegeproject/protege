@@ -14,6 +14,10 @@ import org.protege.editor.core.ui.action.ProtegeAction;
  */
 public abstract class ViewAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8852241017064496713L;
     private View view;
 
 

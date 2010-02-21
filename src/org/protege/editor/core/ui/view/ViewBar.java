@@ -24,6 +24,11 @@ import javax.swing.JToolBar;
  */
 public class ViewBar extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8663538018618395433L;
+
     private ViewBanner viewBanner;
 
     private JToolBar toolBar;

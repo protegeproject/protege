@@ -16,6 +16,12 @@ import java.awt.event.ActionEvent;
  */
 public class CloseAction extends ProtegeAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4440291563885619743L;
+
+
     public void actionPerformed(ActionEvent e) {
         ProtegeManager.getInstance().getEditorKitManager().getWorkspaceManager().doClose(getWorkspace());
     }

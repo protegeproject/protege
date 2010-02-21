@@ -35,6 +35,11 @@ import java.util.List;
  */
 public class WorkspaceFrame extends JFrame {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8568184212386766789L;
+
     private Workspace workspace;
 
     public static final String LOC_X = "LOC_X";
@@ -239,6 +244,11 @@ public class WorkspaceFrame extends JFrame {
 
             for (final ViewComponentPlugin plugin : viewPlugins) {
                 Action action = new AbstractAction(plugin.getLabel()) {
+                    /**
+                     * 
+                     */
+                    private static final long serialVersionUID = 282453625948165209L;
+
                     public void actionPerformed(ActionEvent e) {
                         showView(plugin);
                     }

@@ -23,6 +23,11 @@ import javax.swing.event.DocumentListener;
  */
 public class URLPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7020642060171962002L;
+
     private JTextField textField;
 
     private ArrayList<ChangeListener> listeners;

@@ -16,6 +16,11 @@ import javax.swing.JTable;
  */
 public class PluginInfoTable extends JTable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6344747415695178548L;
+
     public PluginInfoTable() {
         super(new PluginInfoTableModel());
         setRowHeight(getRowHeight() + 10);

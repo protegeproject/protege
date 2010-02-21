@@ -42,6 +42,10 @@ import java.awt.*;
  */
 class ComponentExceptionPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -975497929104417874L;
     public static final int BORDER_THICKNESS = 4;
 
 
