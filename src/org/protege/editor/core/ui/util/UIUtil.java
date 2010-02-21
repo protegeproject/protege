@@ -1,15 +1,21 @@
 package org.protege.editor.core.ui.util;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Window;
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+
+import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.platform.apple.MacUIUtil;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 
 /**
@@ -56,7 +62,9 @@ public class UIUtil {
     }
     
     public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
-        // if there are complaints consider MacUIUtil.openFile() when OSUtils.isOSX() is true
+        if (OSUtils.isOSX()) { // mac users are picky
+            return MacUIUtil.openFile((Window) SwingUtilities.getAncestorOfClass(Window.class, parent), title, extensions);
+        }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
