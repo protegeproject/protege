@@ -17,6 +17,10 @@ import java.awt.*;
  */
 public class OWLIndividualDescriptionViewComponent extends AbstractOWLIndividualViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9201605931160593993L;
     private OWLFrameList<OWLNamedIndividual> list;
 
 

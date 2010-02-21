@@ -41,6 +41,11 @@ import java.awt.*;
  */
 public class SelectedObjectViewComponent extends AbstractOWLViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3043074017840450790L;
+
     private OWLEntityFrame entityFrame;
 
     private OWLFrameList frameList;

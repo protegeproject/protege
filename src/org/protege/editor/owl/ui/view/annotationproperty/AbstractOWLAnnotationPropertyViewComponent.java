@@ -36,6 +36,12 @@ import org.semanticweb.owlapi.model.OWLObject;
  */
 public abstract class AbstractOWLAnnotationPropertyViewComponent extends AbstractOWLSelectionViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3394265329374704626L;
+
+
     protected boolean isOWLAnnotationPropertyView() {
         return true;
     }

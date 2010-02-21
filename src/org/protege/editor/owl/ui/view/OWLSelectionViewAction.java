@@ -16,6 +16,12 @@ import org.protege.editor.core.ui.view.DisposableAction;
  */
 public abstract class OWLSelectionViewAction extends DisposableAction {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8530394736100720111L;
+
+
     protected OWLSelectionViewAction(String name, Icon icon) {
         super(name, icon);
     }

@@ -22,6 +22,11 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
 //    private static final Logger logger = Logger.getLogger(OWLObjectPropertyCharacteristicsViewComponent.class);
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1299595056337566960L;
+
     private JCheckBox functionalCB;
 
     private JCheckBox inverseFunctionalCB;

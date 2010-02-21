@@ -9,6 +9,12 @@ import org.semanticweb.owlapi.model.OWLProperty;
  */
 public abstract class AbstractOWLPropertyViewComponent<O extends OWLProperty> extends AbstractOWLSelectionViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5235785821246673926L;
+
+
     public void disposeView() {
     }
 

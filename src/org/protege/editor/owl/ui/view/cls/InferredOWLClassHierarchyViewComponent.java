@@ -21,6 +21,12 @@ import java.util.List;
  */
 public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLClass> {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3811694223508163396L;
+
+
     protected void performExtraInitialisation() throws Exception {
         getTree().setBackground(OWLFrameList.INFERRED_BG_COLOR);
     }

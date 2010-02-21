@@ -18,6 +18,10 @@ import java.awt.*;
  */
 public class OWLIndividualPropertyAssertionsViewComponent extends AbstractOWLIndividualViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1228370750437540626L;
     private OWLFrameList<OWLIndividual> list;
 
 

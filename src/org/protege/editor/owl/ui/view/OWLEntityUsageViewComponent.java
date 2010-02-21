@@ -11,6 +11,12 @@ import org.semanticweb.owlapi.model.OWLObject;
  */
 public class OWLEntityUsageViewComponent extends AbstractOWLSelectionViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7134623982018115791L;
+
+
     public void initialiseView() throws Exception {
 
     }

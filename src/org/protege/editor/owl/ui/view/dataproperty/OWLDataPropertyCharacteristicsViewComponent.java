@@ -22,6 +22,11 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
 //    private static final Logger logger = Logger.getLogger(OWLDataPropertyCharacteristicsViewComponent.class);
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 161692781388151940L;
+
     private JCheckBox checkBox;
 
     private OWLDataProperty prop;

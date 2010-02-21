@@ -18,6 +18,12 @@ import javax.swing.*;
  */
 public class OWLObjectPropertyHierarchyViewComponent extends AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty> {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6261288574821913346L;
+
+
     protected boolean isOWLObjectPropertyView() {
         return true;
     }

@@ -21,6 +21,11 @@ import java.util.List;
  */
 public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -287697571704681093L;
+
     public static final String ID = "org.protege.editor.owl.SelectedEntityView";
 
     private CardLayout cardLayout = new CardLayout();

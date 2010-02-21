@@ -16,6 +16,10 @@ import java.awt.*;
  */
 public class OWLObjectPropertyDescriptionViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2293216220246399531L;
     private OWLFrameList<OWLObjectProperty> list;
 
 

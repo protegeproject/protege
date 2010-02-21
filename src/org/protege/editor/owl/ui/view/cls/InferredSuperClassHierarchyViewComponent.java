@@ -18,6 +18,11 @@ import org.protege.editor.owl.ui.framelist.OWLFrameList;
  */
 public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClassHierarchyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1125962405110757405L;
+
     private InferredSuperClassHierarchyProvider provider;
 
     private OWLModelManagerListener l = new OWLModelManagerListener(){

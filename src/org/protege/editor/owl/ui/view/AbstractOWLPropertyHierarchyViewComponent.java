@@ -21,6 +21,12 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         implements Findable<O>, Deleteable, CreateNewChildTarget, CreateNewSiblingTarget {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 9069497093520748684L;
+
+
     protected abstract OWLSubPropertyAxiom getSubPropertyAxiom(O child, O parent);
 
 

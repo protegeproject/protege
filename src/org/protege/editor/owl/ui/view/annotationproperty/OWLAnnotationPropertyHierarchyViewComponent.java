@@ -51,6 +51,11 @@ import java.util.Set;
 public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
         implements CreateNewChildTarget, CreateNewSiblingTarget {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2612515129566092096L;
+
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
                                                                    getTree().getSelectionModel()){
@@ -159,6 +164,12 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
     }
     
     public class DeleteAnnotationPropertyAction extends AbstractDeleteEntityAction<OWLAnnotationProperty> {
+
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -4871539633257400493L;
 
 
         /*

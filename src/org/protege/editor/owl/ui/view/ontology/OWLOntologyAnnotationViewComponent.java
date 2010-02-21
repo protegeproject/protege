@@ -21,6 +21,11 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
 //    private static final Logger logger = Logger.getLogger(OWLOntologyAnnotationViewComponent.class);
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1252038674995535772L;
+
     private OWLModelManagerListener listener;
 
     private OWLOntologyAnnotationList list;

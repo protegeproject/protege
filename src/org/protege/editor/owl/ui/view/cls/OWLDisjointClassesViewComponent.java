@@ -16,6 +16,10 @@ import java.awt.*;
  */
 public class OWLDisjointClassesViewComponent extends AbstractOWLClassViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 469413788468114156L;
     private OWLFrameList<OWLClass> list;
 
 

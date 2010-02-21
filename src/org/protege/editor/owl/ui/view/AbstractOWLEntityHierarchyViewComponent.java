@@ -57,6 +57,11 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
  implements Findable<E>, Deleteable {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5980351290853739210L;
+
     private OWLObjectTree<E> tree;
 
     private TreeSelectionListener listener;

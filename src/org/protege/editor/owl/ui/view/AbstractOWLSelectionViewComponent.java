@@ -30,6 +30,11 @@ import java.util.Set;
  */
 public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewComponent implements RefreshableComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3436509499024697735L;
+
     private OWLSelectionModelListener listener;
 
     private Set<OWLSelectionViewAction> registeredActions;

@@ -31,6 +31,11 @@ import java.util.List;
  */
 public abstract class AbstractOWLViewComponent extends ViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3089829405015180530L;
+
     private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
 
     private static final Logger logger = Logger.getLogger(AbstractOWLViewComponent.class);
@@ -121,6 +126,11 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
                                                                                                   Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
                                                                            INPUT_MAP_KEY);
             getActionMap().put(INPUT_MAP_KEY, new AbstractAction() {
+                /**
+                 * 
+                 */
+                private static final long serialVersionUID = 8090385169368686926L;
+
                 public void actionPerformed(ActionEvent e) {
                     handleFind();
                 }

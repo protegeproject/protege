@@ -43,6 +43,11 @@ import java.awt.event.HierarchyListener;
  */
 public class OWLAxiomAnnotationsView extends AbstractOWLViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6288372193137254393L;
+
     private OWLSelectionModelListener selListener = new OWLSelectionModelAdapter(){
         public void selectionChanged() throws Exception {
             final OWLSelectionModel selModel = getOWLWorkspace().getOWLSelectionModel();

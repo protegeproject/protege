@@ -20,6 +20,11 @@ public class OWLImportsDeclarationsViewComponent extends AbstractOWLViewComponen
 
 //    private static final Logger logger = Logger.getLogger(OWLImportsDeclarationsViewComponent.class);
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -173934611566107945L;
+
     private OntologyImportsList list;
 
     private OWLModelManagerListener listener;

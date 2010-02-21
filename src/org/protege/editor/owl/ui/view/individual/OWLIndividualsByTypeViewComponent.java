@@ -38,6 +38,11 @@ import java.util.Set;
 public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewComponent
         implements Findable<OWLNamedIndividual>, CreateNewTarget, RefreshableComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1839126141881937525L;
+
     private OWLObjectTree<OWLObject> tree;
 
     private ChangeListenerMediator changeListenerMediator;
@@ -132,6 +137,11 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     protected void setupActions() {
         addAction(new DisposableAction("Add individual", OWLIcons.getIcon("individual.add.png")) {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -875266874305923355L;
 
             public void actionPerformed(ActionEvent e) {
                 createNewObject();

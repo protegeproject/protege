@@ -14,6 +14,10 @@ import java.awt.*;
  */
 public class OWLObjectPropertyUsageViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2146681987525184036L;
     private UsagePanel usagePanel;
 
 
