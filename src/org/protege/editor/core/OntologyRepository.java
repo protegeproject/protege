@@ -1,7 +1,5 @@
 package org.protege.editor.core;
 
-import java.net.URI;
-import java.util.Set;
 import java.util.List;
 import java.util.Collection;
 /*

@@ -1,7 +1,5 @@
 package org.protege.editor.core.ui.util;
 
-import org.protege.editor.core.platform.OSUtils;
-import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -10,7 +8,6 @@ import javax.swing.filechooser.FileFilter;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Collections;
 import java.util.Set;
 
