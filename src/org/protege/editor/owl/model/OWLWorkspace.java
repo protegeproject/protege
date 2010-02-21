@@ -420,6 +420,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         windowMenu.addSeparator();
         windowMenu.add(new AbstractAction("Refresh User Interface") {
 
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 9136219526373256639L;
+
             public void actionPerformed(ActionEvent e) {
                 refreshComponents();
             }
@@ -647,6 +652,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                                                          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "FOCUS_FIND");
         getActionMap().put("FOCUS_FIND", new AbstractAction() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -2205711779338124168L;
+
             public void actionPerformed(ActionEvent e) {
                 entityFinderField.requestFocus();
             }

@@ -20,6 +20,11 @@ import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
  */
 public class SpeciesValidationReportView extends AbstractOWLViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 702819594671937895L;
+
     public static final String ID = "org.protege.editor.owl.SpeciesValidationReport";
 
     private JTextArea textArea;

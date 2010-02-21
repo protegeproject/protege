@@ -46,6 +46,11 @@ import java.awt.event.MouseEvent;
  */
 public class OntologyImportsAndNavigationPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7247887353859536512L;
+
     private OWLEditorKit owlEditorKit;
 
     private OWLModelManagerTree<OWLOntology> tree;
@@ -80,6 +85,11 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
         });
         showImportsCheckBox = new JCheckBox(new AbstractAction("Show imported axioms") {
 
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -1171161540845340564L;
+
             public void actionPerformed(ActionEvent e) {
                 setShowImports();
             }
@@ -99,6 +109,11 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
 
 
     private class OntologyTreeCellRenderer extends DefaultTreeCellRenderer {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -5285478535989683861L;
 
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf,
                                                       int row, boolean hasFocus) {

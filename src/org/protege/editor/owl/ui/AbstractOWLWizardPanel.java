@@ -17,6 +17,12 @@ import org.protege.editor.owl.model.OWLModelManager;
 public abstract class AbstractOWLWizardPanel extends AbstractWizardPanel {
 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1936870456254240648L;
+
+
     public AbstractOWLWizardPanel(Object id, String title, OWLEditorKit owlEditorKit) {
         super(id, title, owlEditorKit);
     }
