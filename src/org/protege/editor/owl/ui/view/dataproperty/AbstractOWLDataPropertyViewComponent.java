@@ -15,6 +15,11 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
  */
 public abstract class AbstractOWLDataPropertyViewComponent extends AbstractOWLPropertyViewComponent<OWLDataProperty> {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8912688176976991148L;
+
     protected boolean isOWLDataPropertyView() {
         return true;
     }

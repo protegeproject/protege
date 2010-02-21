@@ -42,6 +42,11 @@ import java.io.Writer;
  */
 public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7745031898151962692L;
+
     private JTextArea textArea;
 
     private JScrollPane scroller;

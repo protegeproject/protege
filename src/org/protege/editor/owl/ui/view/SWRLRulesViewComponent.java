@@ -38,6 +38,11 @@ import java.awt.*;
  */
 public class SWRLRulesViewComponent extends AbstractActiveOntologyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -204496848858955147L;
+
     private OWLFrameList list;
 
     private SWRLRulesFrame frame;

@@ -17,6 +17,10 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
  */
 public class InferredObjectPropertyHierarchyViewComponent extends OWLObjectPropertyHierarchyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4252383144570422415L;
     private OWLModelManagerListener l = new OWLModelManagerListener(){
 
         public void handleChange(OWLModelManagerChangeEvent event) {

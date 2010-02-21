@@ -19,6 +19,11 @@ import java.util.List;
  */
 public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLClass> {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2033744534853698832L;
+
     protected OWLObject updateView() {
         return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
     }

@@ -27,6 +27,11 @@ import java.util.Set;
  */
 public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndividualViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7410082483173259241L;
+
     private IndividualsByInferredTypeHierarchyProvider provider;
 
     private OWLObjectTree<OWLObject> tree;

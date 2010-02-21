@@ -40,6 +40,10 @@ import java.util.List;
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent
         implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1519269944342726754L;
     private OWLObjectList<OWLNamedIndividual> list;
     private OWLOntologyChangeListener listener;
     private ChangeListenerMediator changeListenerMediator;
@@ -238,6 +242,11 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     private class AddIndividualAction extends DisposableAction {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 4574601252717263757L;
+
         public AddIndividualAction() {
             super("Add individual", OWLIcons.getIcon("individual.add.png"));
         }

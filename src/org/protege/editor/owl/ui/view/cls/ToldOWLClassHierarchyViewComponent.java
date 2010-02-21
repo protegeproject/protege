@@ -36,6 +36,12 @@ import java.util.Set;
 public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
         implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8712815067223088069L;
+
+
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track
         // of these, as this will be done by the view - i.e. we won't

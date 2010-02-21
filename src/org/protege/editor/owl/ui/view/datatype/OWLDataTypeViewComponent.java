@@ -53,6 +53,11 @@ import java.util.List;
 public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         implements Findable<OWLDatatype> {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3202742013883811816L;
+
     private OWLObjectList<OWLDatatype> list;
 
     private ChangeListenerMediator changeListenerMediator;
@@ -96,6 +101,11 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
     private void setupActions() {
         final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", OWLIcons.getIcon("datarange.add.png")) {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 7152977701137488187L;
+
             public void actionPerformed(ActionEvent event) {
                 createNewDatatype();
             }
@@ -106,6 +116,12 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         };
 
         final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", OWLIcons.getIcon("datarange.remove.png")) {
+
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 5359788681251086828L;
+
 
             public void actionPerformed(ActionEvent event) {
                 deleteDatatype();

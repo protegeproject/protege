@@ -26,6 +26,10 @@ import java.util.Set;
  */
 public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7899828024396593253L;
     private OWLFrameList<OWLClass> list;
 
     public void initialiseClassView() throws Exception {
@@ -61,6 +65,12 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
 
 
     private class ConvertSelectionToEquivalentClassAction extends OWLFrameListPopupMenuAction<OWLClass> {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 8523837123917366996L;
+
 
         protected void initialise() throws Exception {
         }

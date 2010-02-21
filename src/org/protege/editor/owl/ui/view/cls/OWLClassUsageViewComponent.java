@@ -14,6 +14,10 @@ import java.awt.*;
  */
 public class OWLClassUsageViewComponent extends AbstractOWLClassViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7894063719350284625L;
     private UsagePanel usagePanel;
 
 

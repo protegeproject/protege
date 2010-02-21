@@ -15,6 +15,10 @@ import org.protege.editor.owl.model.hierarchy.AssertedSuperClassHierarchyProvide
  */
 public class ToldSuperClassHierarchyViewComponent extends AbstractSuperClassHierarchyViewComponent {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8365490104528457966L;
     private AssertedSuperClassHierarchyProvider provider;
 
 

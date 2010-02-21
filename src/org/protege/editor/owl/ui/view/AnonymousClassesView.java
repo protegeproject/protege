@@ -52,6 +52,11 @@ import java.util.Set;
  */
 public class AnonymousClassesView extends AbstractActiveOntologyViewComponent implements Deleteable, Copyable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6603279963895348251L;
+
     private MList list;
 
     private OWLEntityRemover remover;
