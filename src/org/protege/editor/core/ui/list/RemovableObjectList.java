@@ -169,21 +169,25 @@ public class RemovableObjectList<O> extends MList {
         }
 
 
+        @SuppressWarnings("unchecked")
         public void setElementAt(Object obj, int index) {
             super.setElementAt(new RemovableObjectListItem((O)obj), index);
         }
 
 
+        @SuppressWarnings("unchecked")
         public Object set(int index, Object element) {
             return super.set(index, new RemovableObjectListItem((O)element));
         }
 
 
+        @SuppressWarnings("unchecked")
         public void addElement(Object obj) {
             super.addElement(new RemovableObjectListItem((O)obj));
         }
 
 
+        @SuppressWarnings("unchecked")
         public void add(int index, Object element) {
             super.add(index, new RemovableObjectListItem((O)element));
         }

@@ -13,9 +13,11 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
+@SuppressWarnings("unchecked")
 public class PreferenceNodeGroup {
 
     private String label;
+
 
     private List<PreferenceNode> nodes;
 

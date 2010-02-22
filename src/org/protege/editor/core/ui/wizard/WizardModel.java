@@ -68,13 +68,13 @@ public class WizardModel {
 
     private WizardPanel currentPanel;
 
-    private HashMap panelHashmap;
+    private HashMap<Object, WizardPanel> panelHashmap;
 
-    private HashMap buttonTextHashmap;
+    private HashMap<String, Object> buttonTextHashmap;
 
-    private HashMap buttonIconHashmap;
+    private HashMap<String, Icon> buttonIconHashmap;
 
-    private HashMap buttonEnabledHashmap;
+    private HashMap<String, Boolean> buttonEnabledHashmap;
 
     private PropertyChangeSupport propertyChangeSupport;
 
@@ -84,11 +84,11 @@ public class WizardModel {
      */
     public WizardModel() {
 
-        panelHashmap = new HashMap();
+        panelHashmap = new HashMap<Object, WizardPanel>();
 
-        buttonTextHashmap = new HashMap();
-        buttonIconHashmap = new HashMap();
-        buttonEnabledHashmap = new HashMap();
+        buttonTextHashmap    = new HashMap<String, Object>();
+        buttonIconHashmap    = new HashMap<String, Icon>();
+        buttonEnabledHashmap = new HashMap<String, Boolean>();
 
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
@@ -118,7 +118,7 @@ public class WizardModel {
 
 
     public WizardPanel getPanel(Object id) {
-        return (WizardPanel) panelHashmap.get(id);
+        return panelHashmap.get(id);
     }
 
 
@@ -132,7 +132,7 @@ public class WizardModel {
         //  First, get the hashtable reference to the panel that should
         //  be displayed.
 
-        WizardPanel nextPanel = (WizardPanel) panelHashmap.get(id);
+        WizardPanel nextPanel = panelHashmap.get(id);
 
         //  If we couldn't find the panel that should be displayed, return
         //  false.
@@ -196,7 +196,7 @@ public class WizardModel {
 
 
     Icon getBackButtonIcon() {
-        return (Icon) buttonIconHashmap.get(BACK_BUTTON_ICON_PROPERTY);
+        return buttonIconHashmap.get(BACK_BUTTON_ICON_PROPERTY);
     }
 
 
@@ -211,7 +211,7 @@ public class WizardModel {
 
 
     Icon getNextFinishButtonIcon() {
-        return (Icon) buttonIconHashmap.get(NEXT_FINISH_BUTTON_ICON_PROPERTY);
+        return buttonIconHashmap.get(NEXT_FINISH_BUTTON_ICON_PROPERTY);
     }
 
 
@@ -226,7 +226,7 @@ public class WizardModel {
 
 
     Icon getCancelButtonIcon() {
-        return (Icon) buttonIconHashmap.get(CANCEL_BUTTON_ICON_PROPERTY);
+        return buttonIconHashmap.get(CANCEL_BUTTON_ICON_PROPERTY);
     }
 
 
@@ -241,7 +241,7 @@ public class WizardModel {
 
 
     Boolean getBackButtonEnabled() {
-        return (Boolean) buttonEnabledHashmap.get(BACK_BUTTON_ENABLED_PROPERTY);
+        return buttonEnabledHashmap.get(BACK_BUTTON_ENABLED_PROPERTY);
     }
 
 
@@ -256,7 +256,7 @@ public class WizardModel {
 
 
     Boolean getNextFinishButtonEnabled() {
-        return (Boolean) buttonEnabledHashmap.get(NEXT_FINISH_BUTTON_ENABLED_PROPERTY);
+        return buttonEnabledHashmap.get(NEXT_FINISH_BUTTON_ENABLED_PROPERTY);
     }
 
 
@@ -271,7 +271,7 @@ public class WizardModel {
 
 
     Boolean getCancelButtonEnabled() {
-        return (Boolean) buttonEnabledHashmap.get(CANCEL_BUTTON_ENABLED_PROPERTY);
+        return buttonEnabledHashmap.get(CANCEL_BUTTON_ENABLED_PROPERTY);
     }
 
 
