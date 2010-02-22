@@ -172,15 +172,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * Classifies the current active ontologies.
      */
     public boolean classifyAsynchronously() {
+        if (currentReasonerFactory instanceof NoOpReasonerFactory) {
+            return true;
+        }
         final OWLOntology currentOntology = owlModelManager.getActiveOntology();
         synchronized (currentReasonerMap) {
             if (classificationInProgress) {
                 return false;
             }
             runningReasoner = currentReasonerMap.get(currentOntology);
-            if (runningReasoner instanceof NoOpReasoner){
-                return true;
-            }
             currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
             classificationInProgress = true;
         }
