@@ -41,6 +41,7 @@ import java.util.Set;
  * It does this by a series of explanation factories which can be searched for the most appropriate.
  * It may also search for the most informative cause of the given Throwable object.
  */
+@SuppressWarnings("unchecked")
 public class ErrorExplainer {
 
     private Map<Class<? extends Throwable>, ErrorExplanationFactory> factories =

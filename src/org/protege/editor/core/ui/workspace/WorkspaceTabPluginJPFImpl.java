@@ -42,12 +42,6 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
     /**
      * The plugin extension parameter name that identifies the icon for the tab.
      */
-    private static final String ICON_PARAM = "icon";
-
-
-    /**
-     * The plugin extension parameter name that identifies the icon for the tab.
-     */
     private static final String INDEX_PARAM = "index";
 
 

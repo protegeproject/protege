@@ -40,9 +40,6 @@ public class PluginManager {
 
     private PluginRegistry pluginRegistry;
 
-    private PluginRegistry updatesProvider;
-
-
     private PluginManager() {
 
     }

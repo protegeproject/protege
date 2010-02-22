@@ -121,7 +121,7 @@ public class ViewHolder extends JComponent {
 
     private View getView(String id, Component c) {
         if (c instanceof View) {
-            String viewId = ((View) c).getId();
+            ((View) c).getId();
             if (((View) c).getId().equals(id)) {
                 return (View) c;
             }

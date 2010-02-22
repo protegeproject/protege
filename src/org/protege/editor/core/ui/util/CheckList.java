@@ -181,7 +181,7 @@ public class CheckList extends JComponent {
         public void layoutContainer(Container parent) {
             cb.setSize(cb.getPreferredSize());
             cb.setLocation(2, 2);
-            Insets ins = parent.getInsets();
+            parent.getInsets();
             list.setBounds(20, 0, parent.getWidth() - 20, parent.getHeight());
             ListModel listModel = list.getModel();
             for (int i = 0; i < listModel.getSize(); i++) {

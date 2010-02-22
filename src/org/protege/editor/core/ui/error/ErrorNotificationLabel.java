@@ -23,19 +23,13 @@ public class ErrorNotificationLabel extends JLabel {
 
     private ErrorLogPanel panel;
 
-    private SendErrorReportHandler handler;
-
-    private ErrorLog errorLog;
-
     private ErrorLogListener listener;
 
 
     public ErrorNotificationLabel(ErrorLog errorLog, SendErrorReportHandler handler) {
         super(Icons.getIcon("error.png"));
-        this.handler = handler;
         setToolTipText("Protege-Guard: Click to view errors");
         setupMouseHandler();
-        this.errorLog = errorLog;
         listener = new ErrorLogListener() {
 
             public void errorLogged(ErrorLog errorLog) {

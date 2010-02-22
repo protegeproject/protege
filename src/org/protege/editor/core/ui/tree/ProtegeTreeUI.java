@@ -17,11 +17,7 @@ import javax.swing.tree.TreePath;
  */
 public class ProtegeTreeUI extends BasicTreeUI {
 
-    private BasicTreeUI delegate;
-
-
     public ProtegeTreeUI(BasicTreeUI delegate) {
-        this.delegate = delegate;
     }
 
 

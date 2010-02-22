@@ -12,8 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import org.protege.editor.core.platform.OSUtils;
-import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
