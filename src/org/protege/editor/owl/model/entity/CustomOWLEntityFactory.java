@@ -256,22 +256,22 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private <T extends OWLEntity> T getOWLEntity(Class<T> type, IRI iri) {
         if (OWLClass.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLClass(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLClass(iri));
         }
         else if (OWLObjectProperty.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLObjectProperty(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLObjectProperty(iri));
         }
         else if (OWLDataProperty.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLDataProperty(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLDataProperty(iri));
         }
         else if (OWLNamedIndividual.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLNamedIndividual(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLNamedIndividual(iri));
         }
         else if (OWLAnnotationProperty.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLAnnotationProperty(iri));
         }
         else if (OWLDatatype.class.isAssignableFrom(type)){
-            return (T)mngr.getOWLDataFactory().getOWLDatatype(iri);
+            return type.cast(mngr.getOWLDataFactory().getOWLDatatype(iri));
         }
         return null;
     }

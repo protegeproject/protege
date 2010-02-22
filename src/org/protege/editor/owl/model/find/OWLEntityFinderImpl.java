@@ -311,6 +311,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @SuppressWarnings("unchecked")
     private <T extends OWLEntity> Set<T> getAllEntities(Class<T> type) {
         if (type.equals(OWLDatatype.class)){
             return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies());
@@ -344,25 +345,25 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     private <T extends OWLEntity> T getEntity(String rendering, Class<T> type) {
         if (OWLClass.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLClass(rendering);
+            return type.cast(renderingCache.getOWLClass(rendering));
         }
         else if (OWLObjectProperty.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLObjectProperty(rendering);
+            return type.cast(renderingCache.getOWLObjectProperty(rendering));
         }
         else if (OWLDataProperty.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLDataProperty(rendering);
+            return type.cast(renderingCache.getOWLDataProperty(rendering));
         }
         else if (OWLNamedIndividual.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLIndividual(rendering);
+            return type.cast(renderingCache.getOWLIndividual(rendering));
         }
         else if (OWLAnnotationProperty.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLAnnotationProperty(rendering);
+            return type.cast(renderingCache.getOWLAnnotationProperty(rendering));
         }
         else if (OWLDatatype.class.isAssignableFrom(type)){
-            return (T)renderingCache.getOWLDatatype(rendering);
+            return type.cast(renderingCache.getOWLDatatype(rendering));
         }
         else{
-            return (T)renderingCache.getOWLEntity(rendering);
+            return type.cast(renderingCache.getOWLEntity(rendering));
         }
     }
 
