@@ -51,8 +51,6 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private EditorKit editorKit;
 
-    private boolean setTransparency;
-
     public AbstractWizardPanel(Object id, String title, EditorKit editorKit) {
         super(id);
         this.editorKit = editorKit;
@@ -74,7 +72,6 @@ public abstract class AbstractWizardPanel extends WizardPanel {
             }
         });
         createUI();
-        setTransparency = false;
     }
 
 

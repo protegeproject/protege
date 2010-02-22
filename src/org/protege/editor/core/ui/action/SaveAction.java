@@ -2,7 +2,6 @@ package org.protege.editor.core.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 

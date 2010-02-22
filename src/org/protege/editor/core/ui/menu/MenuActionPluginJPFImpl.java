@@ -129,44 +129,6 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     }
 
 
-    private KeyStroke parseKeyStroke(String s) {
-        StringTokenizer tokenizer = new StringTokenizer(s, " ");
-        boolean shift;
-        boolean control;
-        boolean alt;
-        boolean meta;
-        char ch = 0;
-        boolean found = true;
-        while (tokenizer.hasMoreTokens()) {
-            String curTok = tokenizer.nextToken();
-            if (curTok.equals("shift")) {
-                shift = true;
-            }
-            else if (curTok.equals("control")) {
-                control = true;
-            }
-            else if (curTok.equals("alt")) {
-                alt = true;
-            }
-            else if (curTok.equals("meta")) {
-                meta = true;
-            }
-            else {
-                // Key code?
-                if (curTok.length() == 1) {
-                    found = true;
-                    ch = curTok.charAt(0);
-                    break;
-                }
-            }
-        }
-        if (found) {
-            KeyStroke ks = KeyStroke.getKeyStroke(ch);
-        }
-        return null;
-    }
-
-
     /**
      * Parses the path to extract the parent id, the
      * group and the group index.  If the group and group

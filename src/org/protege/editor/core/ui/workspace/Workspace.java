@@ -416,35 +416,8 @@ public abstract class Workspace extends JComponent implements Disposable {
         }
 
 
-        public String getDefaultState() {
-            return ViewComponentPlugin.VISIBLE;
-        }
-
-
-        public Icon getIcon() {
-            return null;
-        }
-
-
         public String getLabel() {
             return headerLabel;
-        }
-
-
-        public String getViewLocation() {
-            return "Results";
-        }
-
-
-        /**
-         * Gets the id of the preferred workspace tab.
-         * @return A <code>String</code> that represents the
-         *         id of the workspace tab the the instantiated view
-         *         for this plugin will appear on.  Returns the empty string
-         *         if the view does not have a preferred tab.
-         */
-        public String getPreferredWorkspaceTabId() {
-            return "";
         }
 
 
@@ -460,11 +433,6 @@ public abstract class Workspace extends JComponent implements Disposable {
 
         public String getDocumentation() {
             return null;
-        }
-
-
-        public boolean persist() {
-            return false;
         }
 
 

@@ -416,9 +416,6 @@ public class MList extends JList {
 							.getStringBounds(header.getName(), g2).getBounds().width
 							+ BUTTON_MARGIN * 2;
 				}
-				int midLine = rowBounds.y + (BUTTON_DIMENSION + BUTTON_MARGIN)
-						/ 2;
-				// g2.drawLine(endOfButtonRun, midLine, getWidth() - 2, midLine);
 			}
 		}
 		g.setColor(oldColor);

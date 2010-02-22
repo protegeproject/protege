@@ -169,20 +169,6 @@ public class RemovableObjectList<O> extends MList {
         }
 
 
-        public MutableObjectListModel(Collection objects) {
-            for (Object o : objects) {
-                addElement(o);
-            }
-        }
-
-
-        public MutableObjectListModel(Object[] objects) {
-            for (Object o : objects) {
-                addElement(o);
-            }
-        }
-
-
         public void setElementAt(Object obj, int index) {
             super.setElementAt(new RemovableObjectListItem((O)obj), index);
         }
