@@ -77,6 +77,7 @@ public abstract class PreferencesManager {
      * that is generated from a class name.
      * @param c The name of the class that should be used to generate the id.
      */
+    @SuppressWarnings("unchecked")
     public abstract Preferences getApplicationPreferences(Class c);
 
 
@@ -103,5 +104,6 @@ public abstract class PreferencesManager {
      *         method will <b>not</b> return <code>null</code> - if the preferences don't exist they
      *         will be created.
      */
+    @SuppressWarnings("unchecked")
     public abstract Preferences getPreferencesForSet(String setId, Class c);
 }

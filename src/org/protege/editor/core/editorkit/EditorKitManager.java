@@ -17,8 +17,6 @@ import java.util.List;
  */
 public class EditorKitManager {
 
-    private EditorKit activeEditorKit;
-
     private List<EditorKit> editorKits;
 
     private WorkspaceManager workspaceManager;

@@ -145,7 +145,6 @@ public class ProtegeApplication implements BundleActivator {
 
     // If this isn't liked info can be replaced with debug.
     // It helps with diagnosing problems with the FaCT++ plugin.
-    @SuppressWarnings("unchecked")
     private void displayPlatform() {
         Bundle b = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(b);

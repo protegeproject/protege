@@ -115,9 +115,9 @@ public class ErrorExplainer {
      *         one of the most specific superclasses of cls if contained in clses else
      *         null if neither cls or any of its superclasses appear in clses
      */
-    private static <T> Class<? extends T> getBestMatchJavaClass(Class cls, Set<Class<? extends T>> clses){
+    private static <T> Class<? extends T> getBestMatchJavaClass(Class<? extends T> cls, Set<Class<? extends T>> clses){
         Class<? extends T> mostSpecificCls = null;
-        for (Class candidate : clses){
+        for (Class<? extends T> candidate : clses){
             if (candidate.isAssignableFrom(cls)){
                 if (mostSpecificCls == null || mostSpecificCls.isAssignableFrom(candidate)){
                     mostSpecificCls = candidate;

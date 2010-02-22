@@ -58,9 +58,7 @@ public abstract class AbstractAppleApplicationWrapper {
      */
     
     private Method getApplicationMethod;
-    private Method addApplicationListenerMethod;
-    private Method removeApplicationListenerMethod;
-    
+    private Method addApplicationListenerMethod;    
     /*
      * Application Listener Methods
      */
@@ -106,8 +104,6 @@ public abstract class AbstractAppleApplicationWrapper {
         getApplicationMethod = applicationClass.getMethod("getApplication", new Class[] { });
         addApplicationListenerMethod = applicationClass.getMethod("addApplicationListener", applicationListenerClass);
         addApplicationListenerMethod = applicationClass.getMethod("addApplicationListener", new Class[] { applicationListenerClass });
-        removeApplicationListenerMethod = applicationClass.getMethod("removeApplicationListener", new Class[] { applicationListenerClass });
-
         /*
          * Application Listener Methods
          */
@@ -174,6 +170,7 @@ public abstract class AbstractAppleApplicationWrapper {
      * Protege Interfaces
      */
 
+    @SuppressWarnings("unchecked")
     protected final void setEnabledPreferencesMenu(boolean enabled) {
         try {
             Class applicationClass = Class.forName("com.apple.eawt.Application");

@@ -58,6 +58,7 @@ public abstract class AbstractModelManager implements ModelManager {
     }
 
 
+    @SuppressWarnings("unchecked")
     public <T extends Disposable> T get(Object key) {
         return (T) objects.get(key);
     }

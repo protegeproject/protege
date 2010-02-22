@@ -1,6 +1,5 @@
 package org.protege.editor.core.plugin;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 
 
@@ -39,8 +38,7 @@ import org.eclipse.core.runtime.IExtension;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public abstract class JPFUtil implements ProtegePlugin {
-    private static final Logger log = Logger.getLogger(JPFUtil.class);
+public class JPFUtil {
     public final static String EXTENSION_DOCUMENTATION = "documentation";
 
     public static String getDocumentation(IExtension extension) {

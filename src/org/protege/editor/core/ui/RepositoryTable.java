@@ -1,35 +1,14 @@
 package org.protege.editor.core.ui;
 
-import org.protege.editor.core.OntologyRepository;
-import org.protege.editor.core.OntologyRepositoryEntry;
-
-import javax.swing.*;
-import java.net.URI;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-/*
- * Copyright (C) 2008, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+import java.net.URI;
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+import javax.swing.JTable;
 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryEntry;
 
 
 /**
@@ -42,11 +21,8 @@ public class RepositoryTable extends JTable {
      * 
      */
     private static final long serialVersionUID = 343836249221539974L;
-    private OntologyRepository repository;
-
 
     public RepositoryTable(OntologyRepository repository) {
-        this.repository = repository;
         setModel(new RepositoryTableModel(repository));
         setRowHeight(getRowHeight() + 4);
         setShowHorizontalLines(true);
