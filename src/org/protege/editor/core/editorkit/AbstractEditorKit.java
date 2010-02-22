@@ -77,13 +77,14 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
     }
 
 
-    public <T extends Disposable> void put(Object key, T object) {
+    public <S extends Disposable> void put(Object key, S object) {
         objects.put(key, object);
     }
 
 
-    public <T extends Disposable> T get(Object key) {
-        return (T) objects.get(key);
+    @SuppressWarnings("unchecked")
+    public <S extends Disposable> S get(Object key) {
+        return (S) objects.get(key);
     }
 
 

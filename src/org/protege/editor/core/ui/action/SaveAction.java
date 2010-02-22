@@ -17,13 +17,7 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class SaveAction extends ProtegeAction {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 3838354503751266687L;
-    private static final Logger logger = Logger.getLogger(SaveAction.class);
-
 
     public void actionPerformed(ActionEvent e) {
         try {

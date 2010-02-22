@@ -1,15 +1,18 @@
 package org.protege.editor.core.editorkit;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.FileManager;
-import org.protege.editor.core.ProtegeManager;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeManager;
 
 
 /**
@@ -91,6 +94,7 @@ public class RecentEditorKitManager {
     }
 
 
+    @SuppressWarnings("unchecked")
     public void load() {
         Preferences userRoot = Preferences.userRoot();
         byte [] prefsBytes = userRoot.getByteArray(PREFERENCES_KEY, null);
@@ -107,13 +111,6 @@ public class RecentEditorKitManager {
             logger.error(e);
         }
     }
-
-
-    private static File getEditorKitsFile() {
-        File dataFolder = FileManager.getDataFolder();
-        return new File(dataFolder, RECENT_EDITOR_KITS_FILE_NAME);
-    }
-
 
     public void save() {
         try {

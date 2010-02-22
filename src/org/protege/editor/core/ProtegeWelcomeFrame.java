@@ -1,6 +1,24 @@
 package org.protege.editor.core;
 
-import org.apache.log4j.Logger;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
@@ -10,12 +28,6 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 27,
@@ -24,13 +36,7 @@ import java.net.URI;
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeWelcomeFrame extends JFrame {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 3174444631540765155L;
-
-    private static final Logger logger = Logger.getLogger(ProtegeWelcomeFrame.class);
 
     private ProtegeWelcomeFrame.ProtegeWelcomePanel welcomePanel;
 
