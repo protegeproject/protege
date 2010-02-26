@@ -863,8 +863,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                                   int tokenLength) {
         OWLObjectProperty prop = (OWLObjectProperty) entity;
-        OWLClassExpression d = getOWLModelManager().getOWLDataFactory().getOWLObjectMinCardinality(1, prop);
-        if(!getOWLModelManager().getReasoner().isSatisfiable(d)) {
+        OWLObjectProperty bottom = getOWLModelManager().getOWLDataFactory().getOWLBottomObjectProperty();
+        if(getOWLModelManager().getReasoner().getSuperObjectProperties(prop, true).containsEntity(bottom)) {
             doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
         }
     }
