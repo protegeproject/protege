@@ -21,8 +21,7 @@ public class ViewsPaneMemento {
 
 
     public ViewsPaneMemento(URL initialConfigFileURL, String viewPaneId) {
-        this.initialCongigFileURL = initialConfigFileURL;
-        this.viewPaneId = viewPaneId;
+        this(initialConfigFileURL, viewPaneId, false);
     }
 
 
