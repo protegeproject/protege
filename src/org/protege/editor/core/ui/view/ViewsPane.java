@@ -189,7 +189,7 @@ public class ViewsPane extends JPanel {
      * @return The key
      */
     public String getLayoutPreferencesKey() {
-        return memento.getViewPaneId();
+        return "protege-4.1." + memento.getViewPaneId();
     }
 
 
