@@ -177,8 +177,8 @@
 
 
     <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Protege Documentation"/>
-        <toolTip value="Online wiki for Protege 4.0 documentation"/>
+        <name value="Protege documentation"/>
+        <toolTip value="View online documentation for Protege 4.1 Alpha"/>
         <url value="http://protegewiki.stanford.edu/index.php/Protege4UserDocs"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
         <editorKitId value="any"/>
@@ -186,9 +186,9 @@
 
 
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Release Notes"/>
-        <toolTip value="Updates for each release"/>
-        <url value="http://protege.stanford.edu/protege/4.0/webnotes/release-notes.html"/>
+        <name value="Release notes"/>
+        <toolTip value="View release notes for Protege 4.1 Alpha"/>
+        <url value="http://protegewiki.stanford.edu/index.php/Protege_4.1_Alpha_Release_Notes"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
