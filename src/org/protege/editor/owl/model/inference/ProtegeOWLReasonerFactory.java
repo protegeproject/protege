@@ -41,7 +41,7 @@ public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
      * Creates an instance of an <code>OWLReasoner</code>.  This method will
      * create a <i>new</i> instance.
      * 
-     * @param owlOntologyManager The manager to be used by the reasoner.
+     * @param ontology
      * @param monitor  A progress monitor to be used by the reasoner if possible.
      *
      */

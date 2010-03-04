@@ -32,7 +32,6 @@ public interface OntologyLibrary {
      /**
       * Get the physical local of the xml catalog.  Needed for
       * including the xml catalog in other catalogs.
-      * @return
       */
      URI getXmlCatalogName();
 
