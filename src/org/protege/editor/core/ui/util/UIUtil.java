@@ -51,7 +51,6 @@ public class UIUtil {
      * @param parent
      * @param title
      * @param extensions
-     * @return
      * @deprecated Use openFile(Window parent, String title, final String description, final Set<String> extensions)
      */
     @Deprecated
@@ -107,7 +106,6 @@ public class UIUtil {
      * @param title
      * @param extensions
      * @param initialName
-     * @return
      * @deprecated Use saveFile(Window parent, String title, final String description, final Set<String> extensions, String initialName)
      */
     @Deprecated
