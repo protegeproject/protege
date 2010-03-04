@@ -95,6 +95,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     public void setReasonerProgressMonitor(ReasonerProgressMonitor progressMonitor) {
         this.reasonerProgressMonitor = progressMonitor;
     }
+    
+    public ReasonerProgressMonitor getReasonerProgressMonitor() {
+		return reasonerProgressMonitor;
+	}
 
 
     public Set<ProtegeOWLReasonerFactory> getInstalledReasonerFactories() {
@@ -164,7 +168,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     public boolean isClassified() {
         synchronized (currentReasonerMap) {
             OWLReasoner reasoner = getCurrentReasoner();
-            return !(reasoner instanceof NoOpReasoner) && reasoner.getPendingChanges().isEmpty();
+            return !(reasoner instanceof NoOpReasoner) && 
+            			(reasoner.getPendingChanges() == null || reasoner.getPendingChanges().isEmpty());
         }
     }
 
