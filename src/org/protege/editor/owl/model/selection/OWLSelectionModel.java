@@ -91,7 +91,6 @@ public interface OWLSelectionModel {
 
     /**
      * Instances of an axiom wrt the containing ontology
-     * @return and OWLAxiomInstance (an axiom, ontology pair)
      */
     public void setSelectedAxiom(OWLAxiomInstance axiomInstance);
 
