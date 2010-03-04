@@ -72,7 +72,6 @@ public class ComponentFactory {
     /**
      * Creates a JEditorPane suitable for showing HTML content
      * @param hyperlinkListener an optional hyperlink listener
-     * @return
      */
     public static JEditorPane createHTMLPane(HyperlinkListener hyperlinkListener) {
         JEditorPane editorPane = new JEditorPane(new HTMLEditorKit().getContentType(), "");
