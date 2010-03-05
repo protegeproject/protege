@@ -50,7 +50,7 @@ public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrame
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLDataPropertyExpression> getManipulatableObjects() {
         List<OWLDataPropertyExpression> props = new ArrayList<OWLDataPropertyExpression>(getAxiom().getProperties());
         props.remove(getRoot());
         return props;

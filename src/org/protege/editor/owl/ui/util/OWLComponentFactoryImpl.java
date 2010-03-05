@@ -72,7 +72,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
         return getOWLClassDescriptionEditor(expr, null);
     }
 
-
+    @SuppressWarnings("unchecked")
     public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
         for (OWLClassExpressionEditorPlugin plugin : getDescriptionEditorPlugins()) {

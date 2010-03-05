@@ -59,7 +59,8 @@ public class OWLClassExpressionEditorPluginImpl implements OWLClassExpressionEdi
     }
 
 
-    public boolean isSuitableFor(AxiomType type) {
+    @SuppressWarnings("unchecked")
+	public boolean isSuitableFor(AxiomType type) {
         String axiomTypes = PluginUtilities.getAttribute(extension, "axiomTypes");
         if (axiomTypes == null){
             return true;

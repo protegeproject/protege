@@ -1,15 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationSubject;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -26,7 +27,7 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     }
 
 
-    protected List getObjects() {
+    protected List<OWLAnnotation> getObjects() {
         return Arrays.asList(getAxiom().getAnnotation());
     }
 
@@ -48,7 +49,7 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<OWLAnnotation> getManipulatableObjects() {
         return getObjects();
     }
 }

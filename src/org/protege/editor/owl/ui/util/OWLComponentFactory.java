@@ -44,6 +44,7 @@ public interface OWLComponentFactory extends Disposable {
 
     OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr);
 
+    @SuppressWarnings("unchecked")
     OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type);
 
     OWLClassSelectorPanel getOWLClassSelectorPanel();

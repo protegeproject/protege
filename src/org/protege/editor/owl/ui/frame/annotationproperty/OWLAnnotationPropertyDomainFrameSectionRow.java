@@ -1,13 +1,16 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.IRIAnnotationValueEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Arrays;
-import java.util.List;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -60,7 +63,7 @@ public class OWLAnnotationPropertyDomainFrameSectionRow extends AbstractOWLFrame
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<IRI> getManipulatableObjects() {
         return Arrays.asList(getAxiom().getDomain());
     }
 }

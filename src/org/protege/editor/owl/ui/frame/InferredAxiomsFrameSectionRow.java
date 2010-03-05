@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -60,7 +59,7 @@ public class InferredAxiomsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLAxiom> getManipulatableObjects() {
         return Arrays.asList(axiom);
     }
 }

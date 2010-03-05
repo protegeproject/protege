@@ -48,7 +48,8 @@ public abstract class AbstractOWLClassExpressionEditor implements OWLClassExpres
     }
 
 
-    public final void setAxiomType(AxiomType type) {
+    @SuppressWarnings("unchecked")
+	public final void setAxiomType(AxiomType type) {
         this.type = type;
     }
 

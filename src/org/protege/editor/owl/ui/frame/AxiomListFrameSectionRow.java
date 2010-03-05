@@ -58,7 +58,7 @@ public class AxiomListFrameSectionRow extends AbstractOWLFrameSectionRow<Set<OWL
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLAxiom> getManipulatableObjects() {
         return Arrays.asList(getAxiom());
     }
 

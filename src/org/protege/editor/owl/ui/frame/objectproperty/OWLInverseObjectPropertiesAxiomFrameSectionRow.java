@@ -52,11 +52,11 @@ public class OWLInverseObjectPropertiesAxiomFrameSectionRow extends AbstractOWLF
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLObjectPropertyExpression> getManipulatableObjects() {
         Set<OWLObjectPropertyExpression> props = new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
         if(props.size() > 1) {
             props.remove(getRootObject());
         }
-        return new ArrayList(props);
+        return new ArrayList<OWLObjectPropertyExpression>(props);
     }
 }

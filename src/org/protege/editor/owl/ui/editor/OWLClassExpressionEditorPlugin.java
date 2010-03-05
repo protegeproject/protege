@@ -37,7 +37,8 @@ public interface OWLClassExpressionEditorPlugin extends ProtegePlugin<OWLClassEx
 
     public static final String ID = "ui_editor_description";
 
-    boolean isSuitableFor(AxiomType type);
+    @SuppressWarnings("unchecked")
+	boolean isSuitableFor(AxiomType type);
 
     String getIndex();
 }
