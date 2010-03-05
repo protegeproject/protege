@@ -16,7 +16,6 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
 
     Logger logger = Logger.getLogger(AmalgamateDisjointClassesAction.class);
 
-    @SupressWarnings("unchecked")
     public void actionPerformed(ActionEvent actionEvent) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         int axiomsRemoved = 0;
