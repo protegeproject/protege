@@ -69,4 +69,6 @@ public interface OWLReasonerManager extends Disposable {
 
 
     void killCurrentClassification();
+    
+    ReasonerPreferences getReasonerPreferences();
 }

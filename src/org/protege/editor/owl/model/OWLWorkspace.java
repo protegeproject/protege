@@ -34,6 +34,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -76,6 +77,7 @@ import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPlugin;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPluginJPFImpl;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -168,6 +170,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     
     private boolean reasonerManagerStarted = false;
     private JLabel reasonerStatus = new JLabel();
+    private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
     
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -231,6 +234,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
         reasonerManagerStarted = true;
         updateReasonerStatus(false);
+        displayReasonerResults.setSelected(mngr.getOWLReasonerManager().getReasonerPreferences().isShowInferences());
+        displayReasonerResults.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
+                prefs.setShowInferences(displayReasonerResults.isSelected());
+            }
+        });
 
         new OntologySourcesChangedHandlerUI(this);
     }
@@ -889,14 +900,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(reasonerStatus);
+            statusArea.add(Box.createHorizontalStrut(15));
+            statusArea.add(displayReasonerResults);
+            statusArea.add(Box.createHorizontalStrut(20));
         }
         return statusArea;
     }
-    
-    public JLabel getReasonerStatusLabel() {
-        return reasonerStatus;
-    }
-
 
     public WorkspaceTab createWorkspaceTab(final String name) {
         final OWLWorkspaceViewsTab tab = new OWLWorkspaceViewsTab();

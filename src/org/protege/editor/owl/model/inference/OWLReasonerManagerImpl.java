@@ -43,9 +43,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
 
     private ReasonerProgressMonitor reasonerProgressMonitor;
-
-
     private OWLReasonerExceptionHandler exceptionHandler;
+    private ReasonerPreferences preferences;
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -68,6 +67,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     public void dispose() {
         clearAndDisposeReasoners();
+        if (preferences != null) {
+            preferences.save();
+        }
     }
 
     private void clearAndDisposeReasoners() {
@@ -208,6 +210,14 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 runningReasoner.interrupt();
             }
         }
+    }
+    
+    public ReasonerPreferences getReasonerPreferences() {
+        if (preferences == null) {
+            preferences = new ReasonerPreferences();
+            preferences.load();
+        }
+        return preferences;
     }
 
 
