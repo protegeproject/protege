@@ -55,11 +55,13 @@
 			<string>file:log4j.xml</string>
 			<key>org.protege.plugin.dir</key>
 			<string>Java/plugins</string>
+            <key>entityExpansionLimit</key>
+            <string>100000000</string>
 		</dict>
 		<key>VMOptions</key>
 		<array>
-			<string>-Xms200M</string>
-			<string>-Xmx200M</string>
+			<string>-Xms500M</string>
+			<string>-Xmx250M</string>
 		</array>
 		<key>WorkingDirectory</key>
 		<string>$APP_PACKAGE/Contents/Resources</string>
