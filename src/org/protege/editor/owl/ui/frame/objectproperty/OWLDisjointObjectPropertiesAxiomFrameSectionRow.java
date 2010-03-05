@@ -61,7 +61,7 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<OWLObjectPropertyExpression> getManipulatableObjects() {
         List<OWLObjectPropertyExpression> props = new ArrayList<OWLObjectPropertyExpression>(getAxiom().getProperties());
         props.remove(getRoot());
         return props;

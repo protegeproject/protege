@@ -27,6 +27,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
+@SuppressWarnings("unchecked")
 public class OWLAutoCompleter {
 
     private static Logger logger = Logger.getLogger(OWLAutoCompleter.class);

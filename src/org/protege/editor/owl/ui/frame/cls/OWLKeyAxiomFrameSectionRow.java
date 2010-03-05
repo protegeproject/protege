@@ -1,14 +1,17 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLPropertySetEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -61,6 +64,6 @@ public class OWLKeyAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLCl
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLPropertyExpression> getManipulatableObjects() {
         return new ArrayList<OWLPropertyExpression>(getAxiom().getPropertyExpressions());
     }}

@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyRelationshipEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -8,10 +11,8 @@ import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -48,8 +49,8 @@ public class OWLDataPropertyAssertionAxiomFrameSectionRow extends AbstractOWLFra
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
-        List objects = new ArrayList();
+    public List<OWLObject> getManipulatableObjects() {
+        List<OWLObject> objects = new ArrayList<OWLObject>();
         objects.add(getAxiom().getProperty());
         objects.add(getAxiom().getObject());
         return objects;

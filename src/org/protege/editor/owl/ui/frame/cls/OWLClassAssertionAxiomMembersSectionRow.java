@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -53,7 +54,7 @@ public class OWLClassAssertionAxiomMembersSectionRow extends AbstractOWLFrameSec
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<OWLIndividual> getManipulatableObjects() {
         return Arrays.asList(getAxiom().getIndividual());
     }
 }

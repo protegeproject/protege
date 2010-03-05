@@ -66,5 +66,6 @@ public interface OWLClassExpressionEditor extends ProtegePluginInstance, Verifie
      *  - this allows an editor to implement different behaviours based on where the description is going
      * @param type the type of axiom (if any) this description will be added to
      */
+    @SuppressWarnings("unchecked")
     void setAxiomType(AxiomType type);
 }

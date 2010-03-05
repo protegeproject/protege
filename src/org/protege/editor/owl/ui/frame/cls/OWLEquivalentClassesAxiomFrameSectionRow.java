@@ -31,7 +31,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
     }
 
 
-    protected List getObjects() {
+    protected List<OWLClassExpression> getObjects() {
         Set<OWLClassExpression> clses = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
         clses.remove(getRoot());
         return new ArrayList<OWLClassExpression>(clses);
@@ -55,7 +55,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
      * could be placed on the clip board during a copy operation,
      * or navigated to etc.
      */
-    public List getManipulatableObjects() {
+    public List<OWLClassExpression> getManipulatableObjects() {
         return getObjects();
     }
 }

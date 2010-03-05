@@ -1,14 +1,17 @@
 package org.protege.editor.owl.ui.frame.dataproperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Arrays;
-import java.util.List;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 
 
 /**
@@ -41,7 +44,7 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow extends Abstrac
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLDataPropertyExpression> getManipulatableObjects() {
         return Arrays.asList(getAxiom().getSuperProperty());
     }
 }

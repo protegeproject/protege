@@ -1,14 +1,26 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
 /**
@@ -234,14 +246,9 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     public String getRendering() {
         StringBuilder sb = new StringBuilder();
         sb.append(getPrefix());
-        for (Iterator it = getManipulatableObjects().iterator(); it.hasNext();) {
-            Object obj = it.next();
-            if (obj instanceof OWLObject) {
-                sb.append(getObjectRendering((OWLObject) obj));
-            }
-            else {
-                sb.append(obj.toString());
-            }
+        for (Iterator<? extends OWLObject> it = getManipulatableObjects().iterator(); it.hasNext();) {
+            OWLObject obj = it.next();
+            sb.append(getObjectRendering(obj));
             if (it.hasNext()) {
                 sb.append(getDelimeter());
             }

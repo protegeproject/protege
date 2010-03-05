@@ -1,13 +1,24 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.CollectionFactory;
-
-import java.util.*;
 
 
 /**
@@ -56,7 +67,7 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
     }
 
 
-    public List<? extends OWLObject> getManipulatableObjects() {
+    public List<OWLClassExpression> getManipulatableObjects() {
         if (getAxiom() instanceof OWLSubClassOfAxiom) {
             return Arrays.asList(((OWLSubClassOfAxiom) getAxiom()).getSuperClass());
         }
@@ -65,7 +76,8 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
             descs.remove(getRootObject());
             if (descs.isEmpty()){
                 // in the weird case that something is asserted equiv to itself
-                return Collections.singletonList(getRootObject());
+            	OWLClassExpression cls = getRootObject();
+            	return Arrays.asList(cls);
             }
             return Arrays.asList(descs.iterator().next());
         }

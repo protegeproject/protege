@@ -52,6 +52,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
     }
 
 
+    @SuppressWarnings("unchecked")
     private List<OWLOntologyChange> removeDisjointsForClass(OWLClass owlClass, Set<OWLOntology> ontologies) {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLOntology ont : ontologies) {
