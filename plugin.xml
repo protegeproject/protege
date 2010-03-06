@@ -998,6 +998,13 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <!-- Reasoner Preferences Panel -->
+    <extension id="ui.preferences.reasoner"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Reasoner"/>
+        <class value="org.protege.editor.owl.ui.inference.ReasonerPreferencesPanel"/>
+    </extension>
+
 
     <!-- Refactor menu -->
 
