@@ -21,8 +21,8 @@ import org.protege.editor.owl.ui.action.ProtegeOWLAction;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ClassifyAction extends ProtegeOWLAction {
+	private static final long serialVersionUID = -4602291778441065461L;
 
-    private static final Logger logger = Logger.getLogger(ClassifyAction.class);
 
     private OWLModelManagerListener owlModelManagerListener;
 
