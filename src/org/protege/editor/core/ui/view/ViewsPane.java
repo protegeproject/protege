@@ -39,6 +39,7 @@ public class ViewsPane extends JPanel {
     private NodePanel nodePanel;
 
 
+    @SuppressWarnings("unchecked")
     public ViewsPane(Workspace workspace, ViewsPaneMemento memento) {
         this.memento = memento;
         setLayout(new BorderLayout());
