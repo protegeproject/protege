@@ -14,6 +14,7 @@ import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.library.OntologyLibraryManager;
 import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
@@ -252,6 +253,8 @@ public interface OWLModelManager extends ModelManager {
 
 
     OWLReasoner getReasoner();
+    
+    ReasonerPreferences getReasonerPreferences();
 
 
     URI getOntologyPhysicalURI(OWLOntology ontology);
