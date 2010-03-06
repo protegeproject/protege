@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.renderer;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
@@ -760,7 +761,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // If it is a class then paint the word red if the class
                     // is inconsistent
                     if (highlightUnsatisfiableClasses &&
-                            //                            !getOWLModelManager().getReasoner().isConsistent(getOWLModelManager().getActiveOntology()) ||
                             !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                         // Paint red because of inconsistency
                         doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
@@ -860,13 +860,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    private void highlightPropertyIfUnsatisfiable(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
-                                                  int tokenLength) {
-        OWLObjectProperty prop = (OWLObjectProperty) entity;
-        OWLObjectProperty bottom = getOWLModelManager().getOWLDataFactory().getOWLBottomObjectProperty();
-        if(getOWLModelManager().getReasoner().getSuperObjectProperties(prop, true).containsEntity(bottom)) {
-            doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-        }
+    private void highlightPropertyIfUnsatisfiable(final OWLEntity entity, final StyledDocument doc, final int tokenStartIndex, final int tokenLength) {
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, 
+                                                                  new Runnable() {
+            public void run() {
+                OWLObjectProperty prop = (OWLObjectProperty) entity;
+                if(getOWLModelManager().getReasoner().getBottomObjectPropertyNode().contains(prop)) {
+                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                }
+            }
+        });
     }
 
 
