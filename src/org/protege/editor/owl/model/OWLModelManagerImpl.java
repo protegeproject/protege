@@ -35,6 +35,7 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.io.AutoMappedRepositoryIRIMapper;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.io.IOListenerEvent;
@@ -238,8 +239,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
         removeIOListener(sourcesMngr);
 
         try {
-            getReasoner().dispose();
-
             // Empty caches
             owlEntityRenderingCache.dispose();
             owlObjectRenderingCache.dispose();
@@ -945,6 +944,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     public OWLReasoner getReasoner() {
         return getOWLReasonerManager().getCurrentReasoner();
+    }
+    
+    public ReasonerPreferences getReasonerPreferences() {
+        return getOWLReasonerManager().getReasonerPreferences();
     }
 
 
