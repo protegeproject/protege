@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -129,7 +131,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     }
 
 
-    protected final void refillInferred() {
+    protected void refillInferred() {
         for (Node<OWLClass> domains : getInferredDomains()) {
             for (OWLClassExpression domain : domains){
                 if (!addedDomains.contains(domain)) {
