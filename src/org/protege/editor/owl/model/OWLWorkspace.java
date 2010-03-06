@@ -489,7 +489,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         
         reasonerMenu.removeAll();
         ClassifyAction classifyAction = new ClassifyAction();
-        classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
+        classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         classifyAction.setEditorKit(getOWLEditorKit());
         classifyAction.putValue(Action.NAME, "Classify...");
         reasonerMenu.add(classifyAction);
