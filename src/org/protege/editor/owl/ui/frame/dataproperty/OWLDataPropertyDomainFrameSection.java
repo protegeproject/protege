@@ -3,15 +3,20 @@ package org.protege.editor.owl.ui.frame.dataproperty;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSection;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;
 
 
 /**
@@ -43,7 +48,27 @@ public class OWLDataPropertyDomainFrameSection extends AbstractPropertyDomainFra
 
 
     protected NodeSet<OWLClass> getInferredDomains() {
-        return getOWLModelManager().getReasoner().getDataPropertyDomains(getRootObject(), true);
+        OWLReasoner reasoner = getOWLModelManager().getReasoner();
+        OWLDataProperty p = getRootObject();
+        OWLDataFactory factory = getOWLModelManager().getOWLOntologyManager().getOWLDataFactory();
+        OWLClassExpression domain = factory.getOWLDataSomeValuesFrom(p, factory.getTopDatatype());
+        Node<OWLClass> domainNode = reasoner.getEquivalentClasses(domain);
+        if (domainNode != null && !domainNode.getEntities().isEmpty()) {
+            return new OWLClassNodeSet(domainNode);
+        }
+        else {
+            return reasoner.getDataPropertyDomains(getRootObject(), true);
+        }
+    }
+    
+    @Override
+    protected void refillInferred() {
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS,
+                                                                  new Runnable() {
+            public void run() {
+                OWLDataPropertyDomainFrameSection.super.refillInferred();
+            }
+        });
     }
 
 
