@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
+import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -60,6 +62,9 @@ public class UIUtil {
     
     public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
         // use MacUIUtil.openFile if OSX somehow here?
+        if (OSUtils.isOSX() && parent instanceof Window) {
+            return MacUIUtil.openFile((Window) parent, title, extensions);
+        }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {

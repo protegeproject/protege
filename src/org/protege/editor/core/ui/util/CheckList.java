@@ -1,15 +1,30 @@
 package org.protege.editor.core.ui.util;
 
-import java.util.*;
-import java.util.List;
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListDataEvent;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -87,8 +102,8 @@ public class CheckList extends JComponent {
         updateCheckBoxes();
     }
 
-    public Collection getCheckedItems() {
-        Collection items = new ArrayList();
+    public Collection<Object> getCheckedItems() {
+        Collection<Object> items = new ArrayList<Object>();
         for(Object item : item2CheckBoxMap.keySet()) {
             if(item2CheckBoxMap.get(item).isSelected()) {
                 items.add(item);
