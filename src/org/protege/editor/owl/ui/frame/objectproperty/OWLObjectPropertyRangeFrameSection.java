@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -59,18 +60,23 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
 
     protected void refillInferred() {
-        for (OWLClassExpression inferredRange : getInferredRanges()) {
-            if (!addedRanges.contains(inferredRange)) {
-                OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(getRootObject(),
-                                                                                                               inferredRange);
-                addRow(new OWLObjectPropertyRangeFrameSectionRow(getOWLEditorKit(),
-                                                                 this,
-                                                                 null,
-                                                                 getRootObject(),
-                                                                 inferredAxiom));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, 
+                                                                  new Runnable() {
+            public void run() {
+                for (OWLClassExpression inferredRange : getInferredRanges()) {
+                    if (!addedRanges.contains(inferredRange)) {
+                        OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(getRootObject(),
+                                                                                                                       inferredRange);
+                        addRow(new OWLObjectPropertyRangeFrameSectionRow(getOWLEditorKit(),
+                                                                         OWLObjectPropertyRangeFrameSection.this,
+                                                                         null,
+                                                                         getRootObject(),
+                                                                         inferredAxiom));
+                    }
+                    addedRanges.add(inferredRange);
+                }
             }
-            addedRanges.add(inferredRange);
-        }
+        });
     }
 
 
