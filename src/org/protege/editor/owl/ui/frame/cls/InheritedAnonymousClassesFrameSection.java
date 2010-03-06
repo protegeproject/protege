@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -63,6 +64,15 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     protected void refillInferred() {
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES,
+                                                                  new Runnable() {
+            public void run() {
+                refillInferredDoIt();
+            }
+        });
+    }
+    
+    private void refillInferredDoIt() {
         if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
             return;
         }
@@ -70,7 +80,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
         clses.remove(getRootObject());
         for (OWLClass cls : clses) {
             if (!processedClasses.contains(cls)) {
-                for (OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
+                for (OWLOntology ontology : getOWLModelManager().getActiveOntology().getImportsClosure()) {
                     for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(cls)) {
                         if (ax.getSuperClass().isAnonymous()) {
                             addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
