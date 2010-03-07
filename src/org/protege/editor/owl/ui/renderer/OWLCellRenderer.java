@@ -762,7 +762,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // is inconsistent
                     getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
                                                                               new Runnable() {
-                        @Override
                         public void run() {
                             if (!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                                 // Paint red because of inconsistency
