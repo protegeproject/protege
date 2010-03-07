@@ -60,7 +60,6 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, 
                                                                   new Runnable() {
-            @Override
             public void run() {
                 Set<OWLObjectProperty> equivs = new HashSet<OWLObjectProperty>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
                 equivs.remove(getRootObject());
