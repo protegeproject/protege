@@ -1,17 +1,22 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyRelationshipEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -59,23 +64,8 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
 
 
     protected void refillInferred() {
-        if (!getRootObject().isAnonymous()){
-            for (OWLDataProperty dp : getReasoner().getRootOntology().getDataPropertiesInSignature(true)) {
-                Set<OWLLiteral> values = getReasoner().getDataPropertyValues(getRootObject().asOWLNamedIndividual(), dp);
-                for (OWLLiteral constant : values) {
-                    OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(dp,
-                                                                                                            getRootObject(),
-                                                                                                            constant);
-                    if (!added.contains(ax)) {
-                        addRow(new OWLDataPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                this,
-                                                                                null,
-                                                                                getRootObject(),
-                                                                                ax));
-                    }
-                }
-            }
-        }
+        // see svn 17641 for previous implementation.  I believe results will confuse users because
+        // getDataPropertyValues(...) only supports incomplete inference.
     }
 
 
