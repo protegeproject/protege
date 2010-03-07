@@ -23,13 +23,23 @@ public class ReasonerPreferences {
 	
 	public enum OptionalInferenceTask {
 	    // Class Property Inferences
+	    SHOW_CLASS_UNSATISFIABILITY(true),
 	    SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES(false),
+	    
 	    // Object Property Inferences
 	    SHOW_OBJECT_PROPERTY_UNSATISFIABILITY(true),
 	    SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS(false),
 	    SHOW_INFERRED_OBJECT_PROPERTY_RANGES(false),
+	    SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES(false),
+	    SHOW_INFERRED_SUPER_OBJECT_PROPERTIES(false),
+	    SHOW_INFERRED_INVERSE_PROPERTIES(false),
+	    
 	    // Datatype Property Inferences
-	    SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS(false);
+	    SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS(false)
+	    
+	    // Individual Inferences
+	    
+	    ;
 	    
 	    private boolean enabledByDefault;
 	    
