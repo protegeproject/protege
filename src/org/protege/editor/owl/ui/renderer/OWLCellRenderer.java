@@ -742,7 +742,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
 
-        int tokenLength = curToken.length();
+        final int tokenLength = curToken.length();
         Color c = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
         if (c != null && prefs.isHighlightKeyWords() && highlightKeywords) {
             Style s = doc.getStyle(curToken);
@@ -750,23 +750,29 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         else {
             // Not a keyword, so might be an entity (or delim)
-            OWLEntity curEntity = getOWLModelManager().getOWLEntityFinder().getOWLEntity(curToken);
+            final OWLEntity curEntity = getOWLModelManager().getOWLEntityFinder().getOWLEntity(curToken);
             if (curEntity != null) {
                 if (focusedEntity != null) {
                     if (curEntity.equals(focusedEntity)) {
                         doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
                     }
                 }
-                else if (curEntity instanceof OWLClass) {
+                else if (highlightUnsatisfiableClasses && curEntity instanceof OWLClass) {
                     // If it is a class then paint the word red if the class
                     // is inconsistent
-                    if (highlightUnsatisfiableClasses &&
-                            !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
-                        // Paint red because of inconsistency
-                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                    }
+                    getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
+                                                                              new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+                                // Paint red because of inconsistency
+                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                            }
+                        }
+                    });
+
                 }
-                else if(highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
+                else if (highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
                     highlightPropertyIfUnsatisfiable(curEntity, doc, tokenStartIndex, tokenLength);
                 }
                 strikeoutEntityIfCrossedOut(curEntity, doc, tokenStartIndex, tokenLength);
