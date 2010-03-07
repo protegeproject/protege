@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -21,7 +22,6 @@ import java.util.Set;
  * Date: 29-Jan-2007<br><br>
  */
 public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectProperty> {
-    private static Logger log = Logger.getLogger(OWLSubObjectPropertyAxiomSuperPropertyFrameSection.class);
 
     public static final String LABEL = "Super properties";
 
@@ -57,16 +57,22 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
 
 
     protected void refillInferred() {
-        for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
-            if (!added.contains(infSup)) {
-                addRow(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
-                                                                                 this,
-                                                                                 null,
-                                                                                 getRootObject(),
-                                                                                 getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(),
-                                                                                                                                    infSup)));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES,
+                                                                  new Runnable() {
+            @Override
+            public void run() {
+                for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
+                    if (!added.contains(infSup)) {
+                        addRow(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                                                                                         OWLSubObjectPropertyAxiomSuperPropertyFrameSection.this,
+                                                                                         null,
+                                                                                         getRootObject(),
+                                                                                         getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(),
+                                                                                                                                            infSup)));
+                    }
+                }
             }
-        }
+        });
     }
 
 
