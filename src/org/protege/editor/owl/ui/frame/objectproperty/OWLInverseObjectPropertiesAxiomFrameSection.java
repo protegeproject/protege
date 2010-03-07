@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -11,10 +15,6 @@ import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -60,7 +60,6 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, 
                                                                   new Runnable() {
-            @Override
             public void run() {
                 final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
                 infInverses.removeAll(added);
