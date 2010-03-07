@@ -59,7 +59,6 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES,
                                                                   new Runnable() {
-            @Override
             public void run() {
                 for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
                     if (!added.contains(infSup)) {
