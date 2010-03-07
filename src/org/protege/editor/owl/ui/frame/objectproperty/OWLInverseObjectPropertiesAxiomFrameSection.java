@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -57,18 +58,24 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
 
 
     protected void refillInferred() {
-        final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
-        infInverses.removeAll(added);
-        for (OWLObjectProperty invProp : infInverses) {
-            final OWLInverseObjectPropertiesAxiom ax = getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(
-                    getRootObject(),
-                    invProp);
-                addRow(new OWLInverseObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                          this,
-                                                                          null,
-                                                                          getRootObject(),
-                                                                          ax));
-        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, 
+                                                                  new Runnable() {
+            @Override
+            public void run() {
+                final Set<OWLObjectProperty> infInverses = new HashSet<OWLObjectProperty>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
+                infInverses.removeAll(added);
+                for (OWLObjectProperty invProp : infInverses) {
+                    final OWLInverseObjectPropertiesAxiom ax = getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(
+                            getRootObject(),
+                            invProp);
+                        addRow(new OWLInverseObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                  OWLInverseObjectPropertiesAxiomFrameSection.this,
+                                                                                  null,
+                                                                                  getRootObject(),
+                                                                                  ax));
+                }
+            }
+        });
     }
 
 
