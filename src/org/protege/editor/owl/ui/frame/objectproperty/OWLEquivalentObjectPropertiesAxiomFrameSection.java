@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -57,18 +58,25 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     }
 
     protected void refillInferred() {
-        Set<OWLObjectProperty> equivs = new HashSet<OWLObjectProperty>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
-        equivs.remove(getRootObject());
-        if (!equivs.isEmpty()){
-            OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
-            if (!added.contains(ax)) {
-                addRow(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                             this,
-                                                                             null,
-                                                                             getRootObject(),
-                                                                             ax));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, 
+                                                                  new Runnable() {
+            @Override
+            public void run() {
+                Set<OWLObjectProperty> equivs = new HashSet<OWLObjectProperty>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
+                equivs.remove(getRootObject());
+                if (!equivs.isEmpty()){
+                    OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
+                    if (!added.contains(ax)) {
+                        addRow(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                     OWLEquivalentObjectPropertiesAxiomFrameSection.this,
+                                                                                     null,
+                                                                                     getRootObject(),
+                                                                                     ax));
+                    }
+                }
             }
-        }
+        });
+
     }
 
 
