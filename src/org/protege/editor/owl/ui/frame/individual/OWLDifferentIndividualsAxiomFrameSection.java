@@ -54,10 +54,6 @@ import java.util.Set;
     }
 
 
-    protected void refillInferred() {
-    }
-
-
     protected OWLDifferentIndividualsAxiom createAxiom(Set<OWLNamedIndividual> object) {
         object.add(getRootObject());
         return getOWLDataFactory().getOWLDifferentIndividualsAxiom(object);
