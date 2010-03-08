@@ -58,29 +58,6 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
     }
 
 
-    protected void refillInferred() {
-        // Inferred stuff
-        for (OWLDataRange inferredRange : getInferredRanges()) {
-            if (!addedRanges.contains(inferredRange)) {
-                OWLDataPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLDataPropertyRangeAxiom(
-                                                                                                           getRootObject(),
-                                                                                                           inferredRange);
-                addRow(new OWLDataPropertyRangeFrameSectionRow(getOWLEditorKit(),
-                                                               this,
-                                                               null,
-                                                               getRootObject(),
-                                                               inferredAxiom));
-            }
-            addedRanges.add(inferredRange);
-        }
-    }
-
-
-    private Set<OWLDataRange> getInferredRanges() {
-        return Collections.emptySet();  // inferred data ranges are not implemented in the owl api...
-    }
-
-
     public void visit(OWLDataPropertyRangeAxiom axiom) {
         if (axiom.getProperty().equals(getRootObject())) {
             reset();

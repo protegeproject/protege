@@ -62,11 +62,8 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
         }
     }
 
-
-    protected void refillInferred() {
-        // see svn 17641 for previous implementation.  I believe results will confuse users because
+        // see svn 17641 for previous implementation of refillInferred.  I believe results will confuse users because
         // getDataPropertyValues(...) only supports incomplete inference.
-    }
 
 
     protected OWLDataPropertyAssertionAxiom createAxiom(OWLDataPropertyConstantPair object) {

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -60,23 +61,27 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     protected void refillInferred() {
-        if (!getRootObject().isAnonymous()){
-            for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
-                NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asOWLNamedIndividual(), prop);
-                for (OWLNamedIndividual ind : values.getFlattened()) {
-                    OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
-                                                                                                                getRootObject(),
-                                                                                                                ind);
-                    if (!added.contains(ax)) {
-                        addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                  this,
-                                                                                  null,
-                                                                                  getRootObject(),
-                                                                                  ax));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, new Runnable() {
+                public void run() {
+                    if (!getRootObject().isAnonymous()){
+                        for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
+                            NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asOWLNamedIndividual(), prop);
+                            for (OWLNamedIndividual ind : values.getFlattened()) {
+                                OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
+                                                                                                                            getRootObject(),
+                                                                                                                            ind);
+                                if (!added.contains(ax)) {
+                                    addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                              OWLObjectPropertyAssertionAxiomFrameSection.this,
+                                                                                              null,
+                                                                                              getRootObject(),
+                                                                                              ax));
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }
+            });
     }
 
 

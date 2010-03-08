@@ -1,14 +1,28 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -53,19 +67,23 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     protected void refillInferred() {
-        if (!getRootObject().isAnonymous()){
-            for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
-                if (!added.contains(inferredType)) {
-                    OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
-                    addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
-                                                                         this,
-                                                                         null,
-                                                                         getRootObject(),
-                                                                         ax));
-                    added.add(inferredType);
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_TYPES, new Runnable() {
+                public void run() {
+                    if (!getRootObject().isAnonymous()){
+                        for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
+                            if (!added.contains(inferredType)) {
+                                OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
+                                addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
+                                                                                     OWLClassAssertionAxiomTypeFrameSection.this,
+                                                                                     null,
+                                                                                     getRootObject(),
+                                                                                     ax));
+                                added.add(inferredType);
+                            }
+                        }
+                    }
                 }
-            }
-        }
+            });
     }
 
 

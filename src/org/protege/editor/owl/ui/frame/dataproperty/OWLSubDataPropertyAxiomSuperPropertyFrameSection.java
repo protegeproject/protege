@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -63,18 +64,22 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
 
 
     protected void refillInferred() {
-        for (OWLDataPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperDataProperties(getRootObject(), true).getFlattened()) {
-            if (!added.contains(infSup)) {
-                final OWLSubDataPropertyOfAxiom ax = getOWLDataFactory().getOWLSubDataPropertyOfAxiom(
-                                                                                                      getRootObject(),
-                                                                                                      infSup);
-                addRow(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
-                                                                               this,
-                                                                               null,
-                                                                               getRootObject(),
-                                                                               ax));
-            }
-        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES, new Runnable() {
+                public void run() {
+                    for (OWLDataPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperDataProperties(getRootObject(), true).getFlattened()) {
+                        if (!added.contains(infSup)) {
+                            final OWLSubDataPropertyOfAxiom ax = getOWLDataFactory().getOWLSubDataPropertyOfAxiom(
+                                                                                                                  getRootObject(),
+                                                                                                                  infSup);
+                            addRow(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                                                                                           OWLSubDataPropertyAxiomSuperPropertyFrameSection.this,
+                                                                                           null,
+                                                                                           getRootObject(),
+                                                                                           ax));
+                        }
+                    }
+                }
+            });
     }
 
 
