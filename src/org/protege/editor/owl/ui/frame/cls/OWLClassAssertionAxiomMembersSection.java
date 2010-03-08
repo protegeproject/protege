@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.swing.ListSelectionModel;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLIndividualEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -76,20 +77,24 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
 
     protected void refillInferred() {
-        final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-        NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
-        if (instances != null) {
-        	for (OWLIndividual ind : instances.getFlattened()) {
-        		if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
-        			addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
-        					this,
-        					null,
-        					getRootObject(),
-        					df.getOWLClassAssertionAxiom(getRootObject(), ind)));
-        			added.add(ind.asOWLNamedIndividual());
-        		}
-        	}
-        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, new Runnable() {
+                public void run() {
+                    final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+                    NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
+                    if (instances != null) {
+                        for (OWLIndividual ind : instances.getFlattened()) {
+                            if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
+                                addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
+                                                                                   OWLClassAssertionAxiomMembersSection.this,
+                                                                                   null,
+                                                                                   getRootObject(),
+                                                                                   df.getOWLClassAssertionAxiom(getRootObject(), ind)));
+                                added.add(ind.asOWLNamedIndividual());
+                            }
+                        }
+                    }
+                }
+            });
     }
 
 
