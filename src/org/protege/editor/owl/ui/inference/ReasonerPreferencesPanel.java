@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.Dimension;
 import java.util.EnumMap;
 import java.util.Map.Entry;
 
@@ -21,10 +22,28 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
 
     public void initialise() throws Exception {
         preferences = getOWLModelManager().getReasonerPreferences();
-        add(buildClassFrameSectionPreferences());
-        add(buildObjectPropertyFrameSectionPreferences());
-        add(buildDataPropertyFrameSectionPreferences());
-        add(buildIndividualFrameSectionPreferences());
+        JComponent[] boxes = {buildClassFrameSectionPreferences(), 
+                buildObjectPropertyFrameSectionPreferences(),
+                buildDataPropertyFrameSectionPreferences(),
+                buildIndividualFrameSectionPreferences()
+        };
+        double preferredWidth = 0d;
+        for (JComponent box : boxes) {
+            double width = box.getPreferredSize().getWidth();
+            if (width > preferredWidth) {
+                preferredWidth = width;
+            }
+        }
+        for (JComponent box : boxes) {
+            Dimension size = box.getPreferredSize();
+            size.setSize(preferredWidth, size.getHeight());
+            box.setPreferredSize(size);
+            add(box);
+        }
+    }
+    
+    private void addPreferencesBox(JComponent component) {
+        
     }
 
     @Override
@@ -46,7 +65,9 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
         classFrameSectionPreferences.setBorder(ComponentFactory.createTitledBorder("Class Inferences"));
         classFrameSectionPreferences.setAlignmentX(0.0f);
         classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY, "Unsatisfiability"));
-        classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES, "Inferred Inherited Classes"));
+        classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, "Superclasses"));
+        classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, "Class Members"));
+        classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES, "Inherited Classes"));
         return classFrameSectionPreferences;
     }
     
@@ -55,11 +76,11 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
         objectPropertyTabPreferences.setBorder(ComponentFactory.createTitledBorder("Object Property Inferences"));
         objectPropertyTabPreferences.setAlignmentX(0.0f);
         objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, "Unsatisfiability"));
-        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS, "Inferred Domains"));
-        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, "Inferred Ranges"));
-        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, "Inferred Equivalents"));
-        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES, "Inferred SuperProperties"));
-        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, "Inferred Inverses"));
+        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS, "Domains"));
+        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, "Ranges"));
+        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, "Equivalent Properties"));
+        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES, "Super Properties"));
+        objectPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, "Inverses"));
         return objectPropertyTabPreferences;
     }
     
@@ -67,15 +88,19 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
         Box dataPropertyTabPreferences = new Box(BoxLayout.Y_AXIS);
         dataPropertyTabPreferences.setBorder(ComponentFactory.createTitledBorder("Data Property Inferences"));
         dataPropertyTabPreferences.setAlignmentX(0.0f);
-        dataPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS, "Inferred Domains"));
+        dataPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS, "Domains"));
+        dataPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, "Equivalent Properties"));
+        dataPropertyTabPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES, "Super Properties"));
         return dataPropertyTabPreferences;
     }
     
     private JComponent buildIndividualFrameSectionPreferences() {
-        Box dataPropertyTabPreferences = new Box(BoxLayout.Y_AXIS);
-        dataPropertyTabPreferences.setBorder(ComponentFactory.createTitledBorder("Individual Inferences"));
-        dataPropertyTabPreferences.setAlignmentX(0.0f);
-        return dataPropertyTabPreferences;
+        Box individualInferencePreferences = new Box(BoxLayout.Y_AXIS);
+        individualInferencePreferences.setBorder(ComponentFactory.createTitledBorder("Individual Inferences"));
+        individualInferencePreferences.setAlignmentX(0.0f);
+        individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_TYPES, "Types"));
+        individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, "Object Property Assertions"));
+        return individualInferencePreferences;
     }
     
     private JCheckBox getCheckBox(OptionalInferenceTask task, String description) {    
