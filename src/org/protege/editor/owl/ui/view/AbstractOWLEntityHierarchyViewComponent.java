@@ -11,7 +11,6 @@ import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -76,18 +75,16 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         // ordering based on default, but putting Nothing at the top
         final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
-        tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<E>(comp) {
-            public int compare(E o1, E o2) {
-                if (isNothing(o1)) {
+        tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<OWLObject>(comp) {
+            public int compare(OWLObject o1, OWLObject o2) {
+                if (getOWLDataFactory().getOWLNothing().equals(o1)) {
                     return -1;
                 }
-                else if (isNothing(o2)) {
+                else if (getOWLDataFactory().getOWLNothing().equals(o2)) {
                     return 1;
                 }
                 else {
-                    String rendering1 = getOWLModelManager().getRendering(o1);
-                    String rendering2 = getOWLModelManager().getRendering(o2);
-                    return rendering1.compareTo(rendering2);
+                    return comp.compare(o1, o2);
                 }
             }
         });
@@ -172,11 +169,6 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     public Set<E> getSelectedEntities() {
         return new HashSet<E>(tree.getSelectedOWLObjects());
-    }
-
-
-    private boolean isNothing(E o1) {
-        return o1.getIRI().equals(OWLRDFVocabulary.OWL_NOTHING.getIRI());
     }
 
 

@@ -52,7 +52,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private OWLObjectHierarchyProviderListener<N> listener;
 
-    private Comparator<? super N> comparator;
+    private Comparator<OWLObject> comparator;
 
     private OWLTreeDragAndDropHandler<N> dragAndDropHandler;
 
@@ -69,23 +69,18 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider,
-                         Comparator<? super N> objectComparator) {
+                         Comparator<OWLObject> objectComparator) {
         this(eKit, provider, provider.getRoots(), objectComparator);
     }
 
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
-                         Comparator<? super N> owlObjectComparator) {
+                         Comparator<OWLObject> owlObjectComparator) {
         this.eKit = eKit;
 
         ToolTipManager.sharedInstance().registerComponent(this);
 
-        if (owlObjectComparator != null){
-            comparator = owlObjectComparator;
-        }
-        else{
-            comparator = eKit.getOWLModelManager().getOWLObjectComparator();
-        }
+        this.comparator = owlObjectComparator;
         this.provider = provider;
 
         nodeMap = new HashMap<OWLObject, Set<OWLObjectTreeNode<N>>>();
@@ -303,8 +298,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     /**
      * @return the comparator used to order sibling tree nodes
      */
-    public Comparator<? super N> getOWLObjectComparator() {
-        return comparator;
+    public Comparator<OWLObject> getOWLObjectComparator() {
+        return (comparator != null) ? comparator : eKit.getOWLModelManager().getOWLObjectComparator();
     }
 
 
@@ -312,7 +307,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
      * Sets the tree ordering and reloads the tree contents.
      * @param owlObjectComparator the comparator that is used to order sibling tree nodes
      */
-    public void setOWLObjectComparator(Comparator<? super N> owlObjectComparator) {
+    public void setOWLObjectComparator(Comparator<OWLObject> owlObjectComparator) {
         this.comparator = owlObjectComparator;
         reload();
     }
