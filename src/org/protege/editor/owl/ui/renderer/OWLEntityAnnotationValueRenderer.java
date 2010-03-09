@@ -58,8 +58,14 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
                 // otherwise we're telling a whole load of things to update that don't need to
                 if (properties.contains(ax.getProperty())){
                     OWLAnnotationSubject subject = ax.getSubject();
-                    if (subject instanceof OWLEntity){
-                        fireRenderingChanged((OWLEntity)subject);
+                    if (subject instanceof IRI) {
+                        IRI iri = (IRI) subject;
+                        OWLDataFactory factory = getOWLModelManager().getOWLDataFactory();
+                        fireRenderingChanged(factory.getOWLClass(iri));
+                        fireRenderingChanged(factory.getOWLObjectProperty(iri));
+                        fireRenderingChanged(factory.getOWLDataProperty(iri));
+                        fireRenderingChanged(factory.getOWLAnnotationProperty(iri));
+                        fireRenderingChanged(factory.getOWLNamedIndividual(iri));
                     }
                 }
             }
