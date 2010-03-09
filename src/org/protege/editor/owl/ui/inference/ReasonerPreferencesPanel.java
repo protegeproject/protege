@@ -41,10 +41,6 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
             add(box);
         }
     }
-    
-    private void addPreferencesBox(JComponent component) {
-        
-    }
 
     @Override
     public void applyChanges() {
@@ -106,12 +102,31 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
     private JCheckBox getCheckBox(OptionalInferenceTask task, String description) {    
         JCheckBox enabledBox = enabledMap.get(task);
         if (enabledBox == null) {
-            description = description + " (" + preferences.getTimeInTask(task) + " ms total/" + preferences.getAverageTimeInTask(task) + " ms average)";
+            description = description + " (" + timeToString(preferences.getTimeInTask(task)) + " total/" + timeToString(preferences.getAverageTimeInTask(task)) + " average)";
             enabledBox = new JCheckBox(description);
             enabledBox.setSelected(preferences.isEnabled(task));
             enabledMap.put(task, enabledBox);
         }
         return enabledBox;
+    }
+    
+    private String timeToString(int milliseconds) {
+        StringBuffer buffer = new StringBuffer();
+        int seconds = (milliseconds / 1000) % 60;
+        int minutes = (milliseconds / (60 * 1000));
+        if (minutes != 0) {
+            buffer.append(minutes);
+            buffer.append(" min ");
+        }
+        if (seconds != 0) {
+            buffer.append(seconds);
+            buffer.append(" sec");
+        }
+        if (minutes == 0 && seconds == 0) {
+            buffer.append(milliseconds);
+            buffer.append(" ms");
+        }
+        return buffer.toString();
     }
 
 }
