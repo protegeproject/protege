@@ -59,6 +59,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
                                                                    getTree().getSelectionModel()){
+            private static final long serialVersionUID = 9185342735327230183L;
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
@@ -79,12 +80,6 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }, "A", "B");
 
         addAction(new DeleteAnnotationPropertyAction(), "B", "A");
-
-//        getTree().setDragAndDropHandler(new OWLPropertyTreeDropHandler<OWLAnnotationProperty>(getOWLModelManager()){
-//            protected OWLAxiom getAxiom(OWLDataFactory df, OWLAnnotationProperty child, OWLAnnotationProperty parent) {
-//                return df.getOWLSubAnnotationPropertyOfAxiom(child, parent);
-//            }
-//        });
     }
 
 
