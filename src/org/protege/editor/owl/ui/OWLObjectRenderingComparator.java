@@ -15,6 +15,14 @@ public class OWLObjectRenderingComparator<E extends OWLObject> extends OWLObject
     }
 
     public int compare(E o1, E o2) {
-        return getOWLModelManager().getRendering(o1).compareTo(getOWLModelManager().getRendering(o2));
+        String r1 = getOWLModelManager().getRendering(o1);
+        if (r1.startsWith("'")){
+            r1 = r1.substring(1, r1.length()-2);
+        }
+        String r2 = getOWLModelManager().getRendering(o2);
+        if (r2.startsWith("'")){
+            r2 = r2.substring(1, r2.length()-2);
+        }
+        return r1.compareTo(r2);
     }
 }
