@@ -178,7 +178,7 @@
 
    <target name = "create.update.properties">
        <property name="update.properties.file"
-                 location="${build}/core.properties"/>
+                 location="${build}/core-update.properties"/>
        <echo file="${update.properties.file}" append="false">
 id=${plugin}
 version=${bundle.version}
