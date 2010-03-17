@@ -119,19 +119,22 @@ public class PluginInstaller {
     private static File copyPluginToInstallLocation(File pluginFile, PluginInfo info) throws URISyntaxException {
         logger.info("Copying " + info.getLabel());
         boolean doCopy = true;
-
-
-        File oldPluginFile = null;
         File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
-        final File newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
+        File oldPluginFile = null;
+        File newPluginFile = null;
         
-        if (info.getPluginDescriptor() != null){
+        if (info.getPluginDescriptor() != null) {
             String location = info.getPluginDescriptor().getLocation();
             location = location.substring(location.indexOf(":")+1, location.length());
             File existingPlugin = new File(location);
-
-            oldPluginFile = new File(pluginsFolder, existingPlugin.getName() + "-old");
-            doCopy = existingPlugin.renameTo(oldPluginFile);
+            if (existingPlugin.exists()) {
+                oldPluginFile = new File(existingPlugin.getAbsolutePath() + "-old");
+                doCopy = existingPlugin.renameTo(oldPluginFile);
+                newPluginFile = existingPlugin;
+            }
+        }
+        if (newPluginFile == null) {
+            newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
         }
 
         if (doCopy){
