@@ -61,7 +61,6 @@ public class UIUtil {
     }
     
     public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
-        // use MacUIUtil.openFile if OSX somehow here?
         if (OSUtils.isOSX() && parent instanceof Window) {
             return MacUIUtil.openFile((Window) parent, title, extensions);
         }
@@ -92,9 +91,9 @@ public class UIUtil {
             });
         }
         fileDialog.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileDialog.showOpenDialog(parent);
-        File f = fileDialog.getSelectedFile();
-        if (f != null) {
+        int retVal = fileDialog.showOpenDialog(parent);
+        File f;
+        if (retVal == JFileChooser.APPROVE_OPTION && (f = fileDialog.getSelectedFile()) != null) {
             if (f.getParent() != null) {
                 setCurrentFileDirectory(f.getParent());
             }
@@ -119,7 +118,9 @@ public class UIUtil {
     }
 
     public static File saveFile(Component parent, String title, final String description, final Set<String> extensions, String initialName) {
-        // if there are complaints consider MacUIUtil.saveFile() when OSUtils.isOSX() is true
+        if (OSUtils.isOSX() && parent instanceof Window) {
+            return MacUIUtil.saveFile((Window) parent, title, extensions, initialName);
+        }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
@@ -150,10 +151,10 @@ public class UIUtil {
         if (initialName != null) {
             fileDialog.setSelectedFile(new File(initialName));
         }
-        fileDialog.showOpenDialog(parent);
+        int retVal = fileDialog.showSaveDialog(parent);
 
-        File f = fileDialog.getSelectedFile();
-        if (f != null) {
+        File f = null;
+        if (retVal == JFileChooser.APPROVE_OPTION && (f  = fileDialog.getSelectedFile()) != null) {
             if (f.getParent() != null) {
                 setCurrentFileDirectory(f.getParent());
             }
