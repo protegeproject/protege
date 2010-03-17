@@ -41,6 +41,8 @@
      <tstamp>
        <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
      </tstamp>
+     <property name="bundle.version" 
+               value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
@@ -169,12 +171,26 @@
      <manifest file="${manifest}"
                mode="update">
         <attribute name="Built-By"       value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
         <attribute name="Build-Number"   value="${core.build.number}"/>
      </manifest>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources">
+   <target name = "create.update.properties">
+       <property name="update.properties.file"
+                 location="${build}/core.properties"/>
+       <echo file="${update.properties.file}" append="false">
+id=${plugin}
+version=${bundle.version}
+download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
+name=Core Protege Editor Bundle
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/core-readme.txt
+license=http://www.gnu.org/licenses/lgpl.html
+author=Protege Development Team (First working version by Matthew Horridge)
+       </echo>
+   </target>
+
+   <target name = "jar" depends = "compile, copy.resources, create.update.properties">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
