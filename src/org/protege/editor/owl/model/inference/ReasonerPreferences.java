@@ -2,8 +2,7 @@ package org.protege.editor.owl.model.inference;
 
 import java.util.EnumMap;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -134,7 +133,12 @@ public class ReasonerPreferences {
 	public void executeTask(OptionalInferenceTask task, Runnable implementation)  {
 	    if (isShowInferences() && isEnabled(task)) {
 	        startClock(task);
-	        implementation.run();
+	        try {
+	            implementation.run();
+	        }
+	        catch (Throwable t) { // don't let exceptions spoil your day
+	            ProtegeApplication.getErrorLog().logError(t);
+	        }
 	        stopClock(task);
 	    }
 	}
