@@ -10,6 +10,17 @@
            </layout>
         </appender>
         
+        <appender name="file"
+                  class="org.protege.common.log.ProtegeRotatingAppender">
+           <param name="rotationCount"   value="7"/>
+           <param name="directory" value="logs"/>
+           <param name="relativeFile" value="protege-%u.log"/>
+           <layout class="org.apache.log4j.PatternLayout">
+             <param name="ConversionPattern"
+                    value="%-5p %m  %2C[%t]%n"/>
+           </layout>
+        </appender>
+
         <category name="org.mindswap.pellet">
             <priority value="error"/>
         </category>
@@ -23,6 +34,7 @@
         <root>
            <priority value ="info" />
            <appender-ref ref="console" />
+           <appender-ref ref="file" />
         </root>
 
 </log4j:configuration>
