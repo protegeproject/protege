@@ -60,8 +60,8 @@
 		</dict>
 		<key>VMOptions</key>
 		<array>
-			<string>-Xms500M</string>
-			<string>-Xmx250M</string>
+			<string>-Xms250M</string>
+			<string>-Xmx500M</string>
 		</array>
 		<key>WorkingDirectory</key>
 		<string>$APP_PACKAGE/Contents/Resources</string>
