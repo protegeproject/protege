@@ -23,7 +23,6 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactor
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -32,6 +31,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
@@ -269,7 +269,11 @@ public interface OWLModelManager extends ModelManager {
     void setOWLEntityFactory(OWLEntityFactory owlEntityFactory);
 
 
-    ProtegeOWLOntologyManager getOWLOntologyManager();
+    /*
+     * Actually returns a ProtegeOWLOntologyManager - but unfortunately byte-code
+     * views this as an incompatible interface change.
+     */
+    OWLOntologyManager getOWLOntologyManager();
 
 
     /**
