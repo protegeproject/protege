@@ -211,7 +211,7 @@
      by the developer.  The setting of the version id will only work
      if the build file sets the version of the bundle in the manifest.
      -->
-   <target name = "create.update.properties">
+   <target name = "create.update.properties" depends="init">
        <property name="update.properties.file"
                  location="${build}/update.properties"/>
        <echo file="${update.properties.file}" append="false">
