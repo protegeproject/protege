@@ -36,7 +36,6 @@
         -->
    <property name = "src"               location = "./src"/>  
    <property name = "build"             location = "./build"/>
-   <property name = "bundle.dir"        location = "${build}"/>
    <property name = "classes"           location = "${build}/classes"/>
    <property name = "lib"               location = "./lib"/>
    <property name = "genlib"            location = "${build}/lib"/>
@@ -219,7 +218,7 @@ id=${plugin}
 version=${bundle.version}
 download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
 name=DL Query Plugin
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/dlquery-readme.txt
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/dlquery-readme.html
 license=http://www.gnu.org/licenses/lgpl.html
 author=Matthew Horridge for the CO-ODE project
        </echo>
