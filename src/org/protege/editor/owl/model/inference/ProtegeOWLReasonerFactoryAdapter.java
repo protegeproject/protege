@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
+import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
@@ -17,14 +18,22 @@ public abstract class ProtegeOWLReasonerFactoryAdapter implements ProtegeOWLReas
 
     private OWLOntologyManager owlOntologyManager;
 
+    private OWLModelManager owlModelManager;
 
     public void setup(OWLOntologyManager manager, String id, String name) {
         this.id = id;
         this.name = name;
         this.owlOntologyManager = manager;
     }
-
-
+    
+    public OWLModelManager getOWLModelManager() {
+        return owlModelManager;
+    }
+    
+    public void setOWLModelManager(OWLModelManager owlModelManager) {
+        this.owlModelManager = owlModelManager;
+    }
+    
     public OWLOntologyManager getOWLOntologyManager() {
         return owlOntologyManager;
     }

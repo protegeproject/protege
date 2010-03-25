@@ -1,6 +1,9 @@
 package org.protege.editor.owl.model.inference;
 
 
+import java.lang.reflect.Method;
+
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
@@ -40,7 +43,8 @@ import org.protege.editor.owl.model.OWLModelManager;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeOWLReasonerFactoryPluginJPFImpl implements ProtegeOWLReasonerFactoryPlugin {
-
+    private Logger logger = Logger.getLogger(ProtegeOWLReasonerFactoryPluginJPFImpl.class);
+    
     public static final String NAME_PARAM = "name";
 
 
@@ -90,6 +94,15 @@ public class ProtegeOWLReasonerFactoryPluginJPFImpl implements ProtegeOWLReasone
                 extension);
         ProtegeOWLReasonerFactory reasoner = instantiator.instantiate();
         reasoner.setup(owlModelManager.getOWLOntologyManager(), getId(), getName());
+        try {
+            Method m = reasoner.getClass().getMethod("setOWLModelManager", OWLModelManager.class);
+            m.invoke(reasoner, owlModelManager);
+        }
+        catch (Throwable t) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Could not set model manager for reasoner " + reasoner, t);
+            }
+        }
         return reasoner;
     }
 }
