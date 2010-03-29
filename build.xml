@@ -73,15 +73,11 @@
      <condition property="libs.found">
        <and>
            <available file="${protege.osgi}" type = "file"/>
-	   <available file="${equinox.common}" type = "file"/>
-	   <available file="${equinox.registry}" type = "file"/>
        </and>
      </condition>
      <path id = "project.classpath">    
        <pathelement location="${protege.osgi}"/>
        <pathelement location="${protege.lib}"/>
-       <pathelement location="${equinox.common}"/>
-       <pathelement location="${equinox.registry}"/>
        <fileset dir="${lib}" includes="*.jar"/>
      </path>
    </target>
