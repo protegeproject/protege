@@ -99,7 +99,10 @@
         you do not have a lib directory.
      -->
    <target name = "checkProtegeLibs" depends="init">
+     <echo message="**********************************************************"/>
      <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
+     <echo message="Using Java Version = ${ant.java.version}" />
+     <echo message="**********************************************************"/>
      <condition property="libs.found">
        <and>
          <available file="${protege.osgi}" type="file"/>
