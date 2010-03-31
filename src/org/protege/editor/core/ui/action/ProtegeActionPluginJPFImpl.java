@@ -85,4 +85,5 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
     public EditorKit getEditorKit() {
         return editorKit;
     }
+
 }

@@ -29,6 +29,8 @@ import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
  * the Java Plugin Framework to provide the details of the plugin.
  */
 public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implements MenuActionPlugin {
+    
+    private static Logger logger = Logger.getLogger(MenuActionPluginJPFImpl.class);
 
     public static final String EXTENSION_POINT_ID = "EditorKitMenuAction";
 
@@ -131,6 +133,9 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
                 group = groupPart;
             }
         }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Parsed: " + this + " parentId = " + parentId);
+        }
     }
 
 
@@ -185,5 +190,11 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
      */
     public boolean isDynamic() {
         return PluginProperties.getBooleanParameterValue(getExtension(), DYNAMIC_PARAM, false);
+    }
+    
+    
+    @Override
+    public String toString() {
+        return "[Menu: " + getName() + " -- <" + getGroup() + ", " + getGroupIndex() + ">]";
     }
 }

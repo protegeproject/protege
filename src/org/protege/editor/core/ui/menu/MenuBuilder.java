@@ -59,7 +59,7 @@ public class MenuBuilder {
 
     private EditorKit editorKit;
 
-    private Map<MenuActionPlugin, Set<MenuActionPlugin>> parentChildMap;
+    private Map<MenuActionPlugin, Set<MenuActionPlugin>> parentChildMap;  
 
     private Set<ProtegeAction> actions;
 
@@ -78,13 +78,14 @@ public class MenuBuilder {
         for (MenuActionPlugin plugin : idPluginMap.values()) {
             MenuActionPlugin parent = idPluginMap.get(plugin.getParentId());
             getChildren(parent).add(plugin);
+            if (logger.isDebugEnabled()) {
+                logger.debug("" + parent + " parent of " + plugin);
+            }
         }
         // Should now have a hierarchy of plugins
         List<MenuActionPlugin> topLevelMenus = getSortedList(getChildren(null));
         for (MenuActionPlugin plugin : topLevelMenus) {
-            //if (getChildren(plugin).size() > 0) {
             add(plugin, menuBar);
-            //}
         }
 
         return menuBar;
@@ -97,6 +98,17 @@ public class MenuBuilder {
 
 
     private void add(MenuActionPlugin plugin, JComponent component) {
+        if (logger.isDebugEnabled()) {
+            if (component instanceof JMenuBar) {
+                logger.debug("Adding " + plugin + " to menu bar");
+            }
+            else if (component instanceof JMenu) {
+                logger.debug("Giving " + ((JMenu) component).getText() + " the child" + plugin);
+            }
+            else {
+                logger.debug("Modify this log message, please");
+            }
+        }
         List<MenuActionPlugin> children = getSortedList(getChildren(plugin));
         if (!children.isEmpty() || plugin.isDynamic()) {
             if (!children.isEmpty()) {
