@@ -160,7 +160,9 @@ public class ProtegeWelcomeFrame extends JFrame {
             for (final OntologyBuilderPlugin builder : ontologyBuilderManager.getPlugins()) {
                 box.add(new LinkLabel(builder.getLabel(), new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        ProtegeManager.getInstance().handleOpenFromBuilder(builder);
+                        if (ProtegeManager.getInstance().handleOpenFromBuilder(builder)) {
+                            dispose();
+                        }
                     }
                 }));
             }
