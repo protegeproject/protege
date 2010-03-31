@@ -20,6 +20,7 @@
    <extension-point id="EditorKitHook"
                      name="EditorKit Hook"/>
    <extension-point id="OntologyRepositoryFactory" name="Ontology Repository Factory" schema="schema/OntologyRepositoryFactory.exsd"/>
+   <extension-point id="OntologyLoader" name="Ontology Loader" schema="schema/OntologyLoader.exsd"/>
 
     <!-- Set up standard menus -->
 
