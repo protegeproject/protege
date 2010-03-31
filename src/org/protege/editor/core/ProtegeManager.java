@@ -178,8 +178,7 @@ public class ProtegeManager {
         }
         return false;
     }
-
-
+    
     /**
      * Loads an ontology from an ontology repository.  The appropriate editorkit is selected as dictated by the
      * repository.
@@ -212,7 +211,29 @@ public class ProtegeManager {
         }
         return false;
     }
+    
+    
 
+
+    public void handleOpenFromBuilder(OntologyBuilderPlugin builder) {
+        try {
+            for (EditorKitFactoryPlugin plugin : getEditorKitFactoryPlugins()) {
+                String id = plugin.getId();
+                if (id.equals(builder.getEditorKitId())) {
+                    EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
+                    if (editorKitFactory != null) {
+                        EditorKit editorKit = editorKitFactory.createEditorKit();
+                        if (builder.newInstance().loadOntology(editorKit)) {
+                            getEditorKitManager().addEditorKit(editorKit);
+                        }
+                    }   
+                }
+            }
+        }
+        catch (Throwable t) {
+            ProtegeApplication.getErrorLog().logError(t);
+        }
+    }
 
     public void saveEditorKit(EditorKit editorKit) throws Exception {
         editorKit.handleSave();
