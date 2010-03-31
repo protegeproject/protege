@@ -20,6 +20,12 @@ public abstract class AbstractProtegePlugin<P extends ProtegePluginInstance> imp
         return extension.getUniqueIdentifier();
     }
     
+    public String getLabel() {
+        return extension.getLabel();
+    }
+    
+    
+    
 
     public String getDocumentation() {
         return JPFUtil.getDocumentation(extension);
