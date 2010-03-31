@@ -21,10 +21,6 @@ import org.protege.editor.core.ui.workspace.Workspace;
  * items and toolbar items.
  */
 public abstract class ProtegeAction extends AbstractAction implements ProtegePluginInstance {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = -2813521478656046404L;
     private EditorKit editorKit;
 
