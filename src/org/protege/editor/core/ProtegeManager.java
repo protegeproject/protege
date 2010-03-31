@@ -215,7 +215,7 @@ public class ProtegeManager {
     
 
 
-    public void handleOpenFromBuilder(OntologyBuilderPlugin builder) {
+    public boolean handleOpenFromBuilder(OntologyBuilderPlugin builder) {
         try {
             for (EditorKitFactoryPlugin plugin : getEditorKitFactoryPlugins()) {
                 String id = plugin.getId();
@@ -225,6 +225,7 @@ public class ProtegeManager {
                         EditorKit editorKit = editorKitFactory.createEditorKit();
                         if (builder.newInstance().loadOntology(editorKit)) {
                             getEditorKitManager().addEditorKit(editorKit);
+                            return true;
                         }
                     }   
                 }
@@ -233,6 +234,8 @@ public class ProtegeManager {
         catch (Throwable t) {
             ProtegeApplication.getErrorLog().logError(t);
         }
+        return false;
+
     }
 
     public void saveEditorKit(EditorKit editorKit) throws Exception {
