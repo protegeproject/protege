@@ -117,6 +117,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp) {
         return getEntities(match, OWLClass.class, fullRegExp);
     }
+    
+    public Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp, int flags) {
+    	return getEntities(match, OWLClass.class, fullRegExp, flags);
+    }
 
 
     public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match) {
@@ -126,6 +130,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLObjectProperty.class, fullRegExp);
+    }
+    
+    public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLObjectProperty.class, fullRegExp, flags);
     }
 
 
@@ -137,6 +145,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLDataProperty.class, fullRegExp);
     }
+    
+    public Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLDataProperty.class, fullRegExp, flags);
+    }
 
 
     public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match) {
@@ -146,6 +158,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp) {
         return getEntities(match, OWLNamedIndividual.class, fullRegExp);
+    }
+    
+    public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLNamedIndividual.class, fullRegExp, flags);
     }
 
 
@@ -157,6 +173,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp) {
         return getEntities(match, OWLDatatype.class, fullRegExp);
     }
+    
+    public Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLDatatype.class, fullRegExp, flags);
+    }
 
 
     public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match) {
@@ -167,6 +187,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLAnnotationProperty.class, fullRegExp);
     }
+    
+    public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLAnnotationProperty.class, fullRegExp, flags);
+    }
 
 
     public Set<OWLEntity> getMatchingOWLEntities(String match) {
@@ -176,6 +200,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp) {
         return getEntities(match, OWLEntity.class, fullRegExp);
+    }
+    
+    public Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp, int flags) {
+        return getEntities(match, OWLEntity.class, fullRegExp, flags);
     }
 
 
@@ -208,12 +236,16 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     private <T extends OWLEntity> Set<T> getEntities(String match, Class<T> type, boolean fullRegExp) {
+        return getEntities(match, type, fullRegExp, Pattern.CASE_INSENSITIVE);
+    }
+    
+    private <T extends OWLEntity> Set<T> getEntities(String match, Class<T> type, boolean fullRegExp, int flags) {
         if (match.length() == 0) {
             return Collections.emptySet();
         }
 
         if (fullRegExp) {
-            return doRegExpSearch(match, type);
+            return doRegExpSearch(match, type, flags);
         }
         else {
             return doWildcardSearch(match, type);
@@ -221,10 +253,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
-    private <T extends OWLEntity> Set<T> doRegExpSearch(String match, Class<T> type) {
+    private <T extends OWLEntity> Set<T> doRegExpSearch(String match, Class<T> type, int flags) {
         Set<T> results = new HashSet<T>();
         try {
-            Pattern pattern = Pattern.compile(match);
+            Pattern pattern = Pattern.compile(match, flags);
             for (String rendering : getRenderings(type)) {
                 Matcher m = pattern.matcher(rendering);
                 if (m.find()) {
