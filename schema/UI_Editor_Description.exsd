@@ -21,6 +21,7 @@
             <element ref="label"/>
             <element ref="index"/>
             <element ref="class"/>
+            <element ref="axiomTypes" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -83,6 +84,18 @@
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.protege.editor.owl.ui.editor.OWLClassExpressionEditor"/>
                </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="axiomTypes">
+      <complexType>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

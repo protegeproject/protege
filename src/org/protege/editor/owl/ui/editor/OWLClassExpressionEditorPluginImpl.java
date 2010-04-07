@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.editor;
 
 import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginUtilities;
@@ -37,31 +38,19 @@ import org.semanticweb.owlapi.model.AxiomType;
  * Bio Health Informatics Group<br>
  * Date: Feb 26, 2009<br><br>
  */
-public class OWLClassExpressionEditorPluginImpl implements OWLClassExpressionEditorPlugin {
-
-    private IExtension extension;
+public class OWLClassExpressionEditorPluginImpl extends AbstractProtegePlugin<OWLClassExpressionEditor> implements OWLClassExpressionEditorPlugin {
 
     private OWLEditorKit editorKit;
 
     public OWLClassExpressionEditorPluginImpl(OWLEditorKit editorKit, IExtension extension) {
-        this.extension = extension;
+        super(extension);
         this.editorKit = editorKit;
-    }
-
-
-    public String getId() {
-        return extension.getUniqueIdentifier();
-    }
-
-
-    public String getDocumentation() {
-        return JPFUtil.getDocumentation(extension);
     }
 
 
     @SuppressWarnings("unchecked")
 	public boolean isSuitableFor(AxiomType type) {
-        String axiomTypes = PluginUtilities.getAttribute(extension, "axiomTypes");
+        String axiomTypes = getPluginProperty("axiomTypes");
         if (axiomTypes == null){
             return true;
         }
@@ -78,15 +67,14 @@ public class OWLClassExpressionEditorPluginImpl implements OWLClassExpressionEdi
 
 
     public String getIndex() {
-        String index = PluginUtilities.getAttribute(extension, "index");
+        String index = getPluginProperty("index");
         return index != null ? index : "ZZZ";
     }
 
 
     public OWLClassExpressionEditor newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        ExtensionInstantiator<OWLClassExpressionEditor> instantiator = new ExtensionInstantiator<OWLClassExpressionEditor>(extension);
-        OWLClassExpressionEditor editor =  instantiator.instantiate();
-        editor.setup(extension.getUniqueIdentifier(), PluginUtilities.getAttribute(extension, "label"), editorKit);
+        OWLClassExpressionEditor editor =  super.newInstance();
+        editor.setup(getId(), getPluginProperty("label"), editorKit);
         return editor;
     }
 }

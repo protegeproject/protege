@@ -1,5 +1,10 @@
 package org.protege.editor.owl.ui.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
@@ -13,10 +18,7 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -49,7 +51,6 @@ import java.util.List;
  * Date: Feb 26, 2009<br><br>
  */
 public class OWLComponentFactoryImpl implements OWLComponentFactory {
-
     private OWLEditorKit eKit;
 
     private OWLClassSelectorPanel classSelectorPanel;
@@ -61,8 +62,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     private OWLIndividualSelectorPanel individualSelectorPanel;
 
     private List<OWLClassExpressionEditorPlugin> descriptionEditorPlugins;
-
-
+    
     public OWLComponentFactoryImpl(OWLEditorKit eKit) {
         this.eKit = eKit;
     }
@@ -90,7 +90,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
-
+        editor.selectPreferredEditor();
         return editor;
     }
 

@@ -1,17 +1,23 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -22,8 +28,7 @@ import java.util.Set;
  */
 public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassExpression>
         implements VerifiedInputEditor {
-
-    private OWLEditorKit editorKit;
+    public static final String PREFERRED_CLASS_EXPRESSION_EDITOR = "preferred.class.expression.editor";
 
     private JComponent editingComponent;
 
@@ -50,11 +55,10 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
             handleVerifyEditorContents();
         }
     };
-
+    
+    private Preferences preferences = PreferencesManager.getInstance().getApplicationPreferences(OWLClassDescriptionEditor.class);
 
     public OWLClassDescriptionEditor(OWLEditorKit editorKit, OWLClassExpression expression) {
-
-        this.editorKit = editorKit;
 
         this.expression = expression;
 
@@ -100,11 +104,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
     }
 
 
-    private OWLClassExpressionEditor getSelectedEditor() {
-        return activeEditors.get(tabbedPane.getSelectedIndex());
-    }
-
-
     public String getEditorTypeName() {
         return "Class expression";
     }
@@ -122,11 +121,6 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
      */
     public JComponent getEditorComponent() {
         return editingComponent;
-    }
-
-
-    public Set<OWLClassExpression> getEditedObjects() {
-        return getSelectedEditor().getClassExpressions();
     }
 
 
@@ -148,11 +142,14 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
         tabbedPane.validate();
         tabbedPane.addChangeListener(changeListener);
         
+        selectPreferredEditor();
+        
         return !activeEditors.isEmpty(); // then no editors are appropriate for this expression
     }
 
 
     public OWLClassExpression getEditedObject() {
+        setSelectedEditorPreferred();
         Set<OWLClassExpression> sel = getSelectedEditor().getClassExpressions();
         if (sel.isEmpty()){
             return null;
@@ -160,6 +157,55 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
         else{
             return sel.iterator().next();
         }
+    }
+    
+    public Set<OWLClassExpression> getEditedObjects() {
+        setSelectedEditorPreferred();
+        return getSelectedEditor().getClassExpressions();
+    }
+
+
+    private OWLClassExpressionEditor getSelectedEditor() {
+        return activeEditors.get(tabbedPane.getSelectedIndex());
+    }
+
+
+    public void setSelectedEditor(OWLClassExpressionEditor editor) {
+        int index = activeEditors.indexOf(editor);
+        if (index >= 0) {
+            tabbedPane.setSelectedIndex(index);
+        }
+    }
+
+    private void setSelectedEditorPreferred() {
+        OWLClassExpressionEditor editor = getSelectedEditor();
+        preferences.putString(PREFERRED_CLASS_EXPRESSION_EDITOR, editor.getClass().getCanonicalName());
+    }
+    
+    public void selectPreferredEditor() {
+        String preferredEditor = preferences.getString(PREFERRED_CLASS_EXPRESSION_EDITOR, null);
+        if (preferredEditor != null) {
+            int index = 0;
+            for (OWLClassExpressionEditor editor : activeEditors) {
+                if (preferredEditor.equals(editor.getClass().getCanonicalName())) {
+                    tabbedPane.setSelectedIndex(index);
+                    break;
+                }
+                index++;
+            }
+        }
+
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.add(l);
+        l.verifiedStatusChanged(isValidated());
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.remove(l);
     }
 
 
@@ -172,16 +218,5 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
                 throw new RuntimeException(e);
             }
         }
-    }
-
-
-    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
-        listeners.add(l);
-        l.verifiedStatusChanged(isValidated());
-    }
-
-
-    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
-        listeners.remove(l);
     }
 }
