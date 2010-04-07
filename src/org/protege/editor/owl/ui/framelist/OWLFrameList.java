@@ -212,7 +212,7 @@ public class OWLFrameList<R> extends MList
         if (value instanceof OWLFrameSectionRow) {
             buttons.add(axiomAnnotationButton);
             axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent((OWLFrameSectionRow)value));
-            if (((OWLFrameSectionRow) value).isInferred()  && getExplanationHandler() != null) {
+            if (getExplanationHandler() != null) {
                 buttons.addAll(inferredRowButtons);
             }
         }
