@@ -41,6 +41,8 @@ public class UIHelper {
     public UIHelper(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         extensions.add("owl");
+        extensions.add("ofn");
+        extensions.add("omn");
         extensions.add("rdf");
         extensions.add("xml");
         extensions.add("krss");
