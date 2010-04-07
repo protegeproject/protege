@@ -24,8 +24,6 @@ public abstract class AbstractProtegePlugin<P extends ProtegePluginInstance> imp
         return extension.getLabel();
     }
     
-    
-    
 
     public String getDocumentation() {
         return JPFUtil.getDocumentation(extension);
@@ -35,6 +33,10 @@ public abstract class AbstractProtegePlugin<P extends ProtegePluginInstance> imp
 			IllegalAccessException, InstantiationException {
         ExtensionInstantiator<P> instantiator = new ExtensionInstantiator<P>(extension);
         return instantiator.instantiate();
+	}
+	
+	protected String getPluginProperty(String key) {
+	    return PluginProperties.getParameterValue(extension, key, null);
 	}
 	
 	protected String getPluginProperty(String key, String defaultValue) {
