@@ -23,6 +23,10 @@ public class OWLObjectRenderingComparator<E extends OWLObject> extends OWLObject
         if (r2.startsWith("'")){
             r2 = r2.substring(1, r2.length()-2);
         }
-        return r1.compareTo(r2);
+        int result = r1.compareTo(r2);
+        if (result == 0) {
+            result = o1.compareTo(o2);
+        }
+        return result;
     }
 }
