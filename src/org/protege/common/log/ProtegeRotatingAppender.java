@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
+import org.protege.common.ProtegeProperties;
 
 public class ProtegeRotatingAppender extends FileAppender {
     private static final String ROTATION_COUNT_MARKER = "%u";
@@ -31,7 +32,7 @@ public class ProtegeRotatingAppender extends FileAppender {
     }
     
     public void setDirectory(String dirName) {
-        this.directory = new File(System.getProperty("user.home") + File.separator + ".Protege", dirName);
+        this.directory = new File(ProtegeProperties.getDataDirectory(), dirName);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
                 directory = null;
