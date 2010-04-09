@@ -183,8 +183,8 @@
 id=${plugin}
 version=${bundle.version}
 download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
-name=Core Protege Editor Bundle
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/core-readme.txt
+name=Protege Editor Framework
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/core-readme.html
 license=http://www.gnu.org/licenses/lgpl.html
 author=Protege Development Team (First working version by Matthew Horridge)
        </echo>
