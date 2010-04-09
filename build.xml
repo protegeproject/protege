@@ -160,7 +160,7 @@ id=${plugin}
 version=${bundle.version}
 download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
 name=OWL Editor
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/owleditor-readme.txt
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/owleditor-readme.html
 license=http://www.gnu.org/licenses/lgpl.html
 author=Protege Development Team (First working version by Matthew Horridge)
        </echo>
