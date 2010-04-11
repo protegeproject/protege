@@ -2,7 +2,7 @@ package org.protege.common;
 
 import java.io.File;
 
-public class ProtegeProperties {
+public class CommonProtegeProperties {
     
     public static final String APPLICATION_DIR_PROP = "protege.dir";
     public static final String DATA_DIR_PROP = "protege.data.dir";
