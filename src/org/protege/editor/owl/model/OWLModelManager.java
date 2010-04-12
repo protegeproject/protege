@@ -16,13 +16,14 @@ import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.io.IOListener;
-import org.protege.editor.owl.model.library.OntologyLibraryManager;
-import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -176,7 +177,7 @@ public interface OWLModelManager extends ModelManager {
      * for a repository of "standard"/frequently used ontologies (e.g. upper
      * ontologies).
      */
-    public OntologyLibraryManager getOntologyLibraryManager();
+    public OntologyCatalogManager getOntologyLibraryManager();
 
 
     OWLHierarchyManager getOWLHierarchyManager();
@@ -293,7 +294,7 @@ public interface OWLModelManager extends ModelManager {
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
     
-    FolderOntologyLibrary addRootFolder(File dir);
+    XMLCatalog addRootFolder(File dir);
     
-    FolderOntologyLibrary removeRootFolder(File dir);
+    XMLCatalog removeRootFolder(File dir);
 }

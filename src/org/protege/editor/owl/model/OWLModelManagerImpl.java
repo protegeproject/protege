@@ -40,11 +40,10 @@ import org.protege.editor.owl.model.io.AutoMappedRepositoryIRIMapper;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.io.IOListenerEvent;
 import org.protege.editor.owl.model.io.OntologySourcesManager;
-import org.protege.editor.owl.model.io.UserRepositoryIRIMapper;
 import org.protege.editor.owl.model.io.UserResolvedIRIMapper;
 import org.protege.editor.owl.model.io.WebConnectionIRIMapper;
-import org.protege.editor.owl.model.library.OntologyLibraryManager;
-import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
@@ -64,6 +63,7 @@ import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -111,8 +111,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
     private OWLOntology activeOntology;
 
-    private Map<File, FolderOntologyLibrary> ontologyRootFolders;
-
     private OWLEntityRenderingCache owlEntityRenderingCache;
 
     /**
@@ -138,7 +136,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      */
     private ProtegeOWLOntologyManager manager;
 
-    private OntologyLibraryManager ontologyLibraryManager;
+    private OntologyCatalogManager ontologyLibraryManager;
 
     private OWLEntityFactory entityFactory;
 
@@ -196,12 +194,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.clearIRIMappers();
         manager.addIRIMapper(userResolvedIRIMapper);
         manager.addIRIMapper(new WebConnectionIRIMapper());
-        manager.addIRIMapper(new UserRepositoryIRIMapper(this));
         manager.addIRIMapper(autoMappedRepositoryIRIMapper);
 
 
         dirtyOntologies = new HashSet<OWLOntology>();
-        ontologyRootFolders = new HashMap<File, FolderOntologyLibrary>();
         ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
 
 
@@ -275,9 +271,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OntologyLibraryManager getOntologyLibraryManager() {
+    public OntologyCatalogManager getOntologyLibraryManager() {
         if (ontologyLibraryManager == null) {
-            ontologyLibraryManager = new OntologyLibraryManager();
+            ontologyLibraryManager = new OntologyCatalogManager();
         }
         return ontologyLibraryManager;
     }
@@ -346,30 +342,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
         fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
-    public FolderOntologyLibrary addRootFolder(File dir) {
-        FolderOntologyLibrary lib = ontologyRootFolders.get(dir);
-        // Add the parent file which will be the folder
-        if (lib == null) {
-            // Add automapped library
-            try {
-                lib = new FolderOntologyLibrary(dir);
-                autoMappedRepositoryIRIMapper.addLibrary(lib);
-                ontologyRootFolders.put(dir, lib);
-            }
-            catch (IOException ioe) {
-                ProtegeApplication.getErrorLog().logError(ioe);
-                logger.error("Could not look for possible imports in the directory " + dir);
-            }
-        }
-        return lib;
+    public XMLCatalog addRootFolder(File dir) {
+    	return ontologyLibraryManager.addFolder(dir);
     }
     
-    public FolderOntologyLibrary removeRootFolder(File dir) {
-        FolderOntologyLibrary lib = ontologyRootFolders.get(dir);
-        if (lib != null) {
-            autoMappedRepositoryIRIMapper.removeLibrary(lib);
-        }
-        return lib;
+    public XMLCatalog removeRootFolder(File dir) {
+    	return ontologyLibraryManager.removeFolder(dir);
     }
 
 

@@ -24,10 +24,11 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyGroupManager;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
@@ -43,11 +44,13 @@ public class EditUriAction extends AbstractAction {
     
     private JTree parent;
     private TreePath selectionPath;
+    private File catalogFile;
     
-    public EditUriAction(JTree parent, TreePath selectionPath) {
+    public EditUriAction(JTree parent, TreePath selectionPath, File catalogFile) {
         super("Edit Library Entry");
         this.parent = parent;
         this.selectionPath = selectionPath;
+        this.catalogFile = catalogFile;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -63,13 +66,12 @@ public class EditUriAction extends AbstractAction {
         Object value = pane.getValue();
         if (value != null && value.equals(new Integer(JOptionPane.OK_OPTION))) {
             UriEntry editted = panel.getUriEntry();
-            if (container instanceof OntologyLibrary) {
-                OntologyLibrary lib = (OntologyLibrary) container;
-                catalog = ((OntologyLibrary) container).getXmlCatalog();
-                catalog.replaceEntry(entry, editted);
+            if (container instanceof XMLCatalog) {
+            	XMLCatalog lib = (XMLCatalog) container;
+                lib.replaceEntry(entry, editted);
                 node.setUserObject(editted);
                 try {
-                    lib.save();
+                    CatalogUtilities.save(lib, catalogFile);
                 }
                 catch (IOException ioe) {
                     ProtegeApplication.getErrorLog().logError(ioe);

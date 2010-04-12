@@ -1,17 +1,18 @@
 package org.protege.editor.owl.model.io;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 /**
  * Author: drummond<br>
@@ -34,44 +35,16 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
  * auto-mapped file is returned.
  */
 public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
+    private OntologyCatalogManager libraryManager;
+    
 
-    private Logger logger = Logger.getLogger(AutoMappedRepositoryIRIMapper.class);
-
-    private OWLModelManager mngr;
-
-    private Set<OntologyLibrary> automappedLibraries = new HashSet<OntologyLibrary>();
-
-
-    public AutoMappedRepositoryIRIMapper(OWLModelManager mngr) {
-        this.mngr = mngr;
+    public AutoMappedRepositoryIRIMapper(OWLModelManager mngr)  {
+        libraryManager = mngr.getOntologyLibraryManager();
     }
 
 
     public IRI getDocumentIRI(IRI logicalURI) {
-    	List<OntologyLibrary> toRemove = new ArrayList<OntologyLibrary>();
-    	URI uri;
-    	// Search auto mapped libraries
-    	for (OntologyLibrary lib : automappedLibraries) {
-    	    if (lib.contains(logicalURI)) {
-    	        uri = lib.getPhysicalURI(logicalURI);
-    	        // Map the URI
-    	        mngr.getOWLOntologyManager().addIRIMapper(new SimpleIRIMapper(logicalURI, IRI.create(uri)));
-    	        if (logger.isInfoEnabled()) {
-    	            logger.info("Mapping (from automapping): " + lib.getClassExpression() + "): " + logicalURI + " -> " + uri);
-    	        }
-    	        return IRI.create(uri);
-    	    }
-    	}
-    	automappedLibraries.removeAll(toRemove);
-        return null;
-    }
-
-
-    public boolean addLibrary(OntologyLibrary ontologyLibrary) {
-        return automappedLibraries.add(ontologyLibrary);
-    }
-    
-    public boolean removeLibrary(OntologyLibrary ontologyLibrary) {
-        return automappedLibraries.remove(ontologyLibrary);
+    	URI u = libraryManager.getRedirect(logicalURI.toURI());
+    	return u != null ? IRI.create(u) : null;
     }
 }
