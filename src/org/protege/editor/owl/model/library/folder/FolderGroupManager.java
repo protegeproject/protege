@@ -46,7 +46,6 @@ public class FolderGroupManager implements OntologyGroupManager {
         updater.setAlgorithms(algorithms);
     }
     
-	@Override
 	public boolean isSuitable(GroupEntry ge) {
 		String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
 		return ge.getId() != null 
@@ -56,19 +55,16 @@ public class FolderGroupManager implements OntologyGroupManager {
 					&& new File(dirName).isDirectory();
 	}
 
-	@Override
 	public boolean update(GroupEntry ge, long lastModifiedDate) {
 		File folder = new File(LibraryUtilities.getStringProperty(ge, DIR_PROP));
 		return updater.update(folder, ge, lastModifiedDate);
 	}
 
-	@Override
 	public GroupEntry openGroupEntryDialog(XmlBaseContext context) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	@Override
 	public String getDescription(GroupEntry ge) {
 		return "Folder Repository for " + LibraryUtilities.getStringProperty(ge, DIR_PROP);
 	}

@@ -79,24 +79,26 @@
         libraries that have been uncovered in buildlibs. 
      -->
    <target name = "checkProtegeLibs" depends="init">
-     <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
-     <condition property="libs.found">
-       <and>
-         <available file="${protege.osgi}" type="file"/>
-	 <available file="${equinox.common}" type = "file"/>
-	 <available file="${equinox.registry}" type = "file"/>
-         <available file="${owl.lib}" type="file"/>
-       </and>
-     </condition>
-     <path id = "project.classpath">    
-       <pathelement location="${protege.osgi}"/>
-       <pathelement location="${protege.lib}"/>
-       <pathelement location="${equinox.common}"/>
-       <pathelement location="${equinox.registry}"/>
-       <pathelement location="${owl.lib}"/>
-       <fileset dir="${lib}"/>
-       <fileset dir="${genlib}"/>
-     </path>
+       <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
+       <condition property="libs.found">
+           <and>
+               <available file="${protege.osgi}" type="file"/>
+	           <available file="${equinox.common}" type = "file"/>
+	           <available file="${equinox.registry}" type = "file"/>
+               <available file="${common.lib}" type="file"/>
+               <available file="${owl.lib}" type="file"/>
+           </and>
+       </condition>
+       <path id = "project.classpath">    
+           <pathelement location="${protege.osgi}"/>
+           <pathelement location="${common.lib}"/>
+           <pathelement location="${protege.lib}"/>
+           <pathelement location="${equinox.common}"/>
+           <pathelement location="${equinox.registry}"/>
+           <pathelement location="${owl.lib}"/>
+           <fileset dir="${lib}"/>
+           <fileset dir="${genlib}"/>
+       </path>
    </target>
 
 
