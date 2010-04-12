@@ -1,12 +1,16 @@
 package org.protege.editor.core.platform.apple;
 
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Collections;
 import java.util.Set;
+
+import javax.swing.SwingUtilities;
 
 import org.protege.editor.core.ui.util.UIUtil;
 
@@ -85,4 +89,21 @@ public class MacUIUtil {
             return null;
         }
     }
+
+	public static File chooseOSXFolder(Component parent, String title) {
+	    String prop = null;
+	    File file = null;
+	    try {
+	        prop = "apple.awt.fileDialogForDirectories";
+	        System.setProperty(prop, "true");
+	        file = UIUtil.openFile((Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent),
+	                        title,
+	                        "Folder",
+	                        Collections.singleton(""));
+	    }
+	    finally {
+	        System.setProperty(prop, "false");
+	    }
+	    return file;
+	}
 }

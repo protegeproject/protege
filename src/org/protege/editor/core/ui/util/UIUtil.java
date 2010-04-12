@@ -1,15 +1,12 @@
 package org.protege.editor.core.ui.util;
 
 import java.awt.Component;
-import java.awt.Frame;
 import java.awt.Window;
 import java.io.File;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import org.protege.editor.core.platform.OSUtils;
@@ -180,34 +177,24 @@ public class UIUtil {
 
     public static File chooseFolder(Component parent, String title) {
         if (System.getProperty("os.name").indexOf("OS X") != -1) {
-            return chooseOSXFolder(parent, title);
+            return MacUIUtil.chooseOSXFolder(parent, title);
         }
         JFileChooser chooser = new JFileChooser();
+        File currentDirectory = new File(getCurrentFileDirectory());
+        if (currentDirectory != null) {
+        	chooser.setSelectedFile(currentDirectory);
+        }
         chooser.setDialogTitle(title);
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            return chooser.getSelectedFile();
+            File selectedDirectory = chooser.getSelectedFile();
+            if (selectedDirectory != null) {
+            	setCurrentFileDirectory(selectedDirectory.toString());
+            }
+            return selectedDirectory;
         }
         return null;
-    }
-
-
-    private static File chooseOSXFolder(Component parent, String title) {
-        String prop = null;
-        File file = null;
-        try {
-            prop = "apple.awt.fileDialogForDirectories";
-            System.setProperty(prop, "true");
-            file = openFile((Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent),
-                            title,
-                            "Folder",
-                            Collections.singleton(""));
-        }
-        finally {
-            System.setProperty(prop, "false");
-        }
-        return file;
     }
 
 
