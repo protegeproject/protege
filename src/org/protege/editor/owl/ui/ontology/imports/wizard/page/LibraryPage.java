@@ -14,10 +14,10 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.library.OntologyLibrary;
 import org.protege.editor.owl.ui.ontology.imports.wizard.GetImportsVisitor;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 
 
@@ -65,8 +65,8 @@ public class LibraryPage extends OntologyImportPage {
     
     private void calculatePossibleImports() {
         GetImportsVisitor getter = new GetImportsVisitor();
-        for (OntologyLibrary library : getOWLEditorKit().getOWLModelManager().getOntologyLibraryManager().getLibraries()) {
-            for (Entry e : library.getXmlCatalog().getEntries()) {
+        for (XMLCatalog library : getOWLEditorKit().getOWLModelManager().getOntologyLibraryManager().getAllCatalogs()) {
+            for (Entry e : library.getEntries()) {
                 e.accept(getter);
             }
         }

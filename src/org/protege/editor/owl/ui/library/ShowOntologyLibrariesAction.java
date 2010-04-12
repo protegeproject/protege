@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.library;
 
 import java.awt.event.ActionEvent;
 
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 
 
@@ -17,7 +18,12 @@ import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 public class ShowOntologyLibrariesAction extends ProtegeOWLAction {
 
     public void actionPerformed(ActionEvent e) {
-        OntologyLibraryPanel.showDialog(getOWLEditorKit());
+    	try {
+    		OntologyLibraryPanel.showDialog(getOWLEditorKit());
+    	}
+    	catch (Exception ex) {
+    		ProtegeApplication.getErrorLog().logError(ex);
+    	}
     }
 
 

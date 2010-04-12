@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.protege.editor.owl.model.library.OntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyGroupManager;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.NextCatalogEntry;
@@ -29,12 +29,7 @@ public class DeleteRedirectAction extends AbstractAction {
         Entry toDelete = (Entry) nodeToDelete.getUserObject();
         Object o = ((DefaultMutableTreeNode) selectionPath.getParentPath().getLastPathComponent()).getUserObject();
         
-        if (o instanceof OntologyLibrary) {
-            OntologyLibrary lib = (OntologyLibrary) o;
-            lib.getXmlCatalog().removeEntry(toDelete);
-            deleteFromTree = true;
-        }
-        else if (o instanceof GroupEntry) {
+        if (o instanceof GroupEntry) {
             GroupEntry group = (GroupEntry) o;
             group.removeEntry(toDelete);
             deleteFromTree = true;

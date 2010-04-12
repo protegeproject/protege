@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,12 +37,12 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.library.OntologyLibrary;
-import org.protege.editor.owl.model.library.OntologyLibraryManager;
-import org.protege.editor.owl.model.library.folder.FolderOntologyLibrary;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.model.library.OntologyGroupManager;
+import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.EntryVisitor;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.DelegatePublicEntry;
@@ -71,24 +72,28 @@ import org.protege.xmlcatalog.entry.UriEntry;
  * <code>updateLibraryManager()</code> must be called for this to happen.
  */
 public class OntologyLibraryPanel extends JPanel {
+	private static final long serialVersionUID = 1831859637994718783L;
 
-    private static final Logger logger = Logger.getLogger(OntologyLibraryPanel.class);
+	private static final Logger logger = Logger.getLogger(OntologyLibraryPanel.class);
 
-
+    private XMLCatalog catalog;
+    private File catalogFile;
+    
     private OWLEditorKit owlEditorKit;
+    
+    private FolderGroupManager folderManager;
 
     private JTree tree;
 
     private Action removeLibraryAction;
 
     private DefaultMutableTreeNode rootNode;
-
-    private Set<OntologyLibrary> addedLibraries = new HashSet<OntologyLibrary>();
-
-    private Set<OntologyLibrary> removedLibraries = new HashSet<OntologyLibrary>();
-
-    public OntologyLibraryPanel(OWLEditorKit owlEditorKit) {
+    
+    public OntologyLibraryPanel(OWLEditorKit owlEditorKit, File catalogFile) throws MalformedURLException, IOException {
         this.owlEditorKit = owlEditorKit;
+        this.catalogFile = catalogFile;
+        folderManager = owlEditorKit.getOWLModelManager().getOntologyLibraryManager().getFolderOntologyLibraryBuilder();
+        catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
         createUI();
     }
 
@@ -162,7 +167,7 @@ public class OntologyLibraryPanel extends JPanel {
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
         Object o = node.getUserObject();
-        if (o instanceof OntologyLibrary) {
+        if (o instanceof OntologyGroupManager) {
             return;
         }
         else if (o instanceof Entry) {
@@ -170,50 +175,50 @@ public class OntologyLibraryPanel extends JPanel {
             JPopupMenu popupMenu = new JPopupMenu();
             
             if (o instanceof UriEntry) {
-                popupMenu.add(new EditUriAction(tree, selectionPath));
+                popupMenu.add(new EditUriAction(tree, selectionPath, catalogFile));
             }
             popupMenu.add(new DeleteRedirectAction(tree, selectionPath));
             
             popupMenu.show(tree, e.getX(), e.getY());
         }
     }
-    
-    private OWLModelManager getOWLModelManager() {
-        return owlEditorKit.getModelManager();
-    }
-
 
     private void handleAddLibrary() {
         File f = UIUtil.chooseFolder(OntologyLibraryPanel.this, "Please select a folder containing ontologies");
         if (f != null) {
-            OntologyLibrary lib;
+            GroupEntry lib;
             try {
-                lib = new FolderOntologyLibrary(f);
+                lib = folderManager.createGroupEntry(f, catalog);
+                folderManager.update(lib, -1L);
+                catalog.addEntry(lib);
+                CatalogUtilities.save(catalog, catalogFile);
             }
             catch (IOException ioe) {
                 ProtegeApplication.getErrorLog().logError(ioe);
                 return;
             }
-            if (!removedLibraries.remove(lib)){ // just in case of re-insertion
-                addedLibraries.add(lib);
-            }
             insertLibraryIntoTree(lib);
         }
     }
 
-        private void handleRemoveLibrary() {
+    private void handleRemoveLibrary() {
         TreePath path = tree.getSelectionPath();
         if (path == null) {
             return;
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-        Object o = node.getUserObject();
-        if (o instanceof OntologyLibrary) {
-            OntologyLibrary lib = (OntologyLibrary)o;
-            if (!addedLibraries.remove(lib)){
-                removedLibraries.add(lib);
-            }
-            removeLibraryFromTree(lib);
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+
+        Entry lib = (Entry) node.getUserObject();
+        removeLibraryFromTree(lib);
+        if (path.getPathCount() == 2) {
+            catalog.removeEntry(lib);
+            model.removeNodeFromParent(node);
+        }
+        else if (path.getPathCount() > 2) {
+        	GroupEntry parent = (GroupEntry) ((DefaultMutableTreeNode) path.getPathComponent(path.getPathCount() - 2)).getUserObject();
+        	parent.removeEntry(lib);
+            model.removeNodeFromParent(node);
         }
     }
 
@@ -225,18 +230,17 @@ public class OntologyLibraryPanel extends JPanel {
             return;
         }
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        removeLibraryAction.setEnabled(o instanceof OntologyLibrary);
+        removeLibraryAction.setEnabled(o instanceof Entry);
     }
 
 
     private void loadTree() {
-        OntologyLibraryManager ontologyLibrary = getOWLModelManager().getOntologyLibraryManager();
-        for (OntologyLibrary lib : ontologyLibrary.getLibraries()) {
+        for (Entry lib : catalog.getEntries()) {
             insertLibraryIntoTree(lib);
         }
     }
 
-    private void removeLibraryFromTree(OntologyLibrary lib) {
+    private void removeLibraryFromTree(Entry lib) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         MutableTreeNode removeNode = null;
         for (int i=0; i<rootNode.getChildCount(); i++){
@@ -252,13 +256,14 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
 
-    private void insertLibraryIntoTree(OntologyLibrary lib) {
+    private void insertLibraryIntoTree(Entry entry) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        XMLCatalog catalog = lib.getXmlCatalog();
-        DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
+        DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(entry);
         model.insertNodeInto(libNode, rootNode, rootNode.getChildCount());
-        for (Entry entry : catalog.getEntries()) {
-            insertEntryIntoTree(libNode, entry, null);
+        if (entry instanceof GroupEntry) {
+        	for (Entry subEntry : ((GroupEntry) entry).getEntries()) {
+        		insertEntryIntoTree(libNode, subEntry, null);
+        	}
         }
         tree.expandPath(new TreePath(libNode.getPath()));
     }
@@ -300,16 +305,6 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
 
-    public Set<OntologyLibrary> getAddedLibraries() {
-        return addedLibraries;
-    }
-
-
-    public Set<OntologyLibrary> getRemovedLibraries(){
-        return removedLibraries;
-    }
-
-
     private class OntologyLibraryCellRenderer extends DefaultTreeCellRenderer {
 
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
@@ -318,8 +313,8 @@ public class OntologyLibraryPanel extends JPanel {
             // Modify the text
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             Object userObject = node.getUserObject();
-            if (userObject instanceof OntologyLibrary) {
-                label.setText("<html><body><b>" + ((OntologyLibrary) userObject).getClassExpression() + "</b></body></html>");
+            if (userObject instanceof GroupEntry && folderManager.isSuitable((GroupEntry) userObject)) {
+                label.setText("<html><body><b>" + folderManager.getDescription((GroupEntry) userObject) + "</b></body></html>");
                 label.setBorder(BorderFactory.createEmptyBorder(2, 2, 8, 0));
                 setIcon(OWLIcons.getIcon("ontology.library.png"));
             }
@@ -358,7 +353,12 @@ public class OntologyLibraryPanel extends JPanel {
         
         
         public void visit(GroupEntry entry) {
-            throw new UnsupportedOperationException("Not implemented yet");
+        	if (folderManager.isSuitable(entry)) {
+        		label.setText(folderManager.getDescription(entry));
+        	}
+        	else {
+        		label.setText(entry.getId());
+        	}
         }
 
         
@@ -403,26 +403,33 @@ public class OntologyLibraryPanel extends JPanel {
         
     }
 
-    public static void showDialog(OWLEditorKit owlEditorKit) {
+    public static void showDialog(OWLEditorKit owlEditorKit) throws MalformedURLException, IOException {
         UIHelper helper = new UIHelper(owlEditorKit);
-        OntologyLibraryPanel panel = new OntologyLibraryPanel(owlEditorKit);
+        OntologyLibraryPanel panel = new OntologyLibraryPanel(owlEditorKit, OntologyCatalogManager.getGlobalCatalogFile());
         if (helper.showDialog("Ontology libraries", panel) == JOptionPane.OK_OPTION){
-            panel.updateLibraryManager();
+        	try {
+        		CatalogUtilities.save(panel.catalog, panel.catalogFile);
+        		owlEditorKit.getModelManager().getOntologyLibraryManager().reloadGlobalCatalog();
+        	}
+        	catch (IOException e) {
+        		ProtegeApplication.getErrorLog().logError(e);
+        	}
         }
         panel.dispose();
     }
-
-
-    /**
-     * Updates the library manager and saves its state
-     */
-    public void updateLibraryManager() {
-        final OntologyLibraryManager libManager = owlEditorKit.getModelManager().getOntologyLibraryManager();
-        for (OntologyLibrary lib : getAddedLibraries()){
-            libManager.addLibrary(lib);
+    
+    public static void showDialog(OWLEditorKit owlEditorKit, File dir) throws MalformedURLException, IOException {
+        UIHelper helper = new UIHelper(owlEditorKit);
+        OntologyLibraryPanel panel = new OntologyLibraryPanel(owlEditorKit, OntologyCatalogManager.getCatalogFile(dir));
+        if (helper.showDialog("Ontology libraries", panel) == JOptionPane.OK_OPTION){
+        	try {
+        		CatalogUtilities.save(panel.catalog, panel.catalogFile);
+        		owlEditorKit.getModelManager().getOntologyLibraryManager().reloadFolder(dir);
+        	}
+        	catch (IOException e) {
+        		ProtegeApplication.getErrorLog().logError(e);
+        	}
         }
-        for (OntologyLibrary lib : getRemovedLibraries()){
-            libManager.removeLibraray(lib);
-        }
+        panel.dispose();
     }
 }

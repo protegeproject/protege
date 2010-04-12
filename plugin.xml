@@ -11,9 +11,6 @@
                      name="Entity Color Provider"
                      schema="schema/EntityColorProvider.exsd"/>
 
-    <extension-point id="model_libraryfactory"
-                     name="Library Factory"
-                     schema="schema/LibraryFactory.exsd"/>
 
     <extension-point id="moveaxiomskit" name="Move Axioms Kit" schema="schema/MoveAxiomsKit.exsd"/>
 
@@ -26,10 +23,6 @@
 
     <!-- PLUGINS -->
 
-    <extension id="FolderLibrary"
-               point="org.protege.editor.owl.model_libraryfactory">
-        <class value="org.protege.editor.owl.model.library.folder.FolderOntologyLibraryFactory"/>
-    </extension>
 
 
     <extension id="OWLEditorKitFactory"

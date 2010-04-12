@@ -17,6 +17,7 @@ import org.protege.xmlcatalog.entry.RewriteSystemEntry;
 import org.protege.xmlcatalog.entry.RewriteUriEntry;
 import org.protege.xmlcatalog.entry.SystemEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
+import org.protege.xmlcatalog.owl.update.XMLCatalogUpdater;
 import org.semanticweb.owlapi.model.IRI;
 
 public class GetImportsVisitor implements EntryVisitor {
@@ -29,6 +30,9 @@ public class GetImportsVisitor implements EntryVisitor {
 
     public void visit(UriEntry entry) {
         try {
+        	if (entry.getName().startsWith(XMLCatalogUpdater.DUPLICATE_SCHEME)) {
+        		return;
+        	}
             ImportInfo myImport = new ImportInfo();
             myImport.setImportLocation(IRI.create(entry.getName()));
             myImport.setPhysicalLocation(entry.getAbsoluteURI());
@@ -52,6 +56,9 @@ public class GetImportsVisitor implements EntryVisitor {
     }
 
     public void visit(GroupEntry entry) {
+    	for (Entry subEntry : entry.getEntries()) {
+    		subEntry.accept(this);
+    	}
     }
 
     public void visit(PublicEntry entry) {
