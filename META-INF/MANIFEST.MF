@@ -166,7 +166,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.view.individual,
  org.protege.editor.owl.ui.view.ontology,
  org.protege.editor.owl.ui.util
-Bundle-Version: 4.1.0
+Bundle-Version: 4.1.0.cIsAfterBFromUploads
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
  org.protege.editor.core.application,
