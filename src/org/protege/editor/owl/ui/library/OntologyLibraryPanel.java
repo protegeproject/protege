@@ -92,7 +92,7 @@ public class OntologyLibraryPanel extends JPanel {
     public OntologyLibraryPanel(OWLEditorKit owlEditorKit, File catalogFile) throws MalformedURLException, IOException {
         this.owlEditorKit = owlEditorKit;
         this.catalogFile = catalogFile;
-        folderManager = owlEditorKit.getOWLModelManager().getOntologyLibraryManager().getFolderOntologyLibraryBuilder();
+        folderManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager().getFolderOntologyLibraryBuilder();
         catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
         createUI();
     }
@@ -409,7 +409,7 @@ public class OntologyLibraryPanel extends JPanel {
         if (helper.showDialog("Ontology libraries", panel) == JOptionPane.OK_OPTION){
         	try {
         		CatalogUtilities.save(panel.catalog, panel.catalogFile);
-        		owlEditorKit.getModelManager().getOntologyLibraryManager().reloadGlobalCatalog();
+        		owlEditorKit.getModelManager().getOntologyCatalogManager().reloadGlobalCatalog();
         	}
         	catch (IOException e) {
         		ProtegeApplication.getErrorLog().logError(e);
@@ -424,7 +424,7 @@ public class OntologyLibraryPanel extends JPanel {
         if (helper.showDialog("Ontology libraries", panel) == JOptionPane.OK_OPTION){
         	try {
         		CatalogUtilities.save(panel.catalog, panel.catalogFile);
-        		owlEditorKit.getModelManager().getOntologyLibraryManager().reloadFolder(dir);
+        		owlEditorKit.getModelManager().getOntologyCatalogManager().reloadFolder(dir);
         	}
         	catch (IOException e) {
         		ProtegeApplication.getErrorLog().logError(e);
