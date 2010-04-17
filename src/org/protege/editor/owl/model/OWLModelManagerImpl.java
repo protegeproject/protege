@@ -271,7 +271,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public OntologyCatalogManager getOntologyLibraryManager() {
+    public OntologyCatalogManager getOntologyCatalogManager() {
         if (ontologyLibraryManager == null) {
             ontologyLibraryManager = new OntologyCatalogManager();
         }
