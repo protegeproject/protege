@@ -1,13 +1,20 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
-
-import javax.swing.*;
-import java.io.File;
 
 
 /**
@@ -48,13 +55,24 @@ public class MissingImportHandlerUI implements MissingImportHandler {
         if (file == null) {
             return ontologyIRI;
         }
-        // Add a mapping from the ontology to the file.  If the user wants the ontology
-        // to be editable, then they should have the option to copy the file into the
-        // base folder.
-//        owlEditorKit.getModelManager().add(ontologyURI, file.toURI());
+        updateActiveCatalog(ontologyIRI, file);
+
         return IRI.create(file);
 
-        //"<font color=\"gray\">Cause: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")</font><br><br>"
+    }
+    
+    private void updateActiveCatalog(IRI ontologyIRI, File file) {
+        OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
+        XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
+        URI relativeFile = CatalogUtilities.relativize(file.toURI(), activeCatalog);
+        activeCatalog.addEntry(0, new UriEntry("User Entered Import Resolution", activeCatalog, ontologyIRI.toString(), relativeFile, null));
+        File catalogLocation = new File(activeCatalog.getXmlBaseContext().getXmlBase());
+        try {
+            CatalogUtilities.save(activeCatalog, catalogLocation);
+        }
+        catch (IOException e) {
+            logger.warn("Could not save user supplied import redirection to catalog");
+        }
     }
 }
 
