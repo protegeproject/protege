@@ -31,7 +31,7 @@ import org.protege.xmlcatalog.entry.UriEntry;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OntologyCatalogManager {
-	public static final String CATALOG_NAME = "catalog.xml";
+	public static final String CATALOG_NAME = "catalog-v001.xml";
 	public static final String CATALOG_BACKUP_PREFIX = "catalog-backup-";
 	
     private static final Logger logger = Logger.getLogger(OntologyCatalogManager.class);
@@ -58,12 +58,9 @@ public class OntologyCatalogManager {
 				backup(folder, catalogFile);
 			}
 		}
-		if (detectOldFormat(catalog)) {
-			backup(folder, catalogFile);
-			catalog = null;
-		}
 		if (catalog == null) {
 			catalog = new XMLCatalog(folder.toURI());
+			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protege");
 			try {
 				CatalogUtilities.save(catalog, catalogFile);
 			}
@@ -72,22 +69,6 @@ public class OntologyCatalogManager {
 			}
 		}
 		return catalog;
-	}
-
-	// TODO this is bad and hopefully temporary
-	private static boolean detectOldFormat(XMLCatalog catalog) {
-		if (catalog == null || catalog.getId() == null || catalog.getXmlBase() == null) {
-			return false;
-		}
-		if (!catalog.getId().equals(catalog.getXmlBase().toString())) {
-			return false;
-		}
-		for (Entry e : catalog.getEntries()) {
-			if (!(e instanceof UriEntry)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private static void backup(File folder, File catalogFile) {
