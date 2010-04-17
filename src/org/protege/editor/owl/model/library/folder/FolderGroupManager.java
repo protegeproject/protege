@@ -70,25 +70,28 @@ public class FolderGroupManager implements OntologyGroupManager {
 	}
 
 	public XMLCatalog ensureFolderCatalogExists(File folder) throws IOException {
+	    File catalogFile = OntologyCatalogManager.getCatalogFile(folder);
+	    boolean createFolderGroup = !catalogFile.exists();
 		XMLCatalog catalog = OntologyCatalogManager.ensureCatalogExists(folder);
-		File catalogFile = OntologyCatalogManager.getCatalogFile(folder);
-		GroupEntry ge = null;
-		for (Entry e : catalog.getEntries()) {
-			if (e instanceof GroupEntry) {
-				if (folder.getCanonicalPath().equals(LibraryUtilities.getStringProperty((GroupEntry) e, DIR_PROP))) {
-					ge = (GroupEntry) e;
-					break;
-				}
-			}
-		}
-		if (ge == null) {
-			ge = createGroupEntry(folder, catalog);
-			catalog.addEntry(ge);
-			update(ge, -1);
-			CatalogUtilities.save(catalog, catalogFile);
-		}
-		else if (update(ge, catalogFile.lastModified())) {
-			CatalogUtilities.save(catalog, catalogFile);
+		if (createFolderGroup) {
+		    GroupEntry ge = null;
+		    for (Entry e : catalog.getEntries()) {
+		        if (e instanceof GroupEntry) {
+		            if (folder.getCanonicalPath().equals(LibraryUtilities.getStringProperty((GroupEntry) e, DIR_PROP))) {
+		                ge = (GroupEntry) e;
+		                break;
+		            }
+		        }
+		    }
+		    if (ge == null) {
+		        ge = createGroupEntry(folder, catalog);
+		        catalog.addEntry(ge);
+		        update(ge, -1);
+		        CatalogUtilities.save(catalog, catalogFile);
+		    }
+		    else if (update(ge, catalogFile.lastModified())) {
+		        CatalogUtilities.save(catalog, catalogFile);
+		    }
 		}
 		return catalog;
 	}
