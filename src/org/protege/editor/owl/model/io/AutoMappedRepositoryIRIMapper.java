@@ -39,7 +39,7 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
     
 
     public AutoMappedRepositoryIRIMapper(OWLModelManager mngr)  {
-        libraryManager = mngr.getOntologyLibraryManager();
+        libraryManager = mngr.getOntologyCatalogManager();
     }
 
 
