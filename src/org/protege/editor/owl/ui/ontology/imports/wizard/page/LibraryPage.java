@@ -65,7 +65,7 @@ public class LibraryPage extends OntologyImportPage {
     
     private void calculatePossibleImports() {
         GetImportsVisitor getter = new GetImportsVisitor();
-        for (XMLCatalog library : getOWLEditorKit().getOWLModelManager().getOntologyLibraryManager().getAllCatalogs()) {
+        for (XMLCatalog library : getOWLEditorKit().getOWLModelManager().getOntologyCatalogManager().getAllCatalogs()) {
             for (Entry e : library.getEntries()) {
                 e.accept(getter);
             }
