@@ -64,6 +64,9 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     private void updateActiveCatalog(IRI ontologyIRI, File file) {
         OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
         XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
+        if (activeCatalog == null) {
+            return;
+        }
         URI relativeFile = CatalogUtilities.relativize(file.toURI(), activeCatalog);
         activeCatalog.addEntry(0, new UriEntry("User Entered Import Resolution", activeCatalog, ontologyIRI.toString(), relativeFile, null));
         File catalogLocation = new File(activeCatalog.getXmlBaseContext().getXmlBase());
