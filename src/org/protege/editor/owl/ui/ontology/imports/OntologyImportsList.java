@@ -18,7 +18,6 @@ import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
@@ -48,7 +47,9 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
  * Date: May 28, 2009<br><br>
  */
 public class OntologyImportsList extends MList {
-	private static final Logger logger = Logger.getLogger(OntologyImportsList.class);
+    private static final long serialVersionUID = -1532513638674168922L;
+
+    private static final Logger logger = Logger.getLogger(OntologyImportsList.class);
 	
     private OWLEditorKit eKit;
 
@@ -112,13 +113,15 @@ public class OntologyImportsList extends MList {
 
         if (ret == Wizard.FINISH_RETURN_CODE) {
             OWLOntologyManager manager = eKit.getModelManager().getOWLOntologyManager();
+            OntologyCatalogManager catalogManager = eKit.getOWLModelManager().getOntologyCatalogManager();
             OWLOntology activeOntology = eKit.getModelManager().getActiveOntology();
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
         	for (ImportInfo importParameters : wizard.getImports()) {
         		IRI importLocation = importParameters.getImportLocation();
         		URI physicalLocation = importParameters.getPhysicalLocation();
-        		if (!importLocation.equals(IRI.create(physicalLocation))) {
+        		if (!importLocation.equals(IRI.create(physicalLocation)) &&
+        		        catalogManager.getRedirect(importLocation.toURI()) == null) {
         		    addImportMapping(activeOntology, importLocation, IRI.create(physicalLocation));
         		}
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
@@ -150,13 +153,15 @@ public class OntologyImportsList extends MList {
     
     private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
         OWLOntologyManager manager = ontology.getOWLOntologyManager();
+        
         manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
         try {
             IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
             if (importersDocumentLocation.getScheme().equals("file")) {
                 File f = new File(importersDocumentLocation.toURI());
                 XMLCatalog catalog = eKit.getModelManager().addRootFolder(f.getParentFile());
-                catalog.addEntry(new UriEntry("Imports Wizard Entry", catalog, importersDocumentLocation.toURI().toString(), physicalLocation.toURI(), null));
+                URI physicalUri = CatalogUtilities.relativize(physicalLocation.toURI(), catalog);
+                catalog.addEntry(0, new UriEntry("Imports Wizard Entry", catalog, importLocation.toURI().toString(), physicalUri, null));
                 CatalogUtilities.save(catalog, OntologyCatalogManager.getCatalogFile(f.getParentFile()));
             }
         }
