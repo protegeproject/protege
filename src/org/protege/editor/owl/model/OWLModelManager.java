@@ -177,7 +177,7 @@ public interface OWLModelManager extends ModelManager {
      * for a repository of "standard"/frequently used ontologies (e.g. upper
      * ontologies).
      */
-    public OntologyCatalogManager getOntologyLibraryManager();
+    public OntologyCatalogManager getOntologyCatalogManager();
 
 
     OWLHierarchyManager getOWLHierarchyManager();
