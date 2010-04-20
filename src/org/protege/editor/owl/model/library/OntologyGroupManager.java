@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.library;
 
+import java.io.IOException;
+
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.GroupEntry;
 
@@ -22,7 +24,7 @@ public interface OntologyGroupManager {
      
      boolean isSuitable(GroupEntry ge);
      
-     boolean update(GroupEntry ge, long lastModifiedDate);
+     boolean update(GroupEntry ge) throws IOException;
      
      GroupEntry openGroupEntryDialog(XmlBaseContext context);
      

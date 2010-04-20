@@ -14,11 +14,11 @@ import org.apache.log4j.Logger;
 import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
+import org.protege.editor.owl.model.library.folder.UntimeStampedFolderGroupManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
-import org.protege.xmlcatalog.entry.UriEntry;
 
 
 /**
@@ -33,6 +33,9 @@ import org.protege.xmlcatalog.entry.UriEntry;
 public class OntologyCatalogManager {
 	public static final String CATALOG_NAME = "catalog-v001.xml";
 	public static final String CATALOG_BACKUP_PREFIX = "catalog-backup-";
+	
+	public static final String AUTO_UPDATE_PROP = "Auto-Update";
+    public static final String TIMESTAMP        = "Timestamp";
 	
     private static final Logger logger = Logger.getLogger(OntologyCatalogManager.class);
     
@@ -118,7 +121,7 @@ public class OntologyCatalogManager {
     			GroupEntry ge = (GroupEntry) entry;
     			for (OntologyGroupManager updater : updaters) {
     				if (updater.isSuitable(ge)) {
-    					modified = modified | updater.update(ge, location.lastModified());
+    					modified = modified | updater.update(ge);
     				}
     			}
     		}
