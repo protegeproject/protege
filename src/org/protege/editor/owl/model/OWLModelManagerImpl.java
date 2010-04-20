@@ -6,10 +6,8 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Level;
@@ -43,7 +41,6 @@ import org.protege.editor.owl.model.io.OntologySourcesManager;
 import org.protege.editor.owl.model.io.UserResolvedIRIMapper;
 import org.protege.editor.owl.model.io.WebConnectionIRIMapper;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
