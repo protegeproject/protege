@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.xmlcatalog.EntryVisitor;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.DelegatePublicEntry;
@@ -17,7 +18,6 @@ import org.protege.xmlcatalog.entry.RewriteSystemEntry;
 import org.protege.xmlcatalog.entry.RewriteUriEntry;
 import org.protege.xmlcatalog.entry.SystemEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
-import org.protege.xmlcatalog.owl.update.XMLCatalogUpdater;
 import org.semanticweb.owlapi.model.IRI;
 
 public class GetImportsVisitor implements EntryVisitor {
@@ -30,7 +30,7 @@ public class GetImportsVisitor implements EntryVisitor {
 
     public void visit(UriEntry entry) {
         try {
-        	if (entry.getName().startsWith(XMLCatalogUpdater.DUPLICATE_SCHEME)) {
+        	if (entry.getName().startsWith(FolderGroupManager.DUPLICATE_SCHEME)) {
         		return;
         	}
             ImportInfo myImport = new ImportInfo();
