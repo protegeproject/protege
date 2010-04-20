@@ -1,0 +1,4110 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY photography "http://www.co-ode.org/ontologies/photography/photography.owl#" >
+    <!ENTITY photography4 "http://www.co-ode.org/ontologies/photography/photography.owl#4" >
+    <!ENTITY photography5 "http://www.co-ode.org/ontologies/photography/photography.owl#35" >
+    <!ENTITY photography9 "http://www.co-ode.org/ontologies/photography/photography.owl#80" >
+    <!ENTITY photography8 "http://www.co-ode.org/ontologies/photography/photography.owl#18" >
+    <!ENTITY photography2 "http://www.co-ode.org/ontologies/photography/photography.owl#120" >
+    <!ENTITY photography3 "http://www.co-ode.org/ontologies/photography/photography.owl#135" >
+    <!ENTITY photography7 "http://www.co-ode.org/ontologies/photography/photography.owl#35-55" >
+    <!ENTITY photography6 "http://www.co-ode.org/ontologies/photography/photography.owl#20-100" >
+]>
+
+
+<rdf:RDF xmlns="http://www.co-ode.org/ontologies/photography/photography.owl#"
+     xml:base="http://www.co-ode.org/ontologies/photography/photography.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:photography4="&photography;4"
+     xmlns:photography5="&photography;35"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:photography7="&photography;35-55"
+     xmlns:photography3="&photography;135"
+     xmlns:photography8="&photography;18"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:photography6="&photography;20-100"
+     xmlns:photography="http://www.co-ode.org/ontologies/photography/photography.owl#"
+     xmlns:photography9="&photography;80"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:photography2="&photography;120"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="">
+        <todo
+            >High contrast can be controlled with flash and higher shutter speed.</todo>
+        <dc:rights
+            >copyright The University of Manchester, 2008</dc:rights>
+        <dc:coverage
+            >An ontology of photography and cameras.
+Focus (no pun intended) on the *relative* effect of photographer-controlled factors (such as aperture, shutter speed, equipment used etc) on the properties of the image produced (motion blur, depth of field etc). This may be remodelled to allow absolute values.
+
+Other subsidiary areas of detail include:
+- lens characterisation by focal length
+- media characterisation by size (ie films and cameras)
+- &quot;conditions&quot; - the beginnings of a diagnostics application that it will hopefully be possible to query for suggestions of what action to take</dc:coverage>
+        <query
+            >Adjustment and allows some IncreaseShutterSpeed</query>
+        <todo
+            >Lots more annotations</todo>
+        <dc:language>English</dc:language>
+        <todo
+            >Equipment and isSuitableFor some DarkLocation</todo>
+        <owl:versionInfo>initial draft</owl:versionInfo>
+        <query
+            >getSuperClasses of:
+Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength value 120)</query>
+        <query
+            >Equipment and reduces some Blur</query>
+        <dc:date>3rd Nov 2008</dc:date>
+        <rdfs:comment
+            >A very much work in progress model of photography used to:
+- provide more experience of using p4 in a real setting
+- provide a model for a small demo application (to be released)</rdfs:comment>
+        <dc:creator>Nick Drummond</dc:creator>
+        <query
+            >Adjustment and increases some ExposureLevel and not(affects some DepthOfField)</query>
+        <todo
+            >investigate why this does not currently classify in pellet</todo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&dc;language"/>
+    <owl:AnnotationProperty rdf:about="#query"/>
+    <owl:AnnotationProperty rdf:about="&dc;coverage"/>
+    <owl:AnnotationProperty rdf:about="#test"/>
+    <owl:AnnotationProperty rdf:about="&dc;rights"/>
+    <owl:AnnotationProperty rdf:about="&dc;creator"/>
+    <owl:AnnotationProperty rdf:about="&dc;date"/>
+    <owl:AnnotationProperty rdf:about="#todo"/>
+    <owl:AnnotationProperty rdf:about="#synonym"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#affects -->
+
+    <owl:ObjectProperty rdf:about="#affects"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#allows -->
+
+    <owl:ObjectProperty rdf:about="#allows"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#compresses -->
+
+    <owl:ObjectProperty rdf:about="#compresses">
+        <rdfs:subPropertyOf rdf:resource="#reduces"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#corrects -->
+
+    <owl:ObjectProperty rdf:about="#corrects">
+        <rdfs:subPropertyOf rdf:resource="#affects"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#exagerates -->
+
+    <owl:ObjectProperty rdf:about="#exagerates">
+        <rdfs:subPropertyOf rdf:resource="#increases"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasAperture -->
+
+    <owl:ObjectProperty rdf:about="#hasAperture"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFeature -->
+
+    <owl:ObjectProperty rdf:about="#hasFeature"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFormat -->
+
+    <owl:ObjectProperty rdf:about="#hasFormat"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasLens -->
+
+    <owl:ObjectProperty rdf:about="#hasLens">
+        <rdfs:subPropertyOf rdf:resource="#hasPart"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasLevel -->
+
+    <owl:ObjectProperty rdf:about="#hasLevel"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasParameter -->
+
+    <owl:ObjectProperty rdf:about="#hasParameter"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasPart -->
+
+    <owl:ObjectProperty rdf:about="#hasPart">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSensitiveMedia -->
+
+    <owl:ObjectProperty rdf:about="#hasSensitiveMedia"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasShape -->
+
+    <owl:ObjectProperty rdf:about="#hasShape"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasShutterSpeed -->
+
+    <owl:ObjectProperty rdf:about="#hasShutterSpeed"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSubject -->
+
+    <owl:ObjectProperty rdf:about="#hasSubject"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#increases -->
+
+    <owl:ObjectProperty rdf:about="#increases">
+        <rdfs:comment
+            >Cannot make increases and reduces disjoint - this introduces a non-simple role</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="#affects"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#isSuitableFor -->
+
+    <owl:ObjectProperty rdf:about="#isSuitableFor"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#isUsedToTake -->
+
+    <owl:ObjectProperty rdf:about="#isUsedToTake"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#producesImage -->
+
+    <owl:ObjectProperty rdf:about="#producesImage"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#producesLightType -->
+
+    <owl:ObjectProperty rdf:about="#producesLightType"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#reduces -->
+
+    <owl:ObjectProperty rdf:about="#reduces">
+        <rdfs:subPropertyOf rdf:resource="#affects"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#requires -->
+
+    <owl:ObjectProperty rdf:about="#requires">
+        <owl:inverseOf rdf:resource="#isSuitableFor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#uses -->
+
+    <owl:ObjectProperty rdf:about="#uses"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasColourTemperature -->
+
+    <owl:DatatypeProperty rdf:about="#hasColourTemperature">
+        <rdfs:comment
+            >Light temperature measured in Kelvin (~2000-50,000).
+Low temperatures are warmer.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasDepthOfField -->
+
+    <owl:DatatypeProperty rdf:about="#hasDepthOfField"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasDuration -->
+
+    <owl:DatatypeProperty rdf:about="#hasDuration">
+        <rdfs:comment
+            >Normalised to seconds.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasExposure -->
+
+    <owl:DatatypeProperty rdf:about="#hasExposure">
+        <rdfs:comment
+            >light intensity x time</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFStop -->
+
+    <owl:DatatypeProperty rdf:about="#hasFStop"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFixedEffectiveFocalLength -->
+
+    <owl:DatatypeProperty rdf:about="#hasFixedEffectiveFocalLength">
+        <rdfs:comment
+            >This is the effective focal length (ie once the film/sensor size has been taken into account).
+Normalise to mm.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMaxEffectiveFocalLength -->
+
+    <owl:DatatypeProperty rdf:about="#hasMaxEffectiveFocalLength"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMinEffectiveFocalLength -->
+
+    <owl:DatatypeProperty rdf:about="#hasMinEffectiveFocalLength"/>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMinimumFocalDistance -->
+
+    <owl:DatatypeProperty rdf:about="#hasMinimumFocalDistance">
+        <rdfs:comment>Normalise to mm</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSensitivity -->
+
+    <owl:DatatypeProperty rdf:about="#hasSensitivity">
+        <rdfs:comment
+            >ISO50 to ISO32,000 ish</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#height -->
+
+    <owl:DatatypeProperty rdf:about="#height">
+        <rdfs:comment>normalise to mm</rdfs:comment>
+        <rdfs:comment
+            >Should this be a measurement? - ie an ObjectProperty</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#width -->
+
+    <owl:DatatypeProperty rdf:about="#width">
+        <rdfs:comment>normalise to mm</rdfs:comment>
+        <rdfs:comment
+            >Should this be a measurement? - ie an ObjectProperty</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#120RollFilm -->
+
+    <owl:Class rdf:about="#120RollFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFormat"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Format"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#height"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">60</owl:hasValue>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#width"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">60</owl:hasValue>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#135Film -->
+
+    <owl:Class rdf:about="#135Film">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFormat"/>
+                        <owl:someValuesFrom rdf:resource="#35mm"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#18mm -->
+
+    <owl:Class rdf:about="#18mm">
+        <rdfs:subClassOf rdf:resource="#TestLens"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                <owl:hasValue rdf:datatype="&xsd;integer">18</owl:hasValue>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <test rdf:datatype="&xsd;boolean">true</test>
+        <rdfs:comment
+            >Should classify as a wideangle prime</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#20-100mm -->
+
+    <owl:Class rdf:about="#20-100mm">
+        <rdfs:subClassOf rdf:resource="#TestLens"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                <owl:hasValue rdf:datatype="&xsd;integer">20</owl:hasValue>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                <owl:hasValue rdf:datatype="&xsd;integer">100</owl:hasValue>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <test rdf:datatype="&xsd;boolean">true</test>
+        <rdfs:comment
+            >Should classify as a wide through normal to telephoto zoom</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#35-55mm -->
+
+    <owl:Class rdf:about="#35-55mm">
+        <rdfs:subClassOf rdf:resource="#TestLens"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                <owl:hasValue rdf:datatype="&xsd;integer">55</owl:hasValue>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                <owl:hasValue rdf:datatype="&xsd;integer">35</owl:hasValue>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <test rdf:datatype="&xsd;boolean">true</test>
+        <rdfs:comment
+            >Should classify as a normal zoom</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#35mm -->
+
+    <owl:Class rdf:about="#35mm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Format"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#height"/>
+                        <owl:hasValue rdf:datatype="&xsd;integer">24</owl:hasValue>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#width"/>
+                        <owl:hasValue rdf:datatype="&xsd;integer">36</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#4x5inFilm -->
+
+    <owl:Class rdf:about="#4x5inFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFormat"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Format"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#height"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">127</owl:hasValue>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#width"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">101</owl:hasValue>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#80a -->
+
+    <owl:Class rdf:about="#80a">
+        <rdfs:subClassOf rdf:resource="#CorrectionFilter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#Cool"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >An 80a makes the image cooler.
+
+There should possibly be an axiom somewhere to state that and increase in cool implies a decrease in warm (and vice-versa).</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#APS -->
+
+    <owl:Class rdf:about="#APS">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFormat"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Format"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#height"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">17</owl:hasValue>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#width"/>
+                                <owl:hasValue rdf:datatype="&xsd;integer">30</owl:hasValue>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Actually 3 formats, but have stated the largest (in &quot;High Definition&quot; mode)</rdfs:comment>
+        <synonym
+            >Advanced Photo System</synonym>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Action -->
+
+    <owl:Class rdf:about="#Action">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Adjustment -->
+
+    <owl:Class rdf:about="#Adjustment">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AntiShake -->
+
+    <owl:Class rdf:about="#AntiShake">
+        <rdfs:subClassOf rdf:resource="#CameraFeature"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AntiShakeCamera -->
+
+    <owl:Class rdf:about="#AntiShakeCamera">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Camera"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFeature"/>
+                                <owl:someValuesFrom rdf:resource="#AntiShake"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasLens"/>
+                                <owl:someValuesFrom>
+                                    <owl:Class>
+                                        <owl:intersectionOf rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="#Lens"/>
+                                            <owl:Restriction>
+                                                <owl:onProperty rdf:resource="#hasFeature"/>
+                                                <owl:someValuesFrom rdf:resource="#AntiShake"/>
+                                            </owl:Restriction>
+                                        </owl:intersectionOf>
+                                    </owl:Class>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment
+            >A camera that has antishake builtin or in its lens.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Aperture -->
+
+    <owl:Class rdf:about="#Aperture">
+        <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
+        <rdfs:comment
+            >The size of the hole through which light passes when an image is captured.
+This is one of the three main elements controlling exposure in a camera - the others being shutter speed and ISO.
+
+We could say something about optimal aperture for clarity, but this really depends on the manufacture of the lens.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AutoFocus -->
+
+    <owl:Class rdf:about="#AutoFocus">
+        <rdfs:subClassOf rdf:resource="#FocusMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AverageMetering -->
+
+    <owl:Class rdf:about="#AverageMetering">
+        <rdfs:subClassOf rdf:resource="#MeteringMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#BadBoca -->
+
+    <owl:Class rdf:about="#BadBoca">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Boca"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasShape"/>
+                        <owl:someValuesFrom rdf:resource="#Polygon"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Barrelling -->
+
+    <owl:Class rdf:about="#Barrelling">
+        <rdfs:subClassOf rdf:resource="#Distortion"/>
+        <owl:disjointWith rdf:resource="#Pincushioning"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#BlackAndWhiteFilm -->
+
+    <owl:Class rdf:about="#BlackAndWhiteFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Blur -->
+
+    <owl:Class rdf:about="#Blur">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >Softness in an image because of multiple reasons, including poor quality optics/media.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Boca -->
+
+    <owl:Class rdf:about="#Boca">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasShape"/>
+                <owl:someValuesFrom rdf:resource="#Shape"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >The name given to the shape of points of light in the unfocused area of an image.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CCD -->
+
+    <owl:Class rdf:about="#CCD">
+        <rdfs:subClassOf rdf:resource="#ElectronicSensor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CMOS -->
+
+    <owl:Class rdf:about="#CMOS">
+        <rdfs:subClassOf rdf:resource="#ElectronicSensor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Camera -->
+
+    <owl:Class rdf:about="#Camera">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasSensitiveMedia"/>
+                <owl:someValuesFrom rdf:resource="#LightSensitiveMedia"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasAperture"/>
+                <owl:someValuesFrom rdf:resource="#Aperture"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasShutterSpeed"/>
+                <owl:someValuesFrom rdf:resource="#ShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFeature"/>
+                <owl:someValuesFrom rdf:resource="#CameraFeature"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraFeature -->
+
+    <owl:Class rdf:about="#CameraFeature">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraShake -->
+
+    <owl:Class rdf:about="#CameraShake">
+        <rdfs:subClassOf rdf:resource="#MotionBlur"/>
+        <rdfs:comment
+            >Blur caused by the movement of the camera (as opposed to the subject). Hand-holding in poor light is a common cause of softness in images.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraWithMirrorLockup -->
+
+    <owl:Class rdf:about="#CameraWithMirrorLockup">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Camera"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFeature"/>
+                        <owl:someValuesFrom rdf:resource="#MirrorLockup"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="#SLR"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CentreWeightedMetering -->
+
+    <owl:Class rdf:about="#CentreWeightedMetering">
+        <rdfs:subClassOf rdf:resource="#MeteringMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ChromaticAberration -->
+
+    <owl:Class rdf:about="#ChromaticAberration">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >A visual artefact. Classically appears as a misalignment of different colours in an image, most noticeable at high contrast edges - one of the causes of &quot;fringing&quot;. Caused by weaknesses in the lens design.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Circle -->
+
+    <owl:Class rdf:about="#Circle">
+        <rdfs:subClassOf rdf:resource="#Shape"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CloseDownAperture -->
+
+    <owl:Class rdf:about="#CloseDownAperture">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#Aperture"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Aperture"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Aperture"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ClosestSubject -->
+
+    <owl:Class rdf:about="#ClosestSubject">
+        <rdfs:subClassOf rdf:resource="#AutoFocus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourBalance -->
+
+    <owl:Class rdf:about="#ColourBalance">
+        <rdfs:subClassOf rdf:resource="#ColourCast"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourCast -->
+
+    <owl:Class rdf:about="#ColourCast">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourFilm -->
+
+    <owl:Class rdf:about="#ColourFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Composition -->
+
+    <owl:Class rdf:about="#Composition">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CompositionalAdjustment -->
+
+    <owl:Class rdf:about="#CompositionalAdjustment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#affects"/>
+                        <owl:someValuesFrom rdf:resource="#CompositionalParameter"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:someValuesFrom rdf:resource="#Composition"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CompositionalParameter -->
+
+    <owl:Class rdf:about="#CompositionalParameter">
+        <rdfs:subClassOf rdf:resource="#Parameter"/>
+        <rdfs:comment
+            >Parameters that affect the composition of the image.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Conditions -->
+
+    <owl:Class rdf:about="#Conditions">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >We want to be able to state information in an increasing number of scenarios about what equipment to use and which adjustments to make.
+
+Unfortunately, we end up with the common problem of wanting to ask the question in the other direction.
+
+&quot;What equipment and adjustments are suitable for Scenario X?&quot;</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ContinuousAF -->
+
+    <owl:Class rdf:about="#ContinuousAF">
+        <rdfs:subClassOf rdf:resource="#AutoFocus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Contrast -->
+
+    <owl:Class rdf:about="#Contrast">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ConversionFilter -->
+
+    <owl:Class rdf:about="#ConversionFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:someValuesFrom rdf:resource="#ColourCast"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Strong coloured filters used for black and white photography.
+eg a yellow filter is used to darken a blue sky.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Cool -->
+
+    <owl:Class rdf:about="#Cool">
+        <rdfs:subClassOf rdf:resource="#ColourBalance"/>
+        <owl:disjointWith rdf:resource="#Warm"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CorrectionFilter -->
+
+    <owl:Class rdf:about="#CorrectionFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:someValuesFrom rdf:resource="#ColourBalance"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Used to alter the colour temperature of the light.
+Even numbers are cool (blue).
+Odd numbers are warm (orange).
+The higher the letter, the stronger the effect (each letter double the strength of the previous).</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DarkLocation -->
+
+    <owl:Class rdf:about="#DarkLocation">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Conditions"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasParameter"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="#LightIntensity"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasLevel"/>
+                                        <owl:someValuesFrom rdf:resource="#Low"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#requires"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Adjustment"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#increases"/>
+                                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Daylight -->
+
+    <owl:Class rdf:about="#Daylight">
+        <rdfs:subClassOf rdf:resource="#LightType"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasColourTemperature"/>
+                <owl:someValuesFrom>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&owl;DataRange"/>
+                        <xsd:minExclusive rdf:datatype="&xsd;integer">5000</xsd:minExclusive>
+                        <xsd:maxExclusive rdf:datatype="&xsd;integer">6000</xsd:maxExclusive>
+                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                    </rdf:Description>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Same temperature as flash (roughly)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DecreaseShutterSpeed -->
+
+    <owl:Class rdf:about="#DecreaseShutterSpeed">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#ShutterSpeed"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom rdf:resource="#ShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#MotionBlur"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#MotionBlur"/>
+                            <rdf:Description rdf:about="#ShutterSpeed"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DepthOfField -->
+
+    <owl:Class rdf:about="#DepthOfField">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DistanceToSubject -->
+
+    <owl:Class rdf:about="#DistanceToSubject">
+        <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Distortion -->
+
+    <owl:Class rdf:about="#Distortion">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Documentary -->
+
+    <owl:Class rdf:about="#Documentary">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Donut -->
+
+    <owl:Class rdf:about="#Donut">
+        <rdfs:subClassOf rdf:resource="#Shape"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ElectronicSensor -->
+
+    <owl:Class rdf:about="#ElectronicSensor">
+        <rdfs:subClassOf rdf:resource="#LightSensitiveMedia"/>
+        <owl:disjointWith rdf:resource="#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Equipment -->
+
+    <owl:Class rdf:about="#Equipment">
+        <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureAdjustment -->
+
+    <owl:Class rdf:about="#ExposureAdjustment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#affects"/>
+                        <owl:someValuesFrom rdf:resource="#ExposureParameter"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Any adjustment that affects the exposure</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureDecreasingAdjustment -->
+
+    <owl:Class rdf:about="#ExposureDecreasingAdjustment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#OpenUpAperture"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#DecreaseShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:complementOf>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#isSuitableFor"/>
+                        <owl:someValuesFrom rdf:resource="#DarkLocation"/>
+                    </owl:Restriction>
+                </owl:complementOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Anything that reduces the exposure allows us to make further adjustments.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureIncreasingAdjustment -->
+
+    <owl:Class rdf:about="#ExposureIncreasingAdjustment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#CloseDownAperture"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#IncreaseShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isSuitableFor"/>
+                <owl:someValuesFrom rdf:resource="#DarkLocation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Anything that increases the exposure allows us to make further adjustments.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureLevel -->
+
+    <owl:Class rdf:about="#ExposureLevel">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureParameter -->
+
+    <owl:Class rdf:about="#ExposureParameter">
+        <rdfs:subClassOf rdf:resource="#Parameter"/>
+        <rdfs:comment
+            >Parameters that affect the exposure of the image.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FastExposure -->
+
+    <owl:Class rdf:about="#FastExposure">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#ShutterSpeed"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasDuration"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;double">0.01</xsd:maxExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;float"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isSuitableFor"/>
+                <owl:someValuesFrom rdf:resource="#Action"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >A bit of an arbitrary value 1/100.
+This should really be relative to the focal length.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FieldCamera -->
+
+    <owl:Class rdf:about="#FieldCamera">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasSensitiveMedia"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#LightSensitiveMedia"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFormat"/>
+                                <owl:someValuesFrom rdf:resource="#LargeFormat"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFeature"/>
+                <owl:someValuesFrom rdf:resource="#Movements"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Film -->
+
+    <owl:Class rdf:about="#Film">
+        <rdfs:subClassOf rdf:resource="#LightSensitiveMedia"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Filter -->
+
+    <owl:Class rdf:about="#Filter">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#LensFlare"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#Vignetting"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Fisheye -->
+
+    <owl:Class rdf:about="#Fisheye">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:maxExclusive rdf:datatype="&xsd;integer">8</xsd:maxExclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:maxExclusive rdf:datatype="&xsd;integer">8</xsd:maxExclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FixedAF -->
+
+    <owl:Class rdf:about="#FixedAF">
+        <rdfs:subClassOf rdf:resource="#AutoFocus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FixedFocus -->
+
+    <owl:Class rdf:about="#FixedFocus">
+        <rdfs:subClassOf rdf:resource="#FocusMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Flash -->
+
+    <owl:Class rdf:about="#Flash">
+        <rdfs:subClassOf rdf:resource="#Light"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#producesLightType"/>
+                <owl:someValuesFrom rdf:resource="#FlashLight"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isSuitableFor"/>
+                <owl:someValuesFrom rdf:resource="#FreezingMovement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="#StudioLight"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FlashLight -->
+
+    <owl:Class rdf:about="#FlashLight">
+        <rdfs:subClassOf rdf:resource="#LightType"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasColourTemperature"/>
+                <owl:someValuesFrom>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&owl;DataRange"/>
+                        <xsd:minExclusive rdf:datatype="&xsd;integer">5000</xsd:minExclusive>
+                        <xsd:maxExclusive rdf:datatype="&xsd;integer">6000</xsd:maxExclusive>
+                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                    </rdf:Description>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Fluorescent -->
+
+    <owl:Class rdf:about="#Fluorescent">
+        <rdfs:subClassOf rdf:resource="#LightType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FocalLength -->
+
+    <owl:Class rdf:about="#FocalLength">
+        <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
+        <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
+        <rdfs:comment
+            >Not sure what the relation is to the lens focal lengths.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FocusMode -->
+
+    <owl:Class rdf:about="#FocusMode">
+        <rdfs:subClassOf rdf:resource="#CameraFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Format -->
+
+    <owl:Class rdf:about="#Format">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#height"/>
+                <owl:someValuesFrom rdf:resource="&xsd;int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#width"/>
+                <owl:someValuesFrom rdf:resource="&xsd;int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FreezingMovement -->
+
+    <owl:Class rdf:about="#FreezingMovement">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#GoodBoca -->
+
+    <owl:Class rdf:about="#GoodBoca">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Boca"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasShape"/>
+                        <owl:someValuesFrom rdf:resource="#Circle"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#GradFilter -->
+
+    <owl:Class rdf:about="#GradFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+        <rdfs:comment
+            >A grad selectively effects part of an image.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#High -->
+
+    <owl:Class rdf:about="#High">
+        <rdfs:subClassOf rdf:resource="#Level"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#HighContrastSituation -->
+
+    <owl:Class rdf:about="#HighContrastSituation">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Conditions"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasParameter"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="#Contrast"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasLevel"/>
+                                        <owl:someValuesFrom rdf:resource="#High"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#requires"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Adjustment"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#uses"/>
+                                <owl:someValuesFrom rdf:resource="#Flash"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#requires"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Adjustment"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#increases"/>
+                                <owl:someValuesFrom rdf:resource="#ShutterSpeed"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#IRFilter -->
+
+    <owl:Class rdf:about="#IRFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Image -->
+
+    <owl:Class rdf:about="#Image">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ImageFeature -->
+
+    <owl:Class rdf:about="#ImageFeature">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Qualities of the captured image.
+None of these features can be controlled directly, but wil be a product of the equipment used and the setup of that equipment,</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#IncreaseShutterSpeed -->
+
+    <owl:Class rdf:about="#IncreaseShutterSpeed">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#ShutterSpeed"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom rdf:resource="#ShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#MotionBlur"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#MotionBlur"/>
+                            <rdf:Description rdf:about="#ShutterSpeed"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#InfraRedFilm -->
+
+    <owl:Class rdf:about="#InfraRedFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Landscape -->
+
+    <owl:Class rdf:about="#Landscape">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LargeFormat -->
+
+    <owl:Class rdf:about="#LargeFormat">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Format"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#height"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:minInclusive rdf:datatype="&xsd;integer">127</xsd:minInclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#width"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:minInclusive rdf:datatype="&xsd;integer">101</xsd:minInclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LargeFormatFilm -->
+
+    <owl:Class rdf:about="#LargeFormatFilm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFormat"/>
+                        <owl:someValuesFrom rdf:resource="#LargeFormat"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Lens -->
+
+    <owl:Class rdf:about="#Lens">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasAperture"/>
+                <owl:someValuesFrom rdf:resource="#Aperture"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasMinimumFocalDistance"/>
+                <owl:someValuesFrom rdf:resource="&xsd;int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Having a single focal length only works for prime lenses.
+We need a min and max for zooms</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LensFlare -->
+
+    <owl:Class rdf:about="#LensFlare">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Level -->
+
+    <owl:Class rdf:about="#Level">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Light -->
+
+    <owl:Class rdf:about="#Light">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#producesLightType"/>
+                <owl:someValuesFrom rdf:resource="#LightType"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#LightIntensity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightIntensity -->
+
+    <owl:Class rdf:about="#LightIntensity">
+        <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
+        <rdfs:comment
+            >The available light. This can always be supplemented.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightSensitiveMedia -->
+
+    <owl:Class rdf:about="#LightSensitiveMedia">
+        <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasFormat"/>
+                <owl:someValuesFrom rdf:resource="#Format"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasSensitivity"/>
+                <owl:someValuesFrom rdf:resource="&xsd;int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightType -->
+
+    <owl:Class rdf:about="#LightType">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasColourTemperature"/>
+                <owl:someValuesFrom rdf:resource="&xsd;int"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LithFilm -->
+
+    <owl:Class rdf:about="#LithFilm">
+        <rdfs:subClassOf rdf:resource="#Film"/>
+        <rdfs:comment
+            >Very high contrast (black or white, no greyscales)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LongExposure -->
+
+    <owl:Class rdf:about="#LongExposure">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#ShutterSpeed"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasDuration"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:minInclusive rdf:datatype="&xsd;double">1.0</xsd:minInclusive>
+                                <owl:onDataRange rdf:resource="&xsd;float"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isSuitableFor"/>
+                <owl:someValuesFrom rdf:resource="#Night_LowLight"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Exposures longer than a second</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Low -->
+
+    <owl:Class rdf:about="#Low">
+        <rdfs:subClassOf rdf:resource="#Level"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LowerISO -->
+
+    <owl:Class rdf:about="#LowerISO">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#Sensitivity"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:complementOf>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="&owl;Thing"/>
+                    </owl:Restriction>
+                </owl:complementOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#Noise"/>
+                            <rdf:Description rdf:about="#Sensitivity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#Noise"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Macro -->
+
+    <owl:Class rdf:about="#Macro">
+        <rdfs:subClassOf rdf:resource="#Lens"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ManualFocus -->
+
+    <owl:Class rdf:about="#ManualFocus">
+        <rdfs:subClassOf rdf:resource="#FocusMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Medium -->
+
+    <owl:Class rdf:about="#Medium">
+        <rdfs:subClassOf rdf:resource="#Level"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MediumFormat -->
+
+    <owl:Class rdf:about="#MediumFormat">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Format"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#height"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;integer">101</xsd:maxExclusive>
+                                <xsd:minExclusive rdf:datatype="&xsd;integer">36</xsd:minExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#width"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;integer">127</xsd:maxExclusive>
+                                <xsd:minExclusive rdf:datatype="&xsd;integer">24</xsd:minExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MediumFormatFilm -->
+
+    <owl:Class rdf:about="#MediumFormatFilm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFormat"/>
+                        <owl:someValuesFrom rdf:resource="#MediumFormat"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MeteringMode -->
+
+    <owl:Class rdf:about="#MeteringMode">
+        <rdfs:subClassOf rdf:resource="#CameraFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MirrorLockup -->
+
+    <owl:Class rdf:about="#MirrorLockup">
+        <rdfs:subClassOf rdf:resource="#CameraFeature"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MotionBlur -->
+
+    <owl:Class rdf:about="#MotionBlur">
+        <rdfs:subClassOf rdf:resource="#Blur"/>
+        <rdfs:comment
+            >Blur caused by the relative movement of camera and subject.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MotionReducingAdjustment -->
+
+    <owl:Class rdf:about="#MotionReducingAdjustment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#DecreaseShutterSpeed"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#allows"/>
+                <owl:someValuesFrom rdf:resource="#UseLongerFocalLength"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MoveCloserToSubject -->
+
+    <owl:Class rdf:about="#MoveCloserToSubject">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#DistanceToSubject"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#exagerates"/>
+                <owl:someValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#DistanceToSubject"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Composition"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#DistanceToSubject"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MoveFurtherFromSubject -->
+
+    <owl:Class rdf:about="#MoveFurtherFromSubject">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#DistanceToSubject"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#compresses"/>
+                <owl:someValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Composition"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#DistanceToSubject"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#DistanceToSubject"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Movements -->
+
+    <owl:Class rdf:about="#Movements">
+        <rdfs:subClassOf rdf:resource="#CameraFeature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MultiArea -->
+
+    <owl:Class rdf:about="#MultiArea">
+        <rdfs:subClassOf rdf:resource="#AutoFocus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NegativeImage -->
+
+    <owl:Class rdf:about="#NegativeImage">
+        <rdfs:subClassOf rdf:resource="#Image"/>
+        <owl:disjointWith rdf:resource="#PositiveImage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NeutralDensityFilter -->
+
+    <owl:Class rdf:about="#NeutralDensityFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NeutralDensityGrad -->
+
+    <owl:Class rdf:about="#NeutralDensityGrad">
+        <rdfs:subClassOf rdf:resource="#GradFilter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Night_LowLight -->
+
+    <owl:Class rdf:about="#Night_LowLight">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Noise -->
+
+    <owl:Class rdf:about="#Noise">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >Visible artifact. (Normally) randomised variation in colour and/or luminence across an area of the image that should be a single smooth block of colour. Can be caused by many factors, such as film grain size, or in digital photography the interaction of sensors on the chip (leakage). Generally noise is most noticeable in dark areas of an image. Linked to sensitivity.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NormalLens -->
+
+    <owl:Class rdf:about="#NormalLens">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minInclusive rdf:datatype="&xsd;integer">100</xsd:minInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxExclusive rdf:datatype="&xsd;integer">100</xsd:maxExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minExclusive rdf:datatype="&xsd;integer">24</xsd:minExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxInclusive rdf:datatype="&xsd;integer">24</xsd:maxInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxExclusive rdf:datatype="&xsd;integer">100</xsd:maxExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minExclusive rdf:datatype="&xsd;integer">24</xsd:minExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:maxExclusive rdf:datatype="&xsd;integer">100</xsd:maxExclusive>
+                                        <xsd:minExclusive rdf:datatype="&xsd;integer">24</xsd:minExclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#OpenUpAperture -->
+
+    <owl:Class rdf:about="#OpenUpAperture">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#Aperture"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Aperture"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Aperture"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Orientation -->
+
+    <owl:Class rdf:about="#Orientation">
+        <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#OverExposed -->
+
+    <owl:Class rdf:about="#OverExposed">
+        <rdfs:subClassOf rdf:resource="#ExposureLevel"/>
+        <owl:disjointWith rdf:resource="#UnderExposed"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PanoramicCamera -->
+
+    <owl:Class rdf:about="#PanoramicCamera">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Parameter -->
+
+    <owl:Class rdf:about="#Parameter">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Things that are usually under the control of the photographer (given no restrictions on equipment). Ie the things that should be taken into account when taking an individual photograph.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Perspective -->
+
+    <owl:Class rdf:about="#Perspective">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >How pronounced the effect of perspective is. Wide angle lenses and close proximity enhance the effect of perspective.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Photograph -->
+
+    <owl:Class rdf:about="#Photograph">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <synonym>Print</synonym>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PhotographicSubject -->
+
+    <owl:Class rdf:about="#PhotographicSubject">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This is a bad name for the broad categories of photographs</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PhysicalThing -->
+
+    <owl:Class rdf:about="#PhysicalThing">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Pincushioning -->
+
+    <owl:Class rdf:about="#Pincushioning">
+        <rdfs:subClassOf rdf:resource="#Distortion"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PinholeCamera -->
+
+    <owl:Class rdf:about="#PinholeCamera">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Camera"/>
+                    <owl:Class>
+                        <owl:complementOf>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasLens"/>
+                                <owl:someValuesFrom rdf:resource="#Lens"/>
+                            </owl:Restriction>
+                        </owl:complementOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PolarisingFilter -->
+
+    <owl:Class rdf:about="#PolarisingFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#Contrast"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >A polarising filter cuts down reflected light from surfaces and from particles in the atmosphere. The effect is variable depending on the angle of the filter to the lightsource and object. Polarising filters give greater contrast to cloud filled skies and remove reflections from windows and water bodies.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Polygon -->
+
+    <owl:Class rdf:about="#Polygon">
+        <rdfs:subClassOf rdf:resource="#Shape"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Portrait -->
+
+    <owl:Class rdf:about="#Portrait">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PositiveImage -->
+
+    <owl:Class rdf:about="#PositiveImage">
+        <rdfs:subClassOf rdf:resource="#Image"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Prime -->
+
+    <owl:Class rdf:about="#Prime">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                        <owl:someValuesFrom rdf:resource="&xsd;int"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PrintFilm -->
+
+    <owl:Class rdf:about="#PrintFilm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#producesImage"/>
+                        <owl:someValuesFrom rdf:resource="#PositiveImage"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RaiseISO -->
+
+    <owl:Class rdf:about="#RaiseISO">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#Sensitivity"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#Noise"/>
+                            <rdf:Description rdf:about="#Sensitivity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#Noise"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:complementOf>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="&owl;Thing"/>
+                    </owl:Restriction>
+                </owl:complementOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RangeFinder -->
+
+    <owl:Class rdf:about="#RangeFinder">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Reflector -->
+
+    <owl:Class rdf:about="#Reflector">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#LightIntensity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RemoteRelease -->
+
+    <owl:Class rdf:about="#RemoteRelease">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Resolution -->
+
+    <owl:Class rdf:about="#Resolution">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >Resolving power of the lens and light sensitive media. Definition level of the image. In film photography this is related to the ISO of the film. In digital photography this related to the number of pixels on the sensor.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SLR -->
+
+    <owl:Class rdf:about="#SLR">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLens"/>
+                <owl:onClass rdf:resource="#Lens"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <synonym
+            >Single Lens Reflex</synonym>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Sensitivity -->
+
+    <owl:Class rdf:about="#Sensitivity">
+        <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
+        <rdfs:comment
+            >The ability of the sensitive material to pick up light. This is traditionally measured in the ISO standard, with higher numbers meaning higher sensitivity. Standard systems double the ISO for each iteration (eg ISO50, ISO100, ISO200 ... ISO32,000)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Shape -->
+
+    <owl:Class rdf:about="#Shape">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Shift -->
+
+    <owl:Class rdf:about="#Shift">
+        <rdfs:subClassOf rdf:resource="#Movements"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ShutterSpeed -->
+
+    <owl:Class rdf:about="#ShutterSpeed">
+        <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
+        <rdfs:comment
+            >Ideally shutter speeds should be fractional, but to simplify the duration will be stated in seconds.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SingleArea -->
+
+    <owl:Class rdf:about="#SingleArea">
+        <rdfs:subClassOf rdf:resource="#AutoFocus"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SlideFilm -->
+
+    <owl:Class rdf:about="#SlideFilm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#producesImage"/>
+                        <owl:someValuesFrom rdf:resource="#NegativeImage"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SlowExposure -->
+
+    <owl:Class rdf:about="#SlowExposure">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#ShutterSpeed"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasDuration"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:minExclusive rdf:datatype="&xsd;double">0.01</xsd:minExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;float"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#MotionBlur"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Shutter speeds between 1/100 and 1sec.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SmallFormat -->
+
+    <owl:Class rdf:about="#SmallFormat">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Format"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#height"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;integer">24</xsd:maxExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#width"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;integer">36</xsd:maxExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SmallFormatFilm -->
+
+    <owl:Class rdf:about="#SmallFormatFilm">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Film"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFormat"/>
+                        <owl:someValuesFrom rdf:resource="#SmallFormat"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SpecialEffectsFilter -->
+
+    <owl:Class rdf:about="#SpecialEffectsFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SpotMetering -->
+
+    <owl:Class rdf:about="#SpotMetering">
+        <rdfs:subClassOf rdf:resource="#MeteringMode"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StillLife -->
+
+    <owl:Class rdf:about="#StillLife">
+        <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StreetPhotography -->
+
+    <owl:Class rdf:about="#StreetPhotography">
+        <rdfs:subClassOf rdf:resource="#Documentary"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StudioLight -->
+
+    <owl:Class rdf:about="#StudioLight">
+        <rdfs:subClassOf rdf:resource="#Light"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#producesLightType"/>
+                <owl:someValuesFrom rdf:resource="#Tungsten"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Subject -->
+
+    <owl:Class rdf:about="#Subject">
+        <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
+        <rdfs:comment
+            >The subject of an image (the thing being photographed) and assumed to be the thing being focussed on.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Sunshine -->
+
+    <owl:Class rdf:about="#Sunshine">
+        <rdfs:subClassOf rdf:resource="#LightType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TLR -->
+
+    <owl:Class rdf:about="#TLR">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLens"/>
+                <owl:onClass rdf:resource="#Lens"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <synonym
+            >Twin Lens Reflex</synonym>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TTL -->
+
+    <owl:Class rdf:about="#TTL">
+        <rdfs:subClassOf rdf:resource="#MeteringMode"/>
+        <synonym
+            >Through The Lens</synonym>
+        <synonym
+            >Off Film Metering (OFM)</synonym>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Telephoto -->
+
+    <owl:Class rdf:about="#Telephoto">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:minInclusive rdf:datatype="&xsd;integer">100</xsd:minInclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:minInclusive rdf:datatype="&xsd;integer">100</xsd:minInclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TestLens -->
+
+    <owl:Class rdf:about="#TestLens">
+        <rdfs:subClassOf rdf:resource="#Lens"/>
+        <test rdf:datatype="&xsd;boolean">true</test>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tilt -->
+
+    <owl:Class rdf:about="#Tilt">
+        <rdfs:subClassOf rdf:resource="#Movements"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ToyCamera -->
+
+    <owl:Class rdf:about="#ToyCamera">
+        <rdfs:subClassOf rdf:resource="#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tripod -->
+
+    <owl:Class rdf:about="#Tripod">
+        <rdfs:subClassOf rdf:resource="#Equipment"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tungsten -->
+
+    <owl:Class rdf:about="#Tungsten">
+        <rdfs:subClassOf rdf:resource="#LightType"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasColourTemperature"/>
+                <owl:someValuesFrom>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&owl;DataRange"/>
+                        <xsd:minExclusive rdf:datatype="&xsd;integer">2500</xsd:minExclusive>
+                        <xsd:maxExclusive rdf:datatype="&xsd;integer">3500</xsd:maxExclusive>
+                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                    </rdf:Description>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UVFilter -->
+
+    <owl:Class rdf:about="#UVFilter">
+        <rdfs:subClassOf rdf:resource="#Filter"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UnderExposed -->
+
+    <owl:Class rdf:about="#UnderExposed">
+        <rdfs:subClassOf rdf:resource="#ExposureLevel"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseEquipment -->
+
+    <owl:Class rdf:about="#UseEquipment">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#uses"/>
+                        <owl:someValuesFrom rdf:resource="#Equipment"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseLargerFormatCamera -->
+
+    <owl:Class rdf:about="#UseLargerFormatCamera">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#uses"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="#Camera"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasSensitiveMedia"/>
+                                        <owl:someValuesFrom>
+                                            <owl:Restriction>
+                                                <owl:onProperty rdf:resource="#hasFormat"/>
+                                                <owl:someValuesFrom>
+                                                    <owl:Class>
+                                                        <owl:unionOf rdf:parseType="Collection">
+                                                            <rdf:Description rdf:about="#LargeFormat"/>
+                                                            <rdf:Description rdf:about="#MediumFormat"/>
+                                                        </owl:unionOf>
+                                                    </owl:Class>
+                                                </owl:someValuesFrom>
+                                            </owl:Restriction>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom rdf:resource="#Resolution"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#Resolution"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#Noise"/>
+                            <rdf:Description rdf:about="#Resolution"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#Noise"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >This is not the best definition. In fact we don&#39;t really need one here.
+It arbitrarily chooses medium or large format, but actually should just be increasing format</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseLongerFocalLength -->
+
+    <owl:Class rdf:about="#UseLongerFocalLength">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#increases"/>
+                        <owl:someValuesFrom rdf:resource="#FocalLength"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#compresses"/>
+                <owl:someValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#CameraShake"/>
+                            <rdf:Description rdf:about="#FocalLength"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#CameraShake"/>
+                            <rdf:Description rdf:about="#Composition"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#FocalLength"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseShorterFocalLength -->
+
+    <owl:Class rdf:about="#UseShorterFocalLength">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Adjustment"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#reduces"/>
+                        <owl:someValuesFrom rdf:resource="#FocalLength"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#exagerates"/>
+                <owl:someValuesFrom rdf:resource="#Perspective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affects"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#CameraShake"/>
+                            <rdf:Description rdf:about="#Composition"/>
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#FocalLength"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#DepthOfField"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#CameraShake"/>
+                            <rdf:Description rdf:about="#FocalLength"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#DepthOfField"/>
+                            <rdf:Description rdf:about="#ExposureLevel"/>
+                            <rdf:Description rdf:about="#Perspective"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#reduces"/>
+                <owl:someValuesFrom rdf:resource="#CameraShake"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#VeryFastExposure -->
+
+    <owl:Class rdf:about="#VeryFastExposure">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#ShutterSpeed"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasDuration"/>
+                        <owl:someValuesFrom>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                <xsd:maxExclusive rdf:datatype="&xsd;double">0.002</xsd:maxExclusive>
+                                <owl:onDataRange rdf:resource="&xsd;float"/>
+                            </rdf:Description>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isSuitableFor"/>
+                <owl:someValuesFrom rdf:resource="#FreezingMovement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment
+            >Faster than 1/500.
+Suitable for freezing subjects.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Vignetting -->
+
+    <owl:Class rdf:about="#Vignetting">
+        <rdfs:subClassOf rdf:resource="#ImageFeature"/>
+        <rdfs:comment
+            >Darkened corners of an image, caused by light falloff because of poor lens engineering or stacked filters.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Warm -->
+
+    <owl:Class rdf:about="#Warm">
+        <rdfs:subClassOf rdf:resource="#ColourBalance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#WideAngle -->
+
+    <owl:Class rdf:about="#WideAngle">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minInclusive rdf:datatype="&xsd;integer">8</xsd:minInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxExclusive rdf:datatype="&xsd;integer">8</xsd:maxExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minExclusive rdf:datatype="&xsd;integer">24</xsd:minExclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxInclusive rdf:datatype="&xsd;integer">24</xsd:maxInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:maxInclusive rdf:datatype="&xsd;integer">24</xsd:maxInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                                        <owl:someValuesFrom>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&owl;DataRange"/>
+                                                <xsd:minInclusive rdf:datatype="&xsd;integer">8</xsd:minInclusive>
+                                                <owl:onDataRange rdf:resource="&xsd;int"/>
+                                            </rdf:Description>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                                <owl:someValuesFrom>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&owl;DataRange"/>
+                                        <xsd:maxInclusive rdf:datatype="&xsd;integer">24</xsd:maxInclusive>
+                                        <xsd:minInclusive rdf:datatype="&xsd;integer">8</xsd:minInclusive>
+                                        <owl:onDataRange rdf:resource="&xsd;int"/>
+                                    </rdf:Description>
+                                </owl:someValuesFrom>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Zoom -->
+
+    <owl:Class rdf:about="#Zoom">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Lens"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasMaxEffectiveFocalLength"/>
+                        <owl:someValuesFrom rdf:resource="&xsd;int"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasMinEffectiveFocalLength"/>
+                        <owl:someValuesFrom rdf:resource="&xsd;int"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:complementOf>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFixedEffectiveFocalLength"/>
+                        <owl:someValuesFrom rdf:resource="&xsd;int"/>
+                    </owl:Restriction>
+                </owl:complementOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/1 -->
+
+    <owl:Class rdf:about="#f/1">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">1.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/1.4 -->
+
+    <owl:Class rdf:about="#f/1.4">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">1.4</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/11 -->
+
+    <owl:Class rdf:about="#f/11">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">11.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/16 -->
+
+    <owl:Class rdf:about="#f/16">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">16.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/2 -->
+
+    <owl:Class rdf:about="#f/2">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">2.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/2.8 -->
+
+    <owl:Class rdf:about="#f/2.8">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">2.8</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/22 -->
+
+    <owl:Class rdf:about="#f/22">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">22.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/32 -->
+
+    <owl:Class rdf:about="#f/32">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">32.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/4 -->
+
+    <owl:Class rdf:about="#f/4">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">4.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/5.6 -->
+
+    <owl:Class rdf:about="#f/5.6">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">5.6</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/8 -->
+
+    <owl:Class rdf:about="#f/8">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Aperture"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasFStop"/>
+                        <owl:hasValue rdf:datatype="&xsd;double">8.0</owl:hasValue>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdfs:subPropertyOf rdf:resource="#reduces"/>
+        <owl:propertyChain rdf:parseType="Collection">
+            <rdf:Description rdf:about="#hasFeature"/>
+            <rdf:Description rdf:about="#reduces"/>
+        </owl:propertyChain>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Blur"/>
+            <rdf:Description rdf:about="#Boca"/>
+            <rdf:Description rdf:about="#ColourCast"/>
+            <rdf:Description rdf:about="#Composition"/>
+            <rdf:Description rdf:about="#Contrast"/>
+            <rdf:Description rdf:about="#DepthOfField"/>
+            <rdf:Description rdf:about="#Distortion"/>
+            <rdf:Description rdf:about="#ExposureLevel"/>
+            <rdf:Description rdf:about="#LensFlare"/>
+            <rdf:Description rdf:about="#Noise"/>
+            <rdf:Description rdf:about="#Perspective"/>
+            <rdf:Description rdf:about="#Resolution"/>
+            <rdf:Description rdf:about="#Vignetting"/>
+        </owl:members>
+    </rdf:Description>
+    <owl:Restriction>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#increases"/>
+                <owl:someValuesFrom rdf:resource="#ExposureLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:onProperty rdf:resource="#increases"/>
+        <owl:someValuesFrom rdf:resource="#LightIntensity"/>
+    </owl:Restriction>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Camera"/>
+            <rdf:Description rdf:about="#Filter"/>
+            <rdf:Description rdf:about="#Lens"/>
+            <rdf:Description rdf:about="#Light"/>
+            <rdf:Description rdf:about="#Reflector"/>
+            <rdf:Description rdf:about="#RemoteRelease"/>
+            <rdf:Description rdf:about="#Tripod"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:subPropertyOf rdf:resource="#hasFeature"/>
+        <owl:propertyChain rdf:parseType="Collection">
+            <rdf:Description rdf:about="#hasPart"/>
+            <rdf:Description rdf:about="#hasFeature"/>
+        </owl:propertyChain>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#DistanceToSubject"/>
+            <rdf:Description rdf:about="#FocalLength"/>
+            <rdf:Description rdf:about="#Orientation"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#ConversionFilter"/>
+            <rdf:Description rdf:about="#CorrectionFilter"/>
+            <rdf:Description rdf:about="#GradFilter"/>
+            <rdf:Description rdf:about="#IRFilter"/>
+            <rdf:Description rdf:about="#NeutralDensityFilter"/>
+            <rdf:Description rdf:about="#PolarisingFilter"/>
+            <rdf:Description rdf:about="#SpecialEffectsFilter"/>
+            <rdf:Description rdf:about="#UVFilter"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#High"/>
+            <rdf:Description rdf:about="#Low"/>
+            <rdf:Description rdf:about="#Medium"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Adjustment"/>
+            <rdf:Description rdf:about="#CameraFeature"/>
+            <rdf:Description rdf:about="#Conditions"/>
+            <rdf:Description rdf:about="#Format"/>
+            <rdf:Description rdf:about="#Image"/>
+            <rdf:Description rdf:about="#ImageFeature"/>
+            <rdf:Description rdf:about="#Level"/>
+            <rdf:Description rdf:about="#LightType"/>
+            <rdf:Description rdf:about="#Parameter"/>
+            <rdf:Description rdf:about="#Photograph"/>
+            <rdf:Description rdf:about="#PhotographicSubject"/>
+            <rdf:Description rdf:about="#PhysicalThing"/>
+            <rdf:Description rdf:about="#Shape"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Daylight"/>
+            <rdf:Description rdf:about="#FlashLight"/>
+            <rdf:Description rdf:about="#Fluorescent"/>
+            <rdf:Description rdf:about="#Sunshine"/>
+            <rdf:Description rdf:about="#Tungsten"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#18mm"/>
+            <rdf:Description rdf:about="#20-100mm"/>
+            <rdf:Description rdf:about="#35-55mm"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:subPropertyOf rdf:resource="#increases"/>
+        <owl:propertyChain rdf:parseType="Collection">
+            <rdf:Description rdf:about="#uses"/>
+            <rdf:Description rdf:about="#increases"/>
+        </owl:propertyChain>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Aperture"/>
+            <rdf:Description rdf:about="#LightIntensity"/>
+            <rdf:Description rdf:about="#Sensitivity"/>
+            <rdf:Description rdf:about="#ShutterSpeed"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Equipment"/>
+            <rdf:Description rdf:about="#LightSensitiveMedia"/>
+            <rdf:Description rdf:about="#Subject"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:subPropertyOf rdf:resource="#increases"/>
+        <owl:propertyChain rdf:parseType="Collection">
+            <rdf:Description rdf:about="#hasFeature"/>
+            <rdf:Description rdf:about="#increases"/>
+        </owl:propertyChain>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:subPropertyOf rdf:resource="#reduces"/>
+        <owl:propertyChain rdf:parseType="Collection">
+            <rdf:Description rdf:about="#uses"/>
+            <rdf:Description rdf:about="#reduces"/>
+        </owl:propertyChain>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Circle"/>
+            <rdf:Description rdf:about="#Donut"/>
+            <rdf:Description rdf:about="#Polygon"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.941) http://owlapi.sourceforge.net -->
+
