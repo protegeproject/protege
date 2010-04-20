@@ -3,15 +3,17 @@ package org.protege.editor.owl.model.library;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.protege.xmlcatalog.entry.GroupEntry;
+import org.protege.xmlcatalog.entry.Entry;
 
 public class LibraryUtilities {
-	
-	public static String getStringProperty(GroupEntry ge, String property) {
-		if (ge.getId() == null) {
+    public static String getStringProperty(Entry entry, String property) {
+		if (entry.getId() == null) {
 			return null;
 		}
-		String s = ge.getId();
+		String s = entry.getId();
+		if (s == null) {
+		    return null;
+		}
 		int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 		Pattern inMiddle = Pattern.compile(", " + property + "=([^,]*),", flags);
 		Matcher m1 = inMiddle.matcher(s);
