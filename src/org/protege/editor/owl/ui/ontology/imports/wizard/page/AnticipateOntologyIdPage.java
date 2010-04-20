@@ -16,11 +16,11 @@ import javax.swing.SwingUtilities;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
-import org.protege.xmlcatalog.owl.update.XmlBaseAlgorithm;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
