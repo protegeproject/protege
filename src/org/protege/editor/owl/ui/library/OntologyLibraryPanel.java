@@ -189,7 +189,7 @@ public class OntologyLibraryPanel extends JPanel {
             GroupEntry lib;
             try {
                 lib = folderManager.createGroupEntry(f, catalog);
-                folderManager.update(lib, -1L);
+                folderManager.update(lib);
                 catalog.addEntry(lib);
                 CatalogUtilities.save(catalog, catalogFile);
             }
