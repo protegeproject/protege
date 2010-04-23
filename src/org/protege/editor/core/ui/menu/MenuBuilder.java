@@ -218,15 +218,6 @@ public class MenuBuilder {
             MenuActionPluginJPFImpl plugin = new MenuActionPluginJPFImpl(editorKit, ext);
             result.put(ext.getUniqueIdentifier(), plugin);
         }
-        // Dynamically create plugins for the installed clsdescriptioneditor kits.  These are menu items
-        // that are on the File -> Open, and File -> New menus
-//        for (EditorKitFactoryPlugin edKitFactoryPlugin : ProtegeManager.getInstance().getEditorKitFactoryPlugins()) {
-//            EditorKitFactoryOpenActionPlugin openActionPlugin = new EditorKitFactoryOpenActionPlugin(
-//                    edKitFactoryPlugin);
-//            result.put(openActionPlugin.getId(), openActionPlugin);
-//            EditorKitFactoryNewActionPlugin newActionPlugin = new EditorKitFactoryNewActionPlugin(edKitFactoryPlugin);
-//            result.put(newActionPlugin.getId(), newActionPlugin);
-//        }
         return result;
     }
 
