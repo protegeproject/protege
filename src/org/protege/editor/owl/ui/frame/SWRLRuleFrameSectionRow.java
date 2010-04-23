@@ -6,9 +6,9 @@ import java.util.List;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.SWRLRuleEditor;
-import org.protege.editor.owl.ui.renderer.SWRLRuleRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.SWRLRule;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -31,8 +31,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
-
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -40,12 +38,10 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * Date: 06-Jul-2007<br><br>
  */
 public class SWRLRuleFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntology, SWRLRule, SWRLRule> {
-    private SWRLRuleRenderer renderer;
 
     public SWRLRuleFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
                                    OWLOntology rootObject, SWRLRule axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
-        renderer = new SWRLRuleRenderer(owlEditorKit.getModelManager());
     }
 
 
@@ -73,15 +69,5 @@ public class SWRLRuleFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntol
 
     public List<SWRLRule> getManipulatableObjects() {
         return Arrays.asList(getAxiom());
-    }
-    
-  /*
-   * Workaround for owlapi feature request 2896097.  Remove this fix when 
-   * the simple rule renderer and parser is implemented.  Svn at time of 
-   * commit is approximately 16831
-   */
-    @Override
-    public String getRendering() {
-        return renderer.render(getAxiom());
     }
 }
