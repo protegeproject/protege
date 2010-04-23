@@ -8,12 +8,14 @@ import javax.swing.JScrollPane;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
-import org.protege.editor.owl.ui.renderer.SWRLRuleRenderer;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.SWRLRule;
+
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,7 +39,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -45,13 +46,12 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * Date: 06-Jul-2007<br><br>
  */
 public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements VerifiedInputEditor {
+    private OWLModelManager mngr;
 
     private ExpressionEditor<SWRLRule> editor;
 
     private JScrollPane scrollpane;
-
-    private SWRLRuleRenderer renderer;
-
+    
     public SWRLRuleEditor(OWLEditorKit editorKit) {
         final OWLExpressionCheckerFactory fac = editorKit.getModelManager().getOWLExpressionCheckerFactory();
         editor = new ExpressionEditor<SWRLRule>(editorKit, fac.getSWRLChecker());
@@ -59,7 +59,7 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
         scrollpane = new JScrollPane(editor);
         scrollpane.setPreferredSize(new Dimension(500, 200));
         
-        renderer = new SWRLRuleRenderer(editorKit.getModelManager());
+        mngr = editorKit.getModelManager();
     }
 
 
@@ -97,7 +97,7 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
             editor.setText("");
         }
         else{
-            editor.setText(renderer.render(rule));
+            editor.setText(mngr.getRendering(rule));
         }
         return true;
     }
