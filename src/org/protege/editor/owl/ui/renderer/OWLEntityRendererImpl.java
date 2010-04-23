@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.IRI;
 
 
 /**
@@ -23,16 +23,16 @@ public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
     }
 
 
-    public String render(OWLEntity entity) {
+    public String render(IRI iri) {
         try {
-            String rendering = entity.getIRI().getFragment();
+            String rendering = iri.getFragment();
             if (rendering == null) {
                 // Get last bit of path
-                String path = entity.getIRI().toURI().getPath();
+                String path = iri.toURI().getPath();
                 if (path == null) {
-                    return entity.getIRI().toString();
+                    return iri.toQuotedString();
                 }
-                return entity.getIRI().toURI().getPath().substring(path.lastIndexOf("/") + 1);
+                return iri.toURI().getPath().substring(path.lastIndexOf("/") + 1);
             }
             return RenderingEscapeUtils.getEscapedRendering(rendering);
         }
