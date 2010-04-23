@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 
@@ -16,17 +17,20 @@ import org.semanticweb.owlapi.model.OWLEntity;
  */
 public interface OWLModelManagerEntityRenderer extends OWLEntityRenderer, Disposable {
 
-    public void setup(OWLModelManager owlModelManager);
+    void setup(OWLModelManager owlModelManager);
 
 
-    public void initialise();
+    void initialise();
 
 
-    public String render(OWLEntity entity);
+    String render(OWLEntity entity);
+    
+    
+    String render(IRI iri);
 
 
-    public void addListener(OWLEntityRendererListener listener);
+    void addListener(OWLEntityRendererListener listener);
 
 
-    public void removeListener(OWLEntityRendererListener listener);
+    void removeListener(OWLEntityRendererListener listener);
 }
