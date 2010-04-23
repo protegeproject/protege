@@ -33,9 +33,6 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
     private static final long serialVersionUID = 2800648962536275497L;
 
 
-    private Set<ViewComponentPlugin> viewPlugins = new HashSet<ViewComponentPlugin>();
-
-
     private OWLEntityDisplayProvider provider = new OWLEntityDisplayProvider() {
         public boolean canDisplay(OWLEntity owlEntity) {
             return OWLWorkspaceViewsTab.this.canDisplay(owlEntity);
