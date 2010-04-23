@@ -53,6 +53,10 @@ public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntity
     public final String getShortForm(OWLEntity owlEntity) {
         return render(owlEntity);
     }
+    
+    public String render(OWLEntity owlEntity) {
+        return render(owlEntity.getIRI());
+    }
 
 
     protected void processChanges(List<? extends OWLOntologyChange> changes) {
