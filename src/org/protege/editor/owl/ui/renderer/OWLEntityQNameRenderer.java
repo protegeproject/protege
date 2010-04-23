@@ -23,21 +23,20 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
     }
 
 
-    public String render(OWLEntity entity) {
+    public String render(IRI iri) {
         try {
             PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
-            String s = mapper.getShortForm(entity.getIRI().toURI());
+            String s = mapper.getShortForm(iri.toURI());
             if (s != null) {
                 return s;
             }
             else {
                 // No mapping
-                IRI uri = entity.getIRI();
-                if (uri.getFragment() != null) {
-                    return uri.getFragment();
+                if (iri.getFragment() != null) {
+                    return iri.getFragment();
                 }
                 else {
-                    return uri.toString();
+                    return iri.toQuotedString();
                 }
             }
         }
