@@ -43,7 +43,9 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
     }
 
 
-    public String render(OWLEntity entity) {
+    public String render(IRI iri) {
+        // doesn't matter what type of entity we choose - the same value is returned.
+        OWLEntity entity = getOWLModelManager().getOWLDataFactory().getOWLClass(iri);
         String shortForm = provider.getShortForm(entity);
         return escape(shortForm);
     }
