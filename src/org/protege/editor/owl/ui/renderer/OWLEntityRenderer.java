@@ -13,18 +13,11 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
+/*
+ * TODO why is this interface here and different from OWLModelManagerEntityRenderer?
+ */
 public interface OWLEntityRenderer extends ShortFormProvider {
-
-//    public void setup(OWLModelManager owlModelManager);
-
-//    public void initialise();
-
 
     public String render(OWLEntity entity);
 
-//    public void addListener(OWLEntityRendererListener listener);
-//
-//    public void removeListener(OWLEntityRendererListener listener);
-
-//    public void dispose();
 }
