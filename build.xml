@@ -67,18 +67,22 @@
         libraries that have been uncovered in buildlibs. 
      -->
    <target name = "checkProtegeLibs" depends="init">
-     <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
-     <echo message="Using OSGi Library = ${protege.osgi}"/>
-     <condition property="libs.found">
-       <and>
-           <available file="${protege.osgi}" type = "file"/>
-       </and>
-     </condition>
-     <path id = "project.classpath">    
-       <pathelement location="${protege.osgi}"/>
-       <pathelement location="${protege.lib}"/>
-       <fileset dir="${lib}" includes="*.jar"/>
-     </path>
+       <echo message="**********************************************************"/>
+	   <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
+       <echo message="Using Java Version = ${ant.java.version}" />
+       <echo message="Using OSGi Library = ${protege.osgi}"/>
+       <echo message="**********************************************************"/>
+
+       <condition property="libs.found">
+           <and>
+               <available file="${protege.osgi}" type = "file"/>
+           </and>
+       </condition>
+       <path id = "project.classpath">    
+           <pathelement location="${protege.osgi}"/>
+           <pathelement location="${protege.lib}"/>
+           <fileset dir="${lib}" includes="*.jar"/>
+       </path>
    </target>
 
    <!-- 
