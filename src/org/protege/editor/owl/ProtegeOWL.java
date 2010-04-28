@@ -1,5 +1,8 @@
 package org.protege.editor.owl;
 
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+
 
 
 /**
@@ -8,8 +11,22 @@ package org.protege.editor.owl;
  * @author tredmond
  *
  */
-public class ProtegeOWL {
+public class ProtegeOWL implements BundleActivator {
 
     public static final String ID = "org.protege.editor.owl";
+    
+    private static BundleContext context;
+
+    public void start(BundleContext context) throws Exception {
+        ProtegeOWL.context = context;
+    }
+
+    public void stop(BundleContext context) throws Exception {
+        ProtegeOWL.context = null;
+    }
+    
+    public static BundleContext getBundleContext() {
+        return context;
+    }
 
 }
