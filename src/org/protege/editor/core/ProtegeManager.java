@@ -123,10 +123,19 @@ public class ProtegeManager {
     public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
+            boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
-            if (editorKit.handleNewRequest()) {
-                getEditorKitManager().addEditorKit(editorKit);
-                return true;
+            try {
+                if (editorKit.handleNewRequest()) {
+                    getEditorKitManager().addEditorKit(editorKit);
+                    success = true;
+                    return true;
+                }
+            }
+            finally {
+                if (!success) {
+                    editorKit.dispose();
+                }
             }
         }
         return false;
@@ -142,10 +151,19 @@ public class ProtegeManager {
     public boolean openAndSetupEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
+            boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
-            if (editorKit.handleLoadRequest()) {
-                getEditorKitManager().addEditorKit(editorKit);
-                return true;
+            try {
+                if (editorKit.handleLoadRequest()) {
+                    getEditorKitManager().addEditorKit(editorKit);
+                    success = true;
+                    return true;
+                }
+            }
+            finally {
+                if (!success) {
+                    editorKit.dispose();
+                }
             }
         }
         return false;
@@ -155,10 +173,19 @@ public class ProtegeManager {
     public boolean loadAndSetupEditorKitFromURI(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
+            boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
-            if (editorKit.handleLoadFrom(uri)) {
-                getEditorKitManager().addEditorKit(editorKit);
-                return true;
+            try {
+                if (editorKit.handleLoadFrom(uri)) {
+                    getEditorKitManager().addEditorKit(editorKit);
+                    success = true;
+                    return true;
+                }
+            }
+            finally {
+                if (!success) {
+                    editorKit.dispose();
+                }
             }
         }
         return false;
@@ -193,6 +220,7 @@ public class ProtegeManager {
         for (EditorKitFactoryPlugin plugin : getEditorKitFactoryPlugins()) {
             String id = plugin.getId();
             if (id.equals(entry.getEditorKitId())) {
+                boolean success = false;
                 EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
                 if (editorKitFactory != null) {
                     EditorKit editorKit = editorKitFactory.createEditorKit();
@@ -200,13 +228,17 @@ public class ProtegeManager {
                         entry.configureEditorKit(editorKit);
                         if (editorKit.handleLoadFrom(entry.getPhysicalURI())) {
                             getEditorKitManager().addEditorKit(editorKit);
+                            success = true;
                         }
                     }
                     finally {
                         entry.restoreEditorKit(editorKit);
+                        if (!success) {
+                            editorKit.dispose();
+                        }
                     }
                 }
-                return true;
+                return success;
             }
         }
         return false;
@@ -223,9 +255,18 @@ public class ProtegeManager {
                     EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
                     if (editorKitFactory != null) {
                         EditorKit editorKit = editorKitFactory.createEditorKit();
-                        if (builder.newInstance().loadOntology(editorKit)) {
-                            getEditorKitManager().addEditorKit(editorKit);
-                            return true;
+                        boolean success = false;
+                        try {
+                            if (builder.newInstance().loadOntology(editorKit)) {
+                                getEditorKitManager().addEditorKit(editorKit);
+                                success = true;
+                                return true;
+                            }
+                        }
+                        finally {
+                            if (!success) {
+                                editorKit.dispose();
+                            }
                         }
                     }   
                 }
