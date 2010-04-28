@@ -168,6 +168,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private JPanel statusArea;
     
+    private JLabel customizedProtege = new JLabel();
+    
     private boolean reasonerManagerStarted = false;
     private JLabel reasonerStatus = new JLabel();
     private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
@@ -392,6 +394,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return Collections.unmodifiableSet(hiddenAnnotationURIs);
     }
 
+    public void setCustomizedBy(String customizedText) {
+        customizedProtege.setText(customizedText);
+        statusArea.repaint();
+    }
 
     public void setHiddenAnnotationURI(URI annotationURI, boolean hidden) {
         boolean changed;
@@ -898,6 +904,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         if (statusArea == null) {
             statusArea = new JPanel();
             statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
+            statusArea.add(Box.createHorizontalGlue());
+            statusArea.add(customizedProtege);
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(reasonerStatus);
             statusArea.add(Box.createHorizontalStrut(15));
