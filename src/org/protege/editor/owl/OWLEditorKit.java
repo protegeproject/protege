@@ -5,12 +5,19 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.AbstractEditorKit;
+import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -62,6 +69,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private Set<URI> newPhysicalURIs;
     
     private OntologyLoadErrorHandlerUI loadErrorHandler;
+    
+    private ServiceRegistration registration;
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
@@ -83,6 +92,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
+        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Properties());
     }
 
 
@@ -90,6 +100,24 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         super.initialiseCompleted();
     }
 
+    /**
+     * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this call
+     *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that 
+     *             you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing list:
+     *             http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
+     */
+    @Deprecated
+    public void setOWLModelManager(OWLModelManager modelManager) {
+        this.modelManager = modelManager;
+        ServiceReference sr = ProtegeOWL.getBundleContext().getServiceReference(PackageAdmin.class.getCanonicalName());
+        PackageAdmin admin = (PackageAdmin) ProtegeOWL.getBundleContext().getService(sr);
+        Bundle customizer = admin.getBundle(modelManager.getClass());
+        String name = (String) customizer.getHeaders().get(Constants.BUNDLE_NAME);
+        if (name == null) {
+            name = customizer.getSymbolicName();
+        }
+        getOWLWorkspace().setCustomizedBy("Prot\u00E9g\u00E9 Customized by " + name);
+    }
 
     /**
      * Gets the <code>EditorKit</code> Id.  This can be used to identify
@@ -287,6 +315,14 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
             }
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (registration != null) {
+            registration.unregister();
         }
     }
 }
