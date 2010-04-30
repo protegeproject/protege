@@ -9,7 +9,6 @@ public class OrPluginExtensionMatcher implements PluginExtensionMatcher {
         this.extensionMatchers = extensionMatchers;
     }
 
-    @Override
     public boolean matches(IExtension extension) {
         for (PluginExtensionMatcher extensionMatcher : extensionMatchers) {
             if (extensionMatcher.matches(extension)) {
