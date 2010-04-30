@@ -9,8 +9,8 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
@@ -43,6 +43,8 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     private static final String SEPARATOR = "/";
 
     private static final String DYNAMIC_PARAM = "dynamic";
+    
+    private static final String CHECKBOX_PARAM = "checkbox";
 
     private String parentId;
 
@@ -59,7 +61,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
 
     private String getPath() {
         // The path corresponds to the path parameter value.
-        return PluginProperties.getParameterValue(getExtension(), PATH_PARAM, SEPARATOR);
+        return getPluginProperty(PATH_PARAM, SEPARATOR);
     }
 
 
@@ -79,7 +81,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
 
 
     public KeyStroke getAccelerator() {
-        String acceleratorString = PluginProperties.getParameterValue(getExtension(), ACCELERATOR_PARAM, null);
+        String acceleratorString = getPluginProperty(ACCELERATOR_PARAM);
         if (acceleratorString != null) {
             KeyStroke ks = KeyStroke.getKeyStroke(acceleratorString);
             if (ks != null) {
@@ -92,7 +94,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
 
 
     public URL getURL() {
-        String urlStr = PluginProperties.getParameterValue(getExtension(), URL_PARAM, null);
+        String urlStr = getPluginProperty(URL_PARAM, null);
         if (urlStr != null){
             try {
                 return new URL(urlStr);
@@ -106,36 +108,21 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
 
 
     private boolean isClassSpecified(){
-        return PluginProperties.getParameterValue(getExtension(), PluginProperties.CLASS_PARAM_NAME, null) != null;
+        return getPluginProperty(PluginProperties.CLASS_PARAM_NAME) != null;
     }
 
 
     /**
-     * Parses the path to extract the parent id, the
-     * group and the group index.  If the group and group
-     * index aren't specified then these default to the
-     * empty string.
+     * Determines if the menu is dynamically constructed
+     * after the plugin has been loaded.
      */
-    private void parse() {
-        group = "";
-        groupIndex = "";
-        String path = getPath();
-        int separatorIndex = path.indexOf(SEPARATOR);
-        if (separatorIndex > -1) {
-            parentId = path.substring(0, separatorIndex).trim();
-            String groupPart = path.substring(separatorIndex + 1, path.length()).trim();
-            int groupPartIndex = groupPart.indexOf("-");
-            if (groupPartIndex > -1) {
-                group = groupPart.substring(0, groupPartIndex).trim();
-                groupIndex = groupPart.substring(groupPartIndex + 1, groupPart.length());
-            }
-            else {
-                group = groupPart;
-            }
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Parsed: " + this + " parentId = " + parentId);
-        }
+    public boolean isDynamic() {
+        return PropertyUtil.getBoolean(getPluginProperty(DYNAMIC_PARAM), false);
+    }
+
+
+    public boolean isJCheckBox() {
+        return PropertyUtil.getBoolean(getPluginProperty(CHECKBOX_PARAM), false);
     }
 
 
@@ -148,8 +135,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     public ProtegeAction newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         ProtegeAction menuAction = null;
         if (isClassSpecified()){
-            ExtensionInstantiator<ProtegeAction> instantiator = new ExtensionInstantiator<ProtegeAction>(getExtension());
-            menuAction = instantiator.instantiate();
+            menuAction = super.newInstance();
         }
         if (menuAction == null) {
             URL url = getURL();
@@ -179,19 +165,35 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     }
 
 
-    public String getDocumentation() {
-        return null;
-    }
 
 
     /**
-     * Determines if the menu is dynamically constructed
-     * after the plugin has been loaded.
+     * Parses the path to extract the parent id, the
+     * group and the group index.  If the group and group
+     * index aren't specified then these default to the
+     * empty string.
      */
-    public boolean isDynamic() {
-        return PluginProperties.getBooleanParameterValue(getExtension(), DYNAMIC_PARAM, false);
+    private void parse() {
+        group = "";
+        groupIndex = "";
+        String path = getPath();
+        int separatorIndex = path.indexOf(SEPARATOR);
+        if (separatorIndex > -1) {
+            parentId = path.substring(0, separatorIndex).trim();
+            String groupPart = path.substring(separatorIndex + 1, path.length()).trim();
+            int groupPartIndex = groupPart.indexOf("-");
+            if (groupPartIndex > -1) {
+                group = groupPart.substring(0, groupPartIndex).trim();
+                groupIndex = groupPart.substring(groupPartIndex + 1, groupPart.length());
+            }
+            else {
+                group = groupPart;
+            }
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Parsed: " + this + " parentId = " + parentId);
+        }
     }
-    
     
     @Override
     public String toString() {
