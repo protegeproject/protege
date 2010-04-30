@@ -5,6 +5,7 @@ import javax.swing.Icon;
 
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.PluginUtilities;
 
 
@@ -17,7 +18,7 @@ import org.protege.editor.core.plugin.PluginUtilities;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin {
+public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<ProtegeAction> implements ProtegeActionPlugin {
 
     private EditorKit editorKit;
 
@@ -29,22 +30,11 @@ public abstract class ProtegeActionPluginJPFImpl implements ProtegeActionPlugin 
 
 
     protected ProtegeActionPluginJPFImpl(EditorKit editorKit, IExtension extension) {
+        super(extension);
         this.editorKit = editorKit;
         this.extension = extension;
     }
 
-
-    protected IExtension getExtension() {
-        return extension;
-    }
-
-
-    /**
-     * Gets the plugin id.
-     */
-    public String getId() {
-        return extension.getUniqueIdentifier();
-    }
 
 
     /**
