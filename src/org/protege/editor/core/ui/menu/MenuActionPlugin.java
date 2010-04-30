@@ -69,4 +69,9 @@ public interface MenuActionPlugin extends ProtegeActionPlugin {
      * after the plugin has been loaded.
      */
     public boolean isDynamic();
+    
+    /*
+     * Determines if the menu item should be a JCheckBoxMenuItem
+     */
+    boolean isJCheckBox();
 }
