@@ -1,44 +1,30 @@
 package org.protege.editor.core.ui.menu;
 
-import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.platform.OSUtils;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.core.plugin.PluginExtensionFilter;
-import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
-import org.protege.editor.core.plugin.PluginProperties;
-import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.action.ProtegeDynamicAction;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import java.awt.event.KeyEvent;
-import java.util.*;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.apache.log4j.Logger;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 
 
 /**
@@ -162,7 +148,7 @@ public class MenuBuilder {
             if (plugin.getParentId().length() > 0) {
                 try {
                     ProtegeAction action = plugin.newInstance();
-                    final JMenuItem menuItem = new JMenuItem(action);
+                    final JMenuItem menuItem = plugin.isJCheckBox() ? new JCheckBoxMenuItem(action) : new JMenuItem(action);
                     KeyStroke ks = plugin.getAccelerator();
                     // A nasty hack here.  Mac users have complained that the standard
                     // delete key is backspace (in the finder, CMD+Backspace deletes file).
@@ -177,6 +163,15 @@ public class MenuBuilder {
                     }
                     menuItem.setAccelerator(ks);
                     component.add(menuItem);
+                    try {
+                        Method m = action.getClass().getMethod("setMenuItem", JMenuItem.class);
+                        m.invoke(action, menuItem);
+                    }
+                    catch (Throwable t) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Action " + action + " is not requesting a menu item" + t);
+                        }
+                    }
                     actions.add(action);
                 }
                 catch (Exception e) {
@@ -197,26 +192,9 @@ public class MenuBuilder {
         // Create a map to hold the results in.  This maps menu plugin ids to their
         // menus so that we can form an ordering of parent child menu plugins
         Map<String, MenuActionPlugin> result = new HashMap<String, MenuActionPlugin>();
-        // Load general items that are available for any clsdescriptioneditor kit
-        PluginExtensionFilter generalFilter = new PluginExtensionFilter(ProtegeApplication.ID,
-                                                                        MenuActionPluginJPFImpl.EXTENSION_POINT_ID,
-                                                                        new DefaultPluginExtensionMatcher());
-
-        PluginParameterExtensionMatcher generalMatcher = new PluginParameterExtensionMatcher();
-        generalMatcher.put(PluginProperties.EDITOR_KIT_PARAM_NAME, "any");
-        for (IExtension ext : generalFilter.getExtensions()) {
-            MenuActionPluginJPFImpl plugin = new MenuActionPluginJPFImpl(editorKit, ext);
+        MenuActionPluginLoader pluginLoader = new MenuActionPluginLoader(editorKit);
+        for (MenuActionPlugin plugin : pluginLoader.getPlugins()) {
             result.put(plugin.getId(), plugin);
-        }
-        // Load items that are specific to the current clsdescriptioneditor kit
-        PluginParameterExtensionMatcher specificMatcher = new PluginParameterExtensionMatcher();
-        specificMatcher.put(PluginProperties.EDITOR_KIT_PARAM_NAME, editorKit.getId());
-        PluginExtensionFilter specificFilter = new PluginExtensionFilter(ProtegeApplication.ID,
-                                                                         MenuActionPluginJPFImpl.EXTENSION_POINT_ID,
-                                                                         specificMatcher);
-        for (IExtension ext : specificFilter.getExtensions()) {
-            MenuActionPluginJPFImpl plugin = new MenuActionPluginJPFImpl(editorKit, ext);
-            result.put(ext.getUniqueIdentifier(), plugin);
         }
         return result;
     }
