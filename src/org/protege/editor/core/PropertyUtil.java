@@ -30,6 +30,9 @@ public class PropertyUtil {
 
 
     public static boolean getBoolean(String value, boolean defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        }
         try {
             return Boolean.parseBoolean(value);
         }
