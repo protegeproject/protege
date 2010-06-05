@@ -120,6 +120,12 @@
                <include name = "**/looks.jar"/>
            </patternset>
        </unjar>
+       <unjar dest="${build}"
+              src="${owl.lib}">
+           <patternset>
+               <include name = "**/protege-owlapi-extensions.jar"/>
+           </patternset>
+       </unjar>
        <!-- see svn revision 16765 to see how to build xmlcatalog with externals -->
    </target>
 
