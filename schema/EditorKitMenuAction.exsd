@@ -27,6 +27,7 @@
             <element ref="accelerator" minOccurs="0" maxOccurs="1"/>
             <element ref="editorKitId"/>
             <element ref="dynamic" minOccurs="0" maxOccurs="1"/>
+            <element ref="checkbox" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -171,6 +172,18 @@
    <element name="dynamic">
       <complexType>
          <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="checkbox">
+      <complexType>
+         <attribute name="value" type="boolean">
             <annotation>
                <documentation>
                   
