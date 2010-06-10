@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Name: commonlibs
+Bundle-Name: Common Protege Libraries
 Bundle-SymbolicName: org.protege.common
 Bundle-Version: 4.1.0
 Bundle-Description: Some common libraries
