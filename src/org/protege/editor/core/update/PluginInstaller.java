@@ -36,6 +36,10 @@ public class PluginInstaller {
     private static final Logger logger = Logger.getLogger(PluginInstaller.class);
 
     private List<PluginInfo> updates;
+    
+    public enum InstallerResult {
+        DOWNLOADED, ERROR, INSTALLED; 
+    }
 
 
     public PluginInstaller(List<PluginInfo> updates) {
@@ -49,11 +53,29 @@ public class PluginInstaller {
         Runnable r = new Runnable(){
 
             public void run() {
+                boolean errorsFound = false;
+                boolean someInstalled = false;
                 for (PluginInfo info : updates) {
-                    install(info);
+                    InstallerResult result = install(info);
+                    switch (result) {
+                    case ERROR:
+                        errorsFound = true;
+                        break;
+                    case INSTALLED:
+                        someInstalled = true;
+                        break;
+                    }
                 }
                 ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
-                JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");                
+                if (errorsFound) {
+                    JOptionPane.showMessageDialog(null, "Some errors found downloading plugins - look at the console log");
+                }
+                else if (someInstalled) {
+                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege."); 
+                }
             }
         };
 
@@ -63,26 +85,34 @@ public class PluginInstaller {
     }
 
 
-    private void install(PluginInfo info) {
+    private InstallerResult install(PluginInfo info) {
         BackgroundTask downloading = ProtegeApplication.getBackgroundTaskManager().startTask("downloading " + info.getLabel());
         logger.info("Downloading " + info.getLabel());
         try {
             File tempPluginFile = downloadPlugin(info);
             if (tempPluginFile == null) {
-                return;
+                logger.error("Could not download plugin");
+                return InstallerResult.ERROR;
             }
             File installedPluginFile = copyPluginToInstallLocation(tempPluginFile, info);
             if (installedPluginFile == null) {
-                return;
+                logger.error("Could not install plugin");
+                return InstallerResult.ERROR;
             }
-            installPlugin(installedPluginFile, info);
+            if (installPlugin(installedPluginFile, info)) {
+                return InstallerResult.INSTALLED;
+            }
+            else {
+                return InstallerResult.DOWNLOADED;
+            }
         }
         catch (Throwable t) {
             logger.error("Exception caught installing plugins",  t);
+            return InstallerResult.ERROR;
         }
         finally{
             ProtegeApplication.getBackgroundTaskManager().endTask(downloading);
-        }        
+        }
     }
     
     private File downloadPlugin(PluginInfo info) throws IOException {
@@ -218,14 +248,16 @@ public class PluginInstaller {
         return null;
     }
     
-    private void installPlugin(File pluginLocation, PluginInfo info) throws BundleException {
+    private boolean installPlugin(File pluginLocation, PluginInfo info) throws BundleException {
         if (info.getPluginDescriptor() == null) {  // download not an update...
             logger.info("Loading " + info.getLabel());
             Bundle b = ProtegeApplication.getContext().installBundle("file:" + pluginLocation.getPath());
             b.start();
+            return true;
         }
         else {
             logger.info("Plugin " + info.getLabel() + " will be loaded when Protege is restarted");
+            return false;
         }
     }
 }
