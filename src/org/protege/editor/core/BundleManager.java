@@ -111,7 +111,8 @@ public class BundleManager {
                     pluginSanityCheck(b);
                 }
                 catch (BundleException be) {
-                    logger.warn("Problem starting plugin " + getNiceBundleName(b), be);
+                    ProtegeApplication.getErrorLog().logError(be);
+                    logger.warn("Problem starting plugin " + getNiceBundleName(b));
                 }
             }
         }
