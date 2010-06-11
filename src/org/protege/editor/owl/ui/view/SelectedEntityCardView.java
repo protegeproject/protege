@@ -88,7 +88,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
         addPane(ANNOTATION_PROPERTIES_PANEL,
                 "/selected-entity-view-annotationproperty-panel.xml",
-                "org.protege.editor.owl.ui.view.selectedentityview.annotationproperties",
+                "org.protege.editor.owl.ui.view.selectedentityview.annotproperties",
                 reset);
 
 
