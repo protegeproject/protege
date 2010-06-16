@@ -96,6 +96,7 @@ public class ReasonerPreferencesPanel extends OWLPreferencesPanel {
         individualInferencePreferences.setAlignmentX(0.0f);
         individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_TYPES, "Types"));
         individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, "Object Property Assertions"));
+        individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS, "Data Property Assertions"));
         return individualInferencePreferences;
     }
     
