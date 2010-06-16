@@ -62,8 +62,29 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
         }
     }
 
-        // see svn 17641 for previous implementation of refillInferred.  I believe results will confuse users because
-        // getDataPropertyValues(...) only supports incomplete inference.
+    protected void refillInferred() {
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS, new Runnable() {
+    		public void run() {
+    			if (!getRootObject().isAnonymous()){
+    				for (OWLDataProperty dp : getReasoner().getRootOntology().getDataPropertiesInSignature(true)) {
+    					Set<OWLLiteral> values = getReasoner().getDataPropertyValues(getRootObject().asOWLNamedIndividual(), dp);
+    					for (OWLLiteral constant : values) {
+    						OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(dp,
+    								getRootObject(),
+    								constant);
+    						if (!added.contains(ax)) {
+    							addRow(new OWLDataPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
+    									OWLDataPropertyAssertionAxiomFrameSection.this,
+    									null,
+    									getRootObject(),
+    									ax));
+    						}
+    					}
+    				}
+    			}
+    		}
+    	});
+    }
 
 
     protected OWLDataPropertyAssertionAxiom createAxiom(OWLDataPropertyConstantPair object) {

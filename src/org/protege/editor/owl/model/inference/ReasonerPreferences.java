@@ -43,7 +43,8 @@ public class ReasonerPreferences {
 	    
 	    // Individual Inferences
 	    SHOW_INFERRED_TYPES(true),
-	    SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS(true)
+	    SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS(true),
+	    SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS(false)
 	    ;
 	    
 	    private boolean enabledByDefault;
