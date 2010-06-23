@@ -1,12 +1,26 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.protege.editor.owl.model.hierarchy.roots.Relation;
-import org.protege.editor.owl.model.hierarchy.roots.TerminalElementFinder;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import java.util.*;
+import org.protege.owlapi.inference.ChildClassExtractor;
+import org.protege.owlapi.inference.ParentClassExtractor;
+import org.protege.owlapi.inference.orphan.Relation;
+import org.protege.owlapi.inference.orphan.TerminalElementFinder;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
 /**
@@ -253,210 +267,4 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         return result;
     }
 
-// not used
-//    private Set<OWLClass> extractParents(OWLClass cls) {
-//        parentClassExtractor.reset();
-//        for (OWLOntology ont : ontologies) {
-//            for (OWLAxiom ax : ont.getAxioms(cls)) {
-//                ax.accept(parentClassExtractor);
-//            }
-//        }
-//        return new HashSet<OWLClass>(parentClassExtractor.getResult());
-//    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    private class ParentClassExtractor extends OWLAxiomVisitorAdapter {
-
-        private NamedClassExtractor extractor = new NamedClassExtractor();
-
-        private OWLClass current;
-
-
-        public void setCurrentClass(OWLClass current) {
-            this.current = current;
-        }
-
-
-        public void reset() {
-            extractor.reset();
-        }
-
-
-        public Set<OWLClass> getResult() {
-            return extractor.getResult();
-        }
-
-
-        public void visit(OWLSubClassOfAxiom axiom) {
-            axiom.getSuperClass().accept(extractor);
-        }
-
-
-        public void visit(OWLEquivalentClassesAxiom axiom) {
-            for (OWLClassExpression desc : axiom.getClassExpressions()) {
-                if (desc.equals(current)) {
-                    continue;
-                }
-                desc.accept(extractor);
-            }
-        }
-    }
-
-
-    private class NamedClassExtractor extends OWLClassExpressionVisitorAdapter {
-
-        Set<OWLClass> result = new HashSet<OWLClass>();
-
-
-        public void reset() {
-            result.clear();
-        }
-
-
-        public Set<OWLClass> getResult() {
-            return result;
-        }
-
-
-        public void visit(OWLClass desc) {
-            result.add(desc);
-        }
-
-
-        public void visit(OWLObjectIntersectionOf desc) {
-            for (OWLClassExpression op : desc.getOperands()) {
-                op.accept(this);
-            }
-        }
-    }
-
-
-    /**
-     * Checks whether a class description contains a specified named conjunct.
-     */
-    private class NamedConjunctChecker extends OWLClassExpressionVisitorAdapter {
-
-        private boolean found;
-
-        private OWLClass searchClass;
-
-
-        public boolean containsConjunct(OWLClass conjunct, OWLClassExpression description) {
-            found = false;
-            searchClass = conjunct;
-            description.accept(this);
-            return found;
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-
-        public void visit(OWLClass desc) {
-            if (desc.equals(searchClass)) {
-                found = true;
-            }
-        }
-
-
-        public void visit(OWLObjectIntersectionOf desc) {
-            for (OWLClassExpression op : desc.getOperands()) {
-                op.accept(this);
-                if (found) {
-                    break;
-                }
-            }
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-    }
-
-
-    private class ChildClassExtractor extends OWLAxiomVisitorAdapter {
-
-
-        private NamedConjunctChecker checker = new NamedConjunctChecker();
-
-        private NamedClassExtractor namedClassExtractor = new NamedClassExtractor();
-
-        private OWLClass currentParentClass;
-
-        private Set<OWLClass> results = new HashSet<OWLClass>();
-
-
-        public void reset() {
-            results.clear();
-            namedClassExtractor.reset();
-        }
-
-
-        public void setCurrentParentClass(OWLClass currentParentClass) {
-            this.currentParentClass = currentParentClass;
-            reset();
-        }
-
-
-        public Set<OWLClass> getResult() {
-            return new HashSet<OWLClass>(results);
-        }
-
-
-        public void visit(OWLSubClassOfAxiom axiom) {
-            // Example:
-            // If searching for subs of B, candidates are:
-            // SubClassOf(A B)
-            // SubClassOf(A And(B ...))
-            if (checker.containsConjunct(currentParentClass, axiom.getSuperClass())) {
-                // We only want named classes
-                if (!axiom.getSubClass().isAnonymous()) {
-                    results.add(axiom.getSubClass().asOWLClass());
-                }
-            }
-        }
-
-
-        public void visit(OWLEquivalentClassesAxiom axiom) {
-            // EquivalentClasses(A  And(B...))
-            if (!namedClassInEquivalentAxiom(axiom)){
-                return;
-            }
-            Set<OWLClassExpression> candidateDescriptions = new HashSet<OWLClassExpression>();
-            boolean found = false;
-            for (OWLClassExpression equivalentClass : axiom.getClassExpressions()) {
-                if (!checker.containsConjunct(currentParentClass, equivalentClass)) {
-                    // Potential operand
-                    candidateDescriptions.add(equivalentClass);
-                }
-                else {
-                    // This axiom is relevant
-                    if (equivalentClass.isAnonymous()) {
-                        found = true;
-                    }
-                }
-            }
-            if (!found) {
-                return;
-            }
-            namedClassExtractor.reset();
-            for (OWLClassExpression desc : candidateDescriptions) {
-                desc.accept(namedClassExtractor);
-            }
-            results.addAll(namedClassExtractor.getResult());
-        }
-
-
-        private boolean namedClassInEquivalentAxiom(OWLEquivalentClassesAxiom axiom) {
-            for (OWLClassExpression equiv : axiom.getClassExpressions()){
-                if (!equiv.isAnonymous()){
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
 }
