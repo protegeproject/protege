@@ -57,8 +57,8 @@ public class OWLDataTypeUtils {
         final OWLDataFactory df = mngr.getOWLDataFactory();
 
         datatypes.add(df.getTopDatatype());
-        for (URI uri : XSDVocabulary.ALL_DATATYPES) {
-            datatypes.add(df.getOWLDatatype(IRI.create(uri)));
+        for (XSDVocabulary dt : XSDVocabulary.values()) {
+            datatypes.add(df.getOWLDatatype(dt.getIRI()));
         }
         datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getIRI()));
 
