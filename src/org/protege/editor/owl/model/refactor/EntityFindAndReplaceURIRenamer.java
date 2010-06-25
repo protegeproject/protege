@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.refactor;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLEntityRenamer;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 
 import java.net.URI;
@@ -94,30 +95,7 @@ public class EntityFindAndReplaceURIRenamer {
 
 
     public List<OWLOntologyChange> getChanges(){
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-
-        // perform the rename across all loaded ontologies
-        for(OWLOntology ont : ontologies) {
-            Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-            for (OWLEntity entity : entities){
-                axioms.addAll(ont.getReferencingAxioms(entity));
-            }
-
-            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(entity2IRIMap, mngr.getOWLDataFactory());
-            fillListWithTransformChanges(changes, axioms, ont, duplicator);
-        }
-
-        return changes;
-    }
-
-
-    private static void fillListWithTransformChanges(List<OWLOntologyChange> changes,
-                                                     Set<OWLAxiom> axioms, OWLOntology ont,
-                                                     OWLObjectDuplicator duplicator) {
-        for(OWLAxiom ax : axioms) {
-            changes.add(new RemoveAxiom(ont, ax));
-            OWLAxiom dupAx = duplicator.duplicateObject(ax);
-            changes.add(new AddAxiom(ont, dupAx));
-        }
+        OWLEntityRenamer renamer = new OWLEntityRenamer(mngr, ontologies);
+        return renamer.changeIRI(entity2IRIMap);
     }
 }
