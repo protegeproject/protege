@@ -32,7 +32,7 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
         Map<OWLAnnotationProperty, List<String>> propLangMap = new HashMap<OWLAnnotationProperty, List<String>>();
 
         final Map<IRI, List<String>> iriLangMap = OWLRendererPreferences.getInstance().getAnnotationLangs();
-        for (IRI iri : iriLangMap.keySet()){
+        for (IRI iri : OWLRendererPreferences.getInstance().getAnnotationIRIs()){
             final OWLAnnotationProperty ap = df.getOWLAnnotationProperty(iri);
             properties.add(ap);
             propLangMap.put(ap, iriLangMap.get(iri));
