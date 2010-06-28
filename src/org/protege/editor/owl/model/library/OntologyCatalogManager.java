@@ -56,14 +56,14 @@ public class OntologyCatalogManager {
 			try {
 				catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
 			}
-			catch (IOException e) {
+			catch (Throwable e) {
 				ProtegeApplication.getErrorLog().logError(e);
 				backup(folder, catalogFile);
 			}
 		}
 		if (catalog == null) {
 			catalog = new XMLCatalog(folder.toURI());
-			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Prot\u00E9g\u00E9 4");
+			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protege 4");
 			try {
 				CatalogUtilities.save(catalog, catalogFile);
 			}
