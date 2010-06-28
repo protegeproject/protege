@@ -7,6 +7,8 @@
    <property file = "local.properties"/>
    <property file = "version.properties"/>
 	
+   <property name="build" location="./build"/>
+	
    <target name = "add.version">
 		<echo append = "true" file = "${protege.home}/build.properties" message = "core.major.version=${core.major.version}${line.separator}"/>
 		<echo append = "true" file = "${protege.home}/build.properties" message = "core.minor.version=${core.minor.version}${line.separator}"/>
