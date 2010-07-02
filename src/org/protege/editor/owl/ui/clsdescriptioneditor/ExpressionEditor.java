@@ -236,7 +236,9 @@ public class ExpressionEditor<O> extends JTextPane
 
 
     private void setError(OWLExpressionParserException e) {
-        logger.debug("Set error " + e);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Set error " + e);
+        }
         notifyValidationChanged(e == null); // if no error, then content is valid
 
         if (e != null) {
