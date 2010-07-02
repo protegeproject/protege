@@ -182,7 +182,7 @@ how they should be displayed in the Views menu.
       </complexType>
    </element>
 
-   <element name="document">
+   <element name="documentation">
       <complexType>
          <attribute name="value" type="string">
             <annotation>
