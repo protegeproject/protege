@@ -180,6 +180,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         changeListenerManager = new ListenerManager<OWLOntologyChangeListener>();
         manager = ProtegeOWLManager.createOWLOntologyManager();
         manager.setUseWriteSafety(true);
+        manager.setUseSwingThread(true);
         manager.setSilentMissingImportsHandling(true);
         manager.addOntologyChangeListener(this);
         manager.addOntologyLoaderListener(this);
