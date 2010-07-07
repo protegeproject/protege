@@ -1201,8 +1201,8 @@
     <!-- Help menu -->
 
     <extension id="menu.PluginsMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Protege-OWL plug-ins"/>
-        <toolTip value="View a list of plug-ins compatible with Protege 4.1 Alpha"/>
+        <name value="Protege-OWL plugins"/>
+        <toolTip value="View a list of plugins compatible with Protege 4.1 beta"/>
         <url value="http://protegewiki.stanford.edu/index.php/Protege-OWL_4.1"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
         <editorKitId value="any"/>
