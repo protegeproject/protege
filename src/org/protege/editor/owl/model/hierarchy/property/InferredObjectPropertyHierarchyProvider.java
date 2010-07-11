@@ -1,10 +1,12 @@
 package org.protege.editor.owl.model.hierarchy.property;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
@@ -32,22 +34,40 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     }
 
     public Set<OWLObjectProperty> getChildren(OWLObjectProperty objectProperty) {
-        Set<OWLObjectProperty> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
+        Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
-        return subs;
+        Set<OWLObjectProperty> children = new HashSet<OWLObjectProperty>();
+        for (OWLObjectPropertyExpression p : subs) {
+            if (p instanceof OWLObjectProperty) {
+                children.add((OWLObjectProperty) p);
+            }
+        }
+        return children;
     }
 
 
     public Set<OWLObjectProperty> getParents(OWLObjectProperty objectProperty) {
-        Set<OWLObjectProperty> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
+        Set<OWLObjectPropertyExpression> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
         supers.remove(objectProperty);
-        return supers;
+        Set<OWLObjectProperty> parents = new HashSet<OWLObjectProperty>();
+        for (OWLObjectPropertyExpression p : supers) {
+            if (p instanceof OWLObjectProperty) {
+                parents.add((OWLObjectProperty) p);
+            }
+        }
+        return parents;
     }
 
 
     public Set<OWLObjectProperty> getEquivalents(OWLObjectProperty objectProperty) {
-        Set<OWLObjectProperty> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
+        Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
         equivs.remove(objectProperty);
-        return equivs;
+        Set<OWLObjectProperty> ret = new HashSet<OWLObjectProperty>();
+        for (OWLObjectPropertyExpression p : equivs) {
+            if (p instanceof OWLObjectProperty) {
+                ret.add((OWLObjectProperty) p);
+            }
+        }
+        return ret;
     }
 }

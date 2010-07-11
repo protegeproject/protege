@@ -10,6 +10,7 @@ import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
@@ -61,7 +62,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, 
                                                                   new Runnable() {
             public void run() {
-                Set<OWLObjectProperty> equivs = new HashSet<OWLObjectProperty>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
+                Set<OWLObjectPropertyExpression> equivs = new HashSet<OWLObjectPropertyExpression>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
                 equivs.remove(getRootObject());
                 if (!equivs.isEmpty()){
                     OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);

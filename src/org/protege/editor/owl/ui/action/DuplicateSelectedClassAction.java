@@ -159,13 +159,8 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         }
 
 
-        public void visit(OWLTypedLiteral owlTypedLiteral) {
-            label = owlTypedLiteral.getLiteral();
-        }
-
-
-        public void visit(OWLStringLiteral owlStringLiteral) {
-            label = owlStringLiteral.getLiteral();
+        public void visit(OWLLiteral literal) {
+            label = literal.getLiteral();
         }
     }
 

@@ -120,8 +120,8 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         clear();
         if (constant != null) {
             annotationContent.setText(constant.getLiteral());
-            if (constant.isOWLTypedLiteral()) {
-                datatypeComboBox.setSelectedItem(constant.asOWLTypedLiteral().getDatatype());
+            if (!constant.isRDFPlainLiteral()) {
+                datatypeComboBox.setSelectedItem(constant.getDatatype());
             }
             else {
                 langComboBox.setSelectedItem(constant.getLang());
