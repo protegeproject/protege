@@ -23,6 +23,7 @@ import org.semanticweb.owlapi.reasoner.ClassExpressionNotInProfileException;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -77,8 +78,16 @@ public class NoOpReasoner implements OWLReasoner {
         return 0;
     }
 
-    public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException {
-        
+    public Set<InferenceType> getPrecomputableInferenceTypes() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public boolean isPrecomputed(InferenceType inferenceType) {
+        return true;
+    }
+    
+    public void precomputeInferences(InferenceType... inferenceTypes) throws ReasonerInterruptedException, TimeOutException, InconsistentOntologyException {   
     }
 
     public void interrupt() {
@@ -121,7 +130,7 @@ public class NoOpReasoner implements OWLReasoner {
         }
     }
 
-    public Node<OWLObjectProperty> getEquivalentObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public Node<OWLObjectPropertyExpression> getEquivalentObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         if (pe.isAnonymous()) {
             return new OWLObjectPropertyNode();
         }
@@ -134,7 +143,7 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLNamedIndividualNodeSet();
     }
 
-    public Node<OWLObjectProperty> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public Node<OWLObjectPropertyExpression> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         return new OWLObjectPropertyNode();
     }
 
@@ -164,7 +173,7 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLDataPropertyNodeSet();
     }
 
-    public NodeSet<OWLObjectProperty> getSubObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         return new OWLObjectPropertyNodeSet();
     }
 
@@ -176,7 +185,7 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLDataPropertyNodeSet();
     }
 
-    public NodeSet<OWLObjectProperty> getSuperObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getSuperObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         return new OWLObjectPropertyNodeSet();
     }
 
@@ -214,7 +223,7 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLDataPropertyNode(factory.getOWLBottomDataProperty());
     }
 
-    public Node<OWLObjectProperty> getBottomObjectPropertyNode() {
+    public Node<OWLObjectPropertyExpression> getBottomObjectPropertyNode() {
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         return new OWLObjectPropertyNode(factory.getOWLBottomObjectProperty());
     }
@@ -223,15 +232,15 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLNamedIndividualNodeSet();
     }
 
-    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce, boolean direct) {
+    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce) {
         return new OWLClassNodeSet();
     }
 
-    public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         return new OWLDataPropertyNodeSet();
     }
 
-    public NodeSet<OWLObjectProperty> getDisjointObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getDisjointObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException {
         return new OWLObjectPropertyNodeSet();
     }
 
@@ -257,7 +266,7 @@ public class NoOpReasoner implements OWLReasoner {
         return new OWLDataPropertyNode(factory.getOWLTopDataProperty());
     }
 
-    public Node<OWLObjectProperty> getTopObjectPropertyNode() {
+    public Node<OWLObjectPropertyExpression> getTopObjectPropertyNode() {
         OWLDataFactory factory = rootOntology.getOWLOntologyManager().getOWLDataFactory();
         return new OWLObjectPropertyNode(factory.getOWLTopObjectProperty());
     }

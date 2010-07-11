@@ -175,7 +175,7 @@ public class ConvertEntityURIsToIdentifierPattern {
         OWLAnnotationProperty aProp = getPreferredLabel();
         String lang = getPreferredLanguage(aProp);
 
-        OWLStringLiteral value = df.getOWLStringLiteral(label, lang);
+        OWLLiteral value = df.getOWLLiteral(label, lang);
 
         return df.getOWLAnnotation(aProp, value);
     }

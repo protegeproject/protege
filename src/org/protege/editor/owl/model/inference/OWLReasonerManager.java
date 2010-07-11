@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.inference;
 import java.util.Set;
 
 import org.protege.editor.core.Disposable;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
@@ -63,7 +64,7 @@ public interface OWLReasonerManager extends Disposable {
     
     boolean isClassified();
 
-    boolean classifyAsynchronously();
+    boolean classifyAsynchronously(Set<InferenceType> precompute);
 
     void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler);
 

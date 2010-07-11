@@ -1,16 +1,23 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 
 public class ReasonerPreferences {
     public static final String PREFERENCES_SET_KEY = "INFERENCE_PREFS_SET";
 
     public static final String SHOW_INFERENCES_KEY = "SHOW_INFERENCES";
-    
+        
     private long startOperationTime;
     
 	private boolean showInferences;
@@ -18,7 +25,7 @@ public class ReasonerPreferences {
 	private EnumMap<OptionalInferenceTask, Boolean>  enabledMap    = new EnumMap<OptionalInferenceTask, Boolean>(OptionalInferenceTask.class);
 	private EnumMap<OptionalInferenceTask, Integer> clockMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
 	private EnumMap<OptionalInferenceTask, Integer> countMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
-
+	private Set<InferenceType> autoPreComputed = EnumSet.noneOf(InferenceType.class);
 	
 	public enum OptionalInferenceTask {
 	    // Class Property Inferences
@@ -69,6 +76,12 @@ public class ReasonerPreferences {
         for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
             enabledMap.put(task, prefs.getBoolean(task.getKey(), task.getEnabledByDefault()));
         }
+        autoPreComputed.clear();
+        for (InferenceType type : InferenceType.values()) {
+            if (prefs.getBoolean(getPreComputePreferenceName(type), type == InferenceType.CLASS_HIERARCHY)) {
+                autoPreComputed.add(type);
+            }
+        }
 	}
 	
 	public void save() {
@@ -78,6 +91,13 @@ public class ReasonerPreferences {
         for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
             prefs.putBoolean(task.getKey(), enabledMap.get(task));
         }
+        for (InferenceType type : InferenceType.values()) {
+            prefs.putBoolean(getPreComputePreferenceName(type), autoPreComputed.contains(type));
+        }
+	}
+	
+	private String getPreComputePreferenceName(InferenceType type) {
+	    return "PreCompute_" + type.toString();
 	}
 
 	public boolean isShowInferences() {
@@ -144,5 +164,11 @@ public class ReasonerPreferences {
 	    }
 	}
 
+	public Set<InferenceType> getAutoPreComputed() {
+        return Collections.unmodifiableSet(autoPreComputed);
+    }
 
+	public void setAutoPreComputed(Set<InferenceType> autoPreComputed) {
+        this.autoPreComputed = new HashSet<InferenceType>(autoPreComputed);
+    }
 }

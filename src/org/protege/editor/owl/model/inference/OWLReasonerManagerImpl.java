@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
@@ -147,7 +149,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 currentReasonerFactory = reasonerFactory;
                 clearAndDisposeReasoners();
                 owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                classifyAsynchronously();
+                if (preferences != null) {
+                    classifyAsynchronously(preferences.getAutoPreComputed());
+                }
                 return;
             }
         }
@@ -183,7 +187,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     /**
      * Classifies the current active ontologies.
      */
-    public boolean classifyAsynchronously() {
+    public boolean classifyAsynchronously(Set<InferenceType> precompute) {
         if (currentReasonerFactory instanceof NoOpReasonerFactory) {
             return true;
         }
@@ -197,7 +201,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             classificationInProgress = true;
         }
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
-        Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology), "Classification Thread");
+        Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
                 exceptionHandler.handle(throwable);
@@ -246,27 +250,36 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     private class ClassificationRunner implements Runnable {
         private OWLOntology ontology;
+        private Set<InferenceType> precompute;
         
-        public ClassificationRunner(OWLOntology ontology) {
+        public ClassificationRunner(OWLOntology ontology, Set<InferenceType> precompute) {
             this.ontology = ontology;
+            this.precompute = EnumSet.noneOf(InferenceType.class);
+            this.precompute.addAll(precompute);
         }
         
         public void run() {
             try {
                 long start = System.currentTimeMillis();
-                if (runningReasoner != null && 
-                        (runningReasoner.getBufferingMode() == null 
-                                || (runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING && !runningReasoner.getPendingChanges().isEmpty()))) {
-                    runningReasoner.dispose();
-                    runningReasoner = null;
+                if (runningReasoner != null && !runningReasoner.getPendingChanges().isEmpty()) {
+                    if (runningReasoner.getBufferingMode() == null 
+                            || runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
+                        runningReasoner.dispose();
+                        runningReasoner = null;
+                    }
+                    else {
+                        runningReasoner.flush();
+                    }
                 }
                 if (runningReasoner == null) {
                     runningReasoner = currentReasonerFactory.createReasoner(ontology, reasonerProgressMonitor);
-                    runningReasoner.prepareReasoner();
                 }
-                else if (runningReasoner.getBufferingMode() == BufferingMode.BUFFERING) {
-                    runningReasoner.flush();
+                for (InferenceType type : precompute) {
+                    if (runningReasoner.isPrecomputed(type)) {
+                        precompute.remove(type);
+                    }
                 }
+                runningReasoner.precomputeInferences(precompute.toArray(new InferenceType[precompute.size()]));
 
                 String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
                 logger.info(s);

@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -31,7 +32,13 @@ public class ClassifyAction extends ProtegeOWLAction {
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously()) {
+        Frame owner = (Frame) (SwingUtilities.getAncestorOfClass(Frame.class, getOWLEditorKit().getWorkspace()));
+        ChoosePreComputedInferencesDialog dialog = new  ChoosePreComputedInferencesDialog(owner, getOWLEditorKit().getModelManager().getReasonerPreferences());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            ;
+        }
+        else if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously(dialog.getPreCompute())) {
             Object[] options = {"OK", "Interrupt Current Classification"};
             int ret = JOptionPane.showOptionDialog(null,
                                                    "Classification already in progress.  New classification can't be started",

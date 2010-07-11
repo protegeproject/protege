@@ -97,26 +97,14 @@ public class ADCFactory extends OWLObjectVisitorAdapter {
         }
     }
 
-
-    public void visit(OWLStringLiteral literal) {
+    public void visit(OWLLiteral node) {
         try{
-            OWLClassExpression descr = parseOWLClassExpression(literal.getLiteral());
+            OWLClassExpression descr = parseOWLClassExpression(node.getLiteral());
             descrs.add(descr);
         }
         catch(OWLParseException e){
             logger.error(e);
-        }
-    }
-
-
-    public void visit(OWLTypedLiteral owlTypedLiteral) {
-        try{
-            OWLClassExpression descr = parseOWLClassExpression(owlTypedLiteral.getLiteral());
-            descrs.add(descr);
-        }
-        catch(OWLParseException e){
-            logger.error(e);
-        }
+        }     
     }
 
 
