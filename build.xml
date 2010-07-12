@@ -28,11 +28,11 @@
         <antcall target="add.version"/>
     </target>
 
-    <target name="run.equinox" depends="equinox">
+    <target name="run.equinox">
 		<ant antfile="osgi/build-equinox.xml" target="run"/>
     </target>
 
-    <target name="debug.equinox" depends="equinox">
+    <target name="debug.equinox">
 		<ant antfile="osgi/build-equinox.xml" target="debug"/>
     </target>
 
