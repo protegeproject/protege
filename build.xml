@@ -44,11 +44,11 @@
 		<antcall target="add.version"/>
     </target>
 
-    <target name="run.felix" depends="felix">
+    <target name="run.felix">
 		<ant antfile="osgi/build-felix.xml" target="run"/>
     </target>
 
-    <target name="debug.felix" depends="felix">
+    <target name="debug.felix">
 		<ant antfile="osgi/build-felix.xml" target="debug"/>
     </target>
 
@@ -60,11 +60,11 @@
 		<antcall target="add.version"/>
     </target>
 
-    <target name="run.knopflerfish" depends="knopflerfish">
+    <target name="run.knopflerfish">
       <ant antfile="osgi/build-knopflerfish.xml" target="run"/>
     </target>
 
-    <target name="debug.knopflerfish" depends="knopflerfish">
+    <target name="debug.knopflerfish">
       <ant antfile="osgi/build-knopflerfish.xml" target="debug"/>
     </target>
 
