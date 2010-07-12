@@ -82,7 +82,6 @@ public class NoOpReasoner implements OWLReasoner {
         return Collections.emptySet();
     }
 
-    @Override
     public boolean isPrecomputed(InferenceType inferenceType) {
         return true;
     }
