@@ -110,8 +110,10 @@ public class PluginRegistryImpl implements PluginRegistry {
         }
         
         private void checkBundles() {
-            for (Bundle bundle : context.getBundles()) {
-                bundleByIds.put(bundle.getSymbolicName(), bundle);
+            if (context != null) {
+                for (Bundle bundle : context.getBundles()) {
+                    bundleByIds.put(bundle.getSymbolicName(), bundle);
+                }
             }
             if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY) {
                 for (Bundle bundle : context.getBundles()) {
