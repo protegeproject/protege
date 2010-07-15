@@ -34,22 +34,25 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     private OWLModelManager owlModelManager;
     
+    private ReasonerPreferences preferences;
+    
     private Set<ProtegeOWLReasonerFactory> reasonerFactories;
 
     private ProtegeOWLReasonerFactory currentReasonerFactory;
 
-    private Map<OWLOntology, OWLReasoner> currentReasonerMap = new HashMap<OWLOntology, OWLReasoner>();
+    private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<OWLOntology, OWLReasoner>();
+    
     private OWLReasoner runningReasoner;
     private boolean classificationInProgress = false;
     
-    public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
-
     private ReasonerProgressMonitor reasonerProgressMonitor;
     private OWLReasonerExceptionHandler exceptionHandler;
-    private ReasonerPreferences preferences;
+    
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
+        preferences = new ReasonerPreferences();
+        preferences.load();
         reasonerFactories = new HashSet<ProtegeOWLReasonerFactory>();
         reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
@@ -73,9 +76,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         clearAndDisposeReasoners();
     }
-
+    
     private void clearAndDisposeReasoners() {
-        for (OWLReasoner reasoner : currentReasonerMap.values()) {
+        for (OWLReasoner reasoner : reasonerMap.values()) {
             if (reasoner != null) {
                 try {
                     reasoner.dispose();
@@ -85,18 +88,19 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 }
             }
         }
-        currentReasonerMap.clear();
+        reasonerMap.clear();
     }
 
 
-
-
     public String getCurrentReasonerName() {
-        return currentReasonerFactory.getReasonerName();
+        return getCurrentReasoner().getReasonerName();
     }
 
 
     public ProtegeOWLReasonerFactory getCurrentReasonerFactory() {
+        if (currentReasonerFactory == null) {
+            currentReasonerFactory = new NoOpReasonerFactory();
+        }
         return currentReasonerFactory;
     }
 
@@ -115,11 +119,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     }
 
 
-    private void installFactories() {
-        
+    private void installFactories() {        
         ProtegeOWLReasonerFactoryPluginLoader loader = new ProtegeOWLReasonerFactoryPluginLoader(owlModelManager);
         addReasonerFactories(loader.getPlugins());
-        setCurrentReasonerFactoryId(NULL_REASONER_ID);
+        setCurrentReasonerFactoryId(preferences.getDefaultReasonerId());
     }
 
     public void addReasonerFactories(Set<ProtegeOWLReasonerFactoryPlugin> plugins) {
@@ -136,22 +139,21 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     }
 
     public String getCurrentReasonerFactoryId() {
-        return currentReasonerFactory.getReasonerId();
+        return getCurrentReasonerFactory().getReasonerId();
     }
 
 
     public void setCurrentReasonerFactoryId(String id) {
-        if (currentReasonerFactory != null && currentReasonerFactory.getReasonerId().equals(id)) {
+        if (getCurrentReasonerFactory().getReasonerId().equals(id)) {
             return;
         }
         for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
             if (reasonerFactory.getReasonerId().equals(id)) {
-                currentReasonerFactory = reasonerFactory;
+                preferences.setDefaultReasonerId(id);
+                preferences.save();
                 clearAndDisposeReasoners();
+                currentReasonerFactory = reasonerFactory;
                 owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                if (preferences != null) {
-                    classifyAsynchronously(preferences.getAutoPreComputed());
-                }
                 return;
             }
         }
@@ -161,23 +163,27 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     public OWLReasoner getCurrentReasoner() {
         OWLReasoner reasoner;
-        synchronized (currentReasonerMap)  {
-            reasoner = currentReasonerMap.get(owlModelManager.getActiveOntology());
+        OWLOntology activeOntology = owlModelManager.getActiveOntology();
+        synchronized (reasonerMap)  {
+            reasoner = reasonerMap.get(activeOntology);
         }
         if (reasoner == null) {
-            reasoner = new NoOpReasoner(owlModelManager.getActiveOntology());
+            reasoner = new NoOpReasoner(activeOntology);
+            synchronized (reasonerMap)  {
+                reasonerMap.put(activeOntology, reasoner);
+            }
         }
         return reasoner;
     }
     
     public boolean isClassificationInProgress() {
-        synchronized (currentReasonerMap) {
+        synchronized (reasonerMap) {
             return classificationInProgress;
         }
     }
     
     public boolean isClassified() {
-        synchronized (currentReasonerMap) {
+        synchronized (reasonerMap) {
             OWLReasoner reasoner = getCurrentReasoner();
             return !(reasoner instanceof NoOpReasoner) && 
             			(reasoner.getPendingChanges() == null || reasoner.getPendingChanges().isEmpty());
@@ -188,16 +194,16 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * Classifies the current active ontologies.
      */
     public boolean classifyAsynchronously(Set<InferenceType> precompute) {
-        if (currentReasonerFactory instanceof NoOpReasonerFactory) {
+        if (getCurrentReasonerFactory() instanceof NoOpReasonerFactory) {
             return true;
         }
         final OWLOntology currentOntology = owlModelManager.getActiveOntology();
-        synchronized (currentReasonerMap) {
+        synchronized (reasonerMap) {
             if (classificationInProgress) {
                 return false;
             }
-            runningReasoner = currentReasonerMap.get(currentOntology);
-            currentReasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
+            runningReasoner = reasonerMap.get(currentOntology);
+            reasonerMap.put(currentOntology, new NoOpReasoner(currentOntology));
             classificationInProgress = true;
         }
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
@@ -214,7 +220,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
 
     public void killCurrentClassification() {
-        synchronized (currentReasonerMap) {
+        synchronized (reasonerMap) {
             if (runningReasoner != null){
                 runningReasoner.interrupt();
             }
@@ -222,10 +228,6 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     }
     
     public ReasonerPreferences getReasonerPreferences() {
-        if (preferences == null) {
-            preferences = new ReasonerPreferences();
-            preferences.load();
-        }
         return preferences;
     }
 
@@ -251,16 +253,21 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private class ClassificationRunner implements Runnable {
         private OWLOntology ontology;
         private Set<InferenceType> precompute;
+        private ProtegeOWLReasonerFactory currentReasonerFactory;
         
         public ClassificationRunner(OWLOntology ontology, Set<InferenceType> precompute) {
             this.ontology = ontology;
             this.precompute = EnumSet.noneOf(InferenceType.class);
             this.precompute.addAll(precompute);
+            currentReasonerFactory = getCurrentReasonerFactory();
         }
         
         public void run() {
             try {
                 long start = System.currentTimeMillis();
+                if (runningReasoner instanceof NoOpReasoner) {
+                    runningReasoner = null;
+                }
                 if (runningReasoner != null && !runningReasoner.getPendingChanges().isEmpty()) {
                     if (runningReasoner.getBufferingMode() == null 
                             || runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
@@ -273,21 +280,26 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 }
                 if (runningReasoner == null) {
                     runningReasoner = currentReasonerFactory.createReasoner(ontology, reasonerProgressMonitor);
+                    owlModelManager.fireEvent(EventType.REASONER_CHANGED);
                 }
+                Set<InferenceType> dontPrecompute  = EnumSet.noneOf(InferenceType.class);
                 for (InferenceType type : precompute) {
                     if (runningReasoner.isPrecomputed(type)) {
-                        precompute.remove(type);
+                        dontPrecompute.add(type);
                     }
                 }
-                runningReasoner.precomputeInferences(precompute.toArray(new InferenceType[precompute.size()]));
+                precompute.removeAll(dontPrecompute);
+                if (!precompute.isEmpty()) {
+                    runningReasoner.precomputeInferences(precompute.toArray(new InferenceType[precompute.size()]));
 
-                String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                logger.info(s);
+                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
+                    logger.info(s);
+                }
 
             }
             finally{
-                synchronized (currentReasonerMap) {
-                    currentReasonerMap.put(ontology, runningReasoner);
+                synchronized (reasonerMap) {
+                    reasonerMap.put(ontology, runningReasoner);
                     runningReasoner = null;
                     classificationInProgress = false;
                 }
