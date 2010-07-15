@@ -32,7 +32,7 @@ public abstract class PreferencesPanel extends JPanel implements ProtegePluginIn
     private EditorKit editorKit;
 
 
-    protected void setup(String label, EditorKit editorKit) {
+    public void setup(String label, EditorKit editorKit) {
         this.label = label;
         this.editorKit = editorKit;
         setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
