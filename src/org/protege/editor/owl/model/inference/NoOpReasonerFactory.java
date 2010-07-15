@@ -13,8 +13,9 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
  * Date: 16-Apr-2007<br><br>
  */
 public class NoOpReasonerFactory implements ProtegeOWLReasonerFactory {
-    private String id;
+    private String id = NULL_REASONER_ID;
     private String name;
+    public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
 
     public void setup(OWLOntologyManager manager, String id, String name) {
         this.id = id;
