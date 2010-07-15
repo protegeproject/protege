@@ -72,6 +72,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.inference.NoOpReasoner;
+import org.protege.editor.owl.model.inference.NoOpReasonerFactory;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory;
@@ -87,6 +88,7 @@ import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ClassifyAction;
+import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
@@ -494,11 +496,22 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         JMenu reasonerMenu = getReasonerMenu(menuBar);
         
         reasonerMenu.removeAll();
-        ClassifyAction classifyAction = new ClassifyAction();
+        
+        ClassifyAction classifyAllAction = new ClassifyAction(true);
+        classifyAllAction.setEditorKit(getOWLEditorKit());
+        classifyAllAction.putValue(Action.NAME, "Classify All...");
+        reasonerMenu.add(classifyAllAction);
+        
+        ClassifyAction classifyAction = new ClassifyAction(false);
         classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         classifyAction.setEditorKit(getOWLEditorKit());
         classifyAction.putValue(Action.NAME, "Classify...");
         reasonerMenu.add(classifyAction);
+        
+        ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
+        configureAction.setEditorKit(getOWLEditorKit());
+        configureAction.putValue(Action.NAME, "Configure");
+        reasonerMenu.add(configureAction);
         
         reasonerMenu.addSeparator();
         
@@ -719,8 +732,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             return;
         }
         OWLReasoner currentReasoner = reasonerManager.getCurrentReasoner();
-        if (currentReasoner instanceof NoOpReasoner) {
-            reasonerStatus.setText("No Reasoner set");
+        if (reasonerManager.getCurrentReasonerFactory() instanceof NoOpReasonerFactory) {
+            reasonerStatus.setText("No reasoner set");            
+        }
+        else if (currentReasoner instanceof NoOpReasoner) {
+            reasonerStatus.setText("Please classify to initialize reasoner");
         }
         else if (currentReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
             reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ok");
