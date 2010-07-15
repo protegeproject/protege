@@ -1,15 +1,17 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 
 
 /**
@@ -24,21 +26,28 @@ import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 public class ClassifyAction extends ProtegeOWLAction {
 	private static final long serialVersionUID = -4602291778441065461L;
 
-
     private OWLModelManagerListener owlModelManagerListener;
+    
+    private boolean classifyAll;
+    
+    public ClassifyAction(boolean classifyAll) {
+        this.classifyAll = classifyAll;
+    }
 
 
     /**
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        Frame owner = (Frame) (SwingUtilities.getAncestorOfClass(Frame.class, getOWLEditorKit().getWorkspace()));
-        ChoosePreComputedInferencesDialog dialog = new  ChoosePreComputedInferencesDialog(owner, getOWLEditorKit().getModelManager().getReasonerPreferences());
-        dialog.setVisible(true);
-        if (dialog.isCancelled()) {
-            ;
+        ReasonerPreferences  preferences = getOWLModelManager().getOWLReasonerManager().getReasonerPreferences();
+        Set<InferenceType> precompute;
+        if (classifyAll)  {
+            precompute = EnumSet.allOf(InferenceType.class);
         }
-        else if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously(dialog.getPreCompute())) {
+        else {
+            precompute = preferences.getDefaultClassificationInferenceTypes();
+        }
+        if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously(precompute)) {
             Object[] options = {"OK", "Interrupt Current Classification"};
             int ret = JOptionPane.showOptionDialog(null,
                                                    "Classification already in progress.  New classification can't be started",
