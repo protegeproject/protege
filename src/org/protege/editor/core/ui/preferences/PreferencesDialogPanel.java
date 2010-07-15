@@ -62,7 +62,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 scrollerMap.put(label, scroller);
                 tabbedPane.addTab(label, scroller);
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
@@ -75,7 +75,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
             try {
                 panel.dispose();
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
@@ -88,7 +88,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
             try {
                 panel.applyChanges();
             }
-            catch (Exception e) {
+            catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
