@@ -6,6 +6,9 @@
     <extension-point id="inference_reasonerfactory"
                      name="Reasoner Factory"
                      schema="schema/ReasonerFactory.exsd"/>
+    <extension-point id="inference_preferences" 
+                     name="Reasoner Preferences" 
+                     schema="schema/inference_preferences.exsd"/>
 
     <extension-point id="ui_renderer_entitycolorprovider"
                      name="Entity Color Provider"
@@ -995,9 +998,20 @@
     <extension id="ui.preferences.reasoner"
                point="org.protege.editor.core.application.preferencespanel">
         <label value="Reasoner"/>
-        <class value="org.protege.editor.owl.ui.inference.ReasonerPreferencesPanel"/>
+        <class value="org.protege.editor.owl.ui.inference.TabbedReasonerPreferencesPanel"/>
+    </extension>
+    
+    <extension id="ui.preferences.reasoner.display"
+               point="org.protege.editor.owl.inference_preferences">
+        <label value="Displayed Inferences"/>
+        <class value="org.protege.editor.owl.ui.inference.DisplayedInferencesPreferencePanel"/>
     </extension>
 
+    <extension id="ui.preferences.reasoner.classification"
+               point="org.protege.editor.owl.inference_preferences">
+        <label value="Classification Preferences"/>
+        <class value="org.protege.editor.owl.ui.inference.ClassificationPreferencesPanel"/>
+    </extension>
 
     <!-- Refactor menu -->
 
