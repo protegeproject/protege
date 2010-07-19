@@ -157,7 +157,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 return;
             }
         }
-        throw new RuntimeException("Unknown reasoner ID");
+        ProtegeApplication.getErrorLog().logError(new RuntimeException("Unknown reasoner ID"));
     }
 
 
