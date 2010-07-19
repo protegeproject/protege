@@ -44,4 +44,10 @@ public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHie
     protected OWLObject updateView() {
         return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
     }
+
+    @Override
+    protected boolean isOWLClassView() {
+        return true;
+    }
+
 }
