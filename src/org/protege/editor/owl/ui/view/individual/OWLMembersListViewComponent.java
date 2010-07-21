@@ -1,33 +1,20 @@
 package org.protege.editor.owl.ui.view.individual;
 
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owlapi.model.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
+import java.util.Set;
 
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /**
  * Author: drummond<br>
@@ -40,55 +27,73 @@ import java.util.List;
  * Only shows the members of the currently selected class
  */
 public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
+	
+	private static final long serialVersionUID = -6015526995379146198L;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6015526995379146198L;
-    private OWLSelectionModelListener l = new OWLSelectionModelListener(){
-        public void selectionChanged() throws Exception {
-            if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass){
-                refill();
-            }
-        }
-    };
+	private OWLSelectionModelListener l = new OWLSelectionModelListener(){
+		public void selectionChanged() throws Exception {
+			if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass){
+				refill();
+			}
+		}
+	};
 
 
-    @Override
-    public void initialiseIndividualsView() throws Exception {
-        super.initialiseIndividualsView();
-        getOWLWorkspace().getOWLSelectionModel().addListener(l);
-    }
+	@Override
+	public void initialiseIndividualsView() throws Exception {
+		super.initialiseIndividualsView();
+		getOWLWorkspace().getOWLSelectionModel().addListener(l);
+	}
 
 
-    protected void refill() {
-        individualsInList.clear();
-        OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        if (cls != null){
-            for (OWLIndividual ind : cls.getIndividuals(getOntologies())){
-                if (!ind.isAnonymous()){
-                    individualsInList.add(ind.asOWLNamedIndividual());
-                }
-            }
-        }
-        reset();
-    }
+	protected void refill() {
+		individualsInList.clear();
+		OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
+		if (cls != null){        
+			Set<OWLIndividual> individuals = cls.getIndividuals(getOntologies());
+			for (OWLIndividual ind : individuals){
+				if (!ind.isAnonymous()){ //TODO: why are anonymous individuals filtered out?
+						individualsInList.add(ind.asOWLNamedIndividual());
+				}
+			}
+			if (cls.equals(getOWLModelManager().getOWLDataFactory().getOWLThing())) {
+				individualsInList.addAll(getUntypedIndividuals());
+			}
+		} 
+		reset();
+	}
+
+	//TODO: do we want to cache this?
+	protected Set<OWLNamedIndividual> getUntypedIndividuals() {
+		Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
+		//TODO: Do we want all ontologies here? Or all active ones?
+		OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
+
+		for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature()) {
+			Set<OWLClassExpression> types = individual.getTypes(activeOntology);
+			if (types == null || types.size() == 0) { //TODO: look for types in all ontologies?
+				untypedIndividuals.add(individual);
+			}
+		}
+
+		return untypedIndividuals;
+	}
 
 
-    protected List<OWLOntologyChange> dofurtherCreateSteps(OWLIndividual newIndividual) {
-        OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        if (cls != null){
-            OWLAxiom typeAxiom = getOWLModelManager().getOWLDataFactory().getOWLClassAssertionAxiom(cls, newIndividual);
-            OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
-            return Collections.singletonList(change);
-        }
-        return new ArrayList<OWLOntologyChange>();
-    }
+	protected List<OWLOntologyChange> dofurtherCreateSteps(OWLIndividual newIndividual) {
+		OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
+		if (cls != null){
+			OWLAxiom typeAxiom = getOWLModelManager().getOWLDataFactory().getOWLClassAssertionAxiom(cls, newIndividual);
+			OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
+			return Collections.singletonList(change);
+		}
+		return new ArrayList<OWLOntologyChange>();
+	}
 
 
-    @Override
-    public void disposeView() {
-        getOWLWorkspace().getOWLSelectionModel().removeListener(l);
-        super.disposeView();
-    }
+	@Override
+	public void disposeView() {
+		getOWLWorkspace().getOWLSelectionModel().removeListener(l);
+		super.disposeView();
+	}
 }
