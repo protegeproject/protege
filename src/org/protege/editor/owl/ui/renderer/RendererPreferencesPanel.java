@@ -12,6 +12,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -66,7 +67,9 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
         prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
         prefs.setFontSize((Integer) fontSizeSpinner.getValue());
-        prefs.setFontName(fontCombo.getSelectedItem().toString());
+        Object selectedFont = fontCombo.getSelectedItem();
+		prefs.setFontName(selectedFont == null ? OWLRendererPreferences.DEFAULT_FONT_NAME :
+			selectedFont.toString());
 
         if (isDirty()){
             Class<? extends OWLModelManagerEntityRenderer> cls = getSelectedRendererClass();
@@ -135,11 +138,27 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         fontCombo = new JComboBox(fontNames.toArray());
         fontSizePanel.add("Font", fontCombo);
         fontCombo.setSelectedItem(prefs.getFontName());
+        
+        fontSizePanel.add(new JButton(new AbstractAction("Reset font") {
+        	public void actionPerformed(ActionEvent arg0) {
+        		resetFont();
+        	}
+        }));
 
         holderBox.add(fontSizePanel);
     }
 
-    private Component createRendererSelectionPanel() {
+    protected void resetFont() {
+    	OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
+    	prefs.setFontName(OWLRendererPreferences.DEFAULT_FONT_NAME);
+    	fontCombo.setSelectedItem(OWLRendererPreferences.DEFAULT_FONT_NAME);
+    	
+    	prefs.setFontSize(OWLRendererPreferences.DEFAULT_FONT_SIZE);
+    	fontSizeSpinner.setValue(OWLRendererPreferences.DEFAULT_FONT_SIZE);
+	}
+
+
+	private Component createRendererSelectionPanel() {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
         originalClassName = prefs.getRendererClass();
 
