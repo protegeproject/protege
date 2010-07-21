@@ -48,7 +48,7 @@ public class OWLRendererPreferences {
 
     public static final int DEFAULT_FONT_SIZE = 14;
 
-    public static final String DEFAULT_FONT_NAME = "Dialog";
+    public static final String DEFAULT_FONT_NAME = "Dialog.plain";
 
     public static final String ANY_LANGUAGE = "!";
 
