@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.view.individual;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 /*
@@ -81,7 +82,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
             OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
             return Collections.singletonList(change);
         }
-        return dofurtherCreateSteps(newIndividual);
+        return new ArrayList<OWLOntologyChange>();
     }
 
 
