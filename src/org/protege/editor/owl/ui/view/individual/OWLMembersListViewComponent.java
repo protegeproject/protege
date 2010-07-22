@@ -66,12 +66,12 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
 	//TODO: do we want to cache this?
 	protected Set<OWLNamedIndividual> getUntypedIndividuals() {
 		Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
-		//TODO: Do we want all ontologies here? Or all active ones?
 		OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
+		Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
-		for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature()) {
-			Set<OWLClassExpression> types = individual.getTypes(activeOntology);
-			if (types == null || types.size() == 0) { //TODO: look for types in all ontologies?
+		for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(true)) {
+			Set<OWLClassExpression> types = individual.getTypes(importsClosure);
+			if (types == null || types.size() == 0) {
 				untypedIndividuals.add(individual);
 			}
 		}
