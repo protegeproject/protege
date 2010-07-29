@@ -38,7 +38,6 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     private OntologyTargetResolver resolver;
 
-
     public ConvertEntityURIsToIdentifierPattern(OWLModelManager mngr, Set<OWLOntology> ontologies) {
         this.ontologies = ontologies;
         this.mngr = mngr;
@@ -121,7 +120,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
         for(OWLEntity entity : getAllReferencedEntities()) {
             String labelRendering = sfp.getShortForm(entity);
-            if (labelRendering == null){
+            if (labelRendering == null || refactorWhenLabelPresent(entity, labelRendering)){
                 iriMap.put(entity, IRIGen.generateNewIRI(entity));
             }
         }
@@ -134,6 +133,14 @@ public class ConvertEntityURIsToIdentifierPattern {
         }
     }
 
+    private boolean refactorWhenLabelPresent(OWLEntity entity, String labelRendering) {
+        String iri = entity.getIRI().toString();
+        if (!iri.endsWith(labelRendering)) {
+            return false;
+        }
+        char c = iri.charAt(iri.length() - 1 - labelRendering.length());
+        return c == '#' || c == '/';
+    }
 
     private Collection<? extends OWLOntologyChange> createNewLabelAxioms() {
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
