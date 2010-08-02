@@ -9,6 +9,7 @@ Bundle-Description: An OWL plugin for the Protege Editor Framework
 Bundle-Vendor: Protege Development Team (First working version written a
  t the University of Manchester by Matthew Horridge)
 Bundle-ClassPath: .,
+ lib/protege-owlapi-extensions.jar,
  lib/xmlcatalog.jar
 Import-Package: org.osgi.framework,
  org.osgi.service.packageadmin,
@@ -168,7 +169,12 @@ Export-Package: org.protege.editor.owl,
  org.protege.editor.owl.ui.view.datatype,
  org.protege.editor.owl.ui.view.individual,
  org.protege.editor.owl.ui.view.ontology,
- org.protege.editor.owl.ui.util
+ org.protege.editor.owl.ui.util,
+ org.protege.owlapi.apibinding,
+ org.protege.owlapi.concurrent,
+ org.protege.owlapi.inference,
+ org.protege.owlapi.inference.orphan,
+ org.protege.owlapi.model
 Bundle-Version: 4.1.0.cIsAfterBFromUploads
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
