@@ -9,6 +9,7 @@ public class Activator implements BundleActivator {
 		context.registerService(
 	        javax.xml.parsers.SAXParserFactory.class.getName(),
 	        javax.xml.parsers.SAXParserFactory.newInstance(), null);
+		CommonProtegeProperties.getDataDirectory().mkdir();
 	}
 
 	public void stop(BundleContext context) throws Exception {
