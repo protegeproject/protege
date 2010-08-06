@@ -13,8 +13,7 @@
             <fileset dir = "." includes = "log4j.xml"/>
         </copy>
         <copy todir="${protege.home}/bundles">
-          <fileset dir="./osgi/common" 
-                   includes="org.eclipse.equinox.common.jar,org.eclipse.equinox.registry.jar"/>
+          <fileset dir="./osgi/common" />
         </copy>
 
 
