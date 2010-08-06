@@ -7,15 +7,15 @@
     <target name = "install">
         <!-- flush cache -->
         <delete dir = "${protege.home}/configuration"/>
-
         <copy todir = "${protege.home}">
             <fileset dir = "./osgi/equinox"/>
             <fileset dir = "." includes = "log4j.xml"/>
         </copy>
+
         <copy todir="${protege.home}/bundles">
           <fileset dir="./osgi/common" />
         </copy>
-
+        <copy todir = "${protege.home}" file="${launcher}"/>
 
         <chmod file = "${protege.home}/run.sh" perm = "a+x"/>
         <chmod file = "${protege.home}/run.command" perm = "a+x"/>
