@@ -17,7 +17,7 @@ import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 
 
-public class Wrapper {
+public class Launcher {
     public static final String ARG_PROPERTY = "command.line.arg.";
     
     private static final String[][] systemProperties = {
@@ -44,7 +44,7 @@ public class Wrapper {
     private String     factoryClass;
     private String     bundleDir;
     
-    public Wrapper() throws IOException {
+    public Launcher() throws IOException {
 		Properties buildProperties = new Properties();
 		FileInputStream fis = new FileInputStream("build.properties");
 		buildProperties.load(fis);
@@ -98,7 +98,7 @@ public class Wrapper {
     public static void main(String[] args) {
     	try {
     		setSystemProperties(args);
-    		new Wrapper().start();
+    		new Launcher().start();
     	}
     	catch (Throwable t) {
     		System.out.println("Fatal Exception Caught trying to start Protege");

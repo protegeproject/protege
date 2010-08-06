@@ -1,26 +1,16 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <project name = "Protege Felix Distribution Build File" default = "run" basedir = ".">
 	<property name="src"      location="osgi/src.felix"/>
-	<property name="classes"  location="${build}/classes.felix"/>
-	<property name="jar"      location="${protege.home}/bin/wrapper.jar"/>
-	
-
-	<target name="build.wrapper">
-		<delete dir="${build}"/>
-		<mkdir dir="${classes}"/>
-		<mkdir dir="${protege.home}/bin"/>
-		<javac srcdir="${src}" destdir="${classes}" classpath="./osgi/felix/bin/felix.jar"/>
-		<jar basedir="${classes}" destfile="${jar}"/>
-    </target>
 
     <!-- ===================================================================  -->
     <!-- FELIX - create a felix-based distribution -->
     <!-- ===================================================================  -->
-    <target name = "install" depends="build.wrapper">
+    <target name = "install">
         <copy todir = "${protege.home}">
             <fileset dir = "./osgi/felix"/>
             <fileset dir = "." includes = "log4j.xml"/>
         </copy>
+        <copy todir = "${protege.home}/bin" file="${launcher}"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.common.jar"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.registry.jar"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.supplement.jar"/>
