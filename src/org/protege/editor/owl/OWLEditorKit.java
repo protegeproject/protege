@@ -43,6 +43,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.OWLOntologyStorerNotFoundException;
 import org.semanticweb.owlapi.util.VersionInfo;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 
 /**
@@ -242,12 +243,19 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
+        OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
         OWLOntologyFormat format = OntologyFormatPanel.showDialog(this,
-                                                                  man.getOntologyFormat(ont),
+                                                                  oldFormat,
                                                                   getModelManager().getRendering(ont));
         if (format == null) {
             logger.warn("Please select a valid format");
             return false;
+        }
+        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
+        	PrefixOWLOntologyFormat oldPrefixes  = (PrefixOWLOntologyFormat) oldFormat;
+        	for (String name : oldPrefixes.getPrefixNames()) {
+        		((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
+        	}
         }
         File file = getSaveAsOWLFile(ont);
         if (file != null){
