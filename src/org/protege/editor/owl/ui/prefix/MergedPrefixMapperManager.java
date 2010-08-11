@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -36,12 +38,34 @@ public class MergedPrefixMapperManager implements PrefixMapperManager {
 
     public void reload() {
 		OWLOntologyManager manager = modelManager.getOWLOntologyManager();
-		for (OWLOntology ontology :  modelManager.getActiveOntologies()) {
+		for (OWLOntology ontology :  modelManager.getOntologies()) {
 			OWLOntologyFormat format = manager.getOntologyFormat(ontology);
 			if (format != null && format instanceof PrefixOWLOntologyFormat) {
+				Set<String> defaultValues = new  HashSet<String>();
 				PrefixOWLOntologyFormat prefixes = (PrefixOWLOntologyFormat) format;
 				for (String name : prefixes.getPrefixNames()) {
-					mapper.addPrefixMapping(name, prefixes.getPrefix(name));
+					if (name.equals("") || name.equals(":")) {
+						defaultValues.add(prefixes.getPrefix(name));
+					}
+					else {
+						mapper.addPrefixMapping(name, prefixes.getPrefix(name));
+					}
+				}
+				if (defaultValues.size() <= 1) {
+					for (String value : defaultValues) {
+						mapper.addPrefixMapping(":", value);
+					}
+				}
+				else {
+					int counter = 0;
+					for (String value : defaultValues) {
+						String prefix;
+						do {
+							prefix = "p" + (counter++); 
+						}
+						while (mapper.getPrefix(prefix) != null);
+						mapper.addPrefixMapping(prefix, value);
+					}
 				}
 			}
 		}

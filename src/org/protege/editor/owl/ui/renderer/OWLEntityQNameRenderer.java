@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.MergedPrefixMapperManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -17,8 +19,14 @@ import org.semanticweb.owlapi.model.OWLEntity;
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
 	private MergedPrefixMapperManager prefixManager;
+
     
     public void initialise() {
+    	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
+    }
+    
+    @Override
+    public void ontologiesChanged() {
     	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
     }
 

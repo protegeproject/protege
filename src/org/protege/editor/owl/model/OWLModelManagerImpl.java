@@ -636,6 +636,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         logger.info("Setting active ontology to " + activeOntology.getOntologyID());
         rebuildActiveOntologiesCache();
         // Rebuild entity indices
+        entityRenderer.ontologiesChanged();
         rebuildEntityIndices();
         // Inform our listeners
         fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);

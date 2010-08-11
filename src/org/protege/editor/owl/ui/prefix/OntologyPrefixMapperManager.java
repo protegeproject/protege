@@ -31,11 +31,10 @@ public class OntologyPrefixMapperManager implements PrefixMapperManager {
 		OWLOntologyManager manager = ontology.getOWLOntologyManager();
 		OWLOntologyFormat format = manager.getOntologyFormat(ontology);
 		if (format != null && format instanceof PrefixOWLOntologyFormat) {
-			// ToDo: need to clean up the existing prefixes - not supported by  the owl api yet
-			// OWL API GForge 3042072.
 			PrefixOWLOntologyFormat prefixes = (PrefixOWLOntologyFormat) format;
+			prefixes.clearPrefixes();
 			for (String name : mapper.getPrefixes()) {
-				prefixes.setPrefix(name, mapper.getPrefix(name));
+				prefixes.setPrefix(name, mapper.getValue(name));
 			}
 		}
 	}
@@ -51,7 +50,4 @@ public class OntologyPrefixMapperManager implements PrefixMapperManager {
 	public Map<String, String> getPrefixes() {
 		return mapper.getPrefixMap();
 	}
-
-
-
 }

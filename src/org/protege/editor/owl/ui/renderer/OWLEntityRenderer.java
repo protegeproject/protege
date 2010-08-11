@@ -18,6 +18,8 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
  */
 public interface OWLEntityRenderer extends ShortFormProvider {
 
-    public String render(OWLEntity entity);
+	String render(OWLEntity entity);
+    
+    void ontologiesChanged();
 
 }

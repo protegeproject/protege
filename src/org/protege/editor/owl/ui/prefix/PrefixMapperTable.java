@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.prefix;
 
+import javax.swing.table.TableModel;
+
 import org.protege.editor.owl.ui.table.BasicOWLTable;
 
 
@@ -31,7 +33,7 @@ public class PrefixMapperTable extends BasicOWLTable {
 	}
 
     public void createAndEditRow() {
-        int index = getPrefixMapperTableModel().createNewMapping("");
+        int index = getModel().createNewMapping("");
         if (index == -1) {
             return;
         }
@@ -43,8 +45,8 @@ public class PrefixMapperTable extends BasicOWLTable {
         return true;
     }
 
-
-    public PrefixMapperTableModel getPrefixMapperTableModel() {
-        return (PrefixMapperTableModel) getModel();
+    @Override
+    public PrefixMapperTableModel getModel() {
+        return (PrefixMapperTableModel) super.getModel();
     }
 }

@@ -1,8 +1,6 @@
 package org.protege.editor.owl.ui.prefix;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.prefix.PrefixMapperTables.SelectedOntologyListener;
 
 
 /**
@@ -25,48 +24,65 @@ import org.protege.editor.owl.ui.OWLIcons;
 public class RemovePrefixMappingAction extends AbstractAction {
 	private static final long serialVersionUID = 5507854297099664212L;
 	
-	private PrefixMappingPanel panel;
+	private PrefixMapperTables tables;
 	private PrefixMapperTable table;
 	private ListSelectionListener tableSelectionListener = new ListSelectionListener() {
 		
 		public void valueChanged(ListSelectionEvent e) {
-			update();
+			updateEnabled();
+		}
+	};
+	
+	private SelectedOntologyListener ontologySelectionListener = new SelectedOntologyListener() {
+		
+		public void selectedOntologyChanged() {
+	        updateEnabled();
+	        if (table != null) {
+	        	table.getSelectionModel().removeListSelectionListener(tableSelectionListener);
+	        }
+	        table = tables.getPrefixMapperTable();
+	        if (table != null) {
+	        	table.getSelectionModel().addListSelectionListener(tableSelectionListener);
+	        }
 		}
 	};
 
 
-    public RemovePrefixMappingAction(PrefixMappingPanel panel) {
+    public RemovePrefixMappingAction(PrefixMapperTables tables) {
         super("Remove prefix", OWLIcons.getIcon("prefix.remove.png"));
-        this.panel = panel;
-        table = panel.getCurrentPrefixMapperTable();
+        this.tables = tables;
+        table = tables.getPrefixMapperTable();
         table.getSelectionModel().addListSelectionListener(tableSelectionListener);
-        panel.getOntologyList().addItemListener(new ItemListener() {
-			
-			public void itemStateChanged(ItemEvent e) {
-                update();
-                table.getSelectionModel().removeListSelectionListener(tableSelectionListener);
-                table = RemovePrefixMappingAction.this.panel.getCurrentPrefixMapperTable();
-                table.getSelectionModel().addListSelectionListener(tableSelectionListener);
-			}
-		});
-        update();
+        updateEnabled();
+        tables.addListener(ontologySelectionListener);
     }
+    
 
-
-    private void update() {
-        setEnabled(panel.getCurrentPrefixMapperTable().getSelectedRow() != -1);
+    private void updateEnabled() {
+    	PrefixMapperTable table = tables.getPrefixMapperTable();
+    	if (table == null) {
+    		setEnabled(false);
+    		return;
+    	}
+    	int row = table.getSelectedRow();
+    	if (row == -1) {
+    		setEnabled(false);
+    		return;
+    	}
+    	String prefix = (String) table.getModel().getValueAt(row, 0);
+    	setEnabled(!PrefixMapperImpl.isStandardPrefix(prefix));
     }
 
 
     public void actionPerformed(ActionEvent e) {
-    	PrefixMapperTable table = panel.getCurrentPrefixMapperTable();
+    	PrefixMapperTable table = tables.getPrefixMapperTable();
         int [] selIndexes = table.getSelectedRows();
         List<String> prefixesToRemove = new ArrayList<String>();
         for (int i = 0; i < selIndexes.length; i++) {
             prefixesToRemove.add(table.getModel().getValueAt(selIndexes[i], 0).toString());
         }
         for (String prefix : prefixesToRemove) {
-            table.getPrefixMapperTableModel().removeMapping(prefix);
+            table.getModel().removeMapping(prefix);
         }
     }
 }

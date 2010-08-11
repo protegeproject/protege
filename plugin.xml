@@ -531,6 +531,13 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
+    <extension id="OWLOntologyPrefixesView"
+               point="org.protege.editor.core.application.ViewComponent">
+        <label value="Ontology Prefixes"/>
+        <class value="org.protege.editor.owl.ui.prefix.PrefixMapperView"/>
+        <headerColor value="@org.protege.ontologycolor"/>
+        <category value="@org.protege.ontologycategory"/>
+    </extension>
 
     <extension id="OWLOntologyMetricsView"
                point="org.protege.editor.core.application.ViewComponent">

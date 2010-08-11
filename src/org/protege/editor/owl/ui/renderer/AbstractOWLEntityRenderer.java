@@ -73,6 +73,10 @@ public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntity
             listener.renderingChanged(entity, this);
         }
     }
+    
+    public void ontologiesChanged() {
+
+    }
 
 
     final public void dispose() {
