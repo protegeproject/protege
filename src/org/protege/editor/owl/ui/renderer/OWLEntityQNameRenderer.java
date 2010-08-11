@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
-import org.protege.editor.owl.ui.prefix.PrefixMapperManager;
+import org.protege.editor.owl.ui.prefix.MergedPrefixMapperManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -16,16 +16,16 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer {
-
+	private MergedPrefixMapperManager prefixManager;
     
     public void initialise() {
-        // do nothing
+    	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
     }
 
 
     public String render(IRI iri) {
         try {
-            PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
+            PrefixMapper mapper = prefixManager.getMapper();
             String s = mapper.getShortForm(iri.toURI());
             if (s != null) {
                 return s;

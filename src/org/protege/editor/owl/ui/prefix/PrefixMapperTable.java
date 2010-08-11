@@ -13,17 +13,22 @@ import org.protege.editor.owl.ui.table.BasicOWLTable;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMapperTable extends BasicOWLTable {
+	private PrefixMapperManager prefixManager;
 
-    public PrefixMapperTable() {
-        super(new PrefixMapperTableModel());
+    public PrefixMapperTable(PrefixMapperManager prefixManager) {
+        super(new PrefixMapperTableModel(prefixManager));
         setShowGrid(true);
         setRowHeight(getRowHeight() + 3);
         getColumnModel().getColumn(0).setPreferredWidth(150);
         getColumnModel().getColumn(1).setPreferredWidth(600);
         getColumnModel().getColumn(0).setCellEditor(new PrefixTableCellEditor());
         getColumnModel().getColumn(1).setCellEditor(new PrefixTableCellEditor());
+        this.prefixManager = prefixManager;
     }
 
+    public PrefixMapperManager getPrefixMapperManager() {
+		return prefixManager;
+	}
 
     public void createAndEditRow() {
         int index = getPrefixMapperTableModel().createNewMapping("");
