@@ -18,17 +18,17 @@ import org.protege.editor.owl.ui.OWLIcons;
  */
 public class AddPrefixMappingAction extends AbstractAction {
 
-    private PrefixMappingPanel panel;
+    private PrefixMapperTables tables;
 
 
-    public AddPrefixMappingAction(PrefixMappingPanel panel) {
+    public AddPrefixMappingAction(PrefixMapperTables tables) {
         super("Add prefix", OWLIcons.getIcon("prefix.add.png"));
         putValue(AbstractAction.SHORT_DESCRIPTION, "Add prefix mapping");
-        this.panel = panel;
+        this.tables = tables;
     }
 
 
     public void actionPerformed(ActionEvent e) {
-        panel.getCurrentPrefixMapperTable().createAndEditRow();
+        tables.getPrefixMapperTable().createAndEditRow();
     }
 }

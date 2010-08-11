@@ -36,7 +36,8 @@ public class PrefixMapperTableModel extends AbstractTableModel {
         prefixValueMap.clear();
         PrefixMapper mapper = prefixManager.getMapper();
         for (String prefix : mapper.getPrefixes()) {
-            prefixValueMap.put(prefix, mapper.getValue(prefix));
+        	String adjustedPrefix = adjustPrefix(prefix);
+            prefixValueMap.put(adjustedPrefix, mapper.getValue(prefix));
         }
         prefixes.addAll(prefixValueMap.keySet());
         Collections.sort(prefixes);
@@ -45,6 +46,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
 
     public int addMapping(String prefix, String value) {
+    	prefix = adjustPrefix(prefix);
         prefixes.add(prefix);
         prefixValueMap.put(prefix, value);
         Collections.sort(prefixes);
@@ -57,10 +59,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
         // Remove any bum values.
         for (Iterator<String> it = prefixValueMap.keySet().iterator(); it.hasNext();) {
             String prefix = it.next();
-            if (prefix.trim().length() == 0) {
-                it.remove();
-                continue;
-            }
             String value = prefixValueMap.get(prefix);
             if (value.trim().length() == 0) {
                 it.remove();
@@ -69,6 +67,10 @@ public class PrefixMapperTableModel extends AbstractTableModel {
         boolean changed = false;
         PrefixMapper mapper = prefixManager.getMapper();
         for (String prefix : mapper.getPrefixes()) {
+        	if (PrefixMapperImpl.isStandardPrefix(prefix)) {
+        		continue;
+        	}
+        	prefix = adjustPrefix(prefix);
             // If the mapping isn't in the new set, remove it from
             // the current
             if (!prefixValueMap.containsKey(prefix)) {
@@ -77,6 +79,9 @@ public class PrefixMapperTableModel extends AbstractTableModel {
             }
         }
         for (String prefix : prefixValueMap.keySet()) {
+        	if (PrefixMapperImpl.isStandardPrefix(prefix)) {
+        		continue;
+        	}
             if (mapper.addPrefixMapping(prefix, prefixValueMap.get(prefix))) {
                 changed = true;
             }
@@ -156,5 +161,12 @@ public class PrefixMapperTableModel extends AbstractTableModel {
                 return addMapping(candidatePrefix, s);
             }
         }
+    }
+    
+    private String adjustPrefix(String prefix) {
+    	if (prefix.endsWith(":")) {
+    		prefix = prefix.substring(0, prefix.length() - 1);
+    	}
+    	return prefix;
     }
 }

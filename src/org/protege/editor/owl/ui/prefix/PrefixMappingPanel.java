@@ -38,10 +38,9 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMappingPanel extends JPanel {
-
-    private Map<OWLOntologyID, PrefixMapperTable> prefixManagers = new HashMap<OWLOntologyID, PrefixMapperTable>();
+	private static final long serialVersionUID = 826728863799238361L;
     private JComboBox ontologiesList;
-    private CardLayout cards;
+    private PrefixMapperTables tables;
     
     public PrefixMappingPanel(OWLEditorKit owlEditorKit) {
         ViewBarComponent vbc = new ViewBarComponent("Prefix mappings",
@@ -49,14 +48,13 @@ public class PrefixMappingPanel extends JPanel {
                 ComponentFactory.createScrollPane(createIndexedPrefixTables(owlEditorKit)));
         setLayout(new BorderLayout(7, 7));
         add(vbc);
-        vbc.addAction(new AddPrefixMappingAction(this));
-        vbc.addAction(new GeneratePrefixFromOntologyAction(owlEditorKit, this));
-        vbc.addAction(new RemovePrefixMappingAction(this));
+        vbc.addAction(new AddPrefixMappingAction(tables));
+        vbc.addAction(new GeneratePrefixFromOntologyAction(owlEditorKit, tables));
+        vbc.addAction(new RemovePrefixMappingAction(tables));
     }
     
     public PrefixMapperTable getCurrentPrefixMapperTable() {
-        OWLOntology ontology  = (OWLOntology) ontologiesList.getSelectedItem();
-        return prefixManagers.get(ontology.getOntologyID());
+        return tables.getPrefixMapperTable();
     }
 
     public Dimension getPreferredSize() {
@@ -66,17 +64,15 @@ public class PrefixMappingPanel extends JPanel {
     private JPanel createIndexedPrefixTables(final OWLEditorKit owlEditorKit) {
     	JPanel panel = new JPanel();
     	panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    	JComboBox ontologiesList = createOntologyList(owlEditorKit);
+    	createOntologyList(owlEditorKit);
     	panel.add(ontologiesList);
-    	final JPanel prefixTable = createPrefixTables(owlEditorKit.getModelManager());
-    	panel.add(prefixTable);
-    	cards.show(prefixTable, owlEditorKit.getModelManager().getActiveOntology().getOntologyID().getOntologyIRI().toString());
+    	tables = new PrefixMapperTables(owlEditorKit.getModelManager());
+    	panel.add(tables);
     	ontologiesList.addItemListener(new ItemListener() {
 			
 			public void itemStateChanged(ItemEvent e) {
-				OWLOntology ontology = owlEditorKit.getModelManager().getActiveOntology();
-				String name = ontology.getOntologyID().getOntologyIRI().toString();
-				cards.show(prefixTable, name);
+				OWLOntology ontology = (OWLOntology) ontologiesList.getSelectedItem();
+				tables.setOntology(ontology);
 			}
 		});
     	return  panel;
@@ -96,19 +92,6 @@ public class PrefixMappingPanel extends JPanel {
         ontologiesList.setSelectedItem(modelManager.getActiveOntology());
         return ontologiesList;
     }
-    
-    private JPanel createPrefixTables(OWLModelManager modelManager) {
-        JPanel tables = new JPanel();
-        cards = new CardLayout();
-        tables.setLayout(cards);
-        for (OWLOntology ontology : modelManager.getActiveOntologies()) {
-        	PrefixMapperManager prefixManager = new OntologyPrefixMapperManager(ontology);
-        	PrefixMapperTable table = new PrefixMapperTable(prefixManager);
-        	prefixManagers.put(ontology.getOntologyID(), table);
-        	tables.add(table, ontology.getOntologyID().getOntologyIRI().toString());
-        }
-        return tables;
-    }
 
     public static boolean showDialog(OWLEditorKit owlEditorKit) {
         PrefixMappingPanel panel = new PrefixMappingPanel(owlEditorKit);
@@ -118,13 +101,21 @@ public class PrefixMappingPanel extends JPanel {
                                         JOptionPane.PLAIN_MESSAGE,
                                         JOptionPane.OK_CANCEL_OPTION,
                                         panel);
+        boolean changed = false;
         if(ret == JOptionPane.OK_OPTION) {
-            for (PrefixMapperTable table : panel.prefixManagers.values()) {
-                table.getPrefixMapperManager().save();
+        	OWLModelManager modelManager = owlEditorKit.getModelManager();
+            for (OWLOntology ontology : modelManager.getOntologies()) {
+            	PrefixMapperTable table = panel.tables.getPrefixMapperTable(ontology);
+                if (table.getModel().commitPrefixes()) {
+                	changed = true;
+                	modelManager.setDirty(ontology);
+                }
             }
-            // Reset the renderer to force an update - there should
-            // probably be an easier way to do this.
-            owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());
+            if (changed) {
+            	// Reset the renderer to force an update - there should
+            	// probably be an easier way to do this.
+            	owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());
+            }
             return true;
         }
         return false;

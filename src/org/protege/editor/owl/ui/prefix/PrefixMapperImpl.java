@@ -16,10 +16,34 @@ import java.util.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMapperImpl implements PrefixMapper {
+	
+	public static String[][] standardPrefixes = {
+        {"owl:", Namespaces.OWL.toString()},
+        {"rdfs:", Namespaces.RDFS.toString()},
+        {"rdf:", Namespaces.RDF.toString()},
+        {"xsd:", Namespaces.XSD.toString()},
+        {"swrl:", Namespaces.SWRL.toString()},
+        {"swrlb:", Namespaces.SWRLB.toString()},
+        // We could load dublin core prefixes etc. here
+        {"dc:", "http://purl.org/dc/elements/1.1/"},
+        {"dcterms:", "http://purl.org/dc/terms/"},
+        {"dctype:", "http://purl.org/dc/dcmitype/Image"},
+        {"foaf:", "http://xmlns.com/foaf/0.1/"}
+    };
 
     private Map<String, String> prefix2ValueMap;
 
     private Map<String, String> value2PrefixMap;
+
+    public static boolean isStandardPrefix(String prefix) {
+        prefix = adjustPrefix(prefix);
+        for (String[] prefixPair : standardPrefixes) {
+            if (prefix.equals(prefixPair[0])) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public PrefixMapperImpl(Map<String, String> prefix2ValueMap) {
@@ -31,24 +55,17 @@ public class PrefixMapperImpl implements PrefixMapper {
 
 
     private void loadStandardPrefixes() {
-        addPrefixMapping("owl", Namespaces.OWL.toString());
-        addPrefixMapping("rdfs", Namespaces.RDFS.toString());
-        addPrefixMapping("rdf", Namespaces.RDF.toString());
-        addPrefixMapping("xsd", Namespaces.XSD.toString());
-        addPrefixMapping("swrl", Namespaces.SWRL.toString());
-        addPrefixMapping("swrlb", Namespaces.SWRLB.toString());
-        // We could load dublin core prefixes etc. here
-        addPrefixMapping("dc", "http://purl.org/dc/elements/1.1/");
-        addPrefixMapping("dcterms", "http://purl.org/dc/terms/");
-        addPrefixMapping("dctype", "http://purl.org/dc/dcmitype/Image");
-        addPrefixMapping("foaf", "http://xmlns.com/foaf/0.1/");
+        for (String[] prefixPair : standardPrefixes) {
+            addPrefixMapping(prefixPair[0], prefixPair[1]);
+        }
     }
 
 
     private void load(Map<String, String> prefix2Value) {
         for (String prefix : prefix2Value.keySet()) {
-            prefix2ValueMap.put(prefix, prefix2Value.get(prefix));
-            value2PrefixMap.put(prefix2Value.get(prefix), prefix);
+        	String adjustedPrefix = adjustPrefix(prefix);
+            prefix2ValueMap.put(adjustedPrefix, prefix2Value.get(adjustedPrefix));
+            value2PrefixMap.put(prefix2Value.get(adjustedPrefix), adjustedPrefix);
         }
     }
 
@@ -64,13 +81,18 @@ public class PrefixMapperImpl implements PrefixMapper {
 
 
     public boolean addPrefixMapping(String prefix, String value) {
-        prefix2ValueMap.put(prefix, value);
-        value2PrefixMap.put(value, prefix);
-        return true;
+    	prefix = adjustPrefix(prefix);
+    	boolean changed = !prefix2ValueMap.containsKey(prefix) || !value.equals(prefix2ValueMap.get(prefix));
+    	if (changed) {
+    		prefix2ValueMap.put(prefix, value);
+    		value2PrefixMap.put(value, prefix);
+    	}
+    	return changed;
     }
 
 
     public void removePrefixMapping(String prefix) {
+    	prefix = adjustPrefix(prefix);
         String value = prefix2ValueMap.get(prefix);
         if (value == null) {
             return;
@@ -81,6 +103,7 @@ public class PrefixMapperImpl implements PrefixMapper {
 
 
     public String getValue(String prefix) {
+    	prefix = adjustPrefix(prefix);
         return prefix2ValueMap.get(prefix);
     }
 
@@ -106,9 +129,19 @@ public class PrefixMapperImpl implements PrefixMapper {
             String value = prefix2ValueMap.get(prefix);
             if (uriString.startsWith(value)) {
                 // We have our mapping
-                return prefix + ":" + uriString.substring(value.length(), uriString.length());
+            	if (prefix.equals(":")) {
+            		prefix = "";
+            	}
+                return prefix + uriString.substring(value.length(), uriString.length());
             }
         }
         return null;
+    }
+    
+    private static String adjustPrefix(String prefix) {
+    	if (!prefix.endsWith(":")) {
+    		prefix  = prefix + ":";
+    	}
+    	return prefix;
     }
 }

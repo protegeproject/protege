@@ -14,7 +14,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public abstract class AbstractOWLPropertyHierarchyProvider<E extends OWLPropertyExpression<E, ? extends OWLPropertyRange>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
+public abstract class AbstractOWLPropertyHierarchyProvider<E extends OWLPropertyExpression<? extends OWLPropertyRange, E>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
 
 //    private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
 

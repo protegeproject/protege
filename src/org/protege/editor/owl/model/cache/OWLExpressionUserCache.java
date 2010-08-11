@@ -308,6 +308,10 @@ public class OWLExpressionUserCache implements Disposable {
             entity.accept(this);
             return cf;
         }
+        
+        public void ontologiesChanged() {
+
+        }
 
 
         public void visit(OWLClass entity) {

@@ -20,6 +20,11 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
     	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
     }
     
+    @Override
+    public void ontologiesChanged() {
+    	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
+    }
+    
     public String render(OWLEntity entity) {
         String shortForm = getProvider().getShortForm(entity);
         if (OWLRendererPreferences.getInstance().isRenderPrefixes()){

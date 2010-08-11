@@ -131,7 +131,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
         private RestrictionCreator t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLDataPropertyExpression, OWLDataRange> r) {
+        private void handleRestriction(OWLQuantifiedRestriction<OWLDataRange, OWLDataPropertyExpression, OWLDataRange>  r) {
             if (!r.getProperty().isAnonymous() && r.getFiller().isDatatype()){
                 p = r.getProperty().asOWLDataProperty();
                 f = r.getFiller().asOWLDatatype();
