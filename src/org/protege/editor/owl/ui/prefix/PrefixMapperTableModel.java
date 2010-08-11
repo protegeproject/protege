@@ -18,9 +18,12 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     private List<String> prefixes;
 
     private Map<String, String> prefixValueMap;
+    
+    private PrefixMapperManager prefixManager;
 
 
-    public PrefixMapperTableModel() {
+    public PrefixMapperTableModel(PrefixMapperManager prefixManager) {
+    	this.prefixManager = prefixManager;
         prefixValueMap = new HashMap<String, String>();
         prefixes = new ArrayList<String>();
         refill();
@@ -28,9 +31,10 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
 
     private void refill() {
+    	prefixManager.reload();
         prefixes.clear();
         prefixValueMap.clear();
-        PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
+        PrefixMapper mapper = prefixManager.getMapper();
         for (String prefix : mapper.getPrefixes()) {
             prefixValueMap.put(prefix, mapper.getValue(prefix));
         }
@@ -63,7 +67,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
             }
         }
         boolean changed = false;
-        PrefixMapper mapper = PrefixMapperManager.getInstance().getMapper();
+        PrefixMapper mapper = prefixManager.getMapper();
         for (String prefix : mapper.getPrefixes()) {
             // If the mapping isn't in the new set, remove it from
             // the current
@@ -78,7 +82,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
             }
         }
         if (changed){
-            PrefixMapperManager.getInstance().save();
+            prefixManager.save();
         }
         return changed;
     }

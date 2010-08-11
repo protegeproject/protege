@@ -27,14 +27,14 @@ public class GeneratePrefixFromOntologyAction extends AbstractAction {
 
     private OWLEditorKit owlEditorKit;
 
-    private PrefixMapperTable table;
+    private PrefixMappingPanel panel;
 
 
-    public GeneratePrefixFromOntologyAction(OWLEditorKit owlEditorKit, PrefixMapperTable table) {
+    public GeneratePrefixFromOntologyAction(OWLEditorKit owlEditorKit, PrefixMappingPanel panel) {
         super("Generate from ontology URI", OWLIcons.getIcon("prefix.generate.png"));
         putValue(AbstractAction.SHORT_DESCRIPTION, "Generate prefix mappings from ontology URIs...");
         this.owlEditorKit = owlEditorKit;
-        this.table = table;
+        this.panel = panel;
     }
 
 
@@ -59,6 +59,7 @@ public class GeneratePrefixFromOntologyAction extends AbstractAction {
             if (!uriString.endsWith("#") && !uriString.endsWith("/")) {
                 uriString = uriString + "#";
             }
+            PrefixMapperTable table = panel.getCurrentPrefixMapperTable();
             int index = table.getPrefixMapperTableModel().addMapping(prefix, uriString);
             table.getSelectionModel().setSelectionInterval(index, index);
         }
