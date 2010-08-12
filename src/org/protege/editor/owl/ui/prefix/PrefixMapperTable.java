@@ -15,6 +15,7 @@ import org.protege.editor.owl.ui.table.BasicOWLTable;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMapperTable extends BasicOWLTable {
+	private static final long serialVersionUID = 7960180034430124925L;
 	private PrefixMapperManager prefixManager;
 
     public PrefixMapperTable(PrefixMapperManager prefixManager) {

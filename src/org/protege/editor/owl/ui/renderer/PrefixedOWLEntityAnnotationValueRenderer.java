@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.owl.ui.prefix.OntologyPrefixMapperManager;
 import org.protege.editor.owl.ui.prefix.PrefixMapper;
 import org.protege.editor.owl.ui.prefix.MergedPrefixMapperManager;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -13,16 +14,17 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotationValueRenderer {
-	private MergedPrefixMapperManager prefixManager;
+public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotationValueRenderer implements PrefixBasedRenderer {
+	private OntologyPrefixMapperManager prefixManager;
     
     public void initialise() {
-    	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
+    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
+    	super.initialise();
     }
     
     @Override
     public void ontologiesChanged() {
-    	prefixManager = new MergedPrefixMapperManager(getOWLModelManager());
+    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
     }
     
     public String render(OWLEntity entity) {
