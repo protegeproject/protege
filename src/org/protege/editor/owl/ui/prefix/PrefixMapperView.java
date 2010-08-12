@@ -8,6 +8,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.PrefixBasedRenderer;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -22,7 +24,10 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 				OWLModelManager modelManager = getOWLModelManager();
 				OWLOntology activeOntology = tables.getOntology();
 				modelManager.setDirty(activeOntology);
-            	modelManager.setOWLEntityRenderer(modelManager.getOWLEntityRenderer());
+				OWLModelManagerEntityRenderer renderer = modelManager.getOWLEntityRenderer();
+				if (renderer instanceof PrefixBasedRenderer) {
+					modelManager.setOWLEntityRenderer(renderer);
+				}
 			}
 		}
 	};

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,11 +23,10 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class MergedPrefixMapperManager implements PrefixMapperManager {
-
-    private static final Logger logger = Logger.getLogger(MergedPrefixMapperManager.class);
     
     private OWLModelManager modelManager;
     private PrefixMapper mapper;
+    boolean ignoreExtraDefaultPrefixes = true;
 
 
     public MergedPrefixMapperManager(OWLModelManager modelManager) {
@@ -36,41 +36,73 @@ public class MergedPrefixMapperManager implements PrefixMapperManager {
     }
 
 
+    public void setIgnoreExtraDefaultPrefixes(boolean ignoreExtraDefaultPrefixes) {
+		this.ignoreExtraDefaultPrefixes = ignoreExtraDefaultPrefixes;
+	}
+    
+    public boolean getIgnoreExtraDefaultPrefixes() {
+		return ignoreExtraDefaultPrefixes;
+	}
+    
     public void reload() {
+    	Map<OWLOntology, String> defaultPrefixMap = reloadAllButDefaultPrefixes();
+    	handleDefaultPrefixes(defaultPrefixMap);
+    }
+    
+    private Map<OWLOntology, String> reloadAllButDefaultPrefixes() {
 		OWLOntologyManager manager = modelManager.getOWLOntologyManager();
+		Map<OWLOntology, String> defaultPrefixMap = new  HashMap<OWLOntology, String>();
 		for (OWLOntology ontology :  modelManager.getOntologies()) {
 			OWLOntologyFormat format = manager.getOntologyFormat(ontology);
 			if (format != null && format instanceof PrefixOWLOntologyFormat) {
-				Set<String> defaultValues = new  HashSet<String>();
 				PrefixOWLOntologyFormat prefixes = (PrefixOWLOntologyFormat) format;
 				for (String name : prefixes.getPrefixNames()) {
 					if (name.equals("") || name.equals(":")) {
-						defaultValues.add(prefixes.getPrefix(name));
+						defaultPrefixMap.put(ontology, prefixes.getPrefix(name));
 					}
 					else {
 						mapper.addPrefixMapping(name, prefixes.getPrefix(name));
 					}
 				}
-				if (defaultValues.size() <= 1) {
-					for (String value : defaultValues) {
-						mapper.addPrefixMapping(":", value);
-					}
+			}
+		}
+
+		return defaultPrefixMap;
+    }
+
+    private void handleDefaultPrefixes(Map<OWLOntology, String> defaultPrefixMap) {
+		if (defaultPrefixMap.size() <= 1) {
+			for (String value : defaultPrefixMap.values()) {
+				mapper.addPrefixMapping(":", value);
+			}
+		}
+		else if (!ignoreExtraDefaultPrefixes) {
+			Set<OWLOntology> imports = new HashSet<OWLOntology>();
+			for (OWLOntology ontology : modelManager.getOntologies()) {
+				imports.addAll(ontology.getDirectImports());
+			}
+			OWLOntology notImported = null;
+			for (OWLOntology ontology : defaultPrefixMap.keySet()) {
+				if (!imports.contains(ontology)) {
+					notImported = ontology;
 				}
-				else {
-					int counter = 0;
-					for (String value : defaultValues) {
-						String prefix;
-						do {
-							prefix = "p" + (counter++); 
-						}
-						while (mapper.getPrefix(prefix) != null);
-						mapper.addPrefixMapping(prefix, value);
-					}
+			}
+			if (notImported != null) {
+				mapper.addPrefixMapping("", defaultPrefixMap.get(notImported));
+				defaultPrefixMap.remove(notImported);
+			}
+			int counter = 0;
+			for (String value : defaultPrefixMap.values()) {
+				String prefix;
+				do {
+					prefix = "p" + (counter++); 
 				}
+				while (mapper.getPrefix(prefix) != null);
+				mapper.addPrefixMapping(prefix, value);
 			}
 		}
     }
-
+    
 
     public void save() {
     	throw new UnsupportedOperationException("Can't save merged prefix mappings");
