@@ -248,7 +248,7 @@ public class NoOpReasoner implements OWLReasoner {
     }
 
     public String getReasonerName() {
-        return "Protégé Null Reasoner";
+        return ""Prot\x00E9g\x00E9 Null Reasoner";
     }
 
     public Version getReasonerVersion() {
