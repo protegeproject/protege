@@ -411,8 +411,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
             manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
             throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
         }
+        rebuildActiveOntologiesCache();
+        setOWLEntityRenderer(getOWLEntityRenderer());
         fireEvent(EventType.ONTOLOGY_RELOADED);
-        setActiveOntology(ont, true);
         return ont;
     }
 
