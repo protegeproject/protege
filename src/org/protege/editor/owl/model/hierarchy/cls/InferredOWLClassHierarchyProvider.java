@@ -46,8 +46,8 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.REASONER_CHANGED) || event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(
-                        EventType.ONTOLOGY_CLASSIFIED)) {
+                if (event.isType(EventType.REASONER_CHANGED) || event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) 
+                		|| event.isType(EventType.ONTOLOGY_CLASSIFIED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
                     fireHierarchyChanged();
                 }
             }
