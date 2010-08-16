@@ -39,7 +39,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
         list.setRootObject(new OntologyAnnotationContainer(getOWLModelManager().getActiveOntology()));
         listener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
                     updateView();
                 }
             }
