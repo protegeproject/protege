@@ -204,6 +204,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         createActiveOntologyPanel();
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
+        reselectionEventTypes.add(EventType.ONTOLOGY_RELOADED);
         reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
@@ -308,15 +309,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
             break;
         case ENTITY_RENDERER_CHANGED:
+        case ONTOLOGY_RELOADED:
             refreshComponents();
             break;
         case ONTOLOGY_SAVED:
             updateDirtyFlag();
             break;
         case ENTITY_RENDERING_CHANGED:
-            break;
-        case ONTOLOGY_RELOADED:
-            break;
+        	break;
         case ONTOLOGY_VISIBILITY_CHANGED:
             break;
         default:
