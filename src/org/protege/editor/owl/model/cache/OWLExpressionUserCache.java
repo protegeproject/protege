@@ -62,7 +62,8 @@ public class OWLExpressionUserCache implements Disposable {
         public void handleChange(OWLModelManagerChangeEvent event) {
             if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
                 event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
-                event.getType().equals(EventType.ENTITY_RENDERING_CHANGED)){
+                event.getType().equals(EventType.ENTITY_RENDERING_CHANGED) || 
+                event.getType().equals(EventType.ONTOLOGY_RELOADED)){
                 refresh();
             }
         }
