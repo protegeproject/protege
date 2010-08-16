@@ -41,7 +41,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
 
     private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
         public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
                 changed = true;
                 refresh();
             }
