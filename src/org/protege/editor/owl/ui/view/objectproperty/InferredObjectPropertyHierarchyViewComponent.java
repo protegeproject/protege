@@ -26,7 +26,8 @@ public class InferredObjectPropertyHierarchyViewComponent extends OWLObjectPrope
         public void handleChange(OWLModelManagerChangeEvent event) {
             if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED ||
                 event.getType() == EventType.ONTOLOGY_CLASSIFIED ||
-                event.getType() == EventType.REASONER_CHANGED){
+                event.getType() == EventType.REASONER_CHANGED ||
+                event.getType() == EventType.ONTOLOGY_RELOADED){
                 getHierarchyProvider().setOntologies(getOWLModelManager().getActiveOntologies());
             }
         }
