@@ -17,8 +17,6 @@
    <extension-point id="preferencespanel" 
                     name="preferencespanel"
                     schema="schema/preferencespanel.exsd"/>
-   <extension-point id="EditorKitHook"
-                     name="EditorKit Hook"/>
    <extension-point id="OntologyRepositoryFactory" name="Ontology Repository Factory" schema="schema/OntologyRepositoryFactory.exsd"/>
    <extension-point id="OntologyLoader" name="Ontology Loader" schema="schema/OntologyLoader.exsd"/>
 
