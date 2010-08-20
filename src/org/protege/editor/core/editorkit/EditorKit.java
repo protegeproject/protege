@@ -91,10 +91,4 @@ public interface EditorKit extends Disposable {
 
 
     public void handleSaveAs() throws Exception;
-
-
-    public <T extends Disposable> void put(Object key, T object);
-
-
-    public <T extends Disposable> T get(Object key);
 }
