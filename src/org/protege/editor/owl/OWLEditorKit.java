@@ -97,10 +97,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    protected void initialiseCompleted() {
-        super.initialiseCompleted();
-    }
-
     /**
      * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this call
      *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that 
