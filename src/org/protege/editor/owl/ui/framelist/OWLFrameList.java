@@ -99,6 +99,8 @@ public class OWLFrameList<R> extends MList
     private OWLFrameListRenderer cellRenderer;
 
     private AxiomAnnotationPanel axiomAnnotationPanel;
+    
+    private ExplanationHandler explanationHandler;
 
     private ListSelectionListener selListener = new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
@@ -154,13 +156,15 @@ public class OWLFrameList<R> extends MList
 
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(selListener);
+        
+        explanationHandler = new OWLFrameListExplanationHandler(editorKit);
 
         setUI(new OWLFrameListUI());
     }
 
 
     protected ExplanationHandler getExplanationHandler() {
-        return editorKit.get(ExplanationHandler.KEY);
+        return explanationHandler;
     }
 
     public void refreshComponent() {
@@ -212,7 +216,7 @@ public class OWLFrameList<R> extends MList
         if (value instanceof OWLFrameSectionRow) {
             buttons.add(axiomAnnotationButton);
             axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent((OWLFrameSectionRow)value));
-            if (getExplanationHandler() != null) {
+            if (((OWLFrameSectionRow) value).getOntology() == null) {
                 buttons.addAll(inferredRowButtons);
             }
         }
