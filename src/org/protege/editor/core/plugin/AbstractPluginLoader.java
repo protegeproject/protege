@@ -85,8 +85,14 @@ public abstract class AbstractPluginLoader<E> {
      * <code>PluginExtensionMatcher</code>, which is used to filter
      * the plugin extensions to a desired subset.
      */
-    protected abstract PluginExtensionMatcher getExtensionMatcher();
-
+    /**
+     * This method needs to be overriden to provide a
+     * <code>PluginExtensionMatcher</code>, which is used to filter
+     * the plugin extensions to a desired subset.
+     */
+    protected PluginExtensionMatcher getExtensionMatcher() {
+        return new DefaultPluginExtensionMatcher();
+    }
 
     /**
      * This method needs to be overriden to create an instance
