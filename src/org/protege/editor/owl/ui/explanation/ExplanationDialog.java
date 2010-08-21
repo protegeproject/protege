@@ -76,6 +76,7 @@ public class ExplanationDialog extends JDialog {
 				}
 				explanation = t.explain(axiom);
 				explanationContainer.add(explanation);
+				ExplanationDialog.this.pack();
 				ExplanationDialog.this.repaint();
 			}
 		});
