@@ -38,11 +38,6 @@ public class OntologyRepositoryFactoryPluginLoader extends AbstractApplicationPl
     }
 
 
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-
     protected OntologyRepositoryFactoryPlugin createInstance(IExtension extension) {
         return new OntologyRepositoryFactoryPluginImpl(extension);
     }

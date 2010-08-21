@@ -16,9 +16,4 @@ public class OntologyBuilderPluginLoader extends AbstractPluginLoader<OntologyBu
         return new OntologyBuilderPlugin(extension);
     }
 
-    @Override
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
 }
