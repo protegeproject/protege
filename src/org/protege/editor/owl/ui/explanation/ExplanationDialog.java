@@ -88,7 +88,7 @@ public class ExplanationDialog extends JDialog {
 		JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ExplanationDialog.this.setVisible(false);
+				ExplanationDialog.this.dispose();
 			}
 		});
 		ok.setAlignmentX(CENTER_ALIGNMENT);
