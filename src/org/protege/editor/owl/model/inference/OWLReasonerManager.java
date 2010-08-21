@@ -34,7 +34,7 @@ public interface OWLReasonerManager extends Disposable {
      */
     String getCurrentReasonerFactoryId();
 
-    ProtegeOWLReasonerFactory getCurrentReasonerFactory();
+    ProtegeOWLReasonerInfo getCurrentReasonerFactory();
 
     String getCurrentReasonerName();
 
@@ -51,7 +51,7 @@ public interface OWLReasonerManager extends Disposable {
     /**
      * Gets the installed reasoner plugins.
      */
-    Set<ProtegeOWLReasonerFactory> getInstalledReasonerFactories();
+    Set<ProtegeOWLReasonerInfo> getInstalledReasonerFactories();
 
 
     

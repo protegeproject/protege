@@ -16,11 +16,6 @@ public class InferencePreferencePluginLoader extends AbstractPluginLoader<Infere
     }
 
     @Override
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-    @Override
     protected InferencePreferencePlugin createInstance(IExtension extension) {
         return new InferencePreferencePlugin(editorKit, extension);
     }

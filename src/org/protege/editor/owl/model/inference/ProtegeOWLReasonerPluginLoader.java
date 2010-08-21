@@ -39,13 +39,13 @@ import org.protege.editor.owl.model.OWLModelManager;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<ProtegeOWLReasonerFactoryPlugin> {
+public class ProtegeOWLReasonerPluginLoader extends AbstractPluginLoader<ProtegeOWLReasonerPlugin> {
 
     private OWLModelManager owlModelManager;
 
 
-    public ProtegeOWLReasonerFactoryPluginLoader(OWLModelManager owlModelManager) {
-        super(ProtegeOWL.ID, ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
+    public ProtegeOWLReasonerPluginLoader(OWLModelManager owlModelManager) {
+        super(ProtegeOWL.ID, ProtegeOWLReasonerPlugin.REASONER_PLUGIN_TYPE_ID);
         this.owlModelManager = owlModelManager;
     }
 
@@ -58,28 +58,7 @@ public class ProtegeOWLReasonerFactoryPluginLoader extends AbstractPluginLoader<
      * @return A plugin object (typically some sort of wrapper around
      *         the extension)
      */
-    protected ProtegeOWLReasonerFactoryPlugin createInstance(IExtension extension) {
-        return new ProtegeOWLReasonerFactoryPluginJPFImpl(owlModelManager, extension);
-    }
-
-
-    /**
-     * This method needs to be overriden to provide a
-     * <code>PluginExtensionMatcher</code>, which is used to filter
-     * the plugin extensions to a desired subset.
-     */
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new PluginExtensionMatcher() {
-            /**
-             * Determines whether the specified <code>Extension</code>
-             * constitutes a "match" or not.
-             * @param extension The <code>Extension</code> to test.
-             * @return <code>true</code> if the <code>Extension</code> matches
-             *         or <code>false</code> if the <code>Extension</code> doesn't match.
-             */
-            public boolean matches(IExtension extension) {
-                return true;
-            }
-        };
+    protected ProtegeOWLReasonerPlugin createInstance(IExtension extension) {
+        return new ProtegeOWLReasonerPluginJPFImpl(owlModelManager, extension);
     }
 }

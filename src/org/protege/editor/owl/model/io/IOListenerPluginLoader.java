@@ -44,11 +44,6 @@ public class IOListenerPluginLoader extends AbstractPluginLoader<IOListenerPlugi
     }
 
 
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-
     protected IOListenerPlugin createInstance(IExtension extension) {
         return new IOListenerPluginImpl(extension, editorKit);
     }

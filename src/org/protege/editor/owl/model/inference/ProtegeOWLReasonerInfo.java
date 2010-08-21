@@ -1,9 +1,11 @@
 package org.protege.editor.owl.model.inference;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.semanticweb.owlapi.model.OWLOntology;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 
@@ -13,7 +15,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
+public interface ProtegeOWLReasonerInfo extends ProtegePluginInstance {
 
     /**
      * This is called by Protege to configure the factory during the initialization of the 
@@ -36,15 +38,14 @@ public interface ProtegeOWLReasonerFactory extends ProtegePluginInstance {
      * Gets the name of the reasoner that this factory creates.
      */
     String getReasonerName();
+    
+    void setOWLModelManager(OWLModelManager owlModelManager);
+    
+    OWLModelManager getOWLModelManager();
    
-    /**
-     * Creates an instance of an <code>OWLReasoner</code>.  This method will
-     * create a <i>new</i> instance.
-     * 
-     * @param ontology
-     * @param monitor  A progress monitor to be used by the reasoner if possible.
-     *
-     */
-    OWLReasoner createReasoner(OWLOntology ontology, 
-                               ReasonerProgressMonitor monitor);
+    BufferingMode getRecommendedBuffering();
+    
+    OWLReasonerConfiguration getConfiguration(ReasonerProgressMonitor monitor);
+    
+    OWLReasonerFactory getReasonerFactory();
 }

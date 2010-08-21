@@ -10,6 +10,8 @@
                      name="Reasoner Preferences" 
                      schema="schema/inference_preferences.exsd"/>
 
+    <extension-point id="explanation" name="Explanation Services" schema="schema/ExplanationServices.exsd"/>
+
     <extension-point id="ui_renderer_entitycolorprovider"
                      name="Entity Color Provider"
                      schema="schema/EntityColorProvider.exsd"/>
@@ -1237,12 +1239,18 @@
     <extension id="NoOpReasoner"
                point="org.protege.editor.owl.inference_reasonerfactory">
         <name value="None"/>
-        <class value="org.protege.editor.owl.model.inference.NoOpReasonerFactory"/>
+        <class value="org.protege.editor.owl.model.inference.NoOpReasonerInfo"/>
         <defaultReasoner value="true"/>
     </extension>
 
 
-
+	<!-- Explanation Services -->
+	
+	<extension id="BasicExplanation"
+			   point="org.protege.editor.owl.explanation">
+        <name value="Basic Explanation"/>
+        <class value="org.protege.editor.owl.ui.explanation.impl.BasicBlackboxExplanationService"/>
+    </extension>
 
 
     <!-- Preferences -->  

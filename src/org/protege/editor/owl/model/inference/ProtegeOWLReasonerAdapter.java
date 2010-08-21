@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public abstract class ProtegeOWLReasonerFactoryAdapter implements ProtegeOWLReasonerFactory {
+public abstract class ProtegeOWLReasonerAdapter implements ProtegeOWLReasonerInfo {
 
     private String id;
 
