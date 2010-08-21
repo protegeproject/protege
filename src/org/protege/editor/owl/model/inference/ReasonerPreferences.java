@@ -1,11 +1,9 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.protege.editor.core.ProtegeApplication;
@@ -107,7 +105,7 @@ public class ReasonerPreferences {
         PreferencesManager prefMan = PreferencesManager.getInstance();
         Preferences prefs = prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, ReasonerPreferences.class);
         showInferences = prefs.getBoolean(SHOW_INFERENCES_KEY, true);
-        defaultReasonerId = prefs.getString(DEFAULT_REASONER_ID, NoOpReasonerFactory.NULL_REASONER_ID);
+        defaultReasonerId = prefs.getString(DEFAULT_REASONER_ID, NoOpReasonerInfo.NULL_REASONER_ID);
         for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
             enabledMap.put(task, prefs.getBoolean(task.getKey(), task.getEnabledByDefault()));
         }

@@ -48,11 +48,6 @@ public class OWLClassExpressionEditorPluginLoader extends AbstractPluginLoader<O
     }
 
 
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-
     protected OWLClassExpressionEditorPlugin createInstance(IExtension extension) {
         return new OWLClassExpressionEditorPluginImpl(editorKit, extension);
     }

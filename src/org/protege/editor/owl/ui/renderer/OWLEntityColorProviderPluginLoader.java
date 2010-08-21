@@ -50,12 +50,6 @@ public class OWLEntityColorProviderPluginLoader extends AbstractPluginLoader<OWL
         this.owlModelManager = owlModelManager;
     }
 
-
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-
     protected OWLEntityColorProviderPlugin createInstance(IExtension extension) {
         return new OWLEntityColorProviderPluginJPFImpl(owlModelManager, extension);
     }

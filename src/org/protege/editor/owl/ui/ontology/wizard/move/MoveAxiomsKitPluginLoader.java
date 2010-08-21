@@ -44,11 +44,6 @@ public class MoveAxiomsKitPluginLoader extends AbstractPluginLoader<MoveAxiomsKi
     }
 
 
-    protected PluginExtensionMatcher getExtensionMatcher() {
-        return new DefaultPluginExtensionMatcher();
-    }
-
-
     protected MoveAxiomsKitPlugin createInstance(IExtension extension) {
         return new MoveAxiomsKitPluginImpl(editorKit, extension);
     }

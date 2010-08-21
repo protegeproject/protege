@@ -51,6 +51,7 @@ import org.protege.editor.owl.ui.OWLObjectRenderingComparator;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
+import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
@@ -134,6 +135,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
     private ProtegeOWLOntologyManager manager;
 
     private OntologyCatalogManager ontologyLibraryManager;
+    
+    private ExplanationManager explanationManager;
 
     private OWLEntityFactory entityFactory;
 
@@ -285,6 +288,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
         }
         return hm;
     }
+    
+    public ExplanationManager getExplanationManager() {
+    	return explanationManager;
+    }
+    
+    public void setExplanationManager(ExplanationManager explanationManager) {
+		this.explanationManager = explanationManager;
+	}
 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -504,7 +515,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
     
     /**
-     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
+//     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
      * @throws OWLOntologyStorageException if a problem occurs during the save
      */
     @Deprecated

@@ -72,12 +72,12 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.inference.NoOpReasoner;
-import org.protege.editor.owl.model.inference.NoOpReasonerFactory;
+import org.protege.editor.owl.model.inference.NoOpReasonerInfo;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPlugin;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactoryPluginJPFImpl;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPlugin;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPluginJPFImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
@@ -516,14 +516,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reasonerMenu.addSeparator();
         
         ButtonGroup bg = new ButtonGroup();
-        Set<ProtegeOWLReasonerFactory> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
-        List<ProtegeOWLReasonerFactory> factoriesList = new ArrayList<ProtegeOWLReasonerFactory>(factories);
-        Collections.sort(factoriesList, new Comparator<ProtegeOWLReasonerFactory>() {
-            public int compare(ProtegeOWLReasonerFactory o1, ProtegeOWLReasonerFactory o2) {
+        Set<ProtegeOWLReasonerInfo> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
+        List<ProtegeOWLReasonerInfo> factoriesList = new ArrayList<ProtegeOWLReasonerInfo>(factories);
+        Collections.sort(factoriesList, new Comparator<ProtegeOWLReasonerInfo>() {
+            public int compare(ProtegeOWLReasonerInfo o1, ProtegeOWLReasonerInfo o2) {
                 return o1.getReasonerName().compareTo(o2.getReasonerName());
             }
         });
-        for (final ProtegeOWLReasonerFactory plugin : factoriesList) {
+        for (final ProtegeOWLReasonerInfo plugin : factoriesList) {
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(plugin.getReasonerName());
             item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
             reasonerMenu.add(item);
@@ -538,15 +538,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void addReasonerListener(final JMenuBar menuBar) {
         final IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
-        final IExtensionPoint point = registry.getExtensionPoint(ProtegeOWL.ID, ProtegeOWLReasonerFactoryPlugin.REASONER_PLUGIN_TYPE_ID);
+        final IExtensionPoint point = registry.getExtensionPoint(ProtegeOWL.ID, ProtegeOWLReasonerPlugin.REASONER_PLUGIN_TYPE_ID);
         
         registry.addListener(new IRegistryEventListener() {
             
             public void added(IExtension[] extensions) {
                 OWLReasonerManagerImpl reasonerManager = (OWLReasonerManagerImpl) getOWLModelManager().getOWLReasonerManager();
-                Set<ProtegeOWLReasonerFactoryPlugin> plugins = new HashSet<ProtegeOWLReasonerFactoryPlugin>();
+                Set<ProtegeOWLReasonerPlugin> plugins = new HashSet<ProtegeOWLReasonerPlugin>();
                 for (IExtension extension : extensions) {
-                    plugins.add(new ProtegeOWLReasonerFactoryPluginJPFImpl(getOWLModelManager(), extension));
+                    plugins.add(new ProtegeOWLReasonerPluginJPFImpl(getOWLModelManager(), extension));
                 }
                 reasonerManager.addReasonerFactories(plugins);
                 rebuildReasonerMenu(menuBar);
@@ -732,7 +732,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             return;
         }
         OWLReasoner currentReasoner = reasonerManager.getCurrentReasoner();
-        if (reasonerManager.getCurrentReasonerFactory() instanceof NoOpReasonerFactory) {
+        if (reasonerManager.getCurrentReasonerFactory() instanceof NoOpReasonerInfo) {
             reasonerStatus.setText("No reasoner set");            
         }
         else if (currentReasoner instanceof NoOpReasoner) {

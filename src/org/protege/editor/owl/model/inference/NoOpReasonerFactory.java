@@ -1,47 +1,37 @@
 package org.protege.editor.owl.model.inference;
 
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
+public class NoOpReasonerFactory implements OWLReasonerFactory {
 
-/**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Bio-Health Informatics Group<br>
- * Date: 16-Apr-2007<br><br>
- */
-public class NoOpReasonerFactory implements ProtegeOWLReasonerFactory {
-    private String id = NULL_REASONER_ID;
-    private String name;
-    public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
+	public String getReasonerName() {
+		return "Null Reasoner";
+	}
 
-    public void setup(OWLOntologyManager manager, String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+	public OWLReasoner createNonBufferingReasoner(OWLOntology ontology) {
+		return new NoOpReasoner(ontology);
+	}
 
-    public String getReasonerId() {
-        return id;
-    }
+	public OWLReasoner createReasoner(OWLOntology ontology) {
+		return new NoOpReasoner(ontology);
 
-    public String getReasonerName() {
-        return name;
-    }
+	}
 
+	public OWLReasoner createNonBufferingReasoner(OWLOntology ontology,
+			OWLReasonerConfiguration config)
+			throws IllegalConfigurationException {
+		// TODO Auto-generated method stub
+		return new NoOpReasoner(ontology);
+	}
 
-    
-    public OWLReasoner createReasoner(OWLOntology ontology, ReasonerProgressMonitor monitor) {
-        return new NoOpReasoner(ontology);
-    }
-
-    public void initialise() throws Exception {
-
-    }
-
-    public void dispose() throws Exception {
-
-    }
+	public OWLReasoner createReasoner(OWLOntology ontology,
+			OWLReasonerConfiguration config)
+			throws IllegalConfigurationException {
+		return new NoOpReasoner(ontology);
+	}
 
 }

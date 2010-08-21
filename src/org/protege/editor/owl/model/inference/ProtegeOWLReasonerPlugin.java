@@ -12,7 +12,7 @@ import org.protege.editor.core.plugin.ProtegePlugin;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface ProtegeOWLReasonerFactoryPlugin extends ProtegePlugin<ProtegeOWLReasonerFactory> {
+public interface ProtegeOWLReasonerPlugin extends ProtegePlugin<ProtegeOWLReasonerInfo> {
 
     public static final String REASONER_PLUGIN_TYPE_ID = "inference_reasonerfactory";
 

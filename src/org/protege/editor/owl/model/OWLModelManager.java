@@ -20,6 +20,7 @@ import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
+import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.protege.xmlcatalog.XMLCatalog;
@@ -176,8 +177,11 @@ public interface OWLModelManager extends ModelManager {
      * for a repository of "standard"/frequently used ontologies (e.g. upper
      * ontologies).
      */
-    public OntologyCatalogManager getOntologyCatalogManager();
+    OntologyCatalogManager getOntologyCatalogManager();
 
+    ExplanationManager getExplanationManager();
+    
+    void setExplanationManager(ExplanationManager explanations);
 
     OWLHierarchyManager getOWLHierarchyManager();
 

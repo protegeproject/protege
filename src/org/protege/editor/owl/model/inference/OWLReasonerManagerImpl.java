@@ -36,9 +36,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     private ReasonerPreferences preferences;
     
-    private Set<ProtegeOWLReasonerFactory> reasonerFactories;
+    private Set<ProtegeOWLReasonerInfo> reasonerFactories;
 
-    private ProtegeOWLReasonerFactory currentReasonerFactory;
+    private ProtegeOWLReasonerInfo currentReasonerFactory;
 
     private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<OWLOntology, OWLReasoner>();
     
@@ -53,7 +53,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         this.owlModelManager = owlModelManager;
         preferences = new ReasonerPreferences();
         preferences.load();
-        reasonerFactories = new HashSet<ProtegeOWLReasonerFactory>();
+        reasonerFactories = new HashSet<ProtegeOWLReasonerInfo>();
         reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
         exceptionHandler = new DefaultOWLReasonerExceptionHandler();
@@ -97,9 +97,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     }
 
 
-    public ProtegeOWLReasonerFactory getCurrentReasonerFactory() {
+    public ProtegeOWLReasonerInfo getCurrentReasonerFactory() {
         if (currentReasonerFactory == null) {
-            currentReasonerFactory = new NoOpReasonerFactory();
+            currentReasonerFactory = new NoOpReasonerInfo();
         }
         return currentReasonerFactory;
     }
@@ -114,21 +114,21 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 	}
 
 
-    public Set<ProtegeOWLReasonerFactory> getInstalledReasonerFactories() {
+    public Set<ProtegeOWLReasonerInfo> getInstalledReasonerFactories() {
         return reasonerFactories;
     }
 
 
     private void installFactories() {        
-        ProtegeOWLReasonerFactoryPluginLoader loader = new ProtegeOWLReasonerFactoryPluginLoader(owlModelManager);
+        ProtegeOWLReasonerPluginLoader loader = new ProtegeOWLReasonerPluginLoader(owlModelManager);
         addReasonerFactories(loader.getPlugins());
         setCurrentReasonerFactoryId(preferences.getDefaultReasonerId());
     }
 
-    public void addReasonerFactories(Set<ProtegeOWLReasonerFactoryPlugin> plugins) {
-        for (ProtegeOWLReasonerFactoryPlugin plugin : plugins) {
+    public void addReasonerFactories(Set<ProtegeOWLReasonerPlugin> plugins) {
+        for (ProtegeOWLReasonerPlugin plugin : plugins) {
             try {
-                ProtegeOWLReasonerFactory factory = plugin.newInstance();
+                ProtegeOWLReasonerInfo factory = plugin.newInstance();
                 factory.initialise();
                 reasonerFactories.add(factory);
             }
@@ -147,7 +147,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         if (getCurrentReasonerFactory().getReasonerId().equals(id)) {
             return;
         }
-        for (ProtegeOWLReasonerFactory reasonerFactory : reasonerFactories) {
+        for (ProtegeOWLReasonerInfo reasonerFactory : reasonerFactories) {
             if (reasonerFactory.getReasonerId().equals(id)) {
                 preferences.setDefaultReasonerId(id);
                 preferences.save();
@@ -158,7 +158,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             }
         }
         logger.warn("Reasoner with id " + id + " not found");
-        preferences.setDefaultReasonerId(NoOpReasonerFactory.NULL_REASONER_ID);
+        preferences.setDefaultReasonerId(NoOpReasonerInfo.NULL_REASONER_ID);
         preferences.save();
     }
 
@@ -196,7 +196,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * Classifies the current active ontologies.
      */
     public boolean classifyAsynchronously(Set<InferenceType> precompute) {
-        if (getCurrentReasonerFactory() instanceof NoOpReasonerFactory) {
+        if (getCurrentReasonerFactory() instanceof NoOpReasonerInfo) {
             return true;
         }
         final OWLOntology currentOntology = owlModelManager.getActiveOntology();
@@ -255,7 +255,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private class ClassificationRunner implements Runnable {
         private OWLOntology ontology;
         private Set<InferenceType> precompute;
-        private ProtegeOWLReasonerFactory currentReasonerFactory;
+        private ProtegeOWLReasonerInfo currentReasonerFactory;
         
         public ClassificationRunner(OWLOntology ontology, Set<InferenceType> precompute) {
             this.ontology = ontology;
@@ -281,7 +281,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                     }
                 }
                 if (runningReasoner == null) {
-                    runningReasoner = currentReasonerFactory.createReasoner(ontology, reasonerProgressMonitor);
+                	runningReasoner = ReasonerUtilities.createReasoner(ontology, currentReasonerFactory, reasonerProgressMonitor);
                     owlModelManager.fireEvent(EventType.REASONER_CHANGED);
                 }
                 Set<InferenceType> dontPrecompute  = EnumSet.noneOf(InferenceType.class);
