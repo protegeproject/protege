@@ -44,5 +44,5 @@ public abstract class ExplanationService implements ProtegePluginInstance {
 	
 	public abstract boolean hasExplanation(OWLAxiom axiom);
 	
-	public abstract JComponent explain(OWLAxiom axiom);
+	public abstract ExplanationResult explain(OWLAxiom axiom);
 }

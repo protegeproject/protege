@@ -1,15 +1,17 @@
 package org.protege.editor.owl.ui.explanation.impl;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
 
+import org.protege.editor.owl.ui.explanation.ExplanationResult;
 import org.protege.editor.owl.ui.explanation.ExplanationService;
+import org.protege.editor.owl.ui.frame.AxiomListFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.debugging.DebuggerClassExpressionGenerator;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -38,31 +40,28 @@ public class BasicBlackboxExplanationService extends ExplanationService {
 		return getClassExpression(axiom) != null;
 	}
 
-	public JComponent explain(OWLAxiom axiom) {
+	public ExplanationResult explain(OWLAxiom axiom) {
 		OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
 		OWLReasonerFactory rFactory = getOWLModelManager().getOWLReasonerManager().getCurrentReasonerFactory().getReasonerFactory();
 		OWLReasoner reasoner = getOWLModelManager().getOWLReasonerManager().getCurrentReasoner();
 		BlackBoxExplanation explain  = new BlackBoxExplanation(activeOntology, rFactory, reasoner);
 		Set<OWLAxiom> axioms = explain.getExplanation(getClassExpression(axiom));
-		final JList list = new JList(axioms.toArray(new OWLAxiom[0]));
-		list.setCellRenderer(new ListCellRenderer() {
-			private JLabel rendering = new JLabel();
-			public Component getListCellRendererComponent(JList list,
-													      Object value, int index, boolean isSelected,
-													      boolean cellHasFocus) {
-				OWLAxiom axiom = (OWLAxiom) value;
-				rendering.setText(getOWLModelManager().getRendering(axiom));
-		        if (isSelected) {
-		            rendering.setBackground(list.getSelectionBackground());
-		            rendering.setForeground(list.getSelectionForeground());
-		        } else {
-		            rendering.setBackground(list.getBackground());
-		            rendering.setForeground(list.getForeground());
-		        }
-				return rendering;
+
+        AxiomListFrame frame = new AxiomListFrame(getOWLEditorKit());
+        frame.setRootObject(axioms);
+        final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(getOWLEditorKit(), frame);
+        frameList.setPreferredSize(new Dimension(800, 600));
+        frameList.refreshComponent();
+        ExplanationResult result = new ExplanationResult() {
+			
+			@Override
+			public void dispose() {
+				frameList.dispose();
 			}
-		});
-		return new JScrollPane(list);
+		};
+		result.setLayout(new BorderLayout());
+        result.add(new JScrollPane(frameList), BorderLayout.CENTER);
+        return result;
 	}
 	
 	private OWLClassExpression getClassExpression(OWLAxiom axiom) {
