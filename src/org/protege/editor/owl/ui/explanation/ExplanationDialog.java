@@ -64,6 +64,8 @@ public class ExplanationDialog extends JDialog {
 				}
 			}
 		}
+		selector.setSelectedItem(selected);
+		explanation = selected.explain(axiom);
 		selector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExplanationService t = (ExplanationService) selector.getSelectedItem();
@@ -74,10 +76,9 @@ public class ExplanationDialog extends JDialog {
 				}
 				explanation = t.explain(axiom);
 				explanationContainer.add(explanation);
+				ExplanationDialog.this.repaint();
 			}
 		});
-		selector.setSelectedItem(selected);
-		explanation = selected.explain(axiom);
 		return selector;
 	}
 	
