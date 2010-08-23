@@ -29,7 +29,7 @@ public class ReasonerPreferences {
     private EnumMap<OptionalInferenceTask, Boolean>  enabledMap    = new EnumMap<OptionalInferenceTask, Boolean>(OptionalInferenceTask.class);
     private EnumMap<OptionalInferenceTask, Integer> clockMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
     private EnumMap<OptionalInferenceTask, Integer> countMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
-    private Set<InferenceType> defaultClassifictionInferences = EnumSet.noneOf(InferenceType.class);
+    private Set<InferenceType> defaultClassificationInferences = EnumSet.noneOf(InferenceType.class);
 
     public enum OptionalInferenceTask {
         // Class Property Inferences
@@ -74,11 +74,11 @@ public class ReasonerPreferences {
     }
 
     public Set<InferenceType> getDefaultClassificationInferenceTypes() {
-        return Collections.unmodifiableSet(defaultClassifictionInferences);
+        return Collections.unmodifiableSet(defaultClassificationInferences);
     }
 
     public void setDefaultClassificationInferenceTypes(Set<InferenceType> autoPreComputed) {
-        this.defaultClassifictionInferences = new HashSet<InferenceType>(autoPreComputed);
+        this.defaultClassificationInferences = new HashSet<InferenceType>(autoPreComputed);
     }
 
     public String getDefaultReasonerId() {
@@ -89,8 +89,8 @@ public class ReasonerPreferences {
         this.defaultReasonerId = defaultReasonerId;
     }
 
-    private String getPreComputePreferenceName(InferenceType type) {
-        return "PreCompute_" + type.toString();
+    private String getClassifyPreferenceName(InferenceType type) {
+        return "Classify_" + type.toString();
     }
 
     public boolean isShowInferences() {
@@ -109,10 +109,10 @@ public class ReasonerPreferences {
         for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
             enabledMap.put(task, prefs.getBoolean(task.getKey(), task.getEnabledByDefault()));
         }
-        defaultClassifictionInferences.clear();
+        defaultClassificationInferences.clear();
         for (InferenceType type : InferenceType.values()) {
-            if (prefs.getBoolean(getPreComputePreferenceName(type), type == InferenceType.CLASS_HIERARCHY)) {
-                defaultClassifictionInferences.add(type);
+            if (prefs.getBoolean(getClassifyPreferenceName(type), true)) {
+                defaultClassificationInferences.add(type);
             }
         }
     }
@@ -126,7 +126,7 @@ public class ReasonerPreferences {
             prefs.putBoolean(task.getKey(), enabledMap.get(task));
         }
         for (InferenceType type : InferenceType.values()) {
-            prefs.putBoolean(getPreComputePreferenceName(type), defaultClassifictionInferences.contains(type));
+            prefs.putBoolean(getClassifyPreferenceName(type), defaultClassificationInferences.contains(type));
         }
     }
 
