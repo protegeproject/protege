@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
                 section.setRootObject(rootObject);
             }
             catch (Exception ex) {
-                logger.error(ex);
+            	ProtegeApplication.getErrorLog().logError(ex);
             }
         }
     }
@@ -115,7 +116,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
                 listener.frameContentChanged();
             }
             catch (Exception e) {
-                logger.error(e);
+            	ProtegeApplication.getErrorLog().logError(e);
             }
         }
     }
