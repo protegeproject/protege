@@ -30,7 +30,10 @@ public class ExplanationDialog extends JDialog {
 	
 	public ExplanationDialog(Frame owner, ExplanationManager explanationManager, OWLAxiom axiom) {
 		super(owner, "Explanation for " + explanationManager.getModelManager().getRendering(axiom));
-		setModalityType(ModalityType.MODELESS);
+        /*
+         * Using deprecated method because Apple is bad.
+         */
+		setModal(false);
 		
 		this.axiom = axiom;
 		
