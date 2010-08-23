@@ -1,7 +1,5 @@
 package org.protege.editor.owl.model.inference;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
 /**
@@ -10,41 +8,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Bio-Health Informatics Group<br>
  * Date: 16-Apr-2007<br><br>
  */
-public abstract class ProtegeOWLReasonerAdapter implements ProtegeOWLReasonerInfo {
 
-    private String id;
+/**
+ * This is here so that developers won't get confused by my constant refactoring.
+ * 
+ * @deprecated  Use AbstractProtegeOWLReasonerInfo instead.
+ */
+public abstract class ProtegeOWLReasonerAdapter extends AbstractProtegeOWLReasonerInfo {
 
-    private String name;
-
-    private OWLOntologyManager owlOntologyManager;
-
-    private OWLModelManager owlModelManager;
-
-    public void setup(OWLOntologyManager manager, String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.owlOntologyManager = manager;
-    }
-    
-    public OWLModelManager getOWLModelManager() {
-        return owlModelManager;
-    }
-    
-    public void setOWLModelManager(OWLModelManager owlModelManager) {
-        this.owlModelManager = owlModelManager;
-    }
-    
-    public OWLOntologyManager getOWLOntologyManager() {
-        return owlOntologyManager;
-    }
-
-
-    public String getReasonerId() {
-        return id;
-    }
-
-
-    public String getReasonerName() {
-        return name;
-    }
 }
