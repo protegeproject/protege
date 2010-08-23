@@ -135,8 +135,18 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
                 if(diff != 0) {
                     return diff;
                 }
-                return o1.getOntology().compareTo(o2.getOntology());
-                
+                else if (o1.getOntology() == null  && o2.getOntology() == null) {
+                	return 0;
+                }
+                else if (o1.getOntology() == null) {
+                	return -1;
+                }
+                else if (o2.getOntology() == null) {
+                	return +1;
+                }
+                else {
+                	return o1.getOntology().compareTo(o2.getOntology());
+                }
             }
         };
     }
