@@ -44,6 +44,14 @@ public abstract class AbstractProtegeOWLReasonerInfo implements ProtegeOWLReason
         return name;
     }
     
+    public void initialise() throws Exception {
+
+    }
+
+    public void dispose() throws Exception {
+
+    }
+    
     public OWLReasonerConfiguration getConfiguration(ReasonerProgressMonitor monitor) {
     	return new SimpleConfiguration(monitor);
     }
