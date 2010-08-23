@@ -104,7 +104,7 @@
             <jvmarg value = "-Xmx1500M"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>
-              <pathelement path="${launcher}"/>
+              <pathelement path="${protege.launcher}"/>
             </classpath>
         </java>
     </target>
@@ -121,7 +121,7 @@
             <jvmarg value = "-Xmx1500M"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>
-              <pathelement path="${launcher}"/>
+              <pathelement path="${protege.launcher}"/>
             </classpath>
         </java>
     </target>
