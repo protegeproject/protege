@@ -73,17 +73,17 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
                 public void run() {
                     if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
-
-                        for (Node<OWLClass> descs : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
-                            for (OWLClassExpression desc : descs) {
-                                if (!added.contains(desc) && !getRootObject().equals(desc)) {
+                    	OWLClass thing = getOWLModelManager().getOWLDataFactory().getOWLThing();
+                        for (Node<OWLClass> inferredSuperClasses : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
+                            for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
+                                if (!added.contains(inferredSuperClass) && !thing.equals(inferredSuperClass)) {
                                     addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                OWLSubClassAxiomFrameSection.this,
                                                                                null,
                                                                                getRootObject(),
                                                                                getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
-                                                                                                                                              desc)));
-                                    added.add(desc);
+                                                                                                                                              inferredSuperClass)));
+                                    added.add(inferredSuperClass);
                                 }
                             }
                         }
