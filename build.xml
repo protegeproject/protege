@@ -11,6 +11,15 @@
    <property name="src"       location="./src"/>
    <property name="classes"   location="${build}/classes"/>
    <property name="launcher"  location="${build}/ProtegeLauncher.jar"/>
+
+   <target name="init">
+       <echo message="**********************************************************"/>
+       <echo message="Using Protege Home = ${protege.home}"/>
+       <echo message="Using Java Version = ${ant.java.version}" />
+       <echo message="**********************************************************"/>
+   </target>
+
+
 	
    <target name = "add.version">
 		<echo append = "true" file = "${protege.home}/build.properties" message = "core.major.version=${core.major.version}${line.separator}"/>
@@ -21,7 +30,7 @@
 
 
 	
-   <target name="build.launcher">
+   <target name="build.launcher" depends="init">
 	   <mkdir dir="${classes}"/>
 	   <javac srcdir="${src}" 
               destdir="${classes}" 
@@ -87,7 +96,7 @@
     <!-- ===================================================================  -->
     <!-- RUN -->
     <!-- ===================================================================  -->
-    <target name = "run" depends="build.launcher">
+    <target name = "run" depends="init">
         <property file="${protege.home}/build.properties"/>
         <java fork = "true" dir = "${protege.home}" 
               classname = "org.protege.osgi.framework.Launcher">
@@ -103,7 +112,7 @@
     <!-- ===================================================================  -->
     <!-- DEBUG -->
     <!-- ===================================================================  -->
-    <target name = "debug" depends="build.launcher">
+    <target name = "debug" depends="init">
         <property file="${protege.home}/build.properties"/>
         <java fork = "true" dir = "${protege.home}" 
               classname = "org.protege.osgi.framework.Launcher">
