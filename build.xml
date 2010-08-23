@@ -269,6 +269,38 @@ author=Protege Development Team (First working version by Matthew Horridge)
     	   </classpath> 
        </junit>
    </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN -->
+    <!-- ===================================================================  -->
+    <target name = "run" depends="init">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG -->
+    <!-- ===================================================================  -->
+    <target name = "debug" depends="init">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=y"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
 	
    <target name = "clean">
      <delete dir = "${build}"/>
@@ -286,6 +318,8 @@ author=Protege Development Team (First working version by Matthew Horridge)
      <echo message = "                 see the wiki for more details."/>
    	 <echo message = "junit          - runs the junits but requires local.properties"/>
    	 <echo message = "                 to find junit.jar"/>
+     <echo message = "run - runs Protege (requires that Protege has been installed)"/>
+     <echo message = "debug - starts Protege with the debugger using port 8500"/>
    </target>
 
 
