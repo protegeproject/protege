@@ -21,11 +21,16 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 import com.clarkparsia.owlapi.explanation.BlackBoxExplanation;
 
+/**
+ * A very basic explanation service that will provide basic explanation until Matthew's 
+ * explanation service is ready.
+ * 
+ * @author tredmond
+ *
+ */
 public class BasicBlackboxExplanationService extends ExplanationService {
-	private DebuggerClassExpressionGenerator classExpressionVisitor;
 	
 	public void initialise() throws Exception {
-		classExpressionVisitor = new DebuggerClassExpressionGenerator(getOWLModelManager().getOWLDataFactory());
 	}
 
 	public void dispose() throws Exception {
@@ -65,6 +70,10 @@ public class BasicBlackboxExplanationService extends ExplanationService {
 	}
 	
 	private OWLClassExpression getClassExpression(OWLAxiom axiom) {
+		/*
+		 * there is no clear method...
+		 */
+		DebuggerClassExpressionGenerator classExpressionVisitor = new DebuggerClassExpressionGenerator(getOWLModelManager().getOWLDataFactory());
 		axiom.accept(classExpressionVisitor);
 		return classExpressionVisitor.getDebuggerClassExpression();
 	}
