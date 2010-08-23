@@ -69,7 +69,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.protege.editor.owl.model.inference.ProtegeOWLReasonerFactory"/>
+                  <meta.attribute kind="java" basedOn="org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo:"/>
                </appInfo>
             </annotation>
          </attribute>
