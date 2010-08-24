@@ -131,15 +131,18 @@ public class OntologyImportsList extends MList {
                 }
                 try {
                 	manager.makeLoadImportRequest(decl);
-                	OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
-                	if (importedOnt == null) {
-                		logger.warn("Imported ontology has id " + importedOnt.getOntologyID() + 
-                				" but during imports processing we anticipated " + importParameters.getOntologyID());
-                		logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
-                		continue;
-                	}
-                	eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                 	eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
+
+                	if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
+                		OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+                		if (importedOnt == null) {
+                			logger.warn("Imported ontology has unexpected id. "  + 
+                					"During imports processing we anticipated " + importParameters.getOntologyID());
+                			logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+                			continue;
+                		}
+                    	eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
+                	}
                 }
                 catch (OWLOntologyCreationException ooce) {
                 	if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
