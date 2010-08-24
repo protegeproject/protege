@@ -40,9 +40,6 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     private JProgressBar progressBar;
 
     private Runnable checker;
-    
-    private Set<ImportInfo> failedImports = new HashSet<ImportInfo>();
-
 
     public AnticipateOntologyIdPage(OWLEditorKit owlEditorKit) {
         super(ID, "Import verification", owlEditorKit);
@@ -112,23 +109,18 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     		if (parameters.getOntologyID() != null) {
     			continue;
     		}
-    		boolean failed = false;
     		try {
     			MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor(parameters.getPhysicalLocation());
     			OWLOntologyID id = extractor.getOntologyId();
-    			if (id != null && !id.isAnonymous()) {
+    			if (id != null) {
     				parameters.setOntologyID(id);
     			}
     			else {
-    				failed = true;
+    				parameters.setOntologyID(null);
     			}
     		}
     		catch (Throwable t) {
-    			failed = true;
     			ProtegeApplication.getErrorLog().logError(t);
-    		}
-    		if (failed) {
-    			failedImports.add(parameters);
     		}
     	}
         SwingUtilities.invokeLater(new Runnable() {
