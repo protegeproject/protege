@@ -50,9 +50,10 @@ public class ImportLocationOptionsPanel extends JPanel {
     		bg.add(versionIDButton);
     		optionsCount++;
     	}
-    	if (!physicalLocation.equals(id.getOntologyIRI().toURI()) &&
+    	if (id.isAnonymous() || (
+    			!physicalLocation.equals(id.getOntologyIRI().toURI()) &&
     			(id.getVersionIRI() == null || !physicalLocation.equals(id.getVersionIRI().toURI())) &&
-    			!physicalLocation.getScheme().equals("file")) {
+    			!physicalLocation.getScheme().equals("file"))) {
     		physicalIDButton = new JRadioButton("Import using the supplied physical URI (Not Recommended): " + physicalLocation);
     		physicalIDButton.setAlignmentX(LEFT_ALIGNMENT);
     		add(physicalIDButton);
