@@ -31,11 +31,9 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ImportConfirmationPage extends AbstractOWLWizardPanel {
+	private static final long serialVersionUID = -8146050890918692126L;
 
-    private static final Logger logger = Logger.getLogger(ImportConfirmationPage.class);
-
-
-    public static final String ID = "ImportConfirmationPage";
+	public static final String ID = "ImportConfirmationPage";
 
     private JComponent importedOntologiesComponent;
     private TitledBorder titledBorder;
@@ -100,8 +98,9 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 
 
     private class ImportEntryPanel extends JPanel {
+		private static final long serialVersionUID = -4945897856195350142L;
 
-        public ImportEntryPanel(ImportInfo parameter) {
+		public ImportEntryPanel(ImportInfo parameter) {
             setBorder(BorderFactory.createEmptyBorder(1, 0, 4, 0));
             setLayout(new BorderLayout(1, 1));
             JPanel center = new JPanel();
@@ -112,14 +111,21 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
             physicalLocationLabel.setAlignmentX(LEFT_ALIGNMENT);
             center.add(physicalLocationLabel);
             
-            JLabel ontologyNameLabel = new JLabel("Imported Ontology Name " + parameter.getOntologyID().getOntologyIRI().toString());
-            ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
-            center.add(ontologyNameLabel);
-            
-            if (parameter.getOntologyID().getVersionIRI() != null) {
-            	JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI());
-            	ontologyVersionLabel.setAlignmentX(LEFT_ALIGNMENT);
-            	center.add(ontologyVersionLabel);
+            if (!parameter.getOntologyID().isAnonymous()) {
+            	JLabel ontologyNameLabel = new JLabel("Imported Ontology Name " + parameter.getOntologyID().getOntologyIRI().toString());
+            	ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
+            	center.add(ontologyNameLabel);
+
+            	if (parameter.getOntologyID().getVersionIRI() != null) {
+            		JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI());
+            		ontologyVersionLabel.setAlignmentX(LEFT_ALIGNMENT);
+            		center.add(ontologyVersionLabel);
+            	}
+            }
+            else {
+            	JLabel anonymousLabel = new JLabel("Imported Ontology is anonymous.");
+            	anonymousLabel.setAlignmentX(LEFT_ALIGNMENT);
+            	center.add(anonymousLabel);
             }
             
             center.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
