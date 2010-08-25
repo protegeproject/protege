@@ -34,9 +34,9 @@ public class PluginManager {
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
-    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-4.1.url";
+    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-4.1r.url";
 
-    public static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/protege4/plugins/4.1-plugins.repository";
+    public static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/protege4/plugins/4.1-prerelease-plugins.repository";
 
     private PluginRegistry pluginRegistry;
 
