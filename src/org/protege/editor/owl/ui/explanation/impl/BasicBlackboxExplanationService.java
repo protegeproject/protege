@@ -73,7 +73,7 @@ public class BasicBlackboxExplanationService extends ExplanationService {
 		/*
 		 * there is no clear method...
 		 */
-		DebuggerClassExpressionGenerator classExpressionVisitor = new DebuggerClassExpressionGenerator(getOWLModelManager().getOWLDataFactory());
+		BasicClassExpressionGenerator classExpressionVisitor = new BasicClassExpressionGenerator(getOWLModelManager().getOWLDataFactory());
 		axiom.accept(classExpressionVisitor);
 		return classExpressionVisitor.getDebuggerClassExpression();
 	}
