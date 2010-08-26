@@ -38,7 +38,7 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.view.ViewBarComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.library.OntologyGroupManager;
+import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
@@ -167,7 +167,7 @@ public class OntologyLibraryPanel extends JPanel {
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
         Object o = node.getUserObject();
-        if (o instanceof OntologyGroupManager) {
+        if (o instanceof CatalogEntryManager) {
             return;
         }
         else if (o instanceof Entry) {
