@@ -579,7 +579,7 @@
 
     <extension id="InferredAxioms"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Selected entailments"/>
+        <label value="Classification Results"/>
         <class value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
