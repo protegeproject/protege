@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
-import org.protege.editor.owl.model.library.folder.UntimeStampedFolderGroupManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
@@ -45,7 +44,7 @@ public class OntologyCatalogManager {
     
     private XMLCatalog activeCatalog;
 
-    private List<OntologyGroupManager> updaters;
+    private List<CatalogEntryManager> updaters;
     
     private FolderGroupManager folderLibraryFactory;
 
@@ -94,7 +93,7 @@ public class OntologyCatalogManager {
 	public OntologyCatalogManager() {
 		reloadGlobalCatalog();
     	// TODO replace with plugin mechanism here!
-    	updaters = new ArrayList<OntologyGroupManager>();
+    	updaters = new ArrayList<CatalogEntryManager>();
     	folderLibraryFactory = new FolderGroupManager();
     	updaters.add(folderLibraryFactory);
     }
@@ -119,7 +118,7 @@ public class OntologyCatalogManager {
     	for (Entry entry : catalog.getEntries()) {
     		if (entry instanceof GroupEntry) {
     			GroupEntry ge = (GroupEntry) entry;
-    			for (OntologyGroupManager updater : updaters) {
+    			for (CatalogEntryManager updater : updaters) {
     				if (updater.isSuitable(ge)) {
     					modified = modified | updater.update(ge);
     				}

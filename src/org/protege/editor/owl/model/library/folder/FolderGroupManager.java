@@ -12,7 +12,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.library.OntologyGroupManager;
+import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.Prefer;
 import org.protege.xmlcatalog.XMLCatalog;
@@ -31,7 +31,7 @@ import org.protege.xmlcatalog.entry.UriEntry;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class FolderGroupManager implements OntologyGroupManager {
+public class FolderGroupManager implements CatalogEntryManager {
 	private static final Logger logger = Logger.getLogger(FolderGroupManager.class);
 	
 	public static final String ID_PREFIX = "Folder Repository";
@@ -57,25 +57,6 @@ public class FolderGroupManager implements OntologyGroupManager {
     	algorithms.add(new XmlBaseAlgorithm());
     }
     
-	public boolean isSuitable(GroupEntry ge) {
-		String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
-		String enabledName = LibraryUtilities.getStringProperty(ge, OntologyCatalogManager.AUTO_UPDATE_PROP);
-		return ge.getId() != null 
-					&& ge.getId().startsWith(ID_PREFIX)
-					&& (enabledName == null || enabledName.toLowerCase().equals("true"))
-					&& dirName != null
-					&& new File(dirName).exists()
-					&& new File(dirName).isDirectory();
-	}
-
-	public GroupEntry openGroupEntryDialog(XmlBaseContext context) {
-	    throw new UnsupportedOperationException("Not implemented yet");
-	}
-	
-	public String getDescription(GroupEntry ge) {
-		return "Folder Repository for " + LibraryUtilities.getStringProperty(ge, DIR_PROP);
-	}
-
 	public XMLCatalog ensureFolderCatalogExists(File folder) throws IOException {
 	    File catalogFile = OntologyCatalogManager.getCatalogFile(folder);
 	    boolean createFolderGroup = !catalogFile.exists();
@@ -90,10 +71,9 @@ public class FolderGroupManager implements OntologyGroupManager {
 		    }
 		}
 		if (ge == null && createFolderGroup) {
-		    ge = createGroupEntry(folder, catalog);
-		    catalog.addEntry(ge);
-		    update(ge);
-		    CatalogUtilities.save(catalog, catalogFile);
+			if (initializeCatalog(folder, catalog)) {
+				CatalogUtilities.save(catalog, catalogFile);
+			}
 		}
 		else if (ge != null && isSuitable(ge) && update(ge)) {
 		    CatalogUtilities.save(catalog, catalogFile);
@@ -106,10 +86,25 @@ public class FolderGroupManager implements OntologyGroupManager {
 		return new GroupEntry(id, context, Prefer.PUBLIC, folder.toURI());
 	}
 	
-	public boolean update(GroupEntry ge) {
+	public boolean isSuitable(Entry entry) {
+		if  (!(entry instanceof GroupEntry)) {
+			return false;
+		}
+		GroupEntry ge = (GroupEntry) entry;
+		String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
+		String enabledName = LibraryUtilities.getStringProperty(ge, OntologyCatalogManager.AUTO_UPDATE_PROP);
+		return ge.getId() != null 
+					&& ge.getId().startsWith(ID_PREFIX)
+					&& (enabledName == null || enabledName.toLowerCase().equals("true"))
+					&& dirName != null
+					&& new File(dirName).exists()
+					&& new File(dirName).isDirectory();
+	}
+
+	public boolean update(Entry entry) {
         modified = false;
         importDeclToFileMap.clear();
-        this.ge = ge;
+        this.ge = (GroupEntry) entry;
         folder = new File(LibraryUtilities.getStringProperty(ge, DIR_PROP));
         timeOfCurrentUpdate = System.currentTimeMillis();
         try {
@@ -134,6 +129,25 @@ public class FolderGroupManager implements OntologyGroupManager {
         }
     }
 	
+	public boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException {
+	    ge = createGroupEntry(folder, catalog);
+	    catalog.addEntry(ge);
+	    update(ge);
+	    return true;
+	}
+	
+	public GroupEntry newEntryDialog(XmlBaseContext context) {
+	    throw new UnsupportedOperationException("Not implemented yet");
+	}
+
+	public Entry editEntryDialog(XmlBaseContext context, Entry input) {
+	    throw new UnsupportedOperationException("Not implemented yet");
+	}
+
+	public String getDescription(Entry ge) {
+		return "Folder Repository for " + LibraryUtilities.getStringProperty(ge, DIR_PROP);
+	}
+
 	private void addMapping(URI webLocation, File physicalLocation) {
 	    if (logger.isDebugEnabled()) {
 	        logger.debug("\"import " + webLocation + "\" --> " + physicalLocation);

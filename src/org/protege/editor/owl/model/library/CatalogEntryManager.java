@@ -1,9 +1,11 @@
 package org.protege.editor.owl.model.library;
 
+import java.io.File;
 import java.io.IOException;
 
+import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
-import org.protege.xmlcatalog.entry.GroupEntry;
+import org.protege.xmlcatalog.entry.Entry;
 
 
 /**
@@ -20,13 +22,17 @@ import org.protege.xmlcatalog.entry.GroupEntry;
  * If a library contains an ontology then the library can provide
  * a physical URI for that ontology.
  */
-public interface OntologyGroupManager {
+public interface CatalogEntryManager {
      
-     boolean isSuitable(GroupEntry ge);
+     boolean isSuitable(Entry ge);
      
-     boolean update(GroupEntry ge) throws IOException;
+     boolean update(Entry ge) throws IOException;
      
-     GroupEntry openGroupEntryDialog(XmlBaseContext context);
+     boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
      
-     String getDescription(GroupEntry ge);
+     Entry newEntryDialog(XmlBaseContext context);
+     
+     Entry editEntryDialog(XmlBaseContext context, Entry input);
+     
+     String getDescription(Entry ge);
 }
