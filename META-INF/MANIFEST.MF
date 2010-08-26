@@ -179,6 +179,6 @@ Export-Package: org.protege.editor.owl,
 Bundle-Version: 4.1.0.cIsAfterBFromUploads
 Require-Bundle: org.eclipse.equinox.registry,
  org.eclipse.equinox.common,
- org.protege.editor.core.application,
+ org.protege.editor.core.application;bundle-version="4.1.0",
  org.protege.common
 Bundle-Activator: org.protege.editor.owl.ProtegeOWL
