@@ -11,6 +11,9 @@
                 <Component label="Ontology imports">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
                 </Component>
+                <Component label="OntoGraf Import View">
+                    <Property id="pluginId" value="org.protege.ontograf.OntoGrafImportView"/>
+                </Component>
                 <Component label="Ontology Prefixes">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
                 </Component>
