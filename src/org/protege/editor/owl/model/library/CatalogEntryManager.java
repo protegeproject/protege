@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.library;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 
+import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
@@ -22,17 +24,25 @@ import org.protege.xmlcatalog.entry.Entry;
  * If a library contains an ontology then the library can provide
  * a physical URI for that ontology.
  */
-public interface CatalogEntryManager {
+public abstract class CatalogEntryManager implements ProtegePluginInstance {
      
-     boolean isSuitable(Entry ge);
+     public abstract boolean isSuitable(Entry ge);
      
-     boolean update(Entry ge) throws IOException;
+     public abstract boolean update(Entry ge) throws IOException;
      
-     boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
+     public abstract boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
      
-     Entry newEntryDialog(XmlBaseContext context);
+     public abstract Entry newEntryDialog(Frame parent, XmlBaseContext context);
      
-     Entry editEntryDialog(XmlBaseContext context, Entry input);
+     public abstract Entry editEntryDialog(Frame parent, XmlBaseContext context, Entry input);
      
-     String getDescription(Entry ge);
+     public abstract String getDescription(Entry ge);
+     
+     public void initialise() throws Exception {
+    	 //not used
+     }
+     
+     public void dispose() throws Exception {
+    	 // not used
+    }
 }
