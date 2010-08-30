@@ -19,12 +19,11 @@
 
     <extension-point id="moveaxiomskit" name="Move Axioms Kit" schema="schema/MoveAxiomsKit.exsd"/>
 
-    <extension-point id="io_listener"
-                     name="IO Listener"/>
+    <extension-point id="io_listener" name="IO Listener"/>
 
     <extension-point id="ui_editor_description" name="OWL Description Editor" schema="schema/UI_Editor_Description.exsd"/>
 
-
+	<extension-point id="repository" name="OWL Ontology Repository Factory"/>
 
     <!-- PLUGINS -->
 
