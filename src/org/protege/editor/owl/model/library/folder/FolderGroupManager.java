@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.library.folder;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -31,11 +32,12 @@ import org.protege.xmlcatalog.entry.UriEntry;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class FolderGroupManager implements CatalogEntryManager {
+public class FolderGroupManager extends CatalogEntryManager {
 	private static final Logger logger = Logger.getLogger(FolderGroupManager.class);
 	
 	public static final String ID_PREFIX = "Folder Repository";
 	public static final String DIR_PROP = "directory";
+	public static final String RECURSIVE_PROP = "recursive";
     public static final String DUPLICATE_SCHEME = "duplicate:";
 
 	
@@ -48,6 +50,7 @@ public class FolderGroupManager implements CatalogEntryManager {
      */
     private GroupEntry ge;
     private File folder;
+    private boolean recursive = true;
     private long timeOfCurrentUpdate;
     private boolean modified = false;
     private Map<URI, Set<File>> importDeclToFileMap = new HashMap<URI, Set<File>>();
@@ -82,7 +85,7 @@ public class FolderGroupManager implements CatalogEntryManager {
 	}
 	
 	public GroupEntry createGroupEntry(File folder, XmlBaseContext context) throws IOException {
-		String id = ID_PREFIX + ", " + DIR_PROP + "=" + folder.getCanonicalPath() + ", " + OntologyCatalogManager.AUTO_UPDATE_PROP + "=true";
+		String id = ID_PREFIX + ", " + DIR_PROP + "=" + folder.getCanonicalPath() + ", " + RECURSIVE_PROP + "=true, " + OntologyCatalogManager.AUTO_UPDATE_PROP + "=true";
 		return new GroupEntry(id, context, Prefer.PUBLIC, folder.toURI());
 	}
 	
@@ -92,10 +95,10 @@ public class FolderGroupManager implements CatalogEntryManager {
 		}
 		GroupEntry ge = (GroupEntry) entry;
 		String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
-		String enabledName = LibraryUtilities.getStringProperty(ge, OntologyCatalogManager.AUTO_UPDATE_PROP);
+		boolean enabled = LibraryUtilities.getBooleanProperty(ge, OntologyCatalogManager.AUTO_UPDATE_PROP, false);
 		return ge.getId() != null 
 					&& ge.getId().startsWith(ID_PREFIX)
-					&& (enabledName == null || enabledName.toLowerCase().equals("true"))
+					&& enabled
 					&& dirName != null
 					&& new File(dirName).exists()
 					&& new File(dirName).isDirectory();
@@ -106,6 +109,7 @@ public class FolderGroupManager implements CatalogEntryManager {
         importDeclToFileMap.clear();
         this.ge = (GroupEntry) entry;
         folder = new File(LibraryUtilities.getStringProperty(ge, DIR_PROP));
+        recursive = LibraryUtilities.getBooleanProperty(entry, RECURSIVE_PROP, true);
         timeOfCurrentUpdate = System.currentTimeMillis();
         try {
             if (logger.isDebugEnabled()) {
@@ -114,7 +118,7 @@ public class FolderGroupManager implements CatalogEntryManager {
             }
     
             Set<File> examined = handleFreshEntries();
-            handleDiskEntries(examined);
+            handleDiskEntries(folder, examined);
             rebuild();
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Catalog Update Complete ************************************************");
@@ -136,11 +140,11 @@ public class FolderGroupManager implements CatalogEntryManager {
 	    return true;
 	}
 	
-	public GroupEntry newEntryDialog(XmlBaseContext context) {
+	public GroupEntry newEntryDialog(Frame parent, XmlBaseContext context) {
 	    throw new UnsupportedOperationException("Not implemented yet");
 	}
 
-	public Entry editEntryDialog(XmlBaseContext context, Entry input) {
+	public Entry editEntryDialog(Frame parent, XmlBaseContext context, Entry input) {
 	    throw new UnsupportedOperationException("Not implemented yet");
 	}
 
@@ -212,12 +216,15 @@ public class FolderGroupManager implements CatalogEntryManager {
     }
     
     
-    private  void handleDiskEntries(Set<File> examined) {
+    private  void handleDiskEntries(File tree, Set<File> examined) {
         if (algorithms == null || algorithms.isEmpty()) {
             return;
         }
-        for (File physicalLocation : folder.listFiles()) {
-            if (physicalLocation.exists() 
+        for (File physicalLocation : tree.listFiles()) {
+        	if (recursive && physicalLocation.exists() && physicalLocation.isDirectory()) {
+        		handleDiskEntries(physicalLocation, examined);
+        	}
+        	else if (physicalLocation.exists() 
                     && physicalLocation.isFile() 
                     && physicalLocation.getPath().endsWith(".owl")
                     && !physicalLocation.getName().startsWith(".")
