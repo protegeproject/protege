@@ -27,5 +27,19 @@ public class LibraryUtilities {
 		}
 		return null;
 	}
+    
+    public static boolean getBooleanProperty(Entry entry, String  property, boolean defaultValue) {
+    	String s  = getStringProperty(entry, property);
+    	if (s == null) {
+    		return defaultValue;
+    	}
+    	else if (s.toLowerCase().equals("true")) {
+    		return true;
+    	}
+    	else if (s.toLowerCase().equals("false")) {
+    		return false;
+    	}
+    	else return defaultValue;
+    }
 
 }
