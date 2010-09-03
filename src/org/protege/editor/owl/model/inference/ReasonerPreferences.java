@@ -111,7 +111,8 @@ public class ReasonerPreferences {
         }
         defaultClassificationInferences.clear();
         for (InferenceType type : InferenceType.values()) {
-            if (prefs.getBoolean(getClassifyPreferenceName(type), true)) {
+            if (prefs.getBoolean(getClassifyPreferenceName(type), type != InferenceType.DIFFERENT_INDIVIDUALS
+            														&& type != InferenceType.DISJOINT_CLASSES)) {
                 defaultClassificationInferences.add(type);
             }
         }
