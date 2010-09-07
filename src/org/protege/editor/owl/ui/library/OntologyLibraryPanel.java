@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -350,10 +351,17 @@ public class OntologyLibraryPanel extends JPanel {
 
     private class OntologyLibraryCellRenderer extends DefaultTreeCellRenderer {
 		private static final long serialVersionUID = 4839063966773393745L;
+		
+		private boolean hasBorder = false;
 
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
                                                       boolean leaf, int row, boolean hasFocus) {
             JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            if (!hasBorder) {
+                label.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
+                hasBorder = true;
+            }
+            
             // Modify the text
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             Object userObject = node.getUserObject();
