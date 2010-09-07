@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import org.protege.xmlcatalog.entry.Entry;
 
 public class LibraryUtilities {
+	public static final String HIDDEN_ENTRY = "hidden";
+	
     public static String getStringProperty(Entry entry, String property) {
 		if (entry.getId() == null) {
 			return null;

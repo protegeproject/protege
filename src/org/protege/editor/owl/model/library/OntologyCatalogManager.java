@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +14,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
-import org.protege.xmlcatalog.entry.GroupEntry;
 
 
 /**
@@ -35,45 +34,14 @@ public class OntologyCatalogManager {
 	
 	public static final String AUTO_UPDATE_PROP = "Auto-Update";
     public static final String TIMESTAMP        = "Timestamp";
-	
-    private static final Logger logger = Logger.getLogger(OntologyCatalogManager.class);
-    
-    private XMLCatalog globalCatalog;
-    
+	    
     private Map<File, XMLCatalog> localCatalogs = new HashMap<File, XMLCatalog>();
     
     private XMLCatalog activeCatalog;
 
-    private List<CatalogEntryManager> updaters;
+    private List<CatalogEntryManager> entryManagers;
     
-    private FolderGroupManager folderLibraryFactory;
-
-    public static XMLCatalog ensureCatalogExists(File folder) {
-		XMLCatalog catalog = null;
-		File catalogFile = getCatalogFile(folder);
-		if (catalogFile.exists()) {
-			try {
-				catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
-			}
-			catch (Throwable e) {
-				ProtegeApplication.getErrorLog().logError(e);
-				backup(folder, catalogFile);
-			}
-		}
-		if (catalog == null) {
-			catalog = new XMLCatalog(folder.toURI());
-			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protege 4");
-			try {
-				CatalogUtilities.save(catalog, catalogFile);
-			}
-			catch (IOException e) {
-				ProtegeApplication.getErrorLog().logError(e);
-			}
-		}
-		return catalog;
-	}
-
-	private static void backup(File folder, File catalogFile) {
+    private static void backup(File folder, File catalogFile) {
 	    File backup;
 	    int i = 0;
 	    while ((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists()) {
@@ -91,18 +59,75 @@ public class OntologyCatalogManager {
 	}
 		
 	public OntologyCatalogManager() {
-		reloadGlobalCatalog();
-    	// TODO replace with plugin mechanism here!
-    	updaters = new ArrayList<CatalogEntryManager>();
-    	folderLibraryFactory = new FolderGroupManager();
-    	updaters.add(folderLibraryFactory);
+    	entryManagers = new ArrayList<CatalogEntryManager>();
+    	CatalogEntryManagerLoader pluginLoader = new CatalogEntryManagerLoader();
+    	for (CatalogEntryManagerPlugin plugin : pluginLoader.getPlugins()) {
+    		try {
+    			entryManagers.add(plugin.newInstance());
+    		}
+    		catch (Throwable t) {
+    			ProtegeApplication.getErrorLog().logError(t);
+    		}
+    	}
     }
 	
-	public void reloadGlobalCatalog() {
-    	globalCatalog = ensureCatalogExists(CommonProtegeProperties.getDataDirectory());
+	public OntologyCatalogManager(List<? extends CatalogEntryManager> entryManagers) {
+		this.entryManagers = new ArrayList<CatalogEntryManager>(entryManagers);
 	}
-    
-    public URI getRedirect(URI original) {
+	
+	public List<CatalogEntryManager>  getCatalogEntryManagers() {
+		return Collections.unmodifiableList(entryManagers);
+	}
+	
+    public XMLCatalog ensureCatalogExists(File folder) {
+		XMLCatalog catalog = null;
+		File catalogFile = getCatalogFile(folder);
+		boolean alreadyExists = catalogFile.exists();
+		boolean modified = false;
+		if (alreadyExists) {
+			try {
+				catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
+			}
+			catch (Throwable e) {
+				ProtegeApplication.getErrorLog().logError(e);
+				backup(folder, catalogFile);
+			}
+		}
+		if (catalog == null) {
+			catalog = new XMLCatalog(folder.toURI());
+			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protege 4");
+			modified = true;
+		}
+		if (alreadyExists) {
+			try {
+				modified = modified | update(catalog);
+			}
+			catch (Throwable t) {
+				ProtegeApplication.getErrorLog().logError(t);
+			}
+		}
+		else {
+			for (CatalogEntryManager entryManager : entryManagers) {
+				try {
+					modified = modified | entryManager.initializeCatalog(folder, catalog);
+				}
+				catch (Throwable t) {
+					ProtegeApplication.getErrorLog().logError(t);
+				}
+			}
+		}
+		if (modified) {
+			try {
+				CatalogUtilities.save(catalog, catalogFile);
+			}
+			catch (IOException e) {
+				ProtegeApplication.getErrorLog().logError(e);
+			}
+		}
+		return catalog;
+	}
+
+	public URI getRedirect(URI original) {
     	URI redirect = null;
     	for (XMLCatalog catalog : getAllCatalogs()) {
     		redirect = CatalogUtilities.getRedirect(original, catalog);
@@ -113,26 +138,16 @@ public class OntologyCatalogManager {
     	return redirect;
     }
     
-    public boolean update(XMLCatalog catalog, File location) throws IOException {
+    public boolean update(XMLCatalog catalog) throws IOException {
     	boolean modified = false;
     	for (Entry entry : catalog.getEntries()) {
-    		if (entry instanceof GroupEntry) {
-    			GroupEntry ge = (GroupEntry) entry;
-    			for (CatalogEntryManager updater : updaters) {
-    				if (updater.isSuitable(ge)) {
-    					modified = modified | updater.update(ge);
-    				}
+    		for (CatalogEntryManager updater : entryManagers) {
+    			if (updater.isSuitable(entry)) {
+    				modified = modified | updater.update(entry);
     			}
     		}
     	}
-    	if (modified) {
-    		CatalogUtilities.save(catalog, location);
-    	}
     	return modified;
-    }
-    
-    public XMLCatalog getGlobalCatalog() {
-    	return globalCatalog;
     }
     
     public Collection<XMLCatalog> getLocalCatalogs() {
@@ -141,7 +156,6 @@ public class OntologyCatalogManager {
     
     public List<XMLCatalog> getAllCatalogs() {
     	List<XMLCatalog> catalogs = new ArrayList<XMLCatalog>();
-    	catalogs.add(globalCatalog);
     	catalogs.addAll(getLocalCatalogs());
     	return catalogs;
     }
@@ -155,14 +169,8 @@ public class OntologyCatalogManager {
         // Add the parent file which will be the folder
         if (lib == null) {
             // Add automapped library
-            try {
-            	lib = folderLibraryFactory.ensureFolderCatalogExists(dir);
-                localCatalogs.put(dir, lib);
-            }
-            catch (IOException ioe) {
-                ProtegeApplication.getErrorLog().logError(ioe);
-                logger.error("Could not look for possible imports in the directory " + dir);
-            }
+        	lib = ensureCatalogExists(dir);
+        	localCatalogs.put(dir, lib);
         }
         activeCatalog = lib;
         return lib;
@@ -176,10 +184,4 @@ public class OntologyCatalogManager {
     	localCatalogs.remove(dir);
     	localCatalogs.put(dir, CatalogUtilities.parseDocument(getCatalogFile(dir).toURI().toURL()));
     }
-    
-    public FolderGroupManager getFolderOntologyLibraryBuilder() {
-    	return folderLibraryFactory;
-    }
-
-
 }

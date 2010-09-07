@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.library.plugins;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,7 +13,6 @@ import java.util.TreeSet;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,24 +21,25 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.library.NewEntryPanel;
+import org.protege.xmlcatalog.XmlBaseContext;
+import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
-public class UriEntryPanel extends JDialog {
+public class UriEntryPanel extends NewEntryPanel {
 	private static final long serialVersionUID = -6222499916124012217L;
 	
 	public static Logger LOGGER = Logger.getLogger(UriEntryPanel.class);
-	private Frame parent;
+    private XmlBaseContext xmlBase;
+
 	private JTextField physicalLocationField;
 	private JComboBox importDeclarationComboBox;
 	
-	public UriEntryPanel(Frame parent) {
-		super(parent);
-		this.parent = parent;
-		
+	public UriEntryPanel(XmlBaseContext xmlBase) {
 		setLayout(new BorderLayout());
+		this.xmlBase = xmlBase;
 		add(createCenterPanel(), BorderLayout.CENTER);
-		add(createButtons(), BorderLayout.SOUTH);
 	}
 	
 	private JPanel createCenterPanel() {
@@ -56,9 +55,10 @@ public class UriEntryPanel extends JDialog {
 		JButton browse = new JButton("Browse");
 		browse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File f =  UIUtil.openFile(parent, "Choose OWL source", "OWL File",UIHelper.OWL_EXTENSIONS);
+				File f =  UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File",UIHelper.OWL_EXTENSIONS);
 				if (f != null) {
 					physicalLocationField.setText(f.getPath());
+					regenerateImportSuggestions();
 				}
 			}
 		});
@@ -69,35 +69,7 @@ public class UriEntryPanel extends JDialog {
 		generate.setAlignmentX(CENTER_ALIGNMENT);
 		generate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				importDeclarationComboBox.removeAllItems();
-				IRI preferred = null;
-				URI u = getPhysicalLocation();
-				if (u != null) {
-					Set<IRI> locations = new TreeSet<IRI>();
-					if (!"file".equals(u.getScheme())) {
-						preferred = IRI.create(u);
-						locations.add(preferred);
-					}
-					MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-					extractor.setPhysicalAddress(u);
-					OWLOntologyID id = extractor.getOntologyId();
-					if (!id.isAnonymous()) {
-						preferred  = id.getOntologyIRI();
-						locations.add(preferred);
-						if (id.getVersionIRI() != null) {
-							preferred  = id.getVersionIRI();
-							locations.add(preferred);
-						}
-					}
-					for (IRI location : locations) {
-						importDeclarationComboBox.addItem(location);
-					}
-					if (preferred != null) {
-						importDeclarationComboBox.setSelectedItem(preferred);
-					}
-					pack();
-					repaint();
-				}
+			    regenerateImportSuggestions();
 			}
 		});
 		panel.add(generate);
@@ -107,25 +79,50 @@ public class UriEntryPanel extends JDialog {
 		importDeclarationPanel.add(new JLabel("Import Declaration: "));
 		importDeclarationComboBox = new JComboBox();
 		importDeclarationComboBox.setEditable(true);
+		importDeclarationComboBox.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        fireListeners();
+		    }
+		});
 		importDeclarationPanel.add(importDeclarationComboBox);
 		panel.add(importDeclarationPanel);
 		
 		return panel;
 	}
 	
-	private JPanel createButtons() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		JButton ok = new JButton("Ok");
-		ok.setAlignmentX(CENTER_ALIGNMENT);
-		panel.add(ok);
-		JButton cancel = new JButton("Cancel");
-		cancel.setAlignmentX(CENTER_ALIGNMENT);
-		panel.add(cancel);
-		return panel;
+	private void regenerateImportSuggestions() {
+        importDeclarationComboBox.removeAllItems();
+        IRI preferred = null;
+        URI u = getPhysicalLocation();
+        if (u != null) {
+            Set<IRI> locations = new TreeSet<IRI>();
+            if (!"file".equals(u.getScheme())) {
+                preferred = IRI.create(u);
+                locations.add(preferred);
+            }
+            MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
+            extractor.setPhysicalAddress(u);
+            OWLOntologyID id = extractor.getOntologyId();
+            if (!id.isAnonymous()) {
+                preferred  = id.getOntologyIRI();
+                locations.add(preferred);
+                if (id.getVersionIRI() != null) {
+                    preferred  = id.getVersionIRI();
+                    locations.add(preferred);
+                }
+            }
+            for (IRI location : locations) {
+                importDeclarationComboBox.addItem(location);
+            }
+            if (preferred != null) {
+                importDeclarationComboBox.setSelectedItem(preferred);
+            }
+            fireListeners();
+            repaint();
+        }
 	}
 	
-	public URI getPhysicalLocation() {
+	private URI getPhysicalLocation() {
 		String text = physicalLocationField.getText();
 		if (text == null) {
 			return null;
@@ -144,11 +141,16 @@ public class UriEntryPanel extends JDialog {
 		return null;
 	}
 	
-	public static void main(String[] args) {
-		UriEntryPanel fgp = new UriEntryPanel(null);
-		fgp.pack();
-		fgp.repaint();
-		fgp.setVisible(true);
+	@Override
+	public UriEntry getEntry() {
+	    URI  physicalLocation = getPhysicalLocation();
+	    if (physicalLocation == null || importDeclarationComboBox.getSelectedItem() == null) {
+	        return null;
+	    }
+	    return new UriEntry("User Edited Redirect", 
+	                        xmlBase, 
+	                        ((IRI) importDeclarationComboBox.getSelectedItem()).toString(), 
+	                        physicalLocation, 
+	                        null);
 	}
-
 }

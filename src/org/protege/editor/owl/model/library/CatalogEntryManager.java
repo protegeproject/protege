@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.library;
 
-import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 
 import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
@@ -25,24 +25,33 @@ import org.protege.xmlcatalog.entry.Entry;
  * a physical URI for that ontology.
  */
 public abstract class CatalogEntryManager implements ProtegePluginInstance {
-     
-     public abstract boolean isSuitable(Entry ge);
-     
-     public abstract boolean update(Entry ge) throws IOException;
-     
-     public abstract boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
-     
-     public abstract Entry newEntryDialog(Frame parent, XmlBaseContext context);
-     
-     public abstract Entry editEntryDialog(Frame parent, XmlBaseContext context, Entry input);
-     
-     public abstract String getDescription(Entry ge);
-     
-     public void initialise() throws Exception {
-    	 //not used
-     }
-     
-     public void dispose() throws Exception {
-    	 // not used
+    private String id;
+
+    public abstract boolean isSuitable(Entry entry);
+
+    public abstract boolean update(Entry entry) throws IOException;
+
+    public abstract boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
+
+    public abstract NewEntryPanel newEntryPanel(XmlBaseContext xmlBase);
+
+    public abstract String getDescription();
+    
+    public abstract String getDescription(Entry entry);
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void initialise() throws Exception {
+        //not used
+    }
+
+    public void dispose() throws Exception {
+        // not used
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 
 import junit.framework.TestCase;
 
@@ -45,8 +46,8 @@ public class FolderTests extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         copy(new File(SOURCE_DIR, PHOTOGRAPHY_FILE), new File(TEST_DIR, PHOTOGRAPHY_FILE));
 
-        FolderGroupManager gm = new FolderGroupManager();
-        XMLCatalog catalog = gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(new File(TEST_DIR, CATALOG_FILE).exists());
         assertTrue(catalog.getEntries().size() == 1);
         GroupEntry ge = (GroupEntry) catalog.getEntries().get(0);
@@ -61,12 +62,12 @@ public class FolderTests extends TestCase {
         copy(new File(SOURCE_DIR, AMINO_ACID_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         
-        FolderGroupManager gm = new FolderGroupManager();
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
         Thread.sleep(1000);
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() == changed);
     }
     
@@ -74,13 +75,13 @@ public class FolderTests extends TestCase {
         copy(new File(SOURCE_DIR, AMINO_ACID_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         
-        FolderGroupManager gm = new FolderGroupManager();
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        catalogManager.ensureCatalogExists(TEST_DIR);
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
         Thread.sleep(1000);
         copy(new File(SOURCE_DIR, PHOTOGRAPHY_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
-        XMLCatalog catalog = gm.ensureFolderCatalogExists(TEST_DIR);
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() > changed);
         assertTrue(CatalogUtilities.getRedirect(URI.create(PHOTOGRAPHY_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
@@ -90,8 +91,8 @@ public class FolderTests extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         
-        FolderGroupManager gm = new FolderGroupManager();
-        XMLCatalog catalog = gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
         assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) != null);
@@ -105,8 +106,8 @@ public class FolderTests extends TestCase {
         
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
-        FolderGroupManager gm = new FolderGroupManager();
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() == changed);
     }
     
@@ -118,8 +119,8 @@ public class FolderTests extends TestCase {
         
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
-        FolderGroupManager gm = new FolderGroupManager();
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() == changed);
     }
     
@@ -128,10 +129,10 @@ public class FolderTests extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         copy(new File(SOURCE_DIR, PHOTOGRAPHY_FILE), new File(TEST_DIR, PHOTOGRAPHY_FILE));
 
-        FolderGroupManager gm = new FolderGroupManager();
-        gm.ensureFolderCatalogExists(TEST_DIR);
+        OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
+        catalogManager.ensureCatalogExists(TEST_DIR);
         new File(TEST_DIR, PIZZA_FILE).delete();
-        XMLCatalog catalog = gm.ensureFolderCatalogExists(TEST_DIR);
+        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(catalog.getEntries().size() == 1);
         GroupEntry ge = (GroupEntry) catalog.getEntries().get(0);
