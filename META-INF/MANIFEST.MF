@@ -65,7 +65,17 @@ Import-Package: org.osgi.framework,
  org.xml.sax,
  org.xml.sax.ext,
  org.xml.sax.helpers,
- javax.xml.parsers
+ javax.xml.parsers,
+ javax.activation,
+ javax.xml.bind,
+ javax.xml.bind.annotation,
+ javax.xml.bind.annotation.adapters,
+ javax.xml.bind.attachment,
+ javax.xml.bind.helpers,
+ javax.xml.bind.util,
+ javax.xml.stream,
+ javax.xml.stream.events,
+ javax.xml.stream.util
 Update-Url: http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml
 Bundle-Description: Generic Ontology Editor Bundle
 Bundle-Category: protege
