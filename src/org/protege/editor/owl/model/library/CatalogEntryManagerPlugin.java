@@ -9,5 +9,12 @@ public class CatalogEntryManagerPlugin extends AbstractProtegePlugin<CatalogEntr
 	public CatalogEntryManagerPlugin(IExtension extension) {
 		super(extension);
 	}
+	
+	@Override
+	public CatalogEntryManager newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+	    CatalogEntryManager pluginInstance = super.newInstance();
+	    pluginInstance.setId(getId());
+	    return pluginInstance;
+	}
 
 }

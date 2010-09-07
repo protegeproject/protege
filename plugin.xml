@@ -36,11 +36,6 @@
     </extension>
 
 
-    <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
-        <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
-    </extension>
-
-
     <!-- Class Description Editors -->
 
     <extension id="OWLClassExpressionExpressionEditor"
@@ -915,14 +910,23 @@
 
     <!-- Ontology libraries/locations -->
 
-    <extension id="file.showontologylibraries"
+    <extension id="file.editactiveontologylibrary"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Ontology libraries..."/>
-        <class value="org.protege.editor.owl.ui.library.ShowOntologyLibrariesAction"/>
-        <toolTip value="View, add and edit the ontology libraries"/>
+        <name value="Edit Active Ontology Library..."/>
+        <class value="org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction"/>
+        <toolTip value="View, add and edit the active ontology library"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="L"/>
+    </extension>
+
+    <extension id="file.editontologylibrary"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Edit Ontology libraries..."/>
+        <class value="org.protege.editor.owl.ui.library.EditOntologyLibraryAction"/>
+        <toolTip value="View, add and edit the ontology libraries"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-B"/>
+        <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <extension id="file.ontologylocations"
@@ -930,7 +934,7 @@
         <name value="Loaded ontology sources..."/>
         <class value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
         <toolTip value="Shows the physical URIs from where currently loaded ontologies were obtained from"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-B"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
@@ -1185,6 +1189,21 @@
         <path value="org.protege.editor.owl.menu.tools/SlotR-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+
+	<!-- Repositories -->
+
+    <extension id="TONESRepository" point="org.protege.editor.core.application.OntologyRepositoryFactory">
+        <class value="org.protege.editor.owl.model.repository.TONESRepositoryFactory"/>
+    </extension>
+
+
+	<extension id="FolderRepository" point="org.protege.editor.owl.repository">
+		<class value="org.protege.editor.owl.model.library.folder.FolderGroupManager"/>
+	</extension>
+	
+	<extension id="SingleUriEntry" point="org.protege.editor.owl.repository">
+		<class value="org.protege.editor.owl.model.library.UriEntryManager"/>
+	</extension>
 
     <!-- Species validation -->
 

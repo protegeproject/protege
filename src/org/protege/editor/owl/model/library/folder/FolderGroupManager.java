@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.library.folder;
 
-import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -11,10 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.library.CatalogEntryManager;
-import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.editor.owl.ui.library.NewEntryPanel;
+import org.protege.editor.owl.ui.library.plugins.FolderGroupPanel;
 import org.protege.xmlcatalog.Prefer;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
@@ -59,33 +59,9 @@ public class FolderGroupManager extends CatalogEntryManager {
         algorithms = new HashSet<Algorithm>();
     	algorithms.add(new XmlBaseAlgorithm());
     }
-    
-	public XMLCatalog ensureFolderCatalogExists(File folder) throws IOException {
-	    File catalogFile = OntologyCatalogManager.getCatalogFile(folder);
-	    boolean createFolderGroup = !catalogFile.exists();
-		XMLCatalog catalog = OntologyCatalogManager.ensureCatalogExists(folder);
-		GroupEntry ge = null;
-		for (Entry e : catalog.getEntries()) {
-		    if (e instanceof GroupEntry) {
-		        if (folder.getCanonicalPath().equals(LibraryUtilities.getStringProperty((GroupEntry) e, DIR_PROP))) {
-		            ge = (GroupEntry) e;
-		            break;
-		        }
-		    }
-		}
-		if (ge == null && createFolderGroup) {
-			if (initializeCatalog(folder, catalog)) {
-				CatalogUtilities.save(catalog, catalogFile);
-			}
-		}
-		else if (ge != null && isSuitable(ge) && update(ge)) {
-		    CatalogUtilities.save(catalog, catalogFile);
-		}
-		return catalog;
-	}
 	
-	public GroupEntry createGroupEntry(File folder, XmlBaseContext context) throws IOException {
-		String id = ID_PREFIX + ", " + DIR_PROP + "=" + folder.getCanonicalPath() + ", " + RECURSIVE_PROP + "=true, " + OntologyCatalogManager.AUTO_UPDATE_PROP + "=true";
+	public static GroupEntry createGroupEntry(File folder, boolean recursive, XmlBaseContext context) throws IOException {
+		String id = ID_PREFIX + ", " + DIR_PROP + "=" + folder.getCanonicalPath() + ", " + RECURSIVE_PROP + "=" + recursive + ", " + OntologyCatalogManager.AUTO_UPDATE_PROP + "=true";
 		return new GroupEntry(id, context, Prefer.PUBLIC, folder.toURI());
 	}
 	
@@ -134,22 +110,29 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
 	
 	public boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException {
-	    ge = createGroupEntry(folder, catalog);
+	    ge = createGroupEntry(folder, true, catalog);
 	    catalog.addEntry(ge);
 	    update(ge);
 	    return true;
 	}
 	
-	public GroupEntry newEntryDialog(Frame parent, XmlBaseContext context) {
-	    throw new UnsupportedOperationException("Not implemented yet");
+	public NewEntryPanel newEntryPanel(XmlBaseContext xmlBase) {
+	    return new FolderGroupPanel(xmlBase);
 	}
-
-	public Entry editEntryDialog(Frame parent, XmlBaseContext context, Entry input) {
-	    throw new UnsupportedOperationException("Not implemented yet");
+	
+	public String getDescription() {
+	    return "Folder Repository";
 	}
 
 	public String getDescription(Entry ge) {
-		return "Folder Repository for " + LibraryUtilities.getStringProperty(ge, DIR_PROP);
+	    StringBuffer sb = new StringBuffer("<html><body><b>Folder Repository for ");
+	    sb.append(LibraryUtilities.getStringProperty(ge, DIR_PROP));
+	    sb.append("</b>");
+		if (LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true)) {
+		    sb.append(" <font color=\"gray\">(Recursive)</font>");
+		}
+		sb.append("</body></html>");
+		return sb.toString();
 	}
 
 	private void addMapping(URI webLocation, File physicalLocation) {
@@ -259,7 +242,11 @@ public class FolderGroupManager extends CatalogEntryManager {
             boolean duplicatesFound = (diskLocations.size() != 1);
             for (File physicalLocation : diskLocations) {
                 URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
-                UriEntry u = new UriEntry("Automatically generated entry, " + OntologyCatalogManager.TIMESTAMP + "=" + timeOfCurrentUpdate, 
+                String entryId = "Automatically generated entry, " + OntologyCatalogManager.TIMESTAMP + "=" + timeOfCurrentUpdate;
+                if (duplicatesFound) {
+                	entryId = entryId + ", " + LibraryUtilities.HIDDEN_ENTRY + "=true";
+                }
+                UriEntry u = new UriEntry(entryId, 
                                           ge, 
                                           (duplicatesFound ? DUPLICATE_SCHEME : "") + webLocation.toString(),
                                           shortLocation,
