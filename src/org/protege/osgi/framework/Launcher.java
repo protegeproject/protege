@@ -37,6 +37,7 @@ public class Launcher {
         "org.eclipse.equinox.common.jar",
         "org.eclipse.equinox.registry.jar",
         "org.eclipse.equinox.supplement.jar",
+        "org.protege.jaxb.jar",
         "org.protege.editor.core.application.jar"
     };
     
@@ -84,10 +85,28 @@ public class Launcher {
     	BundleContext context = framework.getBundleContext();
     	List<Bundle> core = new ArrayList<Bundle>();
     	for (String bundleName :  coreBundles) {
-    		core.add(context.installBundle(new File(bundleDir, bundleName).toURI().toString()));
+    		boolean success = false;
+    		try {
+    			core.add(context.installBundle(new File(bundleDir, bundleName).toURI().toString()));
+    			success = true;
+    		}
+    		finally {
+    			if (!success) {
+    				System.out.println("Core Bundle " + bundleName + " failed to install.");
+    			}
+    		}
     	}
     	for (Bundle b : core) {
-    		b.start();
+    		boolean success = false;
+    		try {
+    			b.start();
+    			success = true;
+    		}
+    		finally {
+    			if (!success) {
+    				System.out.println("Core Bundle " + b.getBundleId() + " failed to start.");
+    			}
+    		}
     	}
     }
     
