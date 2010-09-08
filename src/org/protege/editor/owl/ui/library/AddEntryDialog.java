@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,12 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 
@@ -37,6 +41,29 @@ public class AddEntryDialog extends JDialog {
     private JButton ok;
     private boolean cancelled = false;
 
+    public static Entry askUserForRepository(JComponent parent, XMLCatalog catalog, List<CatalogEntryManager> entryManagers) {
+        AddEntryDialog dialog = new AddEntryDialog((JDialog) SwingUtilities.getAncestorOfClass(JDialog.class, parent), 
+                                                   entryManagers,
+                                                   catalog.getXmlBaseContext());
+        dialog.setVisible(true);
+        Entry e = dialog.getEntry();
+        if (e != null) {
+            catalog.addEntry(0, e);
+            for (CatalogEntryManager entryManager : entryManagers) {
+                if (entryManager.isSuitable(e)) {
+                    try {
+                        entryManager.update(e);
+                    }
+                    catch (IOException ioe) {
+                        ProtegeApplication.getErrorLog().logError(ioe);
+                    }
+                }
+            }
+        }
+        return e;
+    }
+    
+    
     public AddEntryDialog(JDialog parent, List<CatalogEntryManager> entryManagers, XmlBaseContext xmlBase) {
         super(parent, true);
         this.entryManagers = entryManagers;
@@ -92,6 +119,7 @@ public class AddEntryDialog extends JDialog {
         for (final CatalogEntryManager entryManager : entryManagers) {
             String id = entryManager.getId();
             final NewEntryPanel panel = entryManager.newEntryPanel(xmlBase);
+            panel.setAlignmentY(CENTER_ALIGNMENT);
             panel.addListener(new Runnable() {
                 public void run() {
                     if (entryManager.getId().equals(currentId)) {
