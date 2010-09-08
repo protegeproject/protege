@@ -200,25 +200,9 @@ public class OntologyLibraryPanel extends JPanel {
     }
 
     private void handleAddLibrary() {
-        AddEntryDialog dialog = new AddEntryDialog((JDialog) SwingUtilities.getAncestorOfClass(JDialog.class, this), 
-                                                   entryManagers,
-                                                   catalog.getXmlBaseContext());
-        dialog.setVisible(true);
-        Entry e = dialog.getEntry();
-        if (e != null) {
-            catalog.addEntry(0, e);
-            for (CatalogEntryManager entryManager : entryManagers) {
-                if (entryManager.isSuitable(e)) {
-                    try {
-                        entryManager.update(e);
-                    }
-                    catch (IOException ioe) {
-                        ProtegeApplication.getErrorLog().logError(ioe);
-                    }
-                }
-            }
-            reloadTree();
-        }
+    	if (AddEntryDialog.askUserForRepository(this, catalog, entryManagers) != null) {
+    		reloadTree();
+    	}
     }
     
     private void handleRemoveLibrary() {
