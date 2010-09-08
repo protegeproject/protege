@@ -38,6 +38,7 @@ public class OntologyCatalogManager {
     private Map<File, XMLCatalog> localCatalogs = new HashMap<File, XMLCatalog>();
     
     private XMLCatalog activeCatalog;
+    private File activeCatalogFolder;
 
     private List<CatalogEntryManager> entryManagers;
     
@@ -52,6 +53,17 @@ public class OntologyCatalogManager {
 	
 	public static File getCatalogFile(File folder) {
 		return new File(folder, CATALOG_NAME);
+	}
+	
+	/*
+	 * this works for catalogs that are generated from a parse.
+	 */
+	public static File getCatalogFile(XMLCatalog catalog) {
+		if (catalog.getXmlBaseContext() == null) {
+			return  null;
+		}
+		File f = new File(catalog.getXmlBaseContext().getXmlBase());
+		return f.exists() ? f : null;
 	}
 
 	public static File getGlobalCatalogFile() {
@@ -164,6 +176,10 @@ public class OntologyCatalogManager {
     	return activeCatalog;
     }
     
+    public File getActiveCatalogFolder() {
+		return activeCatalogFolder;
+	}
+    
     public XMLCatalog addFolder(File dir) {
         XMLCatalog lib = localCatalogs.get(dir);
         // Add the parent file which will be the folder
@@ -173,15 +189,13 @@ public class OntologyCatalogManager {
         	localCatalogs.put(dir, lib);
         }
         activeCatalog = lib;
+        activeCatalogFolder = dir;
         return lib;
-    }
-    
-    public XMLCatalog removeFolder(File dir) {
-    	return localCatalogs.remove(dir);
     }
     
     public void reloadFolder(File dir) throws MalformedURLException, IOException {
     	localCatalogs.remove(dir);
     	localCatalogs.put(dir, CatalogUtilities.parseDocument(getCatalogFile(dir).toURI().toURL()));
+    	activeCatalog = localCatalogs.get(activeCatalogFolder);
     }
 }
