@@ -2,9 +2,15 @@ package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -12,8 +18,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.GetImportsVisitor;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
@@ -59,16 +68,35 @@ public class LibraryPage extends OntologyImportPage {
                 }
             }
         });
+        JButton addRepository = new JButton("Add Repository");
+        addRepository.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				handleEditRepositories();
+			}
+		});
+        
+		parent.add(addRepository, BorderLayout.NORTH);
         parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
         parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
     
+    private void handleEditRepositories() {
+    	OntologyCatalogManager catalogManager = getOWLModelManager().getOntologyCatalogManager();
+    	File activeCatalogFile = OntologyCatalogManager.getCatalogFile(catalogManager.getActiveCatalog());
+    	try {
+			OntologyLibraryPanel.showDialog(getOWLEditorKit(), activeCatalogFile);
+			calculatePossibleImports();
+		} catch (Exception e) {
+			ProtegeApplication.getErrorLog().logError(e);
+		}
+    }
+    
     private void calculatePossibleImports() {
         GetImportsVisitor getter = new GetImportsVisitor();
-        for (XMLCatalog library : getOWLEditorKit().getOWLModelManager().getOntologyCatalogManager().getAllCatalogs()) {
-            for (Entry e : library.getEntries()) {
-                e.accept(getter);
-            }
+        XMLCatalog library = getOWLEditorKit().getOWLModelManager().getOntologyCatalogManager().getActiveCatalog();
+        for (Entry e : library.getEntries()) {
+        	e.accept(getter);
         }
         importListModel.clear();
         for (ImportInfo ii : getter.getImports()) {
