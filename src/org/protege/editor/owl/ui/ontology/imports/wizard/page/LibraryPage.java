@@ -2,11 +2,10 @@ package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -14,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -68,15 +68,19 @@ public class LibraryPage extends OntologyImportPage {
                 }
             }
         });
-        JButton addRepository = new JButton("Add Repository");
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        JButton addRepository = new JButton("Edit Repositories");
         addRepository.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				handleEditRepositories();
 			}
 		});
+        buttonPanel.add(addRepository);
         
-		parent.add(addRepository, BorderLayout.NORTH);
+		parent.add(buttonPanel, BorderLayout.NORTH);
         parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
         parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
     }
