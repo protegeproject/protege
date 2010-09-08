@@ -147,9 +147,20 @@ public class UriEntryPanel extends NewEntryPanel {
 	    if (physicalLocation == null || importDeclarationComboBox.getSelectedItem() == null) {
 	        return null;
 	    }
+	    String importDeclarationString = null;
+	    Object importDeclarationObject  = importDeclarationComboBox.getSelectedItem();
+	    if (importDeclarationObject instanceof String) {
+	    	importDeclarationString = (String) importDeclarationObject;
+	    }
+	    else if (importDeclarationObject instanceof IRI) {
+	    	importDeclarationString = ((IRI) importDeclarationObject).toString();
+	    }
+	    if (importDeclarationString == null) {
+	    	return null;
+	    }
 	    return new UriEntry("User Edited Redirect", 
 	                        xmlBase, 
-	                        ((IRI) importDeclarationComboBox.getSelectedItem()).toString(), 
+	                        importDeclarationString, 
 	                        physicalLocation, 
 	                        null);
 	}
