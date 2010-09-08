@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -66,6 +67,7 @@ public class FolderGroupPanel extends NewEntryPanel {
         recursive = new JCheckBox("Recursively search subdirectories");
         recursive.setAlignmentX(CENTER_ALIGNMENT);
         centerPanel.add(recursive);
+        centerPanel.add(Box.createVerticalGlue());
         return centerPanel;
     }
 
