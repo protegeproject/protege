@@ -39,6 +39,11 @@
 	   <jar basedir="${classes}" destfile="${launcher}"/>
    </target>
 
+   <target name="install.launcher" depends="build.launcher">
+     <property file="${protege.home}/build.properties"/>
+     <copy file="${launcher}" tofile="${protege.launcher}"/>
+   	</target>
+
     <!-- ===================================================================  -->
     <!-- OSGI Targets -->
     <!-- ===================================================================  -->
@@ -91,6 +96,8 @@
 		<echo message = "felix - build a felix distribution"/>
 		<echo message = "knopflerfish - build a knopflerfish distribution"/>
 		<echo message = "osx - build a standalone os x application (based on felix)"/>
+        <echo message = "build.launcher - builds the launcher (non-destructive)"/>
+    	<echo message = "install.launcher - installs the launcher (non-destructive)"/>
     </target>
 
     <!-- ===================================================================  -->
