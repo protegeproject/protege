@@ -354,11 +354,6 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public XMLCatalog addRootFolder(File dir) {
     	return ontologyLibraryManager.addFolder(dir);
     }
-    
-    public XMLCatalog removeRootFolder(File dir) {
-    	return ontologyLibraryManager.removeFolder(dir);
-    }
-
 
     private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for(IOListener listener : new ArrayList<IOListener>(ioListeners)) {

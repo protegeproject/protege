@@ -298,6 +298,4 @@ public interface OWLModelManager extends ModelManager {
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
     
     XMLCatalog addRootFolder(File dir);
-    
-    XMLCatalog removeRootFolder(File dir);
 }
