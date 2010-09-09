@@ -315,9 +315,6 @@ public class OntologyLibraryPanel extends JPanel {
     }
     
     private void insertEntryIntoTree(DefaultMutableTreeNode parent, Entry entry) {
-    	if (LibraryUtilities.getBooleanProperty(entry, LibraryUtilities.HIDDEN_ENTRY, false)) {
-    		return;
-    	}
         if (entry instanceof UriEntry) {
         	UriEntry uriEntry = (UriEntry) entry;
         	String redirectDescription = "<html><body><b>Imported Location: " + uriEntry.getName() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
