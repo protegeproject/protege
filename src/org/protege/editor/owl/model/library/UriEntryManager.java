@@ -33,8 +33,8 @@ public class UriEntryManager extends CatalogEntryManager {
     }
 
     
-    public NewEntryPanel newEntryPanel(XmlBaseContext xmlBase) {
-        return new UriEntryPanel(xmlBase);
+    public NewEntryPanel newEntryPanel(XMLCatalog catalog) {
+        return new UriEntryPanel(catalog);
     }
 
     
