@@ -31,7 +31,7 @@ public class EditActiveOntologyLibraryAction extends ProtegeOWLAction {
     	    if (activeCatalog == null) {
     	        return;
     	    }
-    	    File catalogFile = new File(activeCatalog.getXmlBaseContext().getXmlBase());
+    	    File catalogFile = OntologyCatalogManager.getCatalogFile(activeCatalog);
     	    if (!catalogFile.exists()) {
     	        return;
     	    }
