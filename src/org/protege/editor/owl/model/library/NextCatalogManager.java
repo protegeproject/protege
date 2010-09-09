@@ -35,7 +35,7 @@ public class NextCatalogManager extends CatalogEntryManager {
     }
 
     
-    public NewEntryPanel newEntryPanel(XmlBaseContext xmlBase) {
+    public NewEntryPanel newEntryPanel(XMLCatalog catalog) {
         return null;
     }
 
