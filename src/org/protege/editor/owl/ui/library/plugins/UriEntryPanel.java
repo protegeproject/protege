@@ -22,7 +22,8 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
-import org.protege.xmlcatalog.XmlBaseContext;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -31,14 +32,14 @@ public class UriEntryPanel extends NewEntryPanel {
 	private static final long serialVersionUID = -6222499916124012217L;
 	
 	public static Logger LOGGER = Logger.getLogger(UriEntryPanel.class);
-    private XmlBaseContext xmlBase;
+    private XMLCatalog catalog;
 
 	private JTextField physicalLocationField;
 	private JComboBox importDeclarationComboBox;
 	
-	public UriEntryPanel(XmlBaseContext xmlBase) {
+	public UriEntryPanel(XMLCatalog catalog) {
 		setLayout(new BorderLayout());
-		this.xmlBase = xmlBase;
+		this.catalog = catalog;
 		add(createCenterPanel(), BorderLayout.CENTER);
 	}
 	
@@ -158,8 +159,9 @@ public class UriEntryPanel extends NewEntryPanel {
 	    if (importDeclarationString == null) {
 	    	return null;
 	    }
+	    physicalLocation = CatalogUtilities.relativize(physicalLocation, catalog);
 	    return new UriEntry("User Edited Redirect", 
-	                        xmlBase, 
+	                        catalog, 
 	                        importDeclarationString, 
 	                        physicalLocation, 
 	                        null);
