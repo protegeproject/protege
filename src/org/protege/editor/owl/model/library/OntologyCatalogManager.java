@@ -32,8 +32,7 @@ public class OntologyCatalogManager {
 	public static final String CATALOG_NAME = "catalog-v001.xml";
 	public static final String CATALOG_BACKUP_PREFIX = "catalog-backup-";
 	
-	public static final String AUTO_UPDATE_PROP = "Auto-Update";
-    public static final String TIMESTAMP        = "Timestamp";
+	public static final String TIMESTAMP        = "Timestamp";
 	    
     private Map<File, XMLCatalog> localCatalogs = new HashMap<File, XMLCatalog>();
     
@@ -55,14 +54,18 @@ public class OntologyCatalogManager {
 		return new File(folder, CATALOG_NAME);
 	}
 	
-	/*
-	 * this works for catalogs that are generated from a parse.
+	/**
+	 * this works for catalogs that are generated from a parse or created
+	 * by the OntologyCatalogManager.
 	 */
 	public static File getCatalogFile(XMLCatalog catalog) {
 		if (catalog.getXmlBaseContext() == null) {
 			return  null;
 		}
 		File f = new File(catalog.getXmlBaseContext().getXmlBase());
+		if (f.exists() && f.isDirectory())  {
+		    f = getCatalogFile(f);
+		}
 		return f.exists() ? f : null;
 	}
 
