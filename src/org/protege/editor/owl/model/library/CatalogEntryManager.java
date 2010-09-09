@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 
 
@@ -33,7 +32,7 @@ public abstract class CatalogEntryManager implements ProtegePluginInstance {
 
     public abstract boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
 
-    public abstract NewEntryPanel newEntryPanel(XmlBaseContext xmlBase);
+    public abstract NewEntryPanel newEntryPanel(XMLCatalog catalog);
 
     public abstract String getDescription();
     
