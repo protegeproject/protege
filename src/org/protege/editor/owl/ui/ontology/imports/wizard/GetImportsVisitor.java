@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.xmlcatalog.EntryVisitor;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.DelegatePublicEntry;
@@ -30,9 +29,6 @@ public class GetImportsVisitor implements EntryVisitor {
 
     public void visit(UriEntry entry) {
         try {
-        	if (entry.getName().startsWith(FolderGroupManager.DUPLICATE_SCHEME)) {
-        		return;
-        	}
             ImportInfo myImport = new ImportInfo();
             myImport.setImportLocation(IRI.create(entry.getName()));
             myImport.setPhysicalLocation(entry.getAbsoluteURI());
