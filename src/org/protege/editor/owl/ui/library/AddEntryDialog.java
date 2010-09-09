@@ -1,41 +1,30 @@
 package org.protege.editor.owl.ui.library;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 
 public class AddEntryDialog extends JDialog {
     private static final long serialVersionUID = 8162358678767968590L;
     
     private List<CatalogEntryManager> entryManagers;
-    private XmlBaseContext xmlBase;
+    private XMLCatalog catalog;
     private JTabbedPane tabs;
     private JButton ok;
     private boolean cancelled = false;
@@ -43,7 +32,7 @@ public class AddEntryDialog extends JDialog {
     public static Entry askUserForRepository(JComponent parent, XMLCatalog catalog, List<CatalogEntryManager> entryManagers) {
         AddEntryDialog dialog = new AddEntryDialog((JDialog) SwingUtilities.getAncestorOfClass(JDialog.class, parent), 
                                                    entryManagers,
-                                                   catalog.getXmlBaseContext());
+                                                   catalog);
         dialog.setVisible(true);
         Entry e = dialog.getEntry();
         if (e != null) {
@@ -63,10 +52,10 @@ public class AddEntryDialog extends JDialog {
     }
     
     
-    public AddEntryDialog(JDialog parent, List<CatalogEntryManager> entryManagers, XmlBaseContext xmlBase) {
+    public AddEntryDialog(JDialog parent, List<CatalogEntryManager> entryManagers, XMLCatalog catalog) {
         super(parent, true);
         this.entryManagers = entryManagers;
-        this.xmlBase = xmlBase;
+        this.catalog = catalog;
         setLayout(new BorderLayout());
         add(createTabbedPane(), BorderLayout.CENTER);
         add(createButtons(), BorderLayout.SOUTH);
@@ -77,7 +66,7 @@ public class AddEntryDialog extends JDialog {
     private JTabbedPane createTabbedPane() {
     	tabs = new JTabbedPane();
         for (final CatalogEntryManager entryManager : entryManagers) {
-        	NewEntryPanel panel = entryManager.newEntryPanel(xmlBase);
+        	NewEntryPanel panel = entryManager.newEntryPanel(catalog);
         	panel.setAlignmentY(CENTER_ALIGNMENT);
         	tabs.addTab(entryManager.getDescription(), panel);
         	panel.addListener(new Runnable() {
@@ -88,7 +77,6 @@ public class AddEntryDialog extends JDialog {
         	});
         }
         tabs.addChangeListener(new ChangeListener() {
-        	@Override
         	public void stateChanged(ChangeEvent e) {
         		updateOkButtonState();
         	}
