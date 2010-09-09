@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,18 +21,19 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
-import org.protege.xmlcatalog.XmlBaseContext;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.GroupEntry;
 
 public class FolderGroupPanel extends NewEntryPanel {
     private static final long serialVersionUID = 3602861945631171635L;
-    private XmlBaseContext xmlBase;
+    private XMLCatalog catalog;
     private JTextField physicalLocationField;
     private JCheckBox recursive;
 
-    public FolderGroupPanel(XmlBaseContext xmlBase) {
+    public FolderGroupPanel(XMLCatalog catalog) {
         setLayout(new BorderLayout());
-        this.xmlBase = xmlBase;
+        this.catalog = catalog;
         add(createCenterComponent(), BorderLayout.CENTER);
     }
     
@@ -81,7 +83,8 @@ public class FolderGroupPanel extends NewEntryPanel {
             return null;
         }
         try {
-            return FolderGroupManager.createGroupEntry(new File(physicalLocationField.getText()), recursive.isSelected(), xmlBase);
+        	URI folderUri = CatalogUtilities.relativize(new File(physicalLocationField.getText()).toURI(), catalog);
+            return FolderGroupManager.createGroupEntry(folderUri, recursive.isSelected(), catalog);
         }
         catch (IOException ioe) {
             ProtegeApplication.getErrorLog().logError(ioe);
