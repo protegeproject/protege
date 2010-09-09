@@ -6,7 +6,9 @@ import java.util.regex.Pattern;
 import org.protege.xmlcatalog.entry.Entry;
 
 public class LibraryUtilities {
-	public static final String HIDDEN_ENTRY = "hidden";
+	public static final String VERSION_PROPERTY = "version";
+	public static final int DEFAULT_VERSION = 0;
+    public static final String AUTO_UPDATE_PROP = "Auto-Update";
 	
     public static String getStringProperty(Entry entry, String property) {
 		if (entry.getId() == null) {
@@ -43,5 +45,30 @@ public class LibraryUtilities {
     	}
     	else return defaultValue;
     }
+    
+    public static int getIntegerProperty(Entry entry, String property, int defaultValue) {
+        String  s = getStringProperty(entry, property);
+        if (s == null) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(s);
+        }
+        catch (Throwable t) {
+            return defaultValue;
+        }
+    }
+    
+    public static int getVersion(Entry entry) {
+        return getIntegerProperty(entry, VERSION_PROPERTY, DEFAULT_VERSION);
+    }
+    
+    public static void addPropertyValue(StringBuffer sb, String property, Object value) {
+        sb.append(", ");
+        sb.append(property);
+        sb.append("=");
+        sb.append(value);
+    }
+
 
 }
