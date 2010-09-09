@@ -94,8 +94,7 @@ public class FolderTests extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
-        assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) != null);
+        assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) != null);
     }
     
     public void testDontTouchExisting() throws IOException, InterruptedException {
@@ -107,7 +106,7 @@ public class FolderTests extends TestCase {
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
-        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
+        catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() == changed);
     }
     
@@ -120,7 +119,7 @@ public class FolderTests extends TestCase {
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
         long changed = catalogFile.lastModified();
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
-        XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
+        catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(catalogFile.lastModified() == changed);
     }
     
