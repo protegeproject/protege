@@ -98,8 +98,7 @@
        <fileset dir="${src}">
          <include name="**/*"/>
          <exclude name="**/*.java"/>
-         <exclude name="**/MANIFEST.MF"/>
-         <exclude name="**/manifest.mf"/>
+         <exclude name="**/MANIFEST*.MF"/>
        </fileset>
      </copy>
      <copy todir="${classes}/lib">
@@ -140,7 +139,7 @@
 
    <target name="build.manifest">
      <copy tofile="${manifest}" 
-           file="META-INF/MANIFEST.MF" overwrite="true"/>
+           file="META-INF/MANIFEST-BUILD.MF" overwrite="true"/>
      <manifest file="${manifest}" 
                mode = "update">
         <attribute name="Built-By"       value = "${user.name}"/>
