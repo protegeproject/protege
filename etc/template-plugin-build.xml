@@ -94,9 +94,7 @@
         The following target only needs to be modified if the user
         needs to change the classpath.  It is preconfigured to use
         the common protege 4 jars, the lib directory and the
-        libraries that have been uncovered in buildlibs. Also note
-        that the lib entry needs to be removed from the class path if
-        you do not have a lib directory.
+        libraries that have been uncovered in buildlibs.
      -->
    <target name = "checkProtegeLibs" depends="init">
      <echo message="**********************************************************"/>
@@ -119,6 +117,11 @@
        <pathelement location="${equinox.registry}"/>
        <pathelement location="${owl.editor.jar}"/>
        <pathelement location="${owl.lib}"/>
+       <!-- 
+            **** CHANGE ME ****
+
+            Remove this line if you don't have a lib directory.
+            -->
        <fileset dir="${lib}"/>
        <fileset dir="${genlib}"/>
      </path>
@@ -151,20 +154,6 @@
      <manifest file="${manifest}" 
                mode = "update">
         <attribute name="Built-By" value = "${user.name}"/>
-        <!-- 
-             **** CHANGE ME ****
-
-             Do you want the bundle version to be set by the build
-             file/version.properties file?  This is good in situations
-             where there is an automatic build with version updates.
-             It also automatically guarantees that a fresh build is
-             later than the latest released version even if the major,
-             minor and micro version are the same.  Finally it will
-             guarantee the creation of a update.properties file that
-             can be used for automatic updates.  The disadvantage
-             is that the copy run in an ide will often have an old
-             version number.
-         -->
         <attribute name="Bundle-Version" value="${bundle.version}"/>
      </manifest>
    </target>
@@ -177,8 +166,7 @@
         default it already copies non-java files found in the source
         directory, the libraries needed by the project and the
         viewconfig and the plugin.xml.  This will be sufficient in
-        many cases.  Also if you have no lib directory, you will need
-        to delete the line involving the lib directory.
+        many cases.
      -->
    <target name="copy.resources" depends="build.manifest">
      <copy todir="${classes}">
@@ -189,6 +177,11 @@
          <exclude name="**/manifest.mf"/>
        </fileset>
      </copy>
+     <!-- 
+          **** CHANGE ME ****
+
+          Remove the copy operation below if you don't have a lib directory.
+       -->
      <copy todir="${classes}/lib">
        <fileset dir="${lib}" excludes="junit*.jar"/>
      </copy>
