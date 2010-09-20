@@ -196,30 +196,6 @@
            file = "${manifest}"/>
    </target>
 
-   <!-- 
-        **** CHANGE ME ****
-
-     This will probably only need to be setup relatively late in a
-     project.  It arranges the automatic build of an update.properties
-     file for use with the Protege 4 automatic update feature.  The
-     various fields in this properties file will need to be configured
-     by the developer.  The setting of the version id will only work
-     if the build file sets the version of the bundle in the manifest.
-     -->
-   <target name = "create.update.properties" depends="init">
-       <property name="update.properties.file"
-                 location="${build}/update.properties"/>
-       <echo file="${update.properties.file}" append="false">
-id=${plugin}
-version=${bundle.version}
-download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
-name=DL Query Plugin
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/dlquery-readme.html
-license=http://www.gnu.org/licenses/lgpl.html
-author=Matthew Horridge for the CO-ODE project
-       </echo>
-   </target>
-
    <target name = "compile" depends = "buildlibs, checkProtegeLibsAndReport">
      <javac srcdir = "${src}"
             destdir = "${classes}" 
@@ -229,7 +205,7 @@ author=Matthew Horridge for the CO-ODE project
      </javac>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources, create.update.properties">
+   <target name = "jar" depends = "compile, copy.resources">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
@@ -292,5 +268,73 @@ author=Matthew Horridge for the CO-ODE project
      <echo message = "debug - starts Protege with the debugger using port 8500"/>
    </target>
 
+
+   <!-- ===================================================================  -->
+   <!-- Distribution Support - Optional                                      -->
+   <!-- ===================================================================  -->
+
+   <!-- 
+        **** CHANGE ME ****
+
+     This entire last section will probably only need to be setup relatively 
+     late in a project. It is optional and you can delete this section
+     if desired (you can always get it from the plugin template later
+     when you need it.)  It is designed to make it easier for
+     plugin developers to configure an update.properties file for use with the
+     Protege 4 automatic update feature.   Setting up the
+     update.properties file is a tedious process and I am trying to
+     make it simpler.  There will be a wiki for this process soon when
+     the new version of the Protege update mechanism is in place. 
+
+     This first property is the svn root of this project.  The idea is
+     allow the Protege update mechanism to find the update.properties
+     and version-readme.html in the ${svn.root}/etc directory of the
+     svn repository.  So all you need to do to make these files
+     available to the Protege update process is  to commit them.
+     However, feel free to choose other locations for these files if
+     it makes sense.
+     -->
+   <property name="svn.root" value="http://smi-protege/repos/protege/protege4/plugins/org.coode.dlquery/trunk"/>
+
+
+   <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
+   <property name="readme.file"            value="${svn.root}/etc/version-readme.html"/>
+
+   <!--
+       **** CHANGE ME ****
+
+       This property contains the location you will use to download
+       your updated copy of the plugin jar file.
+       -->
+   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar"/>
+
+
+   <!-- 
+        **** CHANGE ME ****
+
+        The name, license and author fields below will probably need
+        adjustment.
+        -->
+   <target name = "dist" depends="init">
+       <echo file="./etc/update.properties" append="false">
+id=${plugin}
+version=${bundle.version}
+download=${download}
+name=DL Query Plugin
+readme=${readme.file}
+license=http://www.gnu.org/licenses/lgpl.html
+author=Matthew Horridge for the CO-ODE project
+       </echo>
+       <echo message="Check the following things"/>
+       <echo message="1. The main repository uses "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="   to find this update"/>
+       <echo message="2. The update.properties can be found at "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="3. The readme file for this update can be found at"/>
+       <echo message="      ${readme.file}"/>
+       <echo message="4. The download for this update can be found at"/>
+       <echo message="      ${download}"/>
+   </target>
 
 </project>
