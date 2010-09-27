@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
@@ -37,6 +38,7 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
  */
 public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
         implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
+	public static final Logger LOGGER = Logger.getLogger(AbstractOWLFrameSection.class);
 
     private OWLEditorKit owlEditorKit;
 
@@ -169,7 +171,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         getOWLModelManager().applyChanges(changes);
         for (A axiom : axioms){
             if (!getOWLModelManager().getActiveOntology().containsAxiom(axiom)){
-                System.out.println("axiom not added = " + axiom);
+                LOGGER.warn("axiom not added = " + axiom);
             }
         }
     }

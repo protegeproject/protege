@@ -401,6 +401,17 @@ public class OWLModelManagerImpl extends AbstractModelManager
         OWLOntology ont = manager.createOntology(ontologyID);
         dirtyOntologies.add(ont);
         setActiveOntology(ont);
+        if (physicalURI != null) {
+        	try {
+        		File containingDirectory = new File(physicalURI).getParentFile();
+        		if (containingDirectory.exists()) {
+        			getOntologyCatalogManager().addFolder(containingDirectory);
+        		}
+        	}
+        	catch (IllegalArgumentException iae) {
+        		logger.info("Cannot generate ontology catalog for ontology at " + physicalURI);
+        	}
+        }
         fireEvent(EventType.ONTOLOGY_CREATED);
         return ont;
     }
