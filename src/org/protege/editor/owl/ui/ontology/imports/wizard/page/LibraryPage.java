@@ -99,8 +99,10 @@ public class LibraryPage extends OntologyImportPage {
     private void calculatePossibleImports() {
         GetImportsVisitor getter = new GetImportsVisitor();
         XMLCatalog library = getOWLEditorKit().getOWLModelManager().getOntologyCatalogManager().getActiveCatalog();
-        for (Entry e : library.getEntries()) {
-        	e.accept(getter);
+        if (library != null) {
+        	for (Entry e : library.getEntries()) {
+        		e.accept(getter);
+        	}
         }
         importListModel.clear();
         for (ImportInfo ii : getter.getImports()) {
