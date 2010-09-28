@@ -315,7 +315,7 @@
         The name, license and author fields below will probably need
         adjustment.
         -->
-   <target name = "dist" depends="init">
+   <target name = "dist" depends="jar">
        <echo file="./etc/update.properties" append="false">
 id=${plugin}
 version=${bundle.version}
@@ -325,6 +325,8 @@ readme=${readme.file}
 license=http://www.gnu.org/licenses/lgpl.html
 author=Matthew Horridge for the CO-ODE project
        </echo>
+       <echo message="The build file should ensure that"/>
+       <echo message="1. The bundle version and id is correct."/>
        <echo message="Check the following things"/>
        <echo message="1. The main repository uses "/>
        <echo message="      ${update.properties.file}"/>
