@@ -1,85 +1,75 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 
 public class ReasonerPreferences {
-    public static final String PREFERENCES_SET_KEY = "INFERENCE_PREFS_SET";
-
-    public static final String SHOW_INFERENCES_KEY = "SHOW_INFERENCES";
-
-    public static final String AUTO_CLASSIFY_NEW_REASONERS = "AUTO_CLASSIFY";
-
-    public static final String DEFAULT_REASONER_ID = "DEFAULT_REASONER_ID";
-
-    private long startOperationTime;
-
-    private boolean showInferences;
-
-    private String defaultReasonerId;
-
-    private EnumMap<OptionalInferenceTask, Boolean>  enabledMap    = new EnumMap<OptionalInferenceTask, Boolean>(OptionalInferenceTask.class);
-    private EnumMap<OptionalInferenceTask, Integer> clockMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
-    private EnumMap<OptionalInferenceTask, Integer> countMap       = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
-    private Set<InferenceType> defaultClassificationInferences = EnumSet.noneOf(InferenceType.class);
-
     public enum OptionalInferenceTask {
-        // Class Property Inferences
-        SHOW_CLASS_UNSATISFIABILITY(true),
-        SHOW_INFERRED_EQUIVALENT_CLASSES(true),
-        SHOW_INFERRED_SUPER_CLASSES(true),
-        SHOW_INFERED_CLASS_MEMBERS(true),
-        SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES(false),
+	    // Class Property Inferences
+	    SHOW_CLASS_UNSATISFIABILITY(true, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERRED_EQUIVALENT_CLASSES(true, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERRED_SUPER_CLASSES(true, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERED_CLASS_MEMBERS(true, InferenceType.CLASS_ASSERTIONS),
+	    SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES(false, InferenceType.CLASS_HIERARCHY),
+	
+	    // Object Property Inferences
+	    SHOW_OBJECT_PROPERTY_UNSATISFIABILITY(true, InferenceType.OBJECT_PROPERTY_HIERARCHY),
+	    SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS(false, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERRED_OBJECT_PROPERTY_RANGES(false, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES(true, InferenceType.OBJECT_PROPERTY_HIERARCHY),
+	    SHOW_INFERRED_SUPER_OBJECT_PROPERTIES(true, InferenceType.OBJECT_PROPERTY_HIERARCHY),
+	    SHOW_INFERRED_INVERSE_PROPERTIES(true, InferenceType.OBJECT_PROPERTY_HIERARCHY),
+	
+	    // Datatype Property Inferences
+	    SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS(false, InferenceType.CLASS_HIERARCHY),
+	    SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES(true, InferenceType.DATA_PROPERTY_HIERARCHY),
+	    SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES(true, InferenceType.DATA_PROPERTY_HIERARCHY),
+	
+	    // Individual Inferences
+	    SHOW_INFERRED_TYPES(true, InferenceType.CLASS_ASSERTIONS),
+	    SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS(true, InferenceType.OBJECT_PROPERTY_ASSERTIONS),
+	    SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS(false, InferenceType.DATA_PROPERTY_ASSERTIONS)
+	    ;
+	
+	    private boolean enabledByDefault;
+	    private InferenceType suggestedInferenceType;
+	
+	    private OptionalInferenceTask(boolean enabledByDefault, InferenceType suggestedInferenceType) {
+	        this.enabledByDefault = enabledByDefault;
+	        this.suggestedInferenceType = suggestedInferenceType;
+	    }
+	
+	    public String getKey() {
+	        return toString();
+	    }
+	
+	    public boolean getEnabledByDefault() {
+	        return enabledByDefault;
+	    }
+	    
+	    public InferenceType getSuggestedInferenceType() {
+	    	return suggestedInferenceType;
+	    }
+	}
 
-        // Object Property Inferences
-        SHOW_OBJECT_PROPERTY_UNSATISFIABILITY(true),
-        SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS(false),
-        SHOW_INFERRED_OBJECT_PROPERTY_RANGES(false),
-        SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES(true),
-        SHOW_INFERRED_SUPER_OBJECT_PROPERTIES(true),
-        SHOW_INFERRED_INVERSE_PROPERTIES(true),
-
-        // Datatype Property Inferences
-        SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS(false),
-        SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES(true),
-        SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES(true),
-
-        // Individual Inferences
-        SHOW_INFERRED_TYPES(true),
-        SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS(true),
-        SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS(false)
-        ;
-
-        private boolean enabledByDefault;
-
-        private OptionalInferenceTask(boolean enabledByDefault) {
-            this.enabledByDefault = enabledByDefault;
-        }
-
-        public String getKey() {
-            return toString();
-        }
-
-        public boolean getEnabledByDefault() {
-            return enabledByDefault;
-        }
+	public static final String PREFERENCES_SET_KEY = "INFERENCE_PREFS_SET";
+    public static final String DEFAULT_REASONER_ID = "DEFAULT_REASONER_ID";
+    
+    /* package */ static Preferences getPreferences() {
+        PreferencesManager prefMan = PreferencesManager.getInstance();
+        return prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, ReasonerPreferences.class);
     }
+    
+    private DisplayedInferencePreferences displayed = new DisplayedInferencePreferences();
+    private PrecomputedInferencePreferences precompute = new PrecomputedInferencePreferences();
+    private String defaultReasonerId;
+    private List<ReasonerPreferencesListener> listeners = new ArrayList<ReasonerPreferencesListener>();
 
-    public Set<InferenceType> getDefaultClassificationInferenceTypes() {
-        return Collections.unmodifiableSet(defaultClassificationInferences);
-    }
-
-    public void setDefaultClassificationInferenceTypes(Set<InferenceType> autoPreComputed) {
-        this.defaultClassificationInferences = new HashSet<InferenceType>(autoPreComputed);
-    }
 
     public String getDefaultReasonerId() {
         return defaultReasonerId;
@@ -89,102 +79,107 @@ public class ReasonerPreferences {
         this.defaultReasonerId = defaultReasonerId;
     }
 
-    private String getClassifyPreferenceName(InferenceType type) {
-        return "Classify_" + type.toString();
-    }
-
-    public boolean isShowInferences() {
-        return showInferences;
-    }
-
-    public void setShowInferences(boolean showInferences) {
-        this.showInferences = showInferences;
-    }
-
     public void load() {
-        PreferencesManager prefMan = PreferencesManager.getInstance();
-        Preferences prefs = prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, ReasonerPreferences.class);
-        showInferences = prefs.getBoolean(SHOW_INFERENCES_KEY, true);
-        defaultReasonerId = prefs.getString(DEFAULT_REASONER_ID, NoOpReasonerInfo.NULL_REASONER_ID);
-        for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
-            enabledMap.put(task, prefs.getBoolean(task.getKey(), task.getEnabledByDefault()));
-        }
-        defaultClassificationInferences.clear();
-        for (InferenceType type : InferenceType.values()) {
-            if (prefs.getBoolean(getClassifyPreferenceName(type), type != InferenceType.DIFFERENT_INDIVIDUALS
-            														&& type != InferenceType.DISJOINT_CLASSES)) {
-                defaultClassificationInferences.add(type);
-            }
-        }
+        Preferences prefs = getPreferences();                                                                                                                        
+
+    	displayed.load(this);
+    	precompute.load(prefs);
+    	
+    	defaultReasonerId = prefs.getString(DEFAULT_REASONER_ID, NoOpReasonerInfo.NULL_REASONER_ID);
     }
 
     public void save() {
-        PreferencesManager prefMan = PreferencesManager.getInstance();
-        Preferences prefs = prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, ReasonerPreferences.class);
-        prefs.putBoolean(SHOW_INFERENCES_KEY, showInferences);
+    	Preferences prefs = getPreferences();
+    	
+    	displayed.save(this);
+    	precompute.save(prefs);
+    	
         prefs.putString(DEFAULT_REASONER_ID, defaultReasonerId);
-        for (OptionalInferenceTask task : OptionalInferenceTask.values()) {
-            prefs.putBoolean(task.getKey(), enabledMap.get(task));
-        }
-        for (InferenceType type : InferenceType.values()) {
-            prefs.putBoolean(getClassifyPreferenceName(type), defaultClassificationInferences.contains(type));
-        }
+    }
+    
+    public void addListener(ReasonerPreferencesListener listener) {
+    	listeners.add(listener);
+    }
+    
+    public void removeListener(ReasonerPreferencesListener listener) {
+    	listeners.remove(listener);
+    }
+    
+    public void fireChanged() {
+    	for (ReasonerPreferencesListener listener : listeners) {
+    		listener.preferencesChanged();
+    	}
+    }
+    
+    
+    
+    public Set<InferenceType> getPrecomputedInferences() {
+    	return precompute.getPrecomputedInferences();
+    }
+    
+    public void requestPrecomputedInferences(String requestor, Set<InferenceType> types) {
+		precompute.requestPrecomputedInferences(requestor, types);
+		fireChanged();
+	}
+
+	public Set<String> getRequestors(InferenceType type) {
+		return precompute.getRequestors(type);
+	}
+
+	public Set<InferenceType> getRequired() {
+		return precompute.getRequired();
+	}
+
+	public void setRequired(InferenceType type, boolean isRequired) {
+		precompute.setRequired(type, isRequired);
+		fireChanged();
+	}
+
+	public Set<InferenceType> getDisallowed() {
+		return precompute.getDisallowed();
+	}
+
+	public void setDisallowed(InferenceType type, boolean isDisallowed) {
+		precompute.setDisallowed(type, isDisallowed);
+		fireChanged();
+	}
+
+	public boolean isShowInferences() {
+        return displayed.isShowInferences();
     }
 
+    public void setShowInferences(boolean showInferences) {
+        displayed.setShowInferences(showInferences);
+		fireChanged();
+    }
+    
     public void startClock(OptionalInferenceTask task) {
-        startOperationTime = System.currentTimeMillis();
+    	displayed.startClock(task);
     }
 
     public void stopClock(OptionalInferenceTask task) {
-        int duration = (int) (System.currentTimeMillis() - startOperationTime);
-
-        countMap.put(task, getCallCount(task) + 1);
-        clockMap.put(task, getTimeInTask(task) + duration);
+    	displayed.stopClock(task);
     }
 
     public int getTimeInTask(OptionalInferenceTask task) {
-        Integer duration = clockMap.get(task);
-        if (duration == null) {
-            duration = 0;
-        }
-        return duration;
+    	return displayed.getTimeInTask(task);
     }
 
     public int getAverageTimeInTask(OptionalInferenceTask task) {
-        int count = getCallCount(task);
-        if (count == 0) {
-            return 0;
-        }
-        return getTimeInTask(task) / count;
-    }
-
-    private int getCallCount(OptionalInferenceTask task) {
-        Integer count = countMap.get(task);
-        if (count == null) {
-            count = 0;
-        }
-        return count;
+    	return displayed.getAverageTimeInTask(task);
     }
 
     public boolean isEnabled(OptionalInferenceTask task) {
-        return enabledMap.get(task);
+    	return displayed.isEnabled(task);
     }
 
     public void setEnabled(OptionalInferenceTask task, boolean enabled) {
-        enabledMap.put(task, enabled);
+    	displayed.setEnabled(task, enabled);
+		fireChanged();
     }
 
     public void executeTask(OptionalInferenceTask task, Runnable implementation)  {
-        if (isShowInferences() && isEnabled(task)) {
-            startClock(task);
-            try {
-                implementation.run();
-            }
-            catch (Throwable t) { // don't let exceptions spoil your day
-                ProtegeApplication.getErrorLog().logError(t);
-            }
-            stopClock(task);
-        }
+    	displayed.executeTask(task, implementation);
     }
 
 
