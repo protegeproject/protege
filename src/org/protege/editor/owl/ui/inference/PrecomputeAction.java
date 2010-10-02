@@ -23,15 +23,12 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ClassifyAction extends ProtegeOWLAction {
+public class PrecomputeAction extends ProtegeOWLAction {
 	private static final long serialVersionUID = -4602291778441065461L;
 
     private OWLModelManagerListener owlModelManagerListener;
-    
-    private boolean classifyAll;
-    
-    public ClassifyAction(boolean classifyAll) {
-        this.classifyAll = classifyAll;
+        
+    public PrecomputeAction() {
     }
 
 
@@ -41,12 +38,7 @@ public class ClassifyAction extends ProtegeOWLAction {
     public void actionPerformed(ActionEvent e) {
         ReasonerPreferences  preferences = getOWLModelManager().getOWLReasonerManager().getReasonerPreferences();
         Set<InferenceType> precompute;
-        if (classifyAll)  {
-            precompute = EnumSet.allOf(InferenceType.class);
-        }
-        else {
-            precompute = preferences.getDefaultClassificationInferenceTypes();
-        }
+        precompute = preferences.getPrecomputedInferences();
         if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously(precompute)) {
             Object[] options = {"OK", "Interrupt Current Classification"};
             int ret = JOptionPane.showOptionDialog(null,

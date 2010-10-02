@@ -1,12 +1,13 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +26,7 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
     private List<OWLPreferencesPanel> panels = new ArrayList<OWLPreferencesPanel>();
 
     public void initialise() throws Exception {
-        setLayout(new BorderLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JTabbedPane tabbedPane = new JTabbedPane();
         InferencePreferencePluginLoader loader = new InferencePreferencePluginLoader(getOWLEditorKit());
         Set<InferencePreferencePlugin> plugins = new TreeSet<InferencePreferencePlugin>(new Comparator<InferencePreferencePlugin>() {
@@ -36,6 +37,8 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
             }
         });
         plugins.addAll(loader.getPlugins());
+        
+        JComponent defaultComponent = null;
         for (InferencePreferencePlugin plugin : plugins) {
             try {
                 OWLPreferencesPanel panel = plugin.newInstance();
@@ -45,12 +48,18 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
                 scroller.setBorder(new EmptyBorder(0, 0, 0, 0));
                 panels.add(panel);
                 tabbedPane.addTab(label, scroller);
+                if (DisplayedInferencesPreferencePanel.LABEL.equals(label)) {
+                	defaultComponent = scroller;
+                }
             }
             catch (Throwable e) {
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
-        add(tabbedPane, BorderLayout.CENTER);
+        if (defaultComponent != null) { // avoid having the precompute preferences as the default.
+        	tabbedPane.setSelectedComponent(defaultComponent);
+        }
+        add(tabbedPane);
     }
 
     public void dispose() throws Exception {

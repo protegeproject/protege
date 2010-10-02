@@ -17,16 +17,15 @@ import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 
 public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = 8356095374634408957L;
+    public static final String LABEL = "Displayed Inferences";
     private ReasonerPreferences preferences;
     private EnumMap<OptionalInferenceTask, JCheckBox> enabledMap = new EnumMap<OptionalInferenceTask, JCheckBox>(OptionalInferenceTask.class);
 
 
     public void initialise() throws Exception {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(new JLabel("These preferences control what inferences are displayed when"));
-        add(new JLabel("you are navigating around in Protege.  The purpose of the"));
-        add(new JLabel("displayed times is to provide you with some idea of what "));
-        add(new JLabel("operations have been using a large amount of time"));
+        JComponent help = buildHelp();
+        add(help);
         add(Box.createRigidArea(new Dimension(0,10)));
 
         preferences = getOWLModelManager().getReasonerPreferences();
@@ -35,17 +34,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
                 buildDataPropertyFrameSectionPreferences(),
                 buildIndividualFrameSectionPreferences()
         };
-        double preferredWidth = 0d;
         for (JComponent box : boxes) {
-            double width = box.getPreferredSize().getWidth();
-            if (width > preferredWidth) {
-                preferredWidth = width;
-            }
-        }
-        for (JComponent box : boxes) {
-            Dimension size = box.getPreferredSize();
-            size.setSize(preferredWidth, size.getHeight());
-            box.setPreferredSize(size);
             add(box);
         }
     }
@@ -60,8 +49,25 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         preferences.save();
     }
     
+    
+    
     public void dispose() throws Exception {
         enabledMap = null;
+    }
+    
+    private JComponent buildHelp() {
+        Box help = new Box(BoxLayout.Y_AXIS);
+        help.setBorder(ComponentFactory.createTitledBorder("Description"));
+        help.setAlignmentX(0.0f);
+        help.add(new JLabel("These preferences control what inferences are displayed while"));
+        help.add(new JLabel("navigating around in Protege.  Each type of inference includes an"));
+        help.add(new JLabel("estimate of the total time that Protege has spent doing that"));
+        help.add(new JLabel("inference.  These times are dynamically updated as different owl"));
+        help.add(new JLabel("entities are selected and inference mechanisms are invoked.  Thus if"));
+        help.add(new JLabel("navigating a tab is becoming expensive and you believe that the the"));
+        help.add(new JLabel("automatic inferences may be the culprit, then you can come to this"));
+        help.add(new JLabel("preferences panel to determine which inferences are causing the delay"));
+        return help;
     }
     
     private JComponent buildClassFrameSectionPreferences() {
@@ -69,6 +75,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         classFrameSectionPreferences.setBorder(ComponentFactory.createTitledBorder("Displayed Class Inferences"));
         classFrameSectionPreferences.setAlignmentX(0.0f);
         classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY, "Unsatisfiability"));
+        classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES, "Superclasses"));
         classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, "Superclasses"));
         classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, "Class Members"));
         classFrameSectionPreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES, "Inherited Classes"));

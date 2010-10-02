@@ -1011,7 +1011,7 @@
     <extension id="ui.preferences.reasoner.classification"
                point="org.protege.editor.owl.inference_preferences">
         <label value="Classification Preferences"/>
-        <class value="org.protege.editor.owl.ui.inference.ClassificationPreferencesPanel"/>
+        <class value="org.protege.editor.owl.ui.inference.PrecomputePreferencesPanel"/>
     </extension>
 
     <!-- Refactor menu -->

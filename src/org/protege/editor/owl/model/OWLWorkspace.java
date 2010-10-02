@@ -87,7 +87,7 @@ import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrate
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
-import org.protege.editor.owl.ui.inference.ClassifyAction;
+import org.protege.editor.owl.ui.inference.PrecomputeAction;
 import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
@@ -497,15 +497,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         
         reasonerMenu.removeAll();
         
-        ClassifyAction classifyAllAction = new ClassifyAction(true);
-        classifyAllAction.setEditorKit(getOWLEditorKit());
-        classifyAllAction.putValue(Action.NAME, "Classify All...");
-        reasonerMenu.add(classifyAllAction);
-        
-        ClassifyAction classifyAction = new ClassifyAction(false);
+        PrecomputeAction classifyAction = new PrecomputeAction();
         classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         classifyAction.setEditorKit(getOWLEditorKit());
-        classifyAction.putValue(Action.NAME, "Classify...");
+        classifyAction.putValue(Action.NAME, "Classify, Realize, etc...");
         reasonerMenu.add(classifyAction);
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
