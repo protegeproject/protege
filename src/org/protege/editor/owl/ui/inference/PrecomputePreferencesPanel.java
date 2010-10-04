@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.protege.editor.owl.model.inference.ReasonerPreferencesListener;
 import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -63,11 +62,13 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         center.add(new JLabel("It is generally recommended that users don't touch this panel.  The"));
         center.add(new JLabel("default setting is to allow plugins to configure what precomputation"));
         center.add(new JLabel("tasks (e.g. classification, realization,...) should be done when a"));
-        center.add(new JLabel("reasoner is initialized.  Requiring extra precomputation steps may"));
-        center.add(new JLabel("slow the time it takes to initialize a reasoner with no performance"));
-        center.add(new JLabel("advantage.  Disallowing precomputation steps may improve the"));
-        center.add(new JLabel("performance of reasoner initialization but may slow the performance of"));
-        center.add(new JLabel("the plugins that requested that precomputation step."));
+        center.add(new JLabel("reasoner is initialized.  The panel below allows you to override the"));
+        center.add(new JLabel("decisions of the plugins by either requiring additional initialization"));
+        center.add(new JLabel("steps or by preventing initialization.  Requiring extra precomputation"));
+        center.add(new JLabel("may slow the time it takes to initialize a reasoner with no performance"));
+        center.add(new JLabel("advantage.  Disallowing precomputation may improve the performance"));
+        center.add(new JLabel("of reasoner initialization but may slow the performance of the plugins"));
+        center.add(new JLabel("that requested that precomputation."));
         center.add(Box.createRigidArea(new Dimension(0,10)));
         
         JComponent tableContainer = new JPanel(new BorderLayout());
