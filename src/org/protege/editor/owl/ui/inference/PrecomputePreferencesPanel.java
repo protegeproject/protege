@@ -102,18 +102,7 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     }
     
     public static String getInferenceTypeName(InferenceType type) {
-        switch (type)  {
-        case CLASS_ASSERTIONS:           return "Inferred Individuals and types";
-        case CLASS_HIERARCHY:            return "Inferred Class Hierarchy";
-        case DISJOINT_CLASSES:           return "Inferred disjoint classes";
-        case DATA_PROPERTY_ASSERTIONS:   return "Inferred Data Property Assertions (incomplete)";
-        case DATA_PROPERTY_HIERARCHY:    return "Inferred Data Property Hierarchy";
-        case OBJECT_PROPERTY_ASSERTIONS: return "Inferred Object Property Values";
-        case OBJECT_PROPERTY_HIERARCHY:  return "Inferred Object Property Hierarchy";
-        case SAME_INDIVIDUAL:            return "Inferred equal individuals";
-        case DIFFERENT_INDIVIDUALS:      return "Inferred different individuals";
-        default:                         throw new IllegalStateException("Programmer error");
-        }
+    	return type.toString();
     }
     
 }

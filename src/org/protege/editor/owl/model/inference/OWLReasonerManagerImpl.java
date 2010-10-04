@@ -292,6 +292,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 }
                 precompute.removeAll(dontPrecompute);
                 if (!precompute.isEmpty()) {
+                	logger.info("Initializing the reasoner by performing the following steps:");
+                	for (InferenceType type : precompute) {
+                		logger.info("\t" + type);
+                	}
                     runningReasoner.precomputeInferences(precompute.toArray(new InferenceType[precompute.size()]));
 
                     String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
