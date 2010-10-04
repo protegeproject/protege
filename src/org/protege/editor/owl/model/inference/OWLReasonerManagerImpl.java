@@ -284,19 +284,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 	runningReasoner = ReasonerUtilities.createReasoner(ontology, currentReasonerFactory, reasonerProgressMonitor);
                     owlModelManager.fireEvent(EventType.REASONER_CHANGED);
                 }
-                Set<InferenceType> dontPrecompute  = EnumSet.noneOf(InferenceType.class);
-                for (InferenceType type : precompute) {
-                    if (runningReasoner.isPrecomputed(type)) {
-                        dontPrecompute.add(type);
-                    }
-                }
-                precompute.removeAll(dontPrecompute);
-                if (!precompute.isEmpty()) {
+                Set<InferenceType> precomputeThisRun  = EnumSet.noneOf(InferenceType.class);
+                precomputeThisRun.addAll(precompute);
+                precomputeThisRun.retainAll(runningReasoner.getPrecomputableInferenceTypes());
+                if (!precomputeThisRun.isEmpty()) {
                 	logger.info("Initializing the reasoner by performing the following steps:");
                 	for (InferenceType type : precompute) {
                 		logger.info("\t" + type);
                 	}
-                    runningReasoner.precomputeInferences(precompute.toArray(new InferenceType[precompute.size()]));
+                    runningReasoner.precomputeInferences(precomputeThisRun.toArray(new InferenceType[precomputeThisRun.size()]));
 
                     String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
                     logger.info(s);
