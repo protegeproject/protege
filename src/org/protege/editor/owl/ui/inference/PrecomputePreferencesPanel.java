@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.inference;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
@@ -10,12 +12,14 @@ import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
@@ -59,18 +63,29 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     private JPanel createCenterPanel() {
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
-        center.add(new JLabel("It is generally recommended that users don't touch this panel.  The"));
-        center.add(new JLabel("default setting is to allow plugins to configure what precomputation"));
-        center.add(new JLabel("tasks (e.g. classification, realization,...) should be done when a"));
-        center.add(new JLabel("reasoner is initialized.  The panel below allows you to override the"));
-        center.add(new JLabel("decisions of the plugins by either requiring additional initialization"));
-        center.add(new JLabel("steps or by preventing initialization.  Requiring extra precomputation"));
-        center.add(new JLabel("may slow the time it takes to initialize a reasoner with no performance"));
-        center.add(new JLabel("advantage.  Disallowing precomputation may improve the performance"));
-        center.add(new JLabel("of reasoner initialization but may slow the performance of the plugins"));
-        center.add(new JLabel("that requested that precomputation."));
+        
+        Box help = new Box(BoxLayout.Y_AXIS);
+        help.setBorder(ComponentFactory.createTitledBorder("Description"));
+        help.add(new JLabel("It is generally recommended that users don't touch this panel.  The"));
+        help.add(new JLabel("default setting is to allow plugins to configure what precomputation"));
+        help.add(new JLabel("tasks (e.g. classification, realization,...) should be done when a"));
+        help.add(new JLabel("reasoner is initialized.  The panel below allows you to override the"));
+        help.add(new JLabel("decisions of the plugins by either requiring additional initialization"));
+        help.add(new JLabel("steps or by preventing initialization.  Requiring extra precomputation"));
+        help.add(new JLabel("may slow the time it takes to initialize a reasoner with no performance"));
+        help.add(new JLabel("advantage.  Disallowing precomputation may improve the performance"));
+        help.add(new JLabel("of reasoner initialization but may slow the performance of the plugins"));
+        help.add(new JLabel("that requested that precomputation."));
+        center.add(help);
+        
         center.add(Box.createRigidArea(new Dimension(0,10)));
         
+        JButton reset = new JButton("Reset to Default");
+        reset.setAlignmentX(CENTER_ALIGNMENT);
+        center.add(reset);
+
+        center.add(Box.createRigidArea(new Dimension(0,10)));
+
         JComponent tableContainer = new JPanel(new BorderLayout());
         final PrecomputePreferencesTableModel tableModel = new PrecomputePreferencesTableModel(required, disallowed);
         JTable table = new JTable(tableModel);
@@ -84,7 +99,14 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         table.getColumnModel().getColumn(Column.INFERENCE_TYPE.ordinal()).setPreferredWidth((int) preferredWidth);
         table.getColumnModel().getColumn(Column.REQUIRED.ordinal()).setPreferredWidth((int) new JLabel(Column.REQUIRED.getColumnName()).getPreferredSize().getWidth());
         table.getColumnModel().getColumn(Column.DISALLOWED.ordinal()).setPreferredWidth((int) new JLabel(Column.DISALLOWED.getColumnName()).getPreferredSize().getWidth());
-
+        reset.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		disallowed.clear();
+        		required.clear();
+        		tableModel.fireTableDataChanged();
+        	}
+        });
+        
         center.add(tableContainer);
 
         return center;
