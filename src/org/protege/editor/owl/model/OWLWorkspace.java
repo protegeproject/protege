@@ -500,7 +500,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         PrecomputeAction classifyAction = new PrecomputeAction();
         classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         classifyAction.setEditorKit(getOWLEditorKit());
-        classifyAction.putValue(Action.NAME, "Classify, Realize, etc...");
+        classifyAction.putValue(Action.NAME, "Classify, Compute Inferred Types, etc...");
         reasonerMenu.add(classifyAction);
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
