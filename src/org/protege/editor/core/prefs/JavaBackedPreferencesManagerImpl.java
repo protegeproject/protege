@@ -31,8 +31,8 @@ public class JavaBackedPreferencesManagerImpl extends PreferencesManager {
 
     private static final String APPLICATION_PREFERENCES = "application_preferences";
 
-    @SuppressWarnings("unchecked")
-    public Preferences getApplicationPreferences(Class c) {
+    @SuppressWarnings("rawtypes")
+	public Preferences getApplicationPreferences(Class c) {
         return new JavaBackedPreferencesImpl(APPLICATION_PREFERENCES, c.getName());
     }
 
@@ -42,7 +42,7 @@ public class JavaBackedPreferencesManagerImpl extends PreferencesManager {
     }
 
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public Preferences getPreferencesForSet(String setId, Class c) {
         return new JavaBackedPreferencesImpl(setId, c.getName());
     }
