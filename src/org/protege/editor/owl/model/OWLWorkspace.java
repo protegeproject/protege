@@ -137,7 +137,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private static final String WINDOW_MODIFIED = "windowModified";
     private static final int FINDER_BORDER = 2;
     private static final int FINDER_MIN_WIDTH = 250;
-
+    
+    public static final String REASONER_INITIALIZE   = "Start Reasoner";
+    public static final String REASONER_RESYNC       = "Synchronize Reasoner";
+    
     private JComboBox ontologiesList;
 
     private ArrayList<OWLEntityDisplayProvider> entityDisplayProviders;
@@ -173,6 +176,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private JLabel customizedProtege = new JLabel();
     
     private boolean reasonerManagerStarted = false;
+    private PrecomputeAction classifyAction = new PrecomputeAction();
     private JLabel reasonerStatus = new JLabel();
     private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
     
@@ -497,10 +501,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         
         reasonerMenu.removeAll();
         
-        PrecomputeAction classifyAction = new PrecomputeAction();
         classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         classifyAction.setEditorKit(getOWLEditorKit());
-        classifyAction.putValue(Action.NAME, "Classify, Compute Inferred Types, etc...");
+        classifyAction.putValue(Action.NAME, REASONER_INITIALIZE);
         reasonerMenu.add(classifyAction);
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
@@ -723,27 +726,36 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
         OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
         if (reasonerManager.isClassificationInProgress()) {
-            reasonerStatus.setText("Classification In Progress");
+            reasonerStatus.setText("Reasoner Initialization In Progress");
             return;
         }
         OWLReasoner currentReasoner = reasonerManager.getCurrentReasoner();
         if (reasonerManager.getCurrentReasonerFactory() instanceof NoOpReasonerInfo) {
-            reasonerStatus.setText("No reasoner set");            
+            reasonerStatus.setText("No reasoner set");
+            classifyAction.setEnabled(false);
         }
         else if (currentReasoner instanceof NoOpReasoner) {
-            reasonerStatus.setText("Please classify to initialize reasoner");
+            reasonerStatus.setText("To use the reasoner click Reasoner->Start Reasoner");
+            classifyAction.putValue(Action.NAME, REASONER_INITIALIZE);
+            classifyAction.setEnabled(true);
         }
         else if (currentReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ok");
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ready");
+            classifyAction.setEnabled(false);
         }
         else if (changesInProgress) {
             reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
+            classifyAction.putValue(Action.NAME, REASONER_RESYNC);
+            classifyAction.setEnabled(true);
         }
         else if (reasonerManager.isClassified()) {
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ok");
+            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ready");
+            classifyAction.setEnabled(false);
         }
-        else {
+        else { // how do I get here exactly?
             reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
+            classifyAction.putValue(Action.NAME, REASONER_RESYNC);
+            classifyAction.setEnabled(true);
         }
     }
 
