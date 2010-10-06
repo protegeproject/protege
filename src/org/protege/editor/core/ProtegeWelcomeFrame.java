@@ -19,9 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromRepositoryPanel;
