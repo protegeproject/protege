@@ -27,9 +27,6 @@ import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryTy
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginManager {
-
-    private static final Logger logger = Logger.getLogger(PluginManager.class);
-
     private static PluginManager instance;
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
