@@ -170,7 +170,7 @@ public abstract class AbstractAppleApplicationWrapper {
      * Protege Interfaces
      */
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected final void setEnabledPreferencesMenu(boolean enabled) {
         try {
             Class applicationClass = Class.forName("com.apple.eawt.Application");
