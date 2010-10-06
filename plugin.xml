@@ -746,7 +746,7 @@
     <extension id="exportinferredaxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Export inferred axioms as ontology..."/>
-        <class value="org.protege.editor.owl.ui.action.ExportInferredOntologyAction"/>
+        <class value="org.protege.editor.owl.ui.action.export.inferred.ExportInferredOntologyAction"/>
         <toolTip value="Exports inferred axioms as an ontology"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-D"/>
         <editorKitId value="OWLEditorKit"/>
