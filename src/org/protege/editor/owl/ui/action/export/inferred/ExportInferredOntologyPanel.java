@@ -18,7 +18,6 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredDataPropertyCharacteristicAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredDisjointClassesAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredEquivalentClassAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredEquivalentDataPropertiesAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredEquivalentObjectPropertyAxiomGenerator;
