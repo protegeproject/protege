@@ -163,21 +163,6 @@
    </target>
 
 
-   <target name = "create.update.properties">
-       <property name="update.properties.file"
-                 location="${build}/owleditor.properties"/>
-       <echo file="${update.properties.file}" append="false">
-id=${plugin}
-version=${bundle.version}
-download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
-name=OWL Editor
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/owleditor-readme.html
-license=http://www.gnu.org/licenses/lgpl.html
-author=Protege Development Team (First working version by Matthew Horridge)
-       </echo>
-   </target>
-
-
    <!-- 
         It is less likely that the developer will want to make changes
         below this line 
@@ -211,7 +196,7 @@ author=Protege Development Team (First working version by Matthew Horridge)
      </manifest>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources, create.update.properties">
+   <target name = "jar" depends = "compile, copy.resources">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
@@ -340,6 +325,44 @@ author=Protege Development Team (First working version by Matthew Horridge)
 
    <property name="owl.editor.jar"
 	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+
+
+   <!-- ===================================================================  -->
+   <!-- Distribution Support - Optional                                      -->
+   <!-- ===================================================================  -->
+
+   <property name="svn.root" value="http://smi-protege/repos/protege/protege4/plugins/org.protege.editor.owl/trunk"/>
+
+
+   <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
+   <property name="readme.file"            value="${svn.root}/etc/owleditor-readme.html"/>
+
+   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar"/>
+
+
+   <target name = "dist" depends="jar">
+       <echo file="./etc/update.properties" append="false">
+id=${plugin}
+version=${bundle.version}
+download=${download}
+name=OWL Editor
+readme=${readme.file}
+license=http://www.gnu.org/licenses/lgpl.html
+author=Protege Development Team (First working version by Matthew Horridge)
+       </echo>
+       <echo message="The build file should ensure that"/>
+       <echo message="1. The bundle version and id is correct."/>
+       <echo message="Check the following things"/>
+       <echo message="1. The main repository uses "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="   to find this update"/>
+       <echo message="2. The update.properties can be found at "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="3. The readme file for this update can be found at"/>
+       <echo message="      ${readme.file}"/>
+       <echo message="4. The download for this update can be found at"/>
+       <echo message="      ${download}"/>
+   </target>
 
 
 

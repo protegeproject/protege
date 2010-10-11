@@ -2,36 +2,43 @@
 <body>
 <h2>OWL Editor</h2>
 <p>
-<h3>Be sure to include the <i>Protege Editor Framework</i> update
-    with this update</h3>
-</p>
-<p>
 This is one of the core Protege plugins and is responsible for
 creating the core owl editing environment.
 </p>
 <h3>Version info</h3>
 
+<h4>v4.1.0 Update Build 209 - 10 Oct, 2010</h4>
 
-<h4>v4.1.0 Build 102 Update - 8 Apr, 2010</h4>
+The most significant change for this update was the improvement of the
+export inferred ontologies action.  It is recommended that anyone who
+is exporting the inferred ontology will upgrade to this version.
+There have been other changes to the user interface but some of these
+are still under discussion at Stanford.
+
 <ul>
-<li> Gave the reasoner access to reasoner preferences so that the
-    classify operation can be optimized.</li>
-<li> Added some additional support for explanation plugins</li>
-<li> Fix for problem with searches that are unexpectedly case
-     sensitive</li>
-<li> OWL class expression editor remembers which editor was last used</li>
-<li> Fix for problem where not all active ontologies are shown in the
-    active ontologies list</li>
+<li> Fixed some problems in the export inferred ontologies action.  I
+    now can export annotations and it ensures that the reasoner is
+    properly initialized for the tasks that it performs during the
+    export task. Also the export of disjoint classes was substantially
+    improved.
+<li> Clarified the role of different reasoner preferences panels.  By
+    default a user only needs to specify what inferences he wants
+    displayed and the preferences for how the reasoner is initialized
+    will be automatically adjusted.</li>
+<li> Provided the ability to modify the way in which ontologies are
+    imported (e.g. ontology libraries) through the Prot&#x00E9g&#x00E9
+    user interface.</li>
+<li> The search for imports in a folder can now be done recursively if
+    the user desires (and this is the default).</li>
 </ul>
 
-<h4>v4.1.0 Build 102 Update - 22 Mar, 2010</h4>
-<ul>
-<li>Compatibility fix so plugins don't require recompilation</li>
-</ul>
+<h4>v4.1.0 Build 209 - 3 Sept, 2010</h4>
 
-<h4>v4.1.0 Build 102 (19 Mar, 2010)</h4>
-<ul>
-<li>See <a href="http://protegewiki.stanford.edu/index.php/Protege_4.1_Beta_Release_Notes">release notes</a></li>
+See
+the <a href="http://protegewiki.stanford.edu/wiki/Protege_4.1_Beta_Release_Notes">Prot&#x00E9g&#x00E9 4.1 release notes</a>.
+
+
+
 
 </body>
 
