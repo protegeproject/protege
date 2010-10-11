@@ -333,8 +333,10 @@ author=Matthew Horridge for the CO-ODE project
        <echo message="   to find this update"/>
        <echo message="2. The update.properties can be found at "/>
        <echo message="      ${update.properties.file}"/>
+       <echo message="   Usually this is ensured by committing your changed files."/>
        <echo message="3. The readme file for this update can be found at"/>
        <echo message="      ${readme.file}"/>
+       <echo message="   Usually this is ensured by committing your changed files."/>
        <echo message="4. The download for this update can be found at"/>
        <echo message="      ${download}"/>
    </target>
