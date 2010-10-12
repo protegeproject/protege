@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
@@ -64,19 +67,10 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
         
-        Box help = new Box(BoxLayout.Y_AXIS);
-        help.setBorder(ComponentFactory.createTitledBorder("Description"));
-        help.add(new JLabel("It is generally recommended that users don't touch this panel.  The"));
-        help.add(new JLabel("default setting is to allow plugins to configure what precomputation"));
-        help.add(new JLabel("tasks (e.g. classification, realization,...) should be done when a"));
-        help.add(new JLabel("reasoner is initialized.  The panel below allows you to override the"));
-        help.add(new JLabel("decisions of the plugins by either requiring additional initialization"));
-        help.add(new JLabel("steps or by preventing initialization.  Requiring extra precomputation"));
-        help.add(new JLabel("may slow the time it takes to initialize a reasoner with no performance"));
-        help.add(new JLabel("advantage.  Disallowing precomputation may improve the performance"));
-        help.add(new JLabel("of reasoner initialization but may slow the performance of the plugins"));
-        help.add(new JLabel("that requested that precomputation."));
-        center.add(help);
+        JComponent help = buildHelp("PrecomputePreferencesHelp.txt");
+        if (help != null) {
+        	center.add(help);
+        }
         
         center.add(Box.createRigidArea(new Dimension(0,10)));
         
@@ -110,6 +104,24 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         center.add(tableContainer);
 
         return center;
+    }
+    
+    /* package */ static JComponent buildHelp(String resource) {
+        Box help = new Box(BoxLayout.Y_AXIS);
+        help.setBorder(ComponentFactory.createTitledBorder("Description"));
+        help.setAlignmentX(0.0f);
+        try {
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(PrecomputePreferencesPanel.class.getResourceAsStream(resource)));
+        	String line;
+        	while ((line = reader.readLine()) != null) {
+        		help.add(new JLabel(line));
+        	}
+        	return help;
+        }
+        catch (Throwable t) {
+        	ProtegeApplication.getErrorLog().logError(t);
+        	return null;
+        }
     }
     
     
