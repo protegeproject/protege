@@ -64,7 +64,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         help.add(new JLabel("estimate of the total time that Protege has spent doing that"));
         help.add(new JLabel("inference.  These times are dynamically updated as different owl"));
         help.add(new JLabel("entities are selected and inference mechanisms are invoked.  Thus if"));
-        help.add(new JLabel("navigating a tab is becoming expensive and you believe that the the"));
+        help.add(new JLabel("navigating a tab is becoming expensive and you believe that the"));
         help.add(new JLabel("automatic inferences may be the culprit, then you can come to this"));
         help.add(new JLabel("preferences panel to determine which inferences are causing the delay"));
         return help;
