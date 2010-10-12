@@ -67,6 +67,7 @@ public class MoveAxiomsByReferenceKit extends MoveAxiomsKit implements Signature
         for (OWLEntity e : entities) {
             for(OWLOntology ont : ontologies) {
                 result.addAll(ont.getReferencingAxioms(e));
+                result.addAll(ont.getAnnotationAssertionAxioms(e.getIRI()));
             }
         }
         return result;
