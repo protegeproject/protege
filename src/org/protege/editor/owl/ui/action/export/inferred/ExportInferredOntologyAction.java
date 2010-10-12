@@ -12,6 +12,9 @@ import javax.swing.ProgressMonitor;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.inference.NoOpReasoner;
+import org.protege.editor.owl.model.inference.OWLReasonerManager;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.protege.editor.owl.model.inference.ReasonerUtilities;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -46,11 +49,10 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 
 	public void actionPerformed(ActionEvent e) {
 		try {
-			if (getOWLModelManager().getReasoner() instanceof NoOpReasoner) {
-				JOptionPane.showMessageDialog(getWorkspace(),
-						"Please initialize a reasoner",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
+			OWLReasonerManager reasonerManager = getOWLModelManager().getOWLReasonerManager();
+			ReasonerStatus status = reasonerManager.getReasonerStatus();
+			if (status != ReasonerStatus.INITIALIZED && status != ReasonerStatus.OUT_OF_SYNC) {
+				ReasonerUtilities.warnUserIfReasonerIsNotConfigured(getOWLWorkspace(), reasonerManager);
 				return;
 			}
 			final ExportInferredOntologyWizard wizard = new ExportInferredOntologyWizard(getOWLEditorKit());

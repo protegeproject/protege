@@ -191,6 +191,29 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             			(reasoner.getPendingChanges() == null || reasoner.getPendingChanges().isEmpty());
         }
     }
+    
+    public ReasonerStatus getReasonerStatus() {
+    	synchronized (reasonerMap) {
+    		if (classificationInProgress) {
+    			return ReasonerStatus.INITIALIZATION_IN_PROGRESS;
+    		}
+    		if (currentReasonerFactory.getReasonerFactory() instanceof NoOpReasonerFactory) {
+    			return ReasonerStatus.NO_REASONER_FACTORY_CHOSEN;
+    		}
+    		else {
+                OWLReasoner reasoner = getCurrentReasoner();
+                if (reasoner instanceof NoOpReasoner) {
+                	return ReasonerStatus.REASONER_NOT_INITIALIZED;
+                }
+                else if (reasoner.getPendingChanges().isEmpty()) {
+                	return ReasonerStatus.INITIALIZED;
+                }
+                else {
+                	return ReasonerStatus.OUT_OF_SYNC;
+                }
+    		}
+    	}
+    }
 
     /**
      * Classifies the current active ontologies.

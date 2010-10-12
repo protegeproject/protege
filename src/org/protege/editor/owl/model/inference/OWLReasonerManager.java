@@ -60,9 +60,19 @@ public interface OWLReasonerManager extends Disposable {
      */
     OWLReasoner getCurrentReasoner();
 
+    /**
+     * @deprecated use getReasonerStatus() instead
+     */
+    @Deprecated
     boolean isClassificationInProgress();
     
+    /**
+     * @deprecated use getReasonerStatus() instead.
+     */
+    @Deprecated
     boolean isClassified();
+    
+    ReasonerStatus getReasonerStatus();
 
     boolean classifyAsynchronously(Set<InferenceType> precompute);
 

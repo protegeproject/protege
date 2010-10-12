@@ -78,7 +78,9 @@ import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPlugin;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPluginJPFImpl;
+import org.protege.editor.owl.model.inference.ReasonerInfoComparator;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -137,9 +139,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private static final String WINDOW_MODIFIED = "windowModified";
     private static final int FINDER_BORDER = 2;
     private static final int FINDER_MIN_WIDTH = 250;
-    
-    public static final String REASONER_INITIALIZE   = "Start Reasoner";
-    public static final String REASONER_RESYNC       = "Synchronize Reasoner";
+
     
     private JComboBox ontologiesList;
 
@@ -176,9 +176,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private JLabel customizedProtege = new JLabel();
     
     private boolean reasonerManagerStarted = false;
-    private PrecomputeAction classifyAction = new PrecomputeAction();
+    private PrecomputeAction startReasonerAction = new PrecomputeAction();
+    private PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
     private JLabel reasonerStatus = new JLabel();
     private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
+    
+    
+    public static final String REASONER_INITIALIZE         = "Start Reasoner";
+    public static final String REASONER_RESYNC             = "Synchronize Reasoner";
     
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -501,10 +506,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         
         reasonerMenu.removeAll();
         
-        classifyAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        classifyAction.setEditorKit(getOWLEditorKit());
-        classifyAction.putValue(Action.NAME, REASONER_INITIALIZE);
-        reasonerMenu.add(classifyAction);
+        startReasonerAction.setEditorKit(getOWLEditorKit());
+        startReasonerAction.putValue(Action.NAME, REASONER_INITIALIZE);
+        reasonerMenu.add(startReasonerAction);
+        
+        synchronizeReasonerAction.setEditorKit(getOWLEditorKit());
+        synchronizeReasonerAction.putValue(Action.NAME, REASONER_RESYNC);
+        reasonerMenu.add(synchronizeReasonerAction);
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
         configureAction.setEditorKit(getOWLEditorKit());
@@ -516,11 +524,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         ButtonGroup bg = new ButtonGroup();
         Set<ProtegeOWLReasonerInfo> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
         List<ProtegeOWLReasonerInfo> factoriesList = new ArrayList<ProtegeOWLReasonerInfo>(factories);
-        Collections.sort(factoriesList, new Comparator<ProtegeOWLReasonerInfo>() {
-            public int compare(ProtegeOWLReasonerInfo o1, ProtegeOWLReasonerInfo o2) {
-                return o1.getReasonerName().compareTo(o2.getReasonerName());
-            }
-        });
+        Collections.sort(factoriesList, new ReasonerInfoComparator());
         for (final ProtegeOWLReasonerInfo plugin : factoriesList) {
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(plugin.getReasonerName());
             item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
@@ -721,42 +725,27 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
     
     private void updateReasonerStatus(boolean changesInProgress) {
-        if (!reasonerManagerStarted) {
-            return;
-        }
-        OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
-        if (reasonerManager.isClassificationInProgress()) {
-            reasonerStatus.setText("Reasoner Initialization In Progress");
-            return;
-        }
-        OWLReasoner currentReasoner = reasonerManager.getCurrentReasoner();
-        if (reasonerManager.getCurrentReasonerFactory() instanceof NoOpReasonerInfo) {
-            reasonerStatus.setText("No reasoner set");
-            classifyAction.setEnabled(false);
-        }
-        else if (currentReasoner instanceof NoOpReasoner) {
-            reasonerStatus.setText("To use the reasoner click Reasoner->Start Reasoner");
-            classifyAction.putValue(Action.NAME, REASONER_INITIALIZE);
-            classifyAction.setEnabled(true);
-        }
-        else if (currentReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ready");
-            classifyAction.setEnabled(false);
-        }
-        else if (changesInProgress) {
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
-            classifyAction.putValue(Action.NAME, REASONER_RESYNC);
-            classifyAction.setEnabled(true);
-        }
-        else if (reasonerManager.isClassified()) {
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Ready");
-            classifyAction.setEnabled(false);
-        }
-        else { // how do I get here exactly?
-            reasonerStatus.setText(currentReasoner.getReasonerName() + ": Out of sync");
-            classifyAction.putValue(Action.NAME, REASONER_RESYNC);
-            classifyAction.setEnabled(true);
-        }
+    	if (!reasonerManagerStarted) {
+    		return;
+    	}
+    	OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
+    	ReasonerStatus newStatus = reasonerManager.getReasonerStatus();
+    	if (changesInProgress && newStatus == ReasonerStatus.INITIALIZED) {
+    		newStatus = ReasonerStatus.OUT_OF_SYNC;
+    	}
+    	updateReasonerStatus(newStatus);
+    }
+    
+    private void updateReasonerStatus(ReasonerStatus status) {
+    	reasonerStatus.setText(status.getDescription());
+    	startReasonerAction.setEnabled(status.isEnableInitialization());
+    	startReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getInitializationTooltip());
+    	synchronizeReasonerAction.setEnabled(status.isEnableSynchronization());
+    	synchronizeReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getSynchronizationTooltip());
+    	
+    	KeyStroke shortcut = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    	startReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
+    	synchronizeReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
     }
 
 

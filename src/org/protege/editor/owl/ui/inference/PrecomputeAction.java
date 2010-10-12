@@ -40,10 +40,10 @@ public class PrecomputeAction extends ProtegeOWLAction {
         Set<InferenceType> precompute;
         precompute = preferences.getPrecomputedInferences();
         if (!getOWLModelManager().getOWLReasonerManager().classifyAsynchronously(precompute)) {
-            Object[] options = {"OK", "Interrupt Current Classification"};
+            Object[] options = {"OK", "Interrupt Current Reasoning Task"};
             int ret = JOptionPane.showOptionDialog(null,
-                                                   "Classification already in progress.  New classification can't be started",
-                                                   "Classification in progress",
+                                                   "Reasoner initialization still in progress.  New initialization can't be started",
+                                                   "Reasoner initialization in progress",
                                                    JOptionPane.YES_NO_CANCEL_OPTION,
                                                    JOptionPane.QUESTION_MESSAGE,
                                                    null,
