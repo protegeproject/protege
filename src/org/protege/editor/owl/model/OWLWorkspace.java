@@ -730,7 +730,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     	}
     	OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
     	ReasonerStatus newStatus = reasonerManager.getReasonerStatus();
-    	if (changesInProgress && newStatus == ReasonerStatus.INITIALIZED) {
+    	if (changesInProgress 
+    			&& newStatus == ReasonerStatus.INITIALIZED 
+    			&& reasonerManager.getCurrentReasoner().getBufferingMode() == BufferingMode.BUFFERING) {
     		newStatus = ReasonerStatus.OUT_OF_SYNC;
     	}
     	updateReasonerStatus(newStatus);
