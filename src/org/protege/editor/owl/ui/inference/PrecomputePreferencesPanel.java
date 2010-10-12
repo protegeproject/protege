@@ -74,9 +74,13 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         
         center.add(Box.createRigidArea(new Dimension(0,10)));
         
+        Box resetButtonContainer = new Box(BoxLayout.X_AXIS);
+        resetButtonContainer.add(Box.createHorizontalGlue());
         JButton reset = new JButton("Reset to Default");
         reset.setAlignmentX(CENTER_ALIGNMENT);
-        center.add(reset);
+        resetButtonContainer.add(reset);
+        resetButtonContainer.add(Box.createHorizontalGlue());
+        center.add(resetButtonContainer);
 
         center.add(Box.createRigidArea(new Dimension(0,10)));
 
