@@ -143,16 +143,18 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
 
     public void createNewChild() {
-        O selProp = getSelectedEntity();
-        if (selProp == null) {
+        O selectedProperty = getSelectedEntity();
+        if (selectedProperty == null) {
             return;
         }
         OWLEntityCreationSet<O> set = createProperty();
         if (set != null) {
             java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(set.getOntologyChanges());
-            OWLAxiom ax = getSubPropertyAxiom(set.getOWLEntity(), selProp);
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            if (shouldAddAsParentOfNewlyCreatedProperty(selectedProperty)) {
+            	OWLAxiom ax = getSubPropertyAxiom(set.getOWLEntity(), selectedProperty);
+            	changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            }
             getOWLModelManager().applyChanges(changes);
             getTree().setSelectedOWLObject(set.getOWLEntity());
         }
@@ -186,13 +188,25 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLOntology ont = getOWLModelManager().getActiveOntology();
-            for (O par : getHierarchyProvider().getParents(property)) {
-                OWLAxiom ax = getSubPropertyAxiom(creationSet.getOWLEntity(), par);
-                changes.add(new AddAxiom(ont, ax));
+            for (O parentProperty : getHierarchyProvider().getParents(property)) {
+            	if (shouldAddAsParentOfNewlyCreatedProperty(parentProperty)) {  
+            		OWLAxiom ax = getSubPropertyAxiom(creationSet.getOWLEntity(), parentProperty);
+            		changes.add(new AddAxiom(ont, ax));
+            	}
             }
             getOWLModelManager().applyChanges(changes);
             getTree().setSelectedOWLObject(creationSet.getOWLEntity());
         }
+    }
+    
+    
+    /*
+     * This code will get me into trouble if and when a hierarchy does not have owl:topObject/DataProperty
+     * as the root of the hierarchy.  I don't know if this is possible yet but it can be imagined. By adding 
+     * a protected method we allow for the possibility that this behavior can be overridden.
+     */
+    protected boolean shouldAddAsParentOfNewlyCreatedProperty(O parent) {
+    	return !getHierarchyProvider().getRoots().contains(parent);
     }
 
     
