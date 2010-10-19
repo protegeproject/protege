@@ -55,6 +55,9 @@ public class OntologyMerger {
                 if (!targetOntology.getOntologyID().isAnonymous()){
                     // move ontology imports
                     for (OWLImportsDeclaration decl : ont.getImportsDeclarations()){
+                    	if (ontologies.contains(ont.getOWLOntologyManager().getImportedOntology(decl))) {
+                    		continue;
+                    	}
                         if (!decl.getIRI().equals(targetOntology.getOntologyID().getDefaultDocumentIRI())){
                             changes.add(new AddImport(targetOntology, decl));
                         }
