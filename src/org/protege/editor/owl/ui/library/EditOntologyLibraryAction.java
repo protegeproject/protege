@@ -25,7 +25,9 @@ public class EditOntologyLibraryAction extends ProtegeOWLAction {
     public void actionPerformed(ActionEvent e) {
     	try {
     		File catalogFile = UIUtil.openFile(getOWLWorkspace(), "Choose catalog file containing ontology repository information", "Choose XML Catalog", Collections.singleton("xml"));
-    		OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
+    		if (catalogFile != null) {
+    			OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
+    		}
     	}
     	catch (Exception ex) {
     		ProtegeApplication.getErrorLog().logError(ex);

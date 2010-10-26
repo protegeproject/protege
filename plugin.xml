@@ -912,7 +912,7 @@
 
     <extension id="file.editactiveontologylibrary"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Edit Active Ontology Library..."/>
+        <name value="Edit active ontology library..."/>
         <class value="org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction"/>
         <toolTip value="View, add and edit the active ontology library"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
@@ -922,7 +922,7 @@
 
     <extension id="file.editontologylibrary"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Edit Ontology libraries..."/>
+        <name value="Edit ontology libraries..."/>
         <class value="org.protege.editor.owl.ui.library.EditOntologyLibraryAction"/>
         <toolTip value="View, add and edit the ontology libraries"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-B"/>
