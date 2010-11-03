@@ -103,7 +103,7 @@ public class OWLClassHierarchyCreator {
         OWLClass cls = nameMap.get(name);
         if (cls == null){
             try {
-                OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, ont.getOntologyID().getOntologyIRI());
+                OWLEntityCreationSet<OWLClass> creationSet = entityFactory.createOWLClass(name, null);
                 changes.addAll(creationSet.getOntologyChanges());
                 cls = creationSet.getOWLEntity();
                 nameMap.put(name, cls);
