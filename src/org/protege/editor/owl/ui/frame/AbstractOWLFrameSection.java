@@ -212,6 +212,10 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     public OWLDataFactory getOWLDataFactory() {
         return getOWLModelManager().getOWLDataFactory();
     }
+    
+    public OWLReasoner getCurrentReasoner() {
+    	return getOWLModelManager().getOWLReasonerManager().getCurrentReasoner();
+    }
 
 
     public OWLFrame<? extends R> getFrame() {
@@ -288,6 +292,14 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      */
     public List<OWLFrameSectionRow<R, A, E>> getRows() {
         return Collections.unmodifiableList(rows);
+    }
+    
+    public List<A> getAxioms() {
+    	List<A> axioms = new ArrayList<A>();
+    	for (OWLFrameSectionRow<R,A,E> row : rows) {
+    		axioms.add(row.getAxiom());
+    	}
+    	return axioms;
     }
 
 
