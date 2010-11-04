@@ -1,17 +1,20 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLIndividualSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
-
-import java.util.Comparator;
-import java.util.Set;
 
 
 /**
@@ -43,6 +46,41 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
             addRow(new OWLSameIndividualsAxiomFrameSectionRow(getOWLEditorKit(), this, ontology, getRootObject(), ax));
         }
     }
+    
+    @Override
+    protected void refillInferred() {
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, new Runnable() {
+    		public void run() {
+    			Set<OWLIndividual> existingSameIndividuals = getCurrentlyDisplayedSameIndividuals();
+    			Set<OWLNamedIndividual> newSameIndividuals = new HashSet<OWLNamedIndividual>();
+    			for (OWLNamedIndividual i : getCurrentReasoner().getSameIndividuals(getRootObject()).getEntities()) {
+    				if (!i.equals(getRootObject()) && !existingSameIndividuals.contains(i)) {
+    					newSameIndividuals.add(i);    					
+    				}
+    			}
+    			if (!newSameIndividuals.isEmpty()) {
+    				newSameIndividuals.add(getRootObject());
+    				addRow(new OWLSameIndividualsAxiomFrameSectionRow(getOWLEditorKit(), 
+    						OWLSameIndividualsAxiomFrameSection.this, 
+    						null, 
+    						getRootObject(),
+    						getOWLDataFactory().getOWLSameIndividualAxiom(newSameIndividuals)
+    				));
+    			}
+    		}
+    	});
+    }
+    
+    public Set<OWLIndividual> getCurrentlyDisplayedSameIndividuals() {
+		Set<OWLIndividual> existingSameIndividuals = new HashSet<OWLIndividual>();
+		for (OWLFrameSectionRow<OWLNamedIndividual, OWLSameIndividualAxiom, Set<OWLNamedIndividual>> existingRow : getRows()) {
+			OWLSameIndividualAxiom existingAxiom = existingRow.getAxiom();
+			for (OWLIndividual existingSameIndividual : existingAxiom.getIndividuals()) {
+				existingSameIndividuals.add(existingSameIndividual);
+			}
+		}
+		return existingSameIndividuals;
+    }
 
 
     public void visit(OWLSameIndividualAxiom axiom) {
@@ -54,7 +92,8 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
 
     protected OWLSameIndividualAxiom createAxiom(Set<OWLNamedIndividual> object) {
         object.add(getRootObject());
-        return getOWLDataFactory().getOWLSameIndividualAxiom(object);
+        OWLSameIndividualAxiom ax = getOWLDataFactory().getOWLSameIndividualAxiom(object);
+        return ax;
     }
 
 
