@@ -102,6 +102,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_TYPES, "Types"));
         individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, "Object Property Assertions"));
         individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS, "Data Property Assertions"));
+        individualInferencePreferences.add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, "Same Individuals"));        
         return individualInferencePreferences;
     }
     
