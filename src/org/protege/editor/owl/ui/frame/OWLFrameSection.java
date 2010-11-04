@@ -38,6 +38,8 @@ public interface OWLFrameSection<R, A extends OWLAxiom, E> extends OWLFrameObjec
      * Gets the rows that this section contains.
      */
     List<OWLFrameSectionRow<R, A, E>> getRows();
+    
+    List<A> getAxioms();
 
 
     /**
