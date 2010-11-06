@@ -331,7 +331,7 @@
    <!-- Distribution Support - Optional                                      -->
    <!-- ===================================================================  -->
 
-   <property name="svn.root" value="http://smi-protege/repos/protege/protege4/plugins/org.protege.editor.owl/trunk"/>
+   <property name="svn.root" value="http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk"/>
 
 
    <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
