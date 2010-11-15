@@ -33,6 +33,12 @@ public class PrefixMapperTables extends JPanel {
 		}
 		setOntology(modelManager.getActiveOntology());
 	}
+	
+	public void refill() {
+		for (PrefixMapperTable table : prefixTableMap.values()) {
+			table.getModel().refill();
+		}
+	}
 
 	public CardLayout getCardLayout() {
 		return cards;
