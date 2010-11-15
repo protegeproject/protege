@@ -61,6 +61,7 @@ public class GeneratePrefixFromOntologyAction extends AbstractAction {
             }
             PrefixMapperTable table = tables.getPrefixMapperTable();
             int index = table.getModel().addMapping(prefix, uriString);
+            table.getModel().fireTableDataChanged();
             table.getSelectionModel().setSelectionInterval(index, index);
         }
     }
