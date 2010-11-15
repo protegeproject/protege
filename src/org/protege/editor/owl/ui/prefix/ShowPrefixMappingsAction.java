@@ -15,8 +15,10 @@ import org.protege.editor.owl.ui.action.ProtegeOWLAction;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ShowPrefixMappingsAction extends ProtegeOWLAction {
+	private static final long serialVersionUID = 3527061473023719657L;
 
-    public void actionPerformed(ActionEvent e) {
+
+	public void actionPerformed(ActionEvent e) {
         PrefixMappingPanel.showDialog(getOWLEditorKit());
     }
 
