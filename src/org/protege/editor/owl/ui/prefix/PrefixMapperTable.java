@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.prefix;
 
+import static org.protege.editor.owl.ui.prefix.PrefixMapperTableModel.Column;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableModel;
 
 import org.protege.editor.owl.ui.table.BasicOWLTable;
@@ -50,5 +52,22 @@ public class PrefixMapperTable extends BasicOWLTable {
     @Override
     public PrefixMapperTableModel getModel() {
         return (PrefixMapperTableModel) super.getModel();
+    }
+    
+    @Override
+    public void editingStopped(ChangeEvent arg0) {
+        int editingColumn = getEditingColumn();
+        String cellValue = (String) getCellEditor().getCellEditorValue();
+        
+    	super.editingStopped(arg0);
+    	if (editingColumn == Column.PREFIX_NAME.ordinal()) {
+            int newRow = getModel().getIndexOfPrefix(cellValue);
+            
+            if (newRow >= 0) {
+            	setRowSelectionInterval(newRow, newRow);                       
+            	editCellAt(newRow, Column.PREFIX.ordinal());
+            	requestFocus();                                
+            }
+    	}
     }
 }
