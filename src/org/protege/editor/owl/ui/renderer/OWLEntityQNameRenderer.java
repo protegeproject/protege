@@ -1,12 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.prefix.OntologyPrefixMapperManager;
-import org.protege.editor.owl.ui.prefix.PrefixMapper;
-import org.protege.editor.owl.ui.prefix.MergedPrefixMapperManager;
+import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 
 /**
@@ -19,24 +15,25 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements PrefixBasedRenderer {
-	private OntologyPrefixMapperManager prefixManager;
+	private PrefixOWLOntologyFormat prefixManager;
 
-    
-    public void initialise() {
-    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
+	public void initialise() {
+    	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
     }
     
     @Override
     public void ontologiesChanged() {
-    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
+    	initialise();
     }
 
 
     public String render(IRI iri) {
         try {
-            PrefixMapper mapper = prefixManager.getMapper();
-            String s = mapper.getShortForm(iri.toURI());
+        	String s = prefixManager.getPrefixIRI(iri);
             if (s != null) {
+            	if (s.startsWith(":")) {
+            		s = s.substring(1);
+            	}
                 return s;
             }
             else {

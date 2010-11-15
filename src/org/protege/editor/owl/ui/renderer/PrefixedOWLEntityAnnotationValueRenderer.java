@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.ui.prefix.OntologyPrefixMapperManager;
-import org.protege.editor.owl.ui.prefix.PrefixMapper;
-import org.protege.editor.owl.ui.prefix.MergedPrefixMapperManager;
+import java.util.Map;
+
+import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 /**
  * Author: Matthew Horridge<br>
@@ -15,16 +16,16 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotationValueRenderer implements PrefixBasedRenderer {
-	private OntologyPrefixMapperManager prefixManager;
+	private PrefixOWLOntologyFormat prefixManager;
     
     public void initialise() {
-    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
+    	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
     	super.initialise();
     }
     
     @Override
     public void ontologiesChanged() {
-    	prefixManager = new OntologyPrefixMapperManager(getOWLModelManager().getActiveOntology());
+    	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
     }
     
     public String render(OWLEntity entity) {
@@ -32,10 +33,11 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
         if (OWLRendererPreferences.getInstance().isRenderPrefixes()){
             final String uriStr = entity.getIRI().toString();
 
-            PrefixMapper mapper = prefixManager.getMapper();
-            for (String base : mapper.getValues()){
-                if (uriStr.startsWith(base)){
-                    return escape(mapper.getPrefix(base) + ":" + shortForm);
+            for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
+            	String prefixName = prefixName2PrefixEntry.getKey();
+            	String prefix     = prefixName2PrefixEntry.getValue();
+                if (uriStr.startsWith(prefix)){
+                    return escape(prefixName + shortForm);
                 }
             }
         }
