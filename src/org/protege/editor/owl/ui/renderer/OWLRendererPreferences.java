@@ -38,8 +38,6 @@ public class OWLRendererPreferences {
 
     public static final String RENDER_DOMAIN_AXIOMS_AS_GCIS = "RENDER_DOMAIN_AXIOMS_AS_GCIS";
 
-    public static final String RENDER_PREFIXES = "RENDER_PREFIXES";
-
     public static final String FONT_SIZE = "FONT_SIZE";
 
     public static final String FONT_NAME = "FONT_NAME";
@@ -63,8 +61,6 @@ public class OWLRendererPreferences {
     private boolean highlightKeyWords;
 
     private boolean useThatKeyword;
-
-    private boolean renderPrefixes;
 
     private String rendererClass;
 
@@ -186,7 +182,6 @@ public class OWLRendererPreferences {
         useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
         rendererClass = p.getString(RENDERER_CLASS, OWLEntityRendererImpl.class.getName());
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
-        renderPrefixes = p.getBoolean(RENDER_PREFIXES, false);
         fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
         loadAnnotations();
@@ -310,14 +305,5 @@ public class OWLRendererPreferences {
 
     public boolean isRenderDomainAxiomsAsGCIs() {
         return renderDomainAxiomsAsGCIs;
-    }
-
-    public boolean isRenderPrefixes() {
-        return renderPrefixes;
-    }
-
-    public void setRenderPrefixes(boolean b){
-        this.renderPrefixes = b;
-        getPreferences().putBoolean(RENDER_PREFIXES, b);
     }
 }
