@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.prefix;
 import javax.swing.table.TableModel;
 
 import org.protege.editor.owl.ui.table.BasicOWLTable;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 
 /**
@@ -16,9 +17,9 @@ import org.protege.editor.owl.ui.table.BasicOWLTable;
  */
 public class PrefixMapperTable extends BasicOWLTable {
 	private static final long serialVersionUID = 7960180034430124925L;
-	private PrefixMapperManager prefixManager;
+	private PrefixOWLOntologyFormat prefixManager;
 
-    public PrefixMapperTable(PrefixMapperManager prefixManager) {
+    public PrefixMapperTable(PrefixOWLOntologyFormat prefixManager) {
         super(new PrefixMapperTableModel(prefixManager));
         setShowGrid(true);
         setRowHeight(getRowHeight() + 3);
@@ -29,7 +30,7 @@ public class PrefixMapperTable extends BasicOWLTable {
         this.prefixManager = prefixManager;
     }
 
-    public PrefixMapperManager getPrefixMapperManager() {
+    public PrefixOWLOntologyFormat getPrefixMapperManager() {
 		return prefixManager;
 	}
 

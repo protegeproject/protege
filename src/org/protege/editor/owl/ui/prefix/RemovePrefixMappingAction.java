@@ -70,7 +70,7 @@ public class RemovePrefixMappingAction extends AbstractAction {
     		return;
     	}
     	String prefix = (String) table.getModel().getValueAt(row, 0);
-    	setEnabled(!PrefixMapperImpl.isStandardPrefix(prefix));
+    	setEnabled(!PrefixUtilities.isStandardPrefix(prefix));
     }
 
 
