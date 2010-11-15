@@ -29,18 +29,19 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
     }
     
     public String render(OWLEntity entity) {
-        String shortForm = getProvider().getShortForm(entity);
-        if (OWLRendererPreferences.getInstance().isRenderPrefixes()){
-            final String uriStr = entity.getIRI().toString();
+    	String shortForm = getProvider().getShortForm(entity);
+    	final String uriStr = entity.getIRI().toString();
 
-            for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
-            	String prefixName = prefixName2PrefixEntry.getKey();
-            	String prefix     = prefixName2PrefixEntry.getValue();
-                if (uriStr.startsWith(prefix)){
-                    return escape(prefixName + shortForm);
-                }
-            }
-        }
-        return escape(shortForm);
+    	for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
+    		String prefixName = prefixName2PrefixEntry.getKey();
+    		String prefix     = prefixName2PrefixEntry.getValue();
+    		if (uriStr.startsWith(prefix)){
+    			if (!prefixName.equals(":")) {
+    				shortForm = prefixName + shortForm;
+    			}
+    			break;
+    		}
+    	}
+    	return escape(shortForm);
     }
 }
