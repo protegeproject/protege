@@ -46,8 +46,11 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     public void refill() {
     	changed = false;
-        prefixes.clear();
-        prefixValueMap.clear();
+    	// arguably here we should only delete the prefixes that don't have an empty value
+    	// it is a little weird when they disappear because they were not committed to the PrefixOWLOntologyFormat
+    	prefixes.clear();
+    	prefixValueMap.clear();
+
         for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
         	String prefixName = prefixName2PrefixEntry.getKey();
         	String prefix     = prefixName2PrefixEntry.getValue();
@@ -65,15 +68,23 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
     public int addMapping(String prefix, String value) {
-    	changed = (value != null && value.length() != 0);
+    	changed = changed || (value != null && value.length() != 0);
     	prefixes.add(prefix);
     	Collections.sort(prefixes);
         prefixValueMap.put(prefix, value);
+	    fireTableDataChanged();
         return prefixes.indexOf(prefix);
     }
 
 
-    public boolean commitPrefixes() {
+    public void removeMapping(String prefix) {
+    	prefixes.remove(prefix);
+	    String prefixValue = prefixValueMap.remove(prefix);
+	    changed = changed || (prefixValue != null & prefixValue.length() != 0);
+	    fireTableDataChanged();
+	}
+
+	public boolean commitPrefixes() {
     	if (changed) {
     		prefixManager.clearPrefixes();
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixValueMap.entrySet()) {
@@ -91,25 +102,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
 
-    public void removeMapping(String prefix) {
-    	changed = true;
-        prefixes.remove(prefix);
-        prefixValueMap.remove(prefix);
-        fireTableDataChanged();
-    }
-
-
-    public int createNewMapping(String s) {
-        for (int i = 0; ; i++) {
-            String candidatePrefix = "p" + i;
-            if (!prefixValueMap.keySet().contains(candidatePrefix)) {
-                int index = addMapping(candidatePrefix, s);
-                fireTableDataChanged();
-                return index;
-            }
-        }
-    }
-    
     public void sortTable() {
     	Collections.sort(prefixes);
     }
@@ -175,18 +167,14 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	        	Collections.sort(prefixes);
 	        	String prefixValue = prefixValueMap.remove(currentPrefix);
 	        	prefixValueMap.put(newPrefix, prefixValue);
-	        	if (prefixValue != null && prefixValue.length() != 0) {
-	        		changed = true;
-	        	}
+	        	changed = changed || (prefixValue != null && prefixValue.length() != 0);
 	        	fireTableDataChanged();
 	        }
 	        break;
 		case PREFIX:
 	        // Replacing value
-			changed = true;
-	        removeMapping(currentPrefix);
+			removeMapping(currentPrefix);
 	        addMapping(currentPrefix, aValue.toString());
-	        fireTableDataChanged();
 	        break;
 		default:
 			throw new UnsupportedOperationException("Programmer error: missed a case");
