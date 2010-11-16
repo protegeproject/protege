@@ -35,13 +35,19 @@ public class PrefixMapperTable extends BasicOWLTable {
     public PrefixOWLOntologyFormat getPrefixMapperManager() {
 		return prefixManager;
 	}
-
+    
     public void createAndEditRow() {
-        int index = getModel().createNewMapping("");
-        if (index == -1) {
-            return;
-        }
-        editCellAt(index, 1);
+    	PrefixMapperTableModel model = getModel();
+    	int index;
+	    for (int i = 0; true; i++) {
+	        String candidatePrefix = "p" + i;
+	        if (model.getIndexOfPrefix(candidatePrefix) < 0) {
+	        	index = model.addMapping(candidatePrefix, "");
+	        	break;
+	        }
+	    }
+    	setRowSelectionInterval(index, index);
+        editCellAt(index, Column.PREFIX.ordinal());
     }
 
 
