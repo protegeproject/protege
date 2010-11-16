@@ -43,6 +43,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 			// I am really trying to detect the case where the user changed the prefixes from 
 			// within the preferences pane.  At that point we change the renderer to ensure
 			// that the new prefixes are seen.
+			//                                            I don't like this.
 			if (event.getType() == EventType.ENTITY_RENDERER_CHANGED) {
 				tables.refill();
 			}
