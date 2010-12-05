@@ -27,7 +27,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
 
     public void initialise() throws Exception {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        JComponent help = PrecomputePreferencesPanel.buildHelp("DisplayedInferencesHelp.txt");
+        JComponent help = PrecomputePreferencesPanel.buildHelp("/DisplayedInferencesHelp.txt");
         if (help != null) {
         	add(help);
         }

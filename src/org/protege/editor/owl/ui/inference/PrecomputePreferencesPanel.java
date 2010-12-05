@@ -67,7 +67,7 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
         
-        JComponent help = buildHelp("PrecomputePreferencesHelp.txt");
+        JComponent help = buildHelp("/PrecomputePreferencesHelp.txt");
         if (help != null) {
         	center.add(help);
         }
