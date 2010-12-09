@@ -8,7 +8,7 @@
    <property file = "version.properties"/>
 	
    <property name="build"     location="./build"/>
-   <property name="src"       location="./src"/>
+   <property name="src"       location="./src/main/java"/>
    <property name="classes"   location="${build}/classes"/>
    <property name="launcher"  location="${build}/ProtegeLauncher.jar"/>
 
