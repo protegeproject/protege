@@ -1,0 +1,38 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>distribution</id>
+	<!-- Define what the target is (directory, a zip, a jar,... -->
+	<formats>
+		<format>dir</format>
+	</formats>
+
+	<!-- Define which files to include (with exception of jars) -->
+	<files>
+		<!-- include log4j.xml -->
+		<file>
+			<source>log4j.xml</source>
+			<outputDirectory>/root</outputDirectory>
+		</file>
+
+		<!-- also include log4j-with-replacement.xml, but replace variables -->
+		<file>
+			<source>log4j-with-replacements.xml</source>
+			<outputDirectory>/root</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
+
+	<!-- Define which jars to include and where to copy -->
+	<dependencySets>
+		<dependencySet>
+			<includes>
+				<include>org.eclipse.osgi:org.eclipse.osgi</include>
+				<!-- Syntax: groupId:artifactId -->
+				<include>protege4:org.protege.common</include>
+			</includes>
+			<outputDirectory>magiclib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+</assembly>
