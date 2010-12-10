@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="XMLCatalog Test Suite" verbose="1">
+
+		<test name="JUnit-Test-Example" junit="true">
+		    <classes>
+                <class name="org.protege.editor.owl.model.repository.RDFExtractorTest"/>
+                <class name="org.protege.editor.owl.model.library.XmlBaseTest"/>
+                <class name="org.protege.editor.owl.model.library.RdfXmlNameTest"/>
+                <class name="org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyTest"/>
+			</classes>
+		</test>
+        <!--
+		<test name="TestNG-Tests" >
+		    <parameter name="alabel"  value="Pizza"/>
+			<packages>
+				<package name="org.coode.dlquery" />
+			</packages>
+		</test>
+            -->
+
+</suite>
