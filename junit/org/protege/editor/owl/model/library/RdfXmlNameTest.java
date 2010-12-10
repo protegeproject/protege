@@ -19,15 +19,10 @@ public class RdfXmlNameTest extends TestCase {
     }
     
     public void testAmbiguous() {
-        try {
-            File ambiguous = new File("junit/ontologies/update/Ambiguous.owl");
-            RdfXmlNameAlgorithm algorithm = new RdfXmlNameAlgorithm();
-            assertTrue(algorithm.getSuggestions(ambiguous).size()==1);
-            assertTrue(algorithm.getSuggestions(ambiguous).contains(URI.create("http://www.test.com/right.owl")));
-        }
-        catch (Throwable t) {
-            logger.error("Exception caught", t);
-        }
+    	File ambiguous = new File("junit/ontologies/update/Ambiguous.owl");
+    	RdfXmlNameAlgorithm algorithm = new RdfXmlNameAlgorithm();
+    	assertTrue(algorithm.getSuggestions(ambiguous).size()==1);
+    	assertTrue(algorithm.getSuggestions(ambiguous).contains(URI.create("http://www.test.com/right.owl")));
     }
     
     public void testVersioned() {
