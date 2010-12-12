@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>protege4</groupId>
+	<artifactId>org.protege.common</artifactId>
+	<packaging>bundle</packaging>
+	<name>Core Protege Libraries</name>
+	<!-- We have to disable the feature until the bug in the plugin is solved
+	  <version>${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}-SNAPSHOT</version> 
+	 -->
+	<version>4.1.0.213_SNAPSHOT</version>
+	<properties>
+		<maven.compiler.source>1.5</maven.compiler.source>
+		<maven.compiler.target>1.5</maven.compiler.target>
+	</properties>
+
+	<distributionManagement>
+		<!-- If this pom.xml is executed on a developer's machine (mvn deploy) 
+			the developer's local repositories will be used, if executed on the BMIR the BMIR repositories. -->
+		<repository>
+			<id>releases</id>
+			<name>Releases</name>
+			<url>${nexus.path}/bmir-release</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Snapshots</name>
+			<url>${nexus.path}/snapshots</url>
+			<!-- <uniqueVersion>false</uniqueVersion> -->
+		</snapshotRepository>
+		
+		
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</connection>
+		<!--<developerConnection>scm:svn:https://127.0.0.1/svn/my-project</developerConnection>-->
+		<tag>HEAD</tag>
+		<url>http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</url>
+	</scm>
+
+	<dependencies>
+        <dependency>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>org.osgi.core</artifactId>
+          <version>1.2.0</version>
+        </dependency>
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.16</version>
+        </dependency>
+        <dependency>
+          <groupId>com.jgoodies</groupId>
+          <artifactId>looks</artifactId>
+          <version>2.2.1</version>
+        </dependency>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <version>1.1.1</version>
+        </dependency>
+        <dependency>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+          <version>1.0</version>
+        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.10</version>
+			<classifier>jdk15</classifier>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<description>Common Protege Libraries</description>
+	<organization>
+		<name>Stanford University, BMIR</name>
+	</organization>
+
+	<build>
+        <!-- Backwards compatibility fixes that should be removed -->
+        <sourceDirectory>src</sourceDirectory>
+        <resources>
+          <resource>
+            <directory>resources</directory>
+          </resource>
+        </resources>
+        <testSourceDirectory>junit</testSourceDirectory>
+        <testResources>
+          <testResource>
+            <directory>junit/ontologies</directory>
+          </testResource>
+        </testResources>
+        <!-- End of backwards compatibility fixes that should be removed -->
+
+		<plugins>
+	        <!-- property reader for version information found in
+	             maven branch at svn revision 21046 -->
+
+            <plugin>
+              <groupId>org.apache.felix</groupId>
+              <artifactId>maven-bundle-plugin</artifactId>
+              <version>1.4.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <instructions>
+                  <Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
+                  <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+                  <Export-Package>
+                    org.apache.*,
+                    com.jgoodies.*,
+                    org.protege.common,
+                    org.protege.common.*
+                  </Export-Package>
+                  <Import-Package>
+                    !com.ibm.*,
+                    !com.sun.*,
+                    javax.swing,
+                    javax.swing.*,
+                    javax.xml.parsers,
+                    !javax.*,
+                    org.apache.commons.*,
+                    org.apache.log4j,
+                    org.apache.log4j.spi,
+                    !org.apache.*,
+                    com.jgoodies.*,
+                    org.osgi.framework,
+                    org.w3c.dom,
+                    org.xml.*,
+                    org.protege.common,
+                    org.protege.common.*
+                  </Import-Package>
+                  <Embed-Dependency>
+                    log4j,looks,commons-logging,commons-lang
+                  </Embed-Dependency>
+                  <Bundle-Activator>org.protege.common.Activator</Bundle-Activator>
+                  <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+                  <Include-Resource>{maven-dependencies}</Include-Resource>
+                </instructions>
+                <executions>
+                  <execution>
+                    <id>bundle-manifest</id>
+                    <phase>install</phase>
+                    <goals>    
+                      <goal>manifest</goal>
+                    </goals>   
+                  </execution>
+                </executions>
+              </configuration>
+            </plugin>
+
+			<!-- Create jar file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+			</plugin>
+		
+		
+			<!-- Execution of unit tests Generates output for reporting plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- We set skip to true. So the unit tests can be explicitly defined 
+						in xml file reference below -->
+					<skip>true</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>unit-tests</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skip>false</skip>
+							<suiteXmlFiles>
+								<suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
+							</suiteXmlFiles>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Compile Java Code -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<!-- JavaDoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+
+			<!-- JXR Plugin produces a cross-reference of the project's sources. The 
+				generated reports make it easier for the user to reference or find specific 
+				lines of code. It is also handy when used with the PMD Plugin for referencing 
+				errors found in the code -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+
+			<!--PMD scans Java source code and looks for potential problems like: 
+				- Possible bugs - empty try/catch/finally/switch statements - Dead code - 
+				unused local variables, parameters and private methods - Suboptimal code 
+				- wasteful String/StringBuffer usage - Overcomplicated expressions - unnecessary 
+				if statements, for loops that could be while loops - Duplicate code - copied/pasted 
+				code means copied/pasted bugs -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+
+			<!-- creates the web interface version of the test results -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+
+			<!-- JDepend determines architecture metrics as (cyclic) dependencies 
+				of packages -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Cobertura determines statement and branch coverage -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+						<format>html</format>
+					</formats>
+				</configuration>
+			</plugin>
+
+			<!-- Checkstyle verifies compliance with coding stanards/guidelines -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<configLocation>
+						${basedir}/src/main/resources/checkstyle/protege.xml
+					</configLocation>
+				</configuration>
+			</plugin>
+
+			<!-- Findbugs -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>1.1.1</version>
+			</plugin>
+
+			<!-- source measurement suite for Java which produces quantity & complexity 
+				metrics -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javancss-maven-plugin</artifactId>
+				<version>2.0-beta-2</version>
+			</plugin>
+
+			<!-- XRadar summarizing/consolidating reports -->
+			<plugin>
+				<groupId>net.sf.xradar</groupId>
+				<artifactId>maven-xradar-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<autoRadar>false</autoRadar>
+					<!--false to execute only the plugins declared -->
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</reporting>
+
+</project>
