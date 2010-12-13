@@ -10,30 +10,12 @@
 	  <version>${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}-SNAPSHOT</version> 
 	 -->
 	<version>4.1.0.213_SNAPSHOT</version>
-	<properties>
-		<maven.compiler.source>1.5</maven.compiler.source>
-		<maven.compiler.target>1.5</maven.compiler.target>
-	</properties>
 
-	<distributionManagement>
-		<!-- If this pom.xml is executed on a developer's machine (mvn deploy) 
-			the developer's local repositories will be used, if executed on the BMIR the BMIR repositories. -->
-		<repository>
-			<id>releases</id>
-			<name>Releases</name>
-			<url>${nexus.path}/bmir-release</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Snapshots</name>
-			<url>${nexus.path}/snapshots</url>
-			<!-- <uniqueVersion>false</uniqueVersion> -->
-		</snapshotRepository>
-		
-		
-	</distributionManagement>
-
+	<parent>
+		<groupId>protege4</groupId>
+		<artifactId>masterpom</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
 	<dependencies>
         <dependency>
