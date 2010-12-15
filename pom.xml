@@ -6,10 +6,8 @@
 	<artifactId>org.protege.editor.owl</artifactId>
 	<packaging>bundle</packaging>
 	<name>OWL Editor</name>
-	<!-- We have to disable the feature until the bug in the plugin is solved
-	  <version>${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}-SNAPSHOT</version> 
-	 -->
-	<version>4.1.0.213_SNAPSHOT</version>
+	<!-- <version>4.1.0.213_SNAPSHOT</version> -->
+    <version>4.1.0.b213_2010_12_10_0327</version>
 
 	<parent>
 		<groupId>protege4</groupId>
