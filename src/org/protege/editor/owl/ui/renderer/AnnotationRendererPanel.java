@@ -157,7 +157,7 @@ public class AnnotationRendererPanel extends JPanel {
                     langsAsString.append(", ");
                 }
                 if (lang == null){
-                    lang = OWLRendererPreferences.ANY_LANGUAGE;
+                    lang = OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN;
                 }
                 langsAsString.append(lang);
             }
@@ -182,7 +182,7 @@ public class AnnotationRendererPanel extends JPanel {
                     java.util.List<String> langs = new ArrayList<String>();
                     for (String token : langsAsString.split(",")){
                         token = token.trim();
-                        if (token.equals(OWLRendererPreferences.ANY_LANGUAGE)){
+                        if (token.equals(OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN)){
                             token = null; // OWL API treats this as "no language"
                         }
                         langs.add(token);

@@ -48,7 +48,9 @@ public class OWLRendererPreferences {
 
     public static final String DEFAULT_FONT_NAME = "Dialog.plain";
 
-    public static final String ANY_LANGUAGE = "!";
+    public static final String NO_LANGUAGE_SET_USER_TOKEN = "!";
+    
+    public static final String NO_LANGUAGE_SET = "";
 
     private static OWLRendererPreferences instance;
 
@@ -123,8 +125,8 @@ public class OWLRendererPreferences {
             final List<String> langs = langMap.get(iri);
             if (langs != null){
                 for (String lang : langs) {
-                    if (lang == null){
-                        lang = ANY_LANGUAGE;
+                    if (lang == null || lang.equals(NO_LANGUAGE_SET)){
+                        lang = NO_LANGUAGE_SET_USER_TOKEN;
                     }
                     str.append(", ").append(lang);
                 }
@@ -207,10 +209,13 @@ public class OWLRendererPreferences {
                     List<String> langs = new ArrayList<String>();
                     for (int i=1; i<tokens.length; i++){
                         String token = tokens[i].trim();
-                        if (token.equals(ANY_LANGUAGE)){
-                            token = null; // OWL API treats this as "no language set"
+                        if (token.equals(NO_LANGUAGE_SET_USER_TOKEN)){
+                            token = NO_LANGUAGE_SET;
                         }
                         langs.add(token);
+                    }
+                    if (!langs.contains(NO_LANGUAGE_SET)) {
+                    	langs.add(NO_LANGUAGE_SET);
                     }
                     annotationIRIS.add(iri);
                     annotationLanguages.put(iri, langs);
