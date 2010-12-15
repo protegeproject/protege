@@ -109,7 +109,6 @@ public class OntologyCatalogManager {
 		}
 		if (catalog == null) {
 			catalog = new XMLCatalog(folder.toURI());
-			catalog.setId("XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protege 4");
 			modified = true;
 		}
 		if (alreadyExists) {

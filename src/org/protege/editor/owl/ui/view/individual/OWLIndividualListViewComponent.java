@@ -165,8 +165,10 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
     private void processChanges(List<? extends OWLOntologyChange> changes) {
-        OWLEntityCollector addedCollector = new OWLEntityCollector();
-        OWLEntityCollector removedCollector = new OWLEntityCollector();
+    	Set<OWLEntity> possiblyAddedObjects = new HashSet<OWLEntity>();
+    	Set<OWLEntity> possiblyRemovedObjects = new HashSet<OWLEntity>();
+        OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedObjects);
+        OWLEntityCollector removedCollector = new OWLEntityCollector(possiblyRemovedObjects);
         for (OWLOntologyChange chg : changes) {
             if (chg.isAxiomChange()) {
                 OWLAxiomChange axChg = (OWLAxiomChange) chg;
@@ -178,14 +180,14 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             }
         }
         boolean mod = false;
-        for (OWLEntity ent : addedCollector.getObjects()) {
+        for (OWLEntity ent : possiblyAddedObjects) {
             if (ent instanceof OWLIndividual) {
                 if (individualsInList.add((OWLNamedIndividual) ent)) {
                     mod = true;
                 }
             }
         }
-        for (OWLEntity ent : removedCollector.getObjects()) {
+        for (OWLEntity ent : possiblyRemovedObjects) {
             if (ent instanceof OWLIndividual) {
                 boolean stillReferenced = false;
                 for (OWLOntology ont : getOntologies()) {

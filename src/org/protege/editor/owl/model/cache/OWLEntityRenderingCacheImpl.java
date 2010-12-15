@@ -105,8 +105,8 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
             addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
-        for (URI uri : DublinCoreVocabulary.ALL_URIS){
-            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(uri)), owlAnnotationPropertyMap);
+        for (IRI uri : DublinCoreVocabulary.ALL_URIS){
+            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
 
         // datatypes

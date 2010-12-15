@@ -186,8 +186,10 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     private void processChanges(java.util.List<? extends OWLOntologyChange> changes) {
-        OWLEntityCollector addedCollector = new OWLEntityCollector();
-        OWLEntityCollector removedCollector = new OWLEntityCollector();
+    	Set<OWLEntity> possiblyAddedEntities = new HashSet<OWLEntity>();
+    	Set<OWLEntity> possiblyRemovedEntities = new HashSet<OWLEntity>();
+        OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedEntities);
+        OWLEntityCollector removedCollector = new OWLEntityCollector(possiblyRemovedEntities);
 
         for(OWLOntologyChange chg : changes) {
             if(chg.isAxiomChange()) {
@@ -201,14 +203,14 @@ public class OWLIndividualListComponent extends JPanel {
             }
         }
         boolean mod = false;
-        for(OWLEntity ent : addedCollector.getObjects()) {
+        for(OWLEntity ent : possiblyAddedEntities) {
             if(ent instanceof OWLIndividual) {
                 if(individualsInList.add((OWLIndividual) ent)) {
                     mod = true;
                 }
             }
         }
-        for(OWLEntity ent : removedCollector.getObjects()) {
+        for(OWLEntity ent : possiblyRemovedEntities) {
             if(ent instanceof OWLNamedIndividual) {
                 if(individualsInList.remove(ent)) {
                     mod = true;
