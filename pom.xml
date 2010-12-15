@@ -43,7 +43,7 @@
         <dependency>
           <groupId>protege4</groupId>
           <artifactId>org.semanticweb.owl.owlapi</artifactId>
-          <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1000</version>
+          <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1039</version>
           <type>jar</type>
         </dependency>
         <dependency>
