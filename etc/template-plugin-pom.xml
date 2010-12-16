@@ -58,7 +58,7 @@
         <dependency>
           <groupId>protege4</groupId>
           <artifactId>org.protege.editor.owl</artifactId>
-          <version>4.1.0.b213_2010_12_15_1114</version>
+          <version>4.1.0.b213_2010_12_15_1705</version>
         </dependency>
         <dependency>
           <groupId>protege4</groupId>
