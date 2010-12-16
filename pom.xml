@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>protege</groupId>
-	<artifactId>protege-base</artifactId>
+	<artifactId>Launcher</artifactId>
 	<name>Protege-Base</name>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>4.1.0.b213_SNAPSHOT</version>
 
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -21,31 +21,45 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.osgi</groupId>
-			<artifactId>org.eclipse.osgi</artifactId>
-			<version>3.6.0.v20100517</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>org.eclipse.equinox.registry</artifactId>
-			<version>3.5.0.v20100503</version>
-			<scope>provided</scope>
-		</dependency>
-       <dependency>
-          <groupId>protege4</groupId>
-          <artifactId>org.protege.common</artifactId>
-          <version>4.1.0.b213_2010_12_15_1123</version>
-        </dependency>
- 
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>felix-parent</artifactId>
+        <version>1.2.0</version>
+        <type>pom</type>
+      </dependency>
+	  <dependency>
+		<groupId>org.eclipse.osgi</groupId>
+		<artifactId>org.eclipse.osgi</artifactId>
+		<version>3.6.0.v20100517</version>
+		<scope>provided</scope>
+	  </dependency>
+      
+      <dependency>
+        <groupId>protege4</groupId>
+        <artifactId>org.protege.common</artifactId>
+        <version>4.1.0.b213_2010_12_15_1123</version>
+      </dependency>
+      <dependency>
+        <groupId>protege4</groupId>
+        <artifactId>org.protege.editor.core.application</artifactId>
+        <version>4.1.0.b213_2010_12_15_1123</version>
+      </dependency>
+      <dependency>
+        <groupId>protege4</groupId>
+        <artifactId>org.semanticweb.owl.owlapi</artifactId>
+        <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1039</version>
+      </dependency>
+      <dependency>
+        <groupId>protege4</groupId>
+        <artifactId>org.protege.editor.owl</artifactId>
+        <version>4.1.0.b213_2010_12_15_1705</version>
+      </dependency>
 	</dependencies>
 
 	<description>The Protege Launcher</description>
 
 	<build>
-		<outputDirectory>target/supermagic</outputDirectory>
+		<outputDirectory>target/classes</outputDirectory>
 
 		<plugins>
 			<plugin>

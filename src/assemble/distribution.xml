@@ -8,31 +8,58 @@
 		<format>dir</format>
 	</formats>
 
+
 	<!-- Define which files to include (with exception of jars) -->
 	<files>
 		<!-- include log4j.xml -->
 		<file>
+			<source>osgi/felix/build.properties</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
 			<source>log4j.xml</source>
-			<outputDirectory>/root</outputDirectory>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.bat</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.command</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.sh</source>
+			<outputDirectory>/</outputDirectory>
 		</file>
 
-		<!-- also include log4j-with-replacement.xml, but replace variables -->
-		<file>
-			<source>log4j-with-replacements.xml</source>
-			<outputDirectory>/root</outputDirectory>
-			<filtered>true</filtered>
-		</file>
 	</files>
+
 
 	<!-- Define which jars to include and where to copy -->
 	<dependencySets>
-		<dependencySet>
-			<includes>
-				<include>org.eclipse.osgi:org.eclipse.osgi</include>
-				<!-- Syntax: groupId:artifactId -->
-				<include>protege4:org.protege.common</include>
-			</includes>
-			<outputDirectory>magiclib</outputDirectory>
-		</dependencySet>
+      <dependencySet>
+        <includes>
+          <include>org.apache.felix:felix-parent</include>
+        </includes>
+        <outputFileNameMapping>felix.jar</outputFileNameMapping>
+		<outputDirectory>bin</outputDirectory>
+      </dependencySet>
+	  <dependencySet>
+		<includes>
+		  <include>protege4:org.protege.common</include>
+          <include>protege4:org.protege.editor.core.application</include>
+		</includes>
+        <outputFileNameMapping>${artifact.artifactId}.jar</outputFileNameMapping>
+		<outputDirectory>bundles</outputDirectory>
+	  </dependencySet>
+	  <dependencySet>
+		<includes>
+          <include>protege4:org.semanticweb.owl.owlapi</include>
+		  <include>protege4:org.protege.editor.owl</include>
+		</includes>
+        <outputFileNameMapping>${artifact.artifactId}.jar</outputFileNameMapping>
+		<outputDirectory>plugins</outputDirectory>
+	  </dependencySet>
 	</dependencySets>
 </assembly>
