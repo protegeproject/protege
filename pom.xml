@@ -25,15 +25,12 @@
         <groupId>org.apache.felix</groupId>
         <artifactId>felix-parent</artifactId>
         <version>1.2.0</version>
-        <type>pom</type>
       </dependency>
-	  <dependency>
-		<groupId>org.eclipse.osgi</groupId>
-		<artifactId>org.eclipse.osgi</artifactId>
-		<version>3.6.0.v20100517</version>
-		<scope>provided</scope>
-	  </dependency>
-      
+      <dependency>
+        <groupId>org.eclipse.equinox</groupId>
+        <artifactId>org.eclipse.equinox.common</artifactId>
+        <version>3.6.0.v20100503</version>
+      </dependency>
       <dependency>
         <groupId>protege4</groupId>
         <artifactId>org.protege.common</artifactId>
