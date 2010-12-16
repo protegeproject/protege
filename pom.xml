@@ -54,9 +54,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>protege4</groupId>
-            <artifactId>org.protege.common</artifactId>
-            <version>4.1.0.213_RELEASE</version>
+          <groupId>protege4</groupId>
+          <artifactId>org.protege.common</artifactId>
+          <version>4.1.0.b213_2010_12_15_1123</version>
         </dependency>
         <dependency>
             <groupId>mdock</groupId>
