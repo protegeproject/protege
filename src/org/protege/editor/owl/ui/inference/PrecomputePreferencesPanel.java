@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
@@ -33,7 +32,7 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     private Set<InferenceType>             required;
     private Set<InferenceType>             disallowed;
     private Map<InferenceType, JCheckBox> selectedInferences = new EnumMap<InferenceType, JCheckBox>(InferenceType.class);
-    private boolean applied = false;
+    //private boolean applied = false;
     
     public void initialise() throws Exception {
     	readPreferences();
@@ -112,10 +111,12 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     
     /* package */ static JComponent buildHelp(String resource) {
         Box help = new Box(BoxLayout.Y_AXIS);
-        help.setBorder(ComponentFactory.createTitledBorder("Description"));
+        //help.setBorder(ComponentFactory.createTitledBorder("Description"));
         help.setAlignmentX(0.0f);
+        
         try {
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(PrecomputePreferencesPanel.class.getResourceAsStream(resource)));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					PrecomputePreferencesPanel.class.getResourceAsStream(resource)));
         	String line;
         	while ((line = reader.readLine()) != null) {
         		help.add(new JLabel(line));
@@ -127,7 +128,6 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         	return null;
         }
     }
-    
     
     public Set<InferenceType> getPreCompute() {
         Set<InferenceType> preCompute = EnumSet.noneOf(InferenceType.class);

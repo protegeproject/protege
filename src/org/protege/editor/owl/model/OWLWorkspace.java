@@ -516,7 +516,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
         configureAction.setEditorKit(getOWLEditorKit());
-        configureAction.putValue(Action.NAME, "Configure");
+        configureAction.putValue(Action.NAME, "Configure...");
         reasonerMenu.add(configureAction);
         
         reasonerMenu.addSeparator();

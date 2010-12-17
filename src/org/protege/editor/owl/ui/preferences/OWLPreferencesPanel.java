@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.preferences.PreferencesPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 
-
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -15,11 +14,11 @@ import org.protege.editor.owl.model.OWLModelManager;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class OWLPreferencesPanel extends PreferencesPanel {
+	private static final long serialVersionUID = -2718837482109478247L;
 
-    public OWLEditorKit getOWLEditorKit() {
+	public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
     }
-
 
     public OWLModelManager getOWLModelManager() {
         return getOWLEditorKit().getModelManager();
