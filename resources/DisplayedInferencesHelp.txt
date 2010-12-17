@@ -1,8 +1,2 @@
-These preferences control what inferences are displayed while
-navigating around in Protege.  Each type of inference includes an
-estimate of the total time that Protege has spent doing that
-inference.  These times are dynamically updated as different owl
-entities are selected and inference mechanisms are invoked.  Thus if
-navigating a tab is becoming expensive and you believe that the
-automatic inferences may be the culprit, then you can come to this
-preferences panel to determine which inferences are causing the delay.
+Use the checkboxes below to control which inferences are displayed in Protege.
+Selectively disabling automatic inferences may improve performance.
