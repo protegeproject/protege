@@ -1,10 +1,18 @@
-package org.protege.editor.owl.ui.renderer;
+package org.protege.editor.owl.ui.renderer.conf;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
+import org.protege.editor.owl.ui.renderer.AnnotationRendererPanel;
+import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.protege.editor.owl.ui.renderer.PrefixedOWLEntityAnnotationValueRenderer;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import javax.swing.*;
