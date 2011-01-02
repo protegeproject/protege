@@ -13,7 +13,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
-import org.protege.editor.owl.ui.renderer.PrefixBasedRenderer;
+import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.model.OWLOntology;
 
