@@ -1,8 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.ui.prefix.PrefixUtilities;
+import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.semanticweb.owlapi.model.PrefixManager;
 
 
 /**
@@ -15,7 +16,7 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements PrefixBasedRenderer {
-	private PrefixOWLOntologyFormat prefixManager;
+	private PrefixManager prefixManager;
 
 	public void initialise() {
     	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
