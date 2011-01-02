@@ -75,7 +75,7 @@
     <extension id="ui.preferences.renderer"
                point="org.protege.editor.core.application.preferencespanel">
         <label value="Renderer"/>
-        <class value="org.protege.editor.owl.ui.renderer.RendererPreferencesPanel"/>
+        <class value="org.protege.editor.owl.ui.renderer.conf.RendererPreferencesPanel"/>
     </extension>
 
     <extension id="org.protege.editor.owl.ui.preferences.annotation"
