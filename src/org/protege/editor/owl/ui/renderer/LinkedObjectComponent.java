@@ -27,10 +27,6 @@ public interface LinkedObjectComponent {
     public Rectangle getMouseCellRect();
 
 
-    /**
-     * Gets the cell object that the mouse is over
-     */
-//    public Object getCellObject();
     public void setLinkedObject(OWLObject object);
 
 
