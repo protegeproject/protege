@@ -113,11 +113,6 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         return "\u2200";
     }
 
-//    protected String getValueKeyWord() {
-//        return "value";
-//    }
-
-
     protected String getMinKeyWord() {
         return "\u2265";
     }
