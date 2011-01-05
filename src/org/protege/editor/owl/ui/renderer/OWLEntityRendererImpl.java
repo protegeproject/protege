@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
 
 
@@ -40,7 +41,14 @@ public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
             return "<Error! " + e.getMessage() + ">";
         }
     }
+    
+    public boolean isConfigurable() {
+    	return false;
+    }
 
+    public boolean configure(OWLEditorKit eKit) {
+    	throw new IllegalStateException("This renderer is not configurable");
+    }
 
     protected void disposeRenderer() {
         // do nothing
