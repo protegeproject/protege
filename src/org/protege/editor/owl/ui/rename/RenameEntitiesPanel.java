@@ -45,7 +45,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -76,7 +76,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private CheckTable<OWLEntity> list;
 
-    private OWLEntityRenderer fragRenderer;
+    private OWLModelManagerEntityRenderer fragRenderer;
 
     private Set<OWLEntity> errors = Collections.emptySet();
 
