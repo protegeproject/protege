@@ -1,5 +1,10 @@
 package org.protege.editor.owl.ui.view;
 
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
@@ -7,14 +12,17 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
-import org.semanticweb.owlapi.model.*;
-
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.util.HashSet;
-import java.util.Set;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 
 /**
@@ -76,7 +84,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         };
 
         entityRendererListener = new OWLEntityRendererListener() {
-            public void renderingChanged(OWLEntity entity, OWLEntityRenderer renderer) {
+            public void renderingChanged(OWLEntity entity, OWLModelManagerEntityRenderer renderer) {
                 if (lastDisplayedObject != null) {
                     if (lastDisplayedObject.equals(entity)) {
                         updateHeader(lastDisplayedObject);
