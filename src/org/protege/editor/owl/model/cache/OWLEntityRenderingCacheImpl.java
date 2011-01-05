@@ -1,15 +1,31 @@
 package org.protege.editor.owl.model.cache;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
-import java.net.URI;
-import java.util.*;
 
 
 /**
@@ -72,7 +88,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     public void rebuild() {
         clear();
-        OWLEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
+        OWLModelManagerEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
 
         OWLClass thing = owlModelManager.getOWLDataFactory().getOWLThing();
         owlClassMap.put(entityRenderer.render(thing), thing);
