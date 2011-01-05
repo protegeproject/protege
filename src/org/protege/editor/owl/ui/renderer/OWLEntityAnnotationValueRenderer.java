@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 
@@ -87,5 +89,13 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
 
     protected AnnotationValueShortFormProvider getProvider(){
         return provider;
+    }
+    
+    public boolean isConfigurable() {
+    	return true;
+    }
+
+    public boolean configure(OWLEditorKit eKit) {
+    	return AnnotationRendererPanel.showDialog(eKit);
     }
 }
