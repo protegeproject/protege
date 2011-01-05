@@ -24,6 +24,7 @@
     <extension-point id="ui_editor_description" name="OWL Description Editor" schema="schema/UI_Editor_Description.exsd"/>
 
 	<extension-point id="repository" name="OWL Ontology Repository Factory"/>
+    <extension-point id="entity_renderer" name="Renderer Plugin" schema="schema/entity_renderer.exsd"/>
 
     <!-- PLUGINS -->
 
@@ -1325,6 +1326,36 @@
                point="org.protege.editor.owl.moveaxiomskit">
         <name value="Axioms by profile (select axioms in a sublanguage of OWL)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.byprofile.MoveAxiomsByProfileKit" />
+    </extension>
+    
+    <!-- Entity Renderers -->
+    
+    <extension id="OWLEntityRenderer"
+    		   point="org.protege.editor.owl.entity_renderer">
+       <name value="Render entities using URI fragment"/>
+       <class value="org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl"/>
+       <sortPosition value="A"/>
+    </extension>
+
+    <extension id="OWLEntityQNameRenderer"
+    		   point="org.protege.editor.owl.entity_renderer">
+       <name value="Render entities using qnames"/>
+       <class value="org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer"/>
+       <sortPosition value="B"/>
+    </extension>
+
+    <extension id="OWLEntityAnnotationValueRenderer"
+    		   point="org.protege.editor.owl.entity_renderer">
+       <name value="Render entities using annotation values"/>
+       <class value="org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer"/>
+       <sortPosition value="C"/>
+    </extension>
+
+    <extension id="PrefixedOWLEntityAnnotationValueRenderer"
+    		   point="org.protege.editor.owl.entity_renderer">
+       <name value="Render entities using annotation values with prefixes"/>
+       <class value="org.protege.editor.owl.ui.renderer.PrefixedOWLEntityAnnotationValueRenderer"/>
+       <sortPosition value="D"/>
     </extension>
 
 
