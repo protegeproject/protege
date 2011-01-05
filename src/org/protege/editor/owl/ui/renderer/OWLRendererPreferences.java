@@ -1,16 +1,21 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.Font;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
+import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -22,7 +27,7 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLRendererPreferences {
-
+	public static final String DEFAULT_RENDERER_CLASS_NAME = OWLEntityRendererImpl.class.getName();
 
     public static final String RENDER_HYPERLINKS = "RENDER_HYPERLINKS";
 
@@ -64,8 +69,6 @@ public class OWLRendererPreferences {
 
     private boolean useThatKeyword;
 
-    private String rendererClass;
-
     private boolean renderDomainAxiomsAsGCIs;
 
     private int fontSize;
@@ -78,7 +81,9 @@ public class OWLRendererPreferences {
 
     private Map<IRI, List<String>> annotationLanguages;
 
-
+    private List<RendererPlugin> rendererPlugins;
+    
+    private RendererPlugin currentRendererPlugin;
 
     public Font getFont() {
         return font;
@@ -157,7 +162,6 @@ public class OWLRendererPreferences {
     }
 
     private OWLRendererPreferences() {
-        rendererClass = OWLEntityRendererImpl.class.getName();
         load();
     }
 
@@ -182,7 +186,7 @@ public class OWLRendererPreferences {
         highlightChangedEntities = p.getBoolean(HIGHLIGHT_CHANGED_ENTITIES, false);
         highlightKeyWords = p.getBoolean(HIGHLIGHT_KEY_WORDS, true);
         useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
-        rendererClass = p.getString(RENDERER_CLASS, OWLEntityRendererImpl.class.getName());
+        setRendererPlugin(p.getString(RENDERER_CLASS, DEFAULT_RENDERER_CLASS_NAME));
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
         fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
@@ -242,18 +246,42 @@ public class OWLRendererPreferences {
         return renderHyperlinks;
     }
 
+    public List<RendererPlugin> getRendererPlugins() {
+    	if (rendererPlugins == null) {
+    		RendererPluginLoader loader = new RendererPluginLoader();
+    		rendererPlugins = new ArrayList<RendererPlugin>(loader.getPlugins());
+    		Collections.sort(rendererPlugins);
+    	}
+    	return rendererPlugins;
+    }
+    
 
-    public String getRendererClass() {
-        return rendererClass;
+
+    public RendererPlugin getRendererPlugin() {
+    	return currentRendererPlugin;
     }
 
+    public void setRendererPlugin(RendererPlugin plugin) {
+	    String rendererClass = plugin.getRendererClassName();
+	    getPreferences().putString(RENDERER_CLASS, rendererClass);
+	    currentRendererPlugin = plugin;
+	}
 
-    public void setRendererClass(String rendererClass) {
-        this.rendererClass = rendererClass;
-        getPreferences().putString(RENDERER_CLASS, rendererClass);
+
+	private void setRendererPlugin(String rendererClass) {
+    	currentRendererPlugin = null;
+    	for (RendererPlugin plugin : getRendererPlugins()) {
+    		String pluginClassName = plugin.getRendererClassName();
+    		if (pluginClassName.equals(rendererClass)) {
+    			currentRendererPlugin = plugin;
+    			break;
+    		}
+    		else if (currentRendererPlugin == null && pluginClassName.equals(DEFAULT_RENDERER_CLASS_NAME)) {
+    			currentRendererPlugin = plugin;
+    		}
+    	}
     }
-
-
+    
     public boolean isUseThatKeyword() {
         return useThatKeyword;
     }
