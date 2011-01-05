@@ -1,5 +1,17 @@
 package org.protege.editor.owl.ui.tree;
 
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Enumeration;
+import java.util.Set;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
@@ -7,18 +19,10 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Enumeration;
-import java.util.Set;
 
 
 /**
@@ -128,7 +132,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         };
         getOWLModelManager().addListener(listener);
         rendererListener = new OWLEntityRendererListener() {
-            public void renderingChanged(OWLEntity entity, OWLEntityRenderer renderer) {
+            public void renderingChanged(OWLEntity entity, OWLModelManagerEntityRenderer renderer) {
                 handleRenderingChanged(entity);
             }
         };
