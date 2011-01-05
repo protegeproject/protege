@@ -1,15 +1,29 @@
 package org.protege.editor.owl.model.cache;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -300,7 +314,7 @@ public class OWLExpressionUserCache implements Disposable {
     }
 
 
-    class InternalFormEntityRenderer implements OWLEntityRenderer, OWLEntityVisitor {
+    class InternalFormEntityRenderer implements ShortFormProvider, OWLEntityVisitor {
 
         private String cf;
 
@@ -308,10 +322,6 @@ public class OWLExpressionUserCache implements Disposable {
             cf = null;
             entity.accept(this);
             return cf;
-        }
-        
-        public void ontologiesChanged() {
-
         }
 
 
