@@ -1,30 +1,39 @@
 package org.protege.editor.owl.ui.renderer.conf;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.protege.editor.owl.ui.prefix.PrefixMappingPanel;
-import org.protege.editor.owl.ui.renderer.AnnotationRendererPanel;
-import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.protege.editor.owl.ui.renderer.PrefixedOWLEntityAnnotationValueRenderer;
+import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Author: Matthew Horridge<br>
@@ -39,11 +48,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private static final Logger logger = Logger.getLogger(RendererPreferencesPanel.class);
 
-    private Map<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>> buttonToRendererMap = new LinkedHashMap<JRadioButton, Class<? extends OWLModelManagerEntityRenderer>>();
-
-    private Map<Class<? extends OWLModelManagerEntityRenderer>, Boolean> rendererToPrefixesMap = new HashMap<Class<? extends OWLModelManagerEntityRenderer>, Boolean>();
-
-    private Map<Class<? extends OWLModelManagerEntityRenderer>, Boolean> rendererToAnnotationsMap = new HashMap<Class<? extends OWLModelManagerEntityRenderer>, Boolean>();
+    private Map<JRadioButton, RendererPlugin> buttonToRendererMap = new LinkedHashMap<JRadioButton, RendererPlugin>();
 
     private JList annotationPropertiesList;
 
@@ -59,11 +64,9 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JComboBox fontCombo;
 
-    private JButton showPrefixedsButton;
+    private JButton configureButton;
 
-    private JButton showAnnotationsButton;
-
-    private String originalClassName;
+    private RendererPlugin originalRendererPlugin;
 
     private boolean dirty = false;
 
@@ -80,10 +83,10 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 			selectedFont.toString());
 
         if (isDirty()){
-            Class<? extends OWLModelManagerEntityRenderer> cls = getSelectedRendererClass();
+            RendererPlugin plugin = getSelectedRendererPlugin();
             try {
-                prefs.setRendererClass(cls.getName());
-                OWLModelManagerEntityRenderer ren = cls.newInstance();
+                prefs.setRendererPlugin(plugin);
+                OWLModelManagerEntityRenderer ren = plugin.newInstance();
                 setupRenderer(ren);
             }
             catch (Exception e) {
@@ -168,13 +171,10 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
 	private Component createRendererSelectionPanel() {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
-        originalClassName = prefs.getRendererClass();
 
-        addRenderer("Render entities using URI fragment", OWLEntityRendererImpl.class, false, false);
-        addRenderer("Render entities using qnames", OWLEntityQNameRenderer.class, true, false);
-        addRenderer("Render entities using annotation values", OWLEntityAnnotationValueRenderer.class, false, true);
-        addRenderer("Render entities using annotation values with prefixes", PrefixedOWLEntityAnnotationValueRenderer.class, true, true);
-
+        for (RendererPlugin plugin : prefs.getRendererPlugins()) {
+        	addRenderer(plugin.getName(), plugin);
+        }
         Box box = new Box(BoxLayout.Y_AXIS);
         box.setBorder(ComponentFactory.createTitledBorder("Entity rendering"));
 
@@ -191,26 +191,22 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         optsPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
         optsPanel.setAlignmentX(0.0f);
 
-        showPrefixedsButton = new JButton(new AbstractAction("Prefixes...") {
+        configureButton = new JButton(new AbstractAction("Configure...") {
             public void actionPerformed(ActionEvent e) {
-                if (PrefixMappingPanel.showDialog(getOWLEditorKit())){
-                    dirty = true;
-                }
+            	RendererPlugin plugin = getSelectedRendererPlugin();
+            	try {
+            		if (plugin != null && plugin.newInstance().configure(getOWLEditorKit())) {
+            			dirty = true;            		
+            		}
+            	}
+            	catch (Exception cnfe) {
+            		ProtegeApplication.getErrorLog().logError(cnfe);
+            	}
             }
         });
-        optsPanel.add(showPrefixedsButton);
-
-        showAnnotationsButton = new JButton(new AbstractAction("Annotations...") {
-            public void actionPerformed(ActionEvent e) {
-                if (AnnotationRendererPanel.showDialog(getOWLEditorKit())){
-                    dirty = true;
-                }
-            }
-        });
-        optsPanel.add(showAnnotationsButton);
+        optsPanel.add(configureButton);
 
         box.add(optsPanel);
-
         final ChangeListener l = new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 updateRendererButtons();
@@ -220,41 +216,41 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         for (JRadioButton button : buttonToRendererMap.keySet()){
             button.addChangeListener(l);
         }
-
+        
         updateRendererButtons();
-
         return box;
     }
 
 
-    private void addRenderer(String label, Class<? extends OWLModelManagerEntityRenderer> rendererClass, boolean showPrefixOptions, boolean showAnnotationOptions) {
-        String currentRendererClassName = OWLRendererPreferences.getInstance().getRendererClass();
-        JRadioButton button = new JRadioButton(label, currentRendererClassName.equals(rendererClass.getName()));
-        buttonToRendererMap.put(button, rendererClass);
-        rendererToPrefixesMap.put(rendererClass, showPrefixOptions);
-        rendererToAnnotationsMap.put(rendererClass, showAnnotationOptions);
+    private void addRenderer(String label, RendererPlugin plugin) {
+        RendererPlugin currentPlugin = OWLRendererPreferences.getInstance().getRendererPlugin();
+        JRadioButton button = new JRadioButton(label, plugin.equals(currentPlugin));
+        buttonToRendererMap.put(button, plugin);
     }
-
 
     private void updateRendererButtons() {
-        final Class<? extends OWLEntityRenderer> cls = getSelectedRendererClass();
-        if (cls != null){
-            showPrefixedsButton.setEnabled(rendererToPrefixesMap.get(cls));
-            showAnnotationsButton.setEnabled(rendererToAnnotationsMap.get(cls));
-        }
+    	RendererPlugin plugin = getSelectedRendererPlugin();
+    	if (plugin != null) {
+    		try {
+        		configureButton.setEnabled(plugin.newInstance().isConfigurable());
+    		}
+    		catch (Exception e) {
+    			ProtegeApplication.getErrorLog().logError(e);
+    			configureButton.setEnabled(false);
+    		}
+    	}
     }
-
 
     public void dispose() {
     }
 
 
     public boolean isDirty() {
-        return dirty || (getSelectedRendererClass() != null && !getSelectedRendererClass().getName().equals(originalClassName));
+        return dirty || (getSelectedRendererPlugin() != null && !getSelectedRendererPlugin().equals(originalRendererPlugin));
     }
 
 
-    public Class<? extends OWLModelManagerEntityRenderer> getSelectedRendererClass() {
+    public RendererPlugin getSelectedRendererPlugin() {
         for (JRadioButton button : buttonToRendererMap.keySet()){
             if (button.isSelected()){
                 return buttonToRendererMap.get(button);
