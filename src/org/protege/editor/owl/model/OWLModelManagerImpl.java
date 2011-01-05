@@ -52,13 +52,14 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionChe
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
-import org.protege.editor.owl.ui.renderer.OWLEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
+import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
@@ -796,9 +797,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public OWLModelManagerEntityRenderer getOWLEntityRenderer() {
         if (entityRenderer == null) {
             try {
-                String clsName = OWLRendererPreferences.getInstance().getRendererClass();
-                Class c = Class.forName(clsName);
-                OWLModelManagerEntityRenderer ren = (OWLModelManagerEntityRenderer) c.newInstance();
+            	RendererPlugin plugin = OWLRendererPreferences.getInstance().getRendererPlugin();
+                OWLModelManagerEntityRenderer ren = plugin.newInstance();
                 // Force an update by using the setter method.
                 setOWLEntityRenderer(ren);
             }
@@ -844,7 +844,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    public void renderingChanged(OWLEntity entity, final OWLEntityRenderer renderer) {
+    public void renderingChanged(OWLEntity entity, final OWLModelManagerEntityRenderer renderer) {
         owlEntityRenderingCache.updateRendering(entity);
         owlObjectRenderingCache.clear();
         // We should inform listeners
