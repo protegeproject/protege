@@ -29,23 +29,4 @@ public class ActiveOntologyComparator implements Comparator<OWLOntology> {
 			return o1.compareTo(o2);
 		}
 	}
-
-	public static PrefixManager createPrefixMap(OWLModelManager manager) {
-		OWLOntologyManager owlManager = manager.getOWLOntologyManager();
-		DefaultPrefixManager prefixes = new DefaultPrefixManager();
-		List<OWLOntology> ontologies = new ArrayList<OWLOntology>(manager.getActiveOntologies());
-		Collections.sort(ontologies, new ActiveOntologyComparator());
-		for (OWLOntology ontology : ontologies) {
-			OWLOntologyFormat format = owlManager.getOntologyFormat(ontology);
-			if (format instanceof PrefixOWLOntologyFormat) {
-				PrefixOWLOntologyFormat newPrefixes = (PrefixOWLOntologyFormat) format;
-				for (Entry<String, String> entry : newPrefixes.getPrefixName2PrefixMap().entrySet()) {
-					String prefixName = entry.getKey();
-					String prefix     = entry.getValue();
-					prefixes.setPrefix(prefixName, prefix);
-				}
-			}
-		}
-		return prefixes;
-	}
 }
