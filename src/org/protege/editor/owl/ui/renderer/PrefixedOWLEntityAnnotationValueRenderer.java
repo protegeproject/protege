@@ -5,7 +5,7 @@ import java.util.Map;
 import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.semanticweb.owlapi.model.PrefixManager;
 
 /**
  * Author: Matthew Horridge<br>
@@ -17,7 +17,7 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotationValueRenderer implements PrefixBasedRenderer {
-	private PrefixOWLOntologyFormat prefixManager;
+	private PrefixManager prefixManager;
     
     public void initialise() {
     	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
