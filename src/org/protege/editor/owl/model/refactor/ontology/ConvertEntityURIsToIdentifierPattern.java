@@ -104,7 +104,7 @@ public class ConvertEntityURIsToIdentifierPattern {
         List<OWLAnnotationProperty> annotationProperties = new ArrayList<OWLAnnotationProperty>();
         Map<OWLAnnotationProperty, List<String>> langMap = new HashMap<OWLAnnotationProperty, List<String>>();
 
-        Map<IRI, List<String>> annotMap = OWLRendererPreferences.getInstance().getAnnotationLangs();
+        Map<IRI, List<String>> annotMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
         for (IRI iri : annotMap.keySet()){
             OWLAnnotationProperty p  = mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
             annotationProperties.add(p);
@@ -180,7 +180,7 @@ public class ConvertEntityURIsToIdentifierPattern {
     private OWLAnnotation generateLabelAnnotation(String label) {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLAnnotationProperty aProp = getPreferredLabel();
-        String lang = getPreferredLanguage(aProp);
+        String lang = getPreferredLanguage();
 
         OWLLiteral value = df.getOWLLiteral(label, lang);
 
@@ -188,8 +188,8 @@ public class ConvertEntityURIsToIdentifierPattern {
     }
 
 
-    private String getPreferredLanguage(OWLAnnotationProperty annotationProperty) {
-        final List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(annotationProperty.getIRI());
+    private String getPreferredLanguage() {
+        final List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs();
         return langs.isEmpty() ? null : langs.get(0);
     }
 
