@@ -112,9 +112,7 @@ public class PrefixMappingPanel extends JPanel {
                 }
             }
             if (changed) {
-            	// Reset the renderer to force an update - there should
-            	// probably be an easier way to do this.
-            	owlEditorKit.getModelManager().setOWLEntityRenderer(owlEditorKit.getModelManager().getOWLEntityRenderer());
+            	owlEditorKit.getModelManager().refreshRenderer();
             }
             return true;
         }
