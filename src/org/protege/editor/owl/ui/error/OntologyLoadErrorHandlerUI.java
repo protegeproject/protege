@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.log4j.Logger;
 import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyParser;
@@ -53,6 +54,7 @@ import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
  * Date: Aug 28, 2008<br><br>
  */
 public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
+	public static final Logger LOGGER = Logger.getLogger(OntologyLoadErrorHandlerUI.class);
     private enum OPTIONS {
         OK("OK"), RELOAD("Reload");
 
@@ -109,6 +111,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
             ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
+            LOGGER.warn(explanation.getMessage(), explanation.getCause());
             retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
                                                      "Load Error: " + ontologyID,
                                                      errorPanel,
