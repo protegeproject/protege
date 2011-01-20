@@ -59,11 +59,12 @@ import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
-import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -430,7 +431,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
         }
         rebuildActiveOntologiesCache();
-        setOWLEntityRenderer(getOWLEntityRenderer());
+        refreshRenderer();
         fireEvent(EventType.ONTOLOGY_RELOADED);
         return ont;
     }
@@ -797,10 +798,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public OWLModelManagerEntityRenderer getOWLEntityRenderer() {
         if (entityRenderer == null) {
             try {
-            	RendererPlugin plugin = OWLRendererPreferences.getInstance().getRendererPlugin();
-                OWLModelManagerEntityRenderer ren = plugin.newInstance();
-                // Force an update by using the setter method.
-                setOWLEntityRenderer(ren);
+            	OWLRendererPreferences preferences = OWLRendererPreferences.getInstance();
+            	RendererPlugin plugin = preferences.getRendererPlugin();
+                entityRenderer = plugin.newInstance();
+                loadRenderer();
             }
             catch (ClassNotFoundException e) {
                 logger.error(e.getMessage());
@@ -812,11 +813,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 logger.error(e.getMessage());
             }
             if (entityRenderer == null) {
-                setOWLEntityRenderer(new OWLEntityRendererImpl());
+            	entityRenderer = new OWLEntityRendererImpl();
+                loadRenderer();
             }
         }
         return entityRenderer;
     }
+    
+
 
 
     public String getRendering(OWLObject object) {
@@ -852,9 +856,8 @@ public class OWLModelManagerImpl extends AbstractModelManager
             listener.handleChange(new OWLModelManagerChangeEvent(this, EventType.ENTITY_RENDERING_CHANGED));
         }
     }
-
-
-    public void setOWLEntityRenderer(OWLModelManagerEntityRenderer renderer) {
+    
+    public void refreshRenderer() {
         if (entityRenderer != null) {
             entityRenderer.removeListener(this);
             try {
@@ -864,12 +867,22 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 ProtegeApplication.getErrorLog().logError(e);
             }
         }
-        entityRenderer = renderer;
+        entityRenderer = null;
+        getOWLEntityRenderer();
+        loadRenderer();
+    }
+    
+    private void loadRenderer() {
         entityRenderer.addListener(this);
         entityRenderer.setup(this);
         entityRenderer.initialise();
         rebuildEntityIndices();
-        fireEvent(EventType.ENTITY_RENDERER_CHANGED);
+        fireEvent(EventType.ENTITY_RENDERER_CHANGED);	
+    }
+
+
+    public void setOWLEntityRenderer(OWLModelManagerEntityRenderer renderer) {
+    	refreshRenderer();
     }
 
 
