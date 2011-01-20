@@ -2,12 +2,10 @@ package org.protege.editor.owl.ui.prefix;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -30,7 +28,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 				modelManager.setDirty(activeOntology);
 				OWLModelManagerEntityRenderer renderer = modelManager.getOWLEntityRenderer();
 				if (renderer instanceof PrefixBasedRenderer) {
-					modelManager.setOWLEntityRenderer(renderer);
+					modelManager.refreshRenderer();
 				}
 			}
 		}
