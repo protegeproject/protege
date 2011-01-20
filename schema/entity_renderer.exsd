@@ -28,6 +28,7 @@ We anticipate that we will eventually support some sort of scheme using multiple
             <element ref="class"/>
             <element ref="name"/>
             <element ref="sortPosition"/>
+            <element ref="ontologyAnnotationSpecifier" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -86,6 +87,18 @@ We anticipate that we will eventually support some sort of scheme using multiple
    <element name="sortPosition">
       <complexType>
          <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ontologyAnnotationSpecifier">
+      <complexType>
+         <attribute name="value" type="string">
             <annotation>
                <documentation>
                   
