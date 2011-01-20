@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class UIHelper {
 
-    private static Logger logger = Logger.getLogger(UIHelper.class);
-
     private OWLEditorKit owlEditorKit;
 
     public final static Set<String> OWL_EXTENSIONS;
@@ -215,13 +213,18 @@ public class UIHelper {
 
 
     public OWLAnnotationProperty pickAnnotationProperty() {
-        OWLAnnotationPropertySelectorPanel panel = new OWLAnnotationPropertySelectorPanel(owlEditorKit);
-        if (showDialog("Select an annotation property", panel) == JOptionPane.OK_OPTION) {
-            return panel.getSelectedObject();
-        }
-        else{
-            return null;
-        }
+    	OWLAnnotationPropertySelectorPanel panel = new OWLAnnotationPropertySelectorPanel(owlEditorKit);
+    	try {
+    		if (showDialog("Select an annotation property", panel) == JOptionPane.OK_OPTION) {
+    			return panel.getSelectedObject();
+    		}
+    		else{
+    			return null;
+    		}
+    	}
+    	finally {
+    		panel.dispose();
+    	}
     }
 
 
