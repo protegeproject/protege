@@ -237,7 +237,12 @@ public interface OWLModelManager extends ModelManager {
 
     OWLModelManagerEntityRenderer getOWLEntityRenderer();
 
-
+    void refreshRenderer();
+    
+    /**
+     * @deprecated Use refreshRenderer instead.
+     */
+    @Deprecated
     void setOWLEntityRenderer(OWLModelManagerEntityRenderer renderer);
 
 
