@@ -40,7 +40,7 @@ public class MatchRendererLabelDescriptor implements LabelDescriptor {
     public String getLanguage() {
         final List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
         if (!iris.isEmpty()){
-            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(iris.get(0));
+            List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs();
             if (!langs.isEmpty()){
                 return langs.get(0);
             }
