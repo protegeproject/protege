@@ -187,37 +187,4 @@ public class ErrorExplainer {
             }
         }
 
-//    public static void main(String[] args) {
-//        Set<Class<? extends Collection>> clses = new HashSet<Class<? extends Collection>>();
-//        clses.add(ArrayList.class);
-//        clses.add(List.class);
-//        clses.add(HashSet.class);
-//
-//        System.out.println(ErrorExplainer.getBestMatchJavaClass(Collection.class, clses));
-//
-//        System.out.println(ErrorExplainer.getBestMatchJavaClass(TestList.class, clses));
-//        System.out.println(ErrorExplainer.getBestMatchJavaClass(ArrayList.class, clses));
-//
-//        System.out.println(ErrorExplainer.getBestMatchJavaClass(LinkedHashSet.class, clses));
-//        clses.add(LinkedHashSet.class);
-//        System.out.println(ErrorExplainer.getBestMatchJavaClass(LinkedHashSet.class, clses));
-//
-//        ErrorExplainer explainer = new ErrorExplainer();
-//        System.out.println(explainer.getErrorExplanation(new FileNotFoundException("monkey.owl"), true).getMessage());
-//        System.out.println(explainer.getErrorExplanation(new IOException("IO Exception here handled by default"), true).getMessage());
-//
-//        explainer.clearExplanationFactories();
-//        explainer.addExplanationFactory(IOException.class, new ErrorExplanationFactory<IOException>(){
-//            public <T extends IOException> ErrorExplanation<T> createExplanation(T throwable) {
-//                return new ErrorExplanation<T>(throwable, "IO Exception: " + throwable.getMessage());
-//            }
-//        });
-//        System.out.println(explainer.getErrorExplanation(new FileNotFoundException("monkey.owl handle by IO exception "), true).getMessage());
-//        System.out.println(explainer.getErrorExplanation(new IOException("IO Exception here"), true).getMessage());
-//
-//    }
-//
-//    public class TestList extends ArrayList{
-//    }
-
 }
