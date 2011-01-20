@@ -1349,6 +1349,7 @@
        <name value="Render entities using annotation values"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer"/>
        <sortPosition value="C"/>
+       <ontologyAnnotationSpecifier value="http://http://protege.org/ui/render/displayWithLabel"/>
     </extension>
 
     <extension id="PrefixedOWLEntityAnnotationValueRenderer"
