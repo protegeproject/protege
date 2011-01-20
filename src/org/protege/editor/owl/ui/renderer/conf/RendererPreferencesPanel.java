@@ -87,20 +87,13 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
             try {
                 prefs.setRendererPlugin(plugin);
                 OWLModelManagerEntityRenderer ren = plugin.newInstance();
-                setupRenderer(ren);
+                getOWLModelManager().refreshRenderer();
             }
             catch (Exception e) {
                 throw new OWLRuntimeException(e);
             }
         }
         getOWLEditorKit().getWorkspace().refreshComponents();
-    }
-
-
-    private void setupRenderer(OWLModelManagerEntityRenderer renderer) {
-        renderer.setup(getOWLModelManager());
-        renderer.initialise();
-        getOWLModelManager().setOWLEntityRenderer(renderer);
     }
 
 
