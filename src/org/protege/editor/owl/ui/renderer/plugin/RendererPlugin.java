@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.semanticweb.owlapi.model.IRI;
 
 public class RendererPlugin extends AbstractProtegePlugin<OWLModelManagerEntityRenderer> implements Comparable<RendererPlugin> {
 	public static final String RENDERER_PLUGIN_ID = "entity_renderer";
@@ -18,6 +19,10 @@ public class RendererPlugin extends AbstractProtegePlugin<OWLModelManagerEntityR
 	
 	public String getSortPosition() {
 		return getPluginProperty("sortPosition");
+	}
+	
+	public IRI getAnnotationSpecifier() {
+		return IRI.create(getPluginProperty("ontologyAnnotationSpecifier"));
 	}
 	
 	public String getRendererClassName() {
