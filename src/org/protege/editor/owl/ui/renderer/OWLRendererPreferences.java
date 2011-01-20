@@ -28,6 +28,8 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
  */
 public class OWLRendererPreferences {
 	public static final String DEFAULT_RENDERER_CLASS_NAME = OWLEntityRendererImpl.class.getName();
+	
+	public static final String ALLOW_PROTEGE_TO_OVERRIDE_RENDERER = "allow.protege.renderer.override";
 
     public static final String RENDER_HYPERLINKS = "RENDER_HYPERLINKS";
 
@@ -84,6 +86,8 @@ public class OWLRendererPreferences {
     private List<RendererPlugin> rendererPlugins;
     
     private RendererPlugin currentRendererPlugin;
+    
+    private boolean allowProtegeToOverrideRenderer;
 
     public Font getFont() {
         return font;
@@ -186,6 +190,7 @@ public class OWLRendererPreferences {
         highlightChangedEntities = p.getBoolean(HIGHLIGHT_CHANGED_ENTITIES, false);
         highlightKeyWords = p.getBoolean(HIGHLIGHT_KEY_WORDS, true);
         useThatKeyword = p.getBoolean(USE_THAT_KEYWORD, false);
+        allowProtegeToOverrideRenderer = p.getBoolean(ALLOW_PROTEGE_TO_OVERRIDE_RENDERER, true);
         setRendererPlugin(p.getString(RENDERER_CLASS, DEFAULT_RENDERER_CLASS_NAME));
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
         fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
@@ -281,6 +286,10 @@ public class OWLRendererPreferences {
     		}
     	}
     }
+	
+	public boolean isProtegeAllowedToOverrideRenderer() {
+		return allowProtegeToOverrideRenderer;
+	}
     
     public boolean isUseThatKeyword() {
         return useThatKeyword;
