@@ -14,6 +14,7 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -102,11 +103,16 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         if (editedObjects.isEmpty()) {
             return;
         }
-        A axiom = createAxiom(editedObjects.iterator().next());
-        if (axiom != null){ // the editor should protect from this, but just in case
+        OWLAxiom newAxiom = createAxiom(editedObjects.iterator().next());
+        if (newAxiom != null){ // the editor should protect from this, but just in case
+        	A oldAxiom = getAxiom();
+        	Set<OWLAnnotation> axiomAnnotations = oldAxiom.getAnnotations();
+        	if (axiomAnnotations != null && !axiomAnnotations.isEmpty()) {
+        		newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
+        	}
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-            changes.add(new RemoveAxiom(getOntology(), getAxiom()));
-            changes.add(new AddAxiom(getOntology(), axiom));
+            changes.add(new RemoveAxiom(getOntology(), oldAxiom));
+            changes.add(new AddAxiom(getOntology(), newAxiom));
             getOWLModelManager().applyChanges(changes);
         }
     }
