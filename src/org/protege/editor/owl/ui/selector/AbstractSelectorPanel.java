@@ -33,8 +33,9 @@ import java.util.Set;
  */
 public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         implements OWLObjectSelector<O>, VerifiedInputEditor {
+	private static final long serialVersionUID = -3436408401382241385L;
 
-    private OWLEditorKit editorKit;
+	private OWLEditorKit editorKit;
 
     private View view;
 
@@ -158,5 +159,9 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
     }
 
 
-    public abstract void dispose();
+    public void dispose() {
+    	if (view != null) {
+    		view.dispose();
+    	}
+    }
 }
