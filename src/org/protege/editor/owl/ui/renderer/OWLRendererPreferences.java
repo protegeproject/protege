@@ -50,7 +50,7 @@ public class OWLRendererPreferences {
     public static final String FONT_NAME = "FONT_NAME";
 
     public static final String ANNOTATIONS = "ANNOTATIONS";
-
+    
     public static final int DEFAULT_FONT_SIZE = 14;
 
     public static final String DEFAULT_FONT_NAME = "Dialog.plain";
@@ -81,7 +81,7 @@ public class OWLRendererPreferences {
 
     private List<IRI> annotationIRIS;
 
-    private Map<IRI, List<String>> annotationLanguages;
+    private List<String> annotationLanguages;
 
     private List<RendererPlugin> rendererPlugins;
     
@@ -124,25 +124,14 @@ public class OWLRendererPreferences {
     }
 
 
-    public void setAnnotations(List<IRI> iris, Map<IRI, List<String>> langMap){
+    public void setAnnotations(List<IRI> iris){
         annotationIRIS = iris;
-        annotationLanguages = langMap;
-        List<String> values = new ArrayList<String>();
-
-        for (IRI iri : iris){
-            StringBuilder str = new StringBuilder(iri.toString());
-            final List<String> langs = langMap.get(iri);
-            if (langs != null){
-                for (String lang : langs) {
-                    if (lang == null || lang.equals(NO_LANGUAGE_SET)){
-                        lang = NO_LANGUAGE_SET_USER_TOKEN;
-                    }
-                    str.append(", ").append(lang);
-                }
-            }
-            values.add(str.toString());
-        }
-        getPreferences().putStringList(ANNOTATIONS, values);
+        writeAnnotations();
+    }
+    
+    public void setAnnotationLanguages(List<String> annotationLanguages) {
+    	this.annotationLanguages = annotationLanguages;
+    	writeAnnotations();
     }
 
 
@@ -151,18 +140,16 @@ public class OWLRendererPreferences {
     }
 
 
-    public List<String> getAnnotationLangs(IRI iri){
-        final List<String> langs = annotationLanguages.get(iri);
-        if (langs != null){
-            return new ArrayList<String>(langs);
-        }
-        else{
-            return Collections.emptyList();
-        }
+    public List<String> getAnnotationLangs(){
+    	return annotationLanguages;
     }
 
-    public Map<IRI, List<String>> getAnnotationLangs(){
-        return annotationLanguages;
+    public Map<IRI, List<String>> getAnnotationLangMap(){
+    	Map<IRI, List<String>> langMap = new HashMap<IRI, List<String>>();
+    	for (IRI iri : annotationIRIS) {
+    		langMap.put(iri, Collections.unmodifiableList(annotationLanguages));
+    	}
+    	return langMap;
     }
 
     private OWLRendererPreferences() {
@@ -199,41 +186,67 @@ public class OWLRendererPreferences {
         resetFont();
     }
 
-
+    /*
+     * Using a backwards compatible encoding of annotations and their languages.
+     */
     private void loadAnnotations() {
         annotationIRIS = new ArrayList<IRI>();
-        annotationLanguages = new HashMap<IRI, List<String>>();
+        annotationLanguages = new ArrayList<String>();
         final List<String> defaultValues = Collections.emptyList();
         List<String> values = getPreferences().getStringList(ANNOTATIONS, defaultValues);
 
         if (values.equals(defaultValues)){
-            annotationIRIS.add(IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI()));
+            annotationIRIS.add(OWLRDFVocabulary.RDFS_LABEL.getIRI());
             annotationIRIS.add(IRI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+            annotationLanguages = new ArrayList<String>();
         }
         else{
+            List<String> langs = new ArrayList<String>();
             for (String value : values){
                 String[] tokens = value.split(",");
                 try {
                     IRI iri = IRI.create(new URI(tokens[0].trim()));
-                    List<String> langs = new ArrayList<String>();
                     for (int i=1; i<tokens.length; i++){
                         String token = tokens[i].trim();
                         if (token.equals(NO_LANGUAGE_SET_USER_TOKEN)){
                             token = NO_LANGUAGE_SET;
                         }
-                        langs.add(token);
-                    }
-                    if (!langs.contains(NO_LANGUAGE_SET)) {
-                    	langs.add(NO_LANGUAGE_SET);
+                        if (!langs.contains(token)) {
+                        	langs.add(token);
+                        }
                     }
                     annotationIRIS.add(iri);
-                    annotationLanguages.put(iri, langs);
+                    annotationLanguages = langs;
                 }
                 catch (URISyntaxException e) {
                     ErrorLogPanel.showErrorDialog(e);
                 }
             }
         }
+        if (!annotationLanguages.contains(NO_LANGUAGE_SET)) {
+        	annotationLanguages.add(NO_LANGUAGE_SET);
+        }
+    }
+    
+    /*
+     * Using a backwards compatible encoding of annotations and their languages.
+     */
+    private void writeAnnotations() {
+        List<String> values = new ArrayList<String>();
+        StringBuilder langStringBuilder = new StringBuilder();
+        for (String lang : annotationLanguages) {
+            if (lang == null || lang.equals(NO_LANGUAGE_SET)){
+                lang = NO_LANGUAGE_SET_USER_TOKEN;
+            }
+            langStringBuilder.append(", ").append(lang);
+        }
+
+        for (IRI iri : annotationIRIS){
+            StringBuilder str = new StringBuilder(iri.toString());
+            str.append(langStringBuilder.toString());
+            values.add(str.toString());
+        }
+        getPreferences().putStringList(ANNOTATIONS, values);
     }
 
 
