@@ -29,7 +29,7 @@ public class PrefixMapperTables extends JPanel {
 			PrefixOWLOntologyFormat prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(ontology);
 			PrefixMapperTable table = new PrefixMapperTable(prefixManager);
 			prefixTableMap.put(ontology, table);
-			add(new JScrollPane(table), ontology.getOntologyID().getOntologyIRI().toString());
+			add(new JScrollPane(table), getNameFromOntology(ontology));
 		}
 		setOntology(modelManager.getActiveOntology());
 	}
@@ -45,7 +45,7 @@ public class PrefixMapperTables extends JPanel {
 	}
 
 	public void setOntology(OWLOntology ontology)  {
-		cards.show(this, ontology.getOntologyID().getOntologyIRI().toString());
+		cards.show(this, getNameFromOntology(ontology));
 		this.ontology = ontology;
 		for (SelectedOntologyListener listener : listeners) {
 			listener.selectedOntologyChanged();
@@ -78,6 +78,17 @@ public class PrefixMapperTables extends JPanel {
 
 	public interface SelectedOntologyListener {
 		void selectedOntologyChanged();
+	}
+	
+	private String getNameFromOntology(OWLOntology ontology) {
+		String ontologyName;
+		if (ontology.getOntologyID().getOntologyIRI() != null) {
+			ontologyName = ontology.getOntologyID().getOntologyIRI().toString();
+		}
+		else {
+			ontologyName = ontology.getOntologyID().toString();
+		}
+		return ontologyName;
 	}
 
 }
