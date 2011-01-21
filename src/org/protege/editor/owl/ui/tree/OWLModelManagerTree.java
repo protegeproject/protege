@@ -12,7 +12,6 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
@@ -35,9 +34,8 @@ import org.semanticweb.owlapi.model.OWLObject;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> implements RefreshableComponent {
-
-    private static final Logger logger = Logger.getLogger(OWLModelManagerTree.class);
-
+	private static final long serialVersionUID = 9168555447316716896L;
+	
     private OWLModelManagerListener listener;
 
     private OWLEntityRendererListener rendererListener;
