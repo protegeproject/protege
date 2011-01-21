@@ -62,9 +62,8 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -74,6 +73,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
@@ -471,9 +471,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
     ///////////////////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     *  Save all of the ontologies that are editable and that have been modified.
+     */
     public void save() throws OWLOntologyStorageException {
-        // Save all of the ontologies that are editable and that
-        // have been modified.
         for (OWLOntology ont : new HashSet<OWLOntology>(dirtyOntologies)) {
             save(ont);
         }
@@ -491,8 +492,11 @@ public class OWLModelManagerImpl extends AbstractModelManager
                     throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
                 }
 
-                // the OWLAPI v3 saves to a temp file now
-                manager.saveOntology(ont, manager.getOntologyFormat(ont), IRI.create(physicalURI));
+                OWLOntologyFormat format = manager.getOntologyFormat(ont);
+                if (format instanceof RDFXMLOntologyFormat) { // rdf is always trouble
+                	((RDFXMLOntologyFormat) format).setAddMissingTypes(false);  
+                }
+                manager.saveOntology(ont, format, IRI.create(physicalURI));
 
                 manager.setOntologyDocumentIRI(ont, IRI.create(physicalURI));
             }
@@ -523,7 +527,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
     
     /**
-//     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
+     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
      * @throws OWLOntologyStorageException if a problem occurs during the save
      */
     @Deprecated
