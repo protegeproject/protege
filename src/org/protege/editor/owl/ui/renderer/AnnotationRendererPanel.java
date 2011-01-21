@@ -1,5 +1,27 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -7,39 +29,6 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 
 /**
  * Author: drummond<br>
@@ -50,11 +39,12 @@ import java.util.Map;
  * Date: Apr 8, 2008<br><br>
  */
 public class AnnotationRendererPanel extends JPanel {
-
-    private JTable table;
+	private static final long serialVersionUID = -4986709925668660394L;
+	private JTable table;
     private JToolBar toolbar;
 
     private DefaultTableModel model;
+    private JTextField languageField;
 
     private boolean dirty = false;
 
@@ -114,8 +104,6 @@ public class AnnotationRendererPanel extends JPanel {
             }
         });
         model.addColumn("Annotation IRI");
-        model.addColumn("Languages (comma separated in order of preference, ! for none)");
-        load();
 
         table = new JTable(model);
         table.setShowVerticalLines(false);
@@ -123,6 +111,14 @@ public class AnnotationRendererPanel extends JPanel {
         table.getColumnModel().getColumn(0).setWidth(200);
         final JScrollPane scroller = new JScrollPane(table);
         add(scroller, BorderLayout.CENTER);
+        
+        JPanel languagePanel = new JPanel();
+        languagePanel.setLayout(new BoxLayout(languagePanel, BoxLayout.X_AXIS));
+        languagePanel.add(new JLabel("Set Language: "));
+        languagePanel.add(languageField = new JTextField());
+        add(languagePanel,BorderLayout.SOUTH);
+        
+        load();
     }
 
     public Dimension getPreferredSize() {
@@ -145,26 +141,25 @@ public class AnnotationRendererPanel extends JPanel {
     }
 
     protected void load(){
-        java.util.List<IRI> rows = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        List<IRI> rows = OWLRendererPreferences.getInstance().getAnnotationIRIs();
+        List<String> languages = OWLRendererPreferences.getInstance().getAnnotationLangs();
         for (IRI row : rows){
-            java.util.List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs(row);
-
-            Object[] rowData = new Object[2];
+            Object[] rowData = new Object[1];
             rowData[0] = row;
-            StringBuilder langsAsString = new StringBuilder();
-            for (String lang : langs) {
-                if (langsAsString.length() != 0) {
-                    langsAsString.append(", ");
-                }
-                if (lang == null){
-                    lang = OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN;
-                }
-                langsAsString.append(lang);
-            }
-            if (langsAsString.length() > 1){
-                rowData[1] = langsAsString.toString();
-            }
             model.addRow(rowData);
+        }
+        StringBuilder langsAsString = new StringBuilder();
+        for (String lang : languages) {
+            if (langsAsString.length() != 0) {
+                langsAsString.append(", ");
+            }
+            if (lang == OWLRendererPreferences.NO_LANGUAGE_SET){
+                lang = OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN;
+            }
+            langsAsString.append(lang);
+        }
+        if (langsAsString.length() > 1){
+            languageField.setText(langsAsString.toString());
         }
     }
 
@@ -172,26 +167,23 @@ public class AnnotationRendererPanel extends JPanel {
         if (dirty){
             // @@TODO change this to get annotation properties
             java.util.List<IRI> iris = new ArrayList<IRI>();
-
-            Map<IRI,java.util.List<String>> langMap = new HashMap<IRI, java.util.List<String>>();
-
             for (int i=0; i<model.getRowCount(); i++){
                 IRI iri = (IRI)model.getValueAt(i, 0);
-                String langsAsString = (String)model.getValueAt(i, 1);
-                if (langsAsString != null){
-                    java.util.List<String> langs = new ArrayList<String>();
-                    for (String token : langsAsString.split(",")){
-                        token = token.trim();
-                        if (token.equals(OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN)){
-                            token = null; // OWL API treats this as "no language"
-                        }
-                        langs.add(token);
-                    }
-                    langMap.put(iri, langs);
-                }
                 iris.add(iri);
             }
-            OWLRendererPreferences.getInstance().setAnnotations(iris, langMap);
+            String langsAsString = languageField.getText();
+            java.util.List<String> langs = new ArrayList<String>();
+            if (langsAsString != null){
+                for (String token : langsAsString.split(",")){
+                    token = token.trim();
+                    if (token.equals(OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN)){
+                        token = OWLRendererPreferences.NO_LANGUAGE_SET;
+                    }
+                    langs.add(token);
+                }
+            }
+            OWLRendererPreferences.getInstance().setAnnotations(iris);
+            OWLRendererPreferences.getInstance().setAnnotationLanguages(langs);
             dirty = false;
         }
     }
