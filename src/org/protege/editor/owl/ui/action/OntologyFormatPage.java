@@ -52,7 +52,10 @@ public class OntologyFormatPage extends AbstractWizardPanel {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please select the format in which the ontology will be saved (by default).");
+        setInstructions("Please select the format in which the ontology will be saved (by default).\n\n" +
+        		        "Note that the Manchester OWL Syntax does not support all OWL constructs (e.g. GCI's and\n" +
+        		        "annotations of undeclared entities) and the Latex format cannot be reloaded");
+         
         panel = new OntologyFormatPanel();
         
         parent.add(panel);
