@@ -244,7 +244,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
         OWLOntologyFormat format = OntologyFormatPanel.showDialog(this,
                                                                   oldFormat,
-                                                                  getModelManager().getRendering(ont));
+                                                                  "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
         if (format == null) {
             logger.warn("Please select a valid format");
             return false;
