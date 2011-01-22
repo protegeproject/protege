@@ -1,6 +1,15 @@
 package org.protege.editor.owl.ui;
 
-import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
+import java.awt.BorderLayout;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.coode.owlapi.latex.LatexOntologyFormat;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.coode.owlapi.obo.parser.OBOOntologyFormat;
@@ -12,11 +21,7 @@ import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.List;
+import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
 
 
 /**
@@ -99,27 +104,47 @@ public class OntologyFormatPanel extends JPanel {
     }
 
 
+    /**
+     * @deprecated Use the other showDialog instead.  This one doesn't explain itself.
+     */
+    @Deprecated
     public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat) {
         return showDialog(editorKit, defaultFormat, null);
     }
 
     
     public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat, String message) {
-        OntologyFormatPanel panel = new OntologyFormatPanel();
-        if (message != null){
-            panel.setMessage(message);
-        }
-        panel.setSelectedFormat(defaultFormat);
-        int ret = JOptionPaneEx.showConfirmDialog(editorKit.getWorkspace(),
-                                                  "Select an ontology format",
-                                                  panel,
-                                                  JOptionPane.PLAIN_MESSAGE,
-                                                  JOptionPane.OK_CANCEL_OPTION,
-                                                  panel.formatComboBox);
-        if (ret != JOptionPane.OK_OPTION) {
-            return null;
-        }
+    	OntologyFormatPanel panel = new OntologyFormatPanel();
+    	if (message != null){
+    		panel.setMessage(message);
+    	}
+    	panel.setSelectedFormat(defaultFormat);
+    	OWLOntologyFormat selectedFormat = null;
+    	do {
+    		int ret = JOptionPaneEx.showConfirmDialog(editorKit.getWorkspace(),
+    				"Select an ontology format",
+    				panel,
+    				JOptionPane.PLAIN_MESSAGE,
+    				JOptionPane.OK_CANCEL_OPTION,
+    				panel.formatComboBox);
+    		if (ret != JOptionPane.OK_OPTION) {
+    			return null;
+    		}
 
-        return panel.getSelectedFormat();
+    		selectedFormat = panel.getSelectedFormat();
+    	}
+    	while (!isFormatOk(editorKit, selectedFormat));
+    	return selectedFormat;
+    }
+    
+    private static boolean isFormatOk(OWLEditorKit editorKit, OWLOntologyFormat format) {
+    	if (!(format instanceof ManchesterOWLSyntaxOntologyFormat)) {
+    		return true;
+    	}
+    	int userSaysOk = JOptionPane.showConfirmDialog(editorKit.getOWLWorkspace(), 
+    			                              "The Manchester OWL Syntax can lose information such as GCI's and annotations of undeclared entities.  Continue?", 
+    			                              "Warning",
+    			                              JOptionPane.YES_NO_OPTION);
+    	return userSaysOk == JOptionPane.YES_OPTION;
     }
 }
