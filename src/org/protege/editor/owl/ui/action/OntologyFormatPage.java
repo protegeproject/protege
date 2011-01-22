@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
+import javax.swing.JComponent;
+
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
@@ -7,7 +9,6 @@ import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
-import javax.swing.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -40,8 +41,9 @@ import javax.swing.*;
  * Date: Jan 6, 2009<br><br>
  */
 public class OntologyFormatPage extends AbstractWizardPanel {
+	private static final long serialVersionUID = -3310342304172021246L;
 
-    public static final String ID = "ONTOLOGY_FORMAT_PANEL";
+	public static final String ID = "ONTOLOGY_FORMAT_PANEL";
 
     private OntologyFormatPanel panel;
 
