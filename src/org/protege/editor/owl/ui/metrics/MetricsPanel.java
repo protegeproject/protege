@@ -16,6 +16,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -206,7 +207,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createBasicMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new ReferencedClassCount(getOWLModelManager().getOWLOntologyManager()));
         metrics.add(new ReferencedObjectPropertyCount(getOWLModelManager().getOWLOntologyManager()));
         metrics.add(new ReferencedDataPropertyCount(getOWLModelManager().getOWLOntologyManager()));
@@ -218,7 +219,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createClassAxiomMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUBCLASS_OF));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.EQUIVALENT_CLASSES));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.DISJOINT_CLASSES));
@@ -230,7 +231,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createObjectPropertyAxiomMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUB_OBJECT_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.EQUIVALENT_OBJECT_PROPERTIES));
@@ -264,7 +265,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createDataPropertyAxiomMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.SUB_DATA_PROPERTY));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.EQUIVALENT_DATA_PROPERTIES));
@@ -282,7 +283,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createIndividualAxiomMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.CLASS_ASSERTION));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(),
                                         AxiomType.OBJECT_PROPERTY_ASSERTION));
@@ -300,7 +301,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createAnnotationAxiomMetrics() {
-        List<OWLMetric> metrics = new ArrayList<OWLMetric>();
+        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_ASSERTION));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_PROPERTY_DOMAIN));
         metrics.add(new AxiomTypeMetric(getOWLModelManager().getOWLOntologyManager(), AxiomType.ANNOTATION_PROPERTY_RANGE));
