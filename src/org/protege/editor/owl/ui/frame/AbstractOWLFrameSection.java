@@ -182,6 +182,9 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     public abstract OWLObjectEditor<E> getObjectEditor();
 
+    public boolean checkEditorResults(OWLObjectEditor<E> editor) {
+    	return true;
+    }
 
     /**
      * Gets the index of the specified section row.
