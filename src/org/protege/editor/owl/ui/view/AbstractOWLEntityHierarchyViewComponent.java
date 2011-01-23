@@ -299,11 +299,6 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     /////////////////////////////////////////////////////////////////////////////////////
 
 
-// will need to be overridden
-//    public java.util.List<E> find(String match) {
-//        return new ArrayList<E>(getOWLModelManager().getEntityFinder().getMatchingOWLClasses(match));
-//    }
-
 
     public void show(E owlEntity) {
         getTree().setSelectedOWLObject(owlEntity);
