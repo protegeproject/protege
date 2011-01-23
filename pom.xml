@@ -39,15 +39,14 @@
           <version>4.1.0.b213_2010_12_15_1123</version>
         </dependency>
         <dependency>
-          <groupId>protege4</groupId>
-          <artifactId>org.semanticweb.owl.owlapi</artifactId>
-          <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1039</version>
-          <type>jar</type>
+            <groupId>owlapi</groupId>
+            <artifactId>owlapi</artifactId>
+            <version>3.2.0.svn1729</version>
         </dependency>
         <dependency>
             <groupId>protege4</groupId>
             <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.1.0.2010_12_15_1149</version>
+            <version>3.2.0.2011_01_23_0425</version>
         </dependency>
         <dependency>
             <groupId>protege4</groupId>
