@@ -17,6 +17,7 @@ public interface OWLFrameObject<R extends Object, A extends OWLAxiom, E> {
 
     OWLObjectEditor<E> getEditor();
 
+    boolean checkEditorResults(OWLObjectEditor<E> editor);
 
     boolean canAcceptDrop(List<OWLObject> objects);
 
