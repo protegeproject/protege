@@ -88,13 +88,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
 
     private void handleVerifyEditorContents() {
-        boolean newStatus = isValidated();
-        if (currentStatus != newStatus){
-            currentStatus = newStatus;
-            for (InputVerificationStatusChangedListener l : listeners){
-                l.verifiedStatusChanged(newStatus);
-            }
-        }
+    	boolean newStatus = isValidated();
+    	currentStatus = newStatus;
+    	for (InputVerificationStatusChangedListener l : listeners){
+    		l.verifiedStatusChanged(newStatus);
+    	}
     }
 
 
