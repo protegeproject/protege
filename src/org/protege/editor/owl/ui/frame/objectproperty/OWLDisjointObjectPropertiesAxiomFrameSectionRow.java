@@ -55,6 +55,11 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
         return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(props);
     }
 
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLObjectProperty>> editor) {
+    	Set<OWLObjectProperty> equivalents = editor.getEditedObject();
+    	return !equivalents.contains(getRootObject());
+    }
 
     /**
      * Gets a list of objects contained in this row.  These objects
