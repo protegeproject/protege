@@ -54,6 +54,11 @@ public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSe
         return editor;
     }
 
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLDataProperty>> editor) {
+    	Set<OWLDataProperty> equivalents = editor.getEditedObject();
+    	return !equivalents.contains(getRootObject());
+    }
 
     public List<OWLDataPropertyExpression> getManipulatableObjects() {
         List<OWLDataPropertyExpression> props = new ArrayList<OWLDataPropertyExpression>(getAxiom().getProperties());

@@ -8,6 +8,7 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Comparator;
@@ -55,6 +56,12 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
 
     public OWLObjectEditor<Set<OWLDataProperty>> getObjectEditor() {
         return new OWLDataPropertySetEditor(getOWLEditorKit());
+    }
+    
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLDataProperty>> editor) {
+    	Set<OWLDataProperty> equivalents = editor.getEditedObject();
+    	return !equivalents.contains(getRootObject());
     }
 
 
