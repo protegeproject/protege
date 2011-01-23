@@ -182,8 +182,20 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     public String getTooltip() {
         if (ontology != null) {
             UIHelper helper = new UIHelper(owlEditorKit);
-            String content = helper.getHTMLOntologyList(Collections.singleton(ontology));
-            return "<html><body>Asserted in: " + content + "</body></html>";
+            StringBuffer buffer = new StringBuffer("<html>\n\t<body>\n\t\tAsserted in: ");
+            buffer.append(helper.getHTMLOntologyList(Collections.singleton(ontology)));
+            Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
+            if (annotations != null && !annotations.isEmpty()) {
+            	buffer.append("\n\t\t<p>Annotations:");
+            	buffer.append("\n\t\t<ul>");
+            	for (OWLAnnotation annotation : annotations) {
+            		buffer.append("\n\t\t\t<li>");
+            		buffer.append(getOWLModelManager().getRendering(annotation));
+            	}
+            	buffer.append("\n\t\t</ul>\n");
+            }
+            buffer.append("\t</body>\n</html>");
+            return buffer.toString();
         }
         else {
             return "Inferred";
