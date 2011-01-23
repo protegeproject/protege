@@ -493,7 +493,7 @@ public class OWLFrameList<R> extends MList
         };
         final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
             public void verifiedStatusChanged(boolean verified) {
-                optionPane.setOKEnabled(verified);
+                optionPane.setOKEnabled(verified && frameObject.checkEditorResults(editor));
             }
         };
         // if the editor is verifying, will need to prevent the OK button from
