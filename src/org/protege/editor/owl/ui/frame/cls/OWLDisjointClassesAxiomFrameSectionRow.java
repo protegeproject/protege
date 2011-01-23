@@ -34,6 +34,11 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
     protected OWLObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
         return new OWLClassExpressionSetEditor(getOWLEditorKit(), getManipulatableObjects());
     }
+    
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
+    	Set<OWLClassExpression> disjoints = editor.getEditedObject();
+    	return disjoints.size() != 1 || !disjoints.contains(getRoot());
+    }
 
 
     protected OWLDisjointClassesAxiom createAxiom(Set<OWLClassExpression> editedObject) {
