@@ -186,13 +186,17 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
             buffer.append(helper.getHTMLOntologyList(Collections.singleton(ontology)));
             Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
             if (annotations != null && !annotations.isEmpty()) {
+            	OWLModelManager protegeManager = getOWLModelManager();
             	buffer.append("\n\t\t<p>Annotations:");
-            	buffer.append("\n\t\t<ul>");
+            	buffer.append("\n\t\t<dl>");
             	for (OWLAnnotation annotation : annotations) {
-            		buffer.append("\n\t\t\t<li>");
-            		buffer.append(getOWLModelManager().getRendering(annotation));
+            		buffer.append("\n\t\t\t<dt>");
+            		buffer.append(protegeManager.getRendering(annotation.getProperty()));
+            		buffer.append("</dt>\n\t\t\t<dd>");
+            		buffer.append(protegeManager.getRendering(annotation.getValue()));
+            		buffer.append("</dd>");
             	}
-            	buffer.append("\n\t\t</ul>\n");
+            	buffer.append("\n\t\t</dl>\n\t</p>\n");
             }
             buffer.append("\t</body>\n</html>");
             return buffer.toString();
