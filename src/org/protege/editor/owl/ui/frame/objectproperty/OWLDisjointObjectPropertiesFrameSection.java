@@ -60,21 +60,20 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
         disjoints.add(getRootObject());
         return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(disjoints);
     }
-
-
-    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        if (axiom.getProperties().contains(getRootObject())) {
-            reset();
-        }
-    }
-
-
+    
     public OWLObjectEditor<Set<OWLObjectProperty>> getObjectEditor() {
         return new OWLObjectPropertySetEditor(getOWLEditorKit());
     }
 
 
-    /**
+    @Override
+	public boolean checkEditorResults(OWLObjectEditor<Set<OWLObjectProperty>> editor) {
+		Set<OWLObjectProperty> equivalents = editor.getEditedObject();
+		return !equivalents.contains(getRootObject());
+	}
+
+
+	/**
      * Obtains a comparator which can be used to sort the rows
      * in this section.
      * @return A comparator if to sort the rows in this section,
@@ -83,4 +82,11 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
     public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectProperty>>> getRowComparator() {
         return null;
     }
+
+
+	public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
+	    if (axiom.getProperties().contains(getRootObject())) {
+	        reset();
+	    }
+	}
 }
