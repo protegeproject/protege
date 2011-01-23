@@ -128,6 +128,17 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
         return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, AxiomType.EQUIVALENT_CLASSES);
     }
 
+    public boolean checkEditorResults(OWLObjectEditor<OWLClassExpression> editor) {
+    	Set<OWLClassExpression> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLClassExpression> editedObjects) {
+    	editedObjects = new HashSet<OWLClassExpression>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
+    }
 
     public boolean canAcceptDrop(List<OWLObject> objects) {
         for (OWLObject obj : objects) {

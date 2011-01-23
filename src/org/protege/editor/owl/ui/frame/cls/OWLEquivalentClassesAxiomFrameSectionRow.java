@@ -43,6 +43,18 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
         descs.remove(getRoot());
         return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES);
     }
+    
+    public boolean checkEditorResults(OWLObjectEditor<OWLClassExpression> editor) {
+    	Set<OWLClassExpression> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLClassExpression> editedObjects) {
+    	editedObjects = new HashSet<OWLClassExpression>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
+    }
 
 
     protected OWLEquivalentClassesAxiom createAxiom(OWLClassExpression editedObject) {
