@@ -48,6 +48,19 @@ public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrame
         }
         return editor;
     }
+    
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<OWLDataProperty> editor) {
+    	Set<OWLDataProperty> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLDataProperty> editedObjects) {
+    	editedObjects = new HashSet<OWLDataProperty>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
+    }
 
 
     public List<OWLDataPropertyExpression> getManipulatableObjects() {

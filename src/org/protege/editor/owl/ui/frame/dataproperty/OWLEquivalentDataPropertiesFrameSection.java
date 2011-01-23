@@ -13,6 +13,7 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
@@ -47,6 +48,19 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
     public OWLObjectEditor<OWLDataProperty> getObjectEditor() {
         return new OWLDataPropertyEditor(getOWLEditorKit());
+    }
+    
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<OWLDataProperty> editor) {
+    	Set<OWLDataProperty> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLDataProperty> editedObjects) {
+    	editedObjects = new HashSet<OWLDataProperty>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
     }
 
 
