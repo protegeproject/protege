@@ -98,13 +98,11 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
                 if (!registeredListener){
                     addSelectionListener(new ChangeListener(){
                         public void stateChanged(ChangeEvent event) {
-                            boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
-                            if (valid != isValid){
-                                for (InputVerificationStatusChangedListener l : validateListeners){
-                                    l.verifiedStatusChanged(valid);
-                                }
-                                isValid = valid;
-                            }
+                        	boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
+                        	for (InputVerificationStatusChangedListener l : validateListeners){
+                        		l.verifiedStatusChanged(valid);
+                        	}
+                        	isValid = valid;
                         }
                     });
                     registeredListener = true;
