@@ -63,6 +63,12 @@ import java.util.Set;
     public OWLObjectEditor<Set<OWLNamedIndividual>> getObjectEditor() {
         return new OWLIndividualSetEditor(getOWLEditorKit());
     }
+    
+    @Override
+	public boolean checkEditorResults(OWLObjectEditor<Set<OWLNamedIndividual>> editor) {
+		Set<OWLNamedIndividual> equivalents = editor.getEditedObject();
+		return !equivalents.contains(getRootObject());
+	}
 
 
     public void visit(OWLDifferentIndividualsAxiom axiom) {

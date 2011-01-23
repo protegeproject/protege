@@ -33,6 +33,12 @@ public class OWLDifferentIndividualAxiomFrameSectionRow extends AbstractOWLFrame
     protected OWLObjectEditor<Set<OWLNamedIndividual>> getObjectEditor() {
         return new OWLIndividualSetEditor(getOWLEditorKit());
     }
+    
+    @Override
+	public boolean checkEditorResults(OWLObjectEditor<Set<OWLNamedIndividual>> editor) {
+		Set<OWLNamedIndividual> equivalents = editor.getEditedObject();
+		return !equivalents.contains(getRootObject());
+	}
 
 
     protected OWLDifferentIndividualsAxiom createAxiom(Set<OWLNamedIndividual> editedObject) {
