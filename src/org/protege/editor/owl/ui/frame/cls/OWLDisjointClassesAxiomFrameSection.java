@@ -61,6 +61,10 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
         return new OWLClassExpressionSetEditor(getOWLEditorKit());
     }
 
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
+    	Set<OWLClassExpression> disjoints = editor.getEditedObject();
+    	return disjoints.size() != 1 || !disjoints.contains(getRootObject());
+    }
 
     public void visit(OWLDisjointClassesAxiom axiom) {
         if (axiom.getClassExpressions().contains(getRootObject())) {
