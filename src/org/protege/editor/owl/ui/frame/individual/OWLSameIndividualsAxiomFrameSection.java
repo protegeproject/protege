@@ -13,6 +13,7 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 
@@ -100,7 +101,12 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
     public OWLObjectEditor<Set<OWLNamedIndividual>> getObjectEditor() {
         return new OWLIndividualSetEditor(getOWLEditorKit());
     }
-
+    
+    @Override
+	public boolean checkEditorResults(OWLObjectEditor<Set<OWLNamedIndividual>> editor) {
+		Set<OWLNamedIndividual> equivalents = editor.getEditedObject();
+		return !equivalents.contains(getRootObject());
+	}
 
     /**
      * Obtains a comparator which can be used to sort the rows
