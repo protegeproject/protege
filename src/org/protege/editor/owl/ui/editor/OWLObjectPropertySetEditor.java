@@ -1,11 +1,14 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import javax.swing.*;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -38,13 +41,21 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Apr 6, 2009<br><br>
  */
-public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLObjectProperty>> {
+public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLObjectProperty>> implements VerifiedInputEditor {
 
     private OWLObjectPropertySelectorPanel editor;
 
-
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    
+    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
+        public void verifiedStatusChanged(boolean newState) {
+            handleVerifyEditorContents();
+        }
+    };
+    
     public OWLObjectPropertySetEditor(OWLEditorKit owlEditorKit) {
         editor = new OWLObjectPropertySelectorPanel(owlEditorKit);
+        editor.addStatusChangedListener(inputListener);
     }
 
 
@@ -71,6 +82,22 @@ public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLO
 
     public JComponent getEditorComponent() {
         return editor;
+    }
+    
+    private void handleVerifyEditorContents() {
+    	for (InputVerificationStatusChangedListener l : listeners){
+    		l.verifiedStatusChanged(true);
+    	}
+    }
+    
+    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.add(l);
+        l.verifiedStatusChanged(true);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.remove(l);
     }
 
 
