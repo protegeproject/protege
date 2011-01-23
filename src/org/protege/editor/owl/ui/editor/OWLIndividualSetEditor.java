@@ -1,11 +1,14 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.swing.*;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -15,13 +18,21 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 22-Feb-2007<br><br>
  */
-public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamedIndividual>> {
+public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamedIndividual>>  implements VerifiedInputEditor  {
 
     private OWLIndividualSelectorPanel panel;
 
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    
+    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
+        public void verifiedStatusChanged(boolean newState) {
+            handleVerifyEditorContents();
+        }
+    };
 
     public OWLIndividualSetEditor(OWLEditorKit owlEditorKit) {
         panel = new OWLIndividualSelectorPanel(owlEditorKit, ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        panel.addStatusChangedListener(inputListener);
     }
 
 
@@ -48,6 +59,22 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
     public JComponent getEditorComponent() {
         return panel;
+    }
+    
+    private void handleVerifyEditorContents() {
+    	for (InputVerificationStatusChangedListener l : listeners){
+    		l.verifiedStatusChanged(true);
+    	}
+    }
+    
+    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.add(l);
+        l.verifiedStatusChanged(true);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
+        listeners.remove(l);
     }
 
 
