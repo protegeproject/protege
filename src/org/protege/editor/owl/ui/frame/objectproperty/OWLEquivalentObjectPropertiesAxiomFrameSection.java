@@ -7,6 +7,7 @@ import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -95,6 +96,19 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
 
     public OWLObjectEditor<OWLObjectProperty> getObjectEditor() {
         return new OWLObjectPropertyEditor(getOWLEditorKit());
+    }
+    
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<OWLObjectProperty> editor) {
+    	Set<OWLObjectProperty> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLObjectProperty> editedObjects) {
+    	editedObjects = new HashSet<OWLObjectProperty>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
     }
 
 

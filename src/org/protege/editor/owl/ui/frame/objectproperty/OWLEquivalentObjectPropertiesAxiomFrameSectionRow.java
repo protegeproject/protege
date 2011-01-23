@@ -43,7 +43,21 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractO
                 editor.setEditedObject(p.asOWLObjectProperty());
            }
         }
-        return editor;    }
+        return editor;    
+    }
+    
+    @Override
+    public boolean checkEditorResults(OWLObjectEditor<OWLObjectProperty> editor) {
+    	Set<OWLObjectProperty> equivalents = editor.getEditedObjects();
+    	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
+    }
+    
+    @Override
+    public void handleEditingFinished(Set<OWLObjectProperty> editedObjects) {
+    	editedObjects = new HashSet<OWLObjectProperty>(editedObjects);
+    	editedObjects.remove(getRootObject());
+    	super.handleEditingFinished(editedObjects);
+    }
 
 
     protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectProperty editedObject) {
