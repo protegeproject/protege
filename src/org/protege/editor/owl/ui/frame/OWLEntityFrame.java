@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.frame.cls.OWLClassAssertionAxiomMembersSection;
 import org.protege.editor.owl.ui.frame.cls.OWLDisjointClassesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLDisjointUnionAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.cls.OWLEquivalentClassesAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.dataproperty.*;
@@ -89,6 +90,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlClassSections.add(new OWLSubClassAxiomFrameSection(editorKit, this));
         owlClassSections.add(new OWLClassAssertionAxiomMembersSection(editorKit, this));
         owlClassSections.add(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
+        owlClassSections.add(new OWLDisjointUnionAxiomFrameSection(editorKit, this));
 
         owlObjectPropertySections = new ArrayList<OWLFrameSection>();
 
