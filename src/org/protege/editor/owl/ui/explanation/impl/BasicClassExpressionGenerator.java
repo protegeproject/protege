@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.debugging.DebuggerClassExpressionGenerator;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -49,6 +50,12 @@ public class BasicClassExpressionGenerator extends DebuggerClassExpressionGenera
     			factory.getOWLObjectIntersectionOf(someQ, factory.getOWLObjectComplementOf(someP))
     	);
     	
+    }
+    
+    public void visit(OWLDisjointClassesAxiom axiom) {
+    	if (axiom.getClassExpressions().size() == 2) {
+    		desc = factory.getOWLObjectIntersectionOf(axiom.getClassesInSignature().toArray(new OWLClassExpression[2]));
+    	}
     }
     
 }
