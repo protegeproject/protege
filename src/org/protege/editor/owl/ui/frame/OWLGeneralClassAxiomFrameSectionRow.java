@@ -2,6 +2,9 @@ package org.protege.editor.owl.ui.frame;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLGeneralAxiomEditor;
@@ -29,6 +32,13 @@ public class OWLGeneralClassAxiomFrameSectionRow extends AbstractOWLFrameSection
         editor.setEditedObject(getAxiom());
         return editor;
     }
+
+    @Override
+    public void handleEditingFinished(Set<OWLClassAxiom> editedObjects) {
+    	super.handleEditingFinished(editedObjects);
+    	OWLGeneralClassAxiomsFrameSection.checkEditedAxiom(getOWLEditorKit(), editedObjects);
+    }
+    
 
 
     protected OWLClassAxiom createAxiom(OWLClassAxiom editedObject) {
