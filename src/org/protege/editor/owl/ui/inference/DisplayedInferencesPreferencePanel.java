@@ -21,6 +21,8 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
     private EnumMap<OptionalInferenceTask, JCheckBox> enabledMap = new EnumMap<OptionalInferenceTask, JCheckBox>(OptionalInferenceTask.class);
 
     public void initialise() throws Exception {
+    	int gridybase = 0;
+    	
     	preferences = getOWLModelManager().getReasonerPreferences();
     	
     	setLayout(new GridBagLayout());
@@ -28,7 +30,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
     	
     	// Add help text at top
     	c.gridx = 0;
-    	c.gridy = 0;
+    	c.gridy = gridybase;
     	c.gridwidth = 2;
     	c.gridheight = 1;
     	c.fill = GridBagConstraints.BOTH;
@@ -40,10 +42,10 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         	add(help, c);
         }
         
-        buildClassFrameSectionPreferences(c);
-        buildObjectPropertyFrameSectionPreferences(c);
-        buildDataPropertyFrameSectionPreferences(c);
-        buildIndividualFrameSectionPreferences(c);
+        gridybase = buildClassFrameSectionPreferences(c, gridybase);
+        gridybase = buildObjectPropertyFrameSectionPreferences(c, gridybase);
+        gridybase = buildDataPropertyFrameSectionPreferences(c, gridybase);
+        gridybase = buildIndividualFrameSectionPreferences(c, gridybase);
     }
 
     @Override
@@ -60,9 +62,9 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         enabledMap = null;
     }
     
-    private void buildClassFrameSectionPreferences(GridBagConstraints c) {
+    private int buildClassFrameSectionPreferences(GridBagConstraints c, int gridybase) {
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = ++gridybase;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
@@ -72,27 +74,31 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         add((new JLabel("Displayed Class Inferences:")), c);
         
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = gridybase;
         c.insets = new Insets(0,0,5,0);
         c.weightx = 1.0;
         add(getCheckBox(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY, "Unsatisfiability"), c);
         
-        c.gridy = 2;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES, "Equivalent Classes"), c);
         
-        c.gridy = 3;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, "Superclasses"), c);
         
-        c.gridy = 4;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, "Class Members"), c);
         
-        c.gridy = 5;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES, "Inherited Classes"), c);
+        
+        c.gridy = ++gridybase;
+        add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, "Disjoint Classes"), c);
+        return gridybase;
     }
     
-    private void buildObjectPropertyFrameSectionPreferences(GridBagConstraints c) {
+    private int buildObjectPropertyFrameSectionPreferences(GridBagConstraints c, int gridybase) {
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = ++gridybase;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
@@ -102,31 +108,32 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         add((new JLabel("Displayed Object Property Inferences:")), c);
         
         c.gridx = 1;
-        c.gridy = 6;
+        c.gridy = gridybase;
         c.insets = new Insets(11,0,5,0);
         c.weightx = 1.0;
         add(getCheckBox(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, "Unsatisfiability"), c);
         
-        c.gridy = 7;
+        c.gridy = ++gridybase;
         c.insets = new Insets(0,0,5,0);
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS, "Domains"), c);
         
-        c.gridy = 8;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, "Ranges"), c);
         
-        c.gridy = 9;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, "Equivalent Properties"), c);
         
-        c.gridy = 10;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES, "Super Properties"), c);
         
-        c.gridy = 11;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, "Inverses"), c);
+        return gridybase;
     }
     
-    private void buildDataPropertyFrameSectionPreferences(GridBagConstraints c) {
+    private int buildDataPropertyFrameSectionPreferences(GridBagConstraints c, int gridybase) {
         c.gridx = 0;
-        c.gridy = 12;
+        c.gridy = ++gridybase;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
@@ -136,22 +143,23 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         add((new JLabel("Displayed Data Property Inferences:")), c);
         
         c.gridx = 1;
-        c.gridy = 12;
+        c.gridy = gridybase;
         c.insets = new Insets(11,0,5,0);
         c.weightx = 1.0;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS, "Domains"), c);
         
-        c.gridy = 13;
+        c.gridy = ++gridybase;
         c.insets = new Insets(0,0,5,0);
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, "Equivalent Properties"), c);
         
-        c.gridy = 14;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES, "Super Properties"), c);
+        return gridybase;
     }
     
-    private void buildIndividualFrameSectionPreferences(GridBagConstraints c) {
+    private int buildIndividualFrameSectionPreferences(GridBagConstraints c, int gridybase) {
         c.gridx = 0;
-        c.gridy = 15;
+        c.gridy = ++gridybase;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
@@ -161,21 +169,22 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         add((new JLabel("Displayed Individual Inferences:")), c);
         
         c.gridx = 1;
-        c.gridy = 15;
+        c.gridy = gridybase;
         c.insets = new Insets(11,0,5,0);
         c.weightx = 1.0;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_TYPES, "Types"), c);
         
-        c.gridy = 16;
+        c.gridy = ++gridybase;
         c.insets = new Insets(0,0,5,0);
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, "Object Property Assertions"), c);
         
-        c.gridy = 17;
+        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS, "Data Property Assertions"), c);
         
-        c.gridy = 18;
+        c.gridy = ++gridybase;
         c.weighty = 1.0; // request any extra vertical space
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, "Same Individuals"), c);
+        return gridybase;
     }
     
     private JCheckBox getCheckBox(OptionalInferenceTask task, String description) {    
