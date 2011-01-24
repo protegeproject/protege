@@ -44,19 +44,17 @@ import java.util.Set;
  * Date: 14-Sep-2007<br><br>
  */
 public class OWLAxiomList extends MList {
+	private static final long serialVersionUID = 2024889684812090240L;
 
-    private OWLOntologyManager manager;
+	private OWLOntologyManager manager;
 
     private OWLEditorKit editorKit;
-
-    private Set<OWLAxiom> commonAxioms;
 
 
     public OWLAxiomList(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
         this.manager = editorKit.getModelManager().getOWLOntologyManager();
         setCellRenderer(new AxiomListItemRenderer());
-        commonAxioms = new HashSet<OWLAxiom>();
     }
 
 
@@ -111,12 +109,6 @@ public class OWLAxiomList extends MList {
                 AxiomListItem item = ((AxiomListItem) value);
                 ren.setOntology(item.ontology);
                 ren.setHighlightKeywords(true);
-//                if (!item.ontology.containsAxiom(item.axiom)) {
-//                    ren.setStrikeThrough(true);
-//                }
-//                else {
-//                    ren.setStrikeThrough(false);
-//                }
                 ren.setWrap(false);
                 return ren.getListCellRendererComponent(list, item.axiom, index, isSelected, cellHasFocus);
             }
