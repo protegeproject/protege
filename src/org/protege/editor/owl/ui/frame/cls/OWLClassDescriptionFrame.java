@@ -21,5 +21,6 @@ public class OWLClassDescriptionFrame extends AbstractOWLFrame<OWLClass> {
         addSection(new OWLClassAssertionAxiomMembersSection(editorKit, this));
         addSection(new OWLKeySection(editorKit, this));
         addSection(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
+        addSection(new OWLDisjointUnionAxiomFrameSection(editorKit, this));
     }
 }
