@@ -38,6 +38,7 @@ public class OWLDisjointUnionAxiomFrameSection extends AbstractOWLFrameSection<O
         return new OWLClassExpressionSetEditor(getOWLEditorKit());
 	}
 	
+	@Override
     public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
     	Set<OWLClassExpression> disjoints = editor.getEditedObject();
     	return disjoints.size() >= 2;
