@@ -1,13 +1,28 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -19,6 +34,8 @@ import java.util.*;
 public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLDisjointClassesAxiom, Set<OWLClassExpression>> {
 
     public static final String LABEL = "Disjoint classes";
+    
+    public Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
 
 
     public OWLDisjointClassesAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
@@ -27,11 +44,13 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
 
     protected void clear() {
+    	added.clear();
     }
 
 
     protected void addAxiom(OWLDisjointClassesAxiom ax, OWLOntology ont) {
         addRow(new OWLDisjointClassesAxiomFrameSectionRow(getOWLEditorKit(), this, ont, getRootObject(), ax));
+        added.addAll(ax.getClassExpressions());
     }
 
 
@@ -59,6 +78,31 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
     public OWLObjectEditor<Set<OWLClassExpression>> getObjectEditor() {
         return new OWLClassExpressionSetEditor(getOWLEditorKit());
+    }
+    
+    @Override
+    protected void refillInferred() {
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, new Runnable() {
+
+			public void run() {
+				OWLReasoner reasoner = getOWLModelManager().getReasoner();
+				NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
+				for (OWLClass c : disjointFromRoot.getFlattened()) {
+					if (!added.contains(c) && !c.equals(getOWLDataFactory().getOWLNothing()) && !c.equals(getRootObject())) {
+						addRow(new OWLDisjointClassesAxiomFrameSectionRow(
+								getOWLEditorKit(),
+								OWLDisjointClassesAxiomFrameSection.this,
+								null,
+								getRootObject(),
+								getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(getRootObject(), c)
+						    )
+						);
+						added.add(c);
+					}
+				}
+			}
+    		
+    	});
     }
 
     public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
