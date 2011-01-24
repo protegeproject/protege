@@ -35,4 +35,10 @@ public class OWLDisjointUnionAxiomFrameSectionRow extends AbstractOWLFrameSectio
 	protected OWLDisjointUnionAxiom createAxiom(Set<OWLClassExpression> editedObject) {
 		return getOWLDataFactory().getOWLDisjointUnionAxiom(getRootObject(), editedObject);
 	}
+	
+	@Override
+    public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
+    	Set<OWLClassExpression> disjoints = editor.getEditedObject();
+    	return disjoints.size() >= 2;
+    }
 }
