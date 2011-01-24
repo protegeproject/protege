@@ -16,7 +16,6 @@ import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
@@ -216,9 +215,6 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
 
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
-            roots.add(df.getOWLAnnotationProperty(uri));
-        }
-        for (IRI uri : DublinCoreVocabulary.ALL_URIS){
             roots.add(df.getOWLAnnotationProperty(uri));
         }
     }
