@@ -1,19 +1,3 @@
-package org.protege.editor.owl.ui.editor;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
-import org.protege.editor.owl.ui.UIHelper;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLLiteral;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -37,6 +21,32 @@ import java.util.Set;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+package org.protege.editor.owl.ui.editor;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
+import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 /**
  * Author: Matthew Horridge<br>
@@ -45,19 +55,22 @@ import java.util.Set;
  * Date: 01-Aug-2007<br><br>
  */
 public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLiteral> {
-    private static final long serialVersionUID = 3199534896795886986L;
 
-    private JTextArea annotationContent;
+	private static final long serialVersionUID = 3199534896795886986L;
 
-    private JComboBox langComboBox;
+	private JTextArea annotationContent;
 
-    private JComboBox datatypeComboBox;
+	private JComboBox langComboBox;
 
-    private OWLDataFactory dataFactory;
+    private JLabel langLabel = new JLabel("Lang");
 
-    private String lastLanguage;
+	private JComboBox datatypeComboBox;
+	
+	private OWLDataFactory dataFactory;
 
-    private OWLDatatype lastDatatype;
+	private String lastLanguage;
+
+	private OWLDatatype lastDatatype;
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
@@ -67,27 +80,48 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
         langComboBox = uiHelper.getLanguageSelector();
+        
         datatypeComboBox = uiHelper.getDatatypeSelector();
+        datatypeComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OWLDatatype owlDatatype = (OWLDatatype) getSelectedDatatype();
+				boolean b = owlDatatype == null ? true : false;
+				toggleLanguage(b);
+			}
+		});
+        
+        int numItems = datatypeComboBox.getItemCount();
+        for (int i=0; i<numItems; i++) {
+        	OWLDatatype owlDatatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
+
+        	if (owlDatatype == null) continue;
+        	
+        	if (owlDatatype.isRDFPlainLiteral()) {
+        		datatypeComboBox.removeItemAt(i);
+        		break;
+        	}
+        }
 
         setupAutoCompleter(owlEditorKit);
         layoutComponents();
     }
-
+    
+    private void toggleLanguage(boolean b) {
+		langLabel.setEnabled(b);
+		langComboBox.setEnabled(b);
+    }
 
     public boolean canEdit(Object object) {
         return object instanceof OWLLiteral;
     }
 
-
     public boolean isPreferred(Object object) {
         return object instanceof OWLLiteral;
     }
 
-
     public JComponent getEditorComponent() {
         return this;
     }
-
 
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
@@ -95,12 +129,12 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         String value = annotationContent.getText();
         OWLLiteral constant;
         if (isDatatypeSelected()) {
-            constant = dataFactory.getOWLTypedLiteral(value, getSelectedDatatype());
+        	constant = dataFactory.getOWLLiteral(value, getSelectedDatatype());
             lastDatatype = getSelectedDatatype();
         }
         else {
             if (isLangSelected()) {
-                constant = dataFactory.getOWLStringLiteral(value, getSelectedLang());
+            	constant = dataFactory.getOWLLiteral(value, getSelectedLang());
                 lastLanguage = getSelectedLang();
             }
             else {
@@ -110,11 +144,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return constant;
     }
 
-
     public Set<OWLLiteral> getEditedObjects() {
         return Collections.singleton(getEditedObject());
     }
-
 
     public boolean setEditedObject(OWLLiteral constant) {
         clear();
@@ -130,16 +162,13 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return true;
     }
 
-
     public boolean isMultiEditSupported() {
         return false;
     }
 
-
     public String getEditorTypeName() {
         return "Constant";
     }
-
 
     public void clear() {
         annotationContent.setText("");
@@ -147,21 +176,17 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         langComboBox.setSelectedItem(lastLanguage);
     }
 
-
     private boolean isLangSelected() {
         return langComboBox.getSelectedItem() != null && !langComboBox.getSelectedItem().equals("");
     }
-
 
     private boolean isDatatypeSelected() {
         return datatypeComboBox.getSelectedItem() != null;
     }
 
-
     private String getSelectedLang() {
         return (String) langComboBox.getSelectedItem();
     }
-
 
     /**
      * Gets the selected datatype
@@ -172,40 +197,22 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return (OWLDatatype) datatypeComboBox.getSelectedItem();
     }
 
+	private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
+		new OWLAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
+			public void check(String text) throws OWLExpressionParserException {
+				throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<String>());
+			}
 
-    private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
-        new OWLAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
-            public void check(String text) throws OWLExpressionParserException {
-                throw new OWLExpressionParserException(text,
-                                                       0,
-                                                       text.length(),
-                                                       true,
-                                                       true,
-                                                       true,
-                                                       true,
-                                                       true,
-                                                       true,
-                                                       new HashSet<String>());
-            }
-
-
-            public Object createObject(String text) throws OWLExpressionParserException {
-                return null;
-            }
-        });
-    }
-
+			public Object createObject(String text)
+					throws OWLExpressionParserException {
+				return null;
+			}
+		});
+	}
 
     private void layoutComponents() {
-
-//        literalEditingPanel = new JPanel(new GridBagLayout()) {
-//            public boolean requestFocusInWindow() {
-//                return annotationContent.requestFocusInWindow();
-//            }
-//        };
-//        literalEditingPanel.setBorder(BorderFactory.createEmptyBorder(7, 20, 7, 20));
-
         setLayout(new GridBagLayout());
+
         add(new JScrollPane(annotationContent),
             new GridBagConstraints(1,
                                    1,
@@ -260,7 +267,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    40,
                                    0));
 
-        add(new JLabel("Lang"),
+        add(langLabel,
             new GridBagConstraints(3,
                                    3,
                                    1,
@@ -272,7 +279,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    new Insets(0, 20, 0, 0),
                                    0,
                                    0));
-
+        langLabel.setEnabled(true);
 
         add(langComboBox,
             new GridBagConstraints(4,
@@ -288,14 +295,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    0));
     }
 
-
     public void dispose() {
     }
 
-
     public void setHandler(OWLObjectEditorHandler<OWLLiteral> owlLiteralOWLObjectEditorHandler) {
     }
-
 
     public OWLObjectEditorHandler<OWLLiteral> getHandler() {
         return null; 
