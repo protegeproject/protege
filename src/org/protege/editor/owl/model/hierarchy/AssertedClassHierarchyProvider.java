@@ -16,10 +16,12 @@ import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
@@ -107,7 +109,8 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         for (OWLOntologyChange change : changes) {
             // only listen for changes on the appropriate ontologies
             if (ontologies.contains(change.getOntology())){
-                if (change.isAxiomChange()) {
+                if (change.isAxiomChange() &&
+                		hierarchyRelevantChange((OWLAxiomChange) change)) {
                     updateImplicitRoots(change);
                     for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
                         if (entity instanceof OWLClass && !entity.equals(root)) {
@@ -131,6 +134,11 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
             }
         }
         notifyNodeChanges();
+    }
+    
+    private boolean hierarchyRelevantChange(OWLAxiomChange change) {
+    	OWLAxiom axiom = change.getAxiom();
+    	return axiom instanceof OWLEquivalentClassesAxiom || axiom instanceof OWLSubClassOfAxiom;
     }
 
 
