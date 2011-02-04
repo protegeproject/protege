@@ -109,8 +109,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         for (OWLOntologyChange change : changes) {
             // only listen for changes on the appropriate ontologies
             if (ontologies.contains(change.getOntology())){
-                if (change.isAxiomChange() &&
-                		hierarchyRelevantChange((OWLAxiomChange) change)) {
+                if (change.isAxiomChange()) {
                     updateImplicitRoots(change);
                     for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
                         if (entity instanceof OWLClass && !entity.equals(root)) {
@@ -134,11 +133,6 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
             }
         }
         notifyNodeChanges();
-    }
-    
-    private boolean hierarchyRelevantChange(OWLAxiomChange change) {
-    	OWLAxiom axiom = change.getAxiom();
-    	return axiom instanceof OWLEquivalentClassesAxiom || axiom instanceof OWLSubClassOfAxiom;
     }
 
 
