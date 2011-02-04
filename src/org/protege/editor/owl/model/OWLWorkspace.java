@@ -262,20 +262,27 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
+    	boolean reasonerDirty = false;
+    	boolean ontologyIdsDirty = false;
         for (OWLOntologyChange chg : changes){
             if (chg instanceof SetOntologyID){
-                rebuildOntologiesMenu();
-                updateTitleBar();
-                break;
+            	ontologyIdsDirty = true;
             }
             else if (chg instanceof ImportChange) {
-                updateReasonerStatus(true);
+            	reasonerDirty = true;
             }
             else if (chg instanceof OWLAxiomChange && chg.getAxiom().isLogicalAxiom()) {
-                updateReasonerStatus(true);
+            	reasonerDirty = true;
             }
         }
-
+        
+        if (reasonerDirty) {
+            updateReasonerStatus(true);        	
+        }
+        if (ontologyIdsDirty) {
+            rebuildOntologiesMenu();
+            updateTitleBar();
+        }
         updateDirtyFlag();
     }
 
