@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,12 +17,10 @@ import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
@@ -106,18 +105,14 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         Set<OWLClass> oldTerminalElements = new HashSet<OWLClass>(rootFinder.getTerminalElements());
         Set<OWLClass> changedClasses = new HashSet<OWLClass>();
         changedClasses.add(root);
-        for (OWLOntologyChange change : changes) {
-            // only listen for changes on the appropriate ontologies
-            if (ontologies.contains(change.getOntology())){
-                if (change.isAxiomChange()) {
-                    updateImplicitRoots(change);
-                    for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
-                        if (entity instanceof OWLClass && !entity.equals(root)) {
-                            changedClasses.add((OWLClass) entity);
-                        }
-                    }
-                }
-            }
+        List<OWLAxiomChange> filteredChanges = filterIrrelevantChanges(changes);
+        updateImplicitRoots(filteredChanges);
+        for (OWLOntologyChange change : filteredChanges) {
+        	for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
+        		if (entity instanceof OWLClass && !entity.equals(root)) {
+        			changedClasses.add((OWLClass) entity);
+        		}
+        	}
         }
         for (OWLClass cls : changedClasses) {
             registerNodeChanged(cls);
@@ -134,6 +129,19 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         }
         notifyNodeChanges();
     }
+    
+    private List<OWLAxiomChange> filterIrrelevantChanges(List<? extends OWLOntologyChange> changes) {
+    	List<OWLAxiomChange> filteredChanges = new ArrayList<OWLAxiomChange>();
+    	for (OWLOntologyChange change : changes) {
+    		// only listen for changes on the appropriate ontologies
+    		if (ontologies.contains(change.getOntology())){
+    			if (change.isAxiomChange()) {
+    				filteredChanges.add((OWLAxiomChange) change);
+    			}
+    		}
+    	}
+    	return filteredChanges;
+    }
 
 
     private void registerNodeChanged(OWLClass node) {
@@ -149,22 +157,32 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     }
 
 
-    private void updateImplicitRoots(OWLOntologyChange change) {
-    	boolean remove = change instanceof RemoveAxiom;
-    	OWLAxiom axiom = change.getAxiom();
+    private void updateImplicitRoots(List<OWLAxiomChange> changes) {
     	Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>();
     	Set<OWLClass> notInOntologies = new HashSet<OWLClass>();
-    	for (OWLEntity entity : axiom.getSignature()) {
-    		if (!(entity instanceof OWLClass) || entity.equals(root)) {
-    			continue;
+    	
+    	for (OWLOntologyChange change : changes) {
+    		// only listen for changes on the appropriate ontologies
+    		if (ontologies.contains(change.getOntology())){
+    			if (change.isAxiomChange()) {
+    				boolean remove = change instanceof RemoveAxiom;
+    				OWLAxiom axiom = change.getAxiom();
+
+    				for (OWLEntity entity : axiom.getSignature()) {
+    					if (!(entity instanceof OWLClass) || entity.equals(root)) {
+    						continue;
+    					}
+    					OWLClass cls = (OWLClass) entity;
+    					if (remove && !containsReference(cls)) {
+    						notInOntologies.add(cls);
+    						continue;
+    					}
+    					possibleTerminalElements.add(cls);
+    				}
+    			}
     		}
-    		OWLClass cls = (OWLClass) entity;
-    		if (remove && !containsReference(cls)) {
-    		    notInOntologies.add(cls);
-    			continue;
-    		}
-    		possibleTerminalElements.add(cls);
     	}
+    	
     	possibleTerminalElements.addAll(rootFinder.getTerminalElements());
     	possibleTerminalElements.removeAll(notInOntologies);
     	rootFinder.findTerminalElements(possibleTerminalElements);
