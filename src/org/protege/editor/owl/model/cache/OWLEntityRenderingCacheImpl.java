@@ -74,13 +74,15 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
 
     private void processChanges(List<? extends OWLOntologyChange> changes) {
+    	Set<OWLEntity> changedEntities = new HashSet<OWLEntity>();
         for (OWLOntologyChange change : changes) {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
-                for (OWLEntity ent : chg.getEntities()) {
-                    updateRendering(ent);
-                }
+                changedEntities.addAll(chg.getEntities());
             }
+        }
+        for (OWLEntity ent : changedEntities) {
+            updateRendering(ent);
         }
     }
 
