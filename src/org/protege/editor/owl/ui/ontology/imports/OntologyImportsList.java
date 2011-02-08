@@ -120,8 +120,7 @@ public class OntologyImportsList extends MList {
         	for (ImportInfo importParameters : wizard.getImports()) {
         		IRI importLocation = importParameters.getImportLocation();
         		URI physicalLocation = importParameters.getPhysicalLocation();
-        		if (!importLocation.equals(IRI.create(physicalLocation)) &&
-        		        catalogManager.getRedirect(importLocation.toURI()) == null) {
+        		if (willRedirectTotheWrongPlace(catalogManager, importLocation, physicalLocation)) {
         		    addImportMapping(activeOntology, importLocation, IRI.create(physicalLocation));
         		}
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
@@ -152,6 +151,15 @@ public class OntologyImportsList extends MList {
         	}
             eKit.getModelManager().applyChanges(changes);
         }
+    }
+    
+    private boolean willRedirectTotheWrongPlace(OntologyCatalogManager catalogManager, IRI importLocation, URI physicalLocation) {
+    	if (catalogManager.getRedirect(importLocation.toURI()) == null) {
+    		return !importLocation.equals(IRI.create(physicalLocation));
+    	}
+    	else {
+    		return !physicalLocation.equals(catalogManager.getRedirect(importLocation.toURI()));
+    	}		
     }
     
     private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
