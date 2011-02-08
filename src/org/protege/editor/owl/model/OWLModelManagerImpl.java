@@ -422,6 +422,12 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
         IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
         manager.removeOntology(ont);
+        boolean wasTheActiveOntology = false;
+        if (ont == activeOntology) {
+        	wasTheActiveOntology = true;
+        	activeOntology = null;
+        }
+        dirtyOntologies.remove(ont);
         try {
             ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
         }
@@ -429,6 +435,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
             ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
             manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
             throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
+        }
+        if (wasTheActiveOntology) {
+        	activeOntology = ont;
         }
         rebuildActiveOntologiesCache();
         refreshRenderer();
