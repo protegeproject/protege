@@ -13,7 +13,7 @@
         <copy todir = "${protege.home}/Contents/Resources/Java">
             <fileset dir = "./osgi/felix/bin" includes="*.jar"/>
         </copy>
-
+        <copy todir = "${protege.home}/Contents/Resources/Java" file="${launcher}"/>
         <copy todir = "${protege.home}/Contents/Resources/Java/bundle">
             <fileset dir="./osgi/felix/bundles" includes="*.jar"/>
             <fileset dir = "./osgi/common" includes = "*.jar"/>

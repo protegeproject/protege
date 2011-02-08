@@ -73,7 +73,7 @@
     </target>
 
 	<!-- Apple -->
-    <target name="osx">
+    <target name="osx" depends="build.launcher">
 		<delete  dir="${protege.home}"/>
 		<mkdir dir="${protege.home}"/>
 		<ant antfile="osgi/build-osx.xml" target="install"/>
