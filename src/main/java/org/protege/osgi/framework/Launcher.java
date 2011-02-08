@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -18,6 +20,8 @@ import org.osgi.framework.launch.FrameworkFactory;
 
 
 public class Launcher {
+	public static final String PROTEGE_PROPERTIES_PROPERTY = "protege.properties";
+	
     public static final String ARG_PROPERTY = "command.line.arg.";
     
     private static final String[][] systemProperties = {
@@ -46,10 +50,7 @@ public class Launcher {
     private String     bundleDir;
     
     public Launcher() throws IOException {
-		Properties buildProperties = new Properties();
-		FileInputStream fis = new FileInputStream("build.properties");
-		buildProperties.load(fis);
-		fis.close();
+		Properties buildProperties = loadProtegeProperties();
 		
 		bundleDir    = buildProperties.getProperty("protege.common");
 		if (bundleDir == null) {
@@ -76,6 +77,28 @@ public class Launcher {
 		File frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
 		launchProperties.setProperty("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
 		frameworkDir.deleteOnExit();
+    }
+    
+    public Properties loadProtegeProperties() throws IOException {
+    	Properties buildProperties = new Properties();
+ 		File propertiesFile = null;
+ 		String specifiedPropertiesLocation = System.getProperty(PROTEGE_PROPERTIES_PROPERTY);
+ 		if (specifiedPropertiesLocation != null) {
+ 			propertiesFile = new File(specifiedPropertiesLocation);
+ 		}
+ 		else {
+ 			propertiesFile = new File("build.properties");
+ 		}
+ 		String protegeHome = propertiesFile.getAbsoluteFile().getParent();
+ 		FileInputStream fis = new FileInputStream("build.properties");
+ 		buildProperties.load(fis);
+ 		fis.close();
+ 		for (Entry<Object, Object> e : new HashSet<Entry<Object, Object>>(buildProperties.entrySet())) {
+ 			String key = (String) e.getKey();
+ 			String value = (String) e.getValue();
+ 			buildProperties.put(key, value.replace("${protege.home}", protegeHome));
+ 		}
+ 		return buildProperties;
     }
     
     public void start() throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException {
