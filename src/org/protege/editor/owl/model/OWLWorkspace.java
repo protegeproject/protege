@@ -305,7 +305,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         case ACTIVE_ONTOLOGY_CHANGED:
             updateTitleBar();
             updateReasonerStatus(false);
-            rebuildList();
+            rebuildOntologyDropDown();
             rebuildOntologiesMenu();
             ontologiesList.repaint();
             break;
@@ -326,6 +326,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             break;
         case ENTITY_RENDERER_CHANGED:
         case ONTOLOGY_RELOADED:
+            rebuildOntologyDropDown();
+            rebuildOntologiesMenu();
             refreshComponents();
             break;
         case ONTOLOGY_SAVED:
@@ -622,7 +624,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         ontologiesList = new JComboBox();
         ontologiesList.setToolTipText("Active ontology");
         ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
-        rebuildList();
+        rebuildOntologyDropDown();
 
 
         gbc.gridx = 1;
@@ -821,7 +823,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    private void rebuildList() {
+    private void rebuildOntologyDropDown() {
         try {
             TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(getOWLModelManager().getOWLObjectComparator());
             ts.addAll(getOWLModelManager().getOntologies());

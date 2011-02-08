@@ -423,7 +423,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
         manager.removeOntology(ont);
         boolean wasTheActiveOntology = false;
-        if (ont == activeOntology) {
+        if (ont.equals(activeOntology)) {
         	wasTheActiveOntology = true;
         	activeOntology = null;
         }
