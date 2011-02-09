@@ -3,16 +3,19 @@ package org.protege.editor.core.ui.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.util.Collection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.tabbedpane.ViewTabbedPane;
+import org.protege.editor.core.ui.util.UIUtil;
 
 
 /**
@@ -24,7 +27,8 @@ import org.protege.editor.core.ui.tabbedpane.ViewTabbedPane;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ViewHolder extends JComponent {
+public class ViewHolder extends JComponent implements Disposable {
+	public static final Logger LOGGER = Logger.getLogger(ViewHolder.class);
 
     /**
      * 
@@ -36,7 +40,6 @@ public class ViewHolder extends JComponent {
     private String loc;
 
     private JTabbedPane tabbedHolder;
-
 
     public ViewHolder(String id, String loc, JSplitPane sp) {
         this.loc = loc;
@@ -120,23 +123,13 @@ public class ViewHolder extends JComponent {
 
 
     private View getView(String id, Component c) {
-        if (c instanceof View) {
-            ((View) c).getId();
-            if (((View) c).getId().equals(id)) {
-                return (View) c;
-            }
-        }
-        // Carry on searching
-        if (c instanceof Container) {
-            Component [] children = ((Container) c).getComponents();
-            for (int i = 0; i < children.length; i++) {
-                View v = getView(id, children[i]);
-                if (v != null) {
-                    return v;
-                }
-            }
-        }
-        return null;
+    	Collection<View> views = UIUtil.getComponentsExtending(c, View.class);
+    	for (View view : views) {
+    		if (view.getId().equals(id)) {
+    			return view;
+    		}
+    	}
+    	return null;
     }
 
 
@@ -151,4 +144,10 @@ public class ViewHolder extends JComponent {
     public boolean containsView(String id) {
         return getView(id) != null;
     }
+    
+    public void dispose() {
+    	for (ViewContainer container : UIUtil.getComponentsExtending(this, ViewContainer.class)) {
+    		container.dispose();
+    	}
+	}
 }

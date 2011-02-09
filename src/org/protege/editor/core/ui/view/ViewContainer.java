@@ -10,7 +10,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
+import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.split.ViewSplitPane;
+import org.protege.editor.core.ui.util.UIUtil;
 
 
 /**
@@ -26,21 +29,19 @@ import org.protege.editor.core.ui.split.ViewSplitPane;
  * which is either a <code>View</code> or a split pane
  * which contains two <code>View</code>s.
  */
-public class ViewContainer extends JComponent {
+public class ViewContainer extends JComponent implements Disposable {
+	public static Logger LOGGER = Logger.getLogger(ViewContainer.class);
 
     /**
      * 
      */
     private static final long serialVersionUID = -1833840751733500882L;
-    // Debugging can be turned on (requires recompile)
-    // to show borders around the containers
-    public static final boolean DEBUG = false;
 
 
     public ViewContainer(View view) {
         setLayout(new BorderLayout());
         add(view);
-        if (DEBUG) {
+        if (LOGGER.isDebugEnabled()) {
             setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3),
                                                          BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED)));
         }
@@ -159,5 +160,12 @@ public class ViewContainer extends JComponent {
      */
     public Dimension getMinimumSize() {
         return new Dimension(10, 10);
+    }
+    
+    
+    public void dispose() {
+    	for (View view : UIUtil.getComponentsExtending(this, View.class)) {
+    		view.dispose();
+    	}
     }
 }
