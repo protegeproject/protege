@@ -1,8 +1,11 @@
 package org.protege.editor.core.ui.util;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Window;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -211,6 +214,28 @@ public class UIUtil {
         }
         else if (ret == JOptionPane.NO_OPTION){
             handler.openInNewWorkspace();
+        }
+    }
+    
+    public static <T> Collection<T> getComponentsExtending(Component component, Class<? extends T> clazz) {
+    	Collection<T> components = new ArrayList<T>();
+    	addComponentsExtending(component, clazz, components);
+    	return components;
+    }
+    
+    private static <T> void addComponentsExtending(Component component, Class<? extends T> clazz, Collection<T> components) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            int nSubcomponents = container.getComponentCount();
+            for (int i = 0; i < nSubcomponents; ++i) {
+                Component subComponent = container.getComponent(i);
+                if (clazz.isAssignableFrom(subComponent.getClass())) {
+                	components.add(clazz.cast(subComponent));
+                }
+                else {
+                	addComponentsExtending(subComponent, clazz, components);
+                }
+            }
         }
     }
 }
