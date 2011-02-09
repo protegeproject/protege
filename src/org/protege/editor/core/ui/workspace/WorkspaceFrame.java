@@ -35,7 +35,9 @@ import java.util.List;
  */
 public class WorkspaceFrame extends JFrame {
 
-    /**
+    private static final String VIEW = "Views";
+
+	/**
      * 
      */
     private static final long serialVersionUID = -8568184212386766789L;
@@ -170,7 +172,7 @@ public class WorkspaceFrame extends JFrame {
         MenuBuilder menuBuilder = new MenuBuilder(workspace.getEditorKit());
         setJMenuBar(menuBuilder.buildMenu());
         // Views menu - this is a special menu
-        final JMenu viewMenu = getMenu("View");
+        final JMenu viewMenu = getMenu(VIEW);
         viewMenu.addMenuListener(new MenuListener() {
 
             public void menuSelected(MenuEvent e) {
@@ -226,7 +228,7 @@ public class WorkspaceFrame extends JFrame {
         }
 
         // Create a sub menu for each category
-        final JMenu viewMenu = getMenu("View");
+        final JMenu viewMenu = getMenu(VIEW);
 
         List<String> categories = new ArrayList<String>();
         categories.addAll(categoriesMap.keySet());
