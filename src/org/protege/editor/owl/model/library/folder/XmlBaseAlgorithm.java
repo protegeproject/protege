@@ -43,6 +43,14 @@ public class XmlBaseAlgorithm implements Algorithm {
         catch (Throwable t) {
             ;
         }
+        finally {
+        	try {
+        		is.close();
+        	}
+        	catch (Throwable t) {
+        		;
+        	}
+        }
         if (xmlBase == null) {
             return Collections.emptySet();
         }
