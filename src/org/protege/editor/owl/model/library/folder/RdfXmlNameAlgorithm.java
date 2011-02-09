@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.library.folder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,8 +33,10 @@ public class RdfXmlNameAlgorithm implements Algorithm {
             consumer.addOntologyProperty(property);
         }
         RDFParser parser = new RDFParser();
+        InputStream fis = null;
         try {
-            InputSource is = new InputSource(new FileInputStream(f));
+        	fis = new FileInputStream(f);
+            InputSource is = new InputSource(fis);
             is.setSystemId(f.toURI().toString());
             parser.parse(is, consumer);
         }
@@ -47,6 +50,14 @@ public class RdfXmlNameAlgorithm implements Algorithm {
                 log.debug("Exception caught trying to extract ontology from rdf file at  " + f, t);
             }
             return Collections.emptySet();
+        }
+        finally {
+        	try {
+        		fis.close();
+        	}
+        	catch (Throwable t) {
+        		;
+        	}
         }
         OWLOntologyID id = consumer.getOntologyID();
         Set<URI> results = new HashSet<URI>();
