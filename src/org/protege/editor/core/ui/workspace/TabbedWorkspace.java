@@ -486,6 +486,7 @@ public abstract class TabbedWorkspace extends Workspace {
     /**
      * Disposes of the tabbed workspace.  This removes any tabs in the workspace and disposes of them.
      */
+    @Override
     public void dispose() {
         save();
         // Remove the tabs and call their dispose method
@@ -499,6 +500,7 @@ public abstract class TabbedWorkspace extends Workspace {
         }
         workspaceTabs.clear();
         tabbedPane.removeAll();
+        super.dispose();
     }
 
 

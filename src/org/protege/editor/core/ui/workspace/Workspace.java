@@ -73,7 +73,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     public static final int LEFT_RESULTS_VIEW = 1;
 
-    private static final Logger logger = Logger.getLogger(Workspace.class);
+    public static final Logger LOGGER = Logger.getLogger(Workspace.class);
 
     public static final String FILE_MENU_NAME = "File";
     public static final String WINDOW_MENU_NAME = "Window";
@@ -281,9 +281,9 @@ public abstract class Workspace extends JComponent implements Disposable {
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
 
         } catch (ClassNotFoundException e) {
-            logger.warn("Look and feel not found: " + lafName);
+            LOGGER.warn("Look and feel not found: " + lafName);
         } catch (Exception e) {
-            logger.warn(e.toString());
+            LOGGER.warn(e.toString());
         }
     }
 
@@ -296,7 +296,7 @@ public abstract class Workspace extends JComponent implements Disposable {
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, clsName);
         }
         catch (Exception e1) {
-            logger.error("Exception caught setting look and feel ", e1);
+            LOGGER.error("Exception caught setting look and feel ", e1);
         }
     }
 
@@ -380,7 +380,10 @@ public abstract class Workspace extends JComponent implements Disposable {
     }
 
 
-    public abstract void dispose() throws Exception;
+    public void dispose() {
+    	leftResultsViewHolder.dispose();
+    	bottomResultsViewHolder.dispose();
+    }
 
 
     protected String getTitle() {
