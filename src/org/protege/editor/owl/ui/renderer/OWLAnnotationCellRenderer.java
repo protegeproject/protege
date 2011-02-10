@@ -56,7 +56,7 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
         activeOntologyFont = normalFont.deriveFont(Font.BOLD);
 
         annotationContentArea = new JTextArea();
-        annotationContentArea.setFont(new Font("lucida grande", Font.PLAIN, 12));
+        annotationContentArea.setFont(new Font("Dialog", Font.PLAIN, 12));
         annotationContentArea.setLineWrap(true);
         annotationContentArea.setWrapStyleWord(true);
         annotationContentArea.setOpaque(false);
