@@ -116,11 +116,22 @@ public class MenuBuilder {
                 // Construct dynamic menu.  This is basically
                 // a menu, whose children are determined at runtime.
                 final JMenu menu = new JMenu(plugin.getName());
-                menu.add(new JMenuItem());
                 component.add(menu);
                 try {
                     // The menu must be a dynamic action menu.
                     final ProtegeDynamicAction action = (ProtegeDynamicAction) plugin.newInstance();
+                    
+                    //TT: This can be avoided by adding the method in the interface. Is it fine to change the interface?
+                    try {
+                        Method m = action.getClass().getMethod("setMenu", JMenu.class);
+                        m.invoke(action, menu);
+                    }
+                    catch (Throwable t) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Action " + action + " is not requesting a menu item" + t);
+                        }
+                    }
+               
                     menu.addMenuListener(new MenuListener() {
                         public void menuSelected(MenuEvent e) {
                             // Rebuild the menu
@@ -137,6 +148,7 @@ public class MenuBuilder {
 
                         }
                     });
+                    actions.add(action);
                 }
                 catch (Exception e) {
                     logger.error(e);
