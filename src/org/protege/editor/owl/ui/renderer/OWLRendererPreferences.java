@@ -278,6 +278,15 @@ public class OWLRendererPreferences {
     public RendererPlugin getRendererPlugin() {
     	return currentRendererPlugin;
     }
+    
+    public RendererPlugin getRendererPluginByClassName(String javaClassName) {
+    	for (RendererPlugin plugin : getRendererPlugins()) {
+			if (plugin.getRendererClassName().equals(javaClassName)) {
+				return plugin;
+			}
+		}
+    	return null;
+    }
 
     public void setRendererPlugin(RendererPlugin plugin) {
 	    String rendererClass = plugin.getRendererClassName();
