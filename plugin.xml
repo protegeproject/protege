@@ -101,39 +101,40 @@
     
     <extension id="ui.render.menu.byid"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Render by id"/>
-        <toolTip value="Render by entity rdf:id"/>
+        <name value="Render by name (rdf:id)"/>
+        <toolTip value="Render entity by name (rdf:id)"/>
         <path value="org.protege.editor.owl.ui.render.menu/SlotA-A"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderById"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
 
-
     <extension id="ui.render.menu.bylabel"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Render by label"/>
-        <toolTip value="Render by entity rdfs:label"/>
+        <name value="Render by label (rdfs:label)"/>
+        <toolTip value="Render entity by the values of rdfs:label"/>
         <path value="org.protege.editor.owl.ui.render.menu/SlotA-B"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderByLabel"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
     
-    <extension id="ui.render.menu.byqname"
+    <extension id="ui.render.menu.byprop"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Render by qualified name"/>
-        <toolTip value="Render by entity rdf:id"/>
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-C"/>
-        <class value="org.protege.editor.owl.ui.renderer.menu.RenderByQualifiedName"/>
+        <name value="Render by annotation property"/>
+        <toolTip value="Render entity by the values of an annotation property"/>
+        <path value="org.protege.editor.owl.ui.render.menu/SlotA-D"/>
+        <class value="org.protege.editor.owl.ui.renderer.menu.RenderByProperty"/>
         <editorKitId value="OWLEditorKit"/>
+        <dynamic value="true"/>
         <checkbox value="true"/>
     </extension>
-    
+            
     <extension id="ui.render.menu.byconfigure"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Custom rendering..."/>
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-D"/>
+        <toolTip value="Open the rendering configuration panel" />
+        <path value="org.protege.editor.owl.ui.render.menu/SlotA-E"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.ConfigureRenderer"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
