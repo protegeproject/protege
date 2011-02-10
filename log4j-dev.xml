@@ -24,16 +24,6 @@
 
   <!-- Debugging session specific settings -->
 
-  <!-- Debugging the ViewHolder: there are still some mysteries -->
-
-  <category name="org.protege.editor.core.ui.view.ViewHolder">
-    <priority value="debug"/>
-  </category>
-
-  <category name="org.protege.editor.core.ui.workspace.Workspace">
-    <priority value="debug"/>
-  </category>
-
 
   <!-- End of Debugging session specific settings -->
 
