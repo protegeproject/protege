@@ -17,7 +17,7 @@ public class ListenerManager<L extends Object> {
 
     private Map<L, StackTraceElement []> listenerMap;
 
-    private static final int TRACE_DEPTH = 3;
+    private static final int TRACE_DEPTH = 10;
 
     private static final int TRACE_START = 3;
 
