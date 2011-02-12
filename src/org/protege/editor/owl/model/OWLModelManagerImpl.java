@@ -41,8 +41,6 @@ import org.protege.editor.owl.model.io.OntologySourcesManager;
 import org.protege.editor.owl.model.io.UserResolvedIRIMapper;
 import org.protege.editor.owl.model.io.WebConnectionIRIMapper;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
-import org.protege.editor.owl.model.selection.ontologies.AllLoadedOntologiesSelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
@@ -216,14 +214,13 @@ public class OWLModelManagerImpl extends AbstractModelManager
         owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
 
         activeOntologies = new HashSet<OWLOntology>();
+        
+        //needs to be initialized
+        activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
         getOWLEntityRenderer();
-
-        registerOntologySelectionStrategy(new ActiveOntologySelectionStrategy(this));
-        registerOntologySelectionStrategy(new AllLoadedOntologiesSelectionStrategy(this));
-        registerOntologySelectionStrategy(activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this));
 
         XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
 
@@ -677,14 +674,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
 
 
-    private void registerOntologySelectionStrategy(OntologySelectionStrategy strategy) {
+    public void registerOntologySelectionStrategy(OntologySelectionStrategy strategy) {
         ontSelectionStrategies.add(strategy);
     }
 
 
     private void rebuildActiveOntologiesCache() {
-        activeOntologies.clear();
-        activeOntologies.addAll(activeOntologiesStrategy.getOntologies());
+        activeOntologies.clear();       
+        activeOntologies.addAll(activeOntologiesStrategy.getOntologies());        
     }
 
 
