@@ -70,8 +70,10 @@
         <index value="D"/>
     </extension>
 
+	
+	<!-- View menu -->
 
-    <!-- Renderer prefs -->
+    <!-- Renderer prefs in View menu-->
 
     <extension id="ui.preferences.renderer"
                point="org.protege.editor.core.application.preferencespanel">
@@ -91,53 +93,97 @@
         <class value="org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel"/>
     </extension>
     
-    <extension id="ui.render.menu"
+    <extension id="ui.view.menu"
     		   point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Render"/>
+        <name value="View"/>
         <toolTip value="Set Entity Rendering"/>
         <path value="/SlotCR-A"/>
 	    <editorKitId value="OWLEditorKit"/>
     </extension>
     
-    <extension id="ui.render.menu.byid"
+    <extension id="ui.view.menu.byid"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by name (rdf:id)"/>
         <toolTip value="Render entity by name (rdf:id)"/>
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-A"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-A"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderById"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
 
-    <extension id="ui.render.menu.bylabel"
+    <extension id="ui.view.menu.bylabel"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by label (rdfs:label)"/>
         <toolTip value="Render entity by the values of rdfs:label"/>
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-B"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-B"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderByLabel"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
     
-    <extension id="ui.render.menu.byprop"
+    <extension id="ui.view.menu.byprop"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by annotation property"/>
         <toolTip value="Render entity by the values of an annotation property"/>
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-D"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-C"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderByProperty"/>
         <editorKitId value="OWLEditorKit"/>
         <dynamic value="true"/>
         <checkbox value="true"/>
     </extension>
             
-    <extension id="ui.render.menu.byconfigure"
+    <extension id="ui.view.menu.byconfigure"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Custom rendering..."/>
         <toolTip value="Open the rendering configuration panel" />
-        <path value="org.protege.editor.owl.ui.render.menu/SlotA-E"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-D"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.ConfigureRenderer"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+
+
+	<!-- Active ontology strategies in View menu-->
+
+    <extension id="ontologies.activeontology"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show only the active ontology"/>
+        <class value="org.protege.editor.owl.ui.action.ActiveOntologyStrategyAction"/>
+        <toolTip value="Only the active ontology is visible"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAB-C"/>
+        <editorKitId value="OWLEditorKit"/>
+        <radiobutton value="true"/>
+    </extension>
+
+    <extension id="ontologies.importsclosure"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show the imports closure of the active ontology"/>
+        <class value="org.protege.editor.owl.ui.action.ImportsClosureOntologyStrategyAction"/>
+        <toolTip value="Ontologies that are in the imports closure of the active ontology are visible"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAB-A"/>
+        <editorKitId value="OWLEditorKit"/>
+        <radiobutton value="true"/>
+    </extension>
+
+    <extension id="ontologies.allontologies"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show all loaded ontologies"/>
+        <class value="org.protege.editor.owl.ui.action.AllOntologiesStrategyAction"/>
+        <toolTip value="All loaded ontologies are visible"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAB-B"/>
+        <editorKitId value="OWLEditorKit"/>
+        <radiobutton value="true"/>
+    </extension>
+
+    <!--extension id="ontologies.visibilitymanager"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show user selected ontologies..."/>
+        <class value="org.protege.editor.owl.ui.action.VisibilityManagerOntologySelectionStrategyAction"/>
+        <toolTip value="User selected ontologies are visible"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAB-D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension--> 
+
+
 
     <!-- Entity Renderers -->
     
@@ -1018,53 +1064,6 @@
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
-
-
-    <!-- Ontologies menu -->
-
-    <extension id="menu.OntologyMenu"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Ontologies"/>
-        <toolTip value="Set ontology visibility"/>
-        <path value="/SlotC-A"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <!--extension id="ontologies.activeontology"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show only the active ontology"/>
-        <class value="org.protege.editor.owl.ui.action.ActiveOntologyStrategyAction"/>
-        <toolTip value="Only the active ontology is visible"/>
-        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-A"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <extension id="ontologies.importsclosure"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show the imports closure of the active ontology"/>
-        <class value="org.protege.editor.owl.ui.action.ImportsClosureOntologyStrategyAction"/>
-        <toolTip value="Ontologies that are in the imports closure of the active ontology are visible"/>
-        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-B"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <extension id="ontologies.allontologies"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show all loaded ontologies"/>
-        <class value="org.protege.editor.owl.ui.action.AllOntologiesStrategyAction"/>
-        <toolTip value="All loaded ontologies are visible"/>
-        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-C"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension-->
-
-    <!--extension id="ontologies.visibilitymanager"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show user selected ontologies..."/>
-        <class value="org.protege.editor.owl.ui.action.VisibilityManagerOntologySelectionStrategyAction"/>
-        <toolTip value="User selected ontologies are visible"/>
-        <path value="org.protege.editor.owl.menu.OntologyMenu/SlotA-D"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension-->
 
     <!-- Reasoner menu - built automatically -->
 
