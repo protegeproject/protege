@@ -191,6 +191,9 @@ public interface OWLModelManager extends ModelManager {
 
     void setActiveOntologiesStrategy(OntologySelectionStrategy strategy);
 
+             
+    void registerOntologySelectionStrategy(OntologySelectionStrategy strategy);
+    
 
     OntologySelectionStrategy getActiveOntologiesStrategy();
 
