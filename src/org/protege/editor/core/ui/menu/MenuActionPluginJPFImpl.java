@@ -45,6 +45,8 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
     private static final String DYNAMIC_PARAM = "dynamic";
     
     private static final String CHECKBOX_PARAM = "checkbox";
+    
+    private static final String RADIOBUTTON_PARAM = "radiobutton";
 
     private String parentId;
 
@@ -120,9 +122,17 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
         return PropertyUtil.getBoolean(getPluginProperty(DYNAMIC_PARAM), false);
     }
 
-
+    @Deprecated
     public boolean isJCheckBox() {
+        return isCheckBox();
+    }
+
+    public boolean isCheckBox() {
         return PropertyUtil.getBoolean(getPluginProperty(CHECKBOX_PARAM), false);
+    }
+    
+    public boolean isRadioButton() {
+        return PropertyUtil.getBoolean(getPluginProperty(RADIOBUTTON_PARAM), false);
     }
 
 
