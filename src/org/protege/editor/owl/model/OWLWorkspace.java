@@ -19,7 +19,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
@@ -71,8 +69,6 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.inference.NoOpReasoner;
-import org.protege.editor.owl.model.inference.NoOpReasonerInfo;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
@@ -85,12 +81,11 @@ import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
-import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
-import org.protege.editor.owl.ui.inference.PrecomputeAction;
 import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
+import org.protege.editor.owl.ui.inference.PrecomputeAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
@@ -116,7 +111,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -279,8 +273,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         if (reasonerDirty) {
             updateReasonerStatus(true);        	
         }
-        if (ontologyIdsDirty) {
-            rebuildOntologiesMenu();
+        if (ontologyIdsDirty) {            
             updateTitleBar();
         }
         updateDirtyFlag();
@@ -305,8 +298,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         case ACTIVE_ONTOLOGY_CHANGED:
             updateTitleBar();
             updateReasonerStatus(false);
-            rebuildOntologyDropDown();
-            rebuildOntologiesMenu();
+            rebuildOntologyDropDown();            
             ontologiesList.repaint();
             break;
         case ONTOLOGY_CLASSIFIED:
@@ -326,8 +318,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             break;
         case ENTITY_RENDERER_CHANGED:
         case ONTOLOGY_RELOADED:
-            rebuildOntologyDropDown();
-            rebuildOntologiesMenu();
+            rebuildOntologyDropDown();            
             refreshComponents();
             break;
         case ONTOLOGY_SAVED:
@@ -447,8 +438,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
 
-        ontologiesMenu = getOntologiesMenu(menuBar);
-        rebuildOntologiesMenu();
+        ontologiesMenu = getOntologiesMenu(menuBar);       
         rebuildReasonerMenu(menuBar);
         addReasonerListener(menuBar);
         updateTitleBar();
@@ -468,45 +458,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         });
     }
 
-
-    private void rebuildOntologiesMenu() {
-        if (ontologiesMenu != null){ // make sure the UI has been created before
-
-            final OWLModelManager mngr = getOWLModelManager();
-
-            ontologiesMenu.removeAll();
-            ButtonGroup selButtons = new ButtonGroup();
-            for (final OntologySelectionStrategy sel : mngr.getActiveOntologiesStrategies()){
-                JRadioButtonMenuItem item = new JRadioButtonMenuItem(sel.getName());
-                item.setSelected(mngr.getActiveOntologiesStrategy().equals(sel));
-                item.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent event) {
-                        mngr.setActiveOntologiesStrategy(sel);
-                    }
-                });
-                selButtons.add(item);
-                ontologiesMenu.add(item);
-
-            }
-
-            ontologiesMenu.addSeparator();
-            ButtonGroup ontButtons = new ButtonGroup();
-            Set<OWLOntology> orderedOntologies = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
-            orderedOntologies.addAll(mngr.getOntologies());
-            for (final OWLOntology ont : orderedOntologies){
-                JMenuItem item = new JRadioButtonMenuItem(mngr.getRendering(ont));
-                item.setToolTipText(ont.getOntologyID().toString());
-                item.setSelected(ont.equals(mngr.getActiveOntology()));
-                item.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent event) {
-                        mngr.setActiveOntology(ont);
-                    }
-                });
-                ontButtons.add(item);
-                ontologiesMenu.add(item);
-            }
-        }
-    }
     
     private void rebuildReasonerMenu(JMenuBar menuBar) {
         final OWLModelManager mngr = getOWLModelManager();
