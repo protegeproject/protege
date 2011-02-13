@@ -34,6 +34,15 @@ public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrame
                 editedObject));
     }
 
+    @Override
+    public boolean isEditable() {
+    	return getAxiom().getProperties().size() <= 2;
+    }
+    
+    @Override
+    public boolean isDeleteable() {
+    	return true;
+    }
 
     protected OWLObjectEditor<OWLDataProperty> getObjectEditor() {
         final OWLDataPropertyEditor editor = new OWLDataPropertyEditor(getOWLEditorKit());
