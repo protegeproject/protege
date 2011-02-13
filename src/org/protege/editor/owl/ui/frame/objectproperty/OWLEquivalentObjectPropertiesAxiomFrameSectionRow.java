@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyExpressionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
@@ -23,44 +23,52 @@ import org.semanticweb.owlapi.util.CollectionFactory;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectProperty> {
+public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression> {
 
     public OWLEquivalentObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
                                                              OWLOntology ontology, OWLObjectProperty rootObject,
                                                              OWLEquivalentObjectPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
+    
+    @Override
+    public boolean isEditable() {
+    	return getAxiom().getProperties().size() <= 2;
+    }
+    
+    @Override
+    public boolean isDeleteable() {
+    	return true;
+    }
 
 
-    protected OWLObjectEditor<OWLObjectProperty> getObjectEditor() {
-        final OWLObjectPropertyEditor editor = new OWLObjectPropertyEditor(getOWLEditorKit());
+    protected OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
+        final OWLObjectPropertyExpressionEditor editor = new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
         final Set<OWLObjectPropertyExpression> equivs =
                 new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
         equivs.remove(getRootObject());
         if (equivs.size() == 1){
             final OWLObjectPropertyExpression p = equivs.iterator().next();
-            if (!p.isAnonymous()){
-                editor.setEditedObject(p.asOWLObjectProperty());
-           }
+            editor.setEditedObject(p);
         }
         return editor;    
     }
     
     @Override
-    public boolean checkEditorResults(OWLObjectEditor<OWLObjectProperty> editor) {
-    	Set<OWLObjectProperty> equivalents = editor.getEditedObjects();
+    public boolean checkEditorResults(OWLObjectEditor<OWLObjectPropertyExpression> editor) {
+    	Set<OWLObjectPropertyExpression> equivalents = editor.getEditedObjects();
     	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
     }
     
     @Override
-    public void handleEditingFinished(Set<OWLObjectProperty> editedObjects) {
-    	editedObjects = new HashSet<OWLObjectProperty>(editedObjects);
+    public void handleEditingFinished(Set<OWLObjectPropertyExpression> editedObjects) {
+    	editedObjects = new HashSet<OWLObjectPropertyExpression>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
 
 
-    protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectProperty editedObject) {
+    protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectPropertyExpression editedObject) {
         return getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(CollectionFactory.createSet(getRoot(),
                                                                                                      editedObject));
     }
