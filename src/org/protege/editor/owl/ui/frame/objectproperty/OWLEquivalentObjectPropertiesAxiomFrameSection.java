@@ -1,23 +1,22 @@
 package org.protege.editor.owl.ui.frame.objectproperty;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyExpressionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.CollectionFactory;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -26,7 +25,7 @@ import java.util.Set;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectProperty> {
+public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression> {
 
     public static final String LABEL = "Equivalent object properties";
 
@@ -81,7 +80,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     }
 
 
-    protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectProperty object) {
+    protected OWLEquivalentObjectPropertiesAxiom createAxiom(OWLObjectPropertyExpression object) {
         return getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(CollectionFactory.createSet(getRootObject(),
                                                                                                      object));
     }
@@ -94,19 +93,19 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     }
 
 
-    public OWLObjectEditor<OWLObjectProperty> getObjectEditor() {
-        return new OWLObjectPropertyEditor(getOWLEditorKit());
+    public OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
+        return new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
     }
     
     @Override
-    public boolean checkEditorResults(OWLObjectEditor<OWLObjectProperty> editor) {
-    	Set<OWLObjectProperty> equivalents = editor.getEditedObjects();
+    public boolean checkEditorResults(OWLObjectEditor<OWLObjectPropertyExpression> editor) {
+    	Set<OWLObjectPropertyExpression> equivalents = editor.getEditedObjects();
     	return equivalents.size() != 1 || !equivalents.contains(getRootObject());
     }
     
     @Override
-    public void handleEditingFinished(Set<OWLObjectProperty> editedObjects) {
-    	editedObjects = new HashSet<OWLObjectProperty>(editedObjects);
+    public void handleEditingFinished(Set<OWLObjectPropertyExpression> editedObjects) {
+    	editedObjects = new HashSet<OWLObjectPropertyExpression>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
@@ -125,7 +124,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectProperty>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression>> getRowComparator() {
         return null;
     }
 }
