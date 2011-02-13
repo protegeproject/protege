@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClassExpression, OWLEquivalentClassesAxiom, OWLClassExpression> {
 
-    public OWLEquivalentClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLEquivalentClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClassExpression, OWLEquivalentClassesAxiom, OWLClassExpression> section,
                                                     OWLOntology ontology, OWLClassExpression rootObject,
                                                     OWLEquivalentClassesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
@@ -37,11 +37,22 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
         return new ArrayList<OWLClassExpression>(clses);
     }
 
-
+    public boolean isEditable() {
+        Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
+        descs.remove(getRoot());
+        return descs.size() == 1;
+    }
+    
+    @Override
+    public boolean isDeleteable() {
+    	return true;
+    }
+    
     protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
         descs.remove(getRoot());
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES);
+        return descs.size() == 1 ? getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES)
+        		: null;
     }
     
     public boolean checkEditorResults(OWLObjectEditor<OWLClassExpression> editor) {
