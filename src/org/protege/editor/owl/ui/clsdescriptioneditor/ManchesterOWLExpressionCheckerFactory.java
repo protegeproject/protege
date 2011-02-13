@@ -74,4 +74,8 @@ public class ManchesterOWLExpressionCheckerFactory implements OWLExpressionCheck
     public OWLExpressionChecker<Set<OWLPropertyExpression>> getPropertySetChecker() {
         return new OWLPropertySetChecker(mngr);
     }
+    
+    public OWLExpressionChecker<Set<OWLObjectPropertyExpression>> getObjectPropertySetChecker() {
+    	return new OWLObjectPropertySetChecker(mngr);
+    }
 }
