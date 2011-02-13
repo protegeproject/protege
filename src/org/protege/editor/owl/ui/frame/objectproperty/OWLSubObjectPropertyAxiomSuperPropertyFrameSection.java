@@ -7,7 +7,7 @@ import java.util.Set;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.protege.editor.owl.ui.editor.OWLObjectPropertyEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyExpressionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
@@ -23,7 +23,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectProperty> {
+public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectPropertyExpression> {
 
     public static final String LABEL = "Super properties";
 
@@ -78,13 +78,13 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
     }
 
 
-    protected OWLSubObjectPropertyOfAxiom createAxiom(OWLObjectProperty object) {
+    protected OWLSubObjectPropertyOfAxiom createAxiom(OWLObjectPropertyExpression object) {
         return getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(), object);
     }
 
 
-    public OWLObjectEditor<OWLObjectProperty> getObjectEditor() {
-        return new OWLObjectPropertyEditor(getOWLEditorKit());
+    public OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
+        return new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
     }
 
 
@@ -101,7 +101,7 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
-    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectProperty>> getRowComparator() {
+    public Comparator<OWLFrameSectionRow<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectPropertyExpression>> getRowComparator() {
         return null;
     }
 }
