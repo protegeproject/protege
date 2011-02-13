@@ -64,6 +64,8 @@ public interface OWLFrameSectionRow<R, A extends OWLAxiom, E> extends OWLFrameOb
      *         if the row is not editable.
      */
     boolean isEditable();
+    
+    boolean isDeleteable();
 
 
     public boolean isInferred();
