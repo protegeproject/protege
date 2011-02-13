@@ -48,4 +48,6 @@ public interface OWLExpressionCheckerFactory {
     OWLExpressionChecker<SWRLRule> getSWRLChecker();
 
     OWLExpressionChecker<Set<OWLPropertyExpression>> getPropertySetChecker();
+    
+    OWLExpressionChecker<Set<OWLObjectPropertyExpression>> getObjectPropertySetChecker();
 }
