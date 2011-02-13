@@ -1,37 +1,19 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.Dimension;
+import java.util.Set;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-
-import javax.swing.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 /**
  * Author: drummond<br>
@@ -39,69 +21,61 @@ import java.util.Set;
  * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
- * Date: Apr 6, 2009<br><br>
+ * Date: Jun 4, 2009<br><br>
  */
-public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLObjectProperty>> implements VerifiedInputEditor {
+public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLObjectPropertyExpression>> implements VerifiedInputEditor {
 
-    private OWLObjectPropertySelectorPanel editor;
-
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
-    
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
-    
-    public OWLObjectPropertySetEditor(OWLEditorKit owlEditorKit) {
-        editor = new OWLObjectPropertySelectorPanel(owlEditorKit);
-        editor.addStatusChangedListener(inputListener);
-    }
+    private ExpressionEditor<Set<OWLObjectPropertyExpression>> editor;
 
 
-    public Set<OWLObjectProperty> getEditedObject() {
-        return editor.getSelectedObjects();
-    }
-
-
-    public boolean setEditedObject(Set<OWLObjectProperty> p){
-        editor.setSelection(p != null ? p : Collections.EMPTY_SET);
-        return true;
+    public OWLObjectPropertySetEditor(OWLEditorKit eKit) {
+        OWLExpressionChecker<Set<OWLObjectPropertyExpression>> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getObjectPropertySetChecker();
+        editor = new ExpressionEditor<Set<OWLObjectPropertyExpression>>(eKit, checker);
+        editor.setPreferredSize(new Dimension(300, 200));
     }
 
 
     public String getEditorTypeName() {
-        return "Set of Object Properties";
+        return "Set of properties";
     }
 
 
     public boolean canEdit(Object object) {
-        return checkSet(object, OWLObjectProperty.class);
+        return checkSet(object, OWLPropertyExpression.class);
     }
 
 
     public JComponent getEditorComponent() {
         return editor;
     }
-    
-    private void handleVerifyEditorContents() {
-    	for (InputVerificationStatusChangedListener l : listeners){
-    		l.verifiedStatusChanged(true);
-    	}
-    }
-    
-    public void addStatusChangedListener(InputVerificationStatusChangedListener l) {
-        listeners.add(l);
-        l.verifiedStatusChanged(true);
+
+
+    public Set<OWLObjectPropertyExpression> getEditedObject() {
+        try {
+            return editor.createObject();
+        }
+        catch (OWLException e) {
+            throw new OWLRuntimeException(e);
+        }
     }
 
 
-    public void removeStatusChangedListener(InputVerificationStatusChangedListener l) {
-        listeners.remove(l);
+    public boolean setEditedObject(Set<OWLObjectPropertyExpression> editedObject) {
+        editor.setExpressionObject(editedObject);
+        return true;
     }
 
 
     public void dispose() {
-        editor.dispose();
+    }
+
+
+    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        editor.addStatusChangedListener(listener);
+    }
+
+
+    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+        editor.removeStatusChangedListener(listener);
     }
 }
