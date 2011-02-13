@@ -24,7 +24,8 @@ import java.util.Set;
 public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClassExpression, OWLDisjointClassesAxiom, Set<OWLClassExpression>> {
 
 
-    public OWLDisjointClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLDisjointClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    											  OWLFrameSection<OWLClassExpression, OWLDisjointClassesAxiom, Set<OWLClassExpression>> section,
                                                   OWLOntology ontology, OWLClassExpression rootObject,
                                                   OWLDisjointClassesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
