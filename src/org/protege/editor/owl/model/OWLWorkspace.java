@@ -733,7 +733,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    protected CustomWorkspaceTabsManager getCustomTabsManager() {
+    public CustomWorkspaceTabsManager getCustomTabsManager() {
         return new OWLCustomWorkspaceTabsManager();
     }
 
