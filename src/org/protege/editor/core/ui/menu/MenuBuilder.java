@@ -123,16 +123,8 @@ public class MenuBuilder {
 		try {
 			// The menu must be a dynamic action menu.
 			final ProtegeDynamicAction action = (ProtegeDynamicAction) plugin.newInstance();                    
-			//TT: This can be avoided by adding the method in the interface. Is it fine to change the interface?
-			try {
-				Method m = action.getClass().getMethod("setMenu", JMenu.class);
-				m.invoke(action, menu);
-			}
-			catch (Throwable t) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Action " + action + " is not requesting a menu item" + t);
-				}
-			}
+
+			invokeDynamicMenuMethods(action, menu);
 
 			menu.addMenuListener(getDynamicMenuListener(menu, action));
 			actions.add(action);
@@ -140,9 +132,8 @@ public class MenuBuilder {
 		catch (Exception e) {
 			logger.error(e);
 		}
-	}   
-
-
+	}
+	
 	private void buildInnerMenu(MenuActionPlugin plugin, JComponent menuContainer) {
 		try {
 			ProtegeAction action = plugin.newInstance();
@@ -151,28 +142,22 @@ public class MenuBuilder {
 			ks = fixAcceleratorForMacOSX(ks);
 			menuItem.setAccelerator(ks);
 			menuContainer.add(menuItem);
+			
+			invokeInnerMenuMethods(action, menuItem, menuContainer);
 
-			try {
-				Method m = action.getClass().getMethod("setMenuItem", JMenuItem.class);
-				m.invoke(action, menuItem);
-			}
-			catch (Throwable t) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Action " + action + " is not requesting a menu item" + t);
-				}
-			}
 			actions.add(action);
 		}
 		catch (Exception e) {
 			logger.error(e);
 		}
 	}
-
+	
 	private void buildTopLevelMenu(MenuActionPlugin plugin, JComponent menuContainer) {
 		// This is a top level menu.  It is probably a place holder, so add it.
 		JMenu menu = new JMenu(plugin.getName());
 		menuContainer.add(menu);	    
 	}
+
 
 	private JMenuItem createMenuItem(MenuActionPlugin plugin, ProtegeAction action) {
 		if (plugin.isCheckBox()) {
@@ -187,7 +172,8 @@ public class MenuBuilder {
 		}
 		return new JMenuItem(action);
 	}
-	
+
+
 	private ButtonGroup getButtonGroup(MenuActionPlugin plugin) {
 		String group = plugin.getGroup();
 		if (group == null) {
@@ -200,6 +186,7 @@ public class MenuBuilder {
 		}
 		return buttonGroup;
 	}
+
 
 	private KeyStroke fixAcceleratorForMacOSX(KeyStroke ks) {
 		// A nasty hack here.  Mac users have complained that the standard
@@ -216,16 +203,53 @@ public class MenuBuilder {
 		return ks;
 	}
 
+
 	private MenuListener getDynamicMenuListener(final JMenu menu, final ProtegeDynamicAction action) {
 		return new MenuListener() {
 			public void menuSelected(MenuEvent e) {
 				menu.removeAll();
 				action.rebuildChildMenuItems(menu);
 			}
-
+	
 			public void menuDeselected(MenuEvent e) {}
 			public void menuCanceled(MenuEvent e) {}
 		};
+	}
+
+
+	private void invokeDynamicMenuMethods(ProtegeDynamicAction action, JMenu menu) {
+		//TT: This can be avoided by adding the method in the interface. Is it fine to change the interface?
+		try {
+			Method m = action.getClass().getMethod("setMenu", JMenu.class);
+			m.invoke(action, menu);
+		}
+		catch (Throwable t) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Action " + action + " is not requesting a menu item" + t);
+			}
+		}
+	}
+
+
+	private void invokeInnerMenuMethods(ProtegeAction action, JMenuItem menuItem, JComponent menuContainer) {
+		try {
+			Method m = action.getClass().getMethod("setMenuItem", JMenuItem.class);
+			m.invoke(action, menuItem);
+		}
+		catch (Throwable t) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Action " + action + " is not requesting a menu item" + t);
+			}
+		}
+		try {
+			Method m = action.getClass().getMethod("setMenuParent", JComponent.class);
+			m.invoke(action, menuContainer);
+		}
+		catch (Throwable t) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Action " + action + " is not requesting its parent" + t);
+			}
+		}
 	}
 
 	private Map<String, MenuActionPlugin> getPlugins() {
