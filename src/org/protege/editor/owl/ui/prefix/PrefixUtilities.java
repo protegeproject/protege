@@ -22,7 +22,7 @@ public class PrefixUtilities {
 	public static PrefixManager getPrefixOWLOntologyFormat(OWLModelManager modelManager) {
 		OWLOntologyManager owlManager = modelManager.getOWLOntologyManager();
 		DefaultPrefixManager prefixes = new DefaultPrefixManager();
-		List<OWLOntology> ontologies = new ArrayList<OWLOntology>(modelManager.getActiveOntologies());
+		List<OWLOntology> ontologies = new ArrayList<OWLOntology>(modelManager.getOntologies());
 		Collections.sort(ontologies, new ActiveOntologyComparator());
 		for (OWLOntology ontology : ontologies) {
 			OWLOntologyFormat format = owlManager.getOntologyFormat(ontology);
