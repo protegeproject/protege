@@ -20,8 +20,9 @@ import java.awt.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PickRootClassPanel extends AbstractOWLWizardPanel {
+	private static final long serialVersionUID = 3010893357248469815L;
 
-    public static final String ID = "PickRootClassPanel";
+	public static final String ID = "PickRootClassPanel";
 
     private OWLModelManagerTree<OWLClass> tree;
 
