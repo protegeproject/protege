@@ -112,13 +112,83 @@
         <editorKitId value="any"/>
     </extension>
 
-    <!-- View menu -->
-
     <!-- Window menu -->
 
     <extension id="menu.window" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Window"/>
         <path value="/SlotW-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.window.views" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Views"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotA-A"/>
+        <toolTip value="Configure Views"/>
+        <class value="org.protege.editor.core.ui.workspace.views.ViewMenuAction"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
+    </extension>
+
+
+    <extension id="menu.window.tabs" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Tabs"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotA-C"/>
+        <toolTip value="Set default tabs"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.TabsMenuAction"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
+    </extension>
+
+    <extension id="menu.window.createTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Create new tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-D"/>
+        <toolTip value="Create a new custom tab"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.CreateTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.deleteTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Delete custom tabs..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-E"/>
+        <toolTip value="Delete selected custom tabs"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.DeleteCustomTabsAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+        
+    <extension id="menu.window.exportTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Export current tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-F"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ExportTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.importTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Import tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-F"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ImportTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.saveTabs" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Store current layout"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-G"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.SaveAllTabsAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.window.resetCurrentTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Reset selected tab to default state"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-H"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ResetCurrentTabAction"/>
         <editorKitId value="any"/>
     </extension>
 
@@ -150,21 +220,6 @@
         <editorKitId value="any"/>
     </extension>
 
-    <!-- View menu -->
-
-    <extension id="menu.view" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Views"/>
-        <path value="/SlotK-A"/>
-        <editorKitId value="any"/>
-    </extension>
-
-    <!-- Tabs menu -->
-
-    <extension id="menu.tabs" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Tabs"/>
-        <path value="/SlotJ-A"/>
-        <editorKitId value="any"/>
-    </extension>
 
     <!-- Help menu -->
 
