@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 
@@ -22,6 +23,8 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
  */
 public class PrefixMapperTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -5098097390890500539L;
+	
+	private static final Logger LOGGER = Logger.getLogger(PrefixMapperTableModel.class);
 	
 	public enum Column {
 		PREFIX_NAME, PREFIX;
@@ -45,6 +48,9 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
     public void refill() {
+    	if (LOGGER.isDebugEnabled()) {
+    		LOGGER.debug("Clearing changed flag because of a refill operation");
+    	}
     	changed = false;
     	// arguably here we should only delete the prefixes that don't have an empty value
     	// it is a little weird when they disappear because they were not committed to the PrefixOWLOntologyFormat
@@ -69,6 +75,9 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     public int addMapping(String prefix, String value) {
     	changed = changed || (value != null && value.length() != 0);
+    	if (LOGGER.isDebugEnabled()) {
+    		LOGGER.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
+    	}
     	prefixes.add(prefix);
     	Collections.sort(prefixes);
         prefixValueMap.put(prefix, value);
@@ -81,11 +90,17 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     	prefixes.remove(prefix);
 	    String prefixValue = prefixValueMap.remove(prefix);
 	    changed = changed || (prefixValue != null & prefixValue.length() != 0);
+    	if (LOGGER.isDebugEnabled()) {
+    		LOGGER.debug("removing mapping " + prefix + " -> " + prefixValue + " changed = " + changed);
+    	}
 	    fireTableDataChanged();
 	}
 
 	public boolean commitPrefixes() {
     	if (changed) {
+    		if (LOGGER.isDebugEnabled()) {
+    			LOGGER.debug("committing prefix changes and clearing changed flag");
+    		}
     		prefixManager.clearPrefixes();
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixValueMap.entrySet()) {
     			String prefixName = prefixName2PrefixEntry.getKey();
@@ -154,27 +169,31 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
-	    String currentPrefix = (String) getValueAt(rowIndex, 0);
+	    String currentPrefixName = (String) getValueAt(rowIndex, Column.PREFIX_NAME.ordinal());
 		switch (Column.values()[columnIndex]) {
 		case PREFIX_NAME:
-	        // Replacing prefix
+	        // Replacing prefix name 
 	    	String newPrefix = aValue.toString();
 	        if (!prefixes.contains(newPrefix)){
-	        	int index = prefixes.indexOf(currentPrefix);
-	        	prefixes.remove(currentPrefix);
-	        	prefixes.add(index, newPrefix);
+	        	prefixes.remove(currentPrefixName);
+	        	prefixes.add(newPrefix);
 	        	Collections.sort(prefixes);
-	        	String prefixValue = prefixValueMap.remove(currentPrefix);
+	        	String prefixValue = prefixValueMap.remove(currentPrefixName);
 	        	prefixValueMap.put(newPrefix, prefixValue);
 	        	changed = changed || (prefixValue != null && prefixValue.length() != 0);
+	        	if (LOGGER.isDebugEnabled()) {
+	        		LOGGER.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
+	        	}
 	        	fireTableDataChanged();
 	        }
 	        break;
 		case PREFIX:
 	        // Replacing value
-			removeMapping(currentPrefix);
-	        addMapping(currentPrefix, aValue.toString());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Changing the value associated with the prefix " + currentPrefixName + " with a delete and an add.");
+			}
+			removeMapping(currentPrefixName);
+	        addMapping(currentPrefixName, aValue.toString());
 	        break;
 		default:
 			throw new UnsupportedOperationException("Programmer error: missed a case");
