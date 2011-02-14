@@ -19,20 +19,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	private static final long serialVersionUID = 787248046135787437L;
 	private PrefixMapperTables tables;
 	private PrefixMapperTable currentTable;
-	private TableModelListener editListener = new TableModelListener() {
-		
-		public void tableChanged(TableModelEvent e) {
-			if (currentTable != null && currentTable.getModel().commitPrefixes()) {
-				OWLModelManager modelManager = getOWLModelManager();
-				OWLOntology activeOntology = tables.getOntology();
-				modelManager.setDirty(activeOntology);
-				OWLModelManagerEntityRenderer renderer = modelManager.getOWLEntityRenderer();
-				if (renderer instanceof PrefixBasedRenderer) {
-					modelManager.refreshRenderer();
-				}
-			}
-		}
-	};
+
 	
 	private OWLModelManagerListener entitiesChangedListener = new OWLModelManagerListener() {
 		
@@ -69,21 +56,14 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	@Override
 	protected void disposeOntologyView() {
 		if (currentTable != null) {
-			currentTable.getModel().removeTableModelListener(editListener);
 			getOWLModelManager().removeListener(entitiesChangedListener);
 		}
 	}
 
 	@Override
 	protected void updateView(OWLOntology activeOntology) throws Exception {
-		if (currentTable != null) {
-			currentTable.getModel().removeTableModelListener(editListener);
-		}
 		tables.setOntology(activeOntology);
 		currentTable = tables.getPrefixMapperTable();
-		if (currentTable != null) {
-			currentTable.getModel().addTableModelListener(editListener);
-		}
 	}
 	
 
