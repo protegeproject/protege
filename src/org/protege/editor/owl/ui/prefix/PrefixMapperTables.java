@@ -1,52 +1,63 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.awt.CardLayout;
-import java.util.Collection;
-import java.util.HashMap;
+import java.awt.BorderLayout;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 public class PrefixMapperTables extends JPanel {
 	private static final long serialVersionUID = -7430862544150495635L;
-	private Map<OWLOntology, PrefixMapperTable> prefixTableMap = new HashMap<OWLOntology, PrefixMapperTable>();
-	private CardLayout cards;
+	
+	private PrefixMapperTable table;
 	private OWLOntology ontology;
+	private OWLModelManager modelManager;
+	
 	private Set<SelectedOntologyListener> listeners = new HashSet<SelectedOntologyListener>();
-
+	
+	
+	private TableModelListener editListener = new TableModelListener() {
+		
+		public void tableChanged(TableModelEvent e) {
+			if (table != null && table.getModel().commitPrefixes()) {
+				modelManager.setDirty(ontology);
+				OWLModelManagerEntityRenderer renderer = modelManager.getOWLEntityRenderer();
+				if (renderer instanceof PrefixBasedRenderer) {
+					modelManager.refreshRenderer();
+				}
+			}
+		}
+	};
 
 	public PrefixMapperTables(OWLModelManager modelManager) {
-		cards = new CardLayout();
-		setLayout(cards);
-		for (OWLOntology ontology : modelManager.getOntologies()) {
-			PrefixOWLOntologyFormat prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(ontology);
-			PrefixMapperTable table = new PrefixMapperTable(prefixManager);
-			prefixTableMap.put(ontology, table);
-			add(new JScrollPane(table), getNameFromOntology(ontology));
-		}
+		this.modelManager = modelManager;
+		setLayout(new BorderLayout());
 		setOntology(modelManager.getActiveOntology());
 	}
 	
 	public void refill() {
-		for (PrefixMapperTable table : prefixTableMap.values()) {
-			table.getModel().refill();
-		}
-	}
-
-	public CardLayout getCardLayout() {
-		return cards;
+		table.getModel().refill();
 	}
 
 	public void setOntology(OWLOntology ontology)  {
-		cards.show(this, getNameFromOntology(ontology));
+		if (table != null) {
+			table.getModel().removeTableModelListener(editListener);
+		}
 		this.ontology = ontology;
+		PrefixOWLOntologyFormat prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(ontology);
+		table = new PrefixMapperTable(prefixManager);
+		table.getModel().addTableModelListener(editListener);
+		removeAll();
+		add(new JScrollPane(table));
 		for (SelectedOntologyListener listener : listeners) {
 			listener.selectedOntologyChanged();
 		}
@@ -65,30 +76,11 @@ public class PrefixMapperTables extends JPanel {
 	}
 
 	public PrefixMapperTable getPrefixMapperTable() {
-		return prefixTableMap.get(ontology);
-	}
-
-	public PrefixMapperTable getPrefixMapperTable(OWLOntology ontology) {
-		return prefixTableMap.get(ontology);
-	}
-
-	public Collection<PrefixMapperTable> getPrefixMapperTables() {
-		return prefixTableMap.values();
+		return table;
 	}
 
 	public interface SelectedOntologyListener {
 		void selectedOntologyChanged();
-	}
-	
-	private String getNameFromOntology(OWLOntology ontology) {
-		String ontologyName;
-		if (ontology.getOntologyID().getOntologyIRI() != null) {
-			ontologyName = ontology.getOntologyID().getOntologyIRI().toString();
-		}
-		else {
-			ontologyName = ontology.getOntologyID().toString();
-		}
-		return ontologyName;
 	}
 
 }
