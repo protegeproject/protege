@@ -1,24 +1,41 @@
 package org.protege.editor.core.ui.workspace;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.*;
-import java.util.List;
 
 
 /**
@@ -171,101 +188,8 @@ public class WorkspaceFrame extends JFrame {
         // menus based on installed plugins.
         MenuBuilder menuBuilder = new MenuBuilder(workspace.getEditorKit());
         setJMenuBar(menuBuilder.buildMenu());
-        // Views menu - this is a special menu
-        final JMenu viewMenu = getMenu(VIEW);
-        viewMenu.addMenuListener(new MenuListener() {
-
-            public void menuSelected(MenuEvent e) {
-                buildViewMenu();
-            }
-
-
-            public void menuDeselected(MenuEvent e) {
-                viewMenu.removeAll();
-            }
-
-
-            public void menuCanceled(MenuEvent e) {
-                viewMenu.removeAll();
-            }
-        });
         menuActions.addAll(menuBuilder.getActions());
     }
-
-
-    private void buildViewMenu() {
-        if (workspace instanceof TabbedWorkspace == false) {
-            // Don't bother to show a view menu for non
-            // tabbed workspaces.
-            return;
-        }
-
-        // First categorise them
-
-        Map<String, List<ViewComponentPlugin>> categoriesMap = new HashMap<String, List<ViewComponentPlugin>>();
-
-        ViewComponentPluginLoader loader = new ViewComponentPluginLoader(workspace);
-        for (ViewComponentPlugin plugin : loader.getPlugins()) {
-            Set<String> categories = plugin.getCategorisations();
-            if (!categories.isEmpty()) {
-                for (String category : categories) {
-                    List<ViewComponentPlugin> plugins = categoriesMap.get(category);
-                    if (plugins == null) {
-                        plugins = new ArrayList<ViewComponentPlugin>();
-                        categoriesMap.put(category, plugins);
-                    }
-                    plugins.add(plugin);
-                }
-            }
-            else {
-                List<ViewComponentPlugin> plugins = categoriesMap.get("Misc");
-                if (plugins == null) {
-                    plugins = new ArrayList<ViewComponentPlugin>();
-                    categoriesMap.put("Misc", plugins);
-                }
-                plugins.add(plugin);
-            }
-        }
-
-        // Create a sub menu for each category
-        final JMenu viewMenu = getMenu(VIEW);
-
-        List<String> categories = new ArrayList<String>();
-        categories.addAll(categoriesMap.keySet());
-        Collections.sort(categories);
-        for (String category : categories) {
-            JMenu subMenu = new JMenu(category + " views");
-            viewMenu.add(subMenu);
-            List<ViewComponentPlugin> viewPlugins = new ArrayList<ViewComponentPlugin>(categoriesMap.get(category));
-            // Sort them
-            Collections.sort(viewPlugins, new Comparator<ViewComponentPlugin>() {
-                public int compare(ViewComponentPlugin o1, ViewComponentPlugin o2) {
-                    return o1.getLabel().compareTo(o2.getLabel());
-                }
-            });
-
-            for (final ViewComponentPlugin plugin : viewPlugins) {
-                Action action = new AbstractAction(plugin.getLabel()) {
-                    /**
-                     * 
-                     */
-                    private static final long serialVersionUID = 282453625948165209L;
-
-                    public void actionPerformed(ActionEvent e) {
-                        showView(plugin);
-                    }
-                };
-                action.putValue(AbstractAction.SHORT_DESCRIPTION, plugin.getDocumentation());
-                subMenu.add(action);
-            }
-        }
-    }
-
-
-    private void showView(ViewComponentPlugin plugin) {
-        WorkspaceViewManager viewManager = workspace.getViewManager();
-        viewManager.showView(plugin.getId());
-    }
-
+    
 
 }
