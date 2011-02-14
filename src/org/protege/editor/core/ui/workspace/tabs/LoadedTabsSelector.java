@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.protege.editor.core.ui.util.CheckTable;
+import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
 
@@ -19,6 +20,7 @@ public class LoadedTabsSelector extends JPanel {
 
     public LoadedTabsSelector(TabbedWorkspace workspace) {
         super(new BorderLayout());
+        CustomWorkspaceTabsManager customTabsManager = workspace.getCustomTabsManager();
         table = new CheckTable<WorkspaceTabPlugin>("Custom tabs");
         table.setDefaultRenderer(new DefaultTableCellRenderer(){
             /**
@@ -33,11 +35,12 @@ public class LoadedTabsSelector extends JPanel {
                 return super.getTableCellRendererComponent(jTable, o, b, b1, i, i1);
             }
         });
-        table.getModel().setData(workspace.getCustomTabsManager().getCustomTabPlugins(workspace), false);
+        table.getModel().setData(customTabsManager.getCustomTabPlugins(workspace), false);
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
     public List<WorkspaceTabPlugin> getSelectedTabs(){
         return table.getFilteredValues();
     }
+    
 }
