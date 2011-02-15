@@ -30,7 +30,6 @@ public class PrefixUtilities {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Sorted ontologies = " + ontologies);
 		}
-		Set<String> prefixNames
 		Set<String> prefixValues = new HashSet<String>();
 		for (OWLOntology ontology : ontologies) {
 			OWLOntologyFormat format = owlManager.getOntologyFormat(ontology);
