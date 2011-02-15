@@ -189,7 +189,7 @@
     
     <extension id="OWLEntityRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by id"/>
+       <name value="Render by name (rdf:id)"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl"/>
        <sortPosition value="A"/>
     </extension>
@@ -203,7 +203,7 @@
 
     <extension id="OWLEntityAnnotationValueRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by annotation values (e.g., rdfs:label, skos:prefLabel)"/>
+       <name value="Render by annotation property (e.g., rdfs:label, skos:prefLabel)"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer"/>
        <sortPosition value="C"/>
        <ontologyAnnotationSpecifier value="http://http://protege.org/ui/render/displayWithLabel"/>
@@ -211,7 +211,7 @@
 
     <extension id="PrefixedOWLEntityAnnotationValueRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by annotation values with prefixes"/>
+       <name value="Render by prefixed annotation property"/>
        <class value="org.protege.editor.owl.ui.renderer.PrefixedOWLEntityAnnotationValueRenderer"/>
        <sortPosition value="D"/>
     </extension>
