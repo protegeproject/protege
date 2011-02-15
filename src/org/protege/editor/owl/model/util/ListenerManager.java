@@ -52,9 +52,6 @@ public class ListenerManager<L extends Object> {
                     else {
                         log.log(level, "          " + s);
                     }
-                    if (i == TRACE_START + TRACE_DEPTH) {
-                        break;
-                    }
                 }
             }
             log.log(level, "    " + cleanupMessage);
