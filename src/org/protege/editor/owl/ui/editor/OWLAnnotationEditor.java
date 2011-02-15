@@ -149,7 +149,9 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
             OWLAnnotationValue obj = getSelectedEditor().getEditedObject();
 
-            return dataFactory.getOWLAnnotation(property, obj);
+            if (obj != null) {
+            	return dataFactory.getOWLAnnotation(property, obj);
+            }
         }
         return null;
     }
