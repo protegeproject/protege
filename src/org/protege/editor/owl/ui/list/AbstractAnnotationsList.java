@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.list;
 
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
+
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListSectionHeader;
@@ -8,15 +19,11 @@ import org.protege.editor.owl.model.AnnotationContainer;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -139,7 +146,9 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
         if (ret == JOptionPane.OK_OPTION) {
             OWLAnnotation annot = editor.getEditedObject();
-            eKit.getModelManager().applyChanges(getAddChanges(annot));
+            if (annot != null) {
+            	eKit.getModelManager().applyChanges(getAddChanges(annot));
+            }
         }
     }
 
@@ -180,15 +189,16 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
     public void dispose() {
         eKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
+        if (editor != null) {
+        	editor.dispose();
+        	editor = null;
+        }
     }
 
 
     public class AnnotationsListItem implements MListItem {
 
         private OWLAnnotation annot;
-
-        private OWLAnnotationEditor editor;
-
 
         public AnnotationsListItem(OWLAnnotation annot) {
             this.annot = annot;
@@ -216,7 +226,7 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
             if (ret == JOptionPane.OK_OPTION) {
                 OWLAnnotation newAnnotation = editor.getEditedObject();
-                if (!newAnnotation.equals(annot)){
+                if (newAnnotation != null && !newAnnotation.equals(annot)){
                     List<OWLOntologyChange> changes = getReplaceChanges(annot, newAnnotation);
                     eKit.getModelManager().applyChanges(changes);
                 }
