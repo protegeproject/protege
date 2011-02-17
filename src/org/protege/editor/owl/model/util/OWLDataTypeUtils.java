@@ -1,14 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 /*
@@ -57,11 +56,9 @@ public class OWLDataTypeUtils {
         final OWLDataFactory df = mngr.getOWLDataFactory();
 
         datatypes.add(df.getTopDatatype());
-        for (XSDVocabulary dt : XSDVocabulary.values()) {
+        for (OWL2Datatype dt : OWL2Datatype.values()) {
             datatypes.add(df.getOWLDatatype(dt.getIRI()));
-        }
-        datatypes.add(df.getOWLDatatype(OWLRDFVocabulary.RDF_XML_LITERAL.getIRI()));
-
+        }        
         return datatypes;
     }
 
