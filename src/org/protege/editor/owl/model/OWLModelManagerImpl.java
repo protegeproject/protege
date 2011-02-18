@@ -499,9 +499,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
                 }
 
                 OWLOntologyFormat format = manager.getOntologyFormat(ont);
-                if (format instanceof RDFXMLOntologyFormat) { // rdf is always trouble
-                	((RDFXMLOntologyFormat) format).setAddMissingTypes(false);  
-                }
+                /*
+                 * TODO - There used to be some code that set the add missing types flag to false for the rdf/xml format.
+                 *        Now it appears that this may lead to data loss.  Until this is resolved, I am going to turn this 
+                 *        flag off.
+                 *        see https://sourceforge.net/tracker/index.php?func=detail&aid=3186250&group_id=90989&atid=595534
+                 *            https://bmir-gforge.stanford.edu/gf/project/owleditor/tracker/?action=TrackerItemEdit&tracker_item_id=3032&start=0
+                 *        and https://sourceforge.net/mailarchive/forum.php?thread_name=4D5F02D6.5070506%40stanford.edu&forum_name=owlapi-developer
+                 */
                 manager.saveOntology(ont, format, IRI.create(physicalURI));
 
                 manager.setOntologyDocumentIRI(ont, IRI.create(physicalURI));
