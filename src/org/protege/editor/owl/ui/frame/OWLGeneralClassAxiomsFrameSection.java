@@ -44,7 +44,7 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
     	OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
     	if (ontology.containsAxiom(axiom) && !ontology.getGeneralClassAxioms().contains(axiom)) {
     		JOptionPane.showMessageDialog(editorKit.getOWLWorkspace(), 
-    				"Editted axiom is not a general class axiom.  It has been added to\n"+
+    				"Edited axiom is not a general class axiom.  It has been added to\n"+
     				"the ontology but will not show in the General Class Axiom Window.");
     	}
     }
