@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.IRIAnnotationValueEditor;
+import org.protege.editor.owl.ui.editor.IRIFromEntityEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -46,7 +46,7 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
 
     private Set<IRI> addedDomains = new HashSet<IRI>();
 
-    private IRIAnnotationValueEditor editor;
+    private IRIFromEntityEditor editor;
 
 
     public OWLAnnotationPropertyDomainFrameSection(OWLEditorKit editorKit, OWLFrame<OWLAnnotationProperty> frame) {
@@ -66,7 +66,7 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
 
     public OWLObjectEditor<IRI> getObjectEditor() {
         if (editor == null){
-            editor = new IRIAnnotationValueEditor(getOWLEditorKit());
+            editor = new IRIFromEntityEditor(getOWLEditorKit());
         }
         return editor;
     }

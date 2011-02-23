@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.IRIAnnotationValueEditor;
+import org.protege.editor.owl.ui.editor.IRIFromEntityEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.IRI;
@@ -29,8 +29,8 @@ public class OWLAnnotationPropertyRangeFrameSectionRow extends AbstractOWLFrameS
     }
 
 
-    protected IRIAnnotationValueEditor getObjectEditor() {
-        final IRIAnnotationValueEditor editor = new IRIAnnotationValueEditor(getOWLEditorKit());
+    protected IRIFromEntityEditor getObjectEditor() {
+        final IRIFromEntityEditor editor = new IRIFromEntityEditor(getOWLEditorKit());
         editor.setEditedObject(getAxiom().getRange());
         return editor;
     }
