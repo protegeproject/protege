@@ -96,6 +96,8 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         Object[] options = OPTIONS.values();
         
         if (e instanceof UnparsableOntologyException){
+        	// Whoa there baby!!  The gc is necessary to close open files.  Seems iffy...
+        	System.gc();
             errorExplainer = createErrorExplainer();
             ParseErrorsPanel errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
             retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
