@@ -40,7 +40,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
     private OWLAnnotationProperty lastSelectedProperty;
 
-    private List<InputVerificationStatusChangedListener> verifierListeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
 
     private boolean status = false;
 
@@ -49,12 +49,22 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
             verify();
         }
     };
+    
+    private InputVerificationStatusChangedListener mergedVerificationListener = new InputVerificationStatusChangedListener() {
+		
+		public void verifiedStatusChanged(final boolean newState) {
+			for (InputVerificationStatusChangedListener listener : verificationListeners) {
+				listener.verifiedStatusChanged(newState);
+			}
+		}
+	};
 
 
     public OWLAnnotationEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         tabbedPane = new JTabbedPane();
-        mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new VerifiedInputJPanel();
+        mainPanel.setLayout(new BorderLayout());
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         mainPanel.add(splitPane);
 
@@ -83,7 +93,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
 
     private void loadEditors() {
-        final IRIAnnotationValueEditor iriEditor = new IRIAnnotationValueEditor(owlEditorKit);
+        final IRIFromEntityEditor iriEditor = new IRIFromEntityEditor(owlEditorKit);
         iriEditor.addSelectionListener(changeListener);
 
         final OWLConstantEditor constantEditor = new OWLConstantEditor(owlEditorKit);
@@ -91,10 +101,14 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
         final OWLAnonymousIndividualAnnotationValueEditor anonIndividualEditor = new OWLAnonymousIndividualAnnotationValueEditor(owlEditorKit);
         // @@TODO add change listener
+        
+        final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
+        textEditor.addStatusChangedListener(mergedVerificationListener);
 
         editors = new ArrayList<OWLObjectEditor<? extends OWLAnnotationValue>>();
         editors.add(constantEditor);
         editors.add(iriEditor);
+        editors.add(textEditor);
         editors.add(anonIndividualEditor);
         for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
             tabbedPane.add(editor.getEditorTypeName(), editor.getEditorComponent());
@@ -109,7 +123,6 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
     public boolean setEditedObject(OWLAnnotation annotation) {
         int tabIndex = -1;
-        boolean preferred = false;
         if (annotation != null) {
             annotationPropertySelector.setSelection(annotation.getProperty());
             for (int i = 0; i < editors.size(); i++) {
@@ -118,9 +131,6 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
                 if (editor.canEdit(annotation.getValue())) {
                     editor.setEditedObject(annotation.getValue());
                     if (tabIndex == -1) {
-                        tabIndex = i;
-                    }
-                    else if (!preferred) {
                         tabIndex = i;
                     }
                 }
@@ -197,7 +207,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     private void verify() {
         if (status != isValid()){
             status = isValid();
-            for (InputVerificationStatusChangedListener l : verifierListeners){
+            for (InputVerificationStatusChangedListener l : verificationListeners){
                 l.verifiedStatusChanged(status);
             }
         }
@@ -210,12 +220,25 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
 
     public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        verifierListeners.add(listener);
+        verificationListeners.add(listener);
         listener.verifiedStatusChanged(isValid());
     }
 
 
     public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        verifierListeners.remove(listener);
+        verificationListeners.remove(listener);
+    }
+    
+    private class VerifiedInputJPanel extends JPanel implements VerifiedInputEditor {
+		private static final long serialVersionUID = -6537871629287844213L;
+
+		public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
+			OWLAnnotationEditor.this.addStatusChangedListener(listener);
+		}
+
+		public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
+			OWLAnnotationEditor.this.removeStatusChangedListener(listener);
+		}
+    	
     }
 }
