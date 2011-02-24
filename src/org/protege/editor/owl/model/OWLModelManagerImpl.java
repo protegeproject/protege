@@ -500,12 +500,16 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
                 OWLOntologyFormat format = manager.getOntologyFormat(ont);
                 /*
-                 * TODO - There used to be some code that set the add missing types flag to false for the rdf/xml format.
-                 *        Now it appears that this may lead to data loss.  Until this is resolved, I am going to turn this 
-                 *        flag off.
-                 *        see https://sourceforge.net/tracker/index.php?func=detail&aid=3186250&group_id=90989&atid=595534
-                 *            https://bmir-gforge.stanford.edu/gf/project/owleditor/tracker/?action=TrackerItemEdit&tracker_item_id=3032&start=0
-                 *        and https://sourceforge.net/mailarchive/forum.php?thread_name=4D5F02D6.5070506%40stanford.edu&forum_name=owlapi-developer
+                 * There used to be some code that set the add missing types flag to false for the rdf/xml format.
+                 * This is bad for a general purpose OWL 2 editor.  If it were to ever be instantiated it should be
+                 * controlled by a preference that defaults to addMissingTypes = true.   When the flag is false there 
+                 * should be a warning on every save that
+                 *    1. any ontology saved with this flag may not be re-parseable with an OWL 2 compliant parser.
+                 *    2. when such an ontology is loaded into some OWL tool there will be a risk of data loss or corruption.
+                 *
+                 * This comment is here because there are a small number of experts who still argue for this feature.
+                 * 
+                 * See http://sourceforge.net/mailarchive/attachment.php?list_name=owlapi-developer&message_id=4D66AD57.3070205%40stanford.edu&counter=1
                  */
                 manager.saveOntology(ont, format, IRI.create(physicalURI));
 
