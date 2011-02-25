@@ -52,9 +52,7 @@
 			<key>file.encoding</key>
 			<string>UTF-8</string>
 			<key>log4j.configuration</key>
-			<string>file:log4j.xml</string>
-			<key>org.protege.plugin.dir</key>
-			<string>Java/plugins</string>
+			<string>file:Contents/Resources/log4j.xml</string>
 			<key>entityExpansionLimit</key>
 			<string>100000000</string>
 		</dict>
