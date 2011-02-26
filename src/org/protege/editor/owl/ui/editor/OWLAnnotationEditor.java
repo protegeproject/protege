@@ -28,7 +28,7 @@ import java.util.List;
 public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> implements VerifiedInputEditor {
 
 
-    private OWLEditorKit owlEditorKit;
+    protected final OWLEditorKit owlEditorKit;
 
     private JTabbedPane tabbedPane;
 
@@ -68,10 +68,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         mainPanel.add(splitPane);
 
-        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
-        final OWLAnnotationPropertyHierarchyProvider hp =
-                mngr.getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
-        annotationPropertySelector = new OWLAnnotationPropertySelectorPanel(owlEditorKit, true, hp);
+        annotationPropertySelector = createAnnotationPropertySelector();
         JPanel listHolder = new JPanel(new BorderLayout());
         listHolder.add(annotationPropertySelector);
         listHolder.setPreferredSize(new Dimension(200, 300));
@@ -80,7 +77,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         splitPane.setRightComponent(tabbedPane);
         splitPane.setBorder(null);
         loadEditors();
-        lastSelectedProperty = mngr.getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI());
+        initialiseLastSelectedProperty();
 
         annotationPropertySelector.addSelectionListener(new ChangeListener(){
             public void stateChanged(ChangeEvent event) {
@@ -91,8 +88,34 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         tabbedPane.addChangeListener(changeListener);
     }
 
+    protected final void initialiseLastSelectedProperty() {
+    	assert lastSelectedProperty == null; 
+        lastSelectedProperty = getDefaultAnnotationProperty(); 
+    }
+	protected OWLAnnotationProperty getDefaultAnnotationProperty() {
+        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+		return mngr.getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI());		
+	}
 
-    private void loadEditors() {
+    protected OWLAnnotationPropertySelectorPanel createAnnotationPropertySelector() {
+        final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
+        final OWLAnnotationPropertyHierarchyProvider hp =
+                mngr.getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
+        return new OWLAnnotationPropertySelectorPanel(owlEditorKit, true, hp);
+	}
+
+
+	private void loadEditors() {
+        editors = createEditors();
+        assert !editors.isEmpty();
+        for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
+            tabbedPane.add(editor.getEditorTypeName(), editor.getEditorComponent());
+        }
+        tabbedPane.setSelectedIndex(0);
+    }
+
+
+    protected List<OWLObjectEditor<? extends OWLAnnotationValue>> createEditors() {
         final IRIFromEntityEditor iriEditor = new IRIFromEntityEditor(owlEditorKit);
         iriEditor.addSelectionListener(changeListener);
 
@@ -104,19 +127,17 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         
         final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
         textEditor.addStatusChangedListener(mergedVerificationListener);
-
-        editors = new ArrayList<OWLObjectEditor<? extends OWLAnnotationValue>>();
-        editors.add(constantEditor);
-        editors.add(iriEditor);
-        editors.add(textEditor);
-        editors.add(anonIndividualEditor);
-        for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
-            tabbedPane.add(editor.getEditorTypeName(), editor.getEditorComponent());
-        }
-    }
+    	
+    	List<OWLObjectEditor<? extends OWLAnnotationValue>> result = new ArrayList<OWLObjectEditor<? extends OWLAnnotationValue>>();
+        result.add(constantEditor);
+        result.add(iriEditor);
+        result.add(textEditor);
+        result.add(anonIndividualEditor);
+		return result;
+	}
 
 
-    private OWLObjectEditor<? extends OWLAnnotationValue> getSelectedEditor() {
+	protected OWLObjectEditor<? extends OWLAnnotationValue> getSelectedEditor() {
         return editors.get(tabbedPane.getSelectedIndex());
     }
 
@@ -241,4 +262,12 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 		}
     	
     }
+    
+    protected final OWLAnnotationProperty getLastSelectedProperty() {
+		return lastSelectedProperty;
+	}
+    
+    protected final OWLAnnotationPropertySelectorPanel getAnnotationPropertySelector() {
+		return annotationPropertySelector;
+	}
 }
