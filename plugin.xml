@@ -656,7 +656,7 @@
 
     <extension id="OWLOntologyPrefixesView"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Ontology Prefixes"/>
+        <label value="Ontology prefixes"/>
         <class value="org.protege.editor.owl.ui.prefix.PrefixMapperView"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
@@ -700,7 +700,7 @@
 
     <extension id="InferredAxioms"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Classification Results"/>
+        <label value="Classification results"/>
         <class value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
