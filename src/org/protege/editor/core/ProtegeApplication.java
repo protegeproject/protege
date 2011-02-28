@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.PopupFactory;
 import javax.swing.UIManager;
@@ -34,6 +35,7 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
@@ -167,6 +169,7 @@ public class ProtegeApplication implements BundleActivator {
         PluginUtilities.getInstance().initialise(context);
         loadDefaults();
         initializeLookAndFeel();
+        checkConfiguration();
         setupExceptionHandler();
         loadPlugins();
         processCommandLineURIs();  // plugins may set arguments
@@ -261,6 +264,22 @@ public class ProtegeApplication implements BundleActivator {
         }
     }
 
+    /*
+     * At the moment we are only checking the Logger state but in theory this method could
+     * test other things also.  Regular users should never see this message.  The performance
+     * impact of not configuring the Logger correctly is enormous.
+     */
+    private static void checkConfiguration() {
+    	Logger rootLogger = Logger.getRootLogger();
+    	if (rootLogger.isDebugEnabled()) {
+    		JOptionPane.showMessageDialog(null, 
+    				"Logger not initialized.\n" +
+    						"This could have a major impact on performance.\n" +
+    						"Use the -Dlog4j.configuration=\"file:/...\" jvm option.",
+    				"Performance Issue Detected", 
+    				JOptionPane.WARNING_MESSAGE);
+    	}
+    }
 
     private static void setupExceptionHandler() {
         errorLog = new ErrorLog();
