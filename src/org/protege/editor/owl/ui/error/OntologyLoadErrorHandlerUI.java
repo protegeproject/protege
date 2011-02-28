@@ -67,9 +67,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             return name;
         }
     }
-
-    public static final int SMALL_ONTOLOGY = 1024 * 1024;
-
+    
     private OWLEditorKit eKit;
 
     private String lastSelectedParser = null;
@@ -95,9 +93,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         int retVal;
         Object[] options = OPTIONS.values();
         
-        if (e instanceof UnparsableOntologyException){
-        	// Whoa there baby!!  The gc is necessary to close open files.  Seems iffy...
-        	System.gc();
+        if (e instanceof UnparsableOntologyException) {
             errorExplainer = createErrorExplainer();
             ParseErrorsPanel errorPanel = new ParseErrorsPanel((UnparsableOntologyException)e, loc);
             retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
@@ -183,25 +179,13 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             tabs = new JTabbedPane();
             tabs.setPreferredSize(new Dimension(700, 500));
 
-            SourcePanel sourcePanel = null;
-            try {
-                URL physicalLoc = loc.toURL();
-                if (isSmallOntology(physicalLoc)) {
-                    sourcePanel = new SourcePanel(physicalLoc);
-                    sourcePanel.setBorder(new EmptyBorder(0, 7, 0, 7));
-                }
-            }
-            catch (Throwable e1) {
-                ProtegeApplication.getErrorLog().logError(e1);
-            }
-
 
             final java.util.List<OWLParser> parsers = new ArrayList<OWLParser>(e.getExceptions().keySet());
 
             for (OWLParser parser : parsers){
                 Throwable parseError = e.getExceptions().get(parser);
-                ErrorExplainer.ErrorExplanation explanation = errorExplainer.getErrorExplanation(parseError, true);
-                final ErrorPanel errorPanel = new ParseErrorPanel(explanation, loc, sourcePanel);
+                ErrorExplainer.ErrorExplanation<? extends Throwable> explanation = errorExplainer.getErrorExplanation(parseError, true);
+                final ErrorPanel<? extends Throwable> errorPanel = new ParseErrorPanel(explanation, loc);
                 tabs.addTab(parser.getClass().getSimpleName(), errorPanel);
             }
 
@@ -210,21 +194,5 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
             add(tabs, BorderLayout.CENTER);
         }
-    }
-    
-    private boolean isSmallOntology(URL location) throws IOException {
-        InputStream is = location.openStream();
-        int counter = SMALL_ONTOLOGY;
-        try {
-            while (is.read() >= 0) {
-                if (--counter <= 0) {
-                    return false;
-                }
-            }
-        }
-        finally {
-            is.close();
-        }
-        return true;
     }
 }
