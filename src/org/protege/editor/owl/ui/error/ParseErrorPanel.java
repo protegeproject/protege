@@ -41,38 +41,14 @@ import java.net.URI;
  * Date: Dec 11, 2008<br><br>
  */
 public class ParseErrorPanel<O extends Throwable> extends ErrorPanel<O>{
-
-    private static final Logger logger = Logger.getLogger(ParseErrorPanel.class);
-
-    private SourcePanel source;
-
-    private JSplitPane splitter;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5370795163855807014L;
 
 
-    public ParseErrorPanel(final ErrorExplainer.ErrorExplanation<O> oErrorExplanation, URI loc, SourcePanel sourcePanel) {
+	public ParseErrorPanel(final ErrorExplainer.ErrorExplanation<O> oErrorExplanation, URI loc) {
         super(oErrorExplanation, loc);
-        if (sourcePanel != null){
-            this.source = sourcePanel;
-
-            removeComponentFromParent(getTabs());
-            splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getTabs(), null);
-            splitter.setBorder(new EmptyBorder(0, 0, 0, 0));
-            add(splitter, BorderLayout.CENTER);
-
-            addComponentListener(new ComponentAdapter(){
-                public void componentShown(ComponentEvent event) {
-                    if (oErrorExplanation instanceof ErrorExplainer.ParseErrorExplanation){
-                        ErrorExplainer.ParseErrorExplanation expl = (ErrorExplainer.ParseErrorExplanation) oErrorExplanation;
-                        source.highlight(expl.getLine(), expl.getColumn());
-                    }
-
-                    removeComponentFromParent(source);
-                    splitter.setBottomComponent(source);
-                    splitter.setDividerLocation(0.5);
-                    splitter.repaint();
-                }
-            });
-        }
     }
 
 
