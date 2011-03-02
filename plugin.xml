@@ -1231,6 +1231,15 @@
         <path value="org.protege.editor.owl.menu.Refactor/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+    
+    <extension id="menu.AssertUniqueNameAssumptionAction"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Assert the Unique Name Assumption"/>
+        <class value="org.protege.editor.owl.ui.action.AssertUniqueNameAssumptionAction"/>
+        <toolTip value="Assert that all named individuals in the active ontologies are distinct"/>
+        <path value="org.protege.editor.owl.menu.Refactor/SlotDD-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>   
 
     <extension id="menu.MoveAxiomsToOntologyAction"
                point="org.protege.editor.core.application.EditorKitMenuAction">
@@ -1239,18 +1248,7 @@
         <toolTip value="Extract/select axioms from an ontology and optionally move them to another ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-
-    <!--<extension
-         point="org.protege.editor.core.application.EditorKitMenuAction"-->
-    <!--id="menu.RemoveRedundantImports">-->
-    <!--<name value="Remove redundant imports"/>-->
-    <!--<class value="org.protege.editor.owl.ui.action.RemoveRedundantImportsAction"/>-->
-    <!--<toolTip value="Analyses the imports graph and removes imports that aren't necessary."/>-->
-    <!--<path value="org.protege.editor.owl.menu.Refactor/SlotF-B"/>-->
-    <!--<editorKitId value="OWLEditorKit"/>-->
-    <!--</extension>-->
+    </extension> 
 
     <!-- Tools menu -->
 
@@ -1287,22 +1285,13 @@
 
     <!-- Species validation -->
 
-    <!--
-    <extension id="SpeciesValidationReport"
-               point="org.protege.editor.core.application.ViewComponent"> 
-        <label value="Species validation results"/>
-        <class value="org.protege.editor.owl.ui.ontology.validation.SpeciesValidationViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-    </extension>
-    -->
-
 
     <!-- Hierarchy creation -->
     <extension id="menu.CreateClassHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create class hierarchy..."/>
         <class value="org.protege.editor.owl.ui.action.CreateClassHierarchyAction"/>
-        <toolTip value="Creates a class hierarchy from tab indented text, and inserts the new                        hierarchy into the existing class hierarchy at a specified position."/>
+        <toolTip value="Creates a class hierarchy from tab indented text, and inserts the new hierarchy into the existing class hierarchy at a specified position."/>
         <path value="org.protege.editor.owl.menu.tools/SlotF-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
