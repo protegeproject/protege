@@ -53,13 +53,19 @@ public class OWLKeyAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLCl
 
 
     protected OWLHasKeyAxiom createAxiom(Set<OWLPropertyExpression> properties) {
-        return getOWLDataFactory().getOWLHasKeyAxiom(getRootObject(), properties);
+    	/*
+    	 * Degenericized to be compatible with changing OWLAPI interfaces
+    	 */
+    	return getOWLDataFactory().getOWLHasKeyAxiom(getRootObject(), (Set) properties);
     }
 
 
     protected OWLPropertySetEditor getObjectEditor() {
         final OWLPropertySetEditor editor = new OWLPropertySetEditor(getOWLEditorKit());
-        editor.setEditedObject(getAxiom().getPropertyExpressions());
+    	/*
+    	 * Degenericized to be compatible with changing OWLAPI interfaces
+    	 */
+        editor.setEditedObject((Set) getAxiom().getPropertyExpressions());
         return editor;
     }
 
