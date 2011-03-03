@@ -37,7 +37,10 @@ class OWLPropertySetChecker implements OWLExpressionChecker<Set<OWLPropertyExpre
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
-            return parser.parsePropertyList();
+        	/*
+        	 * Degenericized to be compatible with changing OWLAPI interfaces
+        	 */
+            return (Set) parser.parsePropertyList();
         }
         catch (ParserException e) {
             throw ParserUtil.convertException(e);

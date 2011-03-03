@@ -70,7 +70,10 @@ public class OWLKeySection extends AbstractOWLFrameSection<OWLClass, OWLHasKeyAx
 
 
     protected OWLHasKeyAxiom createAxiom(Set<OWLPropertyExpression> properties) {
-        return getOWLDataFactory().getOWLHasKeyAxiom(getRootObject(), properties);
+    	/*
+    	 * Degenericized to be compatible with changing OWLAPI interfaces
+    	 */
+    	return getOWLDataFactory().getOWLHasKeyAxiom(getRootObject(), (Set) properties);
     }
 
 
