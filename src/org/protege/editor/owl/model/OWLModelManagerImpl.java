@@ -317,7 +317,10 @@ public class OWLModelManagerImpl extends AbstractModelManager
             ontology = manager.loadOntologyFromOntologyDocument(IRI.create(uri));
             setActiveOntology(ontology);
             fireEvent(EventType.ONTOLOGY_LOADED);
-            manager.addIRIMapper(new SimpleIRIMapper(ontology.getOntologyID().getDefaultDocumentIRI(), IRI.create(uri)));
+            OWLOntologyID id = ontology.getOntologyID();
+            if (!id.isAnonymous()) {
+            	manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+            }
         }
         catch (OWLOntologyCreationException ooce) {
             ;             // will be handled by the loadErrorHandler, so ignore
