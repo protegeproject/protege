@@ -13,7 +13,6 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -21,7 +20,9 @@ import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 /**
@@ -34,11 +35,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class LoadedOntologyPage extends OntologyImportPage {
+	private static final long serialVersionUID = 7719702648603699776L;
 
-    private static final Logger logger = Logger.getLogger(LoadedOntologyPage.class);
-
-
-    public static final String ID = LoadedOntologyPage.class.getName();
+	public static final String ID = LoadedOntologyPage.class.getName();
 
     private JList ontologyList;
 
@@ -80,13 +79,14 @@ public class LoadedOntologyPage extends OntologyImportPage {
     public void aboutToHidePanel() {
     	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
     	wizard.clearImports();
-        Set<OWLOntology> sel = new HashSet<OWLOntology>();
         for (Object o : ontologyList.getSelectedValues()){
         	OWLOntology ontology = (OWLOntology) o;
+        	OWLOntologyID id = ontology.getOntologyID();
+        	IRI physicalLocation = getOWLModelManager().getOWLOntologyManager().getOntologyDocumentIRI(ontology);
         	ImportInfo parameter = new ImportInfo();
         	parameter.setOntologyID(ontology.getOntologyID());
-        	parameter.setPhysicalLocation(getOWLModelManager().getOWLOntologyManager().getOntologyDocumentIRI(ontology).toURI());
-        	parameter.setImportLocation(ontology.getOntologyID().getDefaultDocumentIRI());
+        	parameter.setPhysicalLocation(physicalLocation.toURI());
+        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI() : physicalLocation);
         	wizard.addImport(parameter);
         }
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
