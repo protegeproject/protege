@@ -169,6 +169,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     
     private JLabel customizedProtege = new JLabel();
     
+    private String altTitle;
+    
     private boolean reasonerManagerStarted = false;
     private PrecomputeAction startReasonerAction = new PrecomputeAction();
     private PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
@@ -656,8 +658,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         updateTitleBar();
     }
 
+    public void setTitle(String title) {
+    	altTitle = title;
+    	updateTitleBar();
+    }
 
     protected String getTitle() {
+    	if (altTitle != null) {
+    		return altTitle;
+    	}
         final OWLModelManager mngr = getOWLModelManager();
         OWLOntology activeOntology = mngr.getActiveOntology();
         if (activeOntology == null) {
