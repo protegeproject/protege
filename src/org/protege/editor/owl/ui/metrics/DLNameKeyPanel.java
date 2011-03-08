@@ -44,7 +44,7 @@ public class DLNameKeyPanel extends JPanel {
                        box);
 
         addExplanation(OWLIcons.getIcon("FLO.png"),
-                       "A sub-language of FL-, which is obtained by disallowing limited existential quantification",
+                       "A sub-language of FL<sup>-</sup>, which is obtained by disallowing limited existential quantification",
                        box);
         addExplanation(OWLIcons.getIcon("C.png"), "Complex concept negation", box);
         addExplanation(OWLIcons.getIcon("S.png"), "An abbreviation for AL and C with transitive properties", box);
