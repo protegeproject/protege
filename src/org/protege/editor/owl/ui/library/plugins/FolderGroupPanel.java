@@ -84,7 +84,7 @@ public class FolderGroupPanel extends NewEntryPanel {
         }
         try {
         	URI folderUri = CatalogUtilities.relativize(new File(physicalLocationField.getText()).toURI(), catalog);
-            return FolderGroupManager.createGroupEntry(folderUri, recursive.isSelected(), catalog);
+            return FolderGroupManager.createGroupEntry(folderUri, recursive.isSelected(), true, catalog);
         }
         catch (IOException ioe) {
             ProtegeApplication.getErrorLog().logError(ioe);
