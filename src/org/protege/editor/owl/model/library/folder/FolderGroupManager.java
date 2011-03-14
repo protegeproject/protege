@@ -3,10 +3,15 @@ package org.protege.editor.owl.model.library.folder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
@@ -42,11 +47,12 @@ public class FolderGroupManager extends CatalogEntryManager {
 	public static final String ID_PREFIX = "Folder Repository";
 	public static final String DIR_PROP = "directory";
 	public static final String RECURSIVE_PROP = "recursive";
-	public static final String DEPRECATED_DUPLICATE_SCHEME="duplicate:";
+	public static final String DUPLICATE_SCHEME="duplicate:";
 	
     public static final String FILE_KEY = "FILE";
     
     private Set<Algorithm> algorithms;
+    private boolean autoUpdate = true;
     private boolean warnedUserOfBadRepositoryDeclaration = false;
     
     /*
@@ -57,13 +63,15 @@ public class FolderGroupManager extends CatalogEntryManager {
     private boolean recursive = true;
     private long timeOfCurrentUpdate;
     private boolean modified = false;
+    private Set<File> examined = new HashSet<File>();
+    private Map<URI, Collection<URI>> webLocationToFileLocationMap = new TreeMap<URI, Collection<URI>>();
     
 
-    public static GroupEntry createGroupEntry(URI folder, boolean recursive, XmlBaseContext context) throws IOException {
+    public static GroupEntry createGroupEntry(URI folder, boolean recursive, boolean autoUpdate, XmlBaseContext context) throws IOException {
         StringBuffer sb = new StringBuffer(ID_PREFIX);
         LibraryUtilities.addPropertyValue(sb, DIR_PROP, folder.toString());
         LibraryUtilities.addPropertyValue(sb, RECURSIVE_PROP, recursive);
-        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, "true");
+        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, autoUpdate ? "true" : "false");
         LibraryUtilities.addPropertyValue(sb, LibraryUtilities.VERSION_PROPERTY, CURRENT_VERSION);
         return new GroupEntry(sb.toString(), context, Prefer.PUBLIC, folder);
     }
@@ -72,6 +80,21 @@ public class FolderGroupManager extends CatalogEntryManager {
         algorithms = new HashSet<Algorithm>();
     	algorithms.add(new XmlBaseAlgorithm());
     }
+    
+    public void setAlgorithms(Algorithm... algorithms) {
+    	this.algorithms.clear();
+    	for (Algorithm algorithm : algorithms) {
+    		this.algorithms.add(algorithm);
+    	}
+    }
+    
+    public void setAutoUpdate(boolean autoUpdate) {
+		this.autoUpdate = autoUpdate;
+	}
+    
+    public boolean isAutoUpdate() {
+		return autoUpdate;
+	}
 	
 	public boolean isSuitable(Entry entry) {
 		if  (!(entry instanceof GroupEntry)) {
@@ -99,20 +122,17 @@ public class FolderGroupManager extends CatalogEntryManager {
 	}
 
 	public boolean update(Entry entry) {
-        modified = false;
         this.ge = (GroupEntry) entry;
-        folder = getDirectory(ge);
-        recursive = LibraryUtilities.getBooleanProperty(entry, RECURSIVE_PROP, true);
-        timeOfCurrentUpdate = System.currentTimeMillis();
+        reset();
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Starting Catalog Update ************************************************");
                 logger.debug("Update of group entry " + ge.getId() + " started at " + new Date(timeOfCurrentUpdate));
             }
     
-            removeOldDuplicates();
-            Set<File> examined = handleStaleEntries();
-            handleDiskEntries(folder, examined);
+            removeStaleEntries();
+            examineDiskEntries(folder);
+            writeEntries();
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Catalog Update Complete ************************************************");
 
@@ -121,13 +141,27 @@ public class FolderGroupManager extends CatalogEntryManager {
         }
         finally {
             this.ge = null;
-            folder = null;
+            reset();
         }
     }
 	
+	private void reset() {
+		modified = false;
+		timeOfCurrentUpdate = System.currentTimeMillis();
+		examined.clear();
+		webLocationToFileLocationMap.clear();
+		if (ge != null) {
+			folder = getDirectory(ge);
+			recursive = LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true);
+		}
+		else {
+			folder = null;
+		}
+	}
+	
 	public boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException {
 	    URI relativeFolderUri = CatalogUtilities.relativize(folder.toURI(), catalog);
-	    ge = FolderGroupManager.createGroupEntry(relativeFolderUri, true, catalog);
+	    ge = FolderGroupManager.createGroupEntry(relativeFolderUri, true, autoUpdate, catalog);
 	    catalog.addEntry(ge);
 	    update(ge);
 	    return true;
@@ -161,21 +195,8 @@ public class FolderGroupManager extends CatalogEntryManager {
 	        return f;
 	    }
 	}
-	
-	private void removeOldDuplicates() {
-	    for (Entry e : new ArrayList<Entry>(ge.getEntries())) {
-            if (e instanceof UriEntry) {
-                UriEntry ue = (UriEntry) e;
-                if (ue.getName().startsWith(DEPRECATED_DUPLICATE_SCHEME)) {
-                    ge.removeEntry(ue);
-                }
-            }
-	    }
-	}
 	   
-    private Set<File> handleStaleEntries() {
-        Set<File> examined = new HashSet<File>();
-
+    private void removeStaleEntries() {
         for (Entry e : new ArrayList<Entry>(ge.getEntries())) {
             if (e instanceof UriEntry) {
                 UriEntry ue = (UriEntry) e;
@@ -193,7 +214,7 @@ public class FolderGroupManager extends CatalogEntryManager {
                     File f = new File(ue.getAbsoluteURI());
                     if (!f.exists() || f.lastModified() >= lastUpdated) {
                         ge.removeEntry(ue);
-                        modified = true; // an entry will be deleted.
+                        modified = true;
                         if (logger.isDebugEnabled()) {
                             logger.debug("Map for file " + f + " is stale and has been removed");
                         }
@@ -210,11 +231,10 @@ public class FolderGroupManager extends CatalogEntryManager {
                 }
             }
         }
-        return examined;
     }
     
     
-    private  void handleDiskEntries(File tree, Set<File> examined) {
+    private  void examineDiskEntries(File tree) {
         if (algorithms == null || algorithms.isEmpty()) {
             return;
         }
@@ -231,25 +251,63 @@ public class FolderGroupManager extends CatalogEntryManager {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Applying algorithms to " + physicalLocation);
                 }
+    			URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
                 for (Algorithm algorithm : algorithms) {
                     Set<URI> webLocations = algorithm.getSuggestions(physicalLocation);
                     for (URI webLocation : webLocations) {
-                        URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
-                        String entryId = "Automatically generated entry, " + OntologyCatalogManager.TIMESTAMP + "=" + timeOfCurrentUpdate;
-                        UriEntry u = new UriEntry(entryId, 
-                                                  ge, 
-                                                  webLocation.toString(),
-                                                  shortLocation,
-                                                  null);
-                        ge.addEntry(u);
-                        modified = true;
+                    	recordEntry(webLocation, shortLocation);
                     }
                 }
             }
         }
         for (File physicalLocation : subFolders) {
-            handleDiskEntries(physicalLocation, examined);
+            examineDiskEntries(physicalLocation);
         }
+    }
+    
+    private void recordEntry(URI webLocation, URI physicalLocation)	{ 
+    	Collection<URI> possibleLocations = webLocationToFileLocationMap.get(webLocation);
+    	if (possibleLocations == null) {
+    		possibleLocations = new ArrayList<URI>();
+    		webLocationToFileLocationMap.put(webLocation, possibleLocations);
+    	}
+    	possibleLocations.add(physicalLocation);
+    }
+    
+    private void writeEntries() {
+    	List<URI> duplicates = new ArrayList<URI>();
+    	for (URI webLocation : webLocationToFileLocationMap.keySet()) {
+    		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
+    		if (physicalLocations.size() > 1) {
+    			duplicates.add(webLocation);
+    			continue;
+    		}
+    		writeEntries(webLocation, physicalLocations);
+    	}
+    	for (URI webLocation : duplicates) {
+    		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
+			try {
+				webLocation = new URI(DUPLICATE_SCHEME + webLocation.toString());
+			}
+			catch (URISyntaxException use) {
+				ProtegeApplication.getErrorLog().logError(use);
+				continue;
+			}
+    		writeEntries(webLocation, physicalLocations);
+    	}
+    }
+    
+    private void writeEntries(URI webLocation, Collection<URI> physicalLocations) {
+		for (URI physicalLocation : physicalLocations) {
+			String entryId = "Automatically generated entry, " + OntologyCatalogManager.TIMESTAMP + "=" + timeOfCurrentUpdate;
+			UriEntry u = new UriEntry(entryId, 
+								      ge, 
+								      webLocation.toString(),
+								      physicalLocation,
+								      null);
+			ge.addEntry(u);
+			modified = true;
+		}
     }
     
     private File getDirectory(GroupEntry ge) {
