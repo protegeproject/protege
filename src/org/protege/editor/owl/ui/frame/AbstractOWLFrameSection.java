@@ -243,11 +243,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();
         if (comparator != null) {
-//            Collections.sort(rows, comparator);
-            TreeSet<OWLFrameSectionRow<R,A,E>> ts = new TreeSet<OWLFrameSectionRow<R,A,E>>(comparator);
-            ts.addAll(rows);
-            rows.clear();
-            rows.addAll(ts);
+            Collections.sort(rows, comparator);
         }
         fireContentChanged();
     }
