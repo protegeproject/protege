@@ -24,39 +24,24 @@ public class Launcher {
 	
     public static final String ARG_PROPERTY = "command.line.arg.";
     
-    private static final String[][] systemProperties = {
-        {"file.encoding", "utf-8"},
-        {"apple.laf.useScreenMenuBar", "true"},
-        {"com.apple.mrj.application.growbox.intrudes", "true"}
-    };
 
-    private static final String[][] frameworkProperties = { 
-        {"org.osgi.framework.bootdelegation", "sun.*,com.sun.*,apple.*,com.apple.*"},
-        {"org.osgi.framework.system.packages.extra", "javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers"},
-        {"org.osgi.framework.storage.clean", "onFirstInit"}
-    };
-
-    private static final String[] coreBundles = {
-        "org.protege.common.jar",
-        "org.eclipse.equinox.common.jar",
-        "org.eclipse.equinox.registry.jar",
-        "org.eclipse.equinox.supplement.jar",
-        "org.protege.jaxb.jar",
-        "org.protege.editor.core.application.jar"
-    };
-    
+    private LaunchConfiguration launchConfiguration;
     private Properties launchProperties = new Properties();
     private String     factoryClass;
     private String     bundleDir;
+    private String     pluginDir;
+
     
-    public Launcher() throws IOException {
+    public Launcher(LaunchConfiguration launchConfiguration) throws IOException {
+    	this.launchConfiguration = launchConfiguration;
+    	setSystemProperties();
 		Properties buildProperties = loadProtegeProperties();
 		
 		bundleDir    = buildProperties.getProperty("protege.common");
 		if (bundleDir == null) {
 			bundleDir = "bundles";
 		}
-		String pluginDir = buildProperties.getProperty("protege.plugins");
+		pluginDir = buildProperties.getProperty("protege.plugins");
 		if (pluginDir == null) {
 			pluginDir = "plugins";
 		}
@@ -70,6 +55,7 @@ public class Launcher {
 		factoryClass = factoryClass.trim();
 		factoryReader.close();
 		
+		String[][] frameworkProperties = launchConfiguration.getFrameworkProperties();
 		for (int i = 0; i < frameworkProperties.length; i++) {
 			launchProperties.setProperty(frameworkProperties[i][0], frameworkProperties[i][1]);
 		}
@@ -79,7 +65,14 @@ public class Launcher {
 		frameworkDir.deleteOnExit();
     }
     
-    public Properties loadProtegeProperties() throws IOException {
+    private void setSystemProperties() {
+		String[][] systemProperties = launchConfiguration.getSystemProperties();
+		for (int i = 0; i < systemProperties.length; i++) {
+			System.setProperty(systemProperties[i][0], systemProperties[i][1]);
+		}
+	}
+
+	public Properties loadProtegeProperties() throws IOException {
     	Properties buildProperties = new Properties();
  		File propertiesFile = null;
  		String specifiedPropertiesLocation = System.getProperty(PROTEGE_PROPERTIES_PROPERTY);
@@ -106,11 +99,18 @@ public class Launcher {
     	Framework framework = factory.newFramework(launchProperties);
     	framework.start();
     	BundleContext context = framework.getBundleContext();
+    	List<Bundle> bundles = installBundles(context, bundleDir, launchConfiguration.getCoreBundles());
+    	bundles.addAll(installBundles(context, pluginDir, launchConfiguration.getPluginBundles()));
+    	startBundles(context, bundles);
+    	startBundles(context, bundles);
+    }
+
+    private List<Bundle> installBundles(BundleContext context, String dir, String[] bundles) throws BundleException {
     	List<Bundle> core = new ArrayList<Bundle>();
-    	for (String bundleName :  coreBundles) {
+    	for (String bundleName :  bundles) {
     		boolean success = false;
     		try {
-    			core.add(context.installBundle(new File(bundleDir, bundleName).toURI().toString()));
+    			core.add(context.installBundle(new File(dir, bundleName).toURI().toString()));
     			success = true;
     		}
     		finally {
@@ -119,7 +119,11 @@ public class Launcher {
     			}
     		}
     	}
-    	for (Bundle b : core) {
+    	return core;
+    }
+    
+    private void startBundles(BundleContext context, List<Bundle> bundles) throws BundleException {
+    	for (Bundle b : bundles) {
     		boolean success = false;
     		try {
     			b.start();
@@ -139,26 +143,22 @@ public class Launcher {
 	 */
     public static void main(String[] args) {
     	try {
-    		setSystemProperties(args);
-    		new Launcher().start();
+    		setArguments(args);
+    		new Launcher(new ProtegeLaunchConfiguration()).start();
     	}
     	catch (Throwable t) {
     		System.out.println("Fatal Exception Caught trying to start Protege");
     		t.printStackTrace();
     	}
     }
-
-
-    private static void setSystemProperties(String[] args) {
+    
+    public static void setArguments(String[] args) {
 		if (args != null) {
 			int counter = 0;
 			for (String arg : args) {
 				System.setProperty(ARG_PROPERTY + (counter++), arg);
 			}
-		}
-		for (int i = 0; i < systemProperties.length; i++) {
-			System.setProperty(systemProperties[i][0], systemProperties[i][1]);
-		}
+		}    	
     }
 	
 }
