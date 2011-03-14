@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.repository.extractors;
 import java.net.URI;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.library.folder.RdfExtractorConsumer;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFParser;
 import org.xml.sax.InputSource;
