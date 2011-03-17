@@ -2,110 +2,78 @@ package org.protege.osgi.framework;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
+import org.xml.sax.SAXException;
 
 
-public class Launcher {
-	public static final String PROTEGE_PROPERTIES_PROPERTY = "protege.properties";
-	
+public class Launcher {	
     public static final String ARG_PROPERTY = "command.line.arg.";
-    
+    public static final String LAUNCH_LOCATION_PROPERTY = "org.protege.launch.config";
 
-    private LaunchConfiguration launchConfiguration;
-    private Properties launchProperties = new Properties();
+    private Properties frameworkProperties;
+    private List<DirectoryWithBundles> directories;
     private String     factoryClass;
-    private String     bundleDir;
-    private String     pluginDir;
 
     
-    public Launcher(LaunchConfiguration launchConfiguration) throws IOException {
-    	this.launchConfiguration = launchConfiguration;
-    	setSystemProperties();
-		Properties buildProperties = loadProtegeProperties();
-		
-		bundleDir    = buildProperties.getProperty("protege.common");
-		if (bundleDir == null) {
-			bundleDir = "bundles";
-		}
-		pluginDir = buildProperties.getProperty("protege.plugins");
-		if (pluginDir == null) {
-			pluginDir = "plugins";
-		}
-		System.setProperty("org.protege.plugin.dir", pluginDir);
-			
-			
-		BufferedReader factoryReader = new BufferedReader(
-				new InputStreamReader(
-						getClass().getClassLoader().getResourceAsStream("META-INF/services/org.osgi.framework.launch.FrameworkFactory")));
-		factoryClass = factoryReader.readLine();
-		factoryClass = factoryClass.trim();
-		factoryReader.close();
-		
-		String[][] frameworkProperties = launchConfiguration.getFrameworkProperties();
-		for (int i = 0; i < frameworkProperties.length; i++) {
-			launchProperties.setProperty(frameworkProperties[i][0], frameworkProperties[i][1]);
-		}
-		
+    public Launcher(File config) throws IOException, ParserConfigurationException, SAXException {
+        parseConfig(config);
+		locateOSGi();
 		File frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
-		launchProperties.setProperty("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
+		frameworkProperties.setProperty("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
 		frameworkDir.deleteOnExit();
     }
     
-    private void setSystemProperties() {
-		String[][] systemProperties = launchConfiguration.getSystemProperties();
-		for (int i = 0; i < systemProperties.length; i++) {
-			System.setProperty(systemProperties[i][0], systemProperties[i][1]);
+    private void parseConfig(File config) throws ParserConfigurationException, SAXException, IOException {
+        Parser p = new Parser();
+        p.parse(config);
+        setSystemProperties(p);
+        directories = p.getDirectories();
+        frameworkProperties = p.getFrameworkProperties();
+    }
+    
+    private void locateOSGi() throws IOException {
+        BufferedReader factoryReader = new BufferedReader(new InputStreamReader(
+             getClass().getClassLoader().getResourceAsStream("META-INF/services/org.osgi.framework.launch.FrameworkFactory")));
+        factoryClass = factoryReader.readLine();
+        factoryClass = factoryClass.trim();
+        factoryReader.close();
+    }
+    
+    private void setSystemProperties(Parser p) {
+		Properties systemProperties = p.getSystemProperties();
+        System.setProperty("org.protege.plugin.dir", p.getPluginDirectory());
+		for (Entry<Object, Object> entry : systemProperties.entrySet()) {
+			System.setProperty((String) entry.getKey(), (String) entry.getValue());
 		}
 	}
 
-	public Properties loadProtegeProperties() throws IOException {
-    	Properties buildProperties = new Properties();
- 		File propertiesFile = null;
- 		String specifiedPropertiesLocation = System.getProperty(PROTEGE_PROPERTIES_PROPERTY);
- 		if (specifiedPropertiesLocation != null) {
- 			propertiesFile = new File(specifiedPropertiesLocation);
- 		}
- 		else {
- 			propertiesFile = new File("build.properties");
- 		}
- 		String protegeHome = propertiesFile.getAbsoluteFile().getParent();
- 		FileInputStream fis = new FileInputStream("build.properties");
- 		buildProperties.load(fis);
- 		fis.close();
- 		for (Entry<Object, Object> e : new HashSet<Entry<Object, Object>>(buildProperties.entrySet())) {
- 			String key = (String) e.getKey();
- 			String value = (String) e.getValue();
- 			buildProperties.put(key, value.replace("${protege.home}", protegeHome));
- 		}
- 		return buildProperties;
-    }
-    
     public void start() throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException {
     	FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
-    	Framework framework = factory.newFramework(launchProperties);
+    	Framework framework = factory.newFramework(frameworkProperties);
     	framework.start();
     	BundleContext context = framework.getBundleContext();
-    	List<Bundle> bundles = installBundles(context, bundleDir, launchConfiguration.getCoreBundles());
-    	bundles.addAll(installBundles(context, pluginDir, launchConfiguration.getPluginBundles()));
-    	startBundles(context, bundles);
+    	List<Bundle> bundles = new ArrayList<Bundle>();
+    	for (DirectoryWithBundles directory : directories) {
+    	    bundles.addAll(installBundles(context, directory.getDirectory(), directory.getBundles()));
+    	}
     	startBundles(context, bundles);
     }
 
-    private List<Bundle> installBundles(BundleContext context, String dir, String[] bundles) throws BundleException {
+    private List<Bundle> installBundles(BundleContext context, String dir, List<String> bundles) throws BundleException {
     	List<Bundle> core = new ArrayList<Bundle>();
     	for (String bundleName :  bundles) {
     		boolean success = false;
@@ -140,16 +108,18 @@ public class Launcher {
 
 	/**
 	 * @param args
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws BundleException 
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-    public static void main(String[] args) {
-    	try {
-    		setArguments(args);
-    		new Launcher(new ProtegeLaunchConfiguration()).start();
-    	}
-    	catch (Throwable t) {
-    		System.out.println("Fatal Exception Caught trying to start Protege");
-    		t.printStackTrace();
-    	}
+    public static void main(String[] args) throws Exception {
+        setArguments(args);
+        String config = System.getProperty(LAUNCH_LOCATION_PROPERTY, "config.xml");
+        new Launcher(new File(config)).start();
     }
     
     public static void setArguments(String[] args) {
