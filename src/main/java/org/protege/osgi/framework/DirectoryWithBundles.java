@@ -1,10 +1,11 @@
 package org.protege.osgi.framework;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DirectoryWithBundles {
 	private String directory;
-	private List<String> bundles;
+	private List<String> bundles = new ArrayList<String>();
 	
 	public DirectoryWithBundles(String directory) {
 		super();

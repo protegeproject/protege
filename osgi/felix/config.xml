@@ -1,6 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
 <launch>
+  <pluginDirectory dir="plugins"/>
   <systemProperties>
     <property name="file.encoding" value="utf-8"/>
     <property name="apple.laf.useScreenMenuBar" value="true"/>
