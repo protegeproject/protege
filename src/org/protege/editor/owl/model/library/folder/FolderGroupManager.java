@@ -275,24 +275,11 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
     
     private void writeEntries() {
-    	List<URI> duplicates = new ArrayList<URI>();
     	for (URI webLocation : webLocationToFileLocationMap.keySet()) {
     		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
     		if (physicalLocations.size() > 1) {
-    			duplicates.add(webLocation);
     			continue;
     		}
-    		writeEntries(webLocation, physicalLocations);
-    	}
-    	for (URI webLocation : duplicates) {
-    		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
-			try {
-				webLocation = new URI(DUPLICATE_SCHEME + webLocation.toString());
-			}
-			catch (URISyntaxException use) {
-				ProtegeApplication.getErrorLog().logError(use);
-				continue;
-			}
     		writeEntries(webLocation, physicalLocations);
     	}
     }
