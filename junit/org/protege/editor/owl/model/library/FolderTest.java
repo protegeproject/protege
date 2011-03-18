@@ -15,8 +15,8 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.GroupEntry;
 
 
-public class FolderTests extends TestCase {
-    public static final File TEST_DIR=new File("build/folder.test");
+public class FolderTest extends TestCase {
+    public static final File TEST_DIR=new File("target/folder.test");
     public static final File SOURCE_DIR=new File("junit/ontologies");
     
     public static final String AMINO_ACID_FILE  = "amino-acid.owl";
@@ -94,7 +94,7 @@ public class FolderTests extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
-        assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) != null);
+        assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
     }
     
     public void testDontTouchExisting() throws IOException, InterruptedException {
