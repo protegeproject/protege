@@ -43,6 +43,8 @@
 		<string>org.protege.osgi.framework.Launcher</string>
 		<key>Properties</key>
 		<dict>
+			<key>org.protege.launch.config</key>
+			<string>Contents/Resources/config.xml</string>
 			<key>apple.laf.useScreenMenuBar</key>
 			<string>true</string>
 			<key>com.apple.mrj.application.grobox.intrudes</key>
