@@ -23,10 +23,13 @@ import org.xml.sax.SAXException;
 public class Launcher {	
     public static final String ARG_PROPERTY = "command.line.arg.";
     public static final String LAUNCH_LOCATION_PROPERTY = "org.protege.launch.config";
+    public static final String PROTEGE_DIR_PROPERTY = "protege.dir";
+    public static String PROTEGE_DIR = System.getProperty(PROTEGE_DIR_PROPERTY);
 
     private Properties frameworkProperties;
     private List<DirectoryWithBundles> directories;
     private String     factoryClass;
+    private Framework  framework;
 
     
     public Launcher(File config) throws IOException, ParserConfigurationException, SAXException {
@@ -35,6 +38,10 @@ public class Launcher {
 		File frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
 		frameworkProperties.setProperty("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
 		frameworkDir.deleteOnExit();
+    }
+    
+    public Framework getFramework() {
+        return framework;
     }
     
     private void parseConfig(File config) throws ParserConfigurationException, SAXException, IOException {
@@ -63,7 +70,7 @@ public class Launcher {
 
     public void start() throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException {
     	FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
-    	Framework framework = factory.newFramework(frameworkProperties);
+    	framework = factory.newFramework(frameworkProperties);
     	framework.start();
     	BundleContext context = framework.getBundleContext();
     	List<Bundle> bundles = new ArrayList<Bundle>();
@@ -74,11 +81,18 @@ public class Launcher {
     }
 
     private List<Bundle> installBundles(BundleContext context, String dir, List<String> bundles) throws BundleException {
+        File directory;
+        if (PROTEGE_DIR != null) {
+            directory = new File(PROTEGE_DIR, dir);
+        }
+        else {
+            directory = new File(dir);
+        }
     	List<Bundle> core = new ArrayList<Bundle>();
     	for (String bundleName :  bundles) {
     		boolean success = false;
     		try {
-    			core.add(context.installBundle(new File(dir, bundleName).toURI().toString()));
+    			core.add(context.installBundle(new File(directory, bundleName).toURI().toString()));
     			success = true;
     		}
     		finally {
@@ -119,10 +133,17 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
         setArguments(args);
         String config = System.getProperty(LAUNCH_LOCATION_PROPERTY, "config.xml");
-        new Launcher(new File(config)).start();
+        File configFile;
+        if (PROTEGE_DIR != null) {
+            configFile = new File(PROTEGE_DIR, config);
+        }
+        else {
+            configFile = new File(config);
+        }
+        new Launcher(configFile).start();
     }
     
-    public static void setArguments(String[] args) {
+    public static void setArguments(String... args) {
 		if (args != null) {
 			int counter = 0;
 			for (String arg : args) {
