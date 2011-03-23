@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <!-- CHANGE ME -->
+    <!-- The version, group artifact id probably all need to be updated -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>protege4</groupId>
 	<artifactId>org.coode.dlquery</artifactId>
 	<packaging>bundle</packaging>
+    <!-- CHANGE ME -->
 	<name>DL Query Plugin</name>
 	<version>1.0.0.SNAPSHOT</version>
     <!-- <version>1.0.0.2010_12_15_1130</version> -->
@@ -74,35 +77,15 @@
 		</dependency>
 	</dependencies>
 
+    <!-- CHANGE ME -->
 	<description>DL Query Plugin</description>
 	<organization>
+        <!-- CHANGE ME -->
 		<name>The Protege Development Team</name>
 	</organization>
 
 	<build>
 		<plugins>
-			<!-- The properties plugin might be used to define certain parameters
-			in a properties file. for demonstration purposes we did that to
-			demonstrate how to customize the output directory (s. "next" plugin) -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-			    <artifactId>properties-maven-plugin</artifactId>
-    			<version>1.0-alpha-1</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<files>
-								<file>version.properties</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
             <plugin>
               <groupId>org.apache.felix</groupId>
               <artifactId>maven-bundle-plugin</artifactId>
@@ -110,13 +93,15 @@
               <extensions>true</extensions>
               <configuration>
                 <instructions>
+                  <!-- CHANGE ME -->
                   <Bundle-SymbolicName>org.coode.dlquery;singleton:=true</Bundle-SymbolicName>
                   <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
                   <Export-Package/>
                   <Import-Package>
                       *
                   </Import-Package>
-                  <Private-Package>org.coode.dlquery</Private-Package>
+                  <!-- CHANGE ME -->
+                  <Private-Package>org.coode.dlquery.*</Private-Package>
                   <Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
                   <Bundle-ClassPath>.</Bundle-ClassPath>
                   <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
