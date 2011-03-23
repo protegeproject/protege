@@ -109,11 +109,11 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             return;
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        // remove before adding in case the user is moving to the same class (or we could check)
+        changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
+                					df.getOWLSubClassOfAxiom(child, fromParent)));
         changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
                                  df.getOWLSubClassOfAxiom(child, toParent)));
-
-        changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
-                                    df.getOWLSubClassOfAxiom(child, fromParent)));
         getOWLModelManager().applyChanges(changes);
     }
 
