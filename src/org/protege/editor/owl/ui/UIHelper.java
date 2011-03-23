@@ -229,23 +229,23 @@ public class UIHelper {
 
 
     public String getHTMLOntologyList(Collection<OWLOntology> ontologies) {
-        String result = "";
+        StringBuffer result = new StringBuffer();
         for (OWLOntology ont : ontologies) {
             if (getOWLModelManager().getActiveOntology().equals(ont)) {
-                result += "<font color=\"0000ff\"><b>";
-                result += ont.getOntologyID().getDefaultDocumentIRI();
-                result += "</font></b>";
+                result.append("<font color=\"0000ff\"><b>");
+                result.append(ont.getOntologyID().getDefaultDocumentIRI());
+                result.append("</font></b>");
             }
             else {
-                result += ont.getOntologyID();
+                result.append(ont.getOntologyID().getDefaultDocumentIRI());
             }
             if (!getOWLModelManager().isMutable(ont)) {
-                result += "&nbsp;";
-                result += " <font color=\"ff0000\">(Not editable)</font>";
+                result.append("&nbsp;");
+                result.append(" <font color=\"ff0000\">(Not editable)</font>");
             }
-            result += "<br>";
+            result.append("<br>");
         }
-        return result;
+        return result.toString();
     }
 
 
