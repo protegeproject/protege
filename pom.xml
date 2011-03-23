@@ -6,8 +6,8 @@
 	<artifactId>org.protege.editor.owl</artifactId>
 	<packaging>bundle</packaging>
 	<name>OWL Editor</name>
-	<version>4.1.0.213_SNAPSHOT</version>
-    <!-- <version>4.1.0.b213_2011_03_07_2010</version> -->
+	<!-- <version>4.1.0.213_SNAPSHOT</version> -->
+    <version>4.1.0.b220_2011_03_23_1149</version>
 
 	<parent>
 		<groupId>protege4</groupId>
