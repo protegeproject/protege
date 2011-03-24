@@ -1,20 +1,61 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
+import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.View;
+import javax.swing.tree.TreeCellRenderer;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.*;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -594,10 +635,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         StyleConstants.setBold(nonBoldStyle, false);
 
         selectionForeground = doc.addStyle("SEL_FG_STYPE", null);
-        StyleConstants.setForeground(selectionForeground, SELECTION_FOREGROUND);
+        // we know that it is possible for SELECTION_FOREGROUND to be null 
+        // and an exception here means that Protege doesn't start
+        if (selectionForeground != null && SELECTION_FOREGROUND != null) {
+        	StyleConstants.setForeground(selectionForeground, SELECTION_FOREGROUND);
+        }
 
         foreground = doc.addStyle("FG_STYLE", null);
-        StyleConstants.setForeground(foreground, FOREGROUND);
+        if (foreground != null && FOREGROUND != null) {
+        	StyleConstants.setForeground(foreground, FOREGROUND);
+        }
 
         linkStyle = doc.addStyle("LINK_STYLE", null);
         StyleConstants.setForeground(linkStyle, Color.BLUE);
