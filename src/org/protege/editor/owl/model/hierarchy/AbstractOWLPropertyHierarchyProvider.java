@@ -73,6 +73,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
             }
             fireNodeChanged(prop);
         }
+        fireNodeChanged(getRoot());
     }
 
 
@@ -212,13 +213,43 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
         Set<P> result = new HashSet<P>();
         for (E prop : object.getSuperProperties(ontologies)) {
             if (!prop.isAnonymous()) {
-                result.add((P)prop);
+                result.add((P) prop);
             }
         }
-        if (result.isEmpty()){
+        if (result.isEmpty() && isReferenced(object)){
             result.add(getRoot());
         }
 
         return result;
+    }
+    
+    
+    private boolean isReferenced(P e) {
+    	return e.accept(new IsReferencePropertyExpressionVisitor());
+    }
+    
+    private class IsReferencePropertyExpressionVisitor implements OWLPropertyExpressionVisitorEx<Boolean> {
+
+		public Boolean visit(OWLObjectProperty property) {
+			return isReferenced(property);
+		}
+
+		public Boolean visit(OWLObjectInverseOf property) {
+			return property.getInverse().accept(this);
+		}
+
+		public Boolean visit(OWLDataProperty property) {
+			return isReferenced(property);
+		}
+    	
+    	
+    	private boolean isReferenced(OWLEntity e) {
+        	for (OWLOntology ontology : ontologies) {
+        		if (ontology.containsEntityInSignature(e)) {
+        			return true;
+        		}
+        	}
+        	return false;
+    	}
     }
 }
