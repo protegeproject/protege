@@ -2,24 +2,31 @@
 <body>
 <h2>OWL Editor</h2>
 <p>
-<b><i>This update is only compatible with Prot&#x00E9g&#x00E9 4.1 Build
-  218.</i></b>
-</p>
-<p>
 This is one of the core Prot&#x00E9g&#x00E9 plugins and is responsible for
 creating the core owl editing environment.
 </p>
 
 <h3>Version info</h3>
 
-<h4>v4.1.0 Update Build 218 - 28 Feb, 2011</h4>
+<h4>v4.1.0 Update Build 220 - 24 Mar, 2011</h4>
 
-<ul>
-<li> On a parse error, all files are now closed so that a windows user
-  is able to edit the ontologies and fix the parser errors.
+<ul> 
+<li> Fixed a refresh problem in the property hierarchy panels where deleting
+    a property did not remove it from the property hierarchy.</li>
+<li> Fixed a bug where dragging a class in the class hierarchy to its own superclass would
+    remove the class from the tree. </li>
+<li> In these cases, ontologies on the web would be slow to load
+     because Protege did make good use of content negotiation. This
+     has been fixed.</li>
+<li>Imports are not automatically redirected to the users disk if the
+    choice of file to choose for the import is ambiguous. </li>
+<li> Fixed some incompatibilities involving how different copies of
+    identical axioms are displayed.  An axiom can appear more than
+    once in an ontology if it is imported from different locations or
+    if the two copies of the same axiom have different annotations.</li>
 </ul>
 
-<h4>v4.1.0 Build 218 - 25 Feb, 2011</h4>
+<h4>v4.1.0 Build 218 - 11 Mar, 2011</h4>
 
 See
 the <a href="http://protegewiki.stanford.edu/wiki/Protege_4.1_Beta_Release_Notes">Prot&#x00E9g&#x00E9 4.1 release notes</a>.
