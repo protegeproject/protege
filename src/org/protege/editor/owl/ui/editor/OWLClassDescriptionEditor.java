@@ -164,7 +164,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
 
     private OWLClassExpressionEditor getSelectedEditor() {
-        return activeEditors.get(tabbedPane.getSelectedIndex());
+    	int index = tabbedPane.getSelectedIndex();
+    	if (index < 0) {
+    		index = 0;
+    	}
+        return activeEditors.get(index);
     }
 
 
