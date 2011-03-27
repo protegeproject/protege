@@ -35,6 +35,13 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OntologyIDPanel extends AbstractWizardPanel {
+	
+	public static final String INSTRUCTIONS = "Please specify the ontology IRI.  \n\nThe ontology IRI is used to identify" +
+    	" the ontology in the context of the world wide web. It is recommended that you " +
+    	" set the ontology IRI to be the URL where the latest version of the ontology" +
+    	" will be published.  If you use a version IRI, then it is recommended that you" +
+    	" set the version IRI to be the URL where this version of the ontology" +
+    	" will be published.";
 
     public static final String ID = "ONTOLOGY_ID_PANEL";
 
@@ -78,12 +85,7 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please specify the ontology IRI.  \n\nThe ontology IRI is used to identify" +
-                        " the ontology in the context of the world wide web. It is recommended that you " +
-                        " set the ontology IRI to be the URL where the latest version of the ontology" +
-                        " will be published.  If you use a version IRI, then it is recommended that you" +
-                        " set the version IRI to be the URL where this version of the ontology" +
-                        " will be published.");
+        setInstructions(INSTRUCTIONS);
 
         ontologyIRIField = new JTextField(OntologyPreferences.getInstance().generateURI().toString());
         ontologyIRIField.setSelectionStart(ontologyIRIField.getText().lastIndexOf("/") + 1);
