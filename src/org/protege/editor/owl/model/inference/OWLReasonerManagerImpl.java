@@ -14,6 +14,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -321,6 +322,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                     logger.info(s);
                 }
 
+            }
+            catch (InconsistentOntologyException ioe) {
+            	runningReasoner = null;
+            	ProtegeApplication.getErrorLog().logError(ioe);
             }
             finally{
                 synchronized (reasonerMap) {
