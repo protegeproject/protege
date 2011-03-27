@@ -1,13 +1,23 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OWLOntologyURIChanger;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.owl.ui.ontology.OntologyIDJDialog;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveImport;
+import org.semanticweb.owlapi.model.SetOntologyID;
+import org.semanticweb.owlapi.util.OWLOntologyURIChanger;
 
 
 /**
@@ -17,23 +27,38 @@ import java.net.URISyntaxException;
  * Date: 07-Mar-2007<br><br>
  */
 public class ChangeOntologyIRI extends ProtegeOWLAction {
+	private static final long serialVersionUID = -6080240335045735182L;
 
 
-    public void actionPerformed(ActionEvent e) {
-        try {
-            OWLOntology ont = getOWLModelManager().getActiveOntology();
-            String s = JOptionPane.showInputDialog("New ontology IRI", ont.getOntologyID().getOntologyIRI());
-
-            if (s == null) {
-                return;
-            }
-            IRI iri = IRI.create(new URI(s));
-            OWLOntologyURIChanger changer = new OWLOntologyURIChanger(getOWLModelManager().getOWLOntologyManager());
-            getOWLModelManager().applyChanges(changer.getChanges(ont, iri));
+	public void actionPerformed(ActionEvent e) {
+		OWLOntology ont = getOWLModelManager().getActiveOntology();
+		OWLOntologyID id = OntologyIDJDialog.showDialog(getOWLEditorKit(), ont.getOntologyID());
+		if (id != null) {
+			getOWLModelManager().applyChanges(getChanges(ont, id));
+		}
+	}
+	
+    private List<OWLOntologyChange> getChanges(OWLOntology ontology, OWLOntologyID id) {
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        OWLOntologyManager owlOntologyManager = ontology.getOWLOntologyManager();
+        OWLDataFactory factory = owlOntologyManager.getOWLDataFactory();
+        OWLOntologyID oldId = ontology.getOntologyID();
+        changes.add(new SetOntologyID(ontology, id));
+        if (!id.isAnonymous() && !id.equals(oldId)) {
+        	for (OWLOntology ont : owlOntologyManager.getOntologies()) {
+        		for (OWLImportsDeclaration decl : ont.getImportsDeclarations()) {
+        			if (decl.getIRI().equals(oldId.getVersionIRI())) {
+        				changes.add(new RemoveImport(ont, decl));
+        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getDefaultDocumentIRI())));
+        			}
+        			else if (decl.getIRI().equals(oldId.getOntologyIRI())) {
+        				changes.add(new RemoveImport(ont, decl));
+        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getOntologyIRI())));
+        			}
+        		}
+        	}
         }
-        catch (URISyntaxException ex) {
-            JOptionPane.showMessageDialog(getWorkspace(), ex.getMessage(), "Invalid IRI", JOptionPane.ERROR_MESSAGE);
-        }
+        return changes;
     }
 
 
