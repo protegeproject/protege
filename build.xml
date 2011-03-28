@@ -337,7 +337,7 @@
    <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
    <property name="readme.file"            value="${svn.root}/etc/owleditor-readme.html"/>
 
-   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar"/>
+   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1-2011-03-11/${plugin}.jar"/>
 
 
    <target name = "dist" depends="jar">
