@@ -1,9 +1,10 @@
 package org.protege.editor.core.editorkit;
 
-import org.protege.editor.core.ui.workspace.WorkspaceManager;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
 
 
 /**
@@ -44,8 +45,20 @@ public class EditorKitManager {
             editorKits.add(editorKit);
             workspaceManager.addWorkspace(editorKit.getWorkspace());
         }
+        installEditorKitPlugins(editorKit);
     }
 
+    private void installEditorKitPlugins(EditorKit editorKit) {
+    	EditorKitPluginLoader loader = new EditorKitPluginLoader(editorKit);
+    	for (EditorKitPlugin plugin : loader.getPlugins()) {
+    		try {
+    			plugin.newInstance();
+    		}
+    		catch (Exception ex) {
+    			ProtegeApplication.getErrorLog().logError(ex);
+    		}
+    	}
+    }
 
     /**
      * Removes an open <code>EditorKit</code>.  The

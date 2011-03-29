@@ -34,16 +34,6 @@ package org.protege.editor.core;
  */
 public interface ModelManager extends Disposable {
 
-
-    public void addModelManagerListener(ModelManagerListener listener);
-
-
-    public void removeModelManagerListener(ModelManagerListener listener);
-
-
-    public void fireModelManagerEvent(ModelManagerEvent event);
-
-
     public boolean isDirty();
 
 
