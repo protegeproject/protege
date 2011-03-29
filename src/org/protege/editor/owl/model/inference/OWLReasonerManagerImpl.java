@@ -326,6 +326,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             catch (InconsistentOntologyException ioe) {
             	runningReasoner = null;
             	ProtegeApplication.getErrorLog().logError(ioe);
+            	owlModelManager.fireEvent(EventType.ONTOLOGY_INCONSISTENT);
             }
             finally{
                 synchronized (reasonerMap) {

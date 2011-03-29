@@ -47,6 +47,8 @@ public enum EventType {
 
     ABOUT_TO_CLASSIFY,
 
+    ONTOLOGY_INCONSISTENT,
+    
     ONTOLOGY_CLASSIFIED,
 
     ONTOLOGY_CREATED,

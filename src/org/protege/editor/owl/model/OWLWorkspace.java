@@ -327,11 +327,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             updateDirtyFlag();
             break;
         case ENTITY_RENDERING_CHANGED:
-        	break;
+        case ONTOLOGY_INCONSISTENT:
         case ONTOLOGY_VISIBILITY_CHANGED:
             break;
-        default:
-            ProtegeApplication.getErrorLog().logError(new RuntimeException("Programmer Error - missed a case"));
         }
     }
 
