@@ -9,10 +9,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -23,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
@@ -238,7 +241,14 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             for (OWLOntology ontology : getOntologies()) {
                 refill(ontology);
             }
-            refillInferred();
+            try {
+            	refillInferred();
+            }
+            catch (InconsistentOntologyException ioe) {
+            	ProtegeApplication.getErrorLog().logError(ioe);
+            	getOWLModelManager().fireEvent(EventType.ONTOLOGY_INCONSISTENT);
+            	getOWLModelManager().getOWLReasonerManager().killCurrentReasoner();
+            }
         }
 
         Comparator<OWLFrameSectionRow<R, A, E>> comparator = getRowComparator();

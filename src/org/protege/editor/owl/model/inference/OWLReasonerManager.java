@@ -59,6 +59,8 @@ public interface OWLReasonerManager extends Disposable {
      * Gets the current reasoner.
      */
     OWLReasoner getCurrentReasoner();
+    
+    void killCurrentReasoner();
 
     /**
      * @deprecated use getReasonerStatus() instead

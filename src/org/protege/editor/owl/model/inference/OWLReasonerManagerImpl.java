@@ -179,6 +179,16 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         return reasoner;
     }
     
+    public void killCurrentReasoner() {
+    	OWLReasoner reasoner = getCurrentReasoner();
+    	if (!(reasoner instanceof NoOpReasoner)) {
+    		reasoner.dispose();
+            synchronized (reasonerMap)  {
+            	reasonerMap.put(owlModelManager.getActiveOntology(), null);
+            }
+    	}
+    }
+    
     public boolean isClassificationInProgress() {
         synchronized (reasonerMap) {
             return classificationInProgress;
@@ -324,9 +334,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
             }
             catch (InconsistentOntologyException ioe) {
-            	runningReasoner = null;
             	ProtegeApplication.getErrorLog().logError(ioe);
             	owlModelManager.fireEvent(EventType.ONTOLOGY_INCONSISTENT);
+            	runningReasoner.dispose();
+            	runningReasoner = null;
             }
             finally{
                 synchronized (reasonerMap) {
