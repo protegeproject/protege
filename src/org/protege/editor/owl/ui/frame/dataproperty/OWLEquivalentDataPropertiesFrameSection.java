@@ -80,6 +80,9 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, new Runnable() {
                 public void run() {
+                	if (!getOWLModelManager().getReasoner().isConsistent()) {
+                		return;
+                	}
                     Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
                     equivs.remove(getRootObject());
                     if (!equivs.isEmpty()){
