@@ -61,6 +61,9 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_INVERSE_PROPERTIES, 
                                                                   new Runnable() {
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
                 final Set<OWLObjectPropertyExpression> infInverses = new HashSet<OWLObjectPropertyExpression>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
                 infInverses.removeAll(added);
                 for (OWLObjectPropertyExpression invProp : infInverses) {
