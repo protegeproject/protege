@@ -19,6 +19,7 @@
       <complexType>
          <sequence>
             <element ref="class"/>
+            <element ref="name"/>
          </sequence>
       </complexType>
    </element>
@@ -33,6 +34,18 @@
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.protege.editor.owl.ui.explanation.inconsistent.ontology.InconsistentOntologyPluginInstance"/>
                </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="name">
+      <complexType>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
