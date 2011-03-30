@@ -17,6 +17,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
+import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -27,6 +28,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
@@ -42,6 +44,7 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
         implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
 	public static final Logger LOGGER = Logger.getLogger(AbstractOWLFrameSection.class);
+	private static int inconsistentOntologyWarnings = 0;
 
     private OWLEditorKit owlEditorKit;
 
@@ -245,9 +248,15 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             	refillInferred();
             }
             catch (InconsistentOntologyException ioe) {
-            	ProtegeApplication.getErrorLog().logError(ioe);
-            	getOWLModelManager().fireEvent(EventType.ONTOLOGY_INCONSISTENT);
-            	getOWLModelManager().getOWLReasonerManager().killCurrentReasoner();
+            	if (++inconsistentOntologyWarnings % 5 == 0) {
+            		ProtegeApplication.getErrorLog().logError(ioe);
+            	}
+            	else {
+            		LOGGER.warn("Ontology is inconsistent: " + ioe);
+            	}
+            }
+            catch (OWLReasonerRuntimeException e) {
+            	ProtegeApplication.getErrorLog().logError(e);
             }
         }
 
