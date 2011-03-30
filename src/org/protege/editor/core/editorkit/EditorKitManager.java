@@ -45,19 +45,6 @@ public class EditorKitManager {
             editorKits.add(editorKit);
             workspaceManager.addWorkspace(editorKit.getWorkspace());
         }
-        installEditorKitPlugins(editorKit);
-    }
-
-    private void installEditorKitPlugins(EditorKit editorKit) {
-    	EditorKitPluginLoader loader = new EditorKitPluginLoader(editorKit);
-    	for (EditorKitPlugin plugin : loader.getPlugins()) {
-    		try {
-    			plugin.newInstance();
-    		}
-    		catch (Exception ex) {
-    			ProtegeApplication.getErrorLog().logError(ex);
-    		}
-    	}
     }
 
     /**

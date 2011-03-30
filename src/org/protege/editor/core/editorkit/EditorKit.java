@@ -42,27 +42,31 @@ public interface EditorKit extends Disposable {
      * @return A <code>String</code> that represents the <code>EditorKit</code>
      *         Id.
      */
-    public String getId();
+    String getId();
 
+    void put(Object key, Disposable value);
+    
+    Disposable get(Object key);
+    
 
     /**
      * Gets the factory that created the clsdescriptioneditor kit.
      */
-    public EditorKitFactory getEditorKitFactory();
+    EditorKitFactory getEditorKitFactory();
 
 
     /**
      * Gets the <code>Workspace</code> that is used in the UI to
      * display the contents of the clsdescriptioneditor kit "model".
      */
-    public Workspace getWorkspace();
+    Workspace getWorkspace();
 
 
     /**
      * Gets the "model" that the clsdescriptioneditor kit edits.  This will
      * probably contain one or more ontologies.
      */
-    public ModelManager getModelManager();
+    ModelManager getModelManager();
 
 
     /**
@@ -75,20 +79,20 @@ public interface EditorKit extends Disposable {
      * @throws Exception This exception is thrown if there were
      *                   errors.
      */
-    public boolean handleNewRequest() throws Exception;
+    boolean handleNewRequest() throws Exception;
 
 
-    public boolean handleLoadRequest() throws Exception;
+    boolean handleLoadRequest() throws Exception;
 
 
-    public boolean handleLoadFrom(URI uri) throws Exception;
+    boolean handleLoadFrom(URI uri) throws Exception;
 
 
-    public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception;
+    boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception;
 
 
-    public void handleSave() throws Exception;
+    void handleSave() throws Exception;
 
 
-    public void handleSaveAs() throws Exception;
+    void handleSaveAs() throws Exception;
 }
