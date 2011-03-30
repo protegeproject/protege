@@ -4,16 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -30,14 +35,15 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 	private JFrame explanations;
 	private OWLEditorKit owlEditorKit;
 	private Phase01 phase01;
+	private boolean successfulExplanation = false;
 
 	public void initialise() throws Exception {
-
 	}
 
 	public void dispose() throws Exception {
@@ -49,24 +55,63 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 	}
 
 	public void explain(OWLOntology ontology) {
+		successfulExplanation = false;
+		final String cancelOption = "Cancel";
+		phase01 = new Phase01();
+		JProgressBar bar = new JProgressBar();
+		bar.setIndeterminate(true);
+		bar.setVisible(true);
+		JOptionPane pane = new JOptionPane(bar, JOptionPane.PLAIN_MESSAGE, JOptionPane.CANCEL_OPTION, null, new Object[] { cancelOption });
+		final JDialog dialog = pane.createDialog(owlEditorKit.getOWLWorkspace(), "Explanation in progress");
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					OWLModelManager p4Manager = owlEditorKit.getOWLModelManager();
+					successfulExplanation = phase01.run(p4Manager.getActiveOntology(), 
+														p4Manager.getOWLReasonerManager().getCurrentReasonerFactory().getReasonerFactory());
+				}
+				catch (OWLOntologyCreationException oce) {
+					ProtegeApplication.getErrorLog().logError(oce);
+				}
+				finally {
+					dialog.dispose();
+				}
+				if (successfulExplanation) {
+					createGui();
+				}
+			}
+		}, "Protege Explanation Thread").start();
+		dialog.setVisible(true);
+		if (cancelOption.equals(pane.getValue())) {
+			phase01.cancel();
+		}
+	}
+	
+	private void createGui() {
 		try {
-			OWLModelManager p4Manager = owlEditorKit.getOWLModelManager();
-		    explanations = new JFrame("Protege Explanation Heuristics");
+			explanations = new JFrame("Protege Explanation Heuristics");
 			JPanel mainPanel = new JPanel();
 			mainPanel.setLayout(new BorderLayout());
-			phase01 = new Phase01();
-			phase01.phase01(p4Manager.getActiveOntology(), 
-					        p4Manager.getOWLReasonerManager().getCurrentReasonerFactory().getReasonerFactory());
+			mainPanel.add(createTopPanel(), BorderLayout.NORTH);
 			mainPanel.add(createCenterPanel(), BorderLayout.CENTER);
 			explanations.getContentPane().add(mainPanel);
 			explanations.pack();
 			explanations.setVisible(true);
 		}
-		catch (Exception e) {
+		catch (IOException e) {
 			ProtegeApplication.getErrorLog().logError(e);
 		}
 	}
 
+	private JComponent createTopPanel() throws IOException {
+        JTextPane tp = new JTextPane();
+        tp.setEditable(false);
+        URL help = ProtegeHeuristics.class.getResource("/InconsistentOntologyExplanationHelp.html");
+        tp.setPage(help);
+        tp.setPreferredSize(new Dimension(600, 100));
+        return tp;
+	}
+	
 	private JComponent createCenterPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -82,14 +127,11 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 		optBox.setBorder(ComponentFactory.createTitledBorder(title));
 		final JList entitiesList = new JList(objects);
 		entitiesList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
-		entitiesList.setPreferredSize(new Dimension(300, 400));
 		entitiesList.addListSelectionListener(new SynchronizeSelectionListener(entitiesList));
 		entitiesList.addMouseListener(new ExplainEntityMouseAdapter(entitiesList));
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().add(entitiesList);
-		JPanel inner = new JPanel();
-		inner.add(scrollPane);
-		optBox.add(inner);
+		optBox.add(scrollPane);
 		return optBox;
 	}
 
