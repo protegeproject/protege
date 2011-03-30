@@ -118,10 +118,9 @@ public class DisplayedInferencePreferences {
             try {
                 implementation.run();
             }
-            catch (Throwable t) { // don't let exceptions spoil your day
-                ProtegeApplication.getErrorLog().logError(t);
+            finally {
+            	stopClock(task);
             }
-            stopClock(task);
         }
     }
 }
