@@ -38,7 +38,7 @@ public class IntroductoryPanel extends JPanel {
         tp.setPage(help);
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().add(tp);
-        scrollPane.setPreferredSize(new Dimension(400, 250));
+        scrollPane.setPreferredSize(new Dimension(480, 300));
         center.add(scrollPane);
         
 		InconsistentOntologyPluginLoader loader= new InconsistentOntologyPluginLoader(owlEditorKit);
