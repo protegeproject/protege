@@ -62,6 +62,9 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, 
                                                                   new Runnable() {
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
                 Set<OWLObjectPropertyExpression> equivs = new HashSet<OWLObjectPropertyExpression>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
                 equivs.remove(getRootObject());
                 if (!equivs.isEmpty()){
