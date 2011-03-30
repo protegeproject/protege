@@ -69,6 +69,9 @@ public class OWLDataPropertyDomainFrameSection extends AbstractPropertyDomainFra
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DATATYPE_PROPERTY_DOMAINS,
                                                                   new Runnable() {
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
                 OWLDataPropertyDomainFrameSection.super.refillInferred();
             }
         });
