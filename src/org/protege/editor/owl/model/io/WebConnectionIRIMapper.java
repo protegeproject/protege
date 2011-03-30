@@ -39,16 +39,9 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
             // First check that the URI can be resolved.
             final URI potentialPhysicalURI = ontologyIRI.toURI();
             URLConnection conn = potentialPhysicalURI.toURL().openConnection();
-            conn.setReadTimeout(5000);
             InputStream is = conn.getInputStream();
             is.close();
-            // Opened a stream.  Is it an ontology at the URI?
-            MasterOntologyIDExtractor ext = new MasterOntologyIDExtractor(potentialPhysicalURI);
-            
-            if (ext.getOntologyId() != null) {
-                // There is an ontology at the URI!
-                return IRI.create(potentialPhysicalURI);
-            }
+            return IRI.create(potentialPhysicalURI);
         }
         catch (IOException e) {
             // Can't open the stream - problem resolving the URI
