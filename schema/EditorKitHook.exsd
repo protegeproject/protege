@@ -56,7 +56,7 @@
                   The name of the EditorKitFactoryClass that will be instantiated.  This must implement the EditorKitFactory inferface
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.protege.editor.core.editorkit.EditorKitPlugin"/>
+                  <meta.attribute kind="java" basedOn="org.protege.editor.core.editorkit.plugin.EditorKitHook:"/>
                </appInfo>
             </annotation>
          </attribute>
