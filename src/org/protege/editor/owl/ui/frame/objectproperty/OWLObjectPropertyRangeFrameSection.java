@@ -63,6 +63,9 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, 
                                                                   new Runnable() {
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
                 for (OWLClassExpression inferredRange : getInferredRanges()) {
                     if (!addedRanges.contains(inferredRange) && !getOWLDataFactory().getOWLThing().equals(inferredRange)) {
                         OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(getRootObject(),
