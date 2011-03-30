@@ -66,6 +66,9 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_DATATYPE_PROPERTIES, new Runnable() {
                 public void run() {
+                	if (!getOWLModelManager().getReasoner().isConsistent()) {
+                		return;
+                	}
                 	OWLDataProperty topProperty = getOWLModelManager().getOWLDataFactory().getOWLTopDataProperty();
                     for (OWLDataPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperDataProperties(getRootObject(), true).getFlattened()) {
                         if (!added.contains(infSup) && !topProperty.equals(infSup)) {
