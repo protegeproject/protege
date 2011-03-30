@@ -1350,6 +1350,7 @@
     <extension id="HeuristicInconsistentOntologyExplanation"
                point="org.protege.editor.owl.inconsistentOntologyExplanation">
       <class value="org.protege.editor.owl.ui.explanation.io.ProtegeHeuristics"/>
+      <name value="Protege Explanation Heuristics"/>
     </extension>
 
     <!-- Preferences -->  
