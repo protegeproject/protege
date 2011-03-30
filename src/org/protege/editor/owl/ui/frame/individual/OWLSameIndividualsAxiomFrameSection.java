@@ -52,6 +52,9 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
     protected void refillInferred() {
     	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, new Runnable() {
     		public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
     			Set<OWLIndividual> existingSameIndividuals = getCurrentlyDisplayedSameIndividuals();
     			Set<OWLNamedIndividual> newSameIndividuals = new HashSet<OWLNamedIndividual>();
     			for (OWLNamedIndividual i : getCurrentReasoner().getSameIndividuals(getRootObject()).getEntities()) {
