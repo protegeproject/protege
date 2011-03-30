@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.inference;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +13,12 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -216,8 +222,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 if (reasoner instanceof NoOpReasoner) {
                 	return ReasonerStatus.REASONER_NOT_INITIALIZED;
                 }
-                else if (reasoner.getPendingChanges().isEmpty()) {
+                else if (reasoner.getPendingChanges().isEmpty() && reasoner.isConsistent()) {
                 	return ReasonerStatus.INITIALIZED;
+                }
+                else if (reasoner.getPendingChanges().isEmpty()) {
+                	return ReasonerStatus.INCONSISTENT;
                 }
                 else {
                 	return ReasonerStatus.OUT_OF_SYNC;
@@ -299,6 +308,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         
         public void run() {
+        	boolean inconsistencyFound = false;
             try {
                 long start = System.currentTimeMillis();
                 if (runningReasoner instanceof NoOpReasoner) {
@@ -335,9 +345,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             }
             catch (InconsistentOntologyException ioe) {
             	ProtegeApplication.getErrorLog().logError(ioe);
-            	owlModelManager.fireEvent(EventType.ONTOLOGY_INCONSISTENT);
-            	runningReasoner.dispose();
-            	runningReasoner = null;
+            	inconsistencyFound = true;
             }
             finally{
                 synchronized (reasonerMap) {
@@ -346,6 +354,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                     classificationInProgress = false;
                 }
                 fireReclassified();
+                if (inconsistencyFound) {
+                	InconsistentOntologyManager.get(owlModelManager).explain();
+                }
             }
         }
     }
