@@ -72,7 +72,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
                 public void run() {
-                    if (getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
+                    if (getOWLModelManager().getReasoner().isConsistent()) {
                     	OWLClass thing = getOWLModelManager().getOWLDataFactory().getOWLThing();
                         for (Node<OWLClass> inferredSuperClasses : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
                             for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
