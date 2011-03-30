@@ -56,6 +56,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -810,7 +811,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
                                                                               new Runnable() {
                         public void run() {
-                            if (!getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+                        	OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                        	boolean consistent = reasoner.isConsistent();
+                            if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
                                 // Paint red because of inconsistency
                                 doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                             }
@@ -917,7 +920,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                                                                   new Runnable() {
             public void run() {
                 OWLObjectProperty prop = (OWLObjectProperty) entity;
-                if(getOWLModelManager().getReasoner().getBottomObjectPropertyNode().contains(prop)) {
+                OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                boolean consistent = reasoner.isConsistent();
+                if(!consistent || reasoner.getBottomObjectPropertyNode().contains(prop)) {
                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                 }
             }
