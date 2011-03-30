@@ -1,44 +1,51 @@
 package org.protege.editor.owl.ui.explanation.io;
 
+import java.io.IOException;
+
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitPluginInstance;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 
 public class InconsistentOntologyManager implements EditorKitPluginInstance {
 	public static final Logger LOGGER = Logger.getLogger(InconsistentOntologyManager.class);
+	public static final String EXPLAIN = "Explain";
 	
 	private OWLEditorKit owlEditorKit;
-	private OWLModelManagerListener listener = new OWLModelManagerListener() {
-		public void handleChange(OWLModelManagerChangeEvent event) {
-			if (event.getType() == EventType.ONTOLOGY_INCONSISTENT) {
-				handleInconsistency();
-			}
-		}
-	};
+	private InconsistentOntologyPlugin lastSelectedPlugin;
 
-
+	public static InconsistentOntologyManager get(OWLModelManager modelManager) {
+		return (InconsistentOntologyManager) modelManager.get(InconsistentOntologyManager.class);
+	}
+	
 	public void setup(EditorKit editorKit) {
 		this.owlEditorKit = (OWLEditorKit) editorKit;
 		OWLModelManager p4Manager = owlEditorKit.getModelManager();
 		p4Manager.put(InconsistentOntologyManager.class, this);
-		p4Manager.addListener(listener);
 	}
 	
-	private void handleInconsistency()  {
-		InconsistentOntologyPluginLoader loader= new InconsistentOntologyPluginLoader(owlEditorKit);
-		for (InconsistentOntologyPlugin plugin : loader.getPlugins()) {
-			try {
-				LOGGER.info("Found plugin " + plugin.newInstance().getClass());
+	public void explain()  {
+		try {
+			Object[] options = new Object[] {EXPLAIN, "Cancel" };
+			IntroductoryPanel intro = new IntroductoryPanel(owlEditorKit, lastSelectedPlugin);
+			int ret = JOptionPane.showOptionDialog(owlEditorKit.getOWLWorkspace(), 
+							 				  	   intro, "Help for inconsistent ontologies", 
+							 				  	   JOptionPane.YES_NO_CANCEL_OPTION,
+							 				  	   JOptionPane.QUESTION_MESSAGE,
+							 				  	   (Icon) null,
+							 				  	   options, EXPLAIN);
+			if (ret == 0) {
+				lastSelectedPlugin = intro.getSelectedPlugin();
+				lastSelectedPlugin.newInstance().explain(owlEditorKit.getOWLModelManager().getActiveOntology());
 			}
-			catch (Exception e) {
-				ProtegeApplication.getErrorLog().logError(e);
-			}
+		}
+		catch (Exception ioe) {
+			ProtegeApplication.getErrorLog().logError(ioe);
 		}
 	}
 	
@@ -47,8 +54,6 @@ public class InconsistentOntologyManager implements EditorKitPluginInstance {
 	}
 
 	public void dispose() throws Exception {
-		OWLModelManager p4Manager = owlEditorKit.getModelManager();
-		p4Manager.removeListener(listener);
 	}
 
 }

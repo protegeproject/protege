@@ -6,12 +6,17 @@ import org.protege.editor.owl.OWLEditorKit;
 
 public class InconsistentOntologyPlugin extends AbstractProtegePlugin<InconsistentOntologyPluginInstance> {
 	public static final String ID = "inconsistentOntologyExplanation";
+	public static final String NAME_FIELD = "name";
 	
 	private OWLEditorKit editorKit;
 	
 	public InconsistentOntologyPlugin(OWLEditorKit editorKit, IExtension extension) {
 		super(extension);
 		this.editorKit = editorKit;
+	}
+	
+	public String getName() {
+		return getPluginProperty(NAME_FIELD);
 	}
 	
 	@Override
