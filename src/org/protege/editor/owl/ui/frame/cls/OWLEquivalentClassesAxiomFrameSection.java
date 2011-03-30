@@ -85,6 +85,9 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
                                                                   new Runnable() {
 
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
             	OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
                 if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject()) && !nothing.equals(getRootObject())) {
                     addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
