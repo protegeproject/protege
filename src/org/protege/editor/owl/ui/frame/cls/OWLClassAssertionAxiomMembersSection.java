@@ -79,6 +79,9 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, new Runnable() {
                 public void run() {
+                	if (!getOWLModelManager().getReasoner().isConsistent()) {
+                		return;
+                	}
                     final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
                     NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
                     if (instances != null) {
