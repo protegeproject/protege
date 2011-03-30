@@ -1335,7 +1335,7 @@
 	<!-- Explanation Services -->
 	
 	<extension id="InconsistentOntologyManager"
-			   point="org.protege.editor.core.application.editorKitPlugin">
+			   point="org.protege.editor.core.application.EditorKitHook">
 	    <class value="org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager"/>
 	    <editorKitId value="OWLEditorKit"/>
 	</extension>
