@@ -19,6 +19,10 @@ public enum ReasonerStatus {
                 false, "Reasoner already running.  Re-initialization not required",
                 false, "Reasoner already running and synchronized with the ontology.  Synchronization not required"),
 
+    INCONSISTENT("Reasoner active but the ontology is inconsistent",
+                 false, "Reasoner already running.  Re-initialization not required",
+                 false, "Reasoner already running and synchronized with the ontology.  Synchronization not required"),
+                
 	OUT_OF_SYNC("Reasoner state out of sync with active ontology",
                 false, "<html>Reasoner already running and does not need to be initialized.<br>" +
                        "However the reasoner has not taken recent changes to the ontology</br><br>" +
