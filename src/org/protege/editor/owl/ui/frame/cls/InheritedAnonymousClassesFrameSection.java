@@ -73,7 +73,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     }
     
     private void refillInferredDoIt() {
-        if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject())) {
+        if (!getOWLModelManager().getReasoner().isConsistent()) {
             return;
         }
         Set<OWLClass> clses = getReasoner().getSuperClasses(getRootObject(), true).getFlattened();
