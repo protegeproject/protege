@@ -41,7 +41,9 @@ public class InconsistentOntologyManager implements EditorKitPluginInstance {
 							 				  	   options, EXPLAIN);
 			if (ret == 0) {
 				lastSelectedPlugin = intro.getSelectedPlugin();
-				lastSelectedPlugin.newInstance().explain(owlEditorKit.getOWLModelManager().getActiveOntology());
+				InconsistentOntologyPluginInstance i = lastSelectedPlugin.newInstance();
+				i.setup(owlEditorKit);
+				i.explain(owlEditorKit.getOWLModelManager().getActiveOntology());
 			}
 		}
 		catch (Exception ioe) {
