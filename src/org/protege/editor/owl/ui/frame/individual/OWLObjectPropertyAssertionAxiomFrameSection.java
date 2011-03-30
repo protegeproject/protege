@@ -64,6 +64,9 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, new Runnable() {
                 public void run() {
+                	if (!getOWLModelManager().getReasoner().isConsistent()) {
+                		return;
+                	}
                     OWLDataFactory factory = getOWLDataFactory();
                     if (!getRootObject().isAnonymous()){
                         for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
