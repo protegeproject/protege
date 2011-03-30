@@ -85,6 +85,7 @@ import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
+import org.protege.editor.owl.ui.inference.ExplainInconsistentOntologyAction;
 import org.protege.editor.owl.ui.inference.PrecomputeAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
@@ -161,8 +162,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private Set<URI> hiddenAnnotationURIs;
 
-    private JMenu ontologiesMenu;
-
     private OWLComponentFactory owlComponentFactory;
 
     private JPanel statusArea;
@@ -174,12 +173,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private boolean reasonerManagerStarted = false;
     private PrecomputeAction startReasonerAction = new PrecomputeAction();
     private PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
+    private ExplainInconsistentOntologyAction explainInconsistentOntologyAction = new ExplainInconsistentOntologyAction();
     private JLabel reasonerStatus = new JLabel();
     private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
     
     
     public static final String REASONER_INITIALIZE         = "Start Reasoner";
     public static final String REASONER_RESYNC             = "Synchronize Reasoner";
+    public static final String REASONER_EXPLAIN            = "Explain inconsistent ontology";
     
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -327,7 +328,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             updateDirtyFlag();
             break;
         case ENTITY_RENDERING_CHANGED:
-        case ONTOLOGY_INCONSISTENT:
         case ONTOLOGY_VISIBILITY_CHANGED:
             break;
         }
@@ -438,7 +438,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
 
-        ontologiesMenu = getOntologiesMenu(menuBar);       
+        getOntologiesMenu(menuBar);       
         rebuildReasonerMenu(menuBar);
         addReasonerListener(menuBar);
         updateTitleBar();
@@ -473,6 +473,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         synchronizeReasonerAction.setEditorKit(getOWLEditorKit());
         synchronizeReasonerAction.putValue(Action.NAME, REASONER_RESYNC);
         reasonerMenu.add(synchronizeReasonerAction);
+        
+        explainInconsistentOntologyAction.setEditorKit(getOWLEditorKit());
+        explainInconsistentOntologyAction.putValue(Action.NAME, REASONER_EXPLAIN);
+        explainInconsistentOntologyAction.setEnabled(false);
+        reasonerMenu.add(explainInconsistentOntologyAction);
         
         ConfigureReasonerAction configureAction = new ConfigureReasonerAction();
         configureAction.setEditorKit(getOWLEditorKit());
@@ -698,7 +703,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     	OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
     	ReasonerStatus newStatus = reasonerManager.getReasonerStatus();
     	if (changesInProgress 
-    			&& newStatus == ReasonerStatus.INITIALIZED 
+    			&& (newStatus == ReasonerStatus.INITIALIZED || newStatus == ReasonerStatus.INCONSISTENT)
     			&& reasonerManager.getCurrentReasoner().getBufferingMode() == BufferingMode.BUFFERING) {
     		newStatus = ReasonerStatus.OUT_OF_SYNC;
     	}
@@ -711,6 +716,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     	startReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getInitializationTooltip());
     	synchronizeReasonerAction.setEnabled(status.isEnableSynchronization());
     	synchronizeReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getSynchronizationTooltip());
+    	explainInconsistentOntologyAction.setEnabled(status == ReasonerStatus.INCONSISTENT);
     	
     	KeyStroke shortcut = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
     	startReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
