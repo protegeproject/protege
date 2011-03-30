@@ -86,6 +86,9 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
 			public void run() {
 				OWLReasoner reasoner = getOWLModelManager().getReasoner();
+				if (!reasoner.isConsistent()) {
+					return;
+				}
 				NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
 				for (OWLClass c : disjointFromRoot.getFlattened()) {
 					if (!added.contains(c) && !c.equals(getOWLDataFactory().getOWLNothing()) && !c.equals(getRootObject())) {
