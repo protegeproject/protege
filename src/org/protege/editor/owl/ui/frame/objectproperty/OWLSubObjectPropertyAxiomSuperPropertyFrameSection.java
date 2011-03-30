@@ -62,6 +62,9 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES,
                                                                   new Runnable() {
             public void run() {
+            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+            		return;
+            	}
             	OWLObjectProperty topProperty  = getOWLModelManager().getOWLDataFactory().getOWLTopObjectProperty();
                 for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
                     if (!added.contains(infSup) && !topProperty.equals(infSup)) {
