@@ -29,7 +29,7 @@ import org.semanticweb.owlapi.util.CollectionFactory;
  */
 public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLClassAxiom, OWLClassExpression> {
 
-    public InheritedAnonymousClassesFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public InheritedAnonymousClassesFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClass, OWLClassAxiom, OWLClassExpression> section,
                                                     OWLOntology ontology, OWLClass rootObject, OWLClassAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

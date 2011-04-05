@@ -45,8 +45,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLDatatypeDefinitionFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDatatype, OWLDatatypeDefinitionAxiom, OWLDataRange> {
 
-    public OWLDatatypeDefinitionFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
-                                               OWLDatatype rootObject, OWLDatatypeDefinitionAxiom axiom) {
+    public OWLDatatypeDefinitionFrameSectionRow(OWLEditorKit owlEditorKit, 
+    		                                    OWLFrameSection<OWLDatatype, OWLDatatypeDefinitionAxiom, OWLDataRange> section, 
+    		                                    OWLOntology ontology,
+                                                OWLDatatype rootObject, OWLDatatypeDefinitionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
 

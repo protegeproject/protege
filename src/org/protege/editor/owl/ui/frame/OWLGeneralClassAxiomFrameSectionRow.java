@@ -21,7 +21,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLGeneralClassAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntology, OWLClassAxiom, OWLClassAxiom> {
 
-    public OWLGeneralClassAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
+    public OWLGeneralClassAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    										   OWLFrameSection<OWLOntology, OWLClassAxiom, OWLClassAxiom> section, 
+    										   OWLOntology ontology,
                                                OWLOntology rootObject, OWLClassAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

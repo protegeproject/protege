@@ -44,7 +44,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLAnnotationPropertyDomainFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAnnotationProperty, OWLAnnotationPropertyDomainAxiom, IRI> {
 
-    public OWLAnnotationPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLAnnotationPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLAnnotationProperty, OWLAnnotationPropertyDomainAxiom, IRI> section,
                                                 OWLOntology ontology, OWLAnnotationProperty property,
                                                 OWLAnnotationPropertyDomainAxiom axiom) {
         super(owlEditorKit, section, ontology, property, axiom);

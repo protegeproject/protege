@@ -45,7 +45,8 @@ import org.semanticweb.owlapi.model.OWLPropertyExpression;
  */
 public class OWLKeyAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLHasKeyAxiom, Set<OWLPropertyExpression>> {
 
-    public OWLKeyAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLKeyAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    								  OWLFrameSection<OWLClass, OWLHasKeyAxiom, Set<OWLPropertyExpression>> section,
                                       OWLOntology ontology, OWLClass rootObject,
                                       OWLHasKeyAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

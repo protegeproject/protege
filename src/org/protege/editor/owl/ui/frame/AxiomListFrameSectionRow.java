@@ -42,7 +42,7 @@ import java.util.Set;
 public class AxiomListFrameSectionRow extends AbstractOWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom> {
 
 
-    public AxiomListFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology, Set<OWLAxiom> rootObject,
+    public AxiomListFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<Set<OWLAxiom>, OWLAxiom, OWLAxiom> section, OWLOntology ontology, Set<OWLAxiom> rootObject,
                                     OWLAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

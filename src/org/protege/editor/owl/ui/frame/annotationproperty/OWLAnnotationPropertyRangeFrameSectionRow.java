@@ -22,7 +22,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLAnnotationPropertyRangeFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAnnotationProperty, OWLAnnotationPropertyRangeAxiom, IRI> {
 
-    public OWLAnnotationPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLAnnotationPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLAnnotationProperty, OWLAnnotationPropertyRangeAxiom, IRI> section,
                                                 OWLOntology ontology, OWLAnnotationProperty property,
                                                 OWLAnnotationPropertyRangeAxiom axiom) {
         super(owlEditorKit, section, ontology, property, axiom);

@@ -22,7 +22,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLDataPropertyRangeFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLDataPropertyRangeAxiom, OWLDataRange> {
 
-    public OWLDataPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
+    public OWLDataPropertyRangeFrameSectionRow(OWLEditorKit owlEditorKit, 
+    		                                   OWLFrameSection<OWLDataProperty, OWLDataPropertyRangeAxiom, OWLDataRange> section, OWLOntology ontology,
                                                OWLDataProperty rootObject, OWLDataPropertyRangeAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

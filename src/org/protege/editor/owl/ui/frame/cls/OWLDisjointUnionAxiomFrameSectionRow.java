@@ -16,7 +16,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLDisjointUnionAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLDisjointUnionAxiom, Set<OWLClassExpression>> {
 
-	public OWLDisjointUnionAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+	public OWLDisjointUnionAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+												OWLFrameSection<OWLClass, OWLDisjointUnionAxiom, Set<OWLClassExpression>> section,
 												OWLOntology ontology, OWLClass rootObject,
 												OWLDisjointUnionAxiom axiom) {
 		super(owlEditorKit, section, ontology, rootObject, axiom);

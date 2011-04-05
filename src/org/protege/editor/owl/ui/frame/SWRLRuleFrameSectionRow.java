@@ -39,7 +39,9 @@ import org.semanticweb.owlapi.model.SWRLRule;
  */
 public class SWRLRuleFrameSectionRow extends AbstractOWLFrameSectionRow<OWLOntology, SWRLRule, SWRLRule> {
 
-    public SWRLRuleFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
+    public SWRLRuleFrameSectionRow(OWLEditorKit owlEditorKit, 
+    		                       OWLFrameSection<OWLOntology, SWRLRule, SWRLRule> section, 
+    		                       OWLOntology ontology,
                                    OWLOntology rootObject, SWRLRule axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }

@@ -42,7 +42,7 @@ public class InferredAxiomsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     private OWLAxiom axiom;
 
 
-    public InferredAxiomsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology, OWLOntology rootObject,
+    public InferredAxiomsFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLOntology, OWLAxiom, OWLAxiom> section, OWLOntology ontology, OWLOntology rootObject,
                                          OWLAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
         this.axiom = axiom;

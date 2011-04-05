@@ -22,7 +22,9 @@ import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
  */
 public class OWLPropertyChainAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLSubPropertyChainOfAxiom, List<OWLObjectPropertyExpression>> {
 
-    public OWLPropertyChainAxiomFrameSectionRow(OWLEditorKit editorKit, OWLFrameSection section, OWLOntology ontology,
+    public OWLPropertyChainAxiomFrameSectionRow(OWLEditorKit editorKit, 
+    											OWLFrameSection<OWLObjectProperty, OWLSubPropertyChainOfAxiom, List<OWLObjectPropertyExpression>> section, 
+    											OWLOntology ontology,
                                                 OWLObjectProperty rootObject,
                                                 OWLSubPropertyChainOfAxiom axiom) {
         super(editorKit, section, ontology, rootObject, axiom);
