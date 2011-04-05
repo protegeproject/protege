@@ -24,7 +24,8 @@ import java.util.Set;
  */
 public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClassExpression, OWLEquivalentClassesAxiom, OWLClassExpression> {
 
-    public OWLEquivalentClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClassExpression, OWLEquivalentClassesAxiom, OWLClassExpression> section,
+    public OWLEquivalentClassesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    												OWLFrameSection<OWLClassExpression, OWLEquivalentClassesAxiom, OWLClassExpression> section,
                                                     OWLOntology ontology, OWLClassExpression rootObject,
                                                     OWLEquivalentClassesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

@@ -25,7 +25,8 @@ import org.semanticweb.owlapi.util.CollectionFactory;
  */
 public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression> {
 
-    public OWLEquivalentObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLEquivalentObjectPropertiesAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    														 OWLFrameSection<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression> section,
                                                              OWLOntology ontology, OWLObjectProperty rootObject,
                                                              OWLEquivalentObjectPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

@@ -43,9 +43,10 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
  */
 public class OWLSubAnnotationPropertyFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAnnotationProperty, OWLSubAnnotationPropertyOfAxiom, OWLAnnotationProperty> {
 
-    public OWLSubAnnotationPropertyFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
-                                                OWLOntology ontology, OWLAnnotationProperty property,
-                                                OWLSubAnnotationPropertyOfAxiom axiom) {
+    public OWLSubAnnotationPropertyFrameSectionRow(OWLEditorKit owlEditorKit, 
+    											   OWLFrameSection<OWLAnnotationProperty, OWLSubAnnotationPropertyOfAxiom, OWLAnnotationProperty> section,
+    											   OWLOntology ontology, OWLAnnotationProperty property,
+    											   OWLSubAnnotationPropertyOfAxiom axiom) {
         super(owlEditorKit, section, ontology, property, axiom);
     }
 

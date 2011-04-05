@@ -22,9 +22,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLClassAssertionAxiomMembersSectionRow extends AbstractOWLFrameSectionRow<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual> {
 
-    public OWLClassAssertionAxiomMembersSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual> section,
-                                                      OWLOntology ontology, OWLClassExpression rootObject,
-                                                      OWLClassAssertionAxiom axiom) {
+    public OWLClassAssertionAxiomMembersSectionRow(OWLEditorKit owlEditorKit, 
+    											   OWLFrameSection<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual> section,
+    											   OWLOntology ontology, OWLClassExpression rootObject,
+    											   OWLClassAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
     }
 

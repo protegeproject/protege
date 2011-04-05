@@ -22,7 +22,8 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
  */
 public class OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow extends AbstractOWLFrameSectionRow<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectPropertyExpression> {
 
-    public OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(OWLEditorKit owlEditorKit, 
+    															 OWLFrameSection<OWLObjectProperty, OWLSubObjectPropertyOfAxiom, OWLObjectPropertyExpression> section,
                                                                  OWLOntology ontology, OWLObjectProperty rootObject,
                                                                  OWLSubObjectPropertyOfAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

@@ -50,7 +50,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
 
     private OWLFrameSection section;
 
-    protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section, OWLOntology ontology,
+    protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<R,A,E> section, OWLOntology ontology,
                                          R rootObject, A axiom) {
         this.owlEditorKit = owlEditorKit;
         this.section = section;
@@ -60,7 +60,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     }
 
 
-    public OWLFrameSection getFrameSection() {
+    public OWLFrameSection<R,A,E> getFrameSection() {
         return section;
     }
 

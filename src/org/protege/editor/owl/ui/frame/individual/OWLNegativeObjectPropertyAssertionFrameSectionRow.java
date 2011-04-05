@@ -23,7 +23,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLNegativeObjectPropertyAssertionFrameSectionRow extends AbstractOWLFrameSectionRow<OWLIndividual, OWLNegativeObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair> {
 
-    public OWLNegativeObjectPropertyAssertionFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLNegativeObjectPropertyAssertionFrameSectionRow(OWLEditorKit owlEditorKit, 
+    														 OWLFrameSection<OWLIndividual, OWLNegativeObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair> section,
                                                              OWLOntology ontology, OWLIndividual rootObject,
                                                              OWLNegativeObjectPropertyAssertionAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

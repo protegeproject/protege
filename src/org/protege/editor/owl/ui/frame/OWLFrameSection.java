@@ -28,7 +28,7 @@ public interface OWLFrameSection<R, A extends OWLAxiom, E> extends OWLFrameObjec
     String getLabel();
 
 
-    String getRowLabel(OWLFrameSectionRow row);
+    String getRowLabel(OWLFrameSectionRow<R,A,E> row);
 
 
     R getRootObject();

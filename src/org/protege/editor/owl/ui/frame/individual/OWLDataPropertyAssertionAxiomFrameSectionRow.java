@@ -23,7 +23,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLDataPropertyAssertionAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLIndividual, OWLDataPropertyAssertionAxiom, OWLDataPropertyConstantPair> {
 
-    public OWLDataPropertyAssertionAxiomFrameSectionRow(OWLEditorKit editorKit, OWLFrameSection section,
+    public OWLDataPropertyAssertionAxiomFrameSectionRow(OWLEditorKit editorKit, 
+    		                                            OWLFrameSection<OWLIndividual, OWLDataPropertyAssertionAxiom, OWLDataPropertyConstantPair> section,
                                                         OWLOntology ontology, OWLIndividual rootObject,
                                                         OWLDataPropertyAssertionAxiom axiom) {
         super(editorKit, section, ontology, rootObject, axiom);

@@ -23,7 +23,8 @@ import java.util.Set;
  */
 public class OWLDifferentIndividualAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLNamedIndividual, OWLDifferentIndividualsAxiom, Set<OWLNamedIndividual>> {
 
-    public OWLDifferentIndividualAxiomFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLDifferentIndividualAxiomFrameSectionRow(OWLEditorKit owlEditorKit, 
+    												  OWLFrameSection<OWLNamedIndividual, OWLDifferentIndividualsAxiom, Set<OWLNamedIndividual>> section,
                                                       OWLOntology ontology, OWLNamedIndividual rootObject,
                                                       OWLDifferentIndividualsAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

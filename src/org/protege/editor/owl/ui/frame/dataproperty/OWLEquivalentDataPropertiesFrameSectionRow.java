@@ -22,7 +22,8 @@ import java.util.Set;
  */
 public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrameSectionRow<OWLDataProperty, OWLEquivalentDataPropertiesAxiom, OWLDataProperty> {
 
-    public OWLEquivalentDataPropertiesFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public OWLEquivalentDataPropertiesFrameSectionRow(OWLEditorKit owlEditorKit, 
+    												  OWLFrameSection<OWLDataProperty, OWLEquivalentDataPropertiesAxiom, OWLDataProperty> section,
                                                       OWLOntology ontology, OWLDataProperty rootObject,
                                                       OWLEquivalentDataPropertiesAxiom axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);

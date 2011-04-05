@@ -20,7 +20,7 @@ public interface OWLFrameSectionRow<R, A extends OWLAxiom, E> extends OWLFrameOb
     /**
      * Gets the frame section which this row belongs to.
      */
-    OWLFrameSection getFrameSection();
+    OWLFrameSection<R,A,E> getFrameSection();
 
 
     /**

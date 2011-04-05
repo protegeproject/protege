@@ -43,7 +43,7 @@ import java.util.List;
  */
 public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLProperty, A extends OWLPropertyDomainAxiom> extends AbstractOWLFrameSectionRow<P, A, OWLClassExpression> {
 
-    public AbstractPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection section,
+    public AbstractPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<P, A, OWLClassExpression> section,
                                                 OWLOntology ontology, P rootObject,
                                                 A axiom) {
         super(owlEditorKit, section, ontology, rootObject, axiom);
