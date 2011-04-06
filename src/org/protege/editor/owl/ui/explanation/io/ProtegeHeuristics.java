@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.explanation.io;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,27 +9,27 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.frame.AxiomListFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.owlapi.inconsistent.Phase01;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -88,51 +89,112 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 	}
 	
 	private void createGui() {
-		try {
-			explanations = new JFrame("Protege Explanation Heuristics");
-			JPanel mainPanel = new JPanel();
-			mainPanel.setLayout(new BorderLayout());
-			mainPanel.add(createTopPanel(), BorderLayout.NORTH);
-			mainPanel.add(createCenterPanel(), BorderLayout.CENTER);
-			explanations.getContentPane().add(mainPanel);
-			explanations.pack();
-			explanations.setVisible(true);
-		}
-		catch (IOException e) {
-			ProtegeApplication.getErrorLog().logError(e);
-		}
-	}
-
-	private JComponent createTopPanel() throws IOException {
-        JTextPane tp = new JTextPane();
-        tp.setEditable(false);
-        URL help = ProtegeHeuristics.class.getResource("/InconsistentOntologyExplanationHelp.html");
-        tp.setPage(help);
-        tp.setPreferredSize(new Dimension(600, 100));
-        return tp;
+		explanations = new JFrame("Prot\u00E9g\u00E9 Explanation Heuristics");
+		JTabbedPane tabs = new JTabbedPane();
+		String[] inconsistentIndividualsExplanation = {"Double click on the individuals listed below to see an explanation of an inconsistency.",
+				"Each individual in the list below corresponds to a reason why the ontology is inconsistent"
+		};
+		tabs.add("Inconsistent Individuals", createEntityListPanel(inconsistentIndividualsExplanation,
+																   phase01.getInconsistentIndividuals()));
+		String[] inconsistentClassesExplanation = {"Double click on the classes listed below to see an explanation of an inconsistency.",
+				"These classes can be proved inconsistent but this may not be a reason why the ontology is inconsistent."
+		};
+		tabs.add("Inconsistent Classes", createEntityListPanel(inconsistentClassesExplanation,
+															   phase01.getInconsistentClasses()));
+		String[] hotSpotExplanation = {"The axioms listed below are likely to be involved in an explanation of an inconsistency.",
+				"In particular, if the ontology contains no individuals then any explanation of why the ontology is ",
+				"inconsistent must include one of the axioms listed below."
+		};
+		tabs.add("Hot spots", createHotspotList(hotSpotExplanation));
+		explanations.setPreferredSize(new Dimension(900, 600));
+		explanations.getContentPane().add(tabs);
+		explanations.pack();
+		explanations.setVisible(true);
 	}
 	
-	private JComponent createCenterPanel() {
+	private <X> JComponent createEntityListPanel(String[] explanations, Set<X> entities) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setAlignmentY(0.0f);
-		panel.add(createTitledEntityList("Inconsistent Classes", phase01.getInconsistentClasses().toArray()));
-		panel.add(createTitledEntityList("Overconstrained Individuals", phase01.getInconsistentIndividuals().toArray()));
-		return panel;
+		panel.setLayout(new BorderLayout());
+		
+		
+		panel.add(buildExplanationsPanel(explanations), BorderLayout.NORTH);
+		
+		int tall = 12000;
+		
+		JPanel frameListPanel = new JPanel();
+		frameListPanel.setLayout(new BoxLayout(frameListPanel, BoxLayout.Y_AXIS));
+		JLabel frameListLabel = new JLabel();
+		frameListPanel.add(frameListLabel);
+		AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
+        final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
+        frameList.setPreferredSize(new Dimension(700, tall));
+        frameList.setMaximumSize(new Dimension(tall, tall));
+        frameList.refreshComponent();
+        frameListPanel.add(frameList);
+        
+        JPanel leftToRight = new JPanel();
+        leftToRight.setLayout(new BoxLayout(leftToRight, BoxLayout.X_AXIS));
+		
+        JComponent individualsList = createTitledEntityList(entities.toArray(), frameList, frameListLabel);
+        individualsList.setPreferredSize(new Dimension(300, tall));
+        
+        leftToRight.add(individualsList);
+        leftToRight.add(frameListPanel);
+        
+        panel.add(leftToRight, BorderLayout.CENTER);
+        
+        return panel;
 	}
 	
-	private JComponent createTitledEntityList(String title, Object[] objects) {
-		Box optBox = new Box(BoxLayout.Y_AXIS);
-		optBox.setAlignmentX(0.0f);
-		optBox.setBorder(ComponentFactory.createTitledBorder(title));
+	private JComponent createTitledEntityList(Object[] objects, OWLFrameList<Set<OWLAxiom>> frameList, JLabel frameListLabel) {
 		final JList entitiesList = new JList(objects);
-		entitiesList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
+		entitiesList.setCellRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = -8027034437907937901L;
+
+			@Override
+			public Component getListCellRendererComponent(JList list,
+														  Object value, int index, boolean isSelected,
+														  boolean cellHasFocus) {
+				JLabel label = (JLabel) super.getListCellRendererComponent(entitiesList, value, index, isSelected, cellHasFocus);
+				if (value instanceof OWLEntity) {
+					label.setText(owlEditorKit.getOWLModelManager().getRendering((OWLEntity) value));
+				}
+				return label;
+			}
+		});
 		entitiesList.addListSelectionListener(new SynchronizeSelectionListener(entitiesList));
-		entitiesList.addMouseListener(new ExplainEntityMouseAdapter(entitiesList));
+		entitiesList.addMouseListener(new ExplainEntityMouseAdapter(entitiesList, frameList, frameListLabel));
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().add(entitiesList);
-		optBox.add(scrollPane);
-		return optBox;
+		return scrollPane;
+	}
+	
+	private JComponent createHotspotList(String[] explanations) {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(buildExplanationsPanel(explanations), BorderLayout.NORTH);
+		int tall = 12000;
+		
+		AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
+        final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
+        frameList.setPreferredSize(new Dimension(700, tall));
+        frameList.setMaximumSize(new Dimension(tall, tall));
+        frameList.refreshComponent();
+        frameList.setRootObject(phase01.getHotspots().getAxioms());
+        
+        panel.add(frameList, BorderLayout.CENTER);
+        
+        return panel;
+	}
+	
+	private JComponent buildExplanationsPanel(String[] explanations) {
+		JPanel explanationPanel = new JPanel();
+		explanationPanel.setLayout(new BoxLayout(explanationPanel, BoxLayout.Y_AXIS));
+		for (String explanation : explanations) {
+			JLabel label = new JLabel(explanation);
+			label.setAlignmentY(0f);
+			explanationPanel.add(label);
+		}
+		return explanationPanel;
 	}
 
     private class SynchronizeSelectionListener implements ListSelectionListener {
@@ -152,38 +214,36 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 
     private class ExplainEntityMouseAdapter extends MouseAdapter {
     	private JList entitiesList;
+    	private OWLFrameList<Set<OWLAxiom>> frameList;
+    	private JLabel frameListLabel;
     	
-    	public ExplainEntityMouseAdapter(JList entitiesList) {
+    	public ExplainEntityMouseAdapter(JList entitiesList, OWLFrameList<Set<OWLAxiom>> frameList, JLabel frameListLabel) {
     		this.entitiesList = entitiesList;
+    		this.frameList = frameList;
+    		this.frameListLabel = frameListLabel;
     	}
+    	
         public void mouseClicked(MouseEvent event) {
             Object o = entitiesList.getSelectedValue();
             if (event.getClickCount() == 2) {
                 Set<OWLAxiom> axioms = null;
                 if (o instanceof OWLIndividual) {
-                    axioms = phase01.explain((OWLIndividual) o);
+                	OWLIndividual i = (OWLIndividual) o;
+                    axioms = phase01.explain(i);
+                    String rendering = owlEditorKit.getOWLModelManager().getRendering(i);
+                    frameListLabel.setText("Inconsistency derived from axioms about " + rendering);
                 }
                 else if (o instanceof OWLClass) {
-                    axioms = phase01.explain((OWLClass) o);
+                	OWLClass c = (OWLClass) o;
+                    axioms = phase01.explain(c);
+                    String rendering = owlEditorKit.getOWLModelManager().getRendering(c);
+                    frameListLabel.setText("Why " + rendering + " is inconsistent.");
                 }
                 else {
                     return;
                 }
-                AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
-                frame.setRootObject(axioms);
-                final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
-                frameList.setPreferredSize(new Dimension(800, 600));
+                frameList.setRootObject(axioms);
                 frameList.refreshComponent();
-                String title = null;
-                String rendering = owlEditorKit.getOWLModelManager().getRendering((OWLEntity) o);
-                if (o instanceof OWLIndividual) {
-                	title = "How the individual " + rendering + " is overconstrained";
-                }
-                else {
-                	title = "Why the class " + rendering + " is inconsistent";
-                }
-                JOptionPane.showMessageDialog(explanations, frameList, title, JOptionPane.PLAIN_MESSAGE);
-                frameList.dispose();
             }
         }
     }
