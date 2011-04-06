@@ -3,6 +3,7 @@ package org.protege.editor.core;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
@@ -102,7 +104,15 @@ public class ProtegeWelcomeFrame extends JFrame {
 
             box = new Box(BoxLayout.Y_AXIS);
             box.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-            panel.add(box);
+            panel.add(box, BorderLayout.CENTER);
+            
+            JPanel otherBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            otherBox.setBackground(Color.WHITE);
+            JMenu other = new JMenu("Other actions");
+            other.setForeground(Color.LIGHT_GRAY);
+            otherBox.add(other);
+            other.setAlignmentY(0.0f);
+            panel.add(otherBox, BorderLayout.SOUTH);
 
             for (final EditorKitFactoryPlugin plugin : manager.getEditorKitFactoryPlugins()) {
 
