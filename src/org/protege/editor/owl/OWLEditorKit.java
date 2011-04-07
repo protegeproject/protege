@@ -15,6 +15,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.AbstractEditorKit;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -323,6 +324,24 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
         }
     }
+    
+    /*
+     * Call the model manager get and put here because otherwise 
+     * listeners created by owl editor kit objects may get disposed
+     * too late.
+     * 
+     * Feels risky.
+     */
+    @Override
+    public Disposable get(Object key) {
+    	return getOWLModelManager().get(key);
+    }
+    
+    @Override
+    public void put(Object key, Disposable value) {
+    	getOWLModelManager().put(key, value);
+    }
+    
     
     @Override
     public void dispose() {
