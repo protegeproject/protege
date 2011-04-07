@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.explanation.io;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.text.html.HTMLDocument;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
@@ -36,6 +38,9 @@ public class IntroductoryPanel extends JPanel {
         JTextPane tp = new JTextPane();
         URL help = IntroductoryPanel.class.getResource("/InconsistentOntologyHelp.html");
         tp.setPage(help);
+		Font font = getParent().getFont();
+        String bodyRule = "body { font-family: " + font.getFamily() + "; " + "font-size: " + font.getSize() + "pt; }";
+		((HTMLDocument) tp.getDocument()).getStyleSheet().addRule(bodyRule);
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().add(tp);
         scrollPane.setPreferredSize(new Dimension(480, 300));
