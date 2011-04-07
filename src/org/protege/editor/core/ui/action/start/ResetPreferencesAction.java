@@ -9,6 +9,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
 import org.protege.editor.core.ProtegeApplication;
@@ -30,9 +31,12 @@ public class ResetPreferencesAction extends AltStartupAction {
 			pane.setPreferredSize(new Dimension(400,400));
 			URL u = getClass().getResource("ResetPreferencesExplanation.html");
 			pane.setPage(u);
-			Font font = getParent().getFont();
-            String bodyRule = "body { font-family: " + font.getFamily() + "; " + "font-size: " + font.getSize() + "pt; }";
-			((HTMLDocument) pane.getDocument()).getStyleSheet().addRule(bodyRule);
+			Font font = UIManager.getFont("TextArea.font");
+			if (font != null) {
+				// modified font-size to match link label - alternatively use font.getSize();
+				String bodyRule = "body { font-family: " + font.getFamily() + "; " + "font-size: 12pt; }";
+				((HTMLDocument) pane.getDocument()).getStyleSheet().addRule(bodyRule);
+			}
 			JScrollPane scroller = new JScrollPane();
 			scroller.getViewport().add(pane);
 			Object reset = "Reset";
