@@ -5,10 +5,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Set;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -39,6 +37,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
+	private final static String PARAGRAPH = "<p>";
 	private JFrame explanations;
 	private OWLEditorKit owlEditorKit;
 	private Phase01 phase01;
@@ -89,21 +88,33 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 	}
 	
 	private void createGui() {
-		explanations = new JFrame("Prot\u00E9g\u00E9 Explanation Heuristics");
+		explanations = new JFrame("Experimental Prot\u00E9g\u00E9 Explanation Heuristics");
 		JTabbedPane tabs = new JTabbedPane();
-		String[] inconsistentIndividualsExplanation = {"Double click on the individuals listed below to see an explanation of an inconsistency.",
-				"Each individual in the list below corresponds to a reason why the ontology is inconsistent"
+		String[] inconsistentIndividualsExplanation = {
+				PARAGRAPH,
+				"Double click on the individuals listed below to see an explanation of an inconsistency.",
+				PARAGRAPH,
+				"Each individual in the list below corresponds to a reason why the ontology is inconsistent.",
+				PARAGRAPH
 		};
-		tabs.add("Inconsistent Individuals", createEntityListPanel(inconsistentIndividualsExplanation,
+		tabs.add("\"Bad\" Individuals", createEntityListPanel(inconsistentIndividualsExplanation,
 																   phase01.getInconsistentIndividuals()));
-		String[] inconsistentClassesExplanation = {"Double click on the classes listed below to see an explanation of an inconsistency.",
-				"These classes can be proved inconsistent but this may not be a reason why the ontology is inconsistent."
+		String[] inconsistentClassesExplanation = {
+				PARAGRAPH,
+				"Double click on the classes listed below to see an explanation of an inconsistency.",
+				PARAGRAPH,
+				"These classes can be proved inconsistent but this may not be a reason why the ontology is inconsistent.",
+				PARAGRAPH
 		};
 		tabs.add("Inconsistent Classes", createEntityListPanel(inconsistentClassesExplanation,
 															   phase01.getInconsistentClasses()));
-		String[] hotSpotExplanation = {"The axioms listed below are likely to be involved in an explanation of an inconsistency.",
+		String[] hotSpotExplanation = {
+				PARAGRAPH,
+				"The axioms listed below are likely to be involved in an explanation of an inconsistency.",
+				PARAGRAPH,
 				"In particular, if the ontology contains no individuals then any explanation of why the ontology is ",
-				"inconsistent must include one of the axioms listed below."
+				"inconsistent must include one of the axioms listed below.",
+				PARAGRAPH
 		};
 		tabs.add("Hot spots", createHotspotList(hotSpotExplanation));
 		explanations.setPreferredSize(new Dimension(900, 600));
@@ -190,6 +201,10 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 		JPanel explanationPanel = new JPanel();
 		explanationPanel.setLayout(new BoxLayout(explanationPanel, BoxLayout.Y_AXIS));
 		for (String explanation : explanations) {
+			if (explanation.equals(PARAGRAPH)) {
+				explanationPanel.add(Box.createVerticalStrut(5));
+				continue;
+			}
 			JLabel label = new JLabel(explanation);
 			label.setAlignmentY(0f);
 			explanationPanel.add(label);
