@@ -24,9 +24,9 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
 
     private IExtension extension;
 
-    private static final String NAME_PARAM = "name";
+    public static final String NAME_PARAM = "name";
 
-    private static final String TOOL_TIP_PARAM = "toolTip";
+    public static final String TOOL_TIP_PARAM = "toolTip";
 
 
     protected ProtegeActionPluginJPFImpl(EditorKit editorKit, IExtension extension) {
