@@ -13,9 +13,6 @@ public abstract class AbstractProtegePlugin<P extends ProtegePluginInstance> imp
 		return extension;
 	}
 
-    /**
-     * Gets a <code>String</code> that represents the reasoner ID.
-     */
     public String getId() {
         return extension.getUniqueIdentifier();
     }
