@@ -3,6 +3,7 @@ package org.protege.editor.core.editorkit.plugin;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractApplicationPluginLoader;
+import org.protege.editor.core.plugin.EditorKitExtensionMatcher;
 import org.protege.editor.core.plugin.OrPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginParameterExtensionMatcher;
@@ -51,13 +52,7 @@ public class EditorKitHookPluginLoader extends AbstractApplicationPluginLoader<E
 
     @Override
     protected PluginExtensionMatcher getExtensionMatcher() {
-        // Load general items that are available for any clsdescriptioneditor kit
-        PluginParameterExtensionMatcher generalMatcher = new PluginParameterExtensionMatcher();
-        generalMatcher.put(PluginProperties.EDITOR_KIT_PARAM_NAME, "any");
-        // Load items that are specific to the current clsdescriptioneditor kit
-        PluginParameterExtensionMatcher specificMatcher = new PluginParameterExtensionMatcher();
-        specificMatcher.put(PluginProperties.EDITOR_KIT_PARAM_NAME, editorKit.getId());
-        return new OrPluginExtensionMatcher(generalMatcher, specificMatcher);
+    	return new EditorKitExtensionMatcher(editorKit);
     }
 
     protected EditorKitHookPlugin createInstance(IExtension extension) {
