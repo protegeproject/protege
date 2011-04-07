@@ -20,8 +20,15 @@
    <extension-point id="EditorKitHook"
                      name="EditorKit Hook"
                      schema="schema/EditorKitHook.exsd"/>
-   <extension-point id="OntologyRepositoryFactory" name="Ontology Repository Factory" schema="schema/OntologyRepositoryFactory.exsd"/>
-   <extension-point id="OntologyLoader" name="Ontology Loader" schema="schema/OntologyLoader.exsd"/>
+   <extension-point id="OntologyRepositoryFactory" 
+                    name="Ontology Repository Factory" 
+                    schema="schema/OntologyRepositoryFactory.exsd"/>
+   <extension-point id="OntologyLoader" 
+                    name="Ontology Loader" 
+                    schema="schema/OntologyLoader.exsd"/>
+   <extension-point id="OtherStartupActions"
+                    name="OtherStartupActions" 
+                    schema="schema/OtherStartupActions.exsd"/>
 
     <!-- Set up standard menus -->
 
@@ -263,6 +270,21 @@
         <label value="Plugins"/>
         <class value="org.protege.editor.core.update.PluginPreferencesPanel"/>
     </extension>
-
+    
+    <!-- Other startup actions --> 
+    
+    <extension id ="AltCheckForPluginsAction"
+               point="org.protege.editor.core.application.OtherStartupActions">
+       <name value="Check For Plugins"/>
+       <class value="org.protege.editor.core.ui.action.start.CheckPluginsAction"/>
+       <sortIndex value="B"/>
+    </extension>
+    
+    <extension id="ResetPreferencesAction"
+               point="org.protege.editor.core.application.OtherStartupActions">
+        <name value="Reset Protege Preferences"/>
+        <class value="org.protege.editor.core.ui.action.start.ResetPreferencesAction"/>
+        <sortIndex value="A"/>
+	</extension>
 
 </plugin>
