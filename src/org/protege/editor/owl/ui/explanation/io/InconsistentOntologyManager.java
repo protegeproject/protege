@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.explanation.io;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
@@ -16,6 +19,7 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 	
 	private OWLEditorKit owlEditorKit;
 	private InconsistentOntologyPlugin lastSelectedPlugin;
+	private List<InconsistentOntologyPluginInstance> explanations = new ArrayList<InconsistentOntologyPluginInstance>();
 
 	public static InconsistentOntologyManager get(OWLModelManager modelManager) {
 		return (InconsistentOntologyManager) modelManager.get(InconsistentOntologyManager.class);
@@ -42,6 +46,7 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 				InconsistentOntologyPluginInstance i = lastSelectedPlugin.newInstance();
 				i.setup(owlEditorKit);
 				i.explain(owlEditorKit.getOWLModelManager().getActiveOntology());
+				explanations.add(i);
 			}
 		}
 		catch (Exception ioe) {
@@ -54,6 +59,10 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 	}
 
 	public void dispose() throws Exception {
+		for (InconsistentOntologyPluginInstance e : explanations) {
+			e.dispose();
+		}
+		explanations.clear();
 	}
 
 }

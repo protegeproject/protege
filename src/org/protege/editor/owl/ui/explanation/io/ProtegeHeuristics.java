@@ -5,6 +5,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.Box;
@@ -42,12 +47,17 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 	private OWLEditorKit owlEditorKit;
 	private Phase01 phase01;
 	private boolean successfulExplanation = false;
+	private List<AxiomListFrame> axiomListFrames = new ArrayList<AxiomListFrame>();
 
 	public void initialise() throws Exception {
 	}
 
+	// might be called more than once.
 	public void dispose() throws Exception {
-
+		for (AxiomListFrame frame : axiomListFrames) {
+			frame.dispose();
+		}
+		axiomListFrames.clear();
 	}
 
 	public void setup(OWLEditorKit editorKit) {
@@ -121,6 +131,17 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 		explanations.getContentPane().add(tabs);
 		explanations.pack();
 		explanations.setVisible(true);
+		explanations.addWindowListener(new WindowAdapter() { // this doesn't work?
+			@Override
+			public void windowClosed(WindowEvent e) {
+				try {
+					dispose();
+				}
+				catch (Exception ex) {
+					ProtegeApplication.getErrorLog().logError(ex);
+				}
+			}
+		});
 	}
 	
 	private <X> JComponent createEntityListPanel(String[] explanations, Set<X> entities) {
@@ -137,6 +158,7 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 		JLabel frameListLabel = new JLabel();
 		frameListPanel.add(frameListLabel);
 		AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
+		axiomListFrames.add(frame);
         final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
         frameList.setPreferredSize(new Dimension(700, tall));
         frameList.setMaximumSize(new Dimension(tall, tall));
@@ -186,6 +208,7 @@ public class ProtegeHeuristics implements InconsistentOntologyPluginInstance {
 		int tall = 12000;
 		
 		AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
+		axiomListFrames.add(frame);
         final OWLFrameList<Set<OWLAxiom>> frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
         frameList.setPreferredSize(new Dimension(700, tall));
         frameList.setMaximumSize(new Dimension(tall, tall));
