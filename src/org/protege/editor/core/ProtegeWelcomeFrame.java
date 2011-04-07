@@ -12,13 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
@@ -26,6 +30,8 @@ import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.OpenFromRepositoryPanel;
 import org.protege.editor.core.ui.OpenFromURLPanel;
+import org.protege.editor.core.ui.action.start.AltStartupActionPlugin;
+import org.protege.editor.core.ui.action.start.AltStartupActionPluginLoader;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -106,13 +112,8 @@ public class ProtegeWelcomeFrame extends JFrame {
             box.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
             panel.add(box, BorderLayout.CENTER);
             
-            JPanel otherBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            otherBox.setBackground(Color.WHITE);
-            JMenu other = new JMenu("Other actions");
-            other.setForeground(Color.LIGHT_GRAY);
-            otherBox.add(other);
-            other.setAlignmentY(0.0f);
-            panel.add(otherBox, BorderLayout.SOUTH);
+
+            panel.add(createOtherActions(), BorderLayout.SOUTH);
 
             for (final EditorKitFactoryPlugin plugin : manager.getEditorKitFactoryPlugins()) {
 
@@ -188,6 +189,38 @@ public class ProtegeWelcomeFrame extends JFrame {
 
             box.add(Box.createVerticalStrut(2 * strutHeight));
             refresh();
+        }
+        
+        private JComponent createOtherActions() {
+        	Color fontColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.PROPERTY_COLOR_KEY),
+                    							    Color.GRAY);
+            JPanel otherActionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            otherActionsPanel.setBackground(Color.WHITE);
+            JMenuBar littleMenuBar = new JMenuBar();
+            // littleMenuBar.setBackground(Color.WHITE);
+            littleMenuBar.setOpaque(false);
+            final JMenu dropDownMenu = new JMenu("More actions...");
+            dropDownMenu.setFont(getFont().deriveFont(Font.BOLD, 10.0f));
+            dropDownMenu.setForeground(fontColor);
+            dropDownMenu.setBackground(Color.WHITE);
+            littleMenuBar.add(dropDownMenu);
+            for (AltStartupActionPlugin plugin : new AltStartupActionPluginLoader(ProtegeWelcomeFrame.this).getPlugins()) {
+            	try {
+            		AbstractAction a = plugin.newInstance();
+            		JMenuItem subMenu = new JMenuItem(a);
+            		dropDownMenu.add(subMenu);
+            	}
+            	catch (Exception e) {
+            		ProtegeApplication.getErrorLog().logError(e);
+            	}
+            }
+            dropDownMenu.addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            		System.out.println("hello");
+            	}
+            });
+            otherActionsPanel.add(littleMenuBar);
+            return otherActionsPanel;
         }
 
 
