@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
 import org.apache.log4j.Logger;
@@ -38,9 +39,11 @@ public class IntroductoryPanel extends JPanel {
         JTextPane tp = new JTextPane();
         URL help = IntroductoryPanel.class.getResource("/InconsistentOntologyHelp.html");
         tp.setPage(help);
-		Font font = getParent().getFont();
-        String bodyRule = "body { font-family: " + font.getFamily() + "; " + "font-size: " + font.getSize() + "pt; }";
-		((HTMLDocument) tp.getDocument()).getStyleSheet().addRule(bodyRule);
+		Font font = UIManager.getFont("TextArea.font");
+		if (font != null) {
+			String bodyRule = "body { font-family: " + font.getFamily() + "; " + "font-size: " + font.getSize() + "pt; }";
+			((HTMLDocument) tp.getDocument()).getStyleSheet().addRule(bodyRule);
+		}
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().add(tp);
         scrollPane.setPreferredSize(new Dimension(480, 300));
