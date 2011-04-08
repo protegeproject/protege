@@ -29,6 +29,7 @@ public class ResetPreferencesAction extends AltStartupAction {
 		try {
 			JTextPane pane = new JTextPane();
 			pane.setPreferredSize(new Dimension(400,400));
+			pane.setEditable(false);
 			URL u = getClass().getResource("ResetPreferencesExplanation.html");
 			pane.setPage(u);
 			Font font = UIManager.getFont("TextArea.font");
