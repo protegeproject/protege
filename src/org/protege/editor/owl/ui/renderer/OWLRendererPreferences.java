@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.protege.editor.core.prefs.Preferences;
@@ -198,7 +199,7 @@ public class OWLRendererPreferences {
         if (values.equals(defaultValues)){
             annotationIRIS.add(OWLRDFVocabulary.RDFS_LABEL.getIRI());
             annotationIRIS.add(IRI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
-            annotationLanguages = new ArrayList<String>();
+            annotationLanguages = getDefaultLanguages();
         }
         else{
             List<String> langs = new ArrayList<String>();
@@ -247,6 +248,19 @@ public class OWLRendererPreferences {
             values.add(str.toString());
         }
         getPreferences().putStringList(ANNOTATIONS, values);
+    }
+    
+    private List<String> getDefaultLanguages() {
+    	List<String> langs = new ArrayList<String>();
+    	Locale locale = Locale.getDefault();
+    	if (locale != null && locale.getLanguage() != null && !locale.getLanguage().isEmpty()) {
+    		langs.add(locale.getLanguage());
+    		if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
+    			langs.add(locale.getLanguage() + "-" + locale.getCountry());
+    		}
+    	}
+    	langs.add(NO_LANGUAGE_SET);
+    	return langs;
     }
 
 
