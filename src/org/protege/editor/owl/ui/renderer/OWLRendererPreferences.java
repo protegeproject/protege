@@ -260,6 +260,10 @@ public class OWLRendererPreferences {
     		}
     	}
     	langs.add(NO_LANGUAGE_SET);
+    	String en = Locale.ENGLISH.getLanguage();
+    	if (!langs.contains(en)) {
+    		langs.add(en);
+    	}
     	return langs;
     }
 
