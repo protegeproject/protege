@@ -253,9 +253,9 @@ public class OWLRendererPreferences {
     private List<String> getDefaultLanguages() {
     	List<String> langs = new ArrayList<String>();
     	Locale locale = Locale.getDefault();
-    	if (locale != null && locale.getLanguage() != null && !locale.getLanguage().isEmpty()) {
+    	if (locale != null && locale.getLanguage() != null && !locale.getLanguage().equals("")) {
     		langs.add(locale.getLanguage());
-    		if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
+    		if (locale.getCountry() != null && !locale.getCountry().equals("")) {
     			langs.add(locale.getLanguage() + "-" + locale.getCountry());
     		}
     	}
