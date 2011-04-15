@@ -55,18 +55,22 @@ public class PluginInstaller {
             public void run() {
                 boolean errorsFound = false;
                 boolean someInstalled = false;
-                for (PluginInfo info : updates) {
-                    InstallerResult result = install(info);
-                    switch (result) {
-                    case ERROR:
-                        errorsFound = true;
-                        break;
-                    case INSTALLED:
-                        someInstalled = true;
-                        break;
-                    }
+                try {
+                	for (PluginInfo info : updates) {
+                		InstallerResult result = install(info);
+                		switch (result) {
+                		case ERROR:
+                			errorsFound = true;
+                			break;
+                		case INSTALLED:
+                			someInstalled = true;
+                			break;
+                		}
+                	}
                 }
-                ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
+                finally {
+                	ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
+                }
                 if (errorsFound) {
                     JOptionPane.showMessageDialog(null, "Some errors found downloading plugins - look at the console log");
                 }
