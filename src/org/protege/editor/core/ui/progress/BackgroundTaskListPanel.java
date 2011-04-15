@@ -49,6 +49,7 @@ public class BackgroundTaskListPanel extends JPanel {
         this.mngr = mngr;
         setLayout(new BorderLayout());
         textArea = new JTextArea();
+        textArea.setEditable(false);
         textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         JPanel contentPane = new JPanel(new BorderLayout(7, 7));
         contentPane.add(new JScrollPane(textArea));
