@@ -512,7 +512,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
                  *
                  * This comment is here because there are a small number of experts who still argue for this feature.
                  * 
-                 * See http://sourceforge.net/mailarchive/attachment.php?list_name=owlapi-developer&message_id=4D66AD57.3070205%40stanford.edu&counter=1
+                 * See http://protegewiki.stanford.edu/wiki/OWL2RDFParserDeclarationRequirement
                  */
                 manager.saveOntology(ont, format, IRI.create(physicalURI));
 
