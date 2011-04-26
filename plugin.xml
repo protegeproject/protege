@@ -241,15 +241,15 @@
 
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Release notes"/>
-        <toolTip value="View online release notes for Protege 4.1 beta"/>
-        <url value="http://protegewiki.stanford.edu/index.php/Protege_4.1_Beta_Release_Notes"/>
+        <toolTip value="View online release notes for Protege 4.1"/>
+        <url value="http://protegewiki.stanford.edu/wiki/Protege_4.1_RC1_Release_Notes"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
 
     <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Protege documentation"/>
-        <toolTip value="View online documentation for Protege 4.1 beta"/>
+        <toolTip value="View online documentation for Protege 4.1"/>
         <url value="http://protegewiki.stanford.edu/index.php/Protege4UserDocs"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
         <editorKitId value="any"/>
