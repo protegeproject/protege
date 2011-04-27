@@ -112,7 +112,6 @@ public class ProtegeWelcomeFrame extends JFrame {
             box.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
             panel.add(box, BorderLayout.CENTER);
             
-
             panel.add(createOtherActions(), BorderLayout.SOUTH);
 
             for (final EditorKitFactoryPlugin plugin : manager.getEditorKitFactoryPlugins()) {
@@ -214,13 +213,11 @@ public class ProtegeWelcomeFrame extends JFrame {
             		ProtegeApplication.getErrorLog().logError(e);
             	}
             }
-            dropDownMenu.addActionListener(new ActionListener() {
-            	public void actionPerformed(ActionEvent e) {
-            		System.out.println("hello");
-            	}
-            });
             otherActionsPanel.add(littleMenuBar);
-            return otherActionsPanel;
+            Box southBox = new Box(BoxLayout.Y_AXIS);
+            southBox.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+            southBox.add(otherActionsPanel);
+            return southBox;
         }
 
 
