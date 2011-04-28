@@ -52,8 +52,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     private Action cancelledAction;
 
     private static final int CANCEL_TIMEOUT_MS = 5000;
-
-    private Timer cancelTimeout;
     
     private boolean running = false;
 
@@ -90,13 +88,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         Dimension windowSize = window.getSize();
         window.setSize(400, windowSize.height);
         window.setResizable(false);
-
-        cancelTimeout = new Timer(CANCEL_TIMEOUT_MS, new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
-            }
-        });
-        cancelTimeout.setRepeats(false);
     }
     
     public void setCancelled() {
@@ -104,6 +95,7 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     		cancelled = true;
     		running = false;
     	}
+    	owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
     	hideWindow();
     }
 
