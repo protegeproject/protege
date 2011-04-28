@@ -16,15 +16,25 @@ import org.semanticweb.owlapi.util.OWLEntitySetProvider;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class DeleteClassAction extends AbstractDeleteEntityAction<OWLClass> {
+	private static final long serialVersionUID = 5053506621554708546L;
+	
+	private OWLEntitySetProvider<OWLClass> clsSetProvider;
+	private OWLClass thing;
 
-    public DeleteClassAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLClass> clsSetProvider) {
-        super("Delete selected classes",
-              OWLIcons.getIcon("class.delete.png"),
-              owlEditorKit,
-              owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider(),
-              clsSetProvider);
-    }
+	public DeleteClassAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLClass> clsSetProvider) {
+		super("Delete selected classes",
+				OWLIcons.getIcon("class.delete.png"),
+				owlEditorKit,
+				owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider(), clsSetProvider);
+		this.clsSetProvider = clsSetProvider;
+		thing = owlEditorKit.getModelManager().getOWLDataFactory().getOWLThing();
+	}
 
+	@Override
+	public void updateState() {
+		super.updateState();
+		setEnabled(!clsSetProvider.getEntities().contains(thing)); // perhaps this should be generalized?
+	}
 
     protected String getPluralDescription() {
         return "classes";
@@ -34,4 +44,5 @@ public class DeleteClassAction extends AbstractDeleteEntityAction<OWLClass> {
     protected String getResultsViewId() {
         return "OWLClassUsageView";
     }
+
 }
