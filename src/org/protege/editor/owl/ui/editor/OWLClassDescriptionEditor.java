@@ -98,7 +98,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
     private boolean isValidated() {
             OWLClassExpressionEditor editor = getSelectedEditor();
-            return editor.isValidInput();
+            return editor != null && editor.isValidInput();
     }
 
 
@@ -168,7 +168,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
     	if (index < 0) {
     		index = 0;
     	}
-        return activeEditors.get(index);
+        return !activeEditors.isEmpty() ? activeEditors.get(index) : null;
     }
 
 
