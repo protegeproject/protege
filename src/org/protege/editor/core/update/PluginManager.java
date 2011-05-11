@@ -27,16 +27,13 @@ import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryTy
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginManager {
-	/*
-	 * Code for using the preferences with the plugin registry can be found at svn revision 
-	 */
     private static PluginManager instance;
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
+    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-4.1-release.url";
     public static final String DEFAULT_REGISTRY = "http://smi-protege.stanford.edu/protege4/plugins/4.1-plugins-2011-03-28.repository";
 
-    private String pluginRegistryLoc = DEFAULT_REGISTRY;
     private PluginRegistry pluginRegistry;
 
     private PluginManager() {
@@ -69,6 +66,7 @@ public class PluginManager {
 
 
     public URL getPluginRegistryLocation() {
+    	String pluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
         try {
             return new URL(pluginRegistryLoc);
         }
@@ -79,8 +77,12 @@ public class PluginManager {
 
 
     public void setPluginRegistryLocation(URL url) {
-        pluginRegistryLoc = url.toString();
-        pluginRegistry = null;
+    	String oldPluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
+    	String newPluginRegistryLoc = url.toString();
+    	if (!newPluginRegistryLoc.equals(oldPluginRegistryLoc)) {
+    		getPrefs().putString(PLUGIN_REGISTRY_KEY, newPluginRegistryLoc);
+    		pluginRegistry = null;
+    	}
     }
 
 
