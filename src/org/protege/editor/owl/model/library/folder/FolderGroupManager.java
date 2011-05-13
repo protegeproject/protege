@@ -40,12 +40,15 @@ public class FolderGroupManager extends CatalogEntryManager {
 	private static final Logger logger = Logger.getLogger(FolderGroupManager.class);
 	
 	public static final int FOLDER_BY_URI_VERSION=1;
-	public static final int CURRENT_VERSION = 1;
+	public static final int CURRENT_VERSION = 2;
 	
 	public static final String ID_PREFIX = "Folder Repository";
 	public static final String DIR_PROP = "directory";
 	public static final String RECURSIVE_PROP = "recursive";
+	
 	public static final String DUPLICATE_SCHEME="duplicate:";
+	public static final String SHADOWED_SCHEME="shadowed:";
+	public static final String[] IGNORED_SCHEMES = { DUPLICATE_SCHEME, SHADOWED_SCHEME };
 	
     public static final String FILE_KEY = "FILE";
     
@@ -66,12 +69,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     
 
     public static GroupEntry createGroupEntry(URI folder, boolean recursive, boolean autoUpdate, XmlBaseContext context) throws IOException {
-        StringBuffer sb = new StringBuffer(ID_PREFIX);
-        LibraryUtilities.addPropertyValue(sb, DIR_PROP, folder.toString());
-        LibraryUtilities.addPropertyValue(sb, RECURSIVE_PROP, recursive);
-        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, autoUpdate ? "true" : "false");
-        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.VERSION_PROPERTY, CURRENT_VERSION);
-        return new GroupEntry(sb.toString(), context, Prefer.PUBLIC, folder);
+        return new GroupEntry(getIdString(folder, recursive, autoUpdate), context, Prefer.PUBLIC, folder);
     }
     
     public FolderGroupManager() {
@@ -122,6 +120,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 	public boolean update(Entry entry) {
         this.ge = (GroupEntry) entry;
         reset();
+        ensureLatestVersion();
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Starting Catalog Update ************************************************");
@@ -172,10 +171,20 @@ public class FolderGroupManager extends CatalogEntryManager {
 		sb.append("</body></html>");
 		return sb.toString();
 	}
+	
+	private static String getIdString(URI folderUri, boolean recursive, boolean autoUpdate) {
+        StringBuffer sb = new StringBuffer(ID_PREFIX);
+        LibraryUtilities.addPropertyValue(sb, DIR_PROP, folderUri.toString());
+        LibraryUtilities.addPropertyValue(sb, RECURSIVE_PROP, recursive);
+        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, autoUpdate ? "true" : "false");
+        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.VERSION_PROPERTY, CURRENT_VERSION);
+        return sb.toString();
+	}
 
 	private void reset() {
 		modified = false;
 		timeOfCurrentUpdate = System.currentTimeMillis();
+		retainedFileToWebLocationMap.clear();
 		webLocationToFileLocationMap.clear();
 		if (ge != null) {
 			folder = getDirectory(ge);
@@ -186,14 +195,13 @@ public class FolderGroupManager extends CatalogEntryManager {
 		}
 	}
 	
-	private static File getCanonicalFile(File f) {
-	    try {
-	        return f.getCanonicalFile();
-	    }
-	    catch (IOException e) {
-	        logger.info("Could not find canonical path for file " + f);
-	        return f;
-	    }
+	private void ensureLatestVersion() {
+		int version = LibraryUtilities.getVersion(ge);
+		if (version < CURRENT_VERSION) {
+			boolean autoUpdate = LibraryUtilities.getBooleanProperty(ge, LibraryUtilities.AUTO_UPDATE_PROP, this.autoUpdate);
+			ge.setId(getIdString(folder.toURI(), recursive, autoUpdate));
+			clearEntries();
+		}
 	}
 	   
     private void retainEntries() {
@@ -222,7 +230,7 @@ public class FolderGroupManager extends CatalogEntryManager {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Map for file " + f + " is still good and will be kept");
                         }
-                        recordRetainedEntry(ue.getUri(), f.getCanonicalFile());
+                        recordRetainedEntry(URI.create(ue.getName()), f.getCanonicalFile());
                     }
                 }
                 catch (Throwable t) {
@@ -293,6 +301,9 @@ public class FolderGroupManager extends CatalogEntryManager {
     			newWebLocations.add(webLocation);
     			recordEntry(webLocation, physicalLocation);
     		}
+    		else {
+    			recordEntry(appendScheme(webLocation, SHADOWED_SCHEME), physicalLocation);
+    		}
     	}
     }
     
@@ -314,7 +325,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     		possibleWebLocations = new ArrayList<URI>();
     		retainedFileToWebLocationMap.put(f, possibleWebLocations);
     	}
-    	possibleWebLocations.add(webLocation);
+    	possibleWebLocations.add(removeIgnoredSchemes(webLocation));
     }
     
     private void clearEntries() {
@@ -332,10 +343,12 @@ public class FolderGroupManager extends CatalogEntryManager {
     	}
     	for (URI webLocation : webLocationToFileLocationMap.keySet()) {
     		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
-    		if (physicalLocations.size() > 1) {
-    			continue;
+    		if (physicalLocations.size() > 1 && !isIgnored(webLocation)) {
+    			writeEntries(appendScheme(webLocation, DUPLICATE_SCHEME), physicalLocations);
     		}
-    		writeEntries(webLocation, physicalLocations);
+    		else {
+    			writeEntries(webLocation, physicalLocations);
+    		}
     	}
     }
     
@@ -352,7 +365,32 @@ public class FolderGroupManager extends CatalogEntryManager {
 		}
     }
     
-    private File getDirectory(GroupEntry ge) {
+    private URI appendScheme(URI u, String scheme) {
+		String uString = u.toString();
+		return URI.create(scheme + uString);
+	}
+
+	private URI removeIgnoredSchemes(URI u) {
+		String uString = u.toString();
+		for (String iScheme : IGNORED_SCHEMES) {
+			if (uString.startsWith(iScheme)) {
+				return URI.create(uString.substring(iScheme.length()));
+			}
+		}
+		return u;
+	}
+	
+	private boolean isIgnored(URI u) {
+		String uString = u.toString();
+		for (String iScheme : IGNORED_SCHEMES) {
+			if (uString.startsWith(iScheme)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private File getDirectory(GroupEntry ge) {
         File folder = null;
         String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
         if (dirName == null) {
