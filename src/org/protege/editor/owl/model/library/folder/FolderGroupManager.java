@@ -3,12 +3,10 @@ package org.protege.editor.owl.model.library.folder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -63,7 +61,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     private boolean recursive = true;
     private long timeOfCurrentUpdate;
     private boolean modified = false;
-    private Set<File> examined = new HashSet<File>();
+    private Map<File, Collection<URI>> retainedFileToWebLocationMap = new TreeMap<File, Collection<URI>>();
     private Map<URI, Collection<URI>> webLocationToFileLocationMap = new TreeMap<URI, Collection<URI>>();
     
 
@@ -130,9 +128,12 @@ public class FolderGroupManager extends CatalogEntryManager {
                 logger.debug("Update of group entry " + ge.getId() + " started at " + new Date(timeOfCurrentUpdate));
             }
     
-            removeStaleEntries();
-            examineDiskEntries(folder);
-            writeEntries();
+            retainEntries();
+            examineDiskEntries(folder, new HashSet<URI>());
+            if (modified) {
+            	clearEntries();
+            	writeEntries();
+            }
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Catalog Update Complete ************************************************");
 
@@ -145,20 +146,6 @@ public class FolderGroupManager extends CatalogEntryManager {
         }
     }
 	
-	private void reset() {
-		modified = false;
-		timeOfCurrentUpdate = System.currentTimeMillis();
-		examined.clear();
-		webLocationToFileLocationMap.clear();
-		if (ge != null) {
-			folder = getDirectory(ge);
-			recursive = LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true);
-		}
-		else {
-			folder = null;
-		}
-	}
-	
 	public boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException {
 	    URI relativeFolderUri = CatalogUtilities.relativize(folder.toURI(), catalog);
 	    ge = FolderGroupManager.createGroupEntry(relativeFolderUri, true, autoUpdate, catalog);
@@ -166,11 +153,11 @@ public class FolderGroupManager extends CatalogEntryManager {
 	    update(ge);
 	    return true;
 	}
-	
+
 	public NewEntryPanel newEntryPanel(XMLCatalog catalog) {
 	    return new FolderGroupPanel(catalog);
 	}
-	
+
 	public String getDescription() {
 	    return "Folder Repository";
 	}
@@ -185,6 +172,19 @@ public class FolderGroupManager extends CatalogEntryManager {
 		sb.append("</body></html>");
 		return sb.toString();
 	}
+
+	private void reset() {
+		modified = false;
+		timeOfCurrentUpdate = System.currentTimeMillis();
+		webLocationToFileLocationMap.clear();
+		if (ge != null) {
+			folder = getDirectory(ge);
+			recursive = LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true);
+		}
+		else {
+			folder = null;
+		}
+	}
 	
 	private static File getCanonicalFile(File f) {
 	    try {
@@ -196,7 +196,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 	    }
 	}
 	   
-    private void removeStaleEntries() {
+    private void retainEntries() {
         for (Entry e : new ArrayList<Entry>(ge.getEntries())) {
             if (e instanceof UriEntry) {
                 UriEntry ue = (UriEntry) e;
@@ -213,17 +213,16 @@ public class FolderGroupManager extends CatalogEntryManager {
                     }
                     File f = new File(ue.getAbsoluteURI());
                     if (!f.exists() || f.lastModified() >= lastUpdated) {
-                        ge.removeEntry(ue);
                         modified = true;
                         if (logger.isDebugEnabled()) {
                             logger.debug("Map for file " + f + " is stale and has been removed");
                         }
                     }
                     else {
-                        examined.add(getCanonicalFile(f));
                         if (logger.isDebugEnabled()) {
                             logger.debug("Map for file " + f + " is still good and will be kept");
                         }
+                        recordRetainedEntry(ue.getUri(), f.getCanonicalFile());
                     }
                 }
                 catch (Throwable t) {
@@ -234,7 +233,8 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
     
     
-    private  void examineDiskEntries(File tree) {
+    private  void examineDiskEntries(File tree, Set<URI> webLocationsFoundInParentDirectory) {
+    	Set<URI> newWebLocations = new HashSet<URI>();
         if (algorithms == null || algorithms.isEmpty()) {
             return;
         }
@@ -244,37 +244,92 @@ public class FolderGroupManager extends CatalogEntryManager {
         	    subFolders.add(physicalLocation);
         	}
         	else if (physicalLocation.exists() 
-                    && physicalLocation.isFile() 
-                    && physicalLocation.getPath().endsWith(".owl")
-                    && !physicalLocation.getName().startsWith(".")
-                    && !examined.contains(getCanonicalFile(physicalLocation))) {
+                        && physicalLocation.isFile() 
+                        && isValidOWLFile(physicalLocation)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Applying algorithms to " + physicalLocation);
                 }
     			URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
-                for (Algorithm algorithm : algorithms) {
-                    Set<URI> webLocations = algorithm.getSuggestions(physicalLocation);
-                    for (URI webLocation : webLocations) {
-                    	recordEntry(webLocation, shortLocation);
-                    }
+                Collection<URI> retainedSuggestions = null;
+                try {
+                	retainedSuggestions = retainedFileToWebLocationMap.get(physicalLocation.getCanonicalFile());
+                }
+                catch (IOException e) {
+                	logger.warn("IO Exception caught processing file " + physicalLocation + " for repository library update", e);
+                }
+                if (retainedSuggestions != null) {
+                	if (logger.isDebugEnabled()) {
+                		logger.debug("Adding mappings retained from previous version of the catalog");
+                	}
+                	recordEntries(retainedSuggestions, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
+                }
+                else {
+                	if (logger.isDebugEnabled()) {
+                		logger.debug("Adding new mappings not found in the previous version of the catalog");
+                	}
+                	for (Algorithm algorithm : algorithms) {
+                		Set<URI> webLocations = algorithm.getSuggestions(physicalLocation);
+                		modified = modified || !webLocations.isEmpty();
+                		recordEntries(webLocations, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
+                	}
                 }
             }
         }
+        webLocationsFoundInParentDirectory.addAll(newWebLocations);
         for (File physicalLocation : subFolders) {
-            examineDiskEntries(physicalLocation);
+            examineDiskEntries(physicalLocation, webLocationsFoundInParentDirectory);
         }
     }
     
-    private void recordEntry(URI webLocation, URI physicalLocation)	{ 
-    	Collection<URI> possibleLocations = webLocationToFileLocationMap.get(webLocation);
-    	if (possibleLocations == null) {
-    		possibleLocations = new ArrayList<URI>();
-    		webLocationToFileLocationMap.put(webLocation, possibleLocations);
+    protected boolean isValidOWLFile(File physicalLocation) {
+    	return physicalLocation.getPath().endsWith(".owl")
+                       && !physicalLocation.getName().startsWith(".");
+    }
+    
+    private void recordEntries(Collection<URI> webLocations, URI physicalLocation, 
+    		                   Set<URI> webLocationsFoundInParentDirectory, Set<URI> newWebLocations) {
+    	for (URI webLocation : webLocations) {
+    		if (!webLocationsFoundInParentDirectory.contains(webLocation)) {
+    			newWebLocations.add(webLocation);
+    			recordEntry(webLocation, physicalLocation);
+    		}
     	}
-    	possibleLocations.add(physicalLocation);
+    }
+    
+    private void recordEntry(URI webLocation, URI physicalLocation)	{
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Found mapping from import location " + webLocation + " to physical file " + physicalLocation);
+    	}
+    	Collection<URI> possibleFileLocations = webLocationToFileLocationMap.get(webLocation);
+    	if (possibleFileLocations == null) {
+    		possibleFileLocations = new ArrayList<URI>();
+    		webLocationToFileLocationMap.put(webLocation, possibleFileLocations);
+    	}
+    	possibleFileLocations.add(physicalLocation);
+    }
+    
+    private void recordRetainedEntry(URI webLocation, File f) {
+    	Collection<URI> possibleWebLocations = retainedFileToWebLocationMap.get(f);
+    	if (possibleWebLocations == null) {
+    		possibleWebLocations = new ArrayList<URI>();
+    		retainedFileToWebLocationMap.put(f, possibleWebLocations);
+    	}
+    	possibleWebLocations.add(webLocation);
+    }
+    
+    private void clearEntries() {
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Catalog must be modified - clearing out existing data");
+    	}
+    	for (Entry e : ge.getEntries()) {
+    		ge.removeEntry(e);
+    	}
     }
     
     private void writeEntries() {
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Catalog must be modified - writing new data");
+    	}
     	for (URI webLocation : webLocationToFileLocationMap.keySet()) {
     		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
     		if (physicalLocations.size() > 1) {
