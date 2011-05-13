@@ -1231,16 +1231,7 @@
          and replaces them with someValuesFrom restrictions."/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
-    
-    <extension id="menu.AssertUniqueNameAssumptionAction"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Assert the Unique Name Assumption"/>
-        <class value="org.protege.editor.owl.ui.action.AssertUniqueNameAssumptionAction"/>
-        <toolTip value="Assert that all named individuals in the active ontologies are distinct"/>
-        <path value="org.protege.editor.owl.menu.Refactor/SlotDD-A"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>   
+    </extension> 
 
     <extension id="menu.MoveAxiomsToOntologyAction"
                point="org.protege.editor.core.application.EditorKitMenuAction">
