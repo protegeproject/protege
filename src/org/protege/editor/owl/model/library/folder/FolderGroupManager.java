@@ -16,6 +16,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.editor.owl.ui.library.plugins.FolderGroupPanel;
 import org.protege.xmlcatalog.CatalogUtilities;
@@ -46,11 +47,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 	public static final String DIR_PROP = "directory";
 	public static final String RECURSIVE_PROP = "recursive";
 	
-	public static final String DUPLICATE_SCHEME="duplicate:";
-	public static final String SHADOWED_SCHEME="shadowed:";
-	public static final String[] IGNORED_SCHEMES = { DUPLICATE_SCHEME, SHADOWED_SCHEME };
-	
-    public static final String FILE_KEY = "FILE";
+	public static final String FILE_KEY = "FILE";
     
     private Set<Algorithm> algorithms;
     private boolean autoUpdate = true;
@@ -290,8 +287,16 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
     
     protected boolean isValidOWLFile(File physicalLocation) {
-    	return physicalLocation.getPath().endsWith(".owl")
-                       && !physicalLocation.getName().startsWith(".");
+    	if (physicalLocation.getName().startsWith(".")) {
+    		return false;
+    	}
+    	String path = physicalLocation.getPath();
+    	for (String extension : UIHelper.OWL_EXTENSIONS) {
+    		if (path.endsWith(extension)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     private void recordEntries(Collection<URI> webLocations, URI physicalLocation, 
@@ -302,7 +307,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     			recordEntry(webLocation, physicalLocation);
     		}
     		else {
-    			recordEntry(appendScheme(webLocation, SHADOWED_SCHEME), physicalLocation);
+    			recordEntry(appendScheme(webLocation, CatalogEntryManager.SHADOWED_SCHEME), physicalLocation);
     		}
     	}
     }
@@ -344,7 +349,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     	for (URI webLocation : webLocationToFileLocationMap.keySet()) {
     		Collection<URI> physicalLocations = webLocationToFileLocationMap.get(webLocation);
     		if (physicalLocations.size() > 1 && !isIgnored(webLocation)) {
-    			writeEntries(appendScheme(webLocation, DUPLICATE_SCHEME), physicalLocations);
+    			writeEntries(appendScheme(webLocation, CatalogEntryManager.DUPLICATE_SCHEME), physicalLocations);
     		}
     		else {
     			writeEntries(webLocation, physicalLocations);
@@ -372,7 +377,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 
 	private URI removeIgnoredSchemes(URI u) {
 		String uString = u.toString();
-		for (String iScheme : IGNORED_SCHEMES) {
+		for (String iScheme : CatalogEntryManager.IGNORED_SCHEMES) {
 			if (uString.startsWith(iScheme)) {
 				return URI.create(uString.substring(iScheme.length()));
 			}
@@ -382,7 +387,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 	
 	private boolean isIgnored(URI u) {
 		String uString = u.toString();
-		for (String iScheme : IGNORED_SCHEMES) {
+		for (String iScheme : CatalogEntryManager.IGNORED_SCHEMES) {
 			if (uString.startsWith(iScheme)) {
 				return true;
 			}

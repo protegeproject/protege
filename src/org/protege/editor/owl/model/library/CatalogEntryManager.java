@@ -24,6 +24,10 @@ import org.protege.xmlcatalog.entry.Entry;
  * a physical URI for that ontology.
  */
 public abstract class CatalogEntryManager implements ProtegePluginInstance {
+	public static final String SHADOWED_SCHEME="shadowed:";
+	public static final String DUPLICATE_SCHEME="duplicate:";
+	public static final String[] IGNORED_SCHEMES = { DUPLICATE_SCHEME, SHADOWED_SCHEME };
+
     private String id;
 
     public abstract boolean isSuitable(Entry entry);
