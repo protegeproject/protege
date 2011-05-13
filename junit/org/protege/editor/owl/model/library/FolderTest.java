@@ -69,7 +69,7 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
     }
     
     public void testUpdateNoChange() throws IOException, InterruptedException {
@@ -109,7 +109,7 @@ public class FolderTest extends TestCase {
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
         assertTrue(duplicateRedirect.equals(new File(TEST_DIR, PIZZA_FILE).toURI()) || duplicateRedirect.equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
     }
     
@@ -167,7 +167,7 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
 
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
@@ -178,7 +178,7 @@ public class FolderTest extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
         assertTrue(catalogFile.lastModified() >= changed + sleepInterval);
     }
@@ -193,7 +193,7 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
 
         File catalogFile = new File(TEST_DIR, CATALOG_FILE);
@@ -204,7 +204,7 @@ public class FolderTest extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
         assertTrue(catalogFile.lastModified() >= changed + sleepInterval);
     }
@@ -218,12 +218,12 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         
         new File(subDirectory, AMINO_ACID_FILE).delete();
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
     }
     
     public void testUpdateShadowed() throws IOException, InterruptedException {
@@ -235,7 +235,7 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         
         Thread.sleep(SUFFICIENTLY_LONG_TIME);
         
@@ -243,7 +243,7 @@ public class FolderTest extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(subDirectory, AMINO_ACID_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));
     }
     
@@ -256,7 +256,7 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         
         Thread.sleep(SUFFICIENTLY_LONG_TIME);
         
@@ -264,7 +264,7 @@ public class FolderTest extends TestCase {
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
     }
     
@@ -277,12 +277,12 @@ public class FolderTest extends TestCase {
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
         
         new File(TEST_DIR, AMINO_ACID_FILE).delete();
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, subDirectoryName + "/" + AMINO_ACID_FILE).toURI()));     
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.SHADOWED_SCHEME + AMINO_ACID_NS), catalog) == null);     
     }
     
     public void testUpdateWithDuplicate() throws IOException {
@@ -292,14 +292,14 @@ public class FolderTest extends TestCase {
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
         assertTrue(duplicateRedirect.equals(new File(TEST_DIR, PIZZA_FILE).toURI()) || duplicateRedirect.equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
         assertTrue(CatalogUtilities.getRedirect(URI.create(PHOTOGRAPHY_NS), catalog) == null);
         
         copy(new File(SOURCE_DIR, PHOTOGRAPHY_FILE), new File(TEST_DIR, PHOTOGRAPHY_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
         assertTrue(duplicateRedirect.equals(new File(TEST_DIR, PIZZA_FILE).toURI()) || duplicateRedirect.equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
         assertTrue(CatalogUtilities.getRedirect(URI.create(PHOTOGRAPHY_NS), catalog).equals(new File(TEST_DIR, PHOTOGRAPHY_FILE).toURI()));
     }
@@ -311,14 +311,14 @@ public class FolderTest extends TestCase {
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
         assertTrue(duplicateRedirect.equals(new File(TEST_DIR, PIZZA_FILE).toURI()) || duplicateRedirect.equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
         
         new File(TEST_DIR, AMINO_ACID_FILE).delete();
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
-        duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) == null);
+        duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) == null);
     }
     
     public void testUpdateDuplicate() throws IOException, InterruptedException {
@@ -328,7 +328,7 @@ public class FolderTest extends TestCase {
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog) == null);
-        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
+        URI duplicateRedirect = CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog);
         assertTrue(duplicateRedirect.equals(new File(TEST_DIR, PIZZA_FILE).toURI()) || duplicateRedirect.equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog) == null);
         Thread.sleep(SUFFICIENTLY_LONG_TIME);
@@ -336,7 +336,7 @@ public class FolderTest extends TestCase {
         copy(new File(SOURCE_DIR, AMINO_ACID_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         catalog = catalogManager.ensureCatalogExists(TEST_DIR);
         assertTrue(CatalogUtilities.getRedirect(URI.create(PIZZA_NS), catalog).equals(new File(TEST_DIR, PIZZA_FILE).toURI()));
-        assertTrue(CatalogUtilities.getRedirect(URI.create(FolderGroupManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) == null);
+        assertTrue(CatalogUtilities.getRedirect(URI.create(CatalogEntryManager.DUPLICATE_SCHEME + PIZZA_NS), catalog) == null);
         assertTrue(CatalogUtilities.getRedirect(URI.create(AMINO_ACID_NS), catalog).equals(new File(TEST_DIR, AMINO_ACID_FILE).toURI()));
     }
     

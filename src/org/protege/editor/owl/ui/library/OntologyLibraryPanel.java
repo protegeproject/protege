@@ -315,7 +315,7 @@ public class OntologyLibraryPanel extends JPanel {
     }
     
     private void insertEntryIntoTree(DefaultMutableTreeNode parent, Entry entry) {
-        if (entry instanceof UriEntry) {
+        if (entry instanceof UriEntry && !isHidden((UriEntry) entry)) {
         	UriEntry uriEntry = (UriEntry) entry;
         	String redirectDescription = "<html><body><b>Imported Location: " + uriEntry.getName() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
             						           + "<font color=\"gray\">Redirected To: " + uriEntry.getUri() + "</font></body></html>";
@@ -323,6 +323,16 @@ public class OntologyLibraryPanel extends JPanel {
         	DefaultMutableTreeNode entryNode = new DefaultMutableTreeNode(redirectDescription);
         	model.insertNodeInto(entryNode, parent, parent.getChildCount());
         }
+    }
+    
+    private boolean isHidden(UriEntry entry) {
+    	String u = entry.getName();
+    	for (String ignoredScheme : CatalogEntryManager.IGNORED_SCHEMES) {
+    		if (u.startsWith(ignoredScheme)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     public Dimension getPreferredSize() {
