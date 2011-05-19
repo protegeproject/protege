@@ -174,6 +174,9 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
     private void addSetter(final JCheckBox checkBox, final PropertyCharacteristicSetter setter) {
         checkBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	if (getProperty() == null) {
+            		return;
+            	}
                 if (checkBox.isSelected()) {
                     OWLOntology ont = getOWLModelManager().getActiveOntology();
                     OWLAxiom ax = setter.getAxiom();
@@ -202,9 +205,9 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
     }
 
 
-    private void enableAll() {
+    private void setCheckBoxesEnabled(boolean enable) {
         for (JCheckBox cb : checkBoxes) {
-            cb.setEnabled(true);
+            cb.setEnabled(enable);
         }
     }
 
@@ -219,7 +222,10 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
     protected OWLObjectProperty updateView(OWLObjectProperty property) {
         prop = property;
         clearAll();
-        enableAll();
+        setCheckBoxesEnabled(property != null);
+        if (property == null) {
+        	return null;
+        }
         // We only require one axiom to specify that a property has a specific characteristic
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             if (!ont.getFunctionalObjectPropertyAxioms(property).isEmpty()) {

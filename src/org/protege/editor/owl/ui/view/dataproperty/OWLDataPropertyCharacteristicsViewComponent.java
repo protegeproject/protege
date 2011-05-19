@@ -36,7 +36,11 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
 
     protected OWLDataProperty updateView(OWLDataProperty property) {
         prop = property;
+        checkBox.setEnabled(property != null);
         checkBox.setSelected(false);
+        if (property == null) {
+        	return null;
+        }
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             if (!ont.getFunctionalDataPropertyAxioms(prop).isEmpty()) {
                 checkBox.setSelected(true);
