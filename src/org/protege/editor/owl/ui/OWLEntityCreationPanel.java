@@ -5,12 +5,14 @@ import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
+import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 
@@ -44,6 +47,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private OWLEditorKit owlEditorKit;
 
     private JTextField textField;
+    
+    private JCheckBox useRawUri;
 
     private JLabel errorLabel;
 
@@ -86,7 +91,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void createUI(String message) {
         setLayout(new BorderLayout());
 
-        JPanel entryPanel = new JPanel(new BorderLayout());
+        JPanel entryPanel = new JPanel();
+        entryPanel.setLayout(new BoxLayout(entryPanel, BoxLayout.Y_AXIS));
         textField = new JTextField(30);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -105,11 +111,20 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         if (message != null){
             final JLabel label = new JLabel(message);
             label.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
-            entryPanel.add(label, BorderLayout.NORTH);
+            entryPanel.add(label);
         }
 
-        entryPanel.add(textField, BorderLayout.SOUTH);
-
+        entryPanel.add(textField);
+        
+        useRawUri = new JCheckBox("Ignore entity creation preferences");
+        useRawUri.setSelected(false);
+        useRawUri.setBorder(BorderFactory.createEmptyBorder(INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING, INTERNAL_PADDING));
+        useRawUri.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		update();
+        	}
+        });
+        entryPanel.add(useRawUri);
 
         errorLabel = new JLabel("");
         errorLabel.setFont(errorLabel.getFont().deriveFont(10.0f));
@@ -155,9 +170,19 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     public OWLEntityCreationSet<T> getOWLEntityCreationSet() {
         try {
-            return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type,
-                                                                                        getEntityName(),
-                                                                                        getBaseIRI());
+        	if (useRawIri()) {
+        		IRI iri = getRawIRI();
+        		OWLOntology ontology = owlEditorKit.getModelManager().getActiveOntology();
+        		OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
+        		T owlEntity = CustomOWLEntityFactory.getOWLEntity(factory, type, iri);
+        		OWLOntologyChange addDecl = new AddAxiom(ontology, factory.getOWLDeclarationAxiom(owlEntity));
+        		return new OWLEntityCreationSet<T>(owlEntity, Collections.singletonList(addDecl));
+        	}
+        	else {
+        		return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type,
+        																				    getEntityName(),
+         																				    getBaseIRI());
+        	}
         }
         catch (OWLEntityCreationException e) {
             return null;
@@ -208,11 +233,17 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private void performCheck() {
         boolean wasValid = currentlyValid;
         try{
-            final String name = getEntityName();
-            OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
-                                                                                                             name,
-                                                                                                             getBaseIRI());
-            IRI iri = changeSet.getOWLEntity().getIRI();
+    		final String name = getEntityName();
+        	IRI iri;
+        	if (useRawIri()) {
+        		iri = getRawIRI();
+        	}
+        	else {
+        		OWLEntityCreationSet<T> changeSet = owlEditorKit.getModelManager().getOWLEntityFactory().preview(type,
+        				name,
+        				getBaseIRI());
+        		iri = changeSet.getOWLEntity().getIRI();
+        	}
             uriPreviewLabel.setText(iri.toString());
 
             currentlyValid = true;
@@ -221,7 +252,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
             for (OWLOntology ont : owlEditorKit.getOWLModelManager().getActiveOntologies()){
                 if (ont.containsEntityInSignature(iri)){
-                    warningMessage = "Warning: this is a pun for an existing entity.";
+                    warningMessage = "Warning: this name is already being used for a different type of entity.";
                     break;
                 }
             }
@@ -292,6 +323,27 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         errorLabel.setIcon(null);
         errorLabel.setText("");
         errorLabel.validate();
+    }
+    
+    private boolean useRawIri() {
+    	return useRawUri.isSelected();
+    }
+    
+    private IRI getRawIRI() {
+    	String text = textField.getText();
+    	OWLOntology activeOntology = owlEditorKit.getModelManager().getActiveOntology();
+    	OWLOntologyManager manager = owlEditorKit.getModelManager().getOWLOntologyManager();
+    	OWLOntologyFormat format = manager.getOntologyFormat(activeOntology);
+    	int colonIndex = text.indexOf(':');
+    	if (colonIndex >= 0 && format.isPrefixOWLOntologyFormat()) {
+    		PrefixOWLOntologyFormat prefixes = format.asPrefixOWLOntologyFormat();
+    		String prefixName = text.substring(0, colonIndex + 1);
+    		String prefix = prefixes.getPrefix(prefixName);
+    		if (prefix != null) {
+    			return IRI.create(prefix + text.substring(colonIndex + 1));
+    		}
+    	}
+    	return IRI.create(text);
     }
 
 
