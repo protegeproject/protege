@@ -26,6 +26,13 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
  *
  * Only shows the members of the currently selected class
  */
+
+/*
+ * TODO - this class should probably no longer extend OWLIndividualListViewComponent.
+ *        there are too many hacks piling up.  It is not really selectable in the usual sense.
+ *        It completely overrides the process changes methods.  It should display anonymous 
+ *        individuals.
+ */
 public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
 	
 	private static final long serialVersionUID = -6015526995379146198L;
@@ -77,6 +84,11 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
 		}
 
 		return untypedIndividuals;
+	}
+	
+	@Override
+	protected void processChanges(List<? extends OWLOntologyChange> changes) {
+		refill(); // TODO for now this is ok - but things are bad
 	}
 
 
