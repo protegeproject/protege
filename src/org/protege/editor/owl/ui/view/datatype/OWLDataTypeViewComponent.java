@@ -3,6 +3,9 @@ package org.protege.editor.owl.ui.view.datatype;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
@@ -79,6 +82,15 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
             handleChanges(changes);
         }
     };
+    
+    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
+		
+		public void handleChange(OWLModelManagerChangeEvent event) {
+			if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
+				reload();
+			}
+		}
+	};
 
 
     public void initialiseView() throws Exception {
@@ -94,6 +106,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         setupActions();
 
         getOWLModelManager().addOntologyChangeListener(ontChangeListener);
+        getOWLModelManager().addListener(modelManagerListener);
 
         add(ComponentFactory.createScrollPane(list));
     }
@@ -183,6 +196,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
     public void disposeView() {
         getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
+        getOWLModelManager().removeListener(modelManagerListener);
     }
 
 
