@@ -37,6 +37,14 @@ import java.util.List;
  * <br>
  * <p/> This definitely needs a rethink - it is a totally inefficient hack!
  */
+
+/*
+ * TODO - the need for this class probably indicates a problem with the individuals views
+ *        I do use it but for an ontology with a large number of individuals this view is 
+ *        totally worthless.   A good protege would not have this class.  Note that this is 
+ *        also used in individual selection - that is a terrible thing.
+ * TODO - This should not be constrained to named individuals only.
+ */
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent
         implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
 
@@ -164,7 +172,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         return inds;
     }
 
-    private void processChanges(List<? extends OWLOntologyChange> changes) {
+    protected void processChanges(List<? extends OWLOntologyChange> changes) {
     	Set<OWLEntity> possiblyAddedObjects = new HashSet<OWLEntity>();
     	Set<OWLEntity> possiblyRemovedObjects = new HashSet<OWLEntity>();
         OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedObjects);
