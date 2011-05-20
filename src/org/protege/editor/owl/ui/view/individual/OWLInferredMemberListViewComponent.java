@@ -1,10 +1,13 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.util.List;
+
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
@@ -50,6 +53,14 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
         	}
         }
         reset();
+    }
+    
+    @Override
+    protected void processChanges(List<? extends OWLOntologyChange> changes) {
+    	OWLReasoner reasoner = getOWLModelManager().getReasoner();
+    	if (reasoner.getPendingChanges().isEmpty()) {
+    		refill();
+    	}
     }
     
     @Override
