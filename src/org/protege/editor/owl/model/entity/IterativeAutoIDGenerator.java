@@ -65,6 +65,10 @@ public class IterativeAutoIDGenerator extends AbstractIDGenerator implements Rev
         if (end != -1 && id > end){
             throw new AutoIDException("You have run out of IDs for creating new entities - max = " + end);
         }
+        if (EntityCreationPreferences.getSaveAutoIDStart()) {
+        	previousStartId = id + 1;
+        	EntityCreationPreferences.setAutoIDStart((int) (previousStartId));
+        }
         return id++;
     }
 

@@ -5,10 +5,13 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Enumeration;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -37,6 +40,7 @@ import org.protege.editor.owl.model.entity.MatchRendererLabelDescriptor;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.PseudoRandomAutoIDGenerator;
+import org.protege.editor.owl.model.entity.UniqueIdGenerator;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.IRI;
@@ -83,11 +87,13 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     // auto ID panel
     private JRadioButton pseudoRandomButton;
     private JRadioButton iterativeButton;
+    private JRadioButton uniqueIdButton;
     private JSpinner autoIDStart;
     private JSpinner autoIDEnd;
     private JSpinner autoIDDigitCount;
     private JTextField autoIDPrefix;
     private JTextField autoIDSuffix;
+    private JCheckBox saveIterativeIds;
 
     private JComponent autoIDPane;
 
@@ -162,12 +168,14 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         final Class<? extends AutoIDGenerator> autoIDGenCls = EntityCreationPreferences.getAutoIDGeneratorClass();
         pseudoRandomButton.setSelected(autoIDGenCls.equals(PseudoRandomAutoIDGenerator.class));
         iterativeButton.setSelected(autoIDGenCls.equals(IterativeAutoIDGenerator.class));
+        uniqueIdButton.setSelected(autoIDGenCls.equals(UniqueIdGenerator.class));
         autoIDStart.setValue(EntityCreationPreferences.getAutoIDStart());
         autoIDEnd.setValue(EntityCreationPreferences.getAutoIDEnd());
 
         autoIDDigitCount.setValue(EntityCreationPreferences.getAutoIDDigitCount());
         autoIDPrefix.setText(EntityCreationPreferences.getPrefix());
         autoIDSuffix.setText(EntityCreationPreferences.getSuffix());
+        saveIterativeIds.setSelected(EntityCreationPreferences.getSaveAutoIDStart());
 
         refreshState();
     }
@@ -185,6 +193,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
     }
 
     private void refreshState() {
+
         uriDefaultBaseField.setEnabled(uriBaseSpecifiedURI.isSelected());
 
         nameAsLabel.setEnabled(!autoIDURIFragment.isSelected());
@@ -203,6 +212,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         performRecursiveEnable(customLabelPane, customLabelButton.isSelected());
 
         performRecursiveEnable(rangePanel, enableAutoIDPane && iterativeButton.isSelected());
+        
+        autoIDStart.setValue(EntityCreationPreferences.getAutoIDStart());
+        saveIterativeIds.setEnabled(iterativeButton.isSelected());
     }
 
 
@@ -264,6 +276,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         if (iterativeButton.isSelected()){
             EntityCreationPreferences.setAutoIDGeneratorClass(IterativeAutoIDGenerator.class);
         }
+        if (uniqueIdButton.isSelected()) {
+        	EntityCreationPreferences.setAutoIDGeneratorClass(UniqueIdGenerator.class);
+        }
 
         EntityCreationPreferences.setAutoIDStart((Integer)autoIDStart.getValue());
         EntityCreationPreferences.setAutoIDEnd((Integer)autoIDEnd.getValue());
@@ -271,6 +286,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         EntityCreationPreferences.setAutoIDDigitCount((Integer)autoIDDigitCount.getValue());
         EntityCreationPreferences.setPrefix(autoIDPrefix.getText());
         EntityCreationPreferences.setSuffix(autoIDSuffix.getText());
+        EntityCreationPreferences.setSaveAutoIDStart(saveIterativeIds.isSelected());
     }
 
 
@@ -434,6 +450,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
 
         iterativeButton = new JRadioButton("Numeric (iterative)");
         iterativeButton.setAlignmentX(0.0f);
+        
+        uniqueIdButton = new JRadioButton("Unique and Meaningless");
+        uniqueIdButton.setAlignmentX(0.0f);
 
         autoIDStart = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         autoIDStart.setPreferredSize(new Dimension(60, 0));
@@ -489,16 +508,21 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel {
         xFixPanel.add(Box.createHorizontalStrut(HORIZONTAL_SPACE));
         xFixPanel.add(new JLabel("Suffix"));
         xFixPanel.add(autoIDSuffix);
+        
+        saveIterativeIds = new JCheckBox("Remember last id between Prot\u00E9g\u00E9 sessions");
 
         ButtonGroup bg = new ButtonGroup();
         bg.add(pseudoRandomButton);
         bg.add(iterativeButton);
+        bg.add(uniqueIdButton);
 
         c.add(pseudoRandomButton);
         c.add(iterativePanel);
+        c.add(uniqueIdButton);
         c.add(Box.createVerticalStrut(VERTICAL_SPACE));
         c.add(paddingPanel);
         c.add(xFixPanel);
+        c.add(saveIterativeIds);
 
         return c;
     }
