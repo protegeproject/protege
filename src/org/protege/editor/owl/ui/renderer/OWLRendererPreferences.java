@@ -202,7 +202,6 @@ public class OWLRendererPreferences {
             annotationLanguages = getDefaultLanguages();
         }
         else{
-            List<String> langs = new ArrayList<String>();
             for (String value : values){
                 String[] tokens = value.split(",");
                 try {
@@ -212,12 +211,11 @@ public class OWLRendererPreferences {
                         if (token.equals(NO_LANGUAGE_SET_USER_TOKEN)){
                             token = NO_LANGUAGE_SET;
                         }
-                        if (!langs.contains(token)) {
-                        	langs.add(token);
+                        if (!annotationLanguages.contains(token)) {
+                        	annotationLanguages.add(token);
                         }
                     }
                     annotationIRIS.add(iri);
-                    annotationLanguages = langs;
                 }
                 catch (URISyntaxException e) {
                     ErrorLogPanel.showErrorDialog(e);
