@@ -222,11 +222,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 if (reasoner instanceof NoOpReasoner) {
                 	return ReasonerStatus.REASONER_NOT_INITIALIZED;
                 }
-                else if (reasoner.getPendingChanges().isEmpty() && reasoner.isConsistent()) {
-                	return ReasonerStatus.INITIALIZED;
+                else if (!reasoner.isConsistent()) {
+                	return ReasonerStatus.INCONSISTENT;                	
                 }
                 else if (reasoner.getPendingChanges().isEmpty()) {
-                	return ReasonerStatus.INCONSISTENT;
+                	return ReasonerStatus.INITIALIZED;
                 }
                 else {
                 	return ReasonerStatus.OUT_OF_SYNC;
