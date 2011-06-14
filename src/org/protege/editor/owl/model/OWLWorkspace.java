@@ -268,7 +268,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             else if (chg instanceof ImportChange) {
             	reasonerDirty = true;
             }
-            else if (chg instanceof OWLAxiomChange && chg.getAxiom().isLogicalAxiom()) {
+            else if (chg instanceof OWLAxiomChange) {
             	reasonerDirty = true;
             }
         }
