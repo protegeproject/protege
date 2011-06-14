@@ -13,6 +13,7 @@
               value="javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers"/>
     <property name="org.osgi.framework.storage.clean" 
               value="onFirstInit"/>
+    <property name="org.osgi.service.http.port" value="8081"/>
   </frameworkProperties>
   <bundles dir="bundles">
     <bundle name="org.protege.common.jar"/>
