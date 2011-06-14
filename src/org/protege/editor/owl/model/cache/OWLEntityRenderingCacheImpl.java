@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -90,13 +91,14 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     public void rebuild() {
         clear();
         OWLModelManagerEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
-
-        OWLClass thing = owlModelManager.getOWLDataFactory().getOWLThing();
-        owlClassMap.put(entityRenderer.render(thing), thing);
-        entityRenderingMap.put(thing, entityRenderer.render(thing));
-        OWLClass nothing = owlModelManager.getOWLDataFactory().getOWLNothing();
-        entityRenderingMap.put(nothing, entityRenderer.render(nothing));
-        owlClassMap.put(entityRenderer.render(nothing), nothing);
+        OWLDataFactory factory = owlModelManager.getOWLDataFactory();
+        
+        addRendering(factory.getOWLThing(), owlClassMap);
+        addRendering(factory.getOWLNothing(), owlClassMap);
+        addRendering(factory.getOWLTopObjectProperty(), owlObjectPropertyMap);
+        addRendering(factory.getOWLBottomObjectProperty(), owlObjectPropertyMap);
+        addRendering(factory.getOWLTopDataProperty(), owlDataPropertyMap);
+        addRendering(factory.getOWLBottomDataProperty(), owlDataPropertyMap);
 
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             for (OWLClass cls : ont.getClassesInSignature()) {
@@ -120,7 +122,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
         // standard annotation properties        
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
-            addRendering(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+            addRendering(factory.getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
 
         // datatypes
