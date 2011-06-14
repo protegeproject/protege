@@ -344,7 +344,6 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
             }
             catch (InconsistentOntologyException ioe) {
-            	ProtegeApplication.getErrorLog().logError(ioe);
             	inconsistencyFound = true;
             }
             finally{
