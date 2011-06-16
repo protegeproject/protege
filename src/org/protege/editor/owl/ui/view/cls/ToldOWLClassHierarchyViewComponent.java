@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
+import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -184,18 +185,20 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         // We need to apply the changes in the active ontology
         OWLEntityCreationSet<OWLClass> creationSet = getOWLWorkspace().createOWLClass();
         if (creationSet != null) {
-            // Combine the changes that are required to create the OWLClass, with the
+        	OWLObjectTreeNode<OWLClass> parentNode 
+        		= (OWLObjectTreeNode<OWLClass>) getTree().getSelectionPath().getParentPath().getLastPathComponent();
+            if (parentNode == null || parentNode.getOWLObject() == null) {
+            	return;
+            }
+        	OWLClass parentCls = parentNode.getOWLObject();
+        	
+        	// Combine the changes that are required to create the OWLClass, with the
             // changes that are required to make it a sibling class.
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager mngr = getOWLModelManager();
             OWLDataFactory df = mngr.getOWLDataFactory();
-            for (OWLClass par : mngr.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(cls)) {
-                if (!df.getOWLThing().equals(par)){
-                    OWLAxiom ax = df.getOWLSubClassOfAxiom(creationSet.getOWLEntity(), par);
-                    changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
-                }
-            }
+            changes.add(new AddAxiom(mngr.getActiveOntology(), df.getOWLSubClassOfAxiom(creationSet.getOWLEntity(), parentCls)));
             mngr.applyChanges(changes);
             // Select the new class
             getTree().setSelectedOWLObject(creationSet.getOWLEntity());
