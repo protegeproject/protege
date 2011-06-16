@@ -2,11 +2,7 @@
 
 <launch>
   <pluginDirectory dir="Contents/Resources/Java/plugins"/>
-  <systemProperties>
-    <property name="file.encoding" value="utf-8"/>
-    <property name="apple.laf.useScreenMenuBar" value="true"/>
-    <property name="com.apple.mrj.application.growbox.intrudes" value="true"/>
-  </systemProperties>
+  <systemProperties/>
   <frameworkProperties>
     <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*"/>
     <property name="org.osgi.framework.system.packages.extra" 
