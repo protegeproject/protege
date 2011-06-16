@@ -49,6 +49,8 @@
 			<string>true</string>
 			<key>com.apple.mrj.application.growbox.intrudes</key>
 			<string>true</string>
+            <key>apple.laf.useScreenMenuBar</key>
+            <string>true</string>
 			<key>file.encoding</key>
 			<string>UTF-8</string>
 			<key>log4j.configuration</key>
