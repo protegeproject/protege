@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -54,7 +55,8 @@ public class OWLRendererPreferences {
     
     public static final int DEFAULT_FONT_SIZE = 14;
 
-    public static final String DEFAULT_FONT_NAME = "Dialog.plain";
+    public static final String DEFAULT_FONT_NAME = getDefaultFontName();
+
 
     public static final String NO_LANGUAGE_SET_USER_TOKEN = "!";
     
@@ -90,6 +92,39 @@ public class OWLRendererPreferences {
     
     private boolean allowProtegeToOverrideRenderer;
 
+    /*
+     * HELP!
+     * 
+     * I don't really understand this stuff at all.  But it appears that there are two schemes of naming
+     * the dialog font.  The first one, which I believe is used by Windows and Linux is to have a series of
+     * fonts called things like Dialog.plain, Dialog.bold, Dialog.bolditalic and Dialog.italic.  Each of these 
+     * fonts has a family of Dialog and a style of plain.
+     * 
+     * OS/X uses a different scheme.  There is one dialog font with a name of Dialog (no .plain).  He can
+     * be detected by looking for the font with the family Dialog and the style plain.  I am not sure what 
+     * this should be doing exactly. There is also a DialogInput font.
+     * 
+     * This idea of setting the font is a bad idea and I agree with others here that we should get rid of it.
+     */
+    private static String getDefaultFontName() {
+    	String qualifiedDefaultFontName = "Dialog.plain";
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font [] fonts = ge.getAllFonts();
+        // essentially the following is what we had before and it works on linux and windows.
+        for (Font f : fonts) {
+        	if (f.getFontName().equals(qualifiedDefaultFontName)) {
+        		return qualifiedDefaultFontName;
+        	}
+        }
+        // if you do the following on windows and linux you might end up with something like Dialog.bold.
+        for (Font f : fonts) {
+        	if (f.getFamily().equals(Font.DIALOG) && f.getStyle() == Font.PLAIN) {
+        		return f.getFontName();
+        	}
+        }
+        return null; // well this is bad...
+    }
+    
     public Font getFont() {
         return font;
     }
