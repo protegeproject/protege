@@ -16,14 +16,17 @@ Troubleshooting:
 
 Missing protege libraries:
 
-    Sometimes an ant script that depends on other plugins will generate a
-    "Missing protege libraries" message.  This means that the copy of
-    Protege pointed to by the PROTEGE_HOME environment variable is missing
-    some plugin that is needed by this ant script.  To find out which
-    library is missing, run the ant script with the -v option (ant -v
-    install).  There will be an exception at the bottom.  Scroll back
-    through the error messages until you find a message like this:
+Sometimes an ant script that depends on other plugins will generate a
+"Missing protege libraries" message.  This means that the copy of
+Protege pointed to by the PROTEGE_HOME environment variable is missing
+some plugin that is needed by this ant script.  To find out which
+library is missing, run the ant script with the -v option (ant -v
+install).  There will be an exception at the bottom.  Scroll back
+through the error messages until you find a message like this:
 
-[available] Unable to find file /tmp/Protege/plugins/org.protege.editor.owl.jar
+    [available] Unable to find file /tmp/Protege/plugins/org.protege.editor.owl.jar
 
-    This is telling you what file is missing.
+This is telling you what file is missing.  More information is
+available at 
+
+     http://protegewiki.stanford.edu/wiki/ConfiguringAntBuildFiles#Missing_protege_libraries
