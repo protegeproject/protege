@@ -118,7 +118,7 @@ public class OWLRendererPreferences {
         }
         // if you do the following on windows and linux you might end up with something like Dialog.bold.
         for (Font f : fonts) {
-        	if (f.getFamily().equals(Font.DIALOG) && f.getStyle() == Font.PLAIN) {
+        	if (f.getFamily().equals("Dialog") && f.getStyle() == Font.PLAIN) {
         		return f.getFontName();
         	}
         }
