@@ -309,53 +309,72 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         
         public void run() {
         	boolean inconsistencyFound = false;
+        	boolean reasonerChanged = false;
             try {
-                long start = System.currentTimeMillis();
-                if (runningReasoner instanceof NoOpReasoner) {
-                    runningReasoner = null;
-                }
-                if (runningReasoner != null && !runningReasoner.getPendingChanges().isEmpty()) {
-                    if (runningReasoner.getBufferingMode() == null 
-                            || runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
-                        runningReasoner.dispose();
-                        runningReasoner = null;
-                    }
-                    else {
-                        runningReasoner.flush();
-                    }
-                }
-                if (runningReasoner == null) {
-                	runningReasoner = ReasonerUtilities.createReasoner(ontology, currentReasonerFactory, reasonerProgressMonitor);
-                    owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                }
-                Set<InferenceType> precomputeThisRun  = EnumSet.noneOf(InferenceType.class);
-                precomputeThisRun.addAll(precompute);
-                precomputeThisRun.retainAll(runningReasoner.getPrecomputableInferenceTypes());
-                if (!precomputeThisRun.isEmpty()) {
-                	logger.info("Initializing the reasoner by performing the following steps:");
-                	for (InferenceType type : precompute) {
-                		logger.info("\t" + type);
-                	}
-                    runningReasoner.precomputeInferences(precomputeThisRun.toArray(new InferenceType[precomputeThisRun.size()]));
-
-                    String s = currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms";
-                    logger.info(s);
-                }
-
+            	long start = System.currentTimeMillis();
+                reasonerChanged = ensureRunningReasonerInitialized();
+                precompute();
+                logger.info(currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms");
             }
             catch (InconsistentOntologyException ioe) {
             	inconsistencyFound = true;
             }
             finally{
-                synchronized (reasonerMap) {
-                    reasonerMap.put(ontology, runningReasoner);
+            	installRunningReasoner(inconsistencyFound, reasonerChanged);
+            }
+        }
+        
+        public boolean ensureRunningReasonerInitialized() {
+        	boolean reasonerChanged = false;
+            if (runningReasoner instanceof NoOpReasoner) {
+                runningReasoner = null;
+            }
+            if (runningReasoner != null && !runningReasoner.getPendingChanges().isEmpty()) {
+                if (runningReasoner.getBufferingMode() == null 
+                        || runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
+                    runningReasoner.dispose();
                     runningReasoner = null;
-                    classificationInProgress = false;
                 }
-                fireReclassified();
-                if (inconsistencyFound) {
-                	InconsistentOntologyManager.get(owlModelManager).explain();
+                else {
+                    runningReasoner.flush();
                 }
+            }
+            if (runningReasoner == null) {
+            	runningReasoner = ReasonerUtilities.createReasoner(ontology, currentReasonerFactory, reasonerProgressMonitor);
+            	reasonerChanged = true;
+            }
+            return reasonerChanged;
+        }
+        
+        public void precompute() {
+            Set<InferenceType> precomputeThisRun  = EnumSet.noneOf(InferenceType.class);
+            precomputeThisRun.addAll(precompute);
+            precomputeThisRun.retainAll(runningReasoner.getPrecomputableInferenceTypes());
+            if (!precomputeThisRun.isEmpty()) {
+            	logger.info("Initializing the reasoner by performing the following steps:");
+            	for (InferenceType type : precompute) {
+            		logger.info("\t" + type);
+            	}
+                runningReasoner.precomputeInferences(precomputeThisRun.toArray(new InferenceType[precomputeThisRun.size()]));
+            }
+        }
+        
+        public void installRunningReasoner(boolean inconsistencyFound, boolean reasonerChanged) {
+            synchronized (reasonerMap) {
+                reasonerMap.put(ontology, runningReasoner);
+                runningReasoner = null;
+                classificationInProgress = false;
+            }
+            if (reasonerChanged) {
+                SwingUtilities.invokeLater(new Runnable() {
+                	public void run() {
+                        owlModelManager.fireEvent(EventType.REASONER_CHANGED);
+                	}
+                });
+            }
+            fireReclassified();
+            if (inconsistencyFound) {
+            	InconsistentOntologyManager.get(owlModelManager).explain();
             }
         }
     }
