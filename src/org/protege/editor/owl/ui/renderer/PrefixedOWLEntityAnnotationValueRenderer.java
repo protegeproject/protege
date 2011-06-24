@@ -38,11 +38,11 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
     		String prefix     = prefixName2PrefixEntry.getValue();
     		if (uriStr.startsWith(prefix)){
     			if (!prefixName.equals(":")) {
-    				shortForm = prefixName + shortForm;
+    				return escape(prefixName + shortForm);
     			}
     			break;
     		}
     	}
-    	return escape(shortForm);
+    	return entity.getIRI().toQuotedString();
     }
 }
