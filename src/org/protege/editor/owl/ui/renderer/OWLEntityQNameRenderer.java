@@ -40,12 +40,7 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements
             }
             else {
                 // No mapping
-                if (iri.getFragment() != null) {
-                    return iri.getFragment();
-                }
-                else {
-                    return iri.toQuotedString();
-                }
+            	return iri.toQuotedString();
             }
         }
         catch (Exception e) {
