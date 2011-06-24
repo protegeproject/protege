@@ -29,7 +29,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLRendererPreferences {
-	public static final String DEFAULT_RENDERER_CLASS_NAME = OWLEntityRendererImpl.class.getName();
+	public static final String DEFAULT_RENDERER_CLASS_NAME = OWLEntityAnnotationValueRenderer.class.getName();
 	
 	public static final String ALLOW_PROTEGE_TO_OVERRIDE_RENDERER = "allow.protege.renderer.override";
 
