@@ -178,8 +178,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
     
     
-    public static final String REASONER_INITIALIZE         = "Start Reasoner";
-    public static final String REASONER_RESYNC             = "Synchronize Reasoner";
+    public static final String REASONER_INITIALIZE         = "Start reasoner";
+    public static final String REASONER_RESYNC             = "Synchronize reasoner";
     public static final String REASONER_EXPLAIN            = "Explain inconsistent ontology";
     
     public OWLEditorKit getOWLEditorKit() {
