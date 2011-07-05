@@ -275,14 +275,14 @@
     
     <extension id ="AltCheckForPluginsAction"
                point="org.protege.editor.core.application.OtherStartupActions">
-       <name value="Check For Plugins"/>
+       <name value="Check for plugins..."/>
        <class value="org.protege.editor.core.ui.action.start.CheckPluginsAction"/>
        <sortIndex value="B"/>
     </extension>
     
     <extension id="ResetPreferencesAction"
                point="org.protege.editor.core.application.OtherStartupActions">
-        <name value="Reset Protege Preferences"/>
+        <name value="Reset Protege preferences..."/>
         <class value="org.protege.editor.core.ui.action.start.ResetPreferencesAction"/>
         <sortIndex value="A"/>
 	</extension>
