@@ -242,7 +242,7 @@
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Release notes"/>
         <toolTip value="View online release notes for Protege 4.1"/>
-        <url value="http://protegewiki.stanford.edu/wiki/Protege_4.1_RC4_Release_Notes"/>
+        <url value="http://protegewiki.stanford.edu/wiki/Protege_4.1_RC5_Release_Notes"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
