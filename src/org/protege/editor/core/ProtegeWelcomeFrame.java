@@ -198,7 +198,7 @@ public class ProtegeWelcomeFrame extends JFrame {
             JMenuBar littleMenuBar = new JMenuBar();
             // littleMenuBar.setBackground(Color.WHITE);
             littleMenuBar.setOpaque(false);
-            final JMenu dropDownMenu = new JMenu("More actions...");
+            final JMenu dropDownMenu = new JMenu("More actions");
             dropDownMenu.setFont(getFont().deriveFont(Font.BOLD, 10.0f));
             dropDownMenu.setForeground(fontColor);
             dropDownMenu.setBackground(Color.WHITE);
