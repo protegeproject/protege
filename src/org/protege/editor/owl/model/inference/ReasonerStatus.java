@@ -5,7 +5,7 @@ public enum ReasonerStatus {
                                false, "Choose a reasoner from the reasoner menu below.",
                                false, "Choose a reasoner from the reasoner menu below."),
 
-    REASONER_NOT_INITIALIZED("To use the reasoner click Reasoner->Start Reasoner",
+    REASONER_NOT_INITIALIZED("To use the reasoner click Reasoner->Start reasoner",
                              true, "<html>Starts a new reasoner and initializes a cache of reasoning results<br>" +
                                    "including the inferred class hierarchy and the inferred types of</br><br>" +
                                    "of individuals.</br></html>",
