@@ -35,13 +35,13 @@ public class ReasonerUtilities {
             break;
 		case REASONER_NOT_INITIALIZED:
             JOptionPane.showMessageDialog(owner,
-                    "No reasoner has been initialized so inference cannot proceed.  Go to the reasoner menu and select Start Reasoner",
+                    "No reasoner has been initialized so inference cannot proceed.  Go to the reasoner menu and select Start reasoner",
                     "Reasoner not initialized.",
                     JOptionPane.WARNING_MESSAGE);
             break;
 		case OUT_OF_SYNC:
             JOptionPane.showMessageDialog(owner,
-                    "The reasoner is not syncronised.  This may produce misleading results.  Consider Reasoner->Synchronize Reasoner.",
+                    "The reasoner is not synchronized.  This may produce misleading results.  Consider Reasoner->Synchronize reasoner.",
                     "Reasoner out of sync",
                     JOptionPane.WARNING_MESSAGE);
             break;
