@@ -146,11 +146,8 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 						"Export aborted",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-			catch (OWLOntologyStorageException e2) {
-				ProtegeApplication.getErrorLog().logError(e2);
-			}
-			catch (OWLOntologyChangeException e1) {
-				ProtegeApplication.getErrorLog().logError(e1);
+			catch (Throwable t) {
+				ProtegeApplication.getErrorLog().logError(t);
 			}
 		}
 		
