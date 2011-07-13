@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.preferences;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 
@@ -22,8 +23,8 @@ import java.awt.*;
 public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
     //@@TODO centralise this when tidying up prefs
-    private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
-
+    public static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
+    
     private JRadioButton simpleSearchButton;
 
     private JRadioButton regularExpressionSearchButton;
@@ -35,6 +36,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     private static final String SECOND_TOOL_TIP = "1000 = 1 second";
 
     private JCheckBox alwaysCentreDialogsCheckbox;
+    private JCheckBox detachedWindowsFloat;
 
 
     public void applyChanges() {
@@ -46,6 +48,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
         appPrefs.putBoolean(DIALOGS_ALWAYS_CENTRED, alwaysCentreDialogsCheckbox.isSelected());
+        appPrefs.putBoolean(View.DETACHED_WINDOWS_FLOAT, detachedWindowsFloat.isSelected());
     }
 
 
@@ -102,10 +105,13 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
         alwaysCentreDialogsCheckbox = new JCheckBox("Centre dialogs on workspace");
         alwaysCentreDialogsCheckbox.setSelected(appPrefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false));
+        detachedWindowsFloat = new JCheckBox("Detached windows float");
+        detachedWindowsFloat.setSelected(appPrefs.getBoolean(View.DETACHED_WINDOWS_FLOAT, true));
 
         editorPanel.setAlignmentX(LEFT_ALIGNMENT);
         searchPanel.setAlignmentX(LEFT_ALIGNMENT);
         alwaysCentreDialogsCheckbox.setAlignmentX(LEFT_ALIGNMENT);
+        detachedWindowsFloat.setAlignmentX(LEFT_ALIGNMENT);
 
         Box holder = new Box(BoxLayout.PAGE_AXIS);
         holder.add(editorPanel);
@@ -113,6 +119,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         holder.add(searchPanel);
         holder.add(Box.createVerticalStrut(7));
         holder.add(alwaysCentreDialogsCheckbox);
+        holder.add(detachedWindowsFloat);
 
         add(holder, BorderLayout.NORTH);
     }
