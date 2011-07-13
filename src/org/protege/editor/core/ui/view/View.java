@@ -34,6 +34,8 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.util.ComponentFactory;
@@ -69,7 +71,10 @@ public class View extends JComponent implements NodeComponent, Disposable {
     private Logger logger = Logger.getLogger(View.class);
 
 
-    private static final String SPLIT_VERTICALLY_ICON_NAME = "view.splitvertically.gif";
+    public static final String DETACHED_WINDOWS_FLOAT = "DETACHED_WINDOWS_FLOAT";
+
+
+	private static final String SPLIT_VERTICALLY_ICON_NAME = "view.splitvertically.gif";
 
     private static final String SPLIT_HORIZONTALLY_ICON_NAME = "view.horizontalsplit.gif";
 
@@ -122,7 +127,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
     private Set<ViewAction> addedViewActions;
 
 
-    /**
+	/**
      * Creates a <code>View</code> that will display the
      * <code>ViewComponent</code> instantiated by the specified
      * tab view plugin.
@@ -532,7 +537,14 @@ public class View extends JComponent implements NodeComponent, Disposable {
         Point loc = getLocation();
         SwingUtilities.convertPointToScreen(loc, this);
         final View view = createView(plugin);
-        final JDialog dlg = new JDialog(ProtegeManager.getInstance().getFrame(workspace));
+        final JDialog dlg;
+        Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
+        if (appPrefs.getBoolean(DETACHED_WINDOWS_FLOAT, true)) {
+        	dlg = new JDialog(ProtegeManager.getInstance().getFrame(workspace));
+        }
+        else {
+        	dlg = new JDialog();
+        }
         view.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         viewBarComponent.setEnabled(false);
         JPanel holder = new JPanel(new BorderLayout(3, 3));
