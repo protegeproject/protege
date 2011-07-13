@@ -21,7 +21,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +63,6 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
-import org.protege.editor.owl.ui.explanation.ExplanationService;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrame;
@@ -72,6 +70,7 @@ import org.protege.editor.owl.ui.frame.OWLFrameListener;
 import org.protege.editor.owl.ui.frame.OWLFrameObject;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
@@ -120,9 +119,7 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  */
 public class OWLFrameList<R> extends MList
     implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
-
-    private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
-
+	
     private static final Logger logger = Logger.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
@@ -551,7 +548,7 @@ public class OWLFrameList<R> extends MList
     private Component getDialogParent() {
         // @@TODO move prefs somewhere more central
         Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
-        return prefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false) ? SwingUtilities.getAncestorOfClass(Frame.class, getParent()) : getParent();
+        return prefs.getBoolean(GeneralPreferencesPanel.DIALOGS_ALWAYS_CENTRED, false) ? SwingUtilities.getAncestorOfClass(Frame.class, getParent()) : getParent();
     }
 
 
