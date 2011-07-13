@@ -36,7 +36,7 @@
         <dependency>
           <groupId>protege4</groupId>
           <artifactId>org.protege.editor.core.application</artifactId>
-          <version>4.1.0.b220_2011_03_31_0639</version>
+          <version>4.1.0.b231_2011_07_13_1225</version>
         </dependency>
         <dependency>
             <groupId>owlapi</groupId>
