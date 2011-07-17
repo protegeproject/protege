@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -17,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 
 /**
  * Author: drummond<br>
@@ -34,25 +37,24 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
     private Set<OWLAnnotationProperty> roots;
 
-    private OWLOntologyChangeListener listener;
+    private OWLOntologyChangeListener ontologyListener = new OWLOntologyChangeListener() {
+        /**
+         * Called when some changes have been applied to various ontologies.  These
+         * may be an axiom added or an axiom removed changes.
+         * @param changes A list of changes that have occurred.  Each change may be examined
+         *                to determine which ontology it was applied to.
+         */
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+            handleChanges(changes);
+        }
+    };
 
 
     public OWLAnnotationPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.roots = new HashSet<OWLAnnotationProperty>();
         ontologies = new HashSet<OWLOntology>();
-        listener = new OWLOntologyChangeListener() {
-            /**
-             * Called when some changes have been applied to various ontologies.  These
-             * may be an axiom added or an axiom removed changes.
-             * @param changes A list of changes that have occurred.  Each change may be examined
-             *                to determine which ontology it was applied to.
-             */
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                handleChanges(changes);
-            }
-        };
-        owlOntologyManager.addOntologyChangeListener(listener);
+        owlOntologyManager.addOntologyChangeListener(ontologyListener);
     }
 
     public Set<OWLAnnotationProperty> getRoots() {
@@ -127,7 +129,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
     public void dispose() {
         super.dispose();
-        getManager().removeOntologyChangeListener(listener);
+        getManager().removeOntologyChangeListener(ontologyListener);
     }
 
 
