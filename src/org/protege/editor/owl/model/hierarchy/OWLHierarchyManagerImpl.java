@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -9,28 +11,7 @@ import org.protege.editor.owl.model.hierarchy.property.InferredObjectPropertyHie
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>
@@ -164,18 +145,22 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
 
     private void rebuildAsNecessary() {
+    	Set<OWLOntology> ontologies = mngr.getActiveOntologies();
         // Rebuild the various hierarchies
         if (assertedClassHierarchyProvider != null) {
-            getOWLClassHierarchyProvider().setOntologies(mngr.getActiveOntologies());
+            getOWLClassHierarchyProvider().setOntologies(ontologies);
         }
         if (assertedObjectPropertyHierarchyProvider != null) {
-            getOWLObjectPropertyHierarchyProvider().setOntologies(mngr.getActiveOntologies());
+            getOWLObjectPropertyHierarchyProvider().setOntologies(ontologies);
         }
         if (assertedDataPropertyHierarchyProvider != null) {
-            getOWLDataPropertyHierarchyProvider().setOntologies(mngr.getActiveOntologies());
+            getOWLDataPropertyHierarchyProvider().setOntologies(ontologies);
         }
         if (individualsByTypeHierarchyProvider != null) {
-            getOWLIndividualsByTypeHierarchyProvider().setOntologies(mngr.getActiveOntologies());
+            getOWLIndividualsByTypeHierarchyProvider().setOntologies(ontologies);
+        }
+        if (assertedAnnotationPropertyHierarchyProvider != null) {
+        	getOWLAnnotationPropertyHierarchyProvider().setOntologies(ontologies);
         }
     }
 }
