@@ -1,17 +1,35 @@
 package org.protege.editor.owl.ui.find;
 
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 /**
@@ -24,8 +42,9 @@ import java.util.TreeSet;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class EntityFinderField extends JTextField {
+	private static final long serialVersionUID = -5383341925424297227L;
 
-    private OWLEditorKit editorKit;
+	private OWLEditorKit editorKit;
 
     private JList resultsList;
 
@@ -75,6 +94,8 @@ public class EntityFinderField extends JTextField {
         });
         resultsList = new JList();
         resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
+        resultsList.setFixedCellHeight(18);
+        resultsList.setFixedCellWidth(200);
         resultsList.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -183,9 +204,7 @@ public class EntityFinderField extends JTextField {
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
             window.setSize(getWidth(), 200);
-            TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(editorKit.getModelManager().getOWLObjectComparator());
-            ts.addAll(results);
-            resultsList.setListData(ts.toArray());
+            resultsList.setListData(getSortedResults(results).toArray());
             window.setVisible(true);
             window.validate();
             resultsList.setSelectedIndex(0);
@@ -193,7 +212,11 @@ public class EntityFinderField extends JTextField {
         else {
             resultsList.setListData(new Object [0]);
         }
-//        owlModelManager.getOWLEditorKit().getWorkspace().showResultsView("FINDER_RESULTS", "Finder results", Color.GRAY,
-//                new OWLEntityFinderViewComponent(results), true);
+    }
+    
+    private SortedSet<OWLEntity> getSortedResults(Set<OWLEntity> results) {
+        TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(editorKit.getModelManager().getOWLObjectComparator());
+        ts.addAll(results);
+        return ts;
     }
 }
