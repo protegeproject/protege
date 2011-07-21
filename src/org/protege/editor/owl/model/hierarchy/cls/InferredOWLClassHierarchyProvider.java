@@ -2,7 +2,10 @@ package org.protege.editor.owl.model.hierarchy.cls;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -10,9 +13,15 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
@@ -30,11 +39,40 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     private static final Logger logger = Logger.getLogger(InferredOWLClassHierarchyProvider.class);
 
     private OWLModelManager owlModelManager;
+    private OWLOntologyManager owlOntologyManager;
 
     private OWLClass owlThing;
     private OWLClass owlNothing;
 
-    private OWLModelManagerListener owlModelManagerListener;
+    private OWLModelManagerListener owlModelManagerListener = new OWLModelManagerListener() {
+        public void handleChange(OWLModelManagerChangeEvent event) {
+            if (event.isType(EventType.REASONER_CHANGED) || event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) 
+            		|| event.isType(EventType.ONTOLOGY_CLASSIFIED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                fireHierarchyChanged();
+            }
+        }
+    };
+    private OWLOntologyChangeListener owlOntologyChangeListener = new OWLOntologyChangeListener() {
+    	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+    		if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
+    			boolean needsRefresh = false;
+    			for (OWLOntologyChange change : changes) {
+    				if (change instanceof OWLAxiomChange && ((OWLAxiomChange) change).getAxiom().isLogicalAxiom()) {
+    					needsRefresh = true;
+    					break;
+    				}
+    			}
+    			if (needsRefresh) {
+    				// too tricky... too tricky... wait until after the reasoner has reacted to the changes.
+    				SwingUtilities.invokeLater(new Runnable() {
+    					public void run() {
+    	    				fireHierarchyChanged();
+    					}
+    				});
+    			}
+    		}
+    	}
+    };
 
 
     public InferredOWLClassHierarchyProvider(OWLModelManager owlModelManager, OWLOntologyManager owlOntologyManager) {
@@ -44,15 +82,8 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
         owlThing = owlModelManager.getOWLDataFactory().getOWLThing();
         owlNothing = owlModelManager.getOWLDataFactory().getOWLNothing();
 
-        owlModelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.REASONER_CHANGED) || event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) 
-                		|| event.isType(EventType.ONTOLOGY_CLASSIFIED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    fireHierarchyChanged();
-                }
-            }
-        };
         owlModelManager.addListener(owlModelManagerListener);
+        owlOntologyManager.addOntologyChangeListener(owlOntologyChangeListener);
     }
 
 
@@ -63,6 +94,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public void dispose() {
         super.dispose();
         owlModelManager.removeListener(owlModelManagerListener);
+        owlModelManager.getOWLOntologyManager().removeOntologyChangeListener(owlOntologyChangeListener);
     }
 
 
