@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.swing.JComponent;
@@ -92,24 +91,12 @@ public class EntityFinderField extends JTextField {
                 performFind();
             }
         });
-        resultsList = new JList() {
-			private static final long serialVersionUID = -5851324919688863524L;
-
-			public String getToolTipText(MouseEvent evt) {
-        		int index = locationToIndex(evt.getPoint());
-                Object item = getModel().getElementAt(index);
-                if (item instanceof OWLEntity) {
-                	return EntityFinderField.this.editorKit.getModelManager().getRendering((OWLEntity) item);
-                }
-                return null;
-        	}
-        };
+        // tooltip and fixed cell size code at svn revision 23344
+        resultsList = new JList();
         resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
-        resultsList.setFixedCellHeight(18);
-        resultsList.setFixedCellWidth(200);
         resultsList.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 && resultsList.getSelectedValue() instanceof OWLEntity) {
                     selectEntity();
                 }
             }
@@ -214,8 +201,8 @@ public class EntityFinderField extends JTextField {
             Point pt = new Point(0, 0);
             SwingUtilities.convertPointToScreen(pt, this);
             window.setLocation(pt.x, pt.y + getHeight() + 2);
-            window.setSize(getWidth(), 200);
-            resultsList.setListData(getSortedResults(results).toArray());
+            window.setSize(getWidth(), 400);
+            resultsList.setListData(getSortedResults(results));
             window.setVisible(true);
             window.validate();
             resultsList.setSelectedIndex(0);
@@ -225,9 +212,33 @@ public class EntityFinderField extends JTextField {
         }
     }
     
-    private SortedSet<OWLEntity> getSortedResults(Set<OWLEntity> results) {
+    /*
+     * This is an opportunity to add some code to deal with large result sets.  The problem
+     * is that if you give a big set of results to a JList then it will will take a very long time 
+     * (35 seconds on my work desktop to display 29000 entities beginning with an 'a').  A sort already 
+     * involves calculating the browser text for each item (and this is not the bottleneck).  So a potential
+     * solution is to use the setProtypicalItem method of the jlist to set the width and height to the max.
+     * But for some reason this only worked the first time when I tried it and the results would probably not be
+     * optimal.
+     * 
+     * The More... could perhaps be instrumented to completely fill the list when clicked.
+     */
+    private Object[] getSortedResults(Set<OWLEntity> results) {
         TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(editorKit.getModelManager().getOWLObjectComparator());
         ts.addAll(results);
-        return ts;
+        int maxSize = 150;
+        boolean tooMany = ts.size() > maxSize;
+        Object[] arrayResults = new Object[tooMany ? maxSize : ts.size()];
+        int i = 0;
+        for (OWLEntity e : ts) {
+        	if (i >= arrayResults.length - 1) {
+        		break;
+        	}
+        	arrayResults[i++] = e;
+        }
+        if (tooMany) {
+        	arrayResults[maxSize - 1] = "More...";
+        }
+        return arrayResults;
     }
 }
