@@ -13,6 +13,7 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.inference.NoOpReasoner;
 import org.protege.editor.owl.model.inference.ReasonerStatus;
 import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -54,7 +55,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     };
     private OWLOntologyChangeListener owlOntologyChangeListener = new OWLOntologyChangeListener() {
     	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-    		if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
+    		OWLReasoner reasoner = owlModelManager.getReasoner();
+    		// the reasoner may not know it has updates yet - but we can check if it believes it will handle them
+    		if (!(reasoner instanceof NoOpReasoner) && reasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
     			boolean needsRefresh = false;
     			for (OWLOntologyChange change : changes) {
     				if (change instanceof OWLAxiomChange && ((OWLAxiomChange) change).getAxiom().isLogicalAxiom()) {
@@ -66,7 +69,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     				// too tricky... too tricky... wait until after the reasoner has reacted to the changes.
     				SwingUtilities.invokeLater(new Runnable() {
     					public void run() {
-    	    				fireHierarchyChanged();
+    						if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
+    							fireHierarchyChanged();
+    						}
     					}
     				});
     			}
