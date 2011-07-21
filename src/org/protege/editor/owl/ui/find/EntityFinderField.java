@@ -92,7 +92,18 @@ public class EntityFinderField extends JTextField {
                 performFind();
             }
         });
-        resultsList = new JList();
+        resultsList = new JList() {
+			private static final long serialVersionUID = -5851324919688863524L;
+
+			public String getToolTipText(MouseEvent evt) {
+        		int index = locationToIndex(evt.getPoint());
+                Object item = getModel().getElementAt(index);
+                if (item instanceof OWLEntity) {
+                	return EntityFinderField.this.editorKit.getModelManager().getRendering((OWLEntity) item);
+                }
+                return null;
+        	}
+        };
         resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
         resultsList.setFixedCellHeight(18);
         resultsList.setFixedCellWidth(200);
