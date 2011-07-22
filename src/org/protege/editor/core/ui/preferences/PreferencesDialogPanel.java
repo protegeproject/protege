@@ -50,7 +50,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         scrollerMap = new HashMap<String, JComponent>();
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane();
-        tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
         Set<PreferencesPanelPlugin> plugins = new TreeSet<PreferencesPanelPlugin>(new Comparator<PreferencesPanelPlugin>() {
             public int compare(PreferencesPanelPlugin o1, PreferencesPanelPlugin o2) {
@@ -115,7 +114,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(850, 675);
+        return new Dimension(850, 725);
     }
 
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
