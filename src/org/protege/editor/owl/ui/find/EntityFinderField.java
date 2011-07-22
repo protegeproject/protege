@@ -231,7 +231,7 @@ public class EntityFinderField extends JTextField {
         Object[] arrayResults = new Object[tooMany ? maxSize : ts.size()];
         int i = 0;
         for (OWLEntity e : ts) {
-        	if (i >= arrayResults.length - 1) {
+        	if (tooMany && i >= arrayResults.length - 1) {
         		break;
         	}
         	arrayResults[i++] = e;
