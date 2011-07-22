@@ -1,16 +1,28 @@
 package org.protege.editor.core.ui.preferences;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.*;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -23,9 +35,6 @@ import java.util.*;
  */
 public class PreferencesDialogPanel extends JPanel implements Disposable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6338996558666619642L;
 
     private Map<String, PreferencesPanel> map;
@@ -36,12 +45,12 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
     private static final String PREFS_HISTORY_PANEL_KEY = "prefs.history.panel";
 
-
     public PreferencesDialogPanel(EditorKit editorKit) {
         map = new HashMap<String, PreferencesPanel>();
         scrollerMap = new HashMap<String, JComponent>();
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane();
+        tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
         Set<PreferencesPanelPlugin> plugins = new TreeSet<PreferencesPanelPlugin>(new Comparator<PreferencesPanelPlugin>() {
             public int compare(PreferencesPanelPlugin o1, PreferencesPanelPlugin o2) {
@@ -69,7 +78,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         add(tabbedPane);
     }
 
-
     public void dispose() {
         for (PreferencesPanel panel : new ArrayList<PreferencesPanel>(map.values())) {
             try {
@@ -82,7 +90,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         map.clear();
     }
 
-
     public void applyPreferences() {
         for (PreferencesPanel panel : new ArrayList<PreferencesPanel>(map.values())) {
             try {
@@ -93,7 +100,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
             }
         }
     }
-
 
     protected String getSelectedPanel() {
         Component c = tabbedPane.getSelectedComponent();
@@ -108,11 +114,9 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         return null;
     }
 
-
     public Dimension getPreferredSize() {
-        return new Dimension(600, 600);
+        return new Dimension(850, 675);
     }
-
 
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
         PreferencesDialogPanel panel = new PreferencesDialogPanel(editorKit);
