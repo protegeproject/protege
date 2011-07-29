@@ -65,7 +65,14 @@ public class Parser {
 
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(f);
-        Node topNode = doc.getChildNodes().item(0);
+        Node topNode = null;
+        for (int j = 0; j < doc.getChildNodes().getLength(); j++) {
+        	Node node = doc.getChildNodes().item(j);
+        	if (node.getNodeName().equals("launch")) {
+        		topNode = node;
+        		break;
+        	}
+        }
         NodeList nodes = topNode.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node job = nodes.item(i);
