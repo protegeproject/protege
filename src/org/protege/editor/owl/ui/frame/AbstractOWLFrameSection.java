@@ -251,7 +251,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             		LOGGER.warn("Ontology is inconsistent: " + ioe);
             	}
             }
-            catch (OWLReasonerRuntimeException e) {
+            catch (Exception e) {
             	ProtegeApplication.getErrorLog().logError(e);
             }
         }
