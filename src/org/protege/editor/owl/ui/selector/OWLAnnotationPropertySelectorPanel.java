@@ -26,9 +26,8 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelectorPanel<OWLAnnotationProperty> {
-
-
-    private AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty> vc;
+	private static final long serialVersionUID = -5790142068951918908L;
+	private AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty> vc;
 
 
     public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit) {
