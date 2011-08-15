@@ -41,6 +41,7 @@ import javax.swing.text.View;
 import javax.swing.tree.TreeCellRenderer;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
@@ -826,17 +827,22 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 else if (highlightUnsatisfiableClasses && curEntity instanceof OWLClass) {
                     // If it is a class then paint the word red if the class
                     // is inconsistent
-                    getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
-                                                                              new Runnable() {
-                        public void run() {
-                        	OWLReasoner reasoner = getOWLModelManager().getReasoner();
-                        	boolean consistent = reasoner.isConsistent();
-                            if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
-                                // Paint red because of inconsistency
-                                doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                            }
-                        }
-                    });
+                	try {
+                		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
+                				new Runnable() {
+                			public void run() {
+                				OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                				boolean consistent = reasoner.isConsistent();
+                				if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+                					// Paint red because of inconsistency
+                					doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                				}
+                			}
+                		});
+                	}
+                	catch (Exception e) {
+                		ProtegeApplication.getErrorLog().logError(e);
+                	}
 
                 }
                 else if (highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
@@ -934,17 +940,22 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     private void highlightPropertyIfUnsatisfiable(final OWLEntity entity, final StyledDocument doc, final int tokenStartIndex, final int tokenLength) {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, 
-                                                                  new Runnable() {
-            public void run() {
-                OWLObjectProperty prop = (OWLObjectProperty) entity;
-                OWLReasoner reasoner = getOWLModelManager().getReasoner();
-                boolean consistent = reasoner.isConsistent();
-                if(!consistent || reasoner.getBottomObjectPropertyNode().contains(prop)) {
-                    doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                }
-            }
-        });
+    	try {
+    		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, 
+    				new Runnable() {
+    			public void run() {
+    				OWLObjectProperty prop = (OWLObjectProperty) entity;
+    				OWLReasoner reasoner = getOWLModelManager().getReasoner();
+    				boolean consistent = reasoner.isConsistent();
+    				if(!consistent || reasoner.getBottomObjectPropertyNode().contains(prop)) {
+    					doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+    				}
+    			}
+    		});
+    	}
+    	catch (Exception e) {
+    		ProtegeApplication.getErrorLog().logError(e);
+    	}
     }
 
 
