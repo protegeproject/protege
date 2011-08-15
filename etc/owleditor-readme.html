@@ -8,34 +8,19 @@ creating the core owl editing environment.
 
 <h3>Version info</h3>
 
-<h4>v4.1.0 Update Build 220 - 24 Mar, 2011</h4>
+<h4>v4.1.0 Update Build 239 - 15 Aug, 2011</h4>
 
 <ul> 
-<li> Added the ability to change the version IRI of an ontology.</li>
-<li> Stopped the repeated exceptions that occur when a reasoner
-  detects an inconsistent ontology.</li>
-<li> Fixed a problem where a bad choice of the look and feel could
-     prevent Prot&#x00E9g&#x00E9 from starting up.</li>
-<li> Fixed a refresh problem in the property hierarchy panels where deleting
-    a property did not remove it from the property hierarchy.</li>
-<li> Fixed a bug where dragging a class in the class hierarchy to its
-    own superclass would 
-    remove the class from the tree. </li>
-<li> In some cases, ontologies on the web would be slow to load
-     because Protege did make good use of content negotiation. This
-     has been fixed.</li>
-<li>Imports are not automatically redirected to the users disk if the
-    choice of file to choose for the import is ambiguous. </li>
-<li> Fixed some incompatibilities involving how different copies of
-    identical axioms are displayed.  An axiom can appear more than
-    once in an ontology if it is imported from different locations or
-    if the two copies of the same axiom have different annotations.</li>
+<li> When an ontology goes from OWL dl to OWL full, some reasoners go
+  into a mode where they continuously throw exceptions.  Protege
+  handled this badly making the user interface nearly unusable.  This
+  update fixes this issue.
 </ul>
 
-<h4>v4.1.0 Build 218 - 11 Mar, 2011</h4>
+<h4>v4.1.0 Release Build 239 - 26, July, 2011</h4>
 
 See
-the <a href="http://protegewiki.stanford.edu/wiki/Protege_4.1_Beta_Release_Notes">Prot&#x00E9g&#x00E9 4.1 release notes</a>.
+the <a href="http://protegewiki.stanford.edu/wiki/P4_1_Release_Announcement">Prot&#x00E9g&#x00E9 4.1 release notes</a>.
 
 
 </body>
