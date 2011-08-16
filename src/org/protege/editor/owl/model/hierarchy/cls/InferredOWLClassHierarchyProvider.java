@@ -5,16 +5,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.inference.NoOpReasoner;
+import org.protege.editor.owl.model.inference.ReasonerDiedException;
 import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.protege.editor.owl.model.inference.ReasonerUtilities;
 import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLException;
@@ -69,8 +73,13 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     				// too tricky... too tricky... wait until after the reasoner has reacted to the changes.
     				SwingUtilities.invokeLater(new Runnable() {
     					public void run() {
-    						if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
-    							fireHierarchyChanged();
+    						try {
+    							if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
+    								fireHierarchyChanged();
+    							}
+    						}
+    						catch (ReasonerDiedException rde) {
+    							ReasonerUtilities.warnThatReasonerDied(null);
     						}
     					}
     				});

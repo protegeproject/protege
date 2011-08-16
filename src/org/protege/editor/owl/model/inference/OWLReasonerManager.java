@@ -74,6 +74,12 @@ public interface OWLReasonerManager extends Disposable {
     @Deprecated
     boolean isClassified();
     
+    /**
+     * Returns the current status of the reasoner.
+     * 
+     * @throws ReasonerDiedException if the reasoner went into a bad state and needed to be trashed
+     *                                then this exception is thrown.
+     */
     ReasonerStatus getReasonerStatus();
 
     boolean classifyAsynchronously(Set<InferenceType> precompute);

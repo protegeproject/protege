@@ -55,5 +55,12 @@ public class ReasonerUtilities {
 			break; // nothing to do...
 		}
 	}
+	
+	public static void warnThatReasonerDied(Component owner) {
+		JOptionPane.showMessageDialog(owner, 
+				                      "Reasoner died.",
+				                      "Fatal reasoner error",
+				                      JOptionPane.WARNING_MESSAGE);
+	}
 
 }
