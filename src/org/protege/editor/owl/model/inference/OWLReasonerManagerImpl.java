@@ -3,11 +3,9 @@ package org.protege.editor.owl.model.inference;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -15,11 +13,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -240,10 +234,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 	}
                 }
                 catch (Exception e) {
-                	ProtegeApplication.getErrorLog().logError(e);
                 	killCurrentReasoner();
                 	logger.warn("Reasoner died.");
-                	throw new ReasonerDiedException();
+                	throw new ReasonerDiedException(e);
                 }
     		}
     	}
@@ -269,15 +262,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
+                ProtegeApplication.getErrorLog().logError(throwable);
             	try {
             		if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
             			exceptionHandler.handle(throwable);
             		}
             	}
             	catch (ReasonerDiedException died) {
-            		ReasonerUtilities.warnThatReasonerDied(null);
+            		ReasonerUtilities.warnThatReasonerDied(null, died);
             	}
-                ProtegeApplication.getErrorLog().logError(throwable);
             }
         });
         currentReasonerThread.start();
