@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -188,7 +189,12 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     public void killCurrentReasoner() {
     	OWLReasoner reasoner = getCurrentReasoner();
     	if (!(reasoner instanceof NoOpReasoner)) {
-    		reasoner.dispose();
+        	try {
+        		reasoner.dispose();
+        	}
+        	catch (Exception ex) {
+        		ProtegeApplication.getErrorLog().logError(ex);
+        	}
             synchronized (reasonerMap)  {
             	reasonerMap.put(owlModelManager.getActiveOntology(), null);
             }
@@ -219,17 +225,25 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     		}
     		else {
                 OWLReasoner reasoner = getCurrentReasoner();
-                if (reasoner instanceof NoOpReasoner) {
-                	return ReasonerStatus.REASONER_NOT_INITIALIZED;
+                try {
+                	if (reasoner instanceof NoOpReasoner) {
+                		return ReasonerStatus.REASONER_NOT_INITIALIZED;
+                	}
+                	else if (!reasoner.isConsistent()) {
+                		return ReasonerStatus.INCONSISTENT;                	
+                	}
+                	else if (reasoner.getPendingChanges().isEmpty()) {
+                		return ReasonerStatus.INITIALIZED;
+                	}
+                	else {
+                		return ReasonerStatus.OUT_OF_SYNC;
+                	}
                 }
-                else if (!reasoner.isConsistent()) {
-                	return ReasonerStatus.INCONSISTENT;                	
-                }
-                else if (reasoner.getPendingChanges().isEmpty()) {
-                	return ReasonerStatus.INITIALIZED;
-                }
-                else {
-                	return ReasonerStatus.OUT_OF_SYNC;
+                catch (Exception e) {
+                	ProtegeApplication.getErrorLog().logError(e);
+                	killCurrentReasoner();
+                	logger.warn("Reasoner died.");
+                	throw new ReasonerDiedException();
                 }
     		}
     	}
@@ -255,7 +269,14 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
-                exceptionHandler.handle(throwable);
+            	try {
+            		if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
+            			exceptionHandler.handle(throwable);
+            		}
+            	}
+            	catch (ReasonerDiedException died) {
+            		ReasonerUtilities.warnThatReasonerDied(null);
+            	}
                 ProtegeApplication.getErrorLog().logError(throwable);
             }
         });

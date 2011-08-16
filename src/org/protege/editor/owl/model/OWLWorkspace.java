@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
@@ -74,9 +75,11 @@ import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPlugin;
 import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPluginJPFImpl;
+import org.protege.editor.owl.model.inference.ReasonerDiedException;
 import org.protege.editor.owl.model.inference.ReasonerInfoComparator;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.protege.editor.owl.model.inference.ReasonerUtilities;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -224,7 +227,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         owlModelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
-                handleModelManagerEvent(event.getType());
+            	try {
+            		handleModelManagerEvent(event.getType());
+            	}
+            	catch (Exception t) {
+            		ProtegeApplication.getErrorLog().logError(t);
+            	}
             }
         };
         mngr.addListener(owlModelManagerListener);
@@ -235,8 +243,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
 
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-                super.ontologiesChanged(changes);
-                handleOntologiesChanged(changes);
+            	super.ontologiesChanged(changes);
+            	handleOntologiesChanged(changes);
             }
         };
         mngr.addOntologyChangeListener(listener);
@@ -701,7 +709,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     		return;
     	}
     	OWLReasonerManager reasonerManager = getOWLEditorKit().getOWLModelManager().getOWLReasonerManager();
-    	ReasonerStatus newStatus = reasonerManager.getReasonerStatus();
+    	ReasonerStatus newStatus;
+    	try {
+    		newStatus = reasonerManager.getReasonerStatus();
+    	}
+    	catch (ReasonerDiedException reasonerDied) {
+    		newStatus = ReasonerStatus.REASONER_NOT_INITIALIZED;
+    		ReasonerUtilities.warnThatReasonerDied(null);
+    	}
     	if (changesInProgress 
     			&& (newStatus == ReasonerStatus.INITIALIZED || newStatus == ReasonerStatus.INCONSISTENT)
     			&& reasonerManager.getCurrentReasoner().getBufferingMode() == BufferingMode.BUFFERING) {
