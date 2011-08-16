@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import javax.swing.JOptionPane;
 
+import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
@@ -56,9 +57,11 @@ public class ReasonerUtilities {
 		}
 	}
 	
-	public static void warnThatReasonerDied(Component owner) {
+	public static void warnThatReasonerDied(Component owner, ReasonerDiedException died) {
+		Throwable t = died.getCause();
+		ProtegeApplication.getErrorLog().logError(t);
 		JOptionPane.showMessageDialog(owner, 
-				                      "Reasoner died.",
+				                      "Reasoner died.\nReason given: " + t.getMessage(),
 				                      "Fatal reasoner error",
 				                      JOptionPane.WARNING_MESSAGE);
 	}
