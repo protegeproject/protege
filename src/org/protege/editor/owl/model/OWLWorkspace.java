@@ -715,7 +715,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     	}
     	catch (ReasonerDiedException reasonerDied) {
     		newStatus = ReasonerStatus.REASONER_NOT_INITIALIZED;
-    		ReasonerUtilities.warnThatReasonerDied(null);
+    		ReasonerUtilities.warnThatReasonerDied(null, reasonerDied);
     	}
     	if (changesInProgress 
     			&& (newStatus == ReasonerStatus.INITIALIZED || newStatus == ReasonerStatus.INCONSISTENT)
