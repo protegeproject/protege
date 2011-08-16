@@ -79,7 +79,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     							}
     						}
     						catch (ReasonerDiedException rde) {
-    							ReasonerUtilities.warnThatReasonerDied(null);
+    							ReasonerUtilities.warnThatReasonerDied(null, rde);
     						}
     					}
     				});
