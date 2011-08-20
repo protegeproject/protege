@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <VSNode splits="0.3621848739495798 0.6378151260504201">
+    <VSNode splits="0.375 0.625">
         <CNode>
             <Component label="Annotation property hierarchy">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyTree"/>
             </Component>
         </CNode>
-        <HSNode splits="0.25 0.25">
+        <HSNode splits="0.375 0.625">
             <CNode>
                 <Component label="Annotations">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyAnnotations"/>
