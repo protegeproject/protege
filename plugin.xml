@@ -273,6 +273,17 @@
         <index value="E"/>
         <defaultViewConfigFileName value="viewconfig-datapropertiestab.xml"/>
     </extension>
+    
+    <!-- Annotations properties tab -->
+
+    <extension id="OWLAnnotationsPropertiesTab"
+               point="org.protege.editor.core.application.WorkspaceTab">
+        <label value="Annotation Properties"/>
+        <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
+        <editorKitId value="OWLEditorKit"/>
+        <index value="F"/>
+        <defaultViewConfigFileName value="viewconfig-annotationpropertiestab.xml"/>
+    </extension>
 
     <!-- Individuals tab -->
 
@@ -281,7 +292,7 @@
         <label value="Individuals"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
-        <index value="F"/>
+        <index value="G"/>
         <defaultViewConfigFileName value="viewconfig-individualstab.xml"/>
     </extension>
 
