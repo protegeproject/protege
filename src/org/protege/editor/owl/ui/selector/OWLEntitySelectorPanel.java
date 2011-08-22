@@ -43,6 +43,7 @@ import java.util.Set;
  * 21-Sep-2008<br><br>
  */
 public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<OWLEntity>, Disposable {
+    private static final long serialVersionUID = -1671448634230595527L;
 
     private OWLClassSelectorPanel classSelectorPanel;
 
