@@ -1,23 +1,37 @@
 package org.protege.editor.owl.ui.selector;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.util.*;
 
 
 /**
@@ -29,13 +43,74 @@ import java.util.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  *
- * Should extend AbstractSelectorPanel
+ *
  */
 public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype> {
+    private static final long serialVersionUID = 1925753640367589134L;
 
     private AbstractOWLViewComponent vc;
 
     private OWLObjectList<OWLDatatype> list;
+    
+    private Map<ChangeListener, ListSelectionListener> selListenerWrappers = new HashMap<ChangeListener, ListSelectionListener>();
+
+    private class UpdateDatatypeListListener implements OWLOntologyChangeListener {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+            if (datatypesMightHaveChanged(changes)) {
+                rebuildDatatypeList();
+            }
+        }
+        
+        private boolean datatypesMightHaveChanged(List<? extends OWLOntologyChange> changes) {
+            for (OWLOntologyChange change : changes) {
+                if (change instanceof OWLAxiomChange) {
+                    for (OWLEntity e : ((OWLAxiomChange) change).getAxiom().getSignature()) {
+                        if (e instanceof OWLDatatype && !e.isBuiltIn()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        
+    };
+    
+    
+    private class ActiveOntologyChangedListener implements OWLModelManagerListener {
+        public void handleChange(OWLModelManagerChangeEvent event) {
+            switch (event.getType()) {
+            case ACTIVE_ONTOLOGY_CHANGED:
+                rebuildDatatypeList();
+                break;
+            }
+        }
+    };
+    
+    private class OWLDatatypeListView extends AbstractOWLViewComponent {
+        private static final long serialVersionUID = -2407766608313199261L;
+        private OWLOntologyChangeListener ontologyChangeListener = new UpdateDatatypeListListener();
+        private OWLModelManagerListener p4Listener = new ActiveOntologyChangedListener();
+
+
+        protected void initialiseOWLView() throws Exception {
+            setLayout(new BorderLayout());
+
+            list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
+            list.setListData(makeDatatypeList().toArray());
+            list.setSelectedIndex(0);
+
+            add(ComponentFactory.createScrollPane(list));
+            getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
+            getOWLModelManager().addListener(p4Listener);
+        }
+
+
+        protected void disposeOWLView() {
+            getOWLModelManager().removeOntologyChangeListener(ontologyChangeListener);
+            getOWLModelManager().removeListener(p4Listener);
+        }
+    }
 
 
     public OWLDataTypeSelectorPanel(OWLEditorKit editorKit) {
@@ -87,28 +162,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-                vc = new AbstractOWLViewComponent(){
-
-                    protected void initialiseOWLView() throws Exception {
-                        setLayout(new BorderLayout());
-
-                        // Add the built in datatypes
-                        final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-                        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
-                        Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
-
-                        list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
-                        list.setListData(datatypeList.toArray());
-                        list.setSelectedIndex(0);
-
-                        add(ComponentFactory.createScrollPane(list));
-                    }
-
-
-                    protected void disposeOWLView() {
-                        // do nothing
-                    }
-                };
+                vc = new OWLDatatypeListView();
                 vc.setup(this);
                 return vc;
             }
@@ -120,12 +174,6 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
         vc.dispose();
     }
 
-
-// wrap the listeners and just pass the changes straight through
-
-
-    private Map<ChangeListener, ListSelectionListener> selListenerWrappers =
-            new HashMap<ChangeListener, ListSelectionListener>();
 
 
     public void addSelectionListener(ChangeListener listener) {
@@ -149,5 +197,21 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
             selListenerWrappers.put(listener, l);
         }
         return l;
+    }
+    
+    private List<OWLDatatype> makeDatatypeList() {
+        OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
+        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
+        Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
+        return datatypeList;
+    }
+    
+    private void rebuildDatatypeList() {
+        Object selected = list.getSelectedValue();
+        List<OWLDatatype> datatypes = makeDatatypeList();
+        list.setListData(datatypes.toArray());
+        if (datatypes.contains(selected)) {
+            list.setSelectedValue(selected, true);
+        }
     }
 }
