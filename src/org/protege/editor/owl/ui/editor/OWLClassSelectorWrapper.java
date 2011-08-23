@@ -44,7 +44,7 @@ public class OWLClassSelectorWrapper extends AbstractOWLClassExpressionEditor {
     private OWLClassSelectorPanel component;
 
 
-    public void initialise() throws Exception {
+    public void initialise()  {
         component = new OWLClassSelectorPanel(getOWLEditorKit());
     }
 
@@ -86,7 +86,7 @@ public class OWLClassSelectorWrapper extends AbstractOWLClassExpressionEditor {
     }
 
 
-    public void dispose() throws Exception {
+    public void dispose() {
         component.dispose();
     }
 }
