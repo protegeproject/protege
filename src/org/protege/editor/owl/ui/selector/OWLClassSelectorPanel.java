@@ -26,7 +26,8 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
-
+    private static final long serialVersionUID = -7010322785054275542L;
+    
     private AbstractOWLEntityHierarchyViewComponent<OWLClass> vc;
 
 
