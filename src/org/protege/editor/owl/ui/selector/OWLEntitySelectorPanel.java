@@ -1,41 +1,37 @@
 package org.protege.editor.owl.ui.selector;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
-/*
- * Copyright (C) 2008, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import org.semanticweb.owlapi.model.EntityType;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 
 /**
@@ -59,7 +55,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     private JTabbedPane tabbedPane;
 
-    private RemovableObjectList entityList;
+    private RemovableObjectList<OWLEntity> entityList;
 
     private JButton button;
 
@@ -144,7 +140,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         else{
             setLayout(new EntitySelectorPanelLayoutManager());
             add(tabbedPane);
-            entityList = new RemovableObjectList();
+            entityList = new RemovableObjectList<OWLEntity>();
             entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
             entityList.addListSelectionListener(new ListSelectionListener() {
@@ -252,9 +248,9 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         entityList.addObject(getCurrentSelection());
     }
 
-    public Set<? extends OWLEntity> getCurrentSelection() {
+    public Set<OWLEntity> getCurrentSelection() {
         Component selComponent = tabbedPane.getSelectedComponent();
-        return ((OWLObjectSelector<? extends OWLEntity>) selComponent).getSelectedObjects();
+        return (Set<OWLEntity>) ((OWLObjectSelector<? extends OWLEntity>) selComponent).getSelectedObjects();
     }
 
     public void addSelectionListener(ChangeListener l){
