@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.IRIFromEntityEditor;
+import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyDomainEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.semanticweb.owlapi.model.IRI;
@@ -51,8 +52,8 @@ public class OWLAnnotationPropertyDomainFrameSectionRow extends AbstractOWLFrame
     }
 
 
-    protected IRIFromEntityEditor getObjectEditor() {
-        final IRIFromEntityEditor editor = new IRIFromEntityEditor(getOWLEditorKit());
+    protected OWLAnnotationPropertyDomainEditor getObjectEditor() {
+        final OWLAnnotationPropertyDomainEditor editor = new OWLAnnotationPropertyDomainEditor(getOWLEditorKit());
         editor.setEditedObject(getAxiom().getDomain());
         return editor;
     }
