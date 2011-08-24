@@ -7,10 +7,10 @@
    <property file = "local.properties"/>
    <property file = "version.properties"/>
 	
-   <property name="build"     location="./build"/>
-   <property name="src"       location="./src/main/java"/>
-   <property name="classes"   location="${build}/classes"/>
-   <property name="launcher"  location="${build}/ProtegeLauncher.jar"/>
+   <property name="build"      location="./build"/>
+   <property name="src"        location="./src/main/java"/>
+   <property name="classes"    location="${build}/classes"/>
+   <property name="launcher"   location="${build}/ProtegeLauncher.jar"/>
 
    <target name="init">
        <echo message="**********************************************************"/>
@@ -105,10 +105,12 @@
     <!-- ===================================================================  -->
     <target name = "run" depends="init">
         <property file="${protege.home}/build.properties"/>
+        <property name="run.config" location="${protege.home}/config.xml"/>
         <java fork = "true" dir = "${protege.home}" 
               classname = "org.protege.osgi.framework.Launcher">
-            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dlog4j.configuration=file:${basedir}/log4j.xml"/>
             <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>
               <pathelement path="${protege.launcher}"/>
@@ -121,10 +123,12 @@
     <!-- ===================================================================  -->
     <target name = "debug" depends="init">
         <property file="${protege.home}/build.properties"/>
+        <property name="run.config" location="${protege.home}/config.xml"/>
         <java fork = "true" dir = "${protege.home}" 
               classname = "org.protege.osgi.framework.Launcher">
-            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Dlog4j.configuration=file:${basedir}/log4j.xml"/>
             <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=y"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
             <jvmarg value = "-Xmx1500M"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>

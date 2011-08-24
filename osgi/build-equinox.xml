@@ -6,7 +6,6 @@
     <!-- ===================================================================  -->
     <target name = "install">
         <!-- flush cache -->
-        <delete dir = "${protege.home}/configuration"/>
         <copy todir = "${protege.home}">
             <fileset dir = "./osgi/equinox"/>
             <fileset dir = "." includes = "log4j.xml"/>
@@ -15,35 +14,11 @@
         <copy todir="${protege.home}/bundles">
           <fileset dir="./osgi/common" />
         </copy>
-        <copy todir = "${protege.home}" file="${launcher}"/>
+        <copy todir = "${protege.home}/bin" file="${launcher}"/>
 
         <chmod file = "${protege.home}/run.sh" perm = "a+x"/>
         <chmod file = "${protege.home}/run.command" perm = "a+x"/>
 
-    </target>
-
-    <!-- ===================================================================  -->
-    <!-- RUN.EQUINOX -->
-    <!-- ===================================================================  -->
-    <target name = "run">
-        <java fork = "true" dir = "${protege.home}" jar = "${protege.home}/org.eclipse.osgi.jar">
-            <jvmarg value = "-Xmx500M"/>
-            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
-        </java>
-    </target>
-
-    <!-- ===================================================================  -->
-    <!-- DEBUG.EQUINOX - create an equinox-based distribution -->
-    <!-- ===================================================================  -->
-    <target name = "debug">
-        <java fork = "true" dir = "${protege.home}" jar = "${protege.home}/org.eclipse.osgi.jar">
-            <jvmarg value = "-Xmx1500M"/>
-            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
-            <jvmarg value = "-Dlog4j.debug"/>
-            <jvmarg value = "-Xdebug"/>
-            <jvmarg value = "-Xrunjdwp:transport=dt_socket,address=8500,server=y,suspend=y"/> 
-            <arg value = "-console"/>
-        </java>
     </target>
 
 
