@@ -43,6 +43,7 @@
 
    <property name = "protege.common"    location="${protege.home}/bundles"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
+   <property name = "run.config"        location="${protege.home}/config.xml"/>
 
    <property name="equinox.common" 
              location="${protege.common}/org.eclipse.equinox.common.jar"/>
@@ -228,6 +229,7 @@
               classname = "org.protege.osgi.framework.Launcher">
             <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
             <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>
               <pathelement path="${protege.launcher}"/>
@@ -244,6 +246,7 @@
             <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
             <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=y"/>
             <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
             <classpath>
               <pathelement path="${protege.osgi}"/>
               <pathelement path="${protege.launcher}"/>
