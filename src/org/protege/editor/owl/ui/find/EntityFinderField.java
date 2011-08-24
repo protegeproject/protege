@@ -62,7 +62,7 @@ public class EntityFinderField extends JTextField {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     closeResults();
                 }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && resultsList.getSelectedValue() instanceof OWLEntity) {
                     selectEntity();
                 }
             }
