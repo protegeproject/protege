@@ -1,8 +1,10 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,6 +51,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     private ReasonerProgressMonitor reasonerProgressMonitor;
     private OWLReasonerExceptionHandler exceptionHandler;
+    
+    private List<ReasonerFilter> reasonerFilters = new ArrayList<ReasonerFilter>();
     
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
@@ -309,6 +313,21 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
     }
     
+    public void addReasonerFilter(ReasonerFilter filter) {
+        synchronized (reasonerMap) {
+            reasonerFilters.add(filter);
+        }
+    }
+    
+    private OWLOntology applyReasonerFilters(OWLOntology ontology) {
+        synchronized (reasonerMap) {
+            for (ReasonerFilter filter : reasonerFilters) {
+                ontology = filter.getFilteredOntology(ontology);
+            }
+        }
+        return ontology;
+    }
+    
     private class ClassificationRunner implements Runnable {
         private OWLOntology ontology;
         private Set<InferenceType> precompute;
@@ -334,6 +353,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             	inconsistencyFound = true;
             }
             finally{
+                synchronized (runningReasoner) {
+                    reasonerFilters.clear();
+                }
             	installRunningReasoner(inconsistencyFound, reasonerChanged);
             }
         }
@@ -354,7 +376,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 }
             }
             if (runningReasoner == null) {
-            	runningReasoner = ReasonerUtilities.createReasoner(ontology, currentReasonerFactory, reasonerProgressMonitor);
+            	runningReasoner = ReasonerUtilities.createReasoner(applyReasonerFilters(ontology), currentReasonerFactory, reasonerProgressMonitor);
             	reasonerChanged = true;
             }
             return reasonerChanged;

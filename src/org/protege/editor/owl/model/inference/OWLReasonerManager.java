@@ -90,4 +90,7 @@ public interface OWLReasonerManager extends Disposable {
     void killCurrentClassification();
     
     ReasonerPreferences getReasonerPreferences();
+    
+    void addReasonerFilter(ReasonerFilter filter);
+    
 }
