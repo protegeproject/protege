@@ -57,13 +57,14 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     private ChangeListenerMediator changeListenerMediator;
     private OWLModelManagerListener modelManagerListener;
     private int selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+    private boolean selectionChangedByUser = true;
 
     protected Set<OWLNamedIndividual> individualsInList;
 
     private ListSelectionListener listSelectionListener = new ListSelectionListener() {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
-                if (list.getSelectedValue() != null) {
+                if (list.getSelectedValue() != null && selectionChangedByUser) {
                     setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
@@ -145,7 +146,13 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     protected void reset() {
         list.setListData(individualsInList.toArray());
         OWLNamedIndividual individual = getSelectedOWLIndividual();
-        list.setSelectedValue(individual, true);
+        selectionChangedByUser = false;
+        try {
+            list.setSelectedValue(individual, true);
+        }
+        finally {
+            selectionChangedByUser = true;
+        }
     }
 
     public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
