@@ -91,6 +91,13 @@ public interface OWLReasonerManager extends Disposable {
     
     ReasonerPreferences getReasonerPreferences();
     
+    /**
+     * Add the filters to be applied when the ABOUT_TO_CLASSIFY event starts.
+     * The list of filters will be cleared when the classification completes regardless
+     * of whether a new reasoner was created in the process.
+     * 
+     * @param filter
+     */
     void addReasonerFilter(ReasonerFilter filter);
     
 }
