@@ -42,7 +42,7 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
         tabs.addTab("Edit raw IRI", iriTextEditor.getEditorComponent());
         
         editingComponent = new JPanel(new BorderLayout());
-        editingComponent.setPreferredSize(new Dimension(300, 500));
+        editingComponent.setPreferredSize(new Dimension(500, 500));
         editingComponent.add(tabs);
     }
     
