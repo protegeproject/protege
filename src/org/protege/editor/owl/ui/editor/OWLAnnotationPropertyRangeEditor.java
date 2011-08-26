@@ -1,8 +1,11 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.protege.editor.owl.OWLEditorKit;
@@ -16,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLAnnotationPropertyRangeEditor extends AbstractOWLObjectEditor<IRI> {
     private OWLEditorKit editorKit;
+    private JComponent editingComponent;
     private JTabbedPane tabs;
     private OWLClassSelectorWrapper classSelectionEditor;
     private OWLDatatypeSelectionEditor datatypeSelectionEditor;
@@ -33,9 +37,13 @@ public class OWLAnnotationPropertyRangeEditor extends AbstractOWLObjectEditor<IR
         iriTextEditor = new IRITextEditor(editorKit);
         
         tabs = new JTabbedPane();
-        tabs.add("Select Class", classSelectionEditor.getComponent());
-        tabs.add("Select datatype", datatypeSelectionEditor.getEditorComponent());
-        tabs.add("Edit raw IRI", iriTextEditor.getEditorComponent());
+        tabs.addTab("Select Class", classSelectionEditor.getComponent());
+        tabs.addTab("Select datatype", datatypeSelectionEditor.getEditorComponent());
+        tabs.addTab("Edit raw IRI", iriTextEditor.getEditorComponent());
+        
+        editingComponent = new JPanel(new BorderLayout());
+        editingComponent.setPreferredSize(new Dimension(500, 500));
+        editingComponent.add(tabs);
     }
 
     public String getEditorTypeName() {
@@ -47,7 +55,7 @@ public class OWLAnnotationPropertyRangeEditor extends AbstractOWLObjectEditor<IR
     }
 
     public JComponent getEditorComponent() {
-        return tabs;
+        return editingComponent;
     }
 
     public IRI getEditedObject() {
