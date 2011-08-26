@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.editor;
 
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -26,7 +28,6 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	private JTextField iriTextField;
 	private List<InputVerificationStatusChangedListener> inputVerificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
 	
-	
 	public IRITextEditor(OWLEditorKit editorKit) {
 		createGui();
 		setInitialIri(editorKit);
@@ -34,8 +35,24 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	
 	private void createGui() {
 		editor = new JPanel();
-		editor.setLayout(new FlowLayout());
-		editor.add(new JLabel("IRI: "));
+		editor.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(12,12,0,12);
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.weightx = 0;
+		c.weighty = 0;
+		editor.add(new JLabel("IRI:"), c);
+		
+		c.gridx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(12,0,0,12);
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		
 		iriTextField = new JTextField();
 		iriTextField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
@@ -43,15 +60,15 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 					listener.verifiedStatusChanged(getEditedObject() != null);
 				}
 			}
-			
+
 			public void keyPressed(KeyEvent e) {
-
 			}
+			
 			public void keyReleased(KeyEvent e) {
-
 			}
 		});
-		editor.add(iriTextField);
+		
+		editor.add(iriTextField, c);
 	}
 	
 	private void setInitialIri(OWLEditorKit editorKit) {
@@ -131,5 +148,4 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 
 	public void dispose() {
 	}
-
 }

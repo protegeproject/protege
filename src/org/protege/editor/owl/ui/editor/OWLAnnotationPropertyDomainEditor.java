@@ -1,8 +1,11 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.protege.editor.owl.OWLEditorKit;
@@ -14,10 +17,16 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<IRI> {
-    private OWLEditorKit editorKit;
-    private JTabbedPane tabs;
-    private OWLClassSelectorWrapper classSelectionEditor;
+	
     private IRITextEditor iriTextEditor;
+
+    private JComponent editingComponent;
+    
+	private JTabbedPane tabs;
+	
+	private OWLEditorKit editorKit;
+    
+    private OWLClassSelectorWrapper classSelectionEditor;
     
     public OWLAnnotationPropertyDomainEditor(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
@@ -25,12 +34,18 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
         classSelectionEditor = new OWLClassSelectorWrapper();
         classSelectionEditor.setup("class.hierarchy", "Class Hierarchy Selection Editor", editorKit);
         classSelectionEditor.initialise();
+        
         iriTextEditor = new IRITextEditor(editorKit);
+        
         tabs = new JTabbedPane();
-        tabs.add("Select Class", classSelectionEditor.getComponent());
-        tabs.add("Edit raw IRI", iriTextEditor.getEditorComponent());
+        tabs.addTab("Select Class", classSelectionEditor.getComponent());
+        tabs.addTab("Edit raw IRI", iriTextEditor.getEditorComponent());
+        
+        editingComponent = new JPanel(new BorderLayout());
+        editingComponent.setPreferredSize(new Dimension(300, 500));
+        editingComponent.add(tabs);
     }
-
+    
     public String getEditorTypeName() {
         return "Annotation Property domain Editor";
     }
@@ -40,7 +55,7 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
     }
 
     public JComponent getEditorComponent() {
-        return tabs;
+        return editingComponent;
     }
 
     public IRI getEditedObject() {
@@ -84,5 +99,4 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
         classSelectionEditor = null;
         iriTextEditor = null;
     }
-
 }
