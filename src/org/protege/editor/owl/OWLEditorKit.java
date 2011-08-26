@@ -5,7 +5,7 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Properties;
+import java.util.Hashtable;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -96,7 +96,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
-        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Properties());
+        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<String, Object>());
     }
 
 
