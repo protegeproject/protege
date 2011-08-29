@@ -40,7 +40,9 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
     			if (!prefixName.equals(":")) {
     				return escape(prefixName + shortForm);
     			}
-    			break;
+    			else {
+    			    return escape(shortForm);
+    			}
     		}
     	}
     	return entity.getIRI().toQuotedString();
