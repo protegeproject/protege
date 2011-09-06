@@ -46,7 +46,7 @@ public class RenameEntityAction extends SelectedOWLEntityAction {
             }
 
             public void visit(OWLAnnotationProperty owlAnnotationProperty) {
-                ensureSelected(getOWLDataFactory().getOWLDataProperty(iri));
+                ensureSelected(getOWLDataFactory().getOWLAnnotationProperty(iri));
             }
 
             public void visit(OWLNamedIndividual individual) {
