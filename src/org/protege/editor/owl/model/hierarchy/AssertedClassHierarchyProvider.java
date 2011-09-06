@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.protege.owlapi.inference.ChildClassExtractor;
-import org.protege.owlapi.inference.ParentClassExtractor;
+import org.protege.owlapi.inference.cls.ChildClassExtractor;
+import org.protege.owlapi.inference.cls.ParentClassExtractor;
 import org.protege.owlapi.inference.orphan.Relation;
 import org.protege.owlapi.inference.orphan.TerminalElementFinder;
 import org.semanticweb.owlapi.model.OWLAxiom;
