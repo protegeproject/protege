@@ -92,6 +92,7 @@ Import-Package: org.osgi.framework,
  org.protege.owlapi.apibinding,
  org.protege.owlapi.concurrent,
  org.protege.owlapi.inference,
+ org.protege.owlapi.inference.cls,
  org.protege.owlapi.inference.orphan,
  org.protege.owlapi.model
 Export-Package: org.protege.editor.owl,
@@ -173,6 +174,7 @@ Export-Package: org.protege.editor.owl,
  org.protege.owlapi.apibinding,
  org.protege.owlapi.concurrent,
  org.protege.owlapi.inference,
+ org.protege.owlapi.inference.cls,
  org.protege.owlapi.inference.orphan,
  org.protege.owlapi.model
 Bundle-Version: 4.1.0.cIsAfterBFromUploads
