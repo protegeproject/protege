@@ -63,6 +63,7 @@ public class Launcher {
     private void setSystemProperties(Parser p) {
         Properties systemProperties = p.getSystemProperties();
         System.setProperty("org.protege.plugin.dir", p.getPluginDirectory());
+        System.setProperty("org.protege.osgi.launcherHandlesExit", "True");
         for (Entry<Object, Object> entry : systemProperties.entrySet()) {
             System.setProperty((String) entry.getKey(), (String) entry.getValue());
         }
