@@ -27,6 +27,7 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.platform.OSGi;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
@@ -410,13 +411,30 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
         try {
+            if (welcomeFrame != null) {
+                welcomeFrame.dispose();
+            }
+            boolean forceExit = !OSGi.systemExitHandledByLauncher(); // this call fails after context.getBundle(0).stop()
             context.getBundle(0).stop();
+            // Danger, Will Robinson!  Weird territory here - the class loader is no longer working!
+            //  java.lang.IllegalStateException: zip file closed
+            //     at java.util.zip.ZipFile.ensureOpen(ZipFile.java:403)
+            //     at java.util.zip.ZipFile.getEntry(ZipFile.java:148)
+            //     at org.apache.felix.framework.util.ZipFileX.getEntry(ZipFileX.java:52)
+            //     at org.apache.felix.framework.cache.JarContent.getEntryAsBytes(JarContent.java:122)
+            //     at org.apache.felix.framework.ModuleImpl$ModuleClassLoader.findClass(ModuleImpl.java:1816)
+            //     at org.apache.felix.framework.ModuleImpl.findClassOrResourceByDelegation(ModuleImpl.java:727)
+            //     at org.apache.felix.framework.ModuleImpl.access$400(ModuleImpl.java:71)
+            //     at org.apache.felix.framework.ModuleImpl$ModuleClassLoader.loadClass(ModuleImpl.java:1768)
+            //     at java.lang.ClassLoader.loadClass(ClassLoader.java:248)
+            //     at org.protege.editor.core.ProtegeApplication.handleQuit(ProtegeApplication.java:418)
+            if (forceExit) {
+                Thread.sleep(1000);
+                System.exit(0);
+            }
         }
         catch (Throwable t) {
             logger.fatal("Exception caught trying to shut down Protege.", t);
-        }
-        if (welcomeFrame != null) {
-            welcomeFrame.dispose();
         }
         return true;
     }
