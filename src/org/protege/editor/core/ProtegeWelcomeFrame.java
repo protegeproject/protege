@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -44,11 +46,13 @@ import org.protege.editor.core.ui.util.LinkLabel;
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeWelcomeFrame extends JFrame {
-    private static final long serialVersionUID = 3174444631540765155L;
+
+	private static final long serialVersionUID = 3174444631540765155L;
 
     private ProtegeWelcomeFrame.ProtegeWelcomePanel welcomePanel;
-
-
+    
+    private static final int MAX_LENGTH = 75;
+    
     public ProtegeWelcomeFrame() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setName("ProtegeWelcome");
@@ -57,7 +61,6 @@ public class ProtegeWelcomeFrame extends JFrame {
         pack();
         centre();
     }
-
 
     public void setVisible(boolean b) {
         if (b){
@@ -68,19 +71,14 @@ public class ProtegeWelcomeFrame extends JFrame {
         super.setVisible(b);
     }
 
-
     private void centre() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension size = getSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 2);
     }
 
-
     private class ProtegeWelcomePanel extends JPanel {
 
-        /**
-         * 
-         */
         private static final long serialVersionUID = 6744371623503619618L;
 
         private Icon background;
@@ -88,7 +86,6 @@ public class ProtegeWelcomeFrame extends JFrame {
         private Box box;
 
         private Box recentLinkBox;
-
 
         public ProtegeWelcomePanel() {
             setBackground(Color.WHITE);
@@ -220,7 +217,6 @@ public class ProtegeWelcomeFrame extends JFrame {
             return southBox;
         }
 
-
         private void handleOpenFromURI(EditorKitFactoryPlugin plugin) {
             try {
                 URI uri = OpenFromURLPanel.showDialog();
@@ -234,7 +230,6 @@ public class ProtegeWelcomeFrame extends JFrame {
                 ErrorLogPanel.showErrorDialog(e1);
             }
         }
-
 
         private void handleOpenFromRepository(OntologyRepository repository) {
             try {
@@ -251,14 +246,12 @@ public class ProtegeWelcomeFrame extends JFrame {
             }
         }
 
-
         public Dimension getPreferredSize() {
             Dimension prefSize = super.getPreferredSize();
             prefSize.width += 30;
             prefSize.height += 30;
             return prefSize;
         }
-
 
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -270,7 +263,6 @@ public class ProtegeWelcomeFrame extends JFrame {
 
             g2.setColor(oldColor);
         }
-
 
         public void refresh() {
             if (recentLinkBox != null) {
@@ -293,10 +285,18 @@ public class ProtegeWelcomeFrame extends JFrame {
                         0,
                         getFont().deriveFont(Font.BOLD),
                         color), BorderFactory.createEmptyBorder(20, 20, 20, 20)));
-
-
+                
                 for (final EditorKitDescriptor desc : RecentEditorKitManager.getInstance().getDescriptors()) {
-                    recentLinkBox.add(new LinkLabel(desc.getLabel(), new ActionListener() {
+
+                	String label = desc.getLabel();
+                	if (label.length() > MAX_LENGTH) {
+                		ArrayList<String> list = buildList(label);
+                		list = reduce(list);
+                		label = rebuildPath(list);
+                	}
+                	
+                   	LinkLabel linkLabel = new LinkLabel(label, new ActionListener() {
+						@Override
                         public void actionPerformed(ActionEvent e) {
                             try {
                                 if (ProtegeManager.getInstance().openAndSetupRecentEditorKit(desc)) {
@@ -307,12 +307,95 @@ public class ProtegeWelcomeFrame extends JFrame {
                                 ErrorLogPanel.showErrorDialog(e1);
                             }
                         }
-                    }));
+					});
+                	linkLabel.setToolTipText(desc.getLabel());
+                    recentLinkBox.add(linkLabel);
                 }
+
                 box.add(recentLinkBox);
             }
 
             revalidate();
         }
+    }
+
+    private static ArrayList<String> buildList(String path) {
+        ArrayList<String> list = new ArrayList<String>();
+        StringTokenizer st = new StringTokenizer(path, "/");
+        for (int i = 0; st.hasMoreElements(); i++) {
+            list.add(i, (String) st.nextElement());
+        }
+        return list;
+    }
+
+    private ArrayList<String> reduce(ArrayList<String> list) {
+        // sanity checks
+        if (list == null) {
+            return null;
+        }
+        if (list.size() == 0) {
+            return list;
+        }
+        if (getLength(list) <= MAX_LENGTH) {
+            return list;
+        }
+
+        // size is 1
+        if (list.size() == 1) {
+            String fname = (String) list.get(0);
+            fname = fname.substring(0, (MAX_LENGTH - 3)) + "...";
+            list.set(0, fname);
+        }
+        // size is 2
+        else if (list.size() == 2) {
+            if (list.get(0).equals("...")) {
+                list.remove(0);
+            } else {
+                list.set(0, "...");
+            }
+        }
+        // size is 3 or more
+        else {
+            if (!list.contains("...")) {
+                int mid = list.size() / 2;
+                list.set(mid, "...");
+            } else {
+                int idxDot = list.indexOf("...");
+                int before = idxDot;
+                int after = (list.size() - 2) - idxDot;
+
+                if (before > after) {
+                    list.remove(idxDot - 1);
+                } else {
+                    list.remove(idxDot + 1);
+                }
+            }
+        }
+
+        if (getLength(list) <= MAX_LENGTH) {
+            // list is short enough
+            return list;
+        }
+        // list is too long - recurse
+        return reduce(list);
+    }
+
+    private static int getLength(ArrayList<String> list) {
+        String path = "";
+        String sep = "/";
+        for (int i = 0; i < list.size(); i++) {
+            path += list.get(i) + sep;
+        }
+        return path.length() - 1;
+    }
+
+    private static String rebuildPath(ArrayList<String> list) {
+        String path = "";
+        String sep = "/";
+        for (int i = 0; i < list.size(); i++) {
+            path += list.get(i) + sep;
+        }
+        path = path.substring(0, (path.length() - 1));
+        return path;
     }
 }
