@@ -3,9 +3,7 @@ package org.protege.editor.core.editorkit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.workspace.WorkspaceManager;
-
 
 /**
  * Author: Matthew Horridge<br>

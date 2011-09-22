@@ -6,7 +6,6 @@ import javax.swing.Icon;
 import javax.swing.JFrame;
 
 import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
