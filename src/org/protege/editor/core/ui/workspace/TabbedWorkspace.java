@@ -1,12 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,28 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import org.apache.log4j.Logger;
-import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.Resettable;
-import org.protege.editor.core.ui.util.UIUtil;
-
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,
@@ -48,9 +26,6 @@ import org.protege.editor.core.ui.util.UIUtil;
  */
 public abstract class TabbedWorkspace extends Workspace {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 9179999766960877420L;
 
     private JTabbedPane tabbedPane;
@@ -58,9 +33,6 @@ public abstract class TabbedWorkspace extends Workspace {
     private Set<WorkspaceTab> workspaceTabs;
 
     private static final Logger LOGGER = Logger.getLogger(TabbedWorkspace.class);
-
-    private AbstractAction resetTabAction;
-
 
     /**
      * Override of the <code>Workspace</code> initialise method.
