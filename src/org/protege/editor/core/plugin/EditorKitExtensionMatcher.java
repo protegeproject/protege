@@ -1,6 +1,5 @@
 package org.protege.editor.core.plugin;
 
-import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 
 public class EditorKitExtensionMatcher extends OrPluginExtensionMatcher implements PluginExtensionMatcher {
