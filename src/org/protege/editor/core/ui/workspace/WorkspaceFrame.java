@@ -4,39 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.util.Icons;
-import org.protege.editor.core.ui.view.ViewComponentPlugin;
-import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -52,11 +37,6 @@ import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
  */
 public class WorkspaceFrame extends JFrame {
 
-    private static final String VIEW = "Views";
-
-	/**
-     * 
-     */
     private static final long serialVersionUID = -8568184212386766789L;
 
     private Workspace workspace;
