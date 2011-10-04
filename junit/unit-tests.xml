@@ -2,21 +2,22 @@
 
 <suite name="XMLCatalog Test Suite" verbose="1">
 
-		<test name="JUnit-Test-Example" junit="true">
-		    <classes>
-                <class name="org.protege.editor.owl.model.repository.RDFExtractorTest"/>
+        <test name="JUnit-Test-Example" junit="true">
+            <classes>
+                <class name="org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyTest"/>
+                <class name="org.protege.editor.owl.model.history.HistoryTest"/>
                 <class name="org.protege.editor.owl.model.library.FolderTest"/>
                 <class name="org.protege.editor.owl.model.library.XmlBaseTest"/>
-                <class name="org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyTest"/>
-			</classes>
-		</test>
+                <class name="org.protege.editor.owl.model.repository.RDFExtractorTest"/>
+            </classes>
+        </test>
         <!--
-		<test name="TestNG-Tests" >
-		    <parameter name="alabel"  value="Pizza"/>
-			<packages>
-				<package name="org.coode.dlquery" />
-			</packages>
-		</test>
+        <test name="TestNG-Tests" >
+            <parameter name="alabel"  value="Pizza"/>
+            <packages>
+                <package name="org.coode.dlquery" />
+            </packages>
+        </test>
             -->
 
 </suite>
