@@ -35,7 +35,7 @@ public class OWLEditorKitFactory implements EditorKitFactory {
     }
 
 
-    public EditorKit createEditorKit() throws Exception {
+    public EditorKit createEditorKit() {
         return new OWLEditorKit(this);
     }
 
