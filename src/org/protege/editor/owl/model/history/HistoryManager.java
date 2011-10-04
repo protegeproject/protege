@@ -39,8 +39,4 @@ public interface HistoryManager {
 
     public List<List<OWLOntologyChange>> getLoggedChanges();
 
-    
-//    public boolean isEntityChanged(OWLEntity entity);
-
-//    public Set<OWLEntity> getChangedEntities();
 }

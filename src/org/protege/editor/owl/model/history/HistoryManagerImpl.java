@@ -1,13 +1,15 @@
 package org.protege.editor.owl.model.history;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import javax.swing.JList;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 
 /**
@@ -20,17 +22,17 @@ import java.util.Stack;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class HistoryManagerImpl implements HistoryManager {
+    
+    private enum ChangeType {
+        UNDOING, REDOING, NORMAL;
+    };
+    
+    private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
     private static Logger logger = Logger.getLogger(HistoryManager.class);
 
-    private OWLModelManager owlModelManager;
+    private OWLOntologyManager manager;
 
-    //private Map<OWLEntity, Set<OWLOntologyChange>> changeMap;
-
-    //private ChangedEntityExtractor changedEntityExtractor;
-
-
-    private boolean inUndoMode;
 
     /**
      * Holds a list of sets of changes that can be undone.
@@ -50,17 +52,18 @@ public class HistoryManagerImpl implements HistoryManager {
 
     private List<UndoManagerListener> listeners;
 
-    JList viewList;
-
 
     public HistoryManagerImpl(OWLModelManager owlModelManager) {
-        this.owlModelManager = owlModelManager;
+        this(owlModelManager.getOWLOntologyManager());
+
+    }
+    
+    public HistoryManagerImpl(OWLOntologyManager manager) {
+        this.manager = manager;
         undoStack = new Stack<List<OWLOntologyChange>>();
         redoStack = new Stack<List<OWLOntologyChange>>();
         listeners = new ArrayList<UndoManagerListener>();
-        inUndoMode = false;
-        //changeMap = new HashMap<OWLEntity, Set<OWLOntologyChange>>();
-        //changedEntityExtractor = new ChangedEntityExtractor();
+        typeOfChangeInProgress = ChangeType.NORMAL;
     }
 
 
@@ -75,86 +78,42 @@ public class HistoryManagerImpl implements HistoryManager {
 
 
     public void logChanges(List<? extends OWLOntologyChange> changes) {
-        // If we aren't in the undo mode, then push the changes onto the undo stack
-        if (!inUndoMode) {
+        switch (typeOfChangeInProgress) {
+        case NORMAL:
             // Clear the redo stack, because we can
             // no longer redo
             redoStack.clear();
-
+            // no break;
+        case REDOING:
             // Push the changes onto the stack
             undoStack.push(new ArrayList<OWLOntologyChange>(changes));
-
-//            // Store the changes against the entity
-//            storeChanges(changes);
-
-        }
-        else {
+            break;
+        case UNDOING:
             // In undo mode, so handleSave changes for redo.
             // Push the changes onto the redo stack.  Since these will
             // be undo changes, we need to get hold of the reverse changes
             // (The stacks, both undo and redo, should always hold the forward
             // changes).
-            List<OWLOntologyChange> redoChanges = new ArrayList<OWLOntologyChange>();
-            for (OWLOntologyChange change : changes) {
-                ReverseChangeGenerator gen = new ReverseChangeGenerator();
-                change.accept(gen);
-                // Reverse the order
-                redoChanges.add(0, gen.getReverseChange());
-            }
-            redoStack.push(new ArrayList<OWLOntologyChange>(redoChanges));
+
+            redoStack.push(reverseChanges(changes));
+            break;
         }
         fireStateChanged();
     }
-
-//    private void storeChanges(List<OWLOntologyChange> changes) {
-//
-//        try {
-//            for (OWLOntologyChange change : changes) {
-//                change.accept(changedEntityExtractor);
-//                for (OWLEntity entity : changedEntityExtractor.getChangedEntities()) {
-//                    getChanges(entity).add(change);
-//                }
-//            }
-//        } catch (OWLException e) {
-//            logger.error(e);
-//        }
-//    }
-
-//    private void removeChanges(List<OWLOntologyChange> changes) {
-//        try {
-//            for (OWLOntologyChange change : changes) {
-//                change.accept(changedEntityExtractor);
-//                for (OWLEntity entity : changedEntityExtractor.getChangedEntities()) {
-//                    Set<OWLOntologyChange> storedChanges = getChanges(entity);
-//                    storedChanges.remove(change);
-//                    if (storedChanges.isEmpty()) {
-//                        changeMap.remove(entity);
-//                    }
-//                }
-//            }
-//        } catch (OWLException e) {
-//            logger.error(e);
-//        }
-//    }
-
-//    public Set<OWLOntologyChange> getChanges(OWLEntity entity) {
-//        Set<OWLOntologyChange> changes = changeMap.get(entity);
-//        if (changes == null) {
-//            changes = new HashSet<OWLOntologyChange>();
-//            changeMap.put(entity, changes);
-//        }
-//        return changes;
-//    }
 
 
     public void redo() {
         if (canRedo()) {
             try {
+                typeOfChangeInProgress = ChangeType.REDOING;
                 List<OWLOntologyChange> redoChanges = redoStack.pop();
-                owlModelManager.applyChanges(redoChanges);
+                manager.applyChanges(redoChanges);
             }
             catch (Exception e) {
                 logger.error(e);
+            }
+            finally {
+                typeOfChangeInProgress = ChangeType.NORMAL;
             }
         }
     }
@@ -163,18 +122,12 @@ public class HistoryManagerImpl implements HistoryManager {
     public void undo() {
         if (canUndo()) {
             try {
-                inUndoMode = true;
+                typeOfChangeInProgress = ChangeType.UNDOING;
                 // Attempt to undo the changes
                 List<OWLOntologyChange> changes = undoStack.pop();
-                List<OWLOntologyChange> undoChanges = new ArrayList<OWLOntologyChange>();
-                for (OWLOntologyChange change : changes) {
-                    ReverseChangeGenerator gen = new ReverseChangeGenerator();
-                    change.accept(gen);
-                    // Reverse the order
-                    undoChanges.add(0, gen.getReverseChange());
-                }
+
                 // Apply the changes
-                owlModelManager.applyChanges(undoChanges);
+                manager.applyChanges(reverseChanges(changes));
 //                // Remove changes from log
 //                removeChanges(changes);
             }
@@ -183,7 +136,7 @@ public class HistoryManagerImpl implements HistoryManager {
             }
             finally {
                 // No longer in undo mode
-                inUndoMode = false;
+                typeOfChangeInProgress = ChangeType.NORMAL;
             }
         }
     }
@@ -213,20 +166,15 @@ public class HistoryManagerImpl implements HistoryManager {
             listener.stateChanged(this);
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Change logging stuff
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//    public boolean isEntityChanged(OWLEntity entity) {
-//        throw new OWLException("Not implemented");
-//        //return changeMap.containsKey(entity);
-//    }
-//
-//    public Set<OWLEntity> getChangedEntities() {
-//        return changeMap.keySet();
-//    }
-
+    
+    private List<OWLOntologyChange> reverseChanges(List<? extends OWLOntologyChange> changes) {
+        List<OWLOntologyChange> reversedChanges = new ArrayList<OWLOntologyChange>();
+        for (OWLOntologyChange change : changes) {
+            ReverseChangeGenerator gen = new ReverseChangeGenerator();
+            change.accept(gen);
+            // Reverse the order
+            reversedChanges.add(0, gen.getReverseChange());
+        }
+        return reversedChanges;
+    }
 }
