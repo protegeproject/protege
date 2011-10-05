@@ -10,25 +10,21 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 /**
  * Author: Matthew Horridge<br>
@@ -38,457 +34,439 @@ import javax.swing.border.Border;
  * <br>
  */
 public class MList extends JList {
-	/**
-     * 
+
+    /**
+     *
      */
     private static final long serialVersionUID = -7803414142701944703L;
+
+
+    private static final Stroke BUTTON_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+
+    private static final int BUTTON_DIMENSION = 16;
+
+    private static final int BUTTON_MARGIN = 2;
+
+    private static Font SECTION_HEADER_FONT = new Font("Lucida Grande", Font.PLAIN, 10);
+
+    private static final Color itemBackgroundColor = new Color(240, 245, 240);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private ActionListener deleteActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            MList.this.handleDelete();
+        }
+    };
+
+    private ActionListener addActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            MList.this.handleAdd();
+        }
+    };
+
+    private ActionListener editActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            MList.this.handleEdit();
+        }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private MListDeleteButton deleteButton = new MListDeleteButton(this.deleteActionListener) {
+        @Override
+        public String getName() {
+            String name = "<html><body>" + super.getName();
+            String rowName = MList.this.getRowName(this.getRowObject());
+            if (rowName != null) {
+                name += " " + rowName.toLowerCase();
+            }
+            return name + "</body></html>";
+        }
+    };
+
+    private MListAddButton addButton = new MListAddButton(this.addActionListener);
+
+    private MListEditButton editButton = new MListEditButton(this.editActionListener);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     private MListCellRenderer ren;
-	private MListDeleteButton deleteButton;
-	private MListEditButton editButton;
-	private MListAddButton addButton;
-	private static final Stroke BUTTON_STROKE = new BasicStroke(2.0f,
-			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-	private boolean mouseDown;
-	private static final int BUTTON_DIMENSION = 16;
-	private static final int BUTTON_MARGIN = 2;
-	private static Font SECTION_HEADER_FONT = new Font("Lucida Grande",
-			Font.PLAIN, 10);
-	private static final Color itemBackgroundColor = new Color(240, 245, 240);
-	private List<MListButton> editAndDeleteButtons;
-	private List<MListButton> deleteButtonOnly;
-	private ActionListener deleteActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			MList.this.handleDelete();
-		}
-	};
-	private ActionListener addActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			MList.this.handleAdd();
-		}
-	};
-	private ActionListener editActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			MList.this.handleEdit();
-		}
-	};
-	private MouseMotionListener mouseMovementListener = new MouseMotionAdapter() {
-		public int lastIndex = 0;
 
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			if (MList.this.getModel().getSize() > 0) {
-				Point pt = MList.this.getMousePosition();
-				// more efficient than repainting the whole component every time
-				// the mouse moves
-				if (pt != null) {
-					int index = MList.this.locationToIndex(pt);
-					// only repaint all the cells the mouse has moved over
-					MList.this.repaint(MList.this.getCellBounds(Math.min(index,
-							this.lastIndex), Math.max(index, this.lastIndex)));
-					this.lastIndex = index;
-				} else {
-					MList.this.repaint();
-					this.lastIndex = 0;
-				}
-			}
-		}
-	};
-	private MouseListener mouseButtonListener = new MouseAdapter() {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			MList.this.mouseDown = true;
-		}
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			MList.this.handleMouseClick(e);
-			MList.this.mouseDown = false;
-		}
+    private boolean mouseDown;
 
-		@Override
-		public void mouseExited(MouseEvent event) {
-			// leave the component cleanly
-			MList.this.repaint();
-		}
-	};
+    private List<MListButton> editAndDeleteButtonList = Arrays.asList(editButton, deleteButton);
 
-	public MList() {
-		ListCellRenderer renderer = this.getCellRenderer();
-		this.ren = new MListCellRenderer();
-		this.ren.setContentRenderer(renderer);
-		super.setCellRenderer(this.ren);
-		this.deleteButton = new MListDeleteButton(this.deleteActionListener) {
-			@Override
-			public String getName() {
-				String name = "<html><body>" + super.getName();
-				String rowName = MList.this.getRowName(this.getRowObject());
-				if (rowName != null) {
-					name += " " + rowName.toLowerCase();
-				}
-				return name + "</body></html>";
-			}
-		};
-		this.addButton = new MListAddButton(this.addActionListener);
-		this.editButton = new MListEditButton(this.editActionListener);
-		this.addMouseMotionListener(this.mouseMovementListener);
-		this.addMouseListener(this.mouseButtonListener);
-		this.setFixedCellHeight(-1);
-		this.deleteButtonOnly = new ArrayList<MListButton>();
-		this.deleteButtonOnly.add(this.deleteButton);
-		this.editAndDeleteButtons = new ArrayList<MListButton>();
-		this.editAndDeleteButtons.add(this.editButton);
-		this.editAndDeleteButtons.add(this.deleteButton);
-	}
+    private List<MListButton> deleteButtonList = Arrays.<MListButton>asList(deleteButton);
 
-	protected String getRowName(Object rowObject) {
-		return null;
-	}
+    public int lastMousePositionCellIndex = 0;
 
-	@Override
-	public void setCellRenderer(ListCellRenderer cellRenderer) {
-		if (this.ren == null) {
-			super.setCellRenderer(cellRenderer);
-		} else {
-			this.ren.setContentRenderer(cellRenderer);
-		}
-	}
 
-	protected void handleAdd() {
-		if (this.getSelectedValue() instanceof MListItem) {
-			MListItem item = (MListItem) this.getSelectedValue();
-			item.handleEdit();
-		}
-	}
+    private MouseMotionListener mouseMovementListener = new MouseMotionAdapter() {
 
-	protected void handleDelete() {
-		if (this.getSelectedValue() instanceof MListItem) {
-			MListItem item = (MListItem) this.getSelectedValue();
-			item.handleDelete();
-		}
-	}
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            handleMouseMoved();
+        }
+    };
 
-	protected void handleEdit() {
-		if (this.getSelectedValue() instanceof MListItem) {
-			MListItem item = (MListItem) this.getSelectedValue();
-			item.handleEdit();
-		}
-	}
+    private MouseListener mouseButtonListener = new MouseAdapter() {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            MList.this.mouseDown = true;
+        }
 
-	private void handleMouseClick(MouseEvent e) {
-		for (MListButton button : this.getButtons(this.locationToIndex(e
-				.getPoint()))) {
-			if (button.getBounds().contains(e.getPoint())) {
-				button.getActionListener().actionPerformed(
-						new ActionEvent(button, ActionEvent.ACTION_PERFORMED,
-								button.getName()));
-				return;
-			}
-		}
-	}
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            MList.this.handleMouseClick(e);
+            MList.this.mouseDown = false;
+        }
 
-	@Override
-	public boolean getScrollableTracksViewportWidth() {
-		return true;
-	}
+        @Override
+        public void mouseExited(MouseEvent event) {
+            // leave the component cleanly
+            MList.this.repaint();
+        }
+    };
 
-	protected List<MListButton> getButtons(Object value) {
-		if (value instanceof MListSectionHeader) {
-			return this.getSectionButtons((MListSectionHeader) value);
-		} else if (value instanceof MListItem) {
-			return this.getListItemButtons((MListItem) value);
-		} else {
-			return Collections.emptyList();
-		}
-	}
+    public MList() {
+        ListCellRenderer renderer = this.getCellRenderer();
+        this.ren = new MListCellRenderer();
+        this.ren.setContentRenderer(renderer);
+        super.setCellRenderer(this.ren);
+        this.addMouseMotionListener(this.mouseMovementListener);
+        this.addMouseListener(this.mouseButtonListener);
+        attachedListenersForCacheResetting();
+    }
 
-	protected List<MListButton> getSectionButtons(MListSectionHeader header) {
-		List<MListButton> buttons = new ArrayList<MListButton>();
-		if (header.canAdd()) {
-			buttons.add(this.addButton);
-		}
-		return buttons;
-	}
+    private void attachedListenersForCacheResetting() {
+        addHierarchyListener(new HierarchyListener() {
 
-	protected List<MListButton> getListItemButtons(MListItem item) {
-		if (item.isDeleteable()) {
-			if (item.isEditable()) {
-				return this.editAndDeleteButtons;
-			} else {
-				return this.deleteButtonOnly;
-			}
-		}
-		return Collections.emptyList();
-	}
+            private boolean showing = isShowing();
 
-	protected Color getItemBackgroundColor(MListItem item) {
-		return itemBackgroundColor;
-	}
+            public void hierarchyChanged(HierarchyEvent e) {
+                if (isShowing() != showing) {
+                    showing = isShowing();
+                    clearCellHeightCache();
+                }
+            }
+        });
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                clearCellHeightCache();
+            }
 
-	public class MListCellRenderer implements ListCellRenderer {
-		private ListCellRenderer contentRenderer;
-		private DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
+            public void componentShown(ComponentEvent e) {
+                clearCellHeightCache();
+            }
+        });
+    }
 
-		public Component getListCellRendererComponent(JList list, Object value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			// We now modify the component so that it has a nice border and
-			// background
-			if (value instanceof MListSectionHeader) {
-				JLabel label = (JLabel) this.defaultListCellRenderer
-						.getListCellRendererComponent(list, " ", index,
-								isSelected, cellHasFocus);
-				label.setBorder(BorderFactory.createCompoundBorder(MList.this
-						.createPaddingBorder(list, " ", index, isSelected,
-								cellHasFocus), BorderFactory.createEmptyBorder(
-						2, 2, 2, 2)));
-				return label;
-			}
-			JComponent component = (JComponent) this.contentRenderer
-					.getListCellRendererComponent(list, value, index,
-							isSelected, cellHasFocus);
-			component.setOpaque(true);
-			if (value instanceof MListItem) {
-				Border border = BorderFactory.createCompoundBorder(MList.this
-						.createPaddingBorder(list, value, index, isSelected,
-								cellHasFocus), MList.this.createListItemBorder(
-						list, value, index, isSelected, cellHasFocus));
-				int buttonSpan = MList.this.getButtons(value).size()
-						* (BUTTON_DIMENSION + 2) + BUTTON_MARGIN * 2;
-				border = BorderFactory.createCompoundBorder(border,
-						BorderFactory.createEmptyBorder(1, 1, 1, buttonSpan));
-				component.setBorder(border);
-				if (!isSelected) {
-					component.setBackground(MList.this
-							.getItemBackgroundColor((MListItem) value));
-				}
-			}
-			if (isSelected) {
-				component.setBackground(list.getSelectionBackground());
-			}
-			return component;
-		}
+    /**
+     * The ListUI caches cell heights.  Setting a fixed height and then clearing the fixed height resets this cache.
+     */
+    protected void clearCellHeightCache() {
+        setFixedCellHeight(10);
+        setFixedCellHeight(-1);
+    }
 
-		public void setContentRenderer(ListCellRenderer renderer) {
-			this.contentRenderer = renderer;
-		}
-	}
 
-	protected Border createPaddingBorder(JList list, Object value, int index,
-			boolean isSelected, boolean cellHasFocus) {
-		int bottomMargin = 1;
-		if (list.getFixedCellHeight() == -1) {
-			if (this.getModel().getSize() > index + 1) {
-				if (this.getModel().getElementAt(index + 1) instanceof MListSectionHeader) {
-					bottomMargin = 20;
-				}
-			}
-		}
-		return BorderFactory.createMatteBorder(1, 1, bottomMargin, 1,
-				Color.WHITE);
-	}
+    private void handleMouseMoved() {
+        if (MList.this.getModel().getSize() > 0) {
+            Point pt = MList.this.getMousePosition();
+            // more efficient than repainting the whole component every time
+            // the mouse moves
+            if (pt != null) {
+                int index = MList.this.locationToIndex(pt);
+                // only repaint all the cells the mouse has moved over
+                MList.this.repaint(MList.this.getCellBounds(Math.min(index, lastMousePositionCellIndex), Math.max(index, lastMousePositionCellIndex)));
+                lastMousePositionCellIndex = index;
+            }
+            else {
+                MList.this.repaint();
+                lastMousePositionCellIndex = 0;
+            }
+        }
+    }
 
-	protected Border createListItemBorder(JList list, Object value, int index,
-			boolean isSelected, boolean cellHasFocus) {
-		return BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY);
-	}
+    protected String getRowName(Object rowObject) {
+        return null;
+    }
 
-	private List<MListButton> getButtons(int index) {
-		if (index < 0) {
-			return Collections.emptyList();
-		}
-		Object obj = this.getModel().getElementAt(index);
-		List<MListButton> buttons = this.getButtons(obj);
-		Rectangle rowBounds = this.getCellBounds(index, index);
-		if (obj instanceof MListSectionHeader) {
-			MListSectionHeader section = (MListSectionHeader) obj;
-			Rectangle nameBounds = this.getGraphics().getFontMetrics(
-					SECTION_HEADER_FONT).getStringBounds(section.getName(),
-					this.getGraphics()).getBounds();
-			int x = 7 + nameBounds.width + 2;
-			for (MListButton button : buttons) {
-				button.setBounds(new Rectangle(x, rowBounds.y + 2,
-						BUTTON_DIMENSION, BUTTON_DIMENSION));
-				x += BUTTON_DIMENSION;
-				x += 2;
-				button.setRowObject(obj);
-			}
-		} else if (obj instanceof MListItem) {
-			int x = rowBounds.width - 2;
-			for (MListButton button : buttons) {
-				x -= BUTTON_DIMENSION;
-				x -= 2;
-				button.setBounds(new Rectangle(x, rowBounds.y + 2,
-						BUTTON_DIMENSION, BUTTON_DIMENSION));
-				button.setRowObject(obj);
-			}
-		}
-		return buttons;
-	}
+    @Override
+    public void setCellRenderer(ListCellRenderer cellRenderer) {
+        if (this.ren == null) {
+            super.setCellRenderer(cellRenderer);
+        }
+        else {
+            this.ren.setContentRenderer(cellRenderer);
+        }
+    }
 
-	@Override
-	public String getToolTipText(MouseEvent event) {
-		Point mousePos = this.getMousePosition();
-		if (mousePos == null) {
-			return null;
-		}
-		for (MListButton button : this.getButtons(this
-				.locationToIndex(mousePos))) {
-			if (button.getBounds().contains(mousePos)) {
-				return button.getName();
-			}
-		}
-		int index = this.locationToIndex(event.getPoint());
-		if (index == -1) {
-			return null;
-		}
-		Object val = this.getModel().getElementAt(index);
-		if (val instanceof MListItem) {
-			return ((MListItem) val).getTooltip();
-		}
-		return null;
-	}
+    protected void handleAdd() {
+        if (this.getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) this.getSelectedValue();
+            item.handleEdit();
+        }
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Color oldColor = g.getColor();
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		// Paint buttons
-		Stroke oldStroke = g2.getStroke();
-		Rectangle clipBound = g.getClipBounds();
-		boolean paintedSomeRows = false;
-		boolean useQuartz = Boolean.getBoolean(System
-				.getProperty("-Dapple.awt.graphics.UseQuartz"));
-		for (int index = 0; index < this.getModel().getSize(); index++) {
-			Rectangle rowBounds = this.getCellBounds(index, index);
-			if (!rowBounds.intersects(clipBound)) {
-				if (paintedSomeRows) {
-					break;
-				}
-				continue;
-			}
-			paintedSomeRows = true;
-			List<MListButton> buttons = this.getButtons(index);
-			int endOfButtonRun = -1;
-			for (MListButton button : buttons) {
-				Rectangle buttonBounds = button.getBounds();
-				if (buttonBounds.intersects(clipBound)) {
-					g2.setColor(this.getButtonColor(button));
-					if (!useQuartz) {
-						g2
-								.fillOval(buttonBounds.x, buttonBounds.y,
-										buttonBounds.width + 1,
-										buttonBounds.height + 1);
-					} else {
-						g2.fillOval(buttonBounds.x, buttonBounds.y,
-								buttonBounds.width, buttonBounds.height);
-					}
-					g2.setColor(Color.WHITE);
-					Stroke curStroke = g2.getStroke();
-					g2.setStroke(BUTTON_STROKE);
-					button.paintButtonContent(g2);
-					g2.setStroke(curStroke);
-					// g2.translate(-buttonBounds.x, -buttonBounds.y);
-				}
-				endOfButtonRun = buttonBounds.x + buttonBounds.width
-						+ BUTTON_MARGIN;
-			}
-			if (this.getModel().getElementAt(index) instanceof MListSectionHeader) {
-				MListSectionHeader header = (MListSectionHeader) this
-						.getModel().getElementAt(index);
-				if (this.isSelectedIndex(index)) {
-					g2.setColor(this.getSelectionForeground());
-				} else {
-					g2.setColor(Color.GRAY);
-				}
-				int indent = 4;
-				int baseLine = rowBounds.y
-						+ (BUTTON_DIMENSION + BUTTON_MARGIN - g
-								.getFontMetrics().getHeight()) / 2
-						+ g.getFontMetrics().getAscent();
-				Font oldFont = g2.getFont();
-				g2.setFont(SECTION_HEADER_FONT);
-				g2.drawString(header.getName(), 1 + indent, baseLine);
-				g2.setFont(oldFont);
-				if (endOfButtonRun == -1) {
-					endOfButtonRun = g2.getFontMetrics(SECTION_HEADER_FONT)
-							.getStringBounds(header.getName(), g2).getBounds().width
-							+ BUTTON_MARGIN * 2;
-				}
-			}
-		}
-		g.setColor(oldColor);
-		g2.setStroke(oldStroke);
-	}
+    protected void handleDelete() {
+        if (this.getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) this.getSelectedValue();
+            item.handleDelete();
+        }
+    }
 
-	private Color getButtonColor(MListButton button) {
-		Point pt = this.getMousePosition();
-		if (pt == null) {
-			return button.getBackground();
-		}
-		if (button.getBounds().contains(pt)) {
-			if (this.mouseDown) {
-				return Color.DARK_GRAY;
-			} else {
-				return button.getRollOverColor();
-			}
-		}
-		return button.getBackground();
-	}
+    protected void handleEdit() {
+        if (this.getSelectedValue() instanceof MListItem) {
+            MListItem item = (MListItem) this.getSelectedValue();
+            item.handleEdit();
+        }
+    }
 
-	public static class TestItem implements MListItem {
-		private String s;
+    private void handleMouseClick(MouseEvent e) {
+        for (MListButton button : this.getButtons(this.locationToIndex(e.getPoint()))) {
+            if (button.getBounds().contains(e.getPoint())) {
+                button.getActionListener().actionPerformed(new ActionEvent(button, ActionEvent.ACTION_PERFORMED, button.getName()));
+                return;
+            }
+        }
+    }
 
-		public TestItem(String s) {
-			this.s = s;
-		}
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return true;
+    }
 
-		@Override
-		public String toString() {
-			return this.s;
-		}
+    protected List<MListButton> getButtons(Object value) {
+        if (value instanceof MListSectionHeader) {
+            return this.getSectionButtons((MListSectionHeader) value);
+        }
+        else if (value instanceof MListItem) {
+            return this.getListItemButtons((MListItem) value);
+        }
+        else {
+            return Collections.emptyList();
+        }
+    }
 
-		public boolean isEditable() {
-			return true;
-		}
+    protected List<MListButton> getSectionButtons(MListSectionHeader header) {
+        List<MListButton> buttons = new ArrayList<MListButton>();
+        if (header.canAdd()) {
+            buttons.add(this.addButton);
+        }
+        return buttons;
+    }
 
-		public void handleEdit() {
-		}
+    protected List<MListButton> getListItemButtons(MListItem item) {
+        if (item.isDeleteable()) {
+            if (item.isEditable()) {
+                return this.editAndDeleteButtonList;
+            }
+            else {
+                return this.deleteButtonList;
+            }
+        }
+        return Collections.emptyList();
+    }
 
-		public boolean isDeleteable() {
-			return true;
-		}
+    protected Color getItemBackgroundColor(MListItem item) {
+        return itemBackgroundColor;
+    }
 
-		public boolean handleDelete() {
-			return false;
-		}
+    public class MListCellRenderer implements ListCellRenderer {
 
-		public String getTooltip() {
-			return "tooltip";
-		}
-	}
+        private ListCellRenderer contentRenderer;
 
-	public static class TestHeader implements MListSectionHeader {
-		public String getName() {
-			return "This is a test section";
-		}
+        private DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 
-		public boolean canAdd() {
-			return true;
-		}
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            // We now modify the component so that it has a nice border and
+            // background
+            if (value instanceof MListSectionHeader) {
+                JLabel label = (JLabel) this.defaultListCellRenderer.getListCellRendererComponent(list, " ", index, isSelected, cellHasFocus);
+                label.setBorder(BorderFactory.createCompoundBorder(MList.this.createPaddingBorder(list, " ", index, isSelected, cellHasFocus), BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+                return label;
+            }
+            JComponent component = (JComponent) this.contentRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            component.setOpaque(true);
+            if (value instanceof MListItem) {
+                Border border = BorderFactory.createCompoundBorder(MList.this.createPaddingBorder(list, value, index, isSelected, cellHasFocus), MList.this.createListItemBorder(list, value, index, isSelected, cellHasFocus));
+                int buttonSpan = MList.this.getButtons(value).size() * (BUTTON_DIMENSION + 2) + BUTTON_MARGIN * 2;
+                border = BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, buttonSpan));
+                component.setBorder(border);
+                if (!isSelected) {
+                    component.setBackground(MList.this.getItemBackgroundColor((MListItem) value));
+                }
+            }
+            if (isSelected) {
+                component.setBackground(list.getSelectionBackground());
+            }
+            return component;
+        }
 
-		public void handleAdd() {
-		}
-	}
+        public void setContentRenderer(ListCellRenderer renderer) {
+            this.contentRenderer = renderer;
+        }
+    }
 
-	public static void main(String[] args) {
-		MList list = new MList();
-		JFrame frame = new JFrame();
-		frame.setContentPane(list);
-		frame.setVisible(true);
-		list.setListData(new Object[] { new TestHeader(), new TestItem("A"),
-				new TestItem("B"), new TestHeader(), new TestItem("C"),
-				"NOT MLI" });
-	}
+    protected Border createPaddingBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        int bottomMargin = 1;
+        if (list.getFixedCellHeight() == -1) {
+            if (this.getModel().getSize() > index + 1) {
+                if (this.getModel().getElementAt(index + 1) instanceof MListSectionHeader) {
+                    bottomMargin = 20;
+                }
+            }
+        }
+        return BorderFactory.createMatteBorder(1, 1, bottomMargin, 1, Color.WHITE);
+    }
+
+    protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        return BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY);
+    }
+
+    private List<MListButton> getButtons(int index) {
+        if (index < 0) {
+            return Collections.emptyList();
+        }
+        Object obj = this.getModel().getElementAt(index);
+        List<MListButton> buttons = this.getButtons(obj);
+        Rectangle rowBounds = this.getCellBounds(index, index);
+        if (rowBounds != null) {
+            if (obj instanceof MListSectionHeader) {
+                MListSectionHeader section = (MListSectionHeader) obj;
+                Rectangle nameBounds = this.getGraphics().getFontMetrics(SECTION_HEADER_FONT).getStringBounds(section.getName(), this.getGraphics()).getBounds();
+                int x = 7 + nameBounds.width + 2;
+                for (MListButton button : buttons) {
+                    button.setBounds(new Rectangle(x, rowBounds.y + 2, BUTTON_DIMENSION, BUTTON_DIMENSION));
+                    x += BUTTON_DIMENSION;
+                    x += 2;
+                    button.setRowObject(obj);
+                }
+            }
+            else if (obj instanceof MListItem) {
+                int x = rowBounds.width - 2;
+                for (MListButton button : buttons) {
+                    x -= BUTTON_DIMENSION;
+                    x -= 2;
+                    button.setBounds(new Rectangle(x, rowBounds.y + 2, BUTTON_DIMENSION, BUTTON_DIMENSION));
+                    button.setRowObject(obj);
+                }
+            }
+        }
+        return buttons;
+    }
+
+    @Override
+    public String getToolTipText(MouseEvent event) {
+        Point mousePos = this.getMousePosition();
+        if (mousePos == null) {
+            return null;
+        }
+        for (MListButton button : this.getButtons(this.locationToIndex(mousePos))) {
+            if (button.getBounds().contains(mousePos)) {
+                return button.getName();
+            }
+        }
+        int index = this.locationToIndex(event.getPoint());
+        if (index == -1) {
+            return null;
+        }
+        Object val = this.getModel().getElementAt(index);
+        if (val instanceof MListItem) {
+            return ((MListItem) val).getTooltip();
+        }
+        return null;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Color oldColor = g.getColor();
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Paint buttons
+        Stroke oldStroke = g2.getStroke();
+        Rectangle clipBound = g.getClipBounds();
+        for (int index = 0; index < this.getModel().getSize(); index++) {
+            Rectangle rowBounds = this.getCellBounds(index, index);
+            if (rowBounds != null) {
+                if (rowBounds.intersects(clipBound)) {
+                    paintRow(g2, clipBound, index, rowBounds);
+                }
+            }
+        }
+        g.setColor(oldColor);
+        g2.setStroke(oldStroke);
+    }
+
+    private void paintRow(Graphics2D g2, Rectangle clipBound, int index, Rectangle rowBounds) {
+        List<MListButton> buttons = this.getButtons(index);
+        int endOfButtonRun = -1;
+        for (MListButton button : buttons) {
+            endOfButtonRun = paintButton(g2, clipBound, endOfButtonRun, button);
+        }
+        if (this.getModel().getElementAt(index) instanceof MListSectionHeader) {
+            paintSectionHeader(g2, index, rowBounds, endOfButtonRun);
+        }
+    }
+
+    private void paintSectionHeader(Graphics2D g2, int index, Rectangle rowBounds, int endOfButtonRun) {
+        MListSectionHeader header = (MListSectionHeader) this.getModel().getElementAt(index);
+        if (this.isSelectedIndex(index)) {
+            g2.setColor(this.getSelectionForeground());
+        }
+        else {
+            g2.setColor(Color.GRAY);
+        }
+        int baseLine = rowBounds.y + (BUTTON_DIMENSION + BUTTON_MARGIN - g2.getFontMetrics().getHeight()) / 2 + g2.getFontMetrics().getAscent();
+        Font oldFont = g2.getFont();
+        g2.setFont(SECTION_HEADER_FONT);
+        g2.drawString(header.getName(), 5, baseLine);
+        g2.setFont(oldFont);
+    }
+
+    private int paintButton(Graphics2D g2, Rectangle clipBound, int endOfButtonRun, MListButton button) {
+        Rectangle buttonBounds = button.getBounds();
+        if (buttonBounds != null && buttonBounds.intersects(clipBound)) {
+            g2.setColor(this.getButtonColor(button));
+            boolean useQuartz = Boolean.getBoolean(System.getProperty("-Dapple.awt.graphics.UseQuartz"));
+            if (!useQuartz) {
+                g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width + 1, buttonBounds.height + 1);
+            }
+            else {
+                g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
+            }
+            g2.setColor(Color.WHITE);
+            Stroke curStroke = g2.getStroke();
+            g2.setStroke(BUTTON_STROKE);
+            button.paintButtonContent(g2);
+            g2.setStroke(curStroke);
+            endOfButtonRun = buttonBounds.x + buttonBounds.width + BUTTON_MARGIN;
+
+        }
+        return endOfButtonRun;
+    }
+
+    private Color getButtonColor(MListButton button) {
+        Point pt = this.getMousePosition();
+        if (pt == null) {
+            return button.getBackground();
+        }
+        if (button.getBounds().contains(pt)) {
+            if (this.mouseDown) {
+                return Color.DARK_GRAY;
+            }
+            else {
+                return button.getRollOverColor();
+            }
+        }
+        return button.getBackground();
+    }
+
 }
