@@ -208,6 +208,8 @@ public class MetricsPanel extends JPanel {
 
     private void createBasicMetrics() {
         List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
+        metrics.add(new AxiomCount(getOWLModelManager().getOWLOntologyManager()));
+        metrics.add(new LogicalAxiomCount(getOWLModelManager().getOWLOntologyManager()));
         metrics.add(new ReferencedClassCount(getOWLModelManager().getOWLOntologyManager()));
         metrics.add(new ReferencedObjectPropertyCount(getOWLModelManager().getOWLOntologyManager()));
         metrics.add(new ReferencedDataPropertyCount(getOWLModelManager().getOWLOntologyManager()));
