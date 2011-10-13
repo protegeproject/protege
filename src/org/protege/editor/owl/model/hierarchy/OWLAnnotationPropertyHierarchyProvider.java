@@ -187,7 +187,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         // the LHS of a subproperty axiom
         // Assume the property is a root property to begin with
         boolean isRoot = getParents(prop).isEmpty();
-        if (isRoot && containsReference(prop)) {
+        if (isRoot && (containsReference(prop) || prop.isBuiltIn())) {
             return true;
         }
         else {
