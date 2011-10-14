@@ -107,6 +107,21 @@ public interface OWLModelManager extends ModelManager {
     @Deprecated
     void saveAs() throws OWLOntologyStorageException;
 
+    /**
+     * Checks if the ontology has been changed since it was loaded or last saved.
+     * @param ontology
+     * @return
+     */
+    boolean isDirty(OWLOntology ontology);
+    
+    /**
+     * This call is generally not recommended but there are occasions where 
+     * a plugin knows that an ontology has been saved even though it has not been
+     * saved through the OWLModelManager save interface.
+     * 
+     * @param ontology
+     */
+    void setClean(OWLOntology ontology);
 
     /**
      * Gets the ontologies that are loaded into this model.
