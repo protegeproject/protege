@@ -264,6 +264,14 @@ public class OWLModelManagerImpl extends AbstractModelManager
     public boolean isDirty() {
         return !dirtyOntologies.isEmpty();
     }
+    
+    public boolean isDirty(OWLOntology ontology) {
+        return dirtyOntologies.contains(ontology);
+    }
+    
+    public void setClean(OWLOntology ontology) {
+        dirtyOntologies.remove(ontology);
+    }
 
 
     public ProtegeOWLOntologyManager getOWLOntologyManager() {
