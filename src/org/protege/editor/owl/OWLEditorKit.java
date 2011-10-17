@@ -348,6 +348,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         super.dispose();
         if (registration != null) {
             registration.unregister();
+            registration = null;
         }
     }
 }
