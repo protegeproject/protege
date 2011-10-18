@@ -113,8 +113,10 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         // remove before adding in case the user is moving to the same class (or we could check)
         changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
                 					df.getOWLSubClassOfAxiom(child, fromParent)));
-        changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                 df.getOWLSubClassOfAxiom(child, toParent)));
+        if (!df.getOWLThing().equals(toParent)) {
+            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
+                                     df.getOWLSubClassOfAxiom(child, toParent)));
+        }
         getOWLModelManager().applyChanges(changes);
     }
 
@@ -198,7 +200,9 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager mngr = getOWLModelManager();
             OWLDataFactory df = mngr.getOWLDataFactory();
-            changes.add(new AddAxiom(mngr.getActiveOntology(), df.getOWLSubClassOfAxiom(creationSet.getOWLEntity(), parentCls)));
+            if (!df.getOWLThing().equals(parentCls)) {
+                changes.add(new AddAxiom(mngr.getActiveOntology(), df.getOWLSubClassOfAxiom(creationSet.getOWLEntity(), parentCls)));
+            }
             mngr.applyChanges(changes);
             // Select the new class
             getTree().setSelectedOWLObject(creationSet.getOWLEntity());
