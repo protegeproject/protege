@@ -98,8 +98,13 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             return;
         }
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
         changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                 getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(child, parent)));
+                                 df.getOWLDeclarationAxiom(child)));
+        if (!df.getOWLThing().equals(parent)) {
+            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
+                                     df.getOWLSubClassOfAxiom(child, parent)));
+        }
         getOWLModelManager().applyChanges(changes);
     }
 
