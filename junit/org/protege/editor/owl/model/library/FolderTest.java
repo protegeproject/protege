@@ -40,7 +40,7 @@ public class FolderTest extends TestCase {
         if (TEST_DIR.exists()) {
         	removeDirectory(TEST_DIR);
         }
-        TEST_DIR.mkdir();
+        TEST_DIR.mkdirs();
     }
     
     public void testBaseline() throws IOException {
