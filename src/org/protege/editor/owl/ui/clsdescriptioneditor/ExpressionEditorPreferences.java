@@ -61,7 +61,7 @@ public class ExpressionEditorPreferences {
         private void load() {
             Preferences prefs = getPreferences();
             useExpressionCompletion = prefs.getBoolean(USE_EXPRESSION_COMPLETION_KEY, true);
-            checkDelay = prefs.getInt(CHECK_DELAY_KEY, 500);
+            checkDelay = prefs.getInt(CHECK_DELAY_KEY, 120);
         }
 
 
