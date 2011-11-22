@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,8 +31,8 @@ public class Parser {
 	private DocumentBuilderFactory factory;
 	
 	private String pluginDirectory;
-    private Properties frameworkProperties = null;
-    private Properties systemProperties = null;
+    private Map<String, String> frameworkProperties = null;
+    private Map<String, String> systemProperties = null;
     private List<DirectoryWithBundles> directories = new ArrayList<DirectoryWithBundles>();
     
     public Parser() {
@@ -41,11 +43,11 @@ public class Parser {
         return pluginDirectory;
     }
     
-    public Properties getFrameworkProperties() {
+    public Map<String,String> getFrameworkProperties() {
         return frameworkProperties;
     }
 
-    public Properties getSystemProperties() {
+    public Map<String, String> getSystemProperties() {
         return systemProperties;
     }
 
@@ -106,8 +108,8 @@ public class Parser {
         }
     }
     
-    private Properties readProperties(NodeList nodes) {
-        Properties properties = new Properties();
+    private Map<String, String> readProperties(NodeList nodes) {
+        Map<String, String> properties = new TreeMap<String, String>();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node propertyNode = nodes.item(i);
             if (propertyNode instanceof Element && propertyNode.getNodeName().equals(PROPERTY)) {
