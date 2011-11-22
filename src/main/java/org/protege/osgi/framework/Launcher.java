@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class Launcher {
     public static final String PROTEGE_DIR_PROPERTY = "protege.dir";
     public static String PROTEGE_DIR = System.getProperty(PROTEGE_DIR_PROPERTY);
 
-    private Properties frameworkProperties;
+    private Map<String, String> frameworkProperties;
     private List<DirectoryWithBundles> directories;
     private String     factoryClass;
     private Framework  framework;
@@ -37,7 +38,7 @@ public class Launcher {
         parseConfig(config);
         locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
-        frameworkProperties.setProperty("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
+        frameworkProperties.put("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
     }
     
     public Framework getFramework() {
@@ -61,11 +62,11 @@ public class Launcher {
     }
     
     private void setSystemProperties(Parser p) {
-        Properties systemProperties = p.getSystemProperties();
+        Map<String, String> systemProperties = p.getSystemProperties();
         System.setProperty("org.protege.plugin.dir", p.getPluginDirectory());
         System.setProperty("org.protege.osgi.launcherHandlesExit", "True");
-        for (Entry<Object, Object> entry : systemProperties.entrySet()) {
-            System.setProperty((String) entry.getKey(), (String) entry.getValue());
+        for (Entry<String, String> entry : systemProperties.entrySet()) {
+            System.setProperty(entry.getKey(), entry.getValue());
         }
     }
 
