@@ -1,0 +1,21 @@
+Bundle-Name: Protege Editor Framework
+Bundle-SymbolicName: ${plugin};singleton:=true
+Bundle-ManifestVersion: 2
+Bundle-Version: ${bundle.version}
+Built-By: ${user.name}
+Bundle-Description: Some common libraries
+Bundle-Vendor: Protege Development Team (First working version written a
+ t the University of Manchester by Matthew Horridge)
+Bundle-ContactAddress: p4-feedback@lists.stanford.edu
+Bundle-DocURL: http://protege.stanford.edu
+Bundle-Category: protege
+Bundle-Activator: org.protege.editor.core.ProtegeApplication
+Update-Url: http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml
+Bundle-Description: Generic Ontology Editor Bundle
+Bundle-Category: protege
+Excluded-Imports: com.sun.*,junit.*
+Excluded-Exports: lib
+Import-Template: org.eclipse.core.runtime;registry="split"
+Export-Template: org.onemind.*;version="1.2.0",
+ org.coode.mdock.*;version="1.0.0",
+ org.jdesktop.*
