@@ -175,9 +175,12 @@ public class BundleManager {
     }
     
     public static boolean isSingleton(Bundle b) {
-        StringBuffer singleton = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
-        singleton.append(":=true");
-        return ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton.toString());
+        StringBuffer singleton1 = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
+        singleton1.append(":=true");
+        StringBuffer singleton2 = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
+        singleton2.append(":=\"true\"");
+        return ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton1.toString()) ||
+                ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton2.toString());
     }
     
     public static String getNiceBundleName(Bundle b) {
