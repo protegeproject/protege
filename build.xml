@@ -39,6 +39,8 @@
      <tstamp>
        <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
      </tstamp>
+     <property name="bundle.version"
+               value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
@@ -68,7 +70,7 @@
      -->
    <target name = "checkProtegeLibs" depends="init">
        <echo message="**********************************************************"/>
-	   <echo message="Using Protege Home = ${protege.home}"/>
+       <echo message="Using Protege Home = ${protege.home}"/>
        <echo message="Using Java Version = ${ant.java.version}" />
        <echo message="Using OSGi Library = ${protege.osgi}"/>
        <echo message="**********************************************************"/>
@@ -93,7 +95,7 @@
         viewconfig and the plugin.xml.  This will be sufficient in
         many cases. 
      -->
-   <target name="copy.resources" depends="build.manifest">
+   <target name="copy.resources">
      <copy todir="${classes}">
        <fileset dir="${src}">
          <include name="**/*"/>
@@ -109,10 +111,6 @@
            <exclude name="build.xml"/>
        </fileset>
      </copy>
-   	 <!-- the manifest doesn't belong here but this is good for IDE's -->
-     <mkdir dir="${classes}/META-INF"/>  
-     <copy todir="${classes}/META-INF"   
-           file = "${manifest}"/>
    </target>
 
 
@@ -137,22 +135,29 @@
      </javac>
    </target>
 
-   <target name="build.manifest">
+   <target name="bundlor" depends="copy.resources, compile">
+      <java classname="com.springsource.bundlor.commandline.Bundlor"
+            failonerror="true" fork="true">
+        <classpath>
+          <pathelement path="${bundlor}"/>
+        </classpath>
+        <jvmarg value="-Dbundle.version=${bundle.version}"/>
+        <jvmarg value="-Duser.name=${user.name}"/>
+        <jvmarg value="-Dplugin=${plugin}"/>
+        <arg value = "-i"/> <arg value="${classes}"/>
+        <arg value = "-m"/> <arg value="./META-INF/manifest.bundlor"/>
+        <arg value = "-o"/> <arg value = "."/>
+      </java>
      <copy tofile="${manifest}" 
-           file="META-INF/MANIFEST-BUILD.MF" overwrite="true"/>
-     <manifest file="${manifest}" 
-               mode = "update">
-        <attribute name="Built-By"       value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
-        <attribute name="Build-Number"   value="${core.build.number}"/>
-     </manifest>
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources">
+   <target name = "jar" depends = "compile, copy.resources, bundlor">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
    </target>
+
 
    <target name = "install" depends = "jar">
      <!-- flush cache -->
@@ -196,7 +201,7 @@
         </java>
     </target>
 
-	
+    
    <target name = "clean">
      <delete dir = "${build}"/>
    </target>
@@ -230,7 +235,7 @@
              location="${protege.plugins}/org.semanticweb.owl.owlapi.jar"/>
 
    <property name="owl.editor.jar"
-	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+         location="${protege.plugins}/org.protege.editor.owl.jar"/>
 
 
 
