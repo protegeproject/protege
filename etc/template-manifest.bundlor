@@ -1,0 +1,12 @@
+Bundle-Name: Common Protege Libraries
+Bundle-Description: Some common libraries
+Bundle-Vendor: Protege Development Team
+Bundle-ContactAddress: p4-feedback@lists.stanford.edu
+Bundle-DocURL: http://protege.stanford.edu
+Bundle-Category: protege
+Bundle-SymbolicName: ${plugin};singleton:=true
+Bundle-ManifestVersion: 2
+Bundle-Version: ${bundle.version}
+Built-By: ${user.name}
+Excluded-Imports: com.sun.*
+Excluded-Exports: lib
