@@ -45,7 +45,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     @Override
     protected Object getValueKey(Object value) {
-        return getAnnotationFromListValue(value);
+        return extractOWLAnnotationFromCellValue(value);
     }
 
 
@@ -62,7 +62,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     protected void fillPage(Page page, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Color foreground = isSelected ? table.getSelectionForeground() : table.getForeground();
         Color background = isSelected ? table.getSelectionBackground() : table.getBackground();
-        renderAnnotation(page, value, foreground, background, isSelected);
+        renderCellValue(page, value, foreground, background, isSelected);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     protected void fillPage(final Page page, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Color foreground = isSelected ? list.getSelectionForeground() : list.getForeground();
         Color background = isSelected ? list.getSelectionBackground() : list.getBackground();
-        renderAnnotation(page, value, foreground, background, isSelected);
+        renderCellValue(page, value, foreground, background, isSelected);
     }
 
     @Override
@@ -99,8 +99,17 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private void renderAnnotation(Page page, Object value, Color foreground, Color background, boolean isSelected) {
-        OWLAnnotation annotation = getAnnotationFromListValue(value);
+    /**
+     * Renderes a list or table cell value if the value contains an OWLAnnotation.
+     * @param page The page that the value will be rendered into.
+     * @param value The value that may or may not contain an OWLAnnotation.  The annotation will be extracted from
+     * this value.
+     * @param foreground The default foreground color.
+     * @param background The default background color.
+     * @param isSelected Whether or not the cell containing the value is selected.
+     */
+    private void renderCellValue(Page page, Object value, Color foreground, Color background, boolean isSelected) {
+        OWLAnnotation annotation = extractOWLAnnotationFromCellValue(value);
         if (annotation != null) {
             renderAnnotationProperty(page, annotation, foreground, background, isSelected);
             renderAnnotationValue(page, annotation, foreground, background, isSelected);
@@ -111,10 +120,10 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     /**
      * Extracts an OWLAnnotation from the actual value held in a cell in a list or table.
-     * @param value The list or table cell value
+     * @param value The list or table cell value.
      * @return The OWLAnnotation contained within the value.
      */
-    private OWLAnnotation getAnnotationFromListValue(Object value) {
+    protected OWLAnnotation extractOWLAnnotationFromCellValue(Object value) {
         OWLAnnotation annotation = null;
         if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
             annotation = ((AbstractAnnotationsList.AnnotationsListItem) value).getAnnotation();
