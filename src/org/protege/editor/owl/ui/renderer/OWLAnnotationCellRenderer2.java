@@ -38,9 +38,36 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private Pattern URL_PATTERN = Pattern.compile("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]\\b");
 
+    private OWLOntology ontology;
+
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
         this.editorKit = editorKit;
+    }
+
+    /**
+     * Sets a reference ontology to provide a context for the rendering.  The renderer may render certain things differently
+     * depending on whether this is equal to the active ontology or not.
+     * @param ontology The ontology.
+     */
+    public void setReferenceOntology(OWLOntology ontology) {
+        this.ontology = ontology;
+    }
+
+    /**
+     * Clears the reference ontology.
+     * @see {OWLAnnotationCellRenderer2#setOntology()}
+     */
+    public void clearReferenceOntology() {
+        ontology = null;
+    }
+
+    /**
+     * Determines if the reference ontology (if set) is equal to the active ontology.
+     * @return <code>true</code> if the reference ontology is equal to the active ontology, otherwise <code>false</code>.
+     */
+    public boolean isReferenceOntologyActive() {
+        return ontology != null && ontology.equals(editorKit.getOWLModelManager().getActiveOntology());
     }
 
     @Override
@@ -166,7 +193,9 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         Paragraph paragraph = page.addParagraph(rendering);
         Color foreground = getAnnotationPropertyForeground(defaultForeground, isSelected);
         paragraph.setForeground(foreground);
-        paragraph.setBold(true);
+        if (isReferenceOntologyActive()) {
+            paragraph.setBold(true);
+        }
         paragraph.setMarginBottom(4);
     }
 
