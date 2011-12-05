@@ -14,3 +14,7 @@ Excluded-Imports: com.sun.*,javax.jms,javax.mail.*
 Excluded-Exports: lib
 Export-Template: org.apache.log4j.*;version="1.2.14",
  com.jgoodies.looks.*;version="2.2.1"
+Import-Template: javax.*;version="0.0.0",
+ org.w3c.*;version="0.0.0",
+ org.xml.*;version="0.0.0",
+ org.osgi.*;version="0.0.0"
