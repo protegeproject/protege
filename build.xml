@@ -137,7 +137,7 @@
         viewconfig and the plugin.xml.  This will be sufficient in
         many cases. 
      -->
-   <target name="copy.resources" depends="build.manifest">
+   <target name="copy.resources">
      <copy todir="${classes}">
        <fileset dir="${src}">
          <include name="**/*"/>
@@ -156,10 +156,6 @@
        <fileset dir="./icons"/>
        <fileset dir="./resources"/>
      </copy>
-   	 <!-- the manifest doesn't belong here but this is good for IDE's -->
-     <mkdir dir="${classes}/META-INF"/>  
-     <copy todir="${classes}/META-INF"   
-           file = "${manifest}"/>
    </target>
 
 
@@ -185,24 +181,31 @@
      </javac>
    </target>
 
-   <target name="build.manifest">
+   <target name="bundlor" depends="copy.resources, compile">
+      <java classname="com.springsource.bundlor.commandline.Bundlor"
+            failonerror="true" fork="true">
+        <classpath>
+          <pathelement path="${bundlor}"/>
+        </classpath>
+        <jvmarg value="-Dbundle.version=${bundle.version}"/>
+        <jvmarg value="-Duser.name=${user.name}"/>
+        <jvmarg value="-Dplugin=${plugin}"/>
+        <arg value = "-i"/> <arg value="${classes}"/>
+        <arg value = "-m"/> <arg value="./META-INF/manifest.bundlor"/>
+        <arg value = "-o"/> <arg value = "."/>
+      </java>
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
-     <manifest file="${manifest}" 
-               mode = "update">
-        <attribute name="Built-By"       value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${bundle.version}"/>
-        <attribute name="Build-Number"   value="${core.build.number}"/>
-     </manifest>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources">
+
+   <target name = "jar" depends = "compile, bundlor">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
    </target>
 
-   <target name = "orphanAlg" depends="compile, build.manifest">
+   <target name = "orphanAlg" depends="compile,bundlor">
      <jar jarfile  = "${build}/orphanNodesAlg.jar"
           basedir  = "${classes}" 
           manifest = "${build}/manifest.mf"
