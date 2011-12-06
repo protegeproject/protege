@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class PageCache {
 
-    public static final int DEFAULT_CACHE_SIZE = 50;
+    public static final int DEFAULT_CACHE_SIZE = 200;
 
 
     private int cacheSize = DEFAULT_CACHE_SIZE;
