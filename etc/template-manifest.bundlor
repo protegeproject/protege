@@ -10,3 +10,10 @@ Bundle-Version: ${bundle.version}
 Built-By: ${user.name}
 Excluded-Imports: com.sun.*
 Excluded-Exports: lib
+Import-Template: javax.*;version="0.0.0",
+ org.apache.log4j.*;version="1.2.14",
+ org.w3c.*;version="0.0.0",
+ org.xml.*;version="0.0.0",
+ org.semanticweb.owlapi.*;version="3.2.4",
+ org.protege.common.*;version="4.1.0",
+ org.protege.editor.*;version="4.1.0"
