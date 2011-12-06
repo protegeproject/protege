@@ -27,7 +27,9 @@ public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewCompon
     public void initialiseClassView() throws Exception {
         list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
-        add(new JScrollPane(list));
+        JScrollPane comp = new JScrollPane(list);
+        comp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        add(comp);
     }
 
 
