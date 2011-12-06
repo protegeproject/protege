@@ -1,8 +1,6 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -34,6 +32,7 @@ public abstract class Link {
     public abstract void activate(Component component, MouseEvent event);
 
     public abstract boolean isRollOverLink();
+
 
     @Override
     public int hashCode() {
