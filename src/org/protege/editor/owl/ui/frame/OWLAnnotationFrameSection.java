@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.ArrayList;
@@ -120,7 +121,78 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
 
         public int compare(OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
                            OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
-            return owlObjectComparator.compare(o1.getAxiom(), o2.getAxiom());
+            OWLAnnotation annotation1 = o1.getAxiom().getAnnotation();
+            OWLAnnotation annotation2 = o2.getAxiom().getAnnotation();
+            return getAnnotationDifference(annotation1, annotation2);
+        }
+
+        private int getAnnotationDifference(OWLAnnotation annotation1, OWLAnnotation annotation2) {
+            int diff = getAnnotationPropertyDifference(annotation1.getProperty(), annotation2.getProperty());
+            if(diff == 0) {
+                diff = getAnnotationLanguageDifference(annotation1.getValue(), annotation2.getValue());
+            }
+            if(diff == 0) {
+                diff = getAnnotationValueDifference(annotation1.getValue(), annotation2.getValue());
+            }
+            return diff;
+        }
+
+
+        private int getAnnotationPropertyDifference(OWLAnnotationProperty property1, OWLAnnotationProperty property2) {
+            OWLRendererPreferences preferences = OWLRendererPreferences.getInstance();
+            List<IRI> annotationIRIs = preferences.getAnnotationIRIs();
+            int index1 = annotationIRIs.indexOf(property1.getIRI());
+            int index2 = annotationIRIs.indexOf(property2.getIRI());
+            int diff = 0;
+            if (index1 != -1 && index2 != -1) {
+                diff = index1 - index2;
+            }
+            if(diff == 0) {
+                // Labels come first
+                if(property1.isLabel()) {
+                    if(!property2.isLabel()) {
+                        diff = -1;
+                    }
+                }
+                else {
+                    if(property2.isLabel()) {
+                        diff = 1;
+                    }
+                }
+            }
+            if(diff == 0) {
+                diff = owlObjectComparator.compare(property1, property2);
+            }
+            return diff;
+        }
+
+        private int getAnnotationLanguageDifference(OWLAnnotationValue value1, OWLAnnotationValue value2) {
+            int diff = 0;
+            if(value1 instanceof OWLLiteral && value2 instanceof OWLLiteral) {
+                OWLLiteral lit1 = (OWLLiteral) value1;
+                String lang1 = lit1.getLang();
+                OWLLiteral lit2 = (OWLLiteral) value2;
+                String lang2 = lit2.getLang();
+                List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs();
+                int langIndex1 = langs.indexOf(lang1);
+                int langIndex2 = langs.indexOf(lang2);
+                if(langIndex1 == -1) {
+                    diff = 1;
+                }
+                else if(langIndex2 == -1) {
+                    diff = - 1;
+                }
+                else {
+                    diff = langIndex1 - langIndex2;
+                }
+
+            }
+            return diff;
+        }
+
+        private int getAnnotationValueDifference(OWLAnnotationValue value1, OWLAnnotationValue value2) {
+            return owlObjectComparator.compare(value1, value2);
         }
     }
+
 }
