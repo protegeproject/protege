@@ -1,21 +1,16 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.coode.string.EscapeUtils;
-import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
 import org.protege.editor.owl.ui.renderer.layout.*;
 import org.semanticweb.owlapi.model.*;
-import sun.beans.editors.ColorEditor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,7 +113,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     @Override
     protected int getMaxAvailablePageWidth(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Insets insets = OWLFrameList.ITEM_BORDER.getBorderInsets();
+        Insets insets = list.getInsets();//OWLFrameList.ITEM_BORDER.getBorderInsets();
         int componentWidth = list.getWidth();
         JViewport vp = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, list);
         if(vp != null) {
