@@ -17,17 +17,17 @@ import java.awt.*;
  */
 public class OWLObjectPropertyAnnotationsViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8491580078087562290L;
+
     private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseView() throws Exception {
         list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
-        add(new JScrollPane(list));
+        JScrollPane sp = new JScrollPane(list);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        add(sp);
     }
 
 
