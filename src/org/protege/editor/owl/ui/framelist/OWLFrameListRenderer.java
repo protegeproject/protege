@@ -5,6 +5,7 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
+import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -31,7 +32,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
 
     private ListCellRenderer separatorRenderer;
 
-    private OWLAnnotationCellRenderer annotationRenderer;
+    private OWLAnnotationCellRenderer2 annotationRenderer;
 
     private boolean highlightKeywords;
 
@@ -47,7 +48,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
         this.owlEditorKit = owlEditorKit;
         owlCellRenderer = new OWLCellRenderer(owlEditorKit);
         separatorRenderer = new DefaultListCellRenderer();
-        annotationRenderer = new OWLAnnotationCellRenderer(owlEditorKit);
+        annotationRenderer = new OWLAnnotationCellRenderer2(owlEditorKit);
         highlightKeywords = true;
         highlightUnsatisfiableClasses = true;
         highlightUnsatisfiableProperties = true;
@@ -135,7 +136,7 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             final OWLAxiom axiom = row.getAxiom();
             if (axiom instanceof OWLAnnotationAssertionAxiom && annotationRendererEnabled) {
                 OWLAnnotationAssertionAxiom annotationAssertionAxiom = (OWLAnnotationAssertionAxiom) axiom;
-                annotationRenderer.setOntology(row.getOntology());
+                annotationRenderer.setReferenceOntology(row.getOntology());
                 return annotationRenderer.getListCellRendererComponent(list,
                                                                        annotationAssertionAxiom.getAnnotation(),
                                                                        index,
