@@ -66,4 +66,9 @@ public class LinkBox extends PageObject {
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    protected void doHandleMouseMoved(MouseEvent event) {
+    }
+
 }

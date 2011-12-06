@@ -28,9 +28,16 @@ public class LinkManager {
 
     private List<LinkBox> pageLinks = new ArrayList<LinkBox>();
 
+    private Page currentPage;
+
+    private int currentPageXOffset = 0;
+
+    private int currentPageYOffset = 0;
+
     private MouseMotionAdapter mouseMotionListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
+            handleMouseMoved(e);
             updateCursor();
         }
     };
@@ -108,5 +115,24 @@ public class LinkManager {
                 link.getLink().activate(component, event);
             }
         }
+    }
+
+    public void clearCurrentPage() {
+        currentPage = null;
+    }
+
+    public void setCurrentPage(Page page, int xOffset, int yOffset) {
+        currentPage = page;
+        currentPageXOffset = xOffset;
+        currentPageYOffset = yOffset;
+    }
+
+    private void handleMouseMoved(MouseEvent e) {
+        if(currentPage == null) {
+            return;
+        }
+        e.translatePoint(-currentPageXOffset, -currentPageYOffset);
+        currentPage.handleMouseMoved(e);
+        e.translatePoint(currentPageXOffset, currentPageYOffset);
     }
 }

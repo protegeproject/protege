@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
-import java.awt.font.TextAttribute;
-import java.text.AttributedString;
 
 /**
  * Author: Matthew Horridge<br>
@@ -46,9 +43,8 @@ public class Page extends PageObject {
      * @return The {@link Paragraph} that was created and added.
      */
     public Paragraph addParagraph(String paragraph, Color foreground) {
-        AttributedString attributedString = new AttributedString(paragraph);
-        attributedString.addAttribute(TextAttribute.FOREGROUND, foreground);
-        Paragraph para = new Paragraph(attributedString);
+        Paragraph para = new Paragraph(paragraph);
+        para.setForeground(foreground);
         add(para);
         return para;
     }
@@ -64,24 +60,6 @@ public class Page extends PageObject {
         Paragraph para = new Paragraph(paragraph, link);
         add(para);
         return para;
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////
-    ////////  Page Attributes
-    ////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    public LinkSpan getActiveLinkSpan() {
-        return activeLinkSpan;
-    }
-
-    protected void setActiveLinkSpan(LinkSpan activeLinkSpan) {
-        this.activeLinkSpan = activeLinkSpan;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.renderer.layout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -20,6 +19,8 @@ import java.util.List;
  * Date: 02/11/2011
  */
 public class Paragraph extends PageObject {
+
+    public static final int TAB_SIZE = 20;
 
     private AttributedString paragraphText;
 
@@ -48,11 +49,11 @@ public class Paragraph extends PageObject {
         this(new AttributedString(paragraphText), linkSpans);
     }
 
-    public Paragraph(AttributedString paragraphText) {
+    private Paragraph(AttributedString paragraphText) {
         this(paragraphText, Collections.<LinkSpan>emptyList());
     }
 
-    public Paragraph(AttributedString paragraphText, List<LinkSpan> linkSpans) {
+    private Paragraph(AttributedString paragraphText, List<LinkSpan> linkSpans) {
         this.paragraphText = paragraphText;
         this.linkSpans.addAll(linkSpans);
         computePlainString();
@@ -194,13 +195,13 @@ public class Paragraph extends PageObject {
         invalidateLayout();
     }
 
-//    public int getTabCount() {
-//        return tabCount;
-//    }
-
-
     public void setTabCount(int tabCount) {
-        setMarginLeft(tabCount * 20);
+        setMarginLeft(tabCount * TAB_SIZE);
+    }
+
+    public void increaseTabCount() {
+        int marginSize = getMarginLeft() + TAB_SIZE;
+        setMarginLeft(marginSize);
     }
 
     public AttributedString getParagraphText() {
@@ -308,5 +309,34 @@ public class Paragraph extends PageObject {
             }
 
         }
+    }
+
+    /**
+     * Returns a string representation of the object. In general, the
+     * <code>toString</code> method returns a string that
+     * "textually represents" this object. The result should
+     * be a concise but informative representation that is easy for a
+     * person to read.
+     * It is recommended that all subclasses override this method.
+     * <p>
+     * The <code>toString</code> method for class <code>Object</code>
+     * returns a string consisting of the name of the class of which the
+     * object is an instance, the at-sign character `<code>@</code>', and
+     * the unsigned hexadecimal representation of the hash code of the
+     * object. In other words, this method returns a string equal to the
+     * value of:
+     * <blockquote>
+     * <pre>
+     * getClass().getName() + '@' + Integer.toHexString(hashCode())
+     * </pre></blockquote>
+     * @return a string representation of the object.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Paragraph(");
+        sb.append(plainText);
+        sb.append(")");
+        return sb.toString();
     }
 }

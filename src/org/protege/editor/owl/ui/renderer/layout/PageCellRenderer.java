@@ -223,17 +223,18 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-//        page.setLocation(getInsets().left, getInsets().top);
+        page.setLocation(getInsets().left, getInsets().top);
         Point mousePos = component.getMousePosition();
         if(mousePos != null) {
             int pageRelativeX = mousePos.x - page.getX() - getX();
             int pageRelativeY = mousePos.y - page.getY() - getY();
-            page.handleMouseMoved(new MouseEvent(component, 0, System.currentTimeMillis(), 0, pageRelativeX, pageRelativeY, 0, false, 0));
+//            page.handleMouseMoved(new MouseEvent(component, 0, System.currentTimeMillis(), 0, pageRelativeX, pageRelativeY, 0, false, 0));
         }
         page.draw(g2);
         Rectangle clip = g.getClipBounds();
         clip.translate(getX(), getY());
         manager.clear(clip);
+        manager.setCurrentPage(page, getX(), getY());
         for(LinkBox pageLink : page.getLinks()) {
             manager.add(pageLink.translate(getX(), getY()));
         }

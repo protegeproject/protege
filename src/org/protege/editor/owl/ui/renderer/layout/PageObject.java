@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import org.omg.CORBA.TypeCodePackage.Bounds;
+
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.util.Iterator;
@@ -31,6 +33,8 @@ public abstract class PageObject {
     private Insets borderInsets = new Insets(0, 0, 0, 0);
 
     private Insets paddingInsets = new Insets(0, 0, 0, 0);
+
+    private boolean mouseOver = false;
 
     /**
      * Adds a child to the page object.  The parent of the child will become this page object. If the specified child
@@ -387,6 +391,16 @@ public abstract class PageObject {
         return new Rectangle(bounds);
     }
 
+    public Rectangle getAbsoluteBounds() {
+        Rectangle absoluteBounds = new Rectangle(bounds);
+        PageObject parent = getParent();
+        while(parent != null) {
+            absoluteBounds.translate(parent.getX(), parent.getY());
+            parent = parent.getParent();
+        }
+        return absoluteBounds;
+    }
+
     /**
      * Determines whether this page object contains a point.
      * @param x The x co-ordinate of the point.  This should be specified relative to the location of the parent of this
@@ -427,11 +441,28 @@ public abstract class PageObject {
     public abstract void layout(FontRenderContext fontRenderContext);
 
     final public void handleMouseMoved(MouseEvent event) {
-        event.translatePoint(getX(), getY());
-        for (PageObject child : getChildren()) {
-            child.handleMouseMoved(event);
+        if(bounds.contains(event.getPoint())) {
+            setMouseOver(true);
+            doHandleMouseMoved(event);
+            event.translatePoint(-getX(), -getY());
+            for (PageObject child : getChildren()) {
+//                if (child.contains(event.getPoint())) {
+                    child.handleMouseMoved(event);
+//                }
+            }
+            event.translatePoint(getX(), getY());
         }
-        event.translatePoint(getX(), getY());
+        else {
+            setMouseOver(false);
+        }
+    }
+
+    protected void doHandleMouseEntered(MouseEvent e) {
+
+    }
+
+    protected void doHandleMouseExited(MouseEvent e) {
+
     }
 
     final public List<LinkBox> getLinks() {
@@ -521,11 +552,58 @@ public abstract class PageObject {
 
     }
 
+    protected void doHandleMouseMoved(MouseEvent event) {
+    }
+
     /**
      * Paints the content area of this page object.
      * @param g2 A graphics object which should be used to paint the content.  The origin will be the top left corner
      * of the page content.
      */
     protected abstract void paintContent(Graphics2D g2);
+
+
+    public PageObject getDeepestPageObjectAt(Point pt) {
+        return getDeepestPageObjectOfClassAt(PageObject.class, pt);
+    }
+
+    /**
+     * Gets the deepest {@link PageObject} of a specific type at a given point.
+     * @param pt The point relative to this page object's top left corner.
+     * @param cls The class of {@link PageObject} to look for.
+     * @return A {@link PageObject} P such that (1) P is an instance of the class <code>cls</code>, (2) P is either this
+     * page object or is a descendant of this page object, (3) P does not contain a page object that contains pt and is
+     * also an instance of cls.  <code>null</code> is returned if there is no such P.
+     */
+    public <T extends PageObject> T getDeepestPageObjectOfClassAt(Class<T> cls, Point pt) {
+        T result = null;
+        if(bounds.contains(pt)) {
+            if (cls.isInstance(this)) {
+                result = cls.cast(this);
+            }
+            pt.translate(-getX(), -getY());
+            for(PageObject childPageObject : children) {
+                PageObject o = childPageObject.getDeepestPageObjectAt(pt);
+                if(o != null && cls.isInstance(o)) {
+                    result = cls.cast(o);
+                }
+            }
+            pt.translate(getX(), getY());
+        }
+        return result;
+    }
+
+    public boolean isMouseOver() {
+        return mouseOver;
+    }
+
+    private void setMouseOver(boolean b) {
+        mouseOver = b;
+        if(!b) {
+            for(PageObject child : children) {
+                child.setMouseOver(false);
+            }
+        }
+    }
 
 }
