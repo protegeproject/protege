@@ -84,7 +84,9 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
         Graphics2D graphics = (Graphics2D) list.getGraphics();
         if(page == null) {
             page = new Page();
-            pageCache.put(pageCacheKey, page);
+            if (pageCacheKey != null) {
+                pageCache.put(pageCacheKey, page);
+            }
             fillPage(page, list, value, index, isSelected, cellHasFocus);
             int width = getMaxAvailablePageWidth(list, value, index, isSelected, cellHasFocus);
             page.setWidth(width);
@@ -105,11 +107,11 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
 
         int prefWidth = page.getWidth();
         int prefHeight = page.getHeight();
-        if(list instanceof MList) {
-            prefWidth += 4;
-            prefHeight += 4;
-            page.setLocation(2, 2);
-        }
+//        if(list instanceof MList) {
+//            prefWidth += 4;
+//            prefHeight += 4;
+//            page.setLocation(2, 2);
+//        }
         setPreferredSize(new Dimension(prefWidth, prefHeight));
         return this;
     }

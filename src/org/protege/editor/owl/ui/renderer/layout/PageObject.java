@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.omg.CORBA.TypeCodePackage.Bounds;
-
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.util.Iterator;
@@ -30,11 +28,13 @@ public abstract class PageObject {
 
     private Insets marginInsets = new Insets(0, 0, 0, 0);
 
-    private Insets borderInsets = new Insets(0, 0, 0, 0);
-
     private Insets paddingInsets = new Insets(0, 0, 0, 0);
 
     private boolean mouseOver = false;
+
+    private PageObjectBorder pageObjectBorder = EmptyPageObjectBorder.getEmptyPageObjectBorder();
+
+
 
     /**
      * Adds a child to the page object.  The parent of the child will become this page object. If the specified child
@@ -44,9 +44,13 @@ public abstract class PageObject {
     public void add(PageObject child) {
         if (!children.contains(child)) {
             children.add(child);
-            child.parent = this;
+            child.setParent(this);
             invalidateLayout();
         }
+    }
+
+    protected void setParent(PageObject pageObject) {
+        parent = pageObject;
     }
 
     /**
@@ -58,7 +62,7 @@ public abstract class PageObject {
     }
 
     public void clear() {
-        for (Iterator<PageObject> it = children.iterator(); it.hasNext(); ) {
+        for (Iterator<? extends PageObject> it = children.iterator(); it.hasNext(); ) {
             PageObject pageObject = it.next();
             it.remove();
             pageObject.parent = null;
@@ -249,20 +253,25 @@ public abstract class PageObject {
         setMarginBottom(margin);
     }
 
+    public void setBorder(PageObjectBorder pageObjectBorder) {
+        this.pageObjectBorder = pageObjectBorder;
+        invalidateLayout();
+    }
+
     public int getBorderLeft() {
-        return borderInsets.left;
+        return pageObjectBorder.getLeftInset();
     }
 
     public int getBorderRight() {
-        return borderInsets.right;
+        return pageObjectBorder.getRightInset();
     }
 
     public int getBorderTop() {
-        return borderInsets.top;
+        return pageObjectBorder.getTopInset();
     }
 
     public int getBorderBottom() {
-        return borderInsets.bottom;
+        return pageObjectBorder.getBottomInset();
     }
 
     public int getPaddingLeft() {
@@ -282,12 +291,30 @@ public abstract class PageObject {
     }
 
     /**
+     * Gets the width of the this page object's border.  The border is calculated as the width of this page object
+     * minus the width of the left margin minus the width of the right margin.
+     * @return The border width
+     */
+    public int getBorderWidth() {
+        return getWidth() - getMarginLeft() - getMarginRight();
+    }
+
+    /**
+     * Gets the height of the this page object's border.  The border is calculated as the height of this page object
+     * minus the height of the top margin minus the height of the bottom margin.
+     * @return The border height
+     */
+    public int getBorderHeight() {
+        return getHeight() - getMarginTop() - getMarginBottom();
+    }
+
+    /**
      * Gets the width of the left insets of this page object.  The insets are made up of the margin plus any extra padding
      * and or border width.
      * @return  The width of the left insets.
      */
     public int getInsetsLeft() {
-        return marginInsets.left + borderInsets.left + paddingInsets.left;
+        return marginInsets.left + pageObjectBorder.getLeftInset() + paddingInsets.left;
     }
 
     /**
@@ -296,7 +323,7 @@ public abstract class PageObject {
      * @return  The width of the right insets.
      */
     public int getInsetsRight() {
-        return marginInsets.right + borderInsets.right + paddingInsets.right;
+        return marginInsets.right + pageObjectBorder.getRightInset() + paddingInsets.right;
     }
 
     /**
@@ -305,7 +332,7 @@ public abstract class PageObject {
      * @return  The height of the top insets.
      */
     public int getInsetsTop() {
-        return marginInsets.top + borderInsets.top + paddingInsets.top;
+        return marginInsets.top + pageObjectBorder.getTopInset() + paddingInsets.top;
     }
 
     /**
@@ -314,7 +341,7 @@ public abstract class PageObject {
      * @return  The height of the bottom insets.
      */
     public int getInsetsBottom() {
-        return marginInsets.bottom + borderInsets.bottom + paddingInsets.bottom;
+        return marginInsets.bottom + pageObjectBorder.getBottomInset() + paddingInsets.bottom;
     }
 
     /**
@@ -491,18 +518,26 @@ public abstract class PageObject {
         if (!g2.getClip().intersects(getBounds())) {
             return;
         }
+        requestPaintContent(g2);
+        for (PageObject pageObject : children) {
+            pageObject.draw(g2);
+        }
+        g2.translate(getMarginLeft(), getMarginTop());
+        pageObjectBorder.drawBorder(g2, getBorderWidth(), getBorderHeight(), this);
+        g2.translate(-getMarginLeft(), -getMarginTop());
+        g2.translate(-getX(), -getY());
+    }
+
+
+    private void requestPaintContent(Graphics2D g2) {
         int graphicsXOffset = getX() + getInsetsLeft();
         int graphicsYOffset = getY() + getInsetsTop();
         g2.translate(graphicsXOffset, graphicsYOffset);
         paintContent(g2);
         g2.translate(-graphicsXOffset, -graphicsYOffset);
         g2.translate(getX(), getY());
-        for (PageObject pageObject : children) {
-            pageObject.draw(g2);
-        }
-        g2.translate(-getX(), -getY());
-
     }
+
 
     private void drawDebugBounds(Graphics2D g2) {
         Color oldColor = g2.getColor();
