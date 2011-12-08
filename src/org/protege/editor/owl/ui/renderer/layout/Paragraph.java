@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class Paragraph extends PageObject {
 
-    public static final int TAB_SIZE = 20;
+    public static final int TAB_SIZE = 40;
 
     private AttributedString paragraphText;
 
@@ -149,6 +149,10 @@ public class Paragraph extends PageObject {
         paragraphText.addAttribute(TextAttribute.STRIKETHROUGH, b);
     }
 
+    public void setStrikeThrough(int start, int end, boolean b) {
+        paragraphText.addAttribute(TextAttribute.STRIKETHROUGH, b, start, end);
+    }
+
 //    public List<LinkBox> getLinks() {
 //        List<LinkBox> result = new ArrayList<LinkBox>();
 //        for(PageObject child : getChildren()) {
@@ -220,8 +224,13 @@ public class Paragraph extends PageObject {
 
         clear();
 
-        AttributedString as = new AttributedString(paragraphText.getIterator());
-        as.addAttribute(TextAttribute.JUSTIFICATION, TextAttribute.JUSTIFICATION_FULL);
+        AttributedString as;
+        if(plainText.isEmpty()) {
+            as = new AttributedString(" ");
+        }
+        else {
+            as =  new AttributedString(paragraphText.getIterator());
+        }
         highlightLinks(as);
         AttributedCharacterIterator iterator = as.getIterator();
         LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(iterator, fontRenderContext);

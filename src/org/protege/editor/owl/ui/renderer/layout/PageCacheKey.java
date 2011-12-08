@@ -41,7 +41,7 @@ public class PageCacheKey {
 
     @Override
     public int hashCode() {
-        return objectKey.hashCode() + isSelected.hashCode() + hasFocus.hashCode();
+        return (objectKey != null ? objectKey.hashCode() : 0) + isSelected.hashCode() + hasFocus.hashCode();
     }
 
     @Override
@@ -53,6 +53,6 @@ public class PageCacheKey {
             return false;
         }
         PageCacheKey other = (PageCacheKey) obj;
-        return other.objectKey.equals(this.objectKey) && other.isSelected.equals(this.isSelected) && other.hasFocus.equals(this.hasFocus);
+        return (objectKey != null ? other.objectKey.equals(this.objectKey) : other.objectKey == null) && other.isSelected.equals(this.isSelected) && other.hasFocus.equals(this.hasFocus);
     }
 }
