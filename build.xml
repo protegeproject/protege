@@ -12,7 +12,8 @@
    <property file = "${protege.home}/build.properties"/>
 
    <property file="local.properties"/>
-	
+   <property name = "bundlor.home"      location="${env.BUNDLOR_HOME}"/>
+
    <!-- 
         This setting defines the name of the plugin.
         This may be the only setting that the developer needs to
@@ -33,6 +34,7 @@
    <property name = "lib"               location = "./lib"/>
    <property name = "genlib"            location = "${build}/lib"/>
    <property name = "manifest"          location = "${build}/manifest.mf"/>
+   <property name = "manifest.bundlor"  location = "./META-INF/manifest.bundlor"/>
 
    <property name = "protege.common"    location="${protege.home}/bundles"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
@@ -54,6 +56,12 @@
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
      <mkdir dir = "${genlib}"/>
+     <condition property="use.bundlor">
+       <and>
+         <available file="${bundlor.home}"     type = "dir"/>
+         <available file="${manifest.bundlor}" type = "file"/>
+       </and>
+     </condition>
    </target>  
 
    <!-- ============================================================= -->
@@ -152,6 +160,7 @@
      <copy todir="${classes}">
        <fileset dir="." includes="*.xml">
            <exclude name="build.xml"/>
+           <exclude name="**/log4j.xml"/>
        </fileset>
        <fileset dir="./icons"/>
        <fileset dir="./resources"/>
@@ -181,11 +190,23 @@
      </javac>
    </target>
 
-   <target name="bundlor" depends="copy.resources, compile">
-      <java classname="com.springsource.bundlor.commandline.Bundlor"
+   <target name="use.existing.manifest" depends="init" unless="use.bundlor">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
+     </manifest>
+   </target>
+
+   <target name="bundlor.manifest" depends="copy.resources, compile" if="use.bundlor">
+      <java classname="org.eclipse.virgo.bundlor.commandline.Bundlor"
             failonerror="true" fork="true">
         <classpath>
-          <pathelement path="${bundlor}"/>
+          <fileset dir="${bundlor.home}/lib" includes="*.jar"/>
+          <fileset dir="${bundlor.home}/dist" includes="*.jar"/>
+          <fileset dir="${genlib}"/>
         </classpath>
         <jvmarg value="-Dbundle.version=${bundle.version}"/>
         <jvmarg value="-Duser.name=${user.name}"/>
@@ -199,13 +220,13 @@
    </target>
 
 
-   <target name = "jar" depends = "compile, bundlor">
+   <target name = "jar" depends = "compile, use.existing.manifest, bundlor.manifest">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
    </target>
 
-   <target name = "orphanAlg" depends="compile,bundlor">
+   <target name = "orphanAlg" depends="compile,use.existing.manifest, bundlor.manifest">
      <jar jarfile  = "${build}/orphanNodesAlg.jar"
           basedir  = "${classes}" 
           manifest = "${build}/manifest.mf"
