@@ -13,6 +13,7 @@
    <property file = "${protege.home}/build.properties"/>
 
    <property file="local.properties"/>
+   <property name = "bundlor.home"      location="${env.BUNDLOR_HOME}"/>
 
 
    <!-- 
@@ -31,6 +32,7 @@
    <property name = "classes"           location = "${build}/classes"/>
    <property name = "lib"               location = "./lib"/>
    <property name = "manifest"          location = "${build}/manifest.mf"/>
+   <property name = "manifest.bundlor"  location = "./META-INF/manifest.bundlor"/>
 
    <property name = "protege.common"    location="${protege.home}/bundles"/>
 
@@ -44,6 +46,12 @@
      <mkdir dir = "${build}"/>
      <mkdir dir = "${classes}"/>
      <mkdir dir = "${classes}/lib"/>
+     <condition property="use.bundlor">
+       <and>
+         <available file="${bundlor.home}"     type = "dir"/>
+         <available file="${manifest.bundlor}" type = "file"/>
+       </and>
+     </condition>
    </target>  
 
    <!-- ============================================================= -->
@@ -135,11 +143,22 @@
      </javac>
    </target>
 
-   <target name="bundlor" depends="copy.resources, compile">
-      <java classname="com.springsource.bundlor.commandline.Bundlor"
+   <target name="use.existing.manifest" depends="init" unless="use.bundlor">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
+     </manifest>
+   </target>
+
+   <target name="bundlor.manifest" depends="copy.resources, compile" if="use.bundlor">
+      <java classname="org.eclipse.virgo.bundlor.commandline.Bundlor"
             failonerror="true" fork="true">
         <classpath>
-          <pathelement path="${bundlor}"/>
+          <fileset dir="${bundlor.home}/lib" includes="*.jar"/>
+          <fileset dir="${bundlor.home}/dist" includes="*.jar"/>
         </classpath>
         <jvmarg value="-Dbundle.version=${bundle.version}"/>
         <jvmarg value="-Duser.name=${user.name}"/>
@@ -152,7 +171,7 @@
            file="META-INF/MANIFEST.MF" overwrite="true"/>
    </target>
 
-   <target name = "jar" depends = "compile, copy.resources, bundlor">
+   <target name = "jar" depends = "compile, copy.resources, use.existing.manifest, bundlor.manifest">
      <jar jarfile = "${build}/${plugin}.jar"
           basedir = "${classes}" 
           manifest = "${build}/manifest.mf"/>
