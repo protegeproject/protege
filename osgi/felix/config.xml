@@ -22,6 +22,8 @@
     <bundle name="org.eclipse.equinox.supplement.jar"/>
     <bundle name="org.protege.jaxb.jar"/>
     <bundle name="org.protege.editor.core.application.jar"/>
+    <bundle name="org.apache.felix.configadmin.jar"/>
+    <bundle name="org.apache.felix.scr.jar"/>
   </bundles>
 
 </launch>

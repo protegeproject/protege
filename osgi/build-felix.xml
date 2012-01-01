@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<project name = "Protege Felix Distribution Build File" default = "run" basedir = ".">
+<project name = "Protege Felix Distribution Build File" default = "install" basedir = ".">
     <!-- ===================================================================  -->
     <!-- FELIX - create a felix-based distribution -->
     <!-- ===================================================================  -->
@@ -12,6 +12,8 @@
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.common.jar"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.registry.jar"/>
         <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.supplement.jar"/>
+    	<copy todir = "${protege.home}/bundles" file="./osgi/common/org.apache.felix.configadmin.jar"/>
+    	<copy todir = "${protege.home}/bundles" file="./osgi/common/org.apache.felix.scr.jar"/>
         <chmod file = "${protege.home}/run.sh" perm = "u+x"/>
         <chmod file = "${protege.home}/run.command" perm = "u+x"/>
     </target>
