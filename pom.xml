@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>protege4</groupId>
 	<artifactId>org.protege.common</artifactId>
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 	<name>Core Protege Libraries</name>
 	<version>4.1.0.213_SNAPSHOT</version>
     <!-- <version>4.1.0.b213_2010_12_15_1123</version> -->
@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>protege4</groupId>
 		<artifactId>masterpom</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.3</version>
 	</parent>
 
 	<properties>
@@ -47,6 +47,11 @@
 	</scm>
 
 	<dependencies>
+        <dependency>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>osgi-core-prerelease</artifactId>
+          <version>4.0.1</version>
+        </dependency>
         <dependency>
           <groupId>log4j</groupId>
           <artifactId>log4j</artifactId>
@@ -101,57 +106,8 @@
 	        <!-- property reader for version information found in
 	             maven branch at svn revision 21046 -->
 
-            <plugin>
-              <groupId>org.apache.felix</groupId>
-              <artifactId>maven-bundle-plugin</artifactId>
-              <version>1.4.0</version>
-              <extensions>true</extensions>
-              <configuration>
-                <instructions>
-                  <Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
-                  <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                  <Export-Package>
-                    org.apache.*,
-                    com.jgoodies.*,
-                    org.protege.common,
-                    org.protege.common.*
-                  </Export-Package>
-                  <Import-Package>
-                    !com.ibm.*,
-                    !com.sun.*,
-                    javax.swing,
-                    javax.swing.*,
-                    javax.xml.parsers,
-                    !javax.*,
-                    org.apache.commons.*,
-                    org.apache.log4j,
-                    org.apache.log4j.spi,
-                    !org.apache.*,
-                    com.jgoodies.*,
-                    org.osgi.framework,
-                    org.w3c.dom,
-                    org.xml.*,
-                    org.protege.common,
-                    org.protege.common.*
-                  </Import-Package>
-                  <Embed-Dependency>
-                    log4j,looks,commons-logging,commons-lang
-                  </Embed-Dependency>
-                  <Bundle-Activator>org.protege.common.Activator</Bundle-Activator>
-                  <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-                  <Include-Resource>{maven-dependencies}</Include-Resource>
-                </instructions>
-                <executions>
-                  <execution>
-                    <id>bundle-manifest</id>
-                    <phase>install</phase>
-                    <goals>    
-                      <goal>manifest</goal>
-                    </goals>   
-                  </execution>
-                </executions>
-              </configuration>
-            </plugin>
+            <!-- the old maven-bundle-plugin configuration can be
+                 found in svn revision 24037 -->
 
 			<!-- Create jar file -->
 			<plugin>
