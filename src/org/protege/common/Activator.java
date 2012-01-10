@@ -44,7 +44,7 @@ public class Activator implements BundleActivator {
 			}
 		}
 		
-		private String displayClass(ServiceReference<?> ref) {
+		private String displayClass(ServiceReference ref) {
 			Object classes = ref.getProperty(Constants.OBJECTCLASS);
 			if (classes instanceof String[]) {
 				String classArray[] = (String[]) classes;
