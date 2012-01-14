@@ -2,6 +2,7 @@ Bundle-Name: Protege Editor Framework
 Bundle-SymbolicName: ${plugin};singleton:=true
 Bundle-ManifestVersion: 2
 Bundle-Version: ${bundle.version}
+Build-Number: ${bundle.build}
 Built-By: ${user.name}
 Bundle-Description: Some common libraries
 Bundle-Vendor: Protege Development Team (First working version written a
