@@ -193,6 +193,7 @@ author=Protege Development Team (First working version by Matthew Horridge)
                mode = "update">
         <attribute name="Built-By" value = "${user.name}"/>
         <attribute name="Bundle-Version" value="${bundle.version}"/>
+        <attribute name="Build-Number" value="${core.build.number}"/>
      </manifest>
    </target>
 
@@ -204,6 +205,7 @@ author=Protege Development Team (First working version by Matthew Horridge)
           <fileset dir="${bundlor.home}/dist" includes="*.jar"/>
         </classpath>
         <jvmarg value="-Dbundle.version=${bundle.version}"/>
+        <jvmarg value="-Dbundle.build=${core.build.number}"/>
         <jvmarg value="-Duser.name=${user.name}"/>
         <jvmarg value="-Dplugin=${plugin}"/>
         <arg value = "-i"/> <arg value="${classes}"/>
