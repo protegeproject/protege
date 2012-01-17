@@ -31,20 +31,27 @@
     <priority value="debug"/>
   </category>
   
+    <!-- Debugging session specific settings -->
+    <!-- debug the parsing of the axioms from the owl api triple store model
+    <category name="org.protege.owl.rdf.impl.OwlTripleStoreImpl">
+        <priority value="debug"/>
+    </category>
+    -->
+      
+ 	 <!-- To debug automatic updates and commits from client
+ 	 <category name="org.protege.owl.server.connection.servlet.ServletClientConnection">
+ 	 	<priority value="debug"/>
+	  </category>
+  
+	  <category name="org.protege.editor.owl.client.ClientOntologyBuilder">
+		  	<priority value="debug"/>
+	  </category>
+  	 -->
+    <!-- End of Debugging session specific settings -->
   <root>
     <priority value ="info" />
     <appender-ref ref="console" />
     <appender-ref ref="file" />
   </root>
-  
-  <!-- To debug automatic updates and commits from client
-  <category name="org.protege.owl.server.connection.servlet.ServletClientConnection">
-  	<priority value="debug"/>
-  </category>
-  
-  <category name="org.protege.editor.owl.client.ClientOntologyBuilder">
-  	<priority value="debug"/>
-  </category>
-   -->
   
 </log4j:configuration>
