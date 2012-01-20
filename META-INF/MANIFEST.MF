@@ -45,9 +45,9 @@ Export-Package: com.jgoodies.looks;version="2.2.1";uses:="javax.swing,
  .14";uses:="org.apache.log4j,org.apache.log4j.spi",org.apache.log4j.x
  ml;version="1.2.14";uses:="javax.xml.parsers,org.apache.log4j,org.apa
  che.log4j.config,org.apache.log4j.helpers,org.apache.log4j.spi,org.w3
- c.dom,org.xml.sax",org.protege.common;version="4.2.0.b255_2012_01_20_
- 0242";uses:="org.osgi.framework",org.protege.common.log;version="4.2.
- 0.b255_2012_01_20_0242";uses:="org.apache.log4j"
+ c.dom,org.xml.sax",org.protege.common;version="4.2.0.b256_2012_01_20_
+ 0258";uses:="org.osgi.framework",org.protege.common.log;version="4.2.
+ 0.b256_2012_01_20_0258";uses:="org.apache.log4j"
 Bundle-ClassPath: .,lib/log4j.jar,lib/looks.jar
 Built-By: vendetti
 Tool: Bundlor 1.1.0.M03
@@ -55,7 +55,7 @@ Bundle-Category: protege
 Bundle-Name: Common Protege Libraries
 Bundle-Vendor: Protege Development Team
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
-Bundle-Version: 4.2.0.b255_2012_01_20_0242
+Bundle-Version: 4.2.0.b256_2012_01_20_0258
 Bundle-Activator: org.protege.common.Activator
 Bundle-ManifestVersion: 2
 Bundle-Description: Some common libraries
