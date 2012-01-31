@@ -39,8 +39,9 @@ import java.util.List;
  * Date: 09-Aug-2007<br><br>
  */
 public class ExportInferredOntologyWizardSelectAxiomsPanel extends AbstractOWLWizardPanel {
+	private static final long serialVersionUID = 2488132681396978789L;
 
-    public static final String ID = "SELECT_AXIOMS_PANEL";
+	public static final String ID = "SELECT_AXIOMS_PANEL";
 
     private ExportInferredOntologyPanel exportInferredOntologyPanel;
 
@@ -56,7 +57,7 @@ public class ExportInferredOntologyWizardSelectAxiomsPanel extends AbstractOWLWi
         parent.add(holderPanel);
         holderPanel.add(exportInferredOntologyPanel = new ExportInferredOntologyPanel(), BorderLayout.WEST);
         setInstructions(
-                "This wizard will merge inferred an asserted information from ontologies in the imports closure of the active ontology into one ontology." + "Please select the kinds of inferred axioms that you want to export.");
+                "This wizard will merge inferred and asserted information from ontologies in the imports closure of the active ontology into one ontology." + "Please select the kinds of inferred axioms that you want to export.");
     }
 
 
