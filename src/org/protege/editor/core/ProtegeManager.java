@@ -334,6 +334,7 @@ public class ProtegeManager {
             for(OntologyRepositoryFactoryPlugin plugin : loader.getPlugins()) {
                 try {
                     OntologyRepositoryFactory factory = plugin.newInstance();
+                    factory.initialise();
                     OntologyRepositoryManager.getManager().addRepository(factory.createRepository());
                 }
                 // CATCH EVERYTHING!  We don't want to bring down P4 even before it has appeared to start!
