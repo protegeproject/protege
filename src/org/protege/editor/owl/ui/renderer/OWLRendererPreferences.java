@@ -166,7 +166,7 @@ public class OWLRendererPreferences {
     }
     
     public void setAnnotationLanguages(List<String> annotationLanguages) {
-    	this.annotationLanguages = annotationLanguages;
+    	this.annotationLanguages = new ArrayList<String>(annotationLanguages);
     	writeAnnotations();
     }
 
@@ -177,7 +177,7 @@ public class OWLRendererPreferences {
 
 
     public List<String> getAnnotationLangs(){
-    	return annotationLanguages;
+    	return Collections.unmodifiableList(annotationLanguages);
     }
 
     public Map<IRI, List<String>> getAnnotationLangMap(){
