@@ -191,14 +191,13 @@ public class ProtegeWelcomeFrame extends JFrame {
         	Color fontColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.PROPERTY_COLOR_KEY),
                     							    Color.GRAY);
             JPanel otherActionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            otherActionsPanel.setBackground(Color.WHITE);
+            otherActionsPanel.setOpaque(false);
             JMenuBar littleMenuBar = new JMenuBar();
-            // littleMenuBar.setBackground(Color.WHITE);
             littleMenuBar.setOpaque(false);
-            final JMenu dropDownMenu = new JMenu("More actions");
+            littleMenuBar.setBorder(null);
+            final JMenu dropDownMenu = new JMenu("More...");
             dropDownMenu.setFont(getFont().deriveFont(Font.BOLD, 10.0f));
             dropDownMenu.setForeground(fontColor);
-            dropDownMenu.setBackground(Color.WHITE);
             littleMenuBar.add(dropDownMenu);
             for (AltStartupActionPlugin plugin : new AltStartupActionPluginLoader(ProtegeWelcomeFrame.this).getPlugins()) {
             	try {
@@ -214,6 +213,7 @@ public class ProtegeWelcomeFrame extends JFrame {
             Box southBox = new Box(BoxLayout.Y_AXIS);
             southBox.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
             southBox.add(otherActionsPanel);
+            southBox.setOpaque(false);
             return southBox;
         }
 
