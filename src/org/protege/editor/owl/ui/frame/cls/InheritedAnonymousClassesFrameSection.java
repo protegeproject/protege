@@ -64,7 +64,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES,
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES,
                                                                   new Runnable() {
             public void run() {
                 refillInferredDoIt();
