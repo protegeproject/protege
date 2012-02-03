@@ -15,7 +15,6 @@ public class ReasonerPreferences {
 	    SHOW_INFERRED_EQUIVALENT_CLASSES(true, InferenceType.CLASS_HIERARCHY),
 	    SHOW_INFERRED_SUPER_CLASSES(true, InferenceType.CLASS_HIERARCHY),
 	    SHOW_INFERED_CLASS_MEMBERS(true, InferenceType.CLASS_ASSERTIONS),
-	    SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES(false, InferenceType.CLASS_HIERARCHY),
 	    SHOW_INFERRED_DISJOINT_CLASSES(false, InferenceType.CLASS_HIERARCHY),
 	
 	    // Object Property Inferences
