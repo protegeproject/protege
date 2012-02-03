@@ -346,16 +346,20 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             try {
             	long start = System.currentTimeMillis();
                 reasonerChanged = ensureRunningReasonerInitialized();
-                precompute();
-                logger.info(currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms");
+                if (runningReasoner != null) {
+                	precompute();
+                	logger.info(currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms");
+                }
             }
             catch (InconsistentOntologyException ioe) {
             	inconsistencyFound = true;
             }
             finally{
-                synchronized (runningReasoner) {
-                    reasonerFilters.clear();
-                }
+            	if (runningReasoner != null) {
+            		synchronized (runningReasoner) {
+            			reasonerFilters.clear();
+            		}
+            	}
             	installRunningReasoner(inconsistencyFound, reasonerChanged);
             }
         }
@@ -378,6 +382,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             if (runningReasoner == null) {
             	runningReasoner = ReasonerUtilities.createReasoner(applyReasonerFilters(ontology), currentReasonerFactory, reasonerProgressMonitor);
             	reasonerChanged = true;
+            }
+            if (runningReasoner == null) {
+            	classificationInProgress = false;
+            	ProtegeApplication.getErrorLog().logError(new Exception("Reasoner Initialization failed (ontology is probably inconsistent)"));
             }
             return reasonerChanged;
         }
