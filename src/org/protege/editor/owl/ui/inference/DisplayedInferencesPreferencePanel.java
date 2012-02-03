@@ -89,9 +89,6 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, "Class Members"), c);
         
         c.gridy = ++gridybase;
-        add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_INHERITED_ANONYMOUS_CLASSES, "Inherited Classes"), c);
-        
-        c.gridy = ++gridybase;
         add(getCheckBox(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, "Disjoint Classes"), c);
         return gridybase;
     }
