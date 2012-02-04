@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Window;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -33,7 +34,9 @@ public class UIUtil {
 
     public static final String CURRENT_FILE_DIRECTORY_KEY = "CURRENT_FILE_DIRECTORY_KEY";
 
-    public static final String ENABLE_TEMP_DIRECTORIES_KEY = "ENABLE_TEMP_DIRECTORIES_KEY";    
+    public static final String ENABLE_TEMP_DIRECTORIES_KEY = "ENABLE_TEMP_DIRECTORIES_KEY";
+
+    public static final String FILE_URI_SCHEME = "file";
 
     public static String getCurrentFileDirectory() {
         String dir = "~";
@@ -238,4 +241,19 @@ public class UIUtil {
             }
         }
     }
+
+
+    /**
+     * Tests to see if a URI represents a local file.
+     * @param uri The URI.  May be <code>null</code>.
+     * @return <code>true</code> if the URI represents a local file, otherwise <code>false</code>.
+     */
+    public static boolean isLocalFile(URI uri) {
+        if(uri == null) {
+            return false;
+        }
+        String scheme = uri.getScheme();
+        return scheme != null && FILE_URI_SCHEME.equals(scheme.toLowerCase());
+    }
+
 }

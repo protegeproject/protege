@@ -104,4 +104,10 @@ public abstract class PreferencesManager {
      *         will be created.
      */
     public abstract Preferences getPreferencesForSet(String setId, Class c);
+
+
+    /**
+     * Resets the preferences to the factory settings.  In most cases this will simply wipe out all preferences.
+     */
+    public abstract void resetPreferencesToFactorySettings();
 }

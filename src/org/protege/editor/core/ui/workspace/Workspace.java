@@ -65,7 +65,7 @@ import java.util.Set;
 public abstract class Workspace extends JComponent implements Disposable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1737700990946291204L;
 
@@ -76,7 +76,9 @@ public abstract class Workspace extends JComponent implements Disposable {
     public static final Logger LOGGER = Logger.getLogger(Workspace.class);
 
     public static final String FILE_MENU_NAME = "File";
+
     public static final String WINDOW_MENU_NAME = "Window";
+
     private static final String HELP_MENU_NAME = "Help";
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
@@ -104,7 +106,7 @@ public abstract class Workspace extends JComponent implements Disposable {
      * set up the <code>Workspace</code> (with references
      * to the <code>EditorKit</code> etc.)
      * @param editorKit The <code>EditorKit</code> that this
-     *                  <code>Workspace</code> belongs to.
+     * <code>Workspace</code> belongs to.
      */
     public void setup(EditorKit editorKit) {
         this.editorKit = editorKit;
@@ -142,8 +144,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     private static void adjustBorder(ViewHolder holder) {
         Border currentBorder = holder.getBorder();
-        holder.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7),
-                                                            currentBorder));
+        holder.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7), currentBorder));
     }
 
 
@@ -153,11 +154,11 @@ public abstract class Workspace extends JComponent implements Disposable {
             if (menu.getText().equals(WINDOW_MENU_NAME)) {
                 installLookAndFeelMenu(menu);
             }
-            else if (menu.getText().equals(FILE_MENU_NAME)){
-                if (!OSUtils.isOSX()){
-                    final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences..."){
+            else if (menu.getText().equals(FILE_MENU_NAME)) {
+                if (!OSUtils.isOSX()) {
+                    final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences...") {
                         /**
-                         * 
+                         *
                          */
                         private static final long serialVersionUID = -4897769796985728041L;
 
@@ -170,9 +171,9 @@ public abstract class Workspace extends JComponent implements Disposable {
                     menu.addSeparator();
                     menu.add(menuItem);
                     menu.addSeparator();
-                    menu.add(new AbstractAction("Exit"){
+                    menu.add(new AbstractAction("Exit") {
                         /**
-                         * 
+                         *
                          */
                         private static final long serialVersionUID = -3497054762240815779L;
 
@@ -182,12 +183,12 @@ public abstract class Workspace extends JComponent implements Disposable {
                     });
                 }
             }
-            else if (menu.getText().equals(HELP_MENU_NAME)){
-                if (!OSUtils.isOSX()){
+            else if (menu.getText().equals(HELP_MENU_NAME)) {
+                if (!OSUtils.isOSX()) {
                     menu.addSeparator();
-                    menu.add(new AbstractAction("About"){
+                    menu.add(new AbstractAction("About") {
                         /**
-                         * 
+                         *
                          */
                         private static final long serialVersionUID = 3773470646910947172L;
 
@@ -213,7 +214,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
         JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
             /**
-             * 
+             *
              */
             private static final long serialVersionUID = -1460075802676626382L;
 
@@ -227,17 +228,16 @@ public abstract class Workspace extends JComponent implements Disposable {
 
         for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             final String className = info.getClassName();
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(
-                    new AbstractAction(info.getName()) {
-                        /**
-                         * 
-                         */
-                        private static final long serialVersionUID = 2912631603213508312L;
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(new AbstractAction(info.getName()) {
+                /**
+                 *
+                 */
+                private static final long serialVersionUID = 2912631603213508312L;
 
-                        public void actionPerformed(ActionEvent e) {
-                            setLookAndFeel(className);
-                        }
-                    });
+                public void actionPerformed(ActionEvent e) {
+                    setLookAndFeel(className);
+                }
+            });
             lafMenuItemGroup.add(menuItem);
             menuItem.setSelected(lafName.equals(className));
             menu.add(menuItem);
@@ -245,7 +245,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
         JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
             /**
-             * 
+             *
              */
             private static final long serialVersionUID = 6933202663872017353L;
 
@@ -280,9 +280,11 @@ public abstract class Workspace extends JComponent implements Disposable {
             Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
 
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             LOGGER.warn("Look and feel not found: " + lafName);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOGGER.warn(e.toString());
         }
     }
@@ -318,12 +320,11 @@ public abstract class Workspace extends JComponent implements Disposable {
     public WorkspaceViewManager getViewManager() {
         return viewManager;
     }
-    
+
     public abstract JComponent getStatusArea();
 
 
-    public void showResultsView(String id, String headerLabel, Color headerColor, ViewComponent viewComponent,
-                                boolean replace, int location) {
+    public void showResultsView(String id, String headerLabel, Color headerColor, ViewComponent viewComponent, boolean replace, int location) {
         ViewComponentPlugin plugin = new ResultsViewComponentPlugin(id, headerLabel, headerColor, viewComponent);
         showResultsView(plugin, replace, location);
     }
@@ -381,8 +382,8 @@ public abstract class Workspace extends JComponent implements Disposable {
 
 
     public void dispose() {
-    	leftResultsViewHolder.dispose();
-    	bottomResultsViewHolder.dispose();
+        leftResultsViewHolder.dispose();
+        bottomResultsViewHolder.dispose();
     }
 
 
@@ -405,8 +406,7 @@ public abstract class Workspace extends JComponent implements Disposable {
         private Color headerColor;
 
 
-        protected ResultsViewComponentPlugin(String id, String headerLabel, Color headerColor,
-                                             ViewComponent viewComponent) {
+        protected ResultsViewComponentPlugin(String id, String headerLabel, Color headerColor, ViewComponent viewComponent) {
             this.id = id;
             this.headerColor = headerColor;
             this.headerLabel = headerLabel;
@@ -444,8 +444,7 @@ public abstract class Workspace extends JComponent implements Disposable {
         }
 
 
-        public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
-                InstantiationException {
+        public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
             return viewComponent;
         }
 

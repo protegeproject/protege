@@ -50,20 +50,20 @@ public interface EditorKit extends Disposable {
     
 
     /**
-     * Gets the factory that created the clsdescriptioneditor kit.
+     * Gets the factory that created the editor kit.
      */
     EditorKitFactory getEditorKitFactory();
 
 
     /**
      * Gets the <code>Workspace</code> that is used in the UI to
-     * display the contents of the clsdescriptioneditor kit "model".
+     * display the contents of the editor kit "model".
      */
     Workspace getWorkspace();
 
 
     /**
-     * Gets the "model" that the clsdescriptioneditor kit edits.  This will
+     * Gets the "model" that the editor kit edits.  This will
      * probably contain one or more ontologies.
      */
     ModelManager getModelManager();
@@ -95,4 +95,10 @@ public interface EditorKit extends Disposable {
 
 
     void handleSaveAs() throws Exception;
+
+    /**
+     * Determines if this editor kit has modified the contents if its documents in any way.
+     * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise <code>false</code>.
+     */
+    boolean hasModifiedDocument();
 }
