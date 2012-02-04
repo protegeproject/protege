@@ -99,8 +99,11 @@ public class ErrorLogPanel extends JPanel {
      */
     public static void showErrorDialog(Throwable throwable) {
         ErrorLog errorLog = new ErrorLog();
-        errorLog.logError(throwable);
+        if (throwable != null) {
+            errorLog.logError(throwable);
+        }
         ErrorLogPanel panel = new ErrorLogPanel(errorLog, null);
         JOptionPane.showMessageDialog(null, panel, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
 }

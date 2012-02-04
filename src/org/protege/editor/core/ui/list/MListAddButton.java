@@ -24,7 +24,8 @@ public class MListAddButton extends MListButton {
         Dimension dim = getBounds().getSize();
         int x = getBounds().x;
         int y = getBounds().y;
-        g.drawLine(x + dim.width / 2, y + inset, x + dim.width / 2, y + dim.height - inset);
+        int midLine = (int) Math.round(dim.width / 2.0);
+        g.drawLine(x + midLine, y + inset, x + midLine, y + dim.height - inset);
         g.drawLine(x + inset, y + dim.height / 2, x + dim.width - inset, y + dim.height / 2);
     }
 }

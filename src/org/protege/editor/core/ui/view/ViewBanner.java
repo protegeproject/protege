@@ -1,12 +1,9 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.KeyboardFocusManager;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -54,6 +51,8 @@ public class ViewBanner extends JPanel {
     private String labelText;
 
     private Color defaultBackgroundColor;
+    
+    private ArrayList<ViewIcon> viewIcons = new ArrayList<ViewIcon>();
 
 
     public ViewBanner(String labelText, Color bannerColor) {
@@ -184,6 +183,19 @@ public class ViewBanner extends JPanel {
         }
     }
 
+    /**
+     * Sets the font for this component.
+     * @param font the desired <code>Font</code> for this component
+     * @beaninfo preferred: true
+     * bound: true
+     * attribute: visualUpdate true
+     * description: The font for the component.
+     * @see java.awt.Component#getFont
+     */
+    @Override
+    public void setFont(Font font) {
+        super.setFont(font);
+    }
 
     /**
      * Calls the UI delegate's paint method, if the UI delegate

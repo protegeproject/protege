@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 
 
@@ -33,5 +34,6 @@ public class SaveAction extends ProtegeAction {
 
 
     public void initialise() throws Exception {
+
     }
 }

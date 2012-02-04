@@ -40,7 +40,6 @@
          name="FileMenu"
          point="org.protege.editor.core.application.EditorKitMenuAction">
       <name value="File"/>
-      <toolTip value="File menu tool tip!"/>
       <path value="/SlotA-A"/>
       <editorKitId value="any"/>
    </extension>
@@ -52,7 +51,7 @@
         <class value="org.protege.editor.core.ui.action.NewAction"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-E"/>
         <editorKitId value="any"/>
-        <accelerator value="shift N"/>
+        <accelerator value="N"/>
     </extension>
 
     <extension id="menu.file.open" 

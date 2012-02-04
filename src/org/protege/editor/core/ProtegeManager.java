@@ -5,6 +5,7 @@ import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ public class ProtegeManager {
     private Map<EditorKitFactoryPlugin, EditorKitFactory> editorKitFactoriesMap;
 
     private ProtegeApplication application;
+
+    private WeakReference<EditorKit> firstEditorKit;
 
 
     private ProtegeManager() {
@@ -125,10 +128,14 @@ public class ProtegeManager {
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
+
             try {
                 if (editorKit.handleNewRequest()) {
                     getEditorKitManager().addEditorKit(editorKit);
                     success = true;
+                    if(getEditorKitManager().getEditorKitCount() == 1) {
+                        firstEditorKit = new WeakReference<EditorKit>(editorKit);
+                    }
                     return true;
                 }
             }
@@ -157,6 +164,7 @@ public class ProtegeManager {
                 if (editorKit.handleLoadRequest()) {
                     getEditorKitManager().addEditorKit(editorKit);
                     success = true;
+                    closeFirstEditorKitIfNotModified();
                     return true;
                 }
             }
@@ -169,6 +177,17 @@ public class ProtegeManager {
         return false;
     }
 
+    private void closeFirstEditorKitIfNotModified() {
+        EditorKit firstEditorKit = this.firstEditorKit.get();
+        if(firstEditorKit == null) {
+            return;
+        }
+        EditorKitManager editorKitManager = getEditorKitManager();
+        if(!firstEditorKit.hasModifiedDocument()) {
+            editorKitManager.getWorkspaceManager().doClose(firstEditorKit.getWorkspace());
+        }
+    }
+
 
     public boolean loadAndSetupEditorKitFromURI(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
@@ -178,6 +197,7 @@ public class ProtegeManager {
             try {
                 if (editorKit.handleLoadFrom(uri)) {
                     getEditorKitManager().addEditorKit(editorKit);
+                    closeFirstEditorKitIfNotModified();
                     success = true;
                     return true;
                 }
@@ -199,6 +219,7 @@ public class ProtegeManager {
                 EditorKit editorKit = editorKitFactory.createEditorKit();
                 if (editorKit.handleLoadRecentRequest(editorKitDescriptor)) {
                     getEditorKitManager().addEditorKit(editorKit);
+                    closeFirstEditorKitIfNotModified();
                     return true;
                 }
             }
@@ -228,6 +249,7 @@ public class ProtegeManager {
                         entry.configureEditorKit(editorKit);
                         if (editorKit.handleLoadFrom(entry.getPhysicalURI())) {
                             getEditorKitManager().addEditorKit(editorKit);
+                            closeFirstEditorKitIfNotModified();
                             success = true;
                         }
                     }
@@ -291,16 +313,12 @@ public class ProtegeManager {
 
 
     /**
-     * Closes an <code>EditorKit</code>.  This disposes of the clsdescriptioneditor kit's <code>Workspace</code>, and
-     * closes the clsdescriptioneditor kit's model manager.
+     * Closes an <code>EditorKit</code>.  This disposes of the editor kit's <code>Workspace</code>, and
+     * closes the editor kit's model manager.
      */
     public void disposeOfEditorKit(EditorKit editorKit) {
         ProtegeManager.getInstance().getEditorKitManager().removeEditorKit(editorKit);
         try {
-            // Dispose of the workspace
-            editorKit.getWorkspace().dispose();
-            // Dispose of the model
-            editorKit.getModelManager().dispose();
             editorKit.dispose();
         }
         catch (Exception e) {
@@ -314,7 +332,7 @@ public class ProtegeManager {
     /**
      * Gets an <code>EditorKitFactory</code> by its corresponding plugin.
      *
-     * @param plugin The plugin that describes the clsdescriptioneditor kit that will be returned.
+     * @param plugin The plugin that describes the editor kit that will be returned.
      *
      * @return An <code>EditorKitFactory</code> or <code>null</code> if there is no installed
      *         <code>EditorKitFactory</code> with the specified Id.

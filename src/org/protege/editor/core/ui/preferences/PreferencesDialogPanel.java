@@ -1,28 +1,25 @@
 package org.protege.editor.core.ui.preferences;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.prefs.BackingStoreException;
 
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.prefs.JavaBackedPreferencesImpl;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 
 /**
  * Author: Matthew Horridge<br>
@@ -37,6 +34,10 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
     private static final long serialVersionUID = 6338996558666619642L;
 
+    public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE = "Reset preferences?";
+
+    public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE = "Are you sure you want to reset all preferences to their default settings";
+
     private Map<String, PreferencesPanel> map;
 
     private Map<String, JComponent> scrollerMap;
@@ -44,6 +45,9 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     private JTabbedPane tabbedPane;
 
     private static final String PREFS_HISTORY_PANEL_KEY = "prefs.history.panel";
+
+    // A bit messy
+    private boolean wasReset = false;
 
     public PreferencesDialogPanel(EditorKit editorKit) {
         map = new HashMap<String, PreferencesPanel>();
@@ -117,29 +121,55 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         return new Dimension(850, 725);
     }
 
+    
+
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
-        PreferencesDialogPanel panel = new PreferencesDialogPanel(editorKit);
+        final PreferencesDialogPanel preferencesPanel = new PreferencesDialogPanel(editorKit);
+        
+        JPanel holder = new JPanel(new BorderLayout(4, 4));
+        holder.add(preferencesPanel);
+        
         final Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(PreferencesDialogPanel.class);
         if (selectedPanel == null){
             selectedPanel = prefs.getString(PREFS_HISTORY_PANEL_KEY, null);
         }
-        Component c = panel.scrollerMap.get(selectedPanel);
+        Component c = preferencesPanel.scrollerMap.get(selectedPanel);
         if (c != null) {
-            panel.tabbedPane.setSelectedComponent(c);
+            preferencesPanel.tabbedPane.setSelectedComponent(c);
         }
-        JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+
+        JPanel resetPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton resetPreferencesButton = new JButton(new AbstractAction("Reset preferences...") {
+            public void actionPerformed(ActionEvent e) {
+                handleResetPreferences(preferencesPanel);
+            }
+        });
+        resetPanel.add(resetPreferencesButton);
+        holder.add(resetPanel, BorderLayout.SOUTH);
+
+        JOptionPane op = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         JDialog dlg = op.createDialog(editorKit.getWorkspace(), "Preferences");
         dlg.setResizable(true);
         dlg.setVisible(true);
-        Object o = op.getValue();
-        if (o != null){
-            int ret = (Integer)o;
-            if (ret == JOptionPane.OK_OPTION) {
-                panel.applyPreferences();
+        if (!preferencesPanel.wasReset) {
+            Object o = op.getValue();
+            if (o != null){
+                int ret = (Integer)o;
+                if (ret == JOptionPane.OK_OPTION) {
+                    preferencesPanel.applyPreferences();
+                }
             }
+            prefs.putString(PREFS_HISTORY_PANEL_KEY, preferencesPanel.getSelectedPanel());
         }
 
-        prefs.putString(PREFS_HISTORY_PANEL_KEY, panel.getSelectedPanel());
-        panel.dispose();
+        preferencesPanel.dispose();
+    }
+    
+    private static void handleResetPreferences(PreferencesDialogPanel panel) {
+        int ret = JOptionPane.showConfirmDialog(panel, RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE, RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(ret == JOptionPane.OK_OPTION) {
+            PreferencesManager.getInstance().resetPreferencesToFactorySettings();
+            panel.wasReset = true;
+        }
     }
 }

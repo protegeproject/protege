@@ -1,19 +1,19 @@
 package org.protege.editor.core;
 
+import java.awt.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -23,10 +23,7 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.Version;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.editorkit.EditorKitManager;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.platform.OSGi;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
@@ -35,6 +32,7 @@ import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
@@ -93,9 +91,9 @@ public class ProtegeApplication implements BundleActivator {
     public static final String LOOK_AND_FEEL_KEY = "LOOK_AND_FEEL_KEY";
 
     public static final String LOOK_AND_FEEL_CLASS_NAME = "LOOK_AND_FEEL_CLASS_NAME";
-    
+
     private static BundleContext context;
-    
+
     private static BundleManager bundleManager;
 
     private List<URI> commandLineURIs;
@@ -104,26 +102,27 @@ public class ProtegeApplication implements BundleActivator {
 
     private static BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
 
-    private static JFrame welcomeFrame;
-
     private static boolean quitting = false;
 
     public void start(BundleContext context) {
-    	try {
-    		ProtegeApplication.context = context;
-    		displayPlatform();
-    		initApplication();
+        try {
+            ProtegeApplication.context = context;
+            displayPlatform();
+            initApplication();
 
-    		if (OSUtils.isOSX()){
-    			ProtegeAppleApplication.getInstance();
-    		}
 
-    		ProtegeManager.getInstance().initialise(this);
-    		startApplication();
-    	}
-    	catch (Throwable t) {
-    		logger.error("Exception caught starting Protege", t);
-    	}
+            if (OSUtils.isOSX()) {
+                ProtegeAppleApplication.getInstance();
+            }
+
+            ProtegeManager.getInstance().initialise(this);
+            startApplication();
+
+
+        }
+        catch (Throwable t) {
+            logger.error("Exception caught starting Protege", t);
+        }
     }
 
 
@@ -134,7 +133,6 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
-        logger.info("Thank you for using Protege. Goodbye.");
     }
 
 
@@ -150,18 +148,14 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle b = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(b);
-        logger.info("Starting Protege 4 OWL Editor (Version "  
-                    +  v.getMajor() + "." + v.getMinor() + "." + v.getMicro()
-                    + ", Build = " + PluginUtilities.getBuildNumber(b) + ")");
+        logger.info("Starting Protege 4 OWL Editor (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + PluginUtilities.getBuildNumber(b) + ")");
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
-                    " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
+                " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
         logger.info("    Language: " + Locale.getDefault().getLanguage() +
-                    ", Country: " + Locale.getDefault().getCountry());
-        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR)
-                    + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
-        logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME)
-                    + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
+                ", Country: " + Locale.getDefault().getCountry());
+        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
+        logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME) + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
         logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
     }
 
@@ -182,11 +176,11 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CC9F2A");
         ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "306FA2");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "306FA2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "29A779");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "531852");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "6B8E23");//"6B8E23");// "408000");//"29A779");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "800040");//"531852");
         ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");//"5D30A2"); //"E55D1A");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "C59969");//"719FA0");//"7DA230");//"98BDD8");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "29a779");//"719FA0");//"7DA230");//"98BDD8");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "719FA0");//"719FA0");//"7DA230");//"98BDD8");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "6B8E23  ");//"719FA0");//"7DA230");//"98BDD8");
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
         ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY, "Data property");
@@ -270,15 +264,12 @@ public class ProtegeApplication implements BundleActivator {
      * impact of not configuring the Logger correctly is enormous.
      */
     private static void checkConfiguration() {
-    	Logger rootLogger = Logger.getRootLogger();
-    	if (rootLogger.isDebugEnabled()) {
-    		JOptionPane.showMessageDialog(null, 
-    				"Logger not initialized.\n" +
-    						"This could have a major impact on performance.\n" +
-    						"Use the -Dlog4j.configuration=\"file:/...\" jvm option.",
-    				"Performance Issue Detected", 
-    				JOptionPane.WARNING_MESSAGE);
-    	}
+        Logger rootLogger = Logger.getRootLogger();
+        if (rootLogger.isDebugEnabled()) {
+            JOptionPane.showMessageDialog(null, "Logger not initialized.\n" +
+                    "This could have a major impact on performance.\n" +
+                    "Use the -Dlog4j.configuration=\"file:/...\" jvm option.", "Performance Issue Detected", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     private static void setupExceptionHandler() {
@@ -290,7 +281,7 @@ public class ProtegeApplication implements BundleActivator {
             }
         });
     }
-    
+
     private void loadPlugins() {
         bundleManager = new BundleManager(context);
         bundleManager.loadPlugins();
@@ -329,49 +320,50 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private void startApplication() throws Exception {
-        showWelcomeFrame();
-        try {
-            if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
-                // Open any command line URIs
-                for (URI uri : commandLineURIs) {
-                    editURI(uri);
-                }
-                if (ProtegeManager.getInstance().getEditorKitManager().getEditorKitCount() != 0) {
-                    welcomeFrame.setVisible(false);
-                }
+        createAndSetupDefaultEditorKit();
+        if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
+            // Open any command line URIs
+            for (URI uri : commandLineURIs) {
+                editURI(uri);
             }
         }
-        catch (Exception e) {
-            logger.error("Exception caught loading ontology", e);
-        }
-        
-        if (PluginManager.getInstance().isAutoUpdateEnabled()){
+        checkForUpdates();
+    }
+
+    private void checkForUpdates() {
+        if (PluginManager.getInstance().isAutoUpdateEnabled()) {
             PluginManager.getInstance().performAutoUpdate();
 
             context.addFrameworkListener(new FrameworkListener() {
-               public void frameworkEvent(FrameworkEvent event) {
-                   if (event.getType() == FrameworkEvent.STARTED) {
-                       context.removeFrameworkListener(this);
-                   }
-                } 
-            });
-
-        }
-    }
-    
-    private void showWelcomeFrame(){
-        if (welcomeFrame == null){
-            welcomeFrame = new ProtegeWelcomeFrame();
-            welcomeFrame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    handleQuit();
+                public void frameworkEvent(FrameworkEvent event) {
+                    if (event.getType() == FrameworkEvent.STARTED) {
+                        context.removeFrameworkListener(this);
+                    }
                 }
             });
-            welcomeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         }
-        welcomeFrame.setVisible(true);
     }
 
+    /**
+     * Gets the default (first) editor kit factory plugin and uses it to create and setup and empty editor kit.
+     */
+    private void createAndSetupDefaultEditorKit() {
+        try {
+            ProtegeManager pm = ProtegeManager.getInstance();
+            List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
+            if (!editorKitFactoryPlugins.isEmpty()) {
+                EditorKitFactoryPlugin defaultPlugin = editorKitFactoryPlugins.get(0);
+                pm.createAndSetupNewEditorKit(defaultPlugin);
+            }
+            else {
+                throw new RuntimeException("No editor kit factory plugins available");
+            }
+        }
+        catch (Exception e) {
+            ErrorLogPanel.showErrorDialog(e);
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
     //
@@ -389,6 +381,7 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
+
     public static BackgroundTaskManager getBackgroundTaskManager() {
         return backgroundTaskManager;
     }
@@ -398,21 +391,18 @@ public class ProtegeApplication implements BundleActivator {
         return bundleManager;
     }
 
-    
+
     public static boolean handleQuit() {
         quitting = true;
         final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
-        for (EditorKit eKit : eKitMngr.getEditorKits()){
+        for (EditorKit eKit : eKitMngr.getEditorKits()) {
             Workspace wSpace = eKit.getWorkspace();
-            if (!eKitMngr.getWorkspaceManager().doClose(wSpace)){
+            if (!eKitMngr.getWorkspaceManager().doClose(wSpace)) {
                 quitting = false;
                 return quitting;
             }
         }
         try {
-            if (welcomeFrame != null) {
-                welcomeFrame.dispose();
-            }
             boolean forceExit = !OSGi.systemExitHandledByLauncher(); // this call fails after context.getBundle(0).stop()
             context.getBundle(0).stop();
             // Danger, Will Robinson!  Weird territory here - the class loader is no longer working!
@@ -440,10 +430,10 @@ public class ProtegeApplication implements BundleActivator {
 
 
     public void handleClose() {
-        if (!quitting){
+        if (!quitting) {
             final EditorKitManager eKitMngr = ProtegeManager.getInstance().getEditorKitManager();
-            if (eKitMngr.getEditorKitCount() == 0){
-                showWelcomeFrame();
+            if (eKitMngr.getEditorKitCount() == 0) {
+                handleQuit();
             }
         }
     }
@@ -454,7 +444,7 @@ public class ProtegeApplication implements BundleActivator {
         for (EditorKitFactoryPlugin plugin : pm.getEditorKitFactoryPlugins()) {
             if (plugin.newInstance().canLoad(uri)) {
                 pm.loadAndSetupEditorKitFromURI(plugin, uri);
-                welcomeFrame.setVisible(false);
+//                welcomeFrame.setVisible(false);
                 break;
             }
         }
@@ -462,6 +452,6 @@ public class ProtegeApplication implements BundleActivator {
 
 
     public static void handleRestart() {
-        
+
     }
 }
