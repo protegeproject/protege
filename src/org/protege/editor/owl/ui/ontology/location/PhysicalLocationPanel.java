@@ -8,6 +8,7 @@ import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
@@ -98,7 +99,8 @@ public class PhysicalLocationPanel extends JPanel {
                 List<MListButton> buttons  = new ArrayList<MListButton>(super.getButtons(value));
                 buttons.add(reload);
                 OWLOntology ont = ((OntologyListItem)value).ont;
-                if (owlEditorKit.getModelManager().getOntologyPhysicalURI(ont).getScheme().equals("file")){
+                URI ontologyPhysicalURI = owlEditorKit.getModelManager().getOntologyPhysicalURI(ont);
+                if (UIUtil.isLocalFile(ontologyPhysicalURI)){
                     buttons.add(showFile);
                 }
                 if (owlEditorKit.getModelManager().getDirtyOntologies().contains(ont)){
@@ -178,7 +180,7 @@ public class PhysicalLocationPanel extends JPanel {
 
     private void handleShowFile(OWLOntology ont){
         URI physicalURI = owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont);
-        if (!physicalURI.getScheme().equals("file")) {
+        if (!UIUtil.isLocalFile(physicalURI)) {
             throw new IllegalArgumentException("URI must be a file URI!");
         }
         try {
@@ -268,7 +270,7 @@ public class PhysicalLocationPanel extends JPanel {
             ontURILabel.setText(label);
 
             final URI physicalURI = mngr.getOntologyPhysicalURI(ont);
-            if (physicalURI.getScheme().equals("file")) {
+            if (UIUtil.isLocalFile(physicalURI)) {
                 locURILabel.setText(new File(physicalURI).toString());
             }
             else {

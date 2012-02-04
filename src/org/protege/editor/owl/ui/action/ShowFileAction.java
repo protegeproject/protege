@@ -9,6 +9,7 @@ import javax.swing.AbstractAction;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ui.util.UIUtil;
 
 
 /**
@@ -30,7 +31,7 @@ public class ShowFileAction extends AbstractAction {
     public ShowFileAction(URI physicalURI) {
         super("Show file...");
         this.physicalURI = physicalURI;
-        if (!physicalURI.getScheme().equals("file")) {
+        if (!UIUtil.isLocalFile(physicalURI)) {
             throw new IllegalArgumentException("URI must be a file URI!");
         }
     }

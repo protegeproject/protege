@@ -1,9 +1,6 @@
 package org.protege.editor.owl.ui.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
@@ -75,6 +72,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     @SuppressWarnings("unchecked")
     public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
+        TreeMap<String, OWLClassExpressionEditor> editorMap = new TreeMap<String, OWLClassExpressionEditor>();
         for (OWLClassExpressionEditorPlugin plugin : getDescriptionEditorPlugins()) {
             try {
                 if (type == null || plugin.isSuitableFor(type)){
@@ -83,12 +81,15 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
                         editorPanel.setAxiomType(type);
                     }
                     editorPanel.initialise();
-                    editor.addPanel(editorPanel);
+                    editorMap.put(plugin.getIndex(), editorPanel);
                 }
             }
             catch (Throwable e) { // be harsh if any problems with a plugin
                 ProtegeApplication.getErrorLog().logError(e);
             }
+        }
+        for(String key : editorMap.keySet()) {
+            editor.addPanel(editorMap.get(key));
         }
         editor.selectPreferredEditor();
         return editor;

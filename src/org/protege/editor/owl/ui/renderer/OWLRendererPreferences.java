@@ -4,20 +4,21 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import javax.swing.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -53,8 +54,21 @@ public class OWLRendererPreferences {
 
     public static final String ANNOTATIONS = "ANNOTATIONS";
     
-    public static final int DEFAULT_FONT_SIZE = 14;
+    public static final int DEFAULT_FONT_SIZE = 12;
 
+    /**
+     * The default logical font name.  This is mappable to a physical font on all systems.
+     * See http://docs.oracle.com/javase/tutorial/2d/text/fonts.html#logical-fonts for details.
+     */
+    public static final String DEFAULT_LOGICAL_FONT_FAMILY_NAME = "SansSerif";
+
+    /**
+     * The default preferred font.  Verdana works well if it is installed.  It is specifically designed for readability
+     * at small sizes on computer screens.  See http://en.wikipedia.org/wiki/Verdana for details.  This font will not
+     * be used if is not available on the system.
+     */
+    public static final String DEFAULT_PREFERRED_PHYSICAL_FONT_FAMILY_NAME = "Verdana";
+    
     public static final String DEFAULT_FONT_NAME = getDefaultFontName();
 
 
@@ -107,22 +121,14 @@ public class OWLRendererPreferences {
      * This idea of setting the font is a bad idea and I agree with others here that we should get rid of it.
      */
     private static String getDefaultFontName() {
-    	String qualifiedDefaultFontName = "Dialog.plain";
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Font [] fonts = ge.getAllFonts();
-        // essentially the following is what we had before and it works on linux and windows.
-        for (Font f : fonts) {
-        	if (f.getFontName().equals(qualifiedDefaultFontName)) {
-        		return qualifiedDefaultFontName;
-        	}
+        String [] fontFamilyNames = ge.getAvailableFontFamilyNames();
+        for(String name : fontFamilyNames) {
+            if(name.toLowerCase().equals(DEFAULT_PREFERRED_PHYSICAL_FONT_FAMILY_NAME.toLowerCase())) {
+                return name;
+            }
         }
-        // if you do the following on windows and linux you might end up with something like Dialog.bold.
-        for (Font f : fonts) {
-        	if (f.getFamily().equals("Dialog") && f.getStyle() == Font.PLAIN) {
-        		return f.getFontName();
-        	}
-        }
-        return null; // well this is bad...
+        return DEFAULT_LOGICAL_FONT_FAMILY_NAME;
     }
     
     public Font getFont() {
@@ -135,6 +141,7 @@ public class OWLRendererPreferences {
     }
 
 
+    @Deprecated
     public void setFontName(String fontName) {
         this.fontName = fontName;
         getPreferences().putString(FONT_NAME, fontName);
@@ -144,6 +151,7 @@ public class OWLRendererPreferences {
 
     private void resetFont() {
         font = new Font(this.fontName, Font.PLAIN, fontSize);
+
     }
 
 

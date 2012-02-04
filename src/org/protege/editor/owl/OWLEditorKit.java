@@ -3,10 +3,7 @@ package org.protege.editor.owl;
 import java.io.File;
 import java.net.ProtocolException;
 import java.net.URI;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -17,12 +14,8 @@ import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.editorkit.AbstractEditorKit;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
@@ -30,22 +23,13 @@ import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
-import org.protege.editor.owl.ui.OntologyFormatPanel;
-import org.protege.editor.owl.ui.SaveConfirmationPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
-import org.protege.editor.owl.ui.ontology.wizard.create.CreateOntologyWizard;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.semanticweb.owlapi.model.OWLOntologyStorerNotFoundException;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 
 /**
@@ -65,15 +49,21 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public static final String URI_KEY = "URI";
 
+    public static final String FILE_URI_SCHEME = "file";
+
     private OWLWorkspace workspace;
 
     private OWLModelManager modelManager;
 
     private Set<URI> newPhysicalURIs;
-    
+
     private OntologyLoadErrorHandlerUI loadErrorHandler;
-    
+
     private ServiceRegistration registration;
+    
+    private boolean modifiedDocument = false;
+
+    private OWLOntologyChangeListener ontologyChangeListener;
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
@@ -81,28 +71,45 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    protected void initialise(){
+    protected void initialise() {
         logger.info("Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-        modelManager.setSaveErrorHandler(new SaveErrorHandler(){
+        modelManager.setSaveErrorHandler(new SaveErrorHandler() {
             public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
                 handleSaveError(ont, physicalURIForOntology, e);
             }
         });
+
+        ontologyChangeListener = new OWLOntologyChangeListener() {
+            public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
+                modifiedDocument = true;
+            }
+        };
+        modelManager.addOntologyChangeListener(ontologyChangeListener);
+
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
         registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<String, Object>());
+
+        getWorkspace().refreshComponents();
     }
 
+    /**
+     * Determines if this editor kit has modified the contents if its documents in any way.
+     * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise <code>false</code>.
+     */
+    public boolean hasModifiedDocument() {
+        return modifiedDocument;
+    }
 
     /**
      * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this call
-     *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that 
+     *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that
      *             you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing list:
      *             http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
      */
@@ -178,44 +185,46 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     public boolean handleLoadFrom(URI uri) throws Exception {
         loadErrorHandler.setReloadFlag(false);
         boolean success = ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
-        
-        if (success){
+
+        if (success) {
             addRecent(uri);
         }
         else if (loadErrorHandler.getReloadFlag()) {
             success = handleLoadFrom(uri);
         }
+        modifiedDocument = true;
         return success;
     }
 
+    /**
+     * Creates an ontology Id which should be used by default.  The current implementation returns the next anonymous
+     * ontology identifier.
+     * @return The id.
+     */
+    private OWLOntologyID createDefaultOntologyId() {
+        return new OWLOntologyID();
+    }
 
     public boolean handleNewRequest() throws Exception {
-        CreateOntologyWizard w = new CreateOntologyWizard(null, this);
-        int result = w.showModalDialog();
-        if (result == Wizard.FINISH_RETURN_CODE) {
-            OWLOntologyID id = w.getOntologyID();
-            if (id != null) {
-                OWLOntology ont = getModelManager().createNewOntology(id, w.getLocationURI());
-                getModelManager().getOWLOntologyManager().setOntologyFormat(ont, w.getFormat());
-                newPhysicalURIs.add(w.getLocationURI());
-                addRecent(w.getLocationURI());
-                return true;
-            }
-        }
-        return false;
+        OWLOntologyID id = createDefaultOntologyId();
+        OWLOntology ont = getModelManager().createNewOntology(id, null);
+        getModelManager().getOWLOntologyManager().setOntologyFormat(ont, new RDFXMLOntologyFormat());
+        return true;
     }
 
 
     public void handleSave() throws Exception {
+        Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
+        getWorkspace().save();
+        if(dirtyOntologies.isEmpty()) {
+            return;
+        }
         try {
-            Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
             getModelManager().save();
-            getWorkspace().save();
             for (URI uri : newPhysicalURIs) {
                 addRecent(uri);
             }
             newPhysicalURIs.clear();
-            SaveConfirmationPanel.showDialog(this, dirtyOntologies);
         }
         catch (OWLOntologyStorerNotFoundException e) {
             OWLOntology ont = getModelManager().getActiveOntology();
@@ -229,8 +238,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public void handleSaveAs() throws Exception {
         final OWLOntology ont = getModelManager().getActiveOntology();
-        if (handleSaveAs(ont)){
-            SaveConfirmationPanel.showDialog(this, Collections.singleton(ont));
+        if (handleSaveAs(ont)) {
         }
     }
 
@@ -243,29 +251,26 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this,
-                                                                  oldFormat,
-                                                                  "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
-        if (format == null) {
-            logger.warn("Please select a valid format");
-            return false;
-        }
-        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
-        	PrefixOWLOntologyFormat oldPrefixes  = (PrefixOWLOntologyFormat) oldFormat;
-        	for (String name : oldPrefixes.getPrefixNames()) {
-        		((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
-        	}
-        }
+//        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+//        if (format == null) {
+//            logger.warn("Please select a valid format");
+//            return false;
+//        }
+//        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
+//            PrefixOWLOntologyFormat oldPrefixes = (PrefixOWLOntologyFormat) oldFormat;
+//            for (String name : oldPrefixes.getPrefixNames()) {
+//                ((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
+//            }
+//        }
         File file = getSaveAsOWLFile(ont);
-        if (file != null){
-            man.setOntologyFormat(ont, format);
+        if (file != null) {
+//            man.setOntologyFormat(ont, format);
             man.setOntologyDocumentIRI(ont, IRI.create(file));
             getModelManager().save(ont);
             addRecent(file.toURI());
             return true;
         }
-        else{
-            logger.warn("No valid file specified for the save as operation - quitting");
+        else {
             return false;
         }
     }
@@ -289,10 +294,10 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public void addRecent(URI physicalURI) {
         String label = physicalURI.toString();
-        if (physicalURI.getScheme() != null && physicalURI.getScheme().equals("file")) {
+        if (FILE_URI_SCHEME.equals(physicalURI.getScheme())) {
             label = new File(physicalURI).getPath();
         }
-        else{
+        else {
             // also add to the URI bookmarks
             BookMarkedURIManager.getInstance().add(physicalURI);
         }
@@ -304,17 +309,17 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
         // catch the case where the user is trying to save an ontology that has been loaded from the web
-        if (e.getCause() != null && e.getCause() instanceof ProtocolException){
+        if (e.getCause() != null && e.getCause() instanceof ProtocolException) {
             handleSaveAs(ont);
         }
-        else{
+        else {
             throw e;
         }
     }
 
     private void loadIOListenerPlugins() {
         IOListenerPluginLoader loader = new IOListenerPluginLoader(this);
-        for(IOListenerPlugin pl : loader.getPlugins()) {
+        for (IOListenerPlugin pl : loader.getPlugins()) {
             try {
                 IOListenerPluginInstance instance = pl.newInstance();
                 getModelManager().addIOListener(instance);
@@ -324,28 +329,37 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
         }
     }
-    
+
     /*
-     * Call the model manager get and put here because otherwise 
-     * listeners created by owl editor kit objects may get disposed
-     * too late.
-     * 
-     * Feels risky.
-     */
+    * Call the model manager get and put here because otherwise
+    * listeners created by owl editor kit objects may get disposed
+    * too late.
+    *
+    * Feels risky.
+    */
     @Override
     public Disposable get(Object key) {
-    	return getOWLModelManager().get(key);
+        return getOWLModelManager().get(key);
     }
-    
+
     @Override
     public void put(Object key, Disposable value) {
-    	getOWLModelManager().put(key, value);
+        getOWLModelManager().put(key, value);
     }
-    
-    
+
+
     @Override
     public void dispose() {
+        getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
+        workspace.dispose();
+        try {
+            modelManager.dispose();
+        }
+        catch (Exception e) {
+            ErrorLogPanel.showErrorDialog(e);
+        }
+
         if (registration != null) {
             registration.unregister();
             registration = null;

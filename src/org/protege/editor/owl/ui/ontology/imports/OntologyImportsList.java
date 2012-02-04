@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListSectionHeader;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
@@ -168,7 +169,7 @@ public class OntologyImportsList extends MList {
         manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
         try {
             IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
-            if (importersDocumentLocation.getScheme().equals("file")) {
+            if (UIUtil.isLocalFile(importersDocumentLocation.toURI())) {
                 File f = new File(importersDocumentLocation.toURI());
                 XMLCatalog catalog = eKit.getModelManager().addRootFolder(f.getParentFile());
                 URI physicalUri = CatalogUtilities.relativize(physicalLocation.toURI(), catalog);

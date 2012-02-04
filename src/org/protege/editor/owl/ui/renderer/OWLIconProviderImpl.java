@@ -21,17 +21,17 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     private Icon icon;
 
-    private final Icon primitiveClassIcon = OWLIcons.getIcon("class.primitive.png");
+    private final Icon primitiveClassIcon = new OWLClassIcon(OWLClassIcon.Type.PRIMITIVE);//OWLIcons.getIcon("class.primitive.png");
 
-    private final Icon definedClassIcon = OWLIcons.getIcon("class.defined.png");
+    private final Icon definedClassIcon = new OWLClassIcon(OWLClassIcon.Type.DEFINED);
 
-    private final Icon objectPropertyIcon = OWLIcons.getIcon("property.object.png");
+    private final Icon objectPropertyIcon = new OWLObjectPropertyIcon();
 
-    private final Icon dataPropertyIcon = OWLIcons.getIcon("property.data.png");
+    private final Icon dataPropertyIcon = new OWLDataPropertyIcon();
 
-    private final Icon annotationPropertyIcon = OWLIcons.getIcon("property.annotation.png");
+    private final Icon annotationPropertyIcon = new OWLAnnotationPropertyIcon();
 
-    private final Icon individualIcon = OWLIcons.getIcon("individual.png");
+    private final Icon individualIcon = new OWLIndividualIcon();
 
     private final Icon dataTypeIcon = OWLIcons.getIcon("datarange.png");
 
