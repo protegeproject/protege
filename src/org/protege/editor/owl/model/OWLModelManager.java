@@ -283,7 +283,11 @@ public interface OWLModelManager extends ModelManager {
     
     ReasonerPreferences getReasonerPreferences();
 
-
+    /**
+     * Gets the physical URI for the specified ontology.
+     * @param ontology The ontology.
+     * @return The physical URI.
+     */
     URI getOntologyPhysicalURI(OWLOntology ontology);
 
 

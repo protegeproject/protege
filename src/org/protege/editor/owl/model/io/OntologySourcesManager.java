@@ -118,7 +118,7 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
 
     private long getTimestamp(URI uri){
-        if (uri.getScheme().equals("file")){
+        if ("file".equals(uri.getScheme())){
             File file = new File(uri);
             if (file.exists()){
                 return file.lastModified();

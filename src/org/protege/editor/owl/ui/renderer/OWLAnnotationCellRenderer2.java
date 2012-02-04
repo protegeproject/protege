@@ -180,7 +180,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private void applyGlobalFormattingToAnnotationValueParagraphs(List<Paragraph> valueRenderingParagraphs) {
         for (Paragraph paragraph : valueRenderingParagraphs) {
-            paragraph.setTabCount(1);
+            paragraph.setTabCount(0);
             paragraph.setMarginBottom(2);
         }
     }

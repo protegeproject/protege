@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.framelist;
 
 import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -50,20 +51,20 @@ public class AxiomAnnotationButton extends MListButton {
 
 
     public void paintButtonContent(Graphics2D g) {
-        final Font font = g.getFont();
 
         int w = getBounds().width;
         int h = getBounds().height;
         int x = getBounds().x;
         int y = getBounds().y;
 
-        g.setFont(font.deriveFont(Font.BOLD).deriveFont(8));
-        final Rectangle stringBounds = g.getFontMetrics().getStringBounds(ANNOTATE_STRING, g).getBounds();
-        g.drawString(ANNOTATE_STRING,
-                     getBounds().x + w / 2 - stringBounds.width / 2,
-                     getBounds().y + h / 2 + stringBounds.height / 2 - 3);
+        Font font = g.getFont().deriveFont(Font.BOLD, OWLRendererPreferences.getInstance().getFontSize());
+        g.setFont(font);
+        FontMetrics fontMetrics = g.getFontMetrics(font);
+        final Rectangle stringBounds = fontMetrics.getStringBounds(ANNOTATE_STRING, g).getBounds();
+        int baseline = fontMetrics.getLeading() + fontMetrics.getAscent();
+        g.drawString(ANNOTATE_STRING, x + w / 2 - stringBounds.width / 2, y + (h - stringBounds.height) / 2 + baseline );
 
-        if (annotationPresent){
+        if (annotationPresent) {
             g.drawOval(x + 2, y + 2, w - 4, h - 4);
         }
 

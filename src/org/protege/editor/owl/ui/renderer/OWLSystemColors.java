@@ -34,6 +34,16 @@ public class OWLSystemColors {
                                      Color.GRAY);
     }
 
+    public static Color getOWLAnnotationPropertyColor() {
+        return PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY),
+                Color.GRAY);
+    }
+
+    public static Color getOWLDatatypeColor() {
+        return PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.DATATYPE_COLOR_KEY),
+                Color.GRAY);
+    }
+
 
     public static Color getOWLIndividualColor() {
         return PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.INDIVIDUAL_COLOR_KEY),

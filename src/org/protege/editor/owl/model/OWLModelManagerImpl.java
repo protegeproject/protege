@@ -13,9 +13,11 @@ import java.util.Set;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
+import org.eclipse.core.runtime.URIUtil;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
@@ -316,7 +318,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      * The location of the file is specified by the URI argument.
      */
     public boolean loadOntologyFromPhysicalURI(URI uri) {
-        if (uri.getScheme()  != null && uri.getScheme().equals("file")) {
+        if (UIUtil.isLocalFile(uri)) {
             // Load the URIs of other ontologies that are contained in the same folder.
             addRootFolder(new File(uri).getParentFile());
         }
@@ -397,9 +399,25 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
-        return manager.getOntologyDocumentIRI(ontology).toURI();
+        IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontology);
+        if(ontologyDocumentIRI != null) {
+            if(isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
+                return URI.create("");     
+            }
+            else {
+                return ontologyDocumentIRI.toURI();    
+            }
+        }
+        else {
+            return URI.create("");
+        }
     }
 
+    private boolean isDefaultOWLAPIDocumentIRI(IRI iri) {
+        URI uri = iri.toURI();
+        String scheme = uri.getScheme();
+        return scheme != null && scheme.equals("owlapi");
+    }
 
     public void setPhysicalURI(OWLOntology ontology, URI physicalURI) {
         manager.setOntologyDocumentIRI(ontology, IRI.create(physicalURI));
@@ -407,7 +425,9 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
-        manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
+        if (physicalURI != null) {
+            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
+        }
         OWLOntology ont = manager.createOntology(ontologyID);
         setActiveOntology(ont);
         if (physicalURI != null) {
@@ -504,7 +524,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
             fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
 
             try {
-                if (!physicalURI.getScheme().equals("file")){
+                if (!UIUtil.isLocalFile(physicalURI)){
                     throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
                 }
 

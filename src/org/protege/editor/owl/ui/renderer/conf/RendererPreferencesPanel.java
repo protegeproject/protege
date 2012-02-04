@@ -62,8 +62,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JSpinner fontSizeSpinner;
 
-    private JComboBox fontCombo;
-
     private JButton configureButton;
 
     private RendererPlugin originalRendererPlugin;
@@ -78,10 +76,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
         prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
         prefs.setFontSize((Integer) fontSizeSpinner.getValue());
-        Object selectedFont = fontCombo.getSelectedItem();
-		prefs.setFontName(selectedFont == null ? OWLRendererPreferences.DEFAULT_FONT_NAME :
-			selectedFont.toString());
-
         if (isDirty()){
             RendererPlugin plugin = getSelectedRendererPlugin();
             try {
@@ -139,10 +133,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         for(Font f : fonts) {
             fontNames.add(f.getName());
         }
-        fontCombo = new JComboBox(fontNames.toArray());
-        fontSizePanel.add("Font", fontCombo);
-        fontCombo.setSelectedItem(prefs.getFontName());
-        
+
         fontSizePanel.add(new JButton(new AbstractAction("Reset font") {
         	public void actionPerformed(ActionEvent arg0) {
         		resetFont();
@@ -154,9 +145,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     protected void resetFont() {
     	OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
-    	prefs.setFontName(OWLRendererPreferences.DEFAULT_FONT_NAME);
-    	fontCombo.setSelectedItem(OWLRendererPreferences.DEFAULT_FONT_NAME);
-    	
     	prefs.setFontSize(OWLRendererPreferences.DEFAULT_FONT_SIZE);
     	fontSizeSpinner.setValue(OWLRendererPreferences.DEFAULT_FONT_SIZE);
 	}

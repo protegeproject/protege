@@ -73,6 +73,7 @@ import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Copyable;
@@ -200,6 +201,7 @@ public class OWLFrameList<R> extends MList
         
         setUI(new OWLFrameListUI());
     }
+
 
     public void refreshComponent() {
         refillRows();

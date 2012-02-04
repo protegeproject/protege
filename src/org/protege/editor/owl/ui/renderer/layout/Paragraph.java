@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -57,6 +59,8 @@ public class Paragraph extends PageObject {
         this.paragraphText = paragraphText;
         this.linkSpans.addAll(linkSpans);
         computePlainString();
+        int fontSize = OWLRendererPreferences.getInstance().getFontSize();
+        setSize(fontSize);
     }
 
     public void append(String text, Color foreground) {

@@ -67,6 +67,8 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
         preparePasteable();
 //        }
         prepareCuttable();
+
+        getOWLWorkspace().refreshComponents();
     }
 
 

@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class PageCache {
 
     public static final int DEFAULT_CACHE_SIZE = 200;
+    
+    private int lastFontSize = OWLRendererPreferences.getInstance().getFontSize();
 
 
     private int cacheSize = DEFAULT_CACHE_SIZE;
@@ -39,6 +43,9 @@ public class PageCache {
     }
 
     public Page getPage(PageCacheKey key) {
+        if(hasFontSizeChanged()) {
+            map.clear();
+        }
         return map.get(key);
     }
 
@@ -49,5 +56,15 @@ public class PageCache {
             iterator.remove();
         }
         map.put(key, page);
+    }
+
+    // A temporary hack.  
+    private boolean hasFontSizeChanged() {
+        int currentSize = OWLRendererPreferences.getInstance().getFontSize();
+        if(currentSize != lastFontSize) {
+            lastFontSize = currentSize;
+            return true;
+        }
+        return false;
     }
 }

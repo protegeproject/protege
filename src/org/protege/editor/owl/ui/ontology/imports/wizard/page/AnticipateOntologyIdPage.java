@@ -15,6 +15,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
@@ -72,11 +73,12 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     	        importOptions.add(id.getVersionIRI());
     	    }
     	}
-    	if (!parameters.getPhysicalLocation().getScheme().equals("file") && !importOptions.contains(parameters.getPhysicalLocation())) {
-    	    importOptions.add(IRI.create(parameters.getPhysicalLocation()));
+        URI physicalLocation = parameters.getPhysicalLocation();
+        if (!UIUtil.isLocalFile(physicalLocation) && !importOptions.contains(physicalLocation)) {
+    	    importOptions.add(IRI.create(physicalLocation));
     	}
-    	if (parameters.getPhysicalLocation().getScheme().equals("file") && importOptions.isEmpty()) {
-    	    File f = new File(parameters.getPhysicalLocation());
+    	if (UIUtil.isLocalFile(physicalLocation) && importOptions.isEmpty()) {
+    	    File f = new File(physicalLocation);
     	    
     	    Set<URI> bases = new XmlBaseAlgorithm().getSuggestions(f);
     	    if (bases.size()  == 1) {

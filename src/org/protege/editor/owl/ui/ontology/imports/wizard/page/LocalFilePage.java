@@ -21,6 +21,7 @@ import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.FilePathPanel;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
@@ -105,7 +106,7 @@ public class LocalFilePage extends OntologyImportPage {
         RecentEditorKitManager man = RecentEditorKitManager.getInstance();
         for (EditorKitDescriptor descriptor : man.getDescriptors()) {
             final URI uri = descriptor.getURI(OWLEditorKit.URI_KEY);
-            if (uri.getScheme() != null && uri.getScheme().equals("file")){
+            if (uri.getScheme() != null && UIUtil.isLocalFile(uri)){
                 model.addElement(descriptor);
             }
         }
