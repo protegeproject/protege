@@ -23,6 +23,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.ui.action.ProtegeAction;
@@ -148,7 +149,11 @@ public class MenuBuilder {
 			actions.add(action);
 		}
 		catch (Exception e) {
-			logger.error(e);
+			ProtegeApplication.getErrorLog().logError(e);
+		}
+		catch (NoClassDefFoundError noClass) {
+			logger.error("Error loading menu plugin " + plugin.getId() + "(" + plugin.getName() + ")");
+			ProtegeApplication.getErrorLog().logError(noClass);
 		}
 	}
 	
