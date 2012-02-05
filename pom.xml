@@ -6,8 +6,8 @@
 	<artifactId>org.protege.editor.core.application</artifactId>
 	<packaging>bundle</packaging>
 	<name>Ontology Editing Infrastructure</name>
-	<!--<version>4.1.0.213_SNAPSHOT</version> -->
-    <version>4.2.0.b256_2012_02_04_1820</version>
+	<version>4.1.0.213_SNAPSHOT</version>
+    <!-- <version>4.2.0.b256_2012_02_04_1820</version> -->
 
 	<parent>
 		<groupId>protege4</groupId>
