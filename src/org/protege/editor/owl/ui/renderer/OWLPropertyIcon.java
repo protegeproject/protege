@@ -13,6 +13,7 @@ public class OWLPropertyIcon extends OWLEntityIcon {
     private Color iconColor;
 
     public OWLPropertyIcon(Color iconColor) {
+        super(SizeBias.EVEN);
         this.iconColor = iconColor;
     }
 

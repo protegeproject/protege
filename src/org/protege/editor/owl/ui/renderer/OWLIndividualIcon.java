@@ -11,7 +11,11 @@ import java.awt.*;
 public class OWLIndividualIcon extends OWLEntityIcon {
 
     private static final Color COLOR = OWLSystemColors.getOWLIndividualColor();
-    
+
+    public OWLIndividualIcon() {
+        super(SizeBias.EVEN);
+    }
+
     /**
      * Draw the icon at the specified location.  Icon implementations
      * may use the Component argument to get properties useful for

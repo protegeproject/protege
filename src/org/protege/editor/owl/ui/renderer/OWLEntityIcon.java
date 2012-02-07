@@ -12,10 +12,24 @@ import java.awt.*;
 public abstract class OWLEntityIcon implements Icon {
 
     private static int DEFAULT_PADDING_PX = 2;
-    
+
+    private SizeBias sizeBias;
+
+    protected OWLEntityIcon(SizeBias sizeBias) {
+        this.sizeBias = sizeBias;
+    }
+
     protected int getSize() {
+        int size;
         int fontSize = OWLRendererPreferences.getInstance().getFontSize();
-        return getPadding() * 2 + fontSize;
+        int idealSize = fontSize + getPadding() * 2;
+        if(sizeBias.equals(SizeBias.EVEN)) {
+            size = (idealSize / 2) * 2;
+        }
+        else {
+            size = (idealSize / 2) * 2 + 1;
+        }
+        return size;
     }
     
     protected int getBaseline(Component c, int defaultBaseline) {
@@ -48,5 +62,10 @@ public abstract class OWLEntityIcon implements Icon {
      */
     public int getIconHeight() {
         return getSize();
+    }
+    
+    public static enum SizeBias {
+        ODD,
+        EVEN
     }
 }

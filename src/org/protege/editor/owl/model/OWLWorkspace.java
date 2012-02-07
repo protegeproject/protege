@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -255,7 +256,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private void updateDirtyFlag() {
         WorkspaceManager workspaceManager = ProtegeManager.getInstance().getEditorKitManager().getWorkspaceManager();
         JFrame frame = workspaceManager.getFrame(this);
-        frame.getRootPane().putClientProperty(WINDOW_MODIFIED, !getOWLModelManager().getDirtyOntologies().isEmpty());
+        Set<OWLOntology> dirtyOntologies = getOWLModelManager().getDirtyOntologies();
+        boolean dirty = false;
+        for(OWLOntology ont : getOWLModelManager().getOntologies()) {
+            if(dirtyOntologies.contains(ont)) {
+                dirty = true;
+                break;
+            }
+        }
+        frame.getRootPane().putClientProperty(WINDOW_MODIFIED, dirty);
     }
 
 
@@ -294,6 +303,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 break;
             case ONTOLOGY_SAVED:
                 updateDirtyFlag();
+                updateTitleBar();
                 break;
             case ENTITY_RENDERING_CHANGED:
             case ONTOLOGY_VISIBILITY_CHANGED:
@@ -667,6 +677,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         if (f != null) {
             f.setTitle(getTitle());
         }
+        ontologiesList.repaint();
     }
 
     private void updateReasonerStatus(boolean changesInProgress) {
