@@ -129,6 +129,14 @@
         <editorKitId value="any"/>
     </extension>
 
+    <extension id="menu.window.captureView" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Capture view..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotC-A"/>
+        <toolTip value="Capture the focused view as a png image on the clipboard"/>
+        <class value="org.protege.editor.core.ui.view.CaptureScreenshotAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
     <extension id="menu.window.views" 
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Views"/>
@@ -138,6 +146,8 @@
         <editorKitId value="any"/>
         <dynamic value="true"/>
     </extension>
+
+
 
 
     <extension id="menu.window.tabs" 

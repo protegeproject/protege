@@ -126,7 +126,7 @@ Import-Package: com.jgoodies.looks;version="2.2.1",com.jgoodies.looks.
  registry="split";version="3.4.0",org.osgi.framework;version="0.0.0",o
  rg.osgi.service.packageadmin;version="0.0.0",org.osgi.util.tracker;ve
  rsion="0.0.0",org.w3c.dom;version="0.0.0",org.xml.sax;version="0.0.0"
- ,org.xml.sax.helpers;version="0.0.0"
+ ,org.xml.sax.helpers;version="0.0.0",javax.imageio;version="0.0.0"
 Bundle-SymbolicName: org.protege.editor.core.application;singleton:="t
  rue"
 
