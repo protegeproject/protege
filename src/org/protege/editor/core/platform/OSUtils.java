@@ -36,7 +36,11 @@ public class OSUtils {
 
 
     public static boolean isOSX() {
-        return System.getProperty(OS_NAME).indexOf("OS X") != -1;
+        String property = System.getProperty(OS_NAME);
+        if(property == null) {
+            return false;
+        }
+        return property.toLowerCase().contains("os x");
     }
 
 

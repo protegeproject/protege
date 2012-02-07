@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.list;
 
+import org.omg.CORBA.TypeCodePackage.Bounds;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -21,7 +23,7 @@ public abstract class MListButton {
 
     private ActionListener actionListener;
 
-    private Rectangle bounds;
+    private Rectangle bounds = new Rectangle();
 
     private Object rowObject;
 
@@ -30,7 +32,7 @@ public abstract class MListButton {
         this.name = name;
         this.rollOverColor = rollOverColor;
         this.actionListener = actionListener;
-        if(actionListener == null) {
+        if (actionListener == null) {
             actionListener = new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
@@ -41,6 +43,10 @@ public abstract class MListButton {
 
     protected MListButton(String name, Color rollOverColor) {
         this(name, rollOverColor, null);
+    }
+
+    protected int getSizeMultiple() {
+        return 2;
     }
 
 
@@ -74,8 +80,20 @@ public abstract class MListButton {
     }
 
 
+    @Deprecated
     public void setBounds(Rectangle bounds) {
-        this.bounds = bounds;
+        this.bounds = new Rectangle(bounds);
+    }
+    
+    public void setLocation(int x, int y) {
+        this.bounds.x = x;
+        this.bounds.y = y;
+    }
+    
+    public void setSize(int size) {
+        int normalisedSize = Math.round(size / getSizeMultiple() * 1.0f) * getSizeMultiple();
+        this.bounds.width = normalisedSize;
+        this.bounds.height = normalisedSize;
     }
 
 
@@ -91,7 +109,7 @@ public abstract class MListButton {
      * Paints the button content. For convenience, the graphics origin will be
      * the top left corner of the button
      * @param g The graphics which should be used for rendering
-     *          the content
+     * the content
      */
     public abstract void paintButtonContent(Graphics2D g);
 }

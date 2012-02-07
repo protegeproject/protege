@@ -276,8 +276,8 @@ public class MList extends JList {
             // background
             if (value instanceof MListSectionHeader) {
                 JLabel label = (JLabel) this.defaultListCellRenderer.getListCellRendererComponent(list, " ", index, isSelected, cellHasFocus);
-                label.setBorder(BorderFactory.createCompoundBorder(MList.this.createPaddingBorder(list, " ", index, isSelected, cellHasFocus), BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-                label.setVerticalTextPosition(SwingConstants.BOTTOM);
+                label.setBorder(BorderFactory.createCompoundBorder(MList.this.createPaddingBorder(list, " ", index, isSelected, cellHasFocus), BorderFactory.createEmptyBorder(3, 3, 2, 2)));
+                label.setVerticalTextPosition(SwingConstants.TOP);
                 return label;
             }
             JComponent component = (JComponent) this.contentRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -310,8 +310,12 @@ public class MList extends JList {
             return BUTTON_DIMENSION;
         }
         else {
-            FontMetrics fm = getFontMetrics(font);
-            return fm.getHeight() + 2;
+            FontMetrics fontMetrics = getFontMetrics(font);
+            int height = fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent() + fontMetrics.getLeading();
+            if(height < 20) {
+                height = 20;
+            }
+            return height;
         }
     }
 
@@ -319,22 +323,35 @@ public class MList extends JList {
         int bottomMargin = 0;
         if (list.getFixedCellHeight() == -1) {
             if (this.getModel().getSize() > index + 1) {
-                if (this.getModel().getElementAt(index + 1) instanceof MListSectionHeader) {
-                    bottomMargin = 20;
-                }
+                bottomMargin = getRowHeightPadding(index);
             }
         }
         return BorderFactory.createMatteBorder(0, 0, bottomMargin, 0, Color.WHITE);
     }
 
+    private int getRowHeightPadding(int index) {
+        int bottomMargin = 0;
+        if (isNextRowHeader(index)) {
+            bottomMargin = 20;
+        }
+        return bottomMargin;
+    }
+
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Border internalPadding = BorderFactory.createEmptyBorder(1, 1, 1, 1);
         Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220));
-        Border externalBorder = BorderFactory.createEmptyBorder(0, 20, 0, 0);
+        Border externalBorder = BorderFactory.createMatteBorder(0, 20, 0, 0, list.getBackground());
         return BorderFactory.createCompoundBorder(
                 externalBorder,
                 BorderFactory.createCompoundBorder(line, internalPadding)
         );
+    }
+    
+    private boolean isNextRowHeader(int index) {
+        if(index + 1 < getModel().getSize()) {
+            return getModel().getElementAt(index + 1) instanceof MListSectionHeader;
+        }
+        return false;
     }
 
     private List<MListButton> getButtons(int index) {
@@ -348,10 +365,12 @@ public class MList extends JList {
             int buttonDimension = getButtonDimension();
             if (obj instanceof MListSectionHeader) {
                 MListSectionHeader section = (MListSectionHeader) obj;
-                Rectangle nameBounds = this.getGraphics().getFontMetrics(getSectionHeaderFont()).getStringBounds(section.getName(), this.getGraphics()).getBounds();
+                FontMetrics fm = this.getGraphics().getFontMetrics(getSectionHeaderFont());
+                Rectangle nameBounds = fm.getStringBounds(section.getName(), this.getGraphics()).getBounds();
                 int x = 7 + nameBounds.width + 2;
                 for (MListButton button : buttons) {
-                    button.setBounds(new Rectangle(x, rowBounds.y + 1, buttonDimension, buttonDimension));
+                    button.setLocation(x, rowBounds.y + ((rowBounds.height - getRowHeightPadding(index)) / 2 - buttonDimension / 2));
+                    button.setSize(buttonDimension);
                     x += buttonDimension;
                     x += 2;
                     button.setRowObject(obj);
@@ -362,7 +381,8 @@ public class MList extends JList {
                 for (MListButton button : buttons) {
                     x -= buttonDimension;
                     x -= 2;
-                    button.setBounds(new Rectangle(x, rowBounds.y + 1, buttonDimension, buttonDimension));
+                    button.setLocation(x, rowBounds.y + 1);
+                    button.setSize(buttonDimension);
                     button.setRowObject(obj);
                 }
             }
@@ -454,13 +474,7 @@ public class MList extends JList {
         Rectangle buttonBounds = button.getBounds();
         if (buttonBounds != null && buttonBounds.intersects(clipBound)) {
             g2.setColor(this.getButtonColor(button));
-            boolean useQuartz = Boolean.getBoolean(System.getProperty("-Dapple.awt.graphics.UseQuartz"));
-            if (!useQuartz) {
-                g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width + 1, buttonBounds.height + 1);
-            }
-            else {
-                g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
-            }
+            g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
             g2.setColor(Color.WHITE);
             Stroke curStroke = g2.getStroke();
             g2.setStroke(BUTTON_STROKE);

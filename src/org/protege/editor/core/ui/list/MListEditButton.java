@@ -1,7 +1,6 @@
 package org.protege.editor.core.ui.list;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 
@@ -19,10 +18,18 @@ public class MListEditButton extends MListButton {
 
 
     public void paintButtonContent(Graphics2D g) {
-        int w = getBounds().width;
-        int h = getBounds().height;
-        int x = getBounds().x;
-        int y = getBounds().y;
-        g.drawOval(x + 6, y + 6, w - 12, h - 12);
+        Rectangle bounds = getBounds();
+        int x = bounds.x;
+        int y = bounds.y;
+        int size = bounds.width;
+        int quarterSize = (Math.round(bounds.width / 4.0f) / 2) * 2;
+        g.fillOval(x + size / 2 - quarterSize, y + size / 2 - quarterSize, 2 * quarterSize, 2 * quarterSize);
+        g.setColor(getBackground());
+        g.fillOval(x + size / 2 - quarterSize / 2, y + size / 2 - quarterSize / 2, quarterSize, quarterSize);
+    }
+
+    @Override
+    protected int getSizeMultiple() {
+        return 4;
     }
 }

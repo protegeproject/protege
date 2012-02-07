@@ -22,7 +22,8 @@ Import-Template: org.eclipse.core.runtime;registry="split";version="3.4.0",
  org.apache.log4j.*;version="1.2.14",
  org.osgi.*;version="0.0.0",
  org.w3c.*;version="0.0.0",
- org.xml.*;version="0.0.0"
+ org.xml.*;version="0.0.0",
+ javax.imageio;version="0.0.0"
 Export-Template: org.onemind.*;version="1.2.0",
  org.coode.mdock.*;version="1.0.0",
  org.jdesktop.*

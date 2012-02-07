@@ -20,12 +20,22 @@ public class MListAddButton extends MListButton {
 
 
     public void paintButtonContent(Graphics2D g) {
-        int inset = 5;
-        Dimension dim = getBounds().getSize();
+        int size = getBounds().height;
+        int thickness = (Math.round(size / 8.0f) / 2) * 2;
+        
         int x = getBounds().x;
         int y = getBounds().y;
-        int midLine = (int) Math.round(dim.width / 2.0);
-        g.drawLine(x + midLine, y + inset, x + midLine, y + dim.height - inset);
-        g.drawLine(x + inset, y + dim.height / 2, x + dim.width - inset, y + dim.height / 2);
+
+        int insetX = size / 4;
+        int insetY = size / 4;
+        int insetHeight = size / 2;
+        int insetWidth = size / 2;
+        g.fillRect(x + size / 2  - thickness / 2, y + insetY, thickness, insetHeight);
+        g.fillRect(x + insetX, y + size / 2 - thickness / 2, insetWidth, thickness);
+    }
+
+    @Override
+    protected int getSizeMultiple() {
+        return 4;
     }
 }
