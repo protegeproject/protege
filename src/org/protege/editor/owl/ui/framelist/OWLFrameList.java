@@ -24,20 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -109,6 +96,7 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -118,33 +106,41 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  * <p/> An OWLFrameList is a common component that displays sections and
  * section content. Most of the standard component in protege use this.
  */
-public class OWLFrameList<R> extends MList
-    implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
-	
+public class OWLFrameList<R> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
+
     private static final Logger logger = Logger.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
+
     public static final Color INFERRED_BG_COLOR = new Color(255, 255, 215);
 
     public static final int BUTTON_DIMENSION = 14;
+
     public static final int BUTTON_MARGIN = 3;
 
     private OWLEditorKit editorKit;
+
     private OWLFrame<R> frame;
+
     private OWLFrameListener listener;
+
     private LinkedObjectComponentMediator mediator;
 
     private List<MListButton> inferredRowButtons;
+
     private AxiomAnnotationButton axiomAnnotationButton;
 
     private ChangeListenerMediator changeListenerMediator;
+
     private JPopupMenu popupMenu;
+
     private List<OWLFrameListPopupMenuAction<R>> actions;
+
     private OWLFrameListRenderer cellRenderer;
 
     private AxiomAnnotationPanel axiomAnnotationPanel;
-    
-    private ListSelectionListener selListener = new ListSelectionListener(){
+
+    private ListSelectionListener selListener = new ListSelectionListener() {
         public void valueChanged(ListSelectionEvent event) {
             handleSelectionEvent(event);
         }
@@ -170,8 +166,7 @@ public class OWLFrameList<R> extends MList
 
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                setFixedCellWidth(OWLFrameList.this
-                        .getWidth());
+                setFixedCellWidth(OWLFrameList.this.getWidth());
             }
         });
 
@@ -190,7 +185,7 @@ public class OWLFrameList<R> extends MList
             }
         }));
 
-        axiomAnnotationButton = new AxiomAnnotationButton(new ActionListener(){
+        axiomAnnotationButton = new AxiomAnnotationButton(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 invokeAxiomAnnotationHandler();
             }
@@ -198,7 +193,7 @@ public class OWLFrameList<R> extends MList
 
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(selListener);
-        
+
         setUI(new OWLFrameListUI());
     }
 
@@ -235,25 +230,24 @@ public class OWLFrameList<R> extends MList
     public void updateUI() {
     }
 
-    protected Border createListItemBorder(JList list, Object value, int index,
-                                          boolean isSelected, boolean cellHasFocus) {
+    protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        Border border = super.createListItemBorder(list, value, index, isSelected, cellHasFocus);
         if (value instanceof OWLFrameSectionRow) {
             OWLFrameSectionRow row = (OWLFrameSectionRow) value;
             if (row.isInferred()) {
-                return inferredBorder;
+                border = BorderFactory.createCompoundBorder(border, inferredBorder);
             }
         }
-        return super.createListItemBorder(list, value, index, isSelected,
-                                          cellHasFocus);
+        return border;
     }
 
     protected List<MListButton> getButtons(Object value) {
         List<MListButton> buttons = new ArrayList<MListButton>(super.getButtons(value));
         if (value instanceof OWLFrameSectionRow) {
-        	OWLFrameSectionRow frameRow = (OWLFrameSectionRow) value;
+            OWLFrameSectionRow frameRow = (OWLFrameSectionRow) value;
             buttons.add(axiomAnnotationButton);
             axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
-            
+
             if (getExplanationManager().hasExplanation(frameRow.getAxiom())) {
                 buttons.addAll(inferredRowButtons);
             }
@@ -272,7 +266,7 @@ public class OWLFrameList<R> extends MList
 
 
     protected String getRowName(Object rowObject) {
-        if (rowObject instanceof  OWLFrameSectionRow){
+        if (rowObject instanceof OWLFrameSectionRow) {
             return ((OWLFrameSectionRow) rowObject).getFrameSection().getRowLabel((OWLFrameSectionRow) rowObject);
         }
         return null;
@@ -337,7 +331,8 @@ public class OWLFrameList<R> extends MList
         try {
             action.initialise();
             actions.add(action);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Exception thrown", e);
             }
@@ -354,7 +349,7 @@ public class OWLFrameList<R> extends MList
     }
 
     public void dispose() {
-        if (axiomAnnotationPanel != null){
+        if (axiomAnnotationPanel != null) {
             axiomAnnotationPanel.dispose();
         }
         removeListSelectionListener(selListener);
@@ -362,9 +357,10 @@ public class OWLFrameList<R> extends MList
         for (OWLFrameListPopupMenuAction<R> action : actions) {
             try {
                 action.dispose();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Exception thrown",  e);
+                    logger.debug("Exception thrown", e);
                 }
             }
         }
@@ -373,8 +369,7 @@ public class OWLFrameList<R> extends MList
 
     private void refillRows() {
         List<OWLFrameObject> rows = new ArrayList<OWLFrameObject>();
-        for (OWLFrameSection<R, ? extends Object, ? extends Object> section : frame
-                .getFrameSections()) {
+        for (OWLFrameSection<R, ? extends Object, ? extends Object> section : frame.getFrameSections()) {
             rows.add(section);
             for (OWLFrameSectionRow row : section.getRows()) {
                 rows.add(row);
@@ -417,7 +412,8 @@ public class OWLFrameList<R> extends MList
                 if (!((OWLFrameSection) val).canAdd()) {
                     return;
                 }
-            } else {
+            }
+            else {
                 if (!((OWLFrameSectionRow) val).isEditable()) {
                     return;
                 }
@@ -434,12 +430,12 @@ public class OWLFrameList<R> extends MList
 
     protected void handleSelectionEvent(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            if (isAxiomSelectionSyncronized()){
+            if (isAxiomSelectionSyncronized()) {
                 final Object sel = getSelectedValue();
-                if (sel instanceof OWLFrameSectionRow){
+                if (sel instanceof OWLFrameSectionRow) {
                     final OWLFrameSectionRow row = (OWLFrameSectionRow) sel;
                     OWLAxiom ax = row.getAxiom();
-                    if (ax != null){
+                    if (ax != null) {
                         editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(new OWLAxiomInstance(ax, row.getOntology()));
                     }
                 }
@@ -459,8 +455,7 @@ public class OWLFrameList<R> extends MList
     }
 
 
-    private void showEditorDialog(final OWLFrameObject frameObject,
-                                  final EditHandler handler) {
+    private void showEditorDialog(final OWLFrameObject frameObject, final EditHandler handler) {
         // If we don't have any editing component then just return
         final boolean isRowEditor = frameObject instanceof OWLFrameSectionRow;
         final OWLObjectEditor editor = frameObject.getEditor();
@@ -498,8 +493,7 @@ public class OWLFrameList<R> extends MList
         // if the editor is verifying, will need to prevent the OK button from
         // being available
         if (editor instanceof VerifiedInputEditor) {
-            ((VerifiedInputEditor) editor)
-                    .addStatusChangedListener(verificationListener);
+            ((VerifiedInputEditor) editor).addStatusChangedListener(verificationListener);
         }
         final Component parent = getDialogParent();
         final JDialog dlg = optionPane.createDialog(parent, null);
@@ -518,8 +512,7 @@ public class OWLFrameList<R> extends MList
                 }
                 setSelectedValue(frameObject, true);
                 if (editor instanceof VerifiedInputEditor) {
-                    ((VerifiedInputEditor) editor)
-                            .removeStatusChangedListener(verificationListener);
+                    ((VerifiedInputEditor) editor).removeStatusChangedListener(verificationListener);
                 }
                 // editor.dispose();
                 if (isRowEditor) {
@@ -538,7 +531,7 @@ public class OWLFrameList<R> extends MList
         }
 
         if (rootObject instanceof OWLObject) {
-            dlg.setTitle(editorKit.getModelManager().getRendering((OWLObject)rootObject));
+            dlg.setTitle(editorKit.getModelManager().getRendering((OWLObject) rootObject));
         }
         else if (rootObject != null) {
             dlg.setTitle(rootObject.toString());
@@ -561,14 +554,14 @@ public class OWLFrameList<R> extends MList
         }
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
-        if(getExplanationManager().hasExplanation(ax)) {
-        	getExplanationManager().handleExplain((Frame) SwingUtilities.getAncestorOfClass(Frame.class, this), ax);
+        if (getExplanationManager().hasExplanation(ax)) {
+            getExplanationManager().handleExplain((Frame) SwingUtilities.getAncestorOfClass(Frame.class, this), ax);
         }
 
     }
-    
+
     protected ExplanationManager getExplanationManager() {
-    	return editorKit.getModelManager().getExplanationManager();
+        return editorKit.getModelManager().getExplanationManager();
     }
 
 
@@ -580,13 +573,11 @@ public class OWLFrameList<R> extends MList
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
 
-        if (axiomAnnotationPanel == null){
+        if (axiomAnnotationPanel == null) {
             axiomAnnotationPanel = new AxiomAnnotationPanel(editorKit);
         }
         axiomAnnotationPanel.setAxiomInstance(new OWLAxiomInstance(ax, row.getOntology()));
-        new UIHelper(editorKit).showDialog("Annotations for " + ax.getAxiomType().toString(),
-                                           axiomAnnotationPanel,
-                                           JOptionPane.CLOSED_OPTION);
+        new UIHelper(editorKit).showDialog("Annotations for " + ax.getAxiomType().toString(), axiomAnnotationPanel, JOptionPane.CLOSED_OPTION);
     }
 
 
@@ -654,11 +645,9 @@ public class OWLFrameList<R> extends MList
     }
 
     public void drop(DropTargetDropEvent dtde) {
-        if (dtde.getTransferable().isDataFlavorSupported(
-                OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR)) {
+        if (dtde.getTransferable().isDataFlavorSupported(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR)) {
             try {
-                List<OWLObject> object = (List<OWLObject>) dtde.getTransferable().getTransferData(
-                        OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR);
+                List<OWLObject> object = (List<OWLObject>) dtde.getTransferable().getTransferData(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR);
                 OWLFrameObject<R, ? extends OWLAxiom, ? extends Object> frameObject;
                 frameObject = (OWLFrameObject<R, ? extends OWLAxiom, ? extends Object>) getModel().getElementAt(locationToIndex(dtde.getLocation()));
                 dtde.dropComplete(frameObject.dropObjects(object));
@@ -672,6 +661,7 @@ public class OWLFrameList<R> extends MList
 
 
     private interface EditHandler {
+
         void handleEditFinished(OWLObjectEditor editor);
     }
 
@@ -684,9 +674,7 @@ public class OWLFrameList<R> extends MList
         if (getRootObject() == null) {
             return false;
         }
-        return getSelectedValue() instanceof OWLFrameSection
-               && ((OWLFrameSection) getSelectedValue())
-                .canAcceptDrop(objects);
+        return getSelectedValue() instanceof OWLFrameSection && ((OWLFrameSection) getSelectedValue()).canAcceptDrop(objects);
     }
 
     public void pasteObjects(List<OWLObject> objects) {
@@ -747,8 +735,7 @@ public class OWLFrameList<R> extends MList
                 OWLFrameSectionRow row = (OWLFrameSectionRow) selObject;
                 if (!row.isInferred()) {
                     manipulatableObjects.addAll(row.getManipulatableObjects());
-                    changes.add(new RemoveAxiom(row.getOntology(), row
-                            .getAxiom()));
+                    changes.add(new RemoveAxiom(row.getOntology(), row.getAxiom()));
                 }
             }
         }
@@ -777,6 +764,7 @@ public class OWLFrameList<R> extends MList
     // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * An override of the BasicListUI. This is necessary because of the very
      * poor performance of the default Java implementation. Also, this list UI
@@ -797,7 +785,7 @@ public class OWLFrameList<R> extends MList
         // Also must implement discontiguous multi-selection
         protected MouseInputListener createMouseInputListener() {
 
-            return new MouseInputHandler(){
+            return new MouseInputHandler() {
 
                 boolean showingPopup = false;
 
@@ -808,11 +796,11 @@ public class OWLFrameList<R> extends MList
                         showingPopup = true;
                         showPopupMenu(e);
                     }
-                    else if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0){
+                    else if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0) {
                         int sel = locationToIndex(OWLFrameList.this, lastMouseDownPoint);
                         handleModifiedSelectionEvent(sel);
                     }
-                    else{
+                    else {
                         super.mousePressed(e);
                     }
                 }
@@ -823,7 +811,7 @@ public class OWLFrameList<R> extends MList
                         showPopupMenu(e);
                     }
                     else if (e.getClickCount() == 2) {
-                        if (!showingPopup){
+                        if (!showingPopup) {
                             handleEdit();
                         }
                     }
@@ -836,11 +824,10 @@ public class OWLFrameList<R> extends MList
 
 
         private void handleModifiedSelectionEvent(int index) {
-            if (isSelectedIndex(index)){
+            if (isSelectedIndex(index)) {
                 removeSelectionInterval(index, index);
             }
-            else if (getSelectionMode() == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION ||
-                     getSelectedIndex() == -1){
+            else if (getSelectionMode() == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION || getSelectedIndex() == -1) {
                 addSelectionInterval(index, index);
             }
         }
@@ -874,7 +861,8 @@ public class OWLFrameList<R> extends MList
             if (fixedCellHeight != -1) {
                 cellHeight = fixedCellHeight;
                 cellHeights = null;
-            } else {
+            }
+            else {
                 cellHeight = -1;
                 cellHeights = new int[list.getModel().getSize()];
             }
@@ -897,15 +885,13 @@ public class OWLFrameList<R> extends MList
                             if (fixedCellHeight == -1) {
                                 cellHeights[index] = 22;
                             }
-                        } else {
-                            Component c = renderer
-                                    .getListCellRendererComponent(list,
-                                                                  value, index, false, false);
+                        }
+                        else {
+                            Component c = renderer.getListCellRendererComponent(list, value, index, false, false);
                             rendererPane.add(c);
                             Dimension cellSize = c.getPreferredSize();
                             if (fixedCellWidth == -1) {
-                                cellWidth = Math.max(cellSize.width,
-                                                     cellWidth);
+                                cellWidth = Math.max(cellSize.width, cellWidth);
                             }
                             if (fixedCellHeight == -1) {
                                 cellHeights[index] = cellSize.height;
@@ -914,7 +900,8 @@ public class OWLFrameList<R> extends MList
                         cumulativeHeight += cellHeights[index];
                         cumulativeCellHeight[index] = cumulativeHeight;
                     }
-                } else {
+                }
+                else {
                     if (cellWidth == -1) {
                         cellWidth = 0;
                     }
@@ -975,7 +962,8 @@ public class OWLFrameList<R> extends MList
             x = insets.left;
             if (index >= cellHeights.length) {
                 y = 0;
-            } else {
+            }
+            else {
                 y = cumulativeCellHeight[index] - cellHeights[index];
             }
             w = list.getWidth() - (insets.left + insets.right);
@@ -988,25 +976,19 @@ public class OWLFrameList<R> extends MList
          * stamp" cell renderer component, and then use the CellRendererPane to
          * paint it. Subclasses may want to override this method rather than
          * paint().
-         *
          * @see #paint
          */
 
-        protected void paintCell(Graphics g, int row, Rectangle rowBounds,
-                                 ListCellRenderer cellRenderer, ListModel dataModel,
-                                 ListSelectionModel selModel, int leadIndex) {
+        protected void paintCell(Graphics g, int row, Rectangle rowBounds, ListCellRenderer cellRenderer, ListModel dataModel, ListSelectionModel selModel, int leadIndex) {
             Object value = dataModel.getElementAt(row);
             boolean cellHasFocus = list.hasFocus() && row == leadIndex;
             boolean isSelected = selModel.isSelectedIndex(row);
-            Component rendererComponent = cellRenderer
-                    .getListCellRendererComponent(list, value, row,
-                                                  isSelected, cellHasFocus);
+            Component rendererComponent = cellRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
             int cx = rowBounds.x;
             int cy = rowBounds.y;
             int cw = rowBounds.width;
             int ch = rowBounds.height;
-            rendererPane.paintComponent(g, rendererComponent, list,
-                                        cx, cy, cw, ch, true);
+            rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
         }
     }
 }

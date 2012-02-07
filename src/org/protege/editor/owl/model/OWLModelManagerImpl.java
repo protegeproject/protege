@@ -63,21 +63,7 @@ import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeException;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
@@ -128,7 +114,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      * Dirty ontologies are ontologies that have been edited
      * and not saved.
      */
-    private Set<OWLOntology> dirtyOntologies;
+    private Set<OWLOntologyID> dirtyOntologies;
 
     /**
      * The <code>OWLConnection</code> that we use to manage
@@ -200,7 +186,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         manager.addIRIMapper(autoMappedRepositoryIRIMapper);
 
 
-        dirtyOntologies = new HashSet<OWLOntology>();
+        dirtyOntologies = new HashSet<OWLOntologyID>();
         ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
 
 
@@ -268,11 +254,11 @@ public class OWLModelManagerImpl extends AbstractModelManager
     }
     
     public boolean isDirty(OWLOntology ontology) {
-        return dirtyOntologies.contains(ontology);
+        return dirtyOntologies.contains(ontology.getOntologyID());
     }
     
     public void setClean(OWLOntology ontology) {
-        dirtyOntologies.remove(ontology);
+        dirtyOntologies.remove(ontology.getOntologyID());
     }
 
 
@@ -454,7 +440,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
         	wasTheActiveOntology = true;
         	activeOntology = null;
         }
-        dirtyOntologies.remove(ont);
+        dirtyOntologies.remove(ont.getOntologyID());
         try {
             ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
         }
@@ -478,7 +464,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
             boolean resetActiveOntologyRequired = ont.equals(activeOntology);
             activeOntologies.remove(ont);
-            dirtyOntologies.remove(ont);
+            dirtyOntologies.remove(ont.getOntologyID());
             manager.removeOntology(ont);
 
             if (resetActiveOntologyRequired){
@@ -511,8 +497,13 @@ public class OWLModelManagerImpl extends AbstractModelManager
      *  Save all of the ontologies that are editable and that have been modified.
      */
     public void save() throws OWLOntologyStorageException {
-        for (OWLOntology ont : new HashSet<OWLOntology>(dirtyOntologies)) {
-            save(ont);
+        for (OWLOntologyID ontId : new HashSet<OWLOntologyID>(dirtyOntologies)) {
+            if (manager.contains(ontId)) {
+                save(manager.getOntology(ontId));
+            }
+            else {
+                dirtyOntologies.remove(ontId);
+            }
         }
     }
 
@@ -545,7 +536,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
             logger.info("Saved " + getRendering(ont) + " to " + physicalURI);
 
-            dirtyOntologies.remove(ont);
+            dirtyOntologies.remove(ont.getOntologyID());
 
             fireEvent(EventType.ONTOLOGY_SAVED);
             fireAfterSaveEvent(ont.getOntologyID(), physicalURI);
@@ -612,7 +603,16 @@ public class OWLModelManagerImpl extends AbstractModelManager
 
 
     public Set<OWLOntology> getDirtyOntologies() {
-        return new HashSet<OWLOntology>(dirtyOntologies);
+        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+        for(OWLOntologyID ontId : new ArrayList<OWLOntologyID>(dirtyOntologies)) {
+            if(manager.contains(ontId)) {
+                ontologies.add(manager.getOntology(ontId));
+            }
+            else {
+                dirtyOntologies.remove(ontId);
+            }
+        }
+        return ontologies;
     }
 
 
@@ -622,7 +622,7 @@ public class OWLModelManagerImpl extends AbstractModelManager
      * @param ontology The ontology to be made dirty.
      */
     public void setDirty(OWLOntology ontology) {
-        dirtyOntologies.add(ontology);
+        dirtyOntologies.add(ontology.getOntologyID());
     }
 
 
@@ -757,7 +757,11 @@ public class OWLModelManagerImpl extends AbstractModelManager
         getHistoryManager().logChanges(changes);
         boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {
-            dirtyOntologies.add(change.getOntology());
+            if(change instanceof SetOntologyID) {
+                SetOntologyID ontologyIDChange = (SetOntologyID) change;
+                dirtyOntologies.remove(ontologyIDChange.getOriginalOntologyID());
+            }
+            dirtyOntologies.add(change.getOntology().getOntologyID());
             if (change.isImportChange()){
                 refreshActiveOntology = true;
             }

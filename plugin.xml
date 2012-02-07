@@ -660,7 +660,7 @@
 
     <extension id="OWLOntologyAnnotationsView"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Ontology annotations"/>
+        <label value="Ontology header"/>
         <class value="org.protege.editor.owl.ui.view.ontology.OWLOntologyAnnotationViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
