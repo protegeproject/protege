@@ -33,7 +33,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
  */
 public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLDisjointClassesAxiom, Set<OWLClassExpression>> {
 
-    public static final String LABEL = "Disjoint classes";
+    public static final String LABEL = "Disjoint With";
     
     public Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
 

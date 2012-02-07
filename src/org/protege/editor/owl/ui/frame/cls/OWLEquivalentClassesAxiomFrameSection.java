@@ -31,7 +31,7 @@ import org.semanticweb.owlapi.util.CollectionFactory;
  */
 public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLEquivalentClassesAxiom, OWLClassExpression> {
 
-    private static final String LABEL = "Equivalent classes";
+    private static final String LABEL = "Equivalent To";
 
     private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
 

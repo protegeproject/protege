@@ -23,7 +23,7 @@ import java.util.Set;
   */
  public class OWLDifferentIndividualsAxiomFrameSection extends AbstractOWLFrameSection<OWLNamedIndividual, OWLDifferentIndividualsAxiom, Set<OWLNamedIndividual>> {
 
-    public static final String LABEL = "Different individuals";
+    public static final String LABEL = "Different Individuals";
 
     private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
 

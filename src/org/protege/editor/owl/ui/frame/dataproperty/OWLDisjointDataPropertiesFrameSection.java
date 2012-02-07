@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLDisjointDataPropertiesAxiom, Set<OWLDataProperty>> {
 
-    public static final String LABEL = "Disjoint properties";
+    public static final String LABEL = "Disjoint With";
 
 
     public OWLDisjointDataPropertiesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {

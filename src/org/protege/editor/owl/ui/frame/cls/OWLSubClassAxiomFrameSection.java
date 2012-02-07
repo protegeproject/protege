@@ -32,7 +32,7 @@ import org.semanticweb.owlapi.reasoner.Node;
  */
 public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSection<OWLSubClassOfAxiom, OWLClassExpression> {
 
-    private static final String LABEL = "Superclasses";
+    private static final String LABEL = "SubClass Of";
 
     private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
 

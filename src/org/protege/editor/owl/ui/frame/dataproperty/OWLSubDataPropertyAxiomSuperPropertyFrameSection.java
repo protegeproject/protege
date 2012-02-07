@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
  */
 public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOWLFrameSection<OWLDataProperty, OWLSubDataPropertyOfAxiom, OWLDataProperty> {
 
-    public static final String LABEL = "Super properties";
+    public static final String LABEL = "SubProperty Of";
 
     private Set<OWLSubDataPropertyOfAxiom> added = new HashSet<OWLSubDataPropertyOfAxiom>();
 

@@ -26,13 +26,13 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
  */
 public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSection<OWLClass, OWLClassAxiom, OWLClassExpression> {
 
-    private static final String LABEL = "Inherited anonymous classes";
+    private static final String LABEL = "SubClass Of (Anonymous Ancestor)";
 
     private Set<OWLClass> processedClasses = new HashSet<OWLClass>();
 
 
     public InheritedAnonymousClassesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLClass> frame) {
-        super(editorKit, LABEL, "Inherited anonymous class", frame);
+        super(editorKit, LABEL, "Anonymous Ancestor Class", frame);
     }
 
 
