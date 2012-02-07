@@ -91,6 +91,7 @@ public class RecentEditorKitManager {
         for (int i = MAX_EDITOR_KITS - 1; editorKitDescriptors.size() > MAX_EDITOR_KITS;) {
             editorKitDescriptors.remove(i);
         }
+        save();
     }
 
 
