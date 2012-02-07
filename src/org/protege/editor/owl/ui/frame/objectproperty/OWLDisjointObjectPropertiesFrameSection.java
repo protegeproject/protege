@@ -24,7 +24,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLDisjointObjectPropertiesAxiom, Set<OWLObjectPropertyExpression>> {
 
-    public static final String LABEL = "Disjoint properties";
+    public static final String LABEL = "Disjoint With";
 
 //    private Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
 

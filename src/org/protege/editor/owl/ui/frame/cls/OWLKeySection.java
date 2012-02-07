@@ -46,7 +46,7 @@ import java.util.Set;
  */
 public class OWLKeySection extends AbstractOWLFrameSection<OWLClass, OWLHasKeyAxiom, Set<OWLPropertyExpression>> {
 
-    public static final String LABEL = "Keys";
+    public static final String LABEL = "Target for Key";
 
 
     public OWLKeySection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {

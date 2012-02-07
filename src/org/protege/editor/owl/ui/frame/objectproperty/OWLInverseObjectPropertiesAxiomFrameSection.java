@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLInverseObjectPropertiesAxiom, OWLObjectProperty> {
 
-    public static final String LABEL = "Inverse properties";
+    public static final String LABEL = "Inverse Of";
 
     private Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
 

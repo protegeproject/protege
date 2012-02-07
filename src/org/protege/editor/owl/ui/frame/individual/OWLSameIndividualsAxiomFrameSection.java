@@ -26,7 +26,7 @@ import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
  */
 public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection<OWLNamedIndividual, OWLSameIndividualAxiom, Set<OWLNamedIndividual>> {
 
-    public static final String LABEL = "Same individuals";
+    public static final String LABEL = "Same Individual As";
 
 
     public OWLSameIndividualsAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLNamedIndividual> frame) {

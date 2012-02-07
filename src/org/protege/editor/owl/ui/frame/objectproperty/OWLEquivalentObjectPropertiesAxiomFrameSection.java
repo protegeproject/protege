@@ -27,7 +27,7 @@ import org.semanticweb.owlapi.util.CollectionFactory;
  */
 public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLEquivalentObjectPropertiesAxiom, OWLObjectPropertyExpression> {
 
-    public static final String LABEL = "Equivalent object properties";
+    public static final String LABEL = "Equivalent To";
 
     private Set<OWLEquivalentObjectPropertiesAxiom> added = new HashSet<OWLEquivalentObjectPropertiesAxiom>();
 

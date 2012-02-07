@@ -15,7 +15,7 @@ import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLDisjointUnionAxiomFrameSection extends AbstractOWLFrameSection<OWLClass, OWLDisjointUnionAxiom, Set<OWLClassExpression>> {
-	public final static String LABEL = "Disjoint union of";
+	public final static String LABEL = "Disjoint Union Of";
 	
 	public OWLDisjointUnionAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
 		super(editorKit, LABEL, LABEL, frame);

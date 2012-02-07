@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class OWLPropertyChainAxiomFrameSection extends AbstractOWLFrameSection<OWLObjectProperty, OWLSubPropertyChainOfAxiom, List<OWLObjectPropertyExpression>> {
 
-    public static final String LABEL = "Property chains";
+    public static final String LABEL = "SuperProperty Of (Chain)";
 
 
     public OWLPropertyChainAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
