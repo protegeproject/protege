@@ -13,6 +13,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
@@ -205,7 +208,15 @@ public class UIUtil {
 
 
     public static void openRequest(OpenRequestHandler handler) throws Exception {
-
+        ProtegeManager pm = ProtegeManager.getInstance();
+        EditorKitManager editorKitManager = pm.getEditorKitManager();
+        if(editorKitManager.getEditorKitCount() == 1) {
+            EditorKit editorKit = editorKitManager.getEditorKits().get(0);
+            if(!editorKit.hasModifiedDocument()) {
+                handler.openInNewWorkspace();
+                return;
+            }
+        }
         int ret = JOptionPane.showConfirmDialog(handler.getCurrentWorkspace(),
                                       "Do you want to open the ontology in the current window?",
                                       "Open in current window",
