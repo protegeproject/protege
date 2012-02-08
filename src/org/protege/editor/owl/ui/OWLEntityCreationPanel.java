@@ -65,7 +65,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     private final AugmentedJTextField entityIRIField = new AugmentedJTextField(FIELD_WIDTH, "IRI (auto-generated)");
 
-    private final JTextArea messageArea = new JTextArea(3, FIELD_WIDTH);
+    private final JTextArea messageArea = new JTextArea(1, FIELD_WIDTH);
 
 
     public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, Class<T> type) {
@@ -134,7 +134,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
 
         rowIndex++;
-        holder.add(new JSeparator(), new GridBagConstraints(0, rowIndex, 2, 1, 100.0, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 2, 15, 2), 0, 0));
+        holder.add(new JSeparator(), new GridBagConstraints(0, rowIndex, 2, 1, 100.0, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 2, 5, 2), 0, 0));
 
         rowIndex++;
         messageArea.setBackground(null);
@@ -281,28 +281,33 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             String iriString = owlEntity.getIRI().toString();
             entityIRIField.setText(iriString);
 
-            for (OWLOntologyChange chg : creationSet.getOntologyChanges()) {
-                if (chg.isAxiomChange()) {
-                    OWLAxiomChange axiomChange = (OWLAxiomChange) chg;
-                    if (chg instanceof AddAxiom) {
-                        AddAxiom addAxiomChange = (AddAxiom) chg;
-                        OWLAxiom ax = axiomChange.getAxiom();
-                        if (ax instanceof OWLAnnotationAxiom) {
-                            OWLAnnotationAssertionAxiom annoAx = (OWLAnnotationAssertionAxiom) ax;
-                            if (annoAx.getSubject().equals(owlEntity.getIRI())) {
-                                messageArea.setText(annoAx.getAnnotation().toString());
-                            }
-                        }
-                    }
-                }
-            }
+//            for (OWLOntologyChange chg : creationSet.getOntologyChanges()) {
+//                if (chg.isAxiomChange()) {
+//                    OWLAxiomChange axiomChange = (OWLAxiomChange) chg;
+//                    if (chg instanceof AddAxiom) {
+//                        AddAxiom addAxiomChange = (AddAxiom) chg;
+//                        OWLAxiom ax = axiomChange.getAxiom();
+//                        if (ax instanceof OWLAnnotationAxiom) {
+//                            OWLAnnotationAssertionAxiom annoAx = (OWLAnnotationAssertionAxiom) ax;
+//                            if (annoAx.getSubject().equals(owlEntity.getIRI())) {
+//                                messageArea.setText(annoAx.getAnnotation().toString());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
             setValid(true);
         }
         catch (RuntimeException e) {
             setValid(false);
             Throwable cause = e.getCause();
             if (cause != null) {
-                messageArea.setText(cause.getMessage());
+                if(cause instanceof OWLOntologyCreationException) {
+                    messageArea.setText("Entity already exists");
+                }
+                else {
+                    messageArea.setText(cause.getMessage());
+                }
             }
             else {
                 messageArea.setText(e.getMessage());
