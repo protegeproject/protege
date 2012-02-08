@@ -131,14 +131,23 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
         list.setRootObject(new OntologyAnnotationContainer(activeOntology()));
         listener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED) || event.isType(EventType.ONTOLOGY_SAVED)) {
-                    updateView();
-                }
+                handleModelManagerChangeEvent(event);
             }
         };
         getOWLModelManager().addListener(listener);
 
         getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
+        updateView();
+    }
+
+    private void handleModelManagerChangeEvent(OWLModelManagerChangeEvent event) {
+        if (isUpdateTriggeringEvent(event)) {
+            updateView();
+        }
+    }
+
+    private boolean isUpdateTriggeringEvent(OWLModelManagerChangeEvent event) {
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_LOADED) || event.isType(EventType.ONTOLOGY_RELOADED) || event.isType(EventType.ONTOLOGY_SAVED);
     }
 
     private void showVersionIRIDocumentation() {
