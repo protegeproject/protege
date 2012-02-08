@@ -93,15 +93,16 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
                     for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(cls)) {
                         Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(ax.getClassExpressions());
                         descs.remove(getRootObject());
-                        OWLClassExpression superCls = descs.iterator().next();
-                        if (superCls.isAnonymous()) {
-                            addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
-                                                                                this,
-                                                                                null,
-                                                                                cls,
-                                                                                getOWLDataFactory().getOWLSubClassOfAxiom(
-                                                                                                                          getRootObject(),
-                                                                                                                          superCls)));
+                        for (OWLClassExpression superCls : descs) {
+                        	if (superCls.isAnonymous()) {
+                        		addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
+                        				this,
+                        				null,
+                        				cls,
+                        				getOWLDataFactory().getOWLSubClassOfAxiom(
+                        						getRootObject(),
+                        						superCls)));
+                        	}
                         }
                     }
                 }
