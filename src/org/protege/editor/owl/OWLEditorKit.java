@@ -266,7 +266,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         }
         File file = getSaveAsOWLFile(ont);
         if (file != null) {
-//            man.setOntologyFormat(ont, format);
+            man.setOntologyFormat(ont, format);
             man.setOntologyDocumentIRI(ont, IRI.create(file));
             getModelManager().save(ont);
             addRecent(file.toURI());
