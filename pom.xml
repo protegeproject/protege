@@ -39,9 +39,9 @@
           <version>4.2.0.b256_2012_02_10_1152</version>
         </dependency>
         <dependency>
-            <groupId>owlapi</groupId>
-            <artifactId>owlapi</artifactId>
-            <version>3.2.0.svn1729</version>
+          <groupId>owlapi</groupId>
+          <artifactId>owlapi</artifactId>
+          <version>3.2.5.svn1925_2012_02_15_0727</version>
         </dependency>
         <dependency>
             <groupId>protege4</groupId>
