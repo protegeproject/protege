@@ -175,16 +175,6 @@
         <radiobutton value="true"/>
     </extension>
 
-    <!--extension id="ontologies.visibilitymanager"
-                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show user selected ontologies..."/>
-        <class value="org.protege.editor.owl.ui.action.VisibilityManagerOntologySelectionStrategyAction"/>
-        <toolTip value="User selected ontologies are visible"/>
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAB-D"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension--> 
-
-
 
     <!-- Entity Renderers -->
     
@@ -365,16 +355,6 @@
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.classcategory"/>
     </extension>
-
-
-    <!--extension id="AnonymousClassesView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Anonymous defined classes"/>
-        <class value="org.protege.editor.owl.ui.view.AnonymousClassesView"/>
-        <headerColor value="@org.protege.classcolor"/>
-        <category value="@org.protege.classcategory"/>
-        <navigates value="@org.protege.classcategory"/>
-    </extension-->
 
 
     <!-- Object property views -->
