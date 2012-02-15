@@ -1,33 +1,5 @@
 package org.protege.editor.owl.ui.ontology.location;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.EmptyBorder;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeManager;
@@ -41,11 +13,21 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.SaveConfirmationPanel;
-import org.protege.editor.owl.ui.renderer.OWLIconProvider;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -286,10 +268,6 @@ public class PhysicalLocationPanel extends JPanel {
             String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, mngr);
 
             ontURILabel.setText(label);
-            //2012.02.01 hilpold use Owl Icon Provider
-            OWLIconProvider owlICP = owlEditorKit.getWorkspace().getOWLIconProvider();
-            Icon ontIcon = owlICP.getIcon(ont);
-            ontURILabel.setIcon(ontIcon);
 
             final URI physicalURI = mngr.getOntologyPhysicalURI(ont);
             if (UIUtil.isLocalFile(physicalURI)) {
