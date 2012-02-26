@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
@@ -40,7 +41,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class EntityFinderField extends JTextField {
+public class EntityFinderField extends AugmentedJTextField {
 	private static final long serialVersionUID = -5383341925424297227L;
 
 	private OWLEditorKit editorKit;
@@ -53,7 +54,7 @@ public class EntityFinderField extends JTextField {
 
 
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
-        super(20);
+        super(20, "Search for entity");
         putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         this.editorKit = editorKit;
