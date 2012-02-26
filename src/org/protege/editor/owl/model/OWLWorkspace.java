@@ -589,13 +589,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 // Global find field
         JPanel finderHolder = new JPanel();
         finderHolder.setLayout(new BoxLayout(finderHolder, BoxLayout.LINE_AXIS));
-        finderHolder.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(FINDER_BORDER, FINDER_BORDER, FINDER_BORDER, FINDER_BORDER)));
         final EntityFinderField entityFinderField = new EntityFinderField(this, getOWLEditorKit());
-        final JLabel searchLabel = new JLabel(Icons.getIcon("object.search.gif"));
         final int height = entityFinderField.getPreferredSize().height;
-        searchLabel.setPreferredSize(new Dimension(height, height));
         finderHolder.setMinimumSize(new Dimension(FINDER_MIN_WIDTH, height + ((FINDER_BORDER + 1) * 2)));
-        finderHolder.add(searchLabel);
         finderHolder.add(entityFinderField);
 
         gbc.gridx = 2;
