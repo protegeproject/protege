@@ -27,6 +27,7 @@ import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
+import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.*;
@@ -204,13 +205,23 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @return The id.
      */
     private OWLOntologyID createDefaultOntologyId() {
-        return new OWLOntologyID();
+        return new OWLOntologyID(createFreshOntologyIRI());
+    }
+
+    /**
+     * Creates a fresh ontology IRI.
+     * @return The ontology IRI.
+     */
+    private IRI createFreshOntologyIRI() {
+        OntologyPreferences ontologyPreferences = OntologyPreferences.getInstance();
+        return IRI.create(ontologyPreferences.generateNextURI());
     }
 
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
-        OWLOntology ont = getModelManager().createNewOntology(id, null);
-        getModelManager().getOWLOntologyManager().setOntologyFormat(ont, new RDFXMLOntologyFormat());
+        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().toURI());
+        OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
+        owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
         return true;
     }
 
