@@ -819,6 +819,7 @@
         <accelerator value="shift O"/>
     </extension>
 
+
     <!--<extension id="closeOntologies"-->
     <!--point="org.protege.editor.core.application.EditorKitMenuAction">-->
     <!--<name value="Close ontologies..."/>-->
