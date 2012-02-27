@@ -34,7 +34,12 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 
     private OWLOntologyManager owlOntologyManager;
 
-    private Set<OWLOntology> ontologies;
+    /*
+     * It is not safe to set the collection of ontologies to a HashSet or TreeSet.  
+     * When an ontology changes name it gets a new Hash Code and it is sorted 
+     * differently, so these Collections do not work.
+     */
+    private Collection<OWLOntology> ontologies;
 
     private OWLClass root;
 
@@ -52,7 +57,12 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     public AssertedClassHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.owlOntologyManager = owlOntologyManager;
-        ontologies = new HashSet<OWLOntology>();
+        /*
+         * It is not safe to set the collection of ontologies to a HashSet or TreeSet.  
+         * When an ontology changes name it gets a new Hash Code and it is sorted 
+         * differently, so these Collections do not work.
+         */
+        ontologies = new ArrayList<OWLOntology>();
         rootFinder = new TerminalElementFinder<OWLClass>(new Relation<OWLClass>() {
             public Collection<OWLClass> getR(OWLClass cls) {
                 Collection<OWLClass> parents = getParents(cls);
@@ -77,7 +87,12 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
      * in order to determine the hierarchy.
      */
     public void setOntologies(Set<OWLOntology> ontologies) {
-        this.ontologies = new HashSet<OWLOntology>(ontologies);
+        /*
+         * It is not safe to set the collection of ontologies to a HashSet or TreeSet.  
+         * When an ontology changes name it gets a new Hash Code and it is sorted 
+         * differently, so these Collections do not work.
+         */
+        this.ontologies = new ArrayList<OWLOntology>(ontologies);
         nodesToUpdate.clear();
         if (root == null) {
             root = owlOntologyManager.getOWLDataFactory().getOWLThing();
