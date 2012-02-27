@@ -50,7 +50,9 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
         addAction(new AbstractOWLTreeAction<OWLClass>("Add subclass", OWLIcons.getIcon("class.add.sub.png"),
                                                        getTree().getSelectionModel()){
-            public void actionPerformed(ActionEvent event) {
+        	private static final long serialVersionUID = -4067967212391062364L;
+			
+        	public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
             protected boolean canPerform(OWLClass cls) {
@@ -61,7 +63,9 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         addAction(new AbstractOWLTreeAction<OWLClass>("Add sibling class", OWLIcons.getIcon("class.add.sib.png"),
                                                  getTree().getSelectionModel()){
 
-            public void actionPerformed(ActionEvent event) {
+        	private static final long serialVersionUID = 9163133195546665441L;
+
+        	public void actionPerformed(ActionEvent event) {
                 createNewSibling();
             }
             protected boolean canPerform(OWLClass cls) {
