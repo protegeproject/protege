@@ -7,6 +7,8 @@ import org.protege.editor.owl.model.OntologyAnnotationContainer;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
+import org.protege.editor.owl.model.refactor.ontology.OntologyIDChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
@@ -16,12 +18,14 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.NumberFormat;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -38,12 +42,11 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
     public static final String ONTOLOGY_IRI_FIELD_LABEL = "Ontology IRI";
 
     public static final String ONTOLOGY_VERSION_IRI_FIELD_LABEL = "Ontology Version IRI";
-    
-    
+
+
     public static final URI ONTOLOGY_IRI_DOCUMENTATION = URI.create("http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Ontology_IRI_and_Version_IRI");
 
     public static final URI VERSION_IRI_DOCUMENTATION = URI.create("http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Versioning_of_OWL_2_Ontologies");
-
 
 
     private OWLModelManagerListener listener;
@@ -53,19 +56,19 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
     private final AugmentedJTextField ontologyIRIField = new AugmentedJTextField("e.g http://www.example.com/ontologies/myontology");
 
     private final AugmentedJTextField ontologyVersionIRIField = new AugmentedJTextField("e.g. http://www.example.com/ontologies/myontology/1.0.0");
-    
-    
-    
+
+
     private boolean updatingViewFromModel = false;
-    
+
     private boolean updatingModelFromView = false;
-    
-    
-    
-    
-    
-    
-    
+
+    /**
+     * The IRI of the ontology when the ontology IRI field gets the focus.
+     */
+    private OWLOntologyID initialOntologyID = null;
+
+    private boolean ontologyIRIShowing = false;
+
 
     private final OWLOntologyChangeListener ontologyChangeListener = new OWLOntologyChangeListener() {
         public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
@@ -100,13 +103,30 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
             }
         });
-        
+        ontologyIRIField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                handleOntologyIRIFieldFocusLost();
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                handleOntologyIRIFieldFocusGained();
+            }
+        });
+        ontologyIRIShowing = ontologyIRIField.isShowing();
+        ontologyIRIField.addHierarchyListener(new HierarchyListener() {
+            public void hierarchyChanged(HierarchyEvent e) {
+                handleComponentHierarchyChanged();
+            }
+        });
+
         ontologyIRIPanel.add(new LinkLabel(ONTOLOGY_VERSION_IRI_FIELD_LABEL, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showVersionIRIDocumentation();
             }
         }), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
-        
+
         ontologyIRIPanel.add(ontologyVersionIRIField, new GridBagConstraints(1, 1, 1, 1, 100.0, 0.0, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
         ontologyVersionIRIField.getDocument().addDocumentListener(new DocumentListener() {
@@ -121,8 +141,8 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             public void changedUpdate(DocumentEvent e) {
             }
         });
-        
-        
+
+
         ontologyIRIPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
 
@@ -139,6 +159,72 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
         getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
         updateView();
     }
+
+    private void handleComponentHierarchyChanged() {
+        if (ontologyIRIShowing != ontologyIRIField.isShowing()) {
+            ontologyIRIShowing = ontologyIRIField.isShowing();
+            if (!ontologyIRIField.isShowing()) {
+                handlePossibleOntologyIdUpdate();
+            }
+            else {
+                handleOntologyIRIFieldActivated();
+            }
+        }
+    }
+
+    private void handleOntologyIRIFieldFocusGained() {
+        handleOntologyIRIFieldActivated();
+    }
+
+    private void handleOntologyIRIFieldActivated() {
+        initialOntologyID = getOWLModelManager().getActiveOntology().getOntologyID();
+    }
+
+    private void handleOntologyIRIFieldFocusLost() {
+        handlePossibleOntologyIdUpdate();
+    }
+
+    private void handlePossibleOntologyIdUpdate() {
+        OWLOntologyID id = createOWLOntologyIDFromView();
+        if (isOntologyIRIChange(id)) {
+            EntityIRIUpdaterOntologyChangeStrategy changeStrategy = new EntityIRIUpdaterOntologyChangeStrategy();
+            Set<OWLEntity> entities = changeStrategy.getEntitiesToRename(activeOntology(), initialOntologyID, id);
+            if (!entities.isEmpty()) {
+                boolean rename = showConfirmRenameDialog(id, entities);
+                if (rename) {
+                    List<OWLOntologyChange> changes = changeStrategy.getChangesForRename(activeOntology(), initialOntologyID, id);
+                    System.out.println("Generated " + changes.size() + " changes");
+                    System.out.println("Applying changes...");
+                    getOWLModelManager().applyChanges(changes);
+                    System.out.println("    ... applied changes.");
+                    initialOntologyID = id;
+                }
+            }
+
+
+        }
+    }
+
+    private boolean showConfirmRenameDialog(OWLOntologyID id, Set<OWLEntity> entities) {
+        String msg = getChangeEntityIRIsConfirmationMessage(id, entities);
+        int ret = JOptionPane.showConfirmDialog(this, msg, "Rename entities as well as ontology?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return ret == JOptionPane.YES_OPTION;
+    }
+
+    private boolean isOntologyIRIChange(OWLOntologyID id) {
+        return initialOntologyID != null && id != null && !id.equals(initialOntologyID) && !initialOntologyID.isAnonymous() && !id.isAnonymous();
+    }
+
+    private String getChangeEntityIRIsConfirmationMessage(OWLOntologyID id, Set<OWLEntity> entities) {
+        return "<html><body>You have renamed the ontology from<br>" +
+                "" + initialOntologyID.getOntologyIRI().toString() + "<br>" +
+                "to<br>" +
+                "" + id.getOntologyIRI().toString() + ".<br>" +
+                "<br>" +
+                "<b>There are " + NumberFormat.getIntegerInstance().format(entities.size()) + " entities whose IRIs start with the original ontology IRI. Would you also like to rename these entities<br>" +
+                "so that their IRIs start with the new ontology IRI?</b></body></html>";
+    }
+
 
     private void handleModelManagerChangeEvent(OWLModelManagerChangeEvent event) {
         if (isUpdateTriggeringEvent(event)) {
@@ -172,11 +258,6 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
      * Updates the view from the model - unless the changes were triggered by changes in the view.
      */
     private void updateViewFromModel() {
-//        if(updatingModelFromView) {
-//            ontologyVersionIRIField.repaint();
-//            ontologyIRIField.repaint();
-//            return;
-//        }
         updatingViewFromModel = true;
         try {
             OWLOntology activeOntology = getOWLEditorKit().getOWLModelManager().getActiveOntology();
@@ -190,7 +271,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             }
             else {
                 OWLOntologyID id = activeOntology.getOntologyID();
-    
+
                 IRI ontologyIRI = id.getOntologyIRI();
                 String ontologyIRIString = ontologyIRI.toString();
                 if (ontologyIRI != null) {
@@ -198,7 +279,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
                         ontologyIRIField.setText(ontologyIRIString);
                     }
                 }
-    
+
                 IRI versionIRI = id.getVersionIRI();
                 if (versionIRI != null) {
                     String versionIRIString = versionIRI.toString();
@@ -208,7 +289,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
                 }
                 else {
                     ontologyVersionIRIField.setText("");
-                    if(ontologyIRI != null) {
+                    if (ontologyIRI != null) {
                         ontologyVersionIRIField.setGhostText("e.g. " + ontologyIRIString + (ontologyIRIString.endsWith("/") ? "1.0.0" : "/1.0.0"));
                     }
                 }
@@ -223,7 +304,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
      * Updates the model from the view - unless the changes in the view were triggered by changes in the model.
      */
     private void updateModelFromView() {
-        if(updatingViewFromModel) {
+        if (updatingViewFromModel) {
             return;
         }
         try {
@@ -258,7 +339,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             if (versionIRIString.isEmpty()) {
                 return new OWLOntologyID(ontologyIRI);
             }
-            
+
             URI verURI = new URI(versionIRIString);
             IRI versionIRI = IRI.create(verURI);
             return new OWLOntologyID(ontologyIRI, versionIRI);
