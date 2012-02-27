@@ -3,13 +3,10 @@ package org.protege.editor.owl.ui.tree;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Enumeration;
 import java.util.Set;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.protege.editor.core.ui.RefreshableComponent;
@@ -152,7 +149,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
 
     private void refreshEntityRenderer() {
-        //fireNodeStructureChanged();
         invalidate();
         if (currentRenderer != null){
             currentRenderer.removeListener(rendererListener);
@@ -161,16 +157,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         currentRenderer.addListener(rendererListener);
     }
 
-
-    private void fireNodeStructureChanged() {
-        DefaultTreeModel model = (DefaultTreeModel) getModel();
-        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) model.getRoot();
-        model.nodeStructureChanged(rootNode);
-        Enumeration e = rootNode.breadthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            model.nodeStructureChanged((TreeNode) e.nextElement());
-        }
-    }
 
 
     private void installPopupMenu() {
