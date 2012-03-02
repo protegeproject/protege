@@ -12,12 +12,14 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
@@ -114,11 +116,17 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair>> getRowComparator() {
         return null;
     }
-
-
-    public void visit(OWLObjectPropertyAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLObjectPropertyAssertionAxiom) {
+    		return ((OWLObjectPropertyAssertionAxiom) axiom).getSubject().equals(getRootObject());
+    	}
+    	return false;
     }
+
 }

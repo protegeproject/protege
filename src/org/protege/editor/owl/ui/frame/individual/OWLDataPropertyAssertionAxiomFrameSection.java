@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -115,10 +116,11 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
         return null;
     }
 
-
-    public void visit(OWLDataPropertyAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLDataPropertyAssertionAxiom &&
+    			((OWLDataPropertyAssertionAxiom) change.getAxiom()).getSubject().equals(getRootObject());
     }
+
 }
