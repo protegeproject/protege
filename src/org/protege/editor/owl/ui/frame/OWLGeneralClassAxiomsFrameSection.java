@@ -65,30 +65,32 @@ public class OWLGeneralClassAxiomsFrameSection extends AbstractOWLFrameSection<O
         return null;
     }
 
-
-    public void visit(OWLSubClassOfAxiom axiom) {
-        if (axiom.getSubClass().isAnonymous()) {
-            reset();
-        }
-    }
-
-
-    public void visit(OWLDisjointClassesAxiom axiom) {
-        for (OWLClassExpression desc : axiom.getClassExpressions()) {
-            if (!desc.isAnonymous()) {
-                return;
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLSubClassOfAxiom) {
+    		return ((OWLSubClassOfAxiom) axiom).getSubClass().isAnonymous();
+    	}
+    	else if (axiom instanceof OWLDisjointClassesAxiom) {
+    		for (OWLClassExpression desc : ((OWLDisjointClassesAxiom) axiom).getClassExpressions()) {
+    			if (!desc.isAnonymous()) {
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
+    	else if (axiom instanceof OWLEquivalentClassesAxiom) {
+            for (OWLClassExpression desc : ((OWLEquivalentClassesAxiom) axiom).getClassExpressions()) {
+                if (!desc.isAnonymous()) {
+                    return false;
+                }
             }
-        }
-        reset();
+            return true;
+    	}
+    	return false;
     }
 
-
-    public void visit(OWLEquivalentClassesAxiom axiom) {
-        for (OWLClassExpression desc : axiom.getClassExpressions()) {
-            if (!desc.isAnonymous()) {
-                return;
-            }
-        }
-        reset();
-    }
 }
