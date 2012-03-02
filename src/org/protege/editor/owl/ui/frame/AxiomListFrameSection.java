@@ -100,9 +100,9 @@ public class AxiomListFrameSection extends AbstractOWLFrameSection<Set<OWLAxiom>
         return false;
     }
 
-
-    protected void handleChanges(List<? extends OWLOntologyChange> changes) {
-        reset();
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange();
     }
 
     private class RowComparator implements Comparator<OWLFrameSectionRow<Set<OWLAxiom>, OWLAxiom, OWLAxiom>> {
