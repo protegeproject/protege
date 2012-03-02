@@ -150,11 +150,12 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
             }
         };
     }
-
-
-    public void visit(OWLClassAssertionAxiom axiom) {
-        if (axiom.getIndividual().equals(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLClassAssertionAxiom &&
+    			((OWLClassAssertionAxiom) change.getAxiom()).getIndividual().equals(getRootObject());
     }
+
 }

@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.Comparator;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor;
@@ -7,12 +9,12 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Comparator;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -59,13 +61,6 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
     }
 
 
-    public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
-            reset();
-        }
-    }
-
-
     public OWLObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
         return new OWLObjectPropertyIndividualPairEditor(getOWLEditorKit());
     }
@@ -81,10 +76,17 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
         return null;
     }
 
-
-    public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLNegativeObjectPropertyAssertionAxiom) {
+    		return ((OWLNegativeObjectPropertyAssertionAxiom) axiom).getSubject().equals(getRootObject());
+    	}
+    	return false;
     }
+
+
 }

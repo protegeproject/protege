@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.Comparator;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyRelationshipEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -7,11 +9,11 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLDataPropertyConstantPair;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Comparator;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -78,10 +80,16 @@ public class OWLNegativeDataPropertyAssertionFrameSection extends AbstractOWLFra
         return null;
     }
 
-
-    public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-        if (axiom.getSubject().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLNegativeDataPropertyAssertionAxiom) {
+    		return ((OWLNegativeDataPropertyAssertionAxiom) axiom).getSubject().equals(getRootObject());
+    	}
+    	return false;
     }
+
 }
