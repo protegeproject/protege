@@ -112,10 +112,10 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
         return null;
     }
 
-
-    public void visit(OWLAnnotationPropertyDomainAxiom axiom) {
-        if (axiom.getProperty().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLAnnotationPropertyDomainAxiom &&
+    			((OWLAnnotationPropertyDomainAxiom) change.getAxiom()).getProperty().equals(getRootObject());
     }
 }
