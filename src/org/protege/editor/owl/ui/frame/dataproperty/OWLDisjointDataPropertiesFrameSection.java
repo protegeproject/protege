@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.frame.dataproperty;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataPropertySetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -8,12 +12,8 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -63,13 +63,14 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
     	Set<OWLDataProperty> equivalents = editor.getEditedObject();
     	return !equivalents.contains(getRootObject());
     }
-
-
-    public void visit(OWLDisjointDataPropertiesAxiom axiom) {
-        if (axiom.getProperties().contains(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLDisjointDataPropertiesAxiom &&
+    			((OWLDisjointDataPropertiesAxiom) change.getAxiom()).getProperties().contains(getRootObject());
     }
+
 
 
     public Comparator<OWLFrameSectionRow<OWLDataProperty, OWLDisjointDataPropertiesAxiom, Set<OWLDataProperty>>> getRowComparator() {
