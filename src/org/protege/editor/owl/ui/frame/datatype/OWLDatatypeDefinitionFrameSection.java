@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.frame.datatype;
 
+import java.util.Comparator;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -10,8 +12,7 @@ import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Comparator;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -77,10 +78,10 @@ public class OWLDatatypeDefinitionFrameSection extends AbstractOWLFrameSection<O
         return null;
     }
 
-
-    public void visit(OWLDatatypeDefinitionAxiom axiom) {
-        if (axiom.getDatatype().equals(getRootObject())){
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLDatatypeDefinitionAxiom &&
+    			((OWLDatatypeDefinitionAxiom) change.getAxiom()).getDatatype().equals(getRootObject());
     }
 }
