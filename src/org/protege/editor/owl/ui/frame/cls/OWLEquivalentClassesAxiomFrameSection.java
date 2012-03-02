@@ -115,13 +115,6 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
     }
 
 
-    public void visit(OWLEquivalentClassesAxiom axiom) {
-        if (axiom.getClassExpressions().contains(getRootObject())) {
-            reset();
-        }
-    }
-
-
     protected OWLEquivalentClassesAxiom createAxiom(OWLClassExpression object) {
         return getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(), object));
     }
@@ -170,8 +163,16 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
         return true;
     }
 
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLEquivalentClassesAxiom &&
+    			((OWLEquivalentClassesAxiom) change.getAxiom()).getClassExpressions().contains(getRootObject());
+    }
 
-    /**
+
+
+	/**
      * Obtains a comparator which can be used to sort the rows
      * in this section.
      * @return A comparator if to sort the rows in this section,

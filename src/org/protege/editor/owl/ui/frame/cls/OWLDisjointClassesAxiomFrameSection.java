@@ -113,12 +113,6 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
     	return disjoints.size() != 1 || !disjoints.contains(getRootObject());
     }
 
-    public void visit(OWLDisjointClassesAxiom axiom) {
-        if (axiom.getClassExpressions().contains(getRootObject())) {
-            reset();
-        }
-    }
-
 
     public boolean canAcceptDrop(List<OWLObject> objects) {
         for (OWLObject obj : objects) {
@@ -149,6 +143,13 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
             getOWLModelManager().applyChanges(changes);
         }
         return true;
+    }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLDisjointClassesAxiom &&
+    			((OWLDisjointClassesAxiom) change.getAxiom()).getClassExpressions().contains(getRootObject());
     }
 
 
