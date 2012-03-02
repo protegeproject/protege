@@ -1,13 +1,16 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.Comparator;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.SWRLRuleEditor;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.SWRLRule;
 
-import java.util.Comparator;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -76,8 +79,12 @@ public class SWRLRulesFrameSection extends AbstractOWLFrameSection<OWLOntology, 
         return null;
     }
 
-
-    public void visit(SWRLRule rule) {
-        reset();
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	return change.getAxiom() instanceof SWRLRule;
     }
+
 }
