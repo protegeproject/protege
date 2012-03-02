@@ -102,12 +102,11 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         return true;
     }
 
-
-    public void visit(OWLAnnotationAssertionAxiom axiom) {
-        final OWLAnnotationSubject root = getRootObject();
-        if (axiom.getSubject().equals(root)){
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLAnnotationAssertionAxiom &&
+    			((OWLAnnotationAssertionAxiom) change.getAxiom()).getSubject().equals(getRootObject());
     }
 
 
