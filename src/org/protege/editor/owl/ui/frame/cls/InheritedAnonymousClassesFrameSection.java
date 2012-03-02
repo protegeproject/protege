@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
 
@@ -114,15 +115,10 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     public boolean canAdd() {
         return false;
     }
-
-
-    public void visit(OWLSubClassOfAxiom axiom) {
-        reset();
-    }
-
-
-    public void visit(OWLEquivalentClassesAxiom axiom) {
-        reset();
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() && change.getAxiom() instanceof OWLSubClassOfAxiom || change.getAxiom() instanceof OWLEquivalentClassesAxiom;
     }
 
 

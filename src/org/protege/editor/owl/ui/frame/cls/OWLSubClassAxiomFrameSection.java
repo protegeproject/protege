@@ -142,12 +142,18 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
         return true;
     }
 
-
-    public void visit(OWLSubClassOfAxiom axiom) {
-        if (axiom.getSubClass().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLSubClassOfAxiom) {
+    		return ((OWLSubClassOfAxiom) axiom).getSubClass().equals(getRootObject());
+    	}
+    	return false;
     }
+
 
 
     /**

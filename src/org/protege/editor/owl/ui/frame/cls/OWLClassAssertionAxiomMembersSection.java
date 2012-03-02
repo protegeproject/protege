@@ -151,11 +151,11 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 			}
 		};
 	}
-
-
-    public void visit(OWLClassAssertionAxiom axiom) {
-		if (axiom.getClassExpression().equals(this.getRootObject())) {
-			this.reset();
-		}
+	
+	@Override
+	protected boolean isResettingChange(OWLOntologyChange change) {
+		return change.isAxiomChange() && 
+				change.getAxiom() instanceof OWLClassAssertionAxiom &&
+				((OWLClassAssertionAxiom) change.getAxiom()).getClassExpression().equals(getRootObject());
 	}
 }
