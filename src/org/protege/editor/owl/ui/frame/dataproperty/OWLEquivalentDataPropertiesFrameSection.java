@@ -13,8 +13,8 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
 
@@ -99,12 +99,13 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
             });
     }
 
-
-    public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
-        if (axiom.getProperties().contains(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLEquivalentDataPropertiesAxiom &&
+    			((OWLEquivalentDataPropertiesAxiom) change.getAxiom()).getProperties().contains(getRootObject());
     }
+
 
 
     public Comparator<OWLFrameSectionRow<OWLDataProperty, OWLEquivalentDataPropertiesAxiom, OWLDataProperty>> getRowComparator() {
