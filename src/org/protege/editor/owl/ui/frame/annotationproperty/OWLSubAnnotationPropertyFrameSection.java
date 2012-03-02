@@ -120,11 +120,17 @@ public class OWLSubAnnotationPropertyFrameSection extends AbstractOWLFrameSectio
     public Comparator<OWLFrameSectionRow<OWLAnnotationProperty, OWLSubAnnotationPropertyOfAxiom, OWLAnnotationProperty>> getRowComparator() {
         return null;
     }
-
-
-    public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-        if (axiom.getSubProperty().equals(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLSubAnnotationPropertyOfAxiom) {
+    		return ((OWLSubAnnotationPropertyOfAxiom) axiom).getSubProperty().equals(getRootObject());
+    	}
+    	return false;
     }
+
 }
