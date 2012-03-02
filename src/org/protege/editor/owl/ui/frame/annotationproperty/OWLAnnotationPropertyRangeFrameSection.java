@@ -1,15 +1,29 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.IRIFromEntityEditor;
 import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyRangeEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
-import java.util.*;
+
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -117,10 +131,10 @@ public class OWLAnnotationPropertyRangeFrameSection extends AbstractOWLFrameSect
         return null;
     }
 
-
-    public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
-        if (axiom.getProperty().equals(getRootObject())) {
-            reset();
-        }
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLAnnotationPropertyRangeAxiom &&
+    			((OWLAnnotationPropertyRangeAxiom) change.getAxiom()).getProperty().equals(getRootObject());
     }
 }
