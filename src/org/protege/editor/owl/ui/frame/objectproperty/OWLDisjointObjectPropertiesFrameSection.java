@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**
@@ -84,10 +85,12 @@ public class OWLDisjointObjectPropertiesFrameSection extends AbstractOWLFrameSec
         return null;
     }
 
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLDisjointObjectPropertiesAxiom &&
+    			((OWLDisjointObjectPropertiesAxiom) change.getAxiom()).getProperties().contains(getRootObject());
+    }
 
-	public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-	    if (axiom.getProperties().contains(getRootObject())) {
-	        reset();
-	    }
-	}
+
 }

@@ -11,9 +11,11 @@ import org.protege.editor.owl.ui.editor.OWLObjectPropertyExpressionEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 
 
@@ -89,12 +91,17 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
     public OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
         return new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
     }
-
-
-    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
-        if (axiom.getSubProperty().equals(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLSubObjectPropertyOfAxiom) {
+    		return ((OWLSubObjectPropertyOfAxiom) axiom).getSubProperty().equals(getRootObject());
+    	}
+    	return false;
     }
 
 
