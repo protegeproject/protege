@@ -68,7 +68,7 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
 //        }
         prepareCuttable();
 
-        getOWLWorkspace().refreshComponents();
+        // add refresh components here (perhaps) when the class trees don't do their crazy stuff
     }
 
 
