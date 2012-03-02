@@ -98,13 +98,6 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
     }
 
 
-    public void visit(OWLObjectPropertyRangeAxiom axiom) {
-        if (axiom.getProperty().equals(getRootObject())) {
-            reset();
-        }
-    }
-
-
     public boolean canAcceptDrop(List<OWLObject> objects) {
         for (OWLObject obj : objects) {
             if (!(obj instanceof OWLClassExpression)) {
@@ -131,6 +124,17 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
         return true;
     }
 
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLObjectPropertyRangeAxiom) {
+    		return ((OWLObjectPropertyRangeAxiom) axiom).getProperty().equals(getRootObject());
+    	}
+    	return false;
+    }
 
     /**
      * Obtains a comparator which can be used to sort the rows

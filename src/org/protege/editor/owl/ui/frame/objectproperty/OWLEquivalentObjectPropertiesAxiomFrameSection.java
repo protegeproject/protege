@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
 
@@ -89,12 +90,6 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     }
 
 
-    public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-        if (axiom.getProperties().contains(getRootObject())) {
-            reset();
-        }
-    }
-
 
     public OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
         return new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
@@ -113,11 +108,12 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     	super.handleEditingFinished(editedObjects);
     }
 
-
-    public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
-        if (axiom.getProperties().contains(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	return change.isAxiomChange() &&
+    			change.getAxiom() instanceof OWLEquivalentObjectPropertiesAxiom &&
+    			((OWLEquivalentObjectPropertiesAxiom) change.getAxiom()).getProperties().contains(getRootObject());
     }
 
 

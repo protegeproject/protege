@@ -7,12 +7,14 @@ import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInfere
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSection;
 import org.protege.editor.owl.ui.frame.property.AbstractPropertyDomainFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -76,11 +78,16 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractPropertyDomainF
             }
         });
     }
-
-
-    public void visit(OWLObjectPropertyDomainAxiom axiom) {
-        if (axiom.getProperty().equals(getRootObject())) {
-            reset();
-        }
+    
+    @Override
+    protected boolean isResettingChange(OWLOntologyChange change) {
+    	if (!change.isAxiomChange()) {
+    		return false;
+    	}
+    	OWLAxiom axiom = change.getAxiom();
+    	if (axiom instanceof OWLObjectPropertyDomainAxiom) {
+    		return ((OWLObjectPropertyDomainAxiom) axiom).getProperty().equals(getRootObject());
+    	}
+    	return false;
     }
 }
