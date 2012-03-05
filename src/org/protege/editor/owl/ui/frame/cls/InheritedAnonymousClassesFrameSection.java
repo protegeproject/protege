@@ -118,7 +118,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     
     @Override
     protected boolean isResettingChange(OWLOntologyChange change) {
-    	return change.isAxiomChange() && change.getAxiom() instanceof OWLSubClassOfAxiom || change.getAxiom() instanceof OWLEquivalentClassesAxiom;
+    	return change.isAxiomChange() && (change.getAxiom() instanceof OWLSubClassOfAxiom || change.getAxiom() instanceof OWLEquivalentClassesAxiom);
     }
 
 
