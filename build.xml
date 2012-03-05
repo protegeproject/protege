@@ -201,8 +201,7 @@ author=Protege Development Team (First working version by Matthew Horridge)
       <java classname="org.eclipse.virgo.bundlor.commandline.Bundlor"
             failonerror="true" fork="true">
         <classpath>
-          <fileset dir="${bundlor.home}/lib" includes="*.jar"/>
-          <fileset dir="${bundlor.home}/dist" includes="*.jar"/>
+          <fileset dir="${bundlor.home}/plugins" includes="*.jar"/>
         </classpath>
         <jvmarg value="-Dbundle.version=${bundle.version}"/>
         <jvmarg value="-Dbundle.build=${core.build.number}"/>
