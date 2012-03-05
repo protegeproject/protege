@@ -58,7 +58,7 @@ public class OntologyCatalogManager {
 	 * by the OntologyCatalogManager.
 	 */
 	public static File getCatalogFile(XMLCatalog catalog) {
-		if (catalog.getXmlBaseContext() == null) {
+		if (catalog == null || catalog.getXmlBaseContext() == null) {
 			return  null;
 		}
 		File f = new File(catalog.getXmlBaseContext().getXmlBase());
