@@ -86,6 +86,7 @@ public class LocalFilePage extends OntologyImportPage {
     @Override
     public void aboutToHidePanel() {
     	OntologyImportWizard wizard = getWizard();
+        wizard.setImportsAreFinal(false);
     	wizard.clearImports();
     	ImportInfo parameters = new ImportInfo();
     	parameters.setPhysicalLocation(filePathPanel.getFile().toURI());

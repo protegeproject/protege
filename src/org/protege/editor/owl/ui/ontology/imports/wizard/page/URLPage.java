@@ -82,6 +82,7 @@ public class URLPage extends OntologyImportPage {
     @Override
     public void aboutToHidePanel() {
     	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        wizard.setImportsAreFinal(false);
     	wizard.clearImports();
     	ImportInfo parameters = new ImportInfo();
     	parameters.setPhysicalLocation(urlPanel.getURI());
