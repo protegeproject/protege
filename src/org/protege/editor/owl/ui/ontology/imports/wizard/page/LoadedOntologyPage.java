@@ -78,6 +78,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
     @Override
     public void aboutToHidePanel() {
     	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        wizard.setImportsAreFinal(false);
     	wizard.clearImports();
         for (Object o : ontologyList.getSelectedValues()){
         	OWLOntology ontology = (OWLOntology) o;

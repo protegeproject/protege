@@ -35,8 +35,9 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
+	private static final long serialVersionUID = -1944232166721256262L;
 
-    public static final String ID = "AnticipateOntologyIdPage";
+	public static final String ID = "AnticipateOntologyIdPage";
 
     private JProgressBar progressBar;
 
@@ -86,12 +87,12 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     	    }
     	}
     	
-    	if (!wizard.isCustomizeImports() && importOptions.size() >  0) {
+    	if (!wizard.isImportsAreFinal() && !wizard.isCustomizeImports() && importOptions.size() >  0) {
     	    parameters.setImportLocation(importOptions.get(0));
     	    return false;
     	}
     	else {
-    	    return true;
+    	    return !wizard.isImportsAreFinal();
     	}
     }
 

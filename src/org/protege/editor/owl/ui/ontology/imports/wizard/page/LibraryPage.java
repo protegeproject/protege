@@ -81,8 +81,8 @@ public class LibraryPage extends OntologyImportPage {
         buttonPanel.add(addRepository);
         
 		parent.add(buttonPanel, BorderLayout.NORTH);
-        parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);
-        parent.add(createCustomizedImportsComponent(), BorderLayout.SOUTH);
+        parent.add(ComponentFactory.createScrollPane(importList), BorderLayout.CENTER);	
+        // no advanced option for this particular type of import
     }
     
     private void handleEditRepositories() {
@@ -119,6 +119,8 @@ public class LibraryPage extends OntologyImportPage {
     @Override
     public void aboutToHidePanel() {
         OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        wizard.setImportsAreFinal(true);
+        wizard.setCustomizeImports(false);
         wizard.clearImports();
         for (int index : importList.getSelectedIndices()) {
             wizard.addImport((ImportInfo) importListModel.getElementAt(index));
