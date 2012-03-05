@@ -29,9 +29,9 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.page.URLPage;
  */
 public class OntologyImportWizard extends Wizard {
 
-    private static final Logger logger = Logger.getLogger(OntologyImportWizard.class);
     private Set<ImportInfo> imports = new HashSet<ImportInfo>();
     private boolean customizeImports = false;
+    private boolean importsAreFinal = false;
     
     public OntologyImportWizard(Frame owner, OWLEditorKit owlEditorKit) {
         super(owner);
@@ -70,5 +70,13 @@ public class OntologyImportWizard extends Wizard {
     public void setCustomizeImports(boolean customizeImports) {
         this.customizeImports = customizeImports;
     }
+    
+    public boolean isImportsAreFinal() {
+		return importsAreFinal;
+	}
+    
+    public void setImportsAreFinal(boolean importsAreFinal) {
+		this.importsAreFinal = importsAreFinal;
+	}
 
 }
