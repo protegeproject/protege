@@ -213,9 +213,6 @@ public class ProtegeApplication implements BundleActivator {
             if (OSUtils.isOSX()) {
                 defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
             }
-            else if(OSUtils.isWindows()) {
-                defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
-            }
             else {
                 defaultLAFClassName = ProtegeProperties.PLASTIC_LAF_NAME;
             }
