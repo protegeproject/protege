@@ -1,8 +1,10 @@
 package org.protege.editor.owl.ui.ontology;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
@@ -56,13 +58,36 @@ public class OntologyPreferences {
     private OntologyPreferences() {
         StringBuilder sb = new StringBuilder();
         sb.append(DEFAULT_BASE);
-        String userName = System.getProperty(SYSTEM_USER_NAME_PROPERTY);
-        if(userName != null) {
+        String userName = getNormalisedUserName();
+        if(!userName.isEmpty()) {
             sb.append("/");
             sb.append(userName);
         }
         sb.append("/ontologies");
         baseURI = URI.create(sb.toString());
+    }
+
+    /**
+     * Gets the name of the logged in user, normalised so that it can appear in a URI.
+     * @return The normalised user name.  This may be an empty string of the name could not be normalised for
+     * any reason.
+     */
+    private String getNormalisedUserName() {
+        String rawUserName = System.getProperty(SYSTEM_USER_NAME_PROPERTY);
+        if(rawUserName == null) {
+            return "";
+        }
+        String lowerCaseUserName = rawUserName.toLowerCase();
+        String withoutSpaces = lowerCaseUserName.replaceAll("\\s", "");
+        try {
+            URI uri = new URI(withoutSpaces);
+            // Had toASCIIString which encodes non-ascii characters.  Don't think we need this though.
+            return uri.toString();
+        }
+        catch (URISyntaxException e) {
+            Logger.getLogger(OntologyPreferences.class).warn("Could not encode user name for ontology IRI: " + e.getMessage());
+            return "";
+        }
     }
 
 
@@ -181,4 +206,5 @@ public class OntologyPreferences {
         uriString += documentName;
         return URI.create(uriString);
     }
+
 }
