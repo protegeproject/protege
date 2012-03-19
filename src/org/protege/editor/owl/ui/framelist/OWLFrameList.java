@@ -547,7 +547,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
 
-    private void invokeExplanationHandler() {
+    protected void invokeExplanationHandler() {
         Object obj = getSelectedValue();
         if (!(obj instanceof OWLFrameSectionRow)) {
             return;
