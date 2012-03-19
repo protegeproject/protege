@@ -763,6 +763,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
         highlightText(doc);
+        if(selected) {
+            if (selectionForeground != null) {
+                doc.setCharacterAttributes(0, doc.getLength(), selectionForeground, false);
+            }
+        }
     }
 
 
