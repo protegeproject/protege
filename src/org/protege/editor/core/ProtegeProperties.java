@@ -51,6 +51,8 @@ public class ProtegeProperties extends Properties {
 
     public static final String ONTOLOGY_VIEW_CATEGORY = PROTEGE_PREFIX + "ontologycategory";
 
+    public static final String QUERY_VIEW_CATEGORY = PROTEGE_PREFIX + "querycategory";
+
 
     private static ProtegeProperties instance;
 
