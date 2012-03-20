@@ -83,12 +83,14 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
             if (!processedClasses.contains(cls)) {
                 for (OWLOntology ontology : getOWLModelManager().getActiveOntology().getImportsClosure()) {
                     for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSubClass(cls)) {
-                        if (ax.getSuperClass().isAnonymous()) {
+                        OWLClassExpression superClass = ax.getSuperClass();
+                        if (superClass.isAnonymous()) {
+                            OWLSubClassOfAxiom entailedAxiom = getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(), superClass);
                             addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
                                                                                 this,
                                                                                 null,
                                                                                 cls,
-                                                                                ax));
+                                                                                entailedAxiom));
                         }
                     }
                     for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(cls)) {
@@ -96,13 +98,11 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
                         descs.remove(getRootObject());
                         for (OWLClassExpression superCls : descs) {
                         	if (superCls.isAnonymous()) {
-                        		addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
+                                OWLSubClassOfAxiom entailedAxiom = getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(), superCls);
+                                addRow(new InheritedAnonymousClassesFrameSectionRow(getOWLEditorKit(),
                         				this,
                         				null,
-                        				cls,
-                        				getOWLDataFactory().getOWLSubClassOfAxiom(
-                        						getRootObject(),
-                        						superCls)));
+                        				cls, entailedAxiom));
                         	}
                         }
                     }
