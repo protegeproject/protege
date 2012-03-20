@@ -1,11 +1,13 @@
 package org.protege.editor.owl.ui.explanation;
 
 import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JDialog;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
@@ -71,7 +73,25 @@ public class ExplanationManager {
 	
 	public void handleExplain(Frame owner, OWLAxiom axiom) {
 		Collection<ExplanationService> teachers = getTeachers(axiom);
-		JDialog explanation = new ExplanationDialog(owner, this, axiom);
-		explanation.setVisible(true);
+		final ExplanationDialog explanation = new ExplanationDialog(owner, this, axiom);
+		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        JDialog dlg = op.createDialog(owner, getExplanationDialogTitle(axiom));
+        dlg.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                explanation.dispose();
+            }
+        });
+        dlg.setModal(false);
+        dlg.setResizable(true);
+        dlg.pack();
+        dlg.setVisible(true);
+
+
 	}
+
+    private String getExplanationDialogTitle(OWLAxiom entailment) {
+        String rendering = editorKit.getOWLModelManager().getRendering(entailment).replaceAll("\\s", " ");
+        return "Explanation for " + rendering;
+    }
 }
