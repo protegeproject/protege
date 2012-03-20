@@ -19,7 +19,7 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-public class ExplanationDialog extends JDialog {
+public class ExplanationDialog extends JPanel {
 	private static final long serialVersionUID = -4476549896762790748L;
 	public static final String PREFERENCES_SET_KEY = "EXPLANATION_PREFS_SET";
     public static final String DEFAULT_EXPLANATION_ID = "PREFERRED_PLUGIN_ID";
@@ -29,12 +29,6 @@ public class ExplanationDialog extends JDialog {
 	private OWLAxiom axiom;
 	
 	public ExplanationDialog(Frame owner, ExplanationManager explanationManager, OWLAxiom axiom) {
-		super(owner, "Explanation for " + explanationManager.getModelManager().getRendering(axiom));
-        /*
-         * Using deprecated method because Apple is bad.
-         */
-		setModal(false);
-		
 		this.axiom = axiom;
 		
 		setLayout(new BorderLayout());
@@ -50,9 +44,6 @@ public class ExplanationDialog extends JDialog {
 		explanationContainer.setLayout(new BoxLayout(explanationContainer, BoxLayout.Y_AXIS));
 		explanationContainer.add(explanation);
 		add(explanationContainer, BorderLayout.CENTER);
-
-		add(createButtons(), BorderLayout.SOUTH);
-		pack();
 	}
 	
 	private JComboBox createComboBox(Collection<ExplanationService> teachers) {
@@ -79,27 +70,12 @@ public class ExplanationDialog extends JDialog {
 				}
 				explanation = t.explain(axiom);
 				explanationContainer.add(explanation);
-				ExplanationDialog.this.pack();
-				ExplanationDialog.this.repaint();
+                revalidate();
 			}
 		});
 		return selector;
 	}
-	
-	
-	private JComponent createButtons() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		JButton ok = new JButton("OK");
-		ok.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ExplanationDialog.this.dispose();
-			}
-		});
-		ok.setAlignmentX(CENTER_ALIGNMENT);
-		panel.add(ok);
-		return panel;
-	}
+
 	
 	public String getDefaultPluginId() {
         PreferencesManager prefMan = PreferencesManager.getInstance();
@@ -113,11 +89,9 @@ public class ExplanationDialog extends JDialog {
         prefs.putString(DEFAULT_EXPLANATION_ID, id);
 	}
 	
-	@Override
 	public void dispose() {
 		if (explanation != null) {
 			explanation.dispose();
 		}
-		super.dispose();
 	}
 }
