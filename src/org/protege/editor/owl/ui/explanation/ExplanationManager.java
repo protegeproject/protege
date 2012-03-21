@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.explanation;
 
 import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Collection;
@@ -76,18 +78,17 @@ public class ExplanationManager {
 		final ExplanationDialog explanation = new ExplanationDialog(owner, this, axiom);
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = op.createDialog(owner, getExplanationDialogTitle(axiom));
-        dlg.addWindowListener(new WindowAdapter() {
+        dlg.addComponentListener(new ComponentAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void componentHidden(ComponentEvent e) {
                 explanation.dispose();
             }
         });
+        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
         dlg.setVisible(true);
-
-
 	}
 
     private String getExplanationDialogTitle(OWLAxiom entailment) {
