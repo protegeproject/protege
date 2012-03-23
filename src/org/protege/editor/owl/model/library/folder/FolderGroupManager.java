@@ -66,7 +66,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     
 
     public static GroupEntry createGroupEntry(URI folder, boolean recursive, boolean autoUpdate, XmlBaseContext context) throws IOException {
-        return new GroupEntry(getIdString(folder, recursive, autoUpdate), context, Prefer.PUBLIC, folder);
+        return new GroupEntry(getIdString(ID_PREFIX, folder, recursive, autoUpdate), context, Prefer.PUBLIC, folder);
     }
     
     public FolderGroupManager() {
@@ -88,7 +88,21 @@ public class FolderGroupManager extends CatalogEntryManager {
     public boolean isAutoUpdate() {
 		return autoUpdate;
 	}
+    
+	protected static String getIdString(String idPrefix, URI folderUri, boolean recursive, boolean autoUpdate) {
+		return getIdString(idPrefix, folderUri.toString(), recursive, autoUpdate);
+	}    
 	
+	protected static String getIdString(String idPrefix, String folderUri, boolean recursive, boolean autoUpdate) {
+	    StringBuffer sb = new StringBuffer(idPrefix);
+	    LibraryUtilities.addPropertyValue(sb, DIR_PROP, folderUri);
+	    LibraryUtilities.addPropertyValue(sb, RECURSIVE_PROP, recursive);
+	    LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, autoUpdate ? "true" : "false");
+	    LibraryUtilities.addPropertyValue(sb, LibraryUtilities.VERSION_PROPERTY, CURRENT_VERSION);
+	    return sb.toString();
+	}
+	
+
 	public boolean isSuitable(Entry entry) {
 		if  (!(entry instanceof GroupEntry)) {
 			return false;
@@ -98,7 +112,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 		
 		boolean enabled = LibraryUtilities.getBooleanProperty(ge, LibraryUtilities.AUTO_UPDATE_PROP, false);
 		boolean hasRightType = ge.getId() != null 
-		                            && ge.getId().startsWith(ID_PREFIX)
+		                            && ge.getId().startsWith(getIdPrefix())
 		                            && enabled
 		                            && dir != null;
 
@@ -112,6 +126,10 @@ public class FolderGroupManager extends CatalogEntryManager {
 		    return false;
 		}
 		return hasRightType;
+	}
+	
+	protected String getIdPrefix() {
+		return ID_PREFIX;
 	}
 
 	public boolean update(Entry entry) {
@@ -169,15 +187,6 @@ public class FolderGroupManager extends CatalogEntryManager {
 		return sb.toString();
 	}
 	
-	private static String getIdString(URI folderUri, boolean recursive, boolean autoUpdate) {
-        StringBuffer sb = new StringBuffer(ID_PREFIX);
-        LibraryUtilities.addPropertyValue(sb, DIR_PROP, folderUri.toString());
-        LibraryUtilities.addPropertyValue(sb, RECURSIVE_PROP, recursive);
-        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.AUTO_UPDATE_PROP, autoUpdate ? "true" : "false");
-        LibraryUtilities.addPropertyValue(sb, LibraryUtilities.VERSION_PROPERTY, CURRENT_VERSION);
-        return sb.toString();
-	}
-
 	private void reset() {
 		modified = false;
 		timeOfCurrentUpdate = System.currentTimeMillis();
@@ -196,7 +205,7 @@ public class FolderGroupManager extends CatalogEntryManager {
 		int version = LibraryUtilities.getVersion(ge);
 		if (version < CURRENT_VERSION) {
 			boolean autoUpdate = LibraryUtilities.getBooleanProperty(ge, LibraryUtilities.AUTO_UPDATE_PROP, this.autoUpdate);
-			ge.setId(getIdString(folder.toURI(), recursive, autoUpdate));
+			ge.setId(getIdString(getIdPrefix(), folder.toURI(), recursive, autoUpdate));
 			clearEntries();
 		}
 	}
