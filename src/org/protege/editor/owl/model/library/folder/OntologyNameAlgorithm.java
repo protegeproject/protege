@@ -18,20 +18,26 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class OntologyNameAlgorithm implements Algorithm {
 
 	@Override
-	public Set<URI> getSuggestions(File f) {
+	public Set<URI> getSuggestions(final File f) {
 		try {
+			final IRI iri = IRI.create(f);
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			manager.addIRIMapper(new OWLOntologyIRIMapper() {
 				
 				@Override
 				public IRI getDocumentIRI(IRI ontologyIRI) {
-					return IRI.create("ignore://imports");
+					if (ontologyIRI.equals(iri)) {
+						return IRI.create(f);
+					}
+					else {
+						return IRI.create("http://hopefully.not.a.valid.host.name");
+					}
 				}
 			});
 			OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
 			configuration = configuration.setLoadAnnotationAxioms(false);
 			configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
-			OWLOntology ontology = manager.loadOntology(IRI.create(f));
+			OWLOntology ontology = manager.loadOntology(iri);
 			Set<URI> suggestions = new TreeSet<URI>();
 			OWLOntologyID id = ontology.getOntologyID();
 			if (id.getOntologyIRI() != null) {

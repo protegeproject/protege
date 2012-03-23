@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
+import org.protege.editor.owl.model.library.folder.ImportByNameManager;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
@@ -30,6 +31,7 @@ public class FolderGroupPanel extends NewEntryPanel {
     private XMLCatalog catalog;
     private JTextField physicalLocationField;
     private JCheckBox recursive;
+    private JCheckBox importByName;
 
     public FolderGroupPanel(XMLCatalog catalog) {
         setLayout(new BorderLayout());
@@ -70,6 +72,10 @@ public class FolderGroupPanel extends NewEntryPanel {
         recursive.setAlignmentX(CENTER_ALIGNMENT);
         centerPanel.add(recursive);
         centerPanel.add(Box.createVerticalGlue());
+        importByName = new JCheckBox("Import By Name (requires manual updates)");
+        importByName.setAlignmentX(CENTER_ALIGNMENT);
+        centerPanel.add(importByName);
+        centerPanel.add(Box.createVerticalGlue());
         return centerPanel;
     }
 
@@ -84,7 +90,12 @@ public class FolderGroupPanel extends NewEntryPanel {
         }
         try {
         	URI folderUri = CatalogUtilities.relativize(new File(physicalLocationField.getText()).toURI(), catalog);
-            return FolderGroupManager.createGroupEntry(folderUri, recursive.isSelected(), true, catalog);
+        	if (importByName.isSelected()) {
+        		return ImportByNameManager.createGroupEntry(folderUri, recursive.isSelected(), true, catalog);
+        	}
+        	else {
+        		return FolderGroupManager.createGroupEntry(folderUri, recursive.isSelected(), true, catalog);
+        	}
         }
         catch (IOException ioe) {
             ProtegeApplication.getErrorLog().logError(ioe);

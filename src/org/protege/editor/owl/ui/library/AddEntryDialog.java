@@ -67,14 +67,16 @@ public class AddEntryDialog extends JDialog {
     	tabs = new JTabbedPane();
         for (final CatalogEntryManager entryManager : entryManagers) {
         	NewEntryPanel panel = entryManager.newEntryPanel(catalog);
-        	panel.setAlignmentY(CENTER_ALIGNMENT);
-        	tabs.addTab(entryManager.getDescription(), panel);
-        	panel.addListener(new Runnable() {
-        		
-        		public void run() {
-        			updateOkButtonState();
-        		}
-        	});
+        	if (panel != null) {
+        		panel.setAlignmentY(CENTER_ALIGNMENT);
+        		tabs.addTab(entryManager.getDescription(), panel);
+        		panel.addListener(new Runnable() {
+
+        			public void run() {
+        				updateOkButtonState();
+        			}
+        		});
+        	}
         }
         tabs.addChangeListener(new ChangeListener() {
         	public void stateChanged(ChangeEvent e) {

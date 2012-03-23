@@ -1263,6 +1263,11 @@
 		<class value="org.protege.editor.owl.model.library.folder.FolderGroupManager"/>
 	</extension>
 	
+	<extension id="FolderRepository" point="org.protege.editor.owl.repository">
+		<class value="org.protege.editor.owl.model.library.folder.ImportByNameManager"/>
+	</extension>
+
+
 	<extension id="SingleUriEntry" point="org.protege.editor.owl.repository">
 		<class value="org.protege.editor.owl.model.library.UriEntryManager"/>
 	</extension>
