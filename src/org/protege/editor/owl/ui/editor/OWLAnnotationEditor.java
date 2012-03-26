@@ -43,6 +43,8 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     private List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
 
     private boolean status = false;
+    
+    private static String lastEditorName = "";
 
     private ChangeListener changeListener = new ChangeListener(){
         public void stateChanged(ChangeEvent event) {
@@ -108,10 +110,17 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 	private void loadEditors() {
         editors = createEditors();
         assert !editors.isEmpty();
+        int selIndex = 0;
+        int tabCount = 0;
         for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
-            tabbedPane.add(editor.getEditorTypeName(), editor.getEditorComponent());
+            String editorTypeName = editor.getEditorTypeName();
+            tabbedPane.add(editorTypeName, editor.getEditorComponent());
+            if(lastEditorName != null && editorTypeName != null && lastEditorName.equals(editorTypeName)) {
+                selIndex = tabCount;
+            }
+            tabCount++;
         }
-        tabbedPane.setSelectedIndex(0);
+        tabbedPane.setSelectedIndex(selIndex);
     }
 
 
@@ -162,8 +171,12 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         }
         else {
             annotationPropertySelector.setSelection(lastSelectedProperty);
-            for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
+            for (int i = 0; i < editors.size(); i++) {
+                OWLObjectEditor<? extends OWLAnnotationValue> editor = editors.get(i);
                 editor.setEditedObject(null);
+                if(lastEditorName.equals(editor.getEditorTypeName())) {
+                    tabIndex = i;
+                }
             }
         }
         tabbedPane.setSelectedIndex(tabIndex == -1 ? 0 : tabIndex);
@@ -175,6 +188,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         OWLAnnotationProperty property = annotationPropertySelector.getSelectedObject();
         if (property != null){
             lastSelectedProperty = property;
+            lastEditorName = getSelectedEditor().getEditorTypeName();
 
             OWLDataFactory dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
 
