@@ -9,7 +9,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiomChange;
@@ -90,7 +89,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     public void rebuild() {
         clear();
-        OWLModelManagerEntityRenderer entityRenderer = owlModelManager.getOWLEntityRenderer();
+        owlModelManager.getOWLEntityRenderer();
         OWLDataFactory factory = owlModelManager.getOWLDataFactory();
         
         addRendering(factory.getOWLThing(), owlClassMap);
@@ -100,7 +99,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         addRendering(factory.getOWLTopDataProperty(), owlDataPropertyMap);
         addRendering(factory.getOWLBottomDataProperty(), owlDataPropertyMap);
 
-        for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
+        for (OWLOntology ont : owlModelManager.getOntologies()) {
             for (OWLClass cls : ont.getClassesInSignature()) {
                 addRendering(cls, owlClassMap);
             }
