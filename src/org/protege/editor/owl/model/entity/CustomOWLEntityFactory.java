@@ -264,7 +264,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
 
     private <T extends OWLEntity> boolean isIRIAlreadyUsed(Class<T> type, IRI iri) {
-        for (OWLOntology ont : mngr.getOntologies()){
+        for (OWLOntology ont : mngr.getActiveOntologies()){
             if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassInSignature(iri)) ||
                 (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyInSignature(iri)) ||
                 (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyInSignature(iri)) ||
