@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.about;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -46,7 +47,12 @@ public class PluginInfoTableModel extends AbstractTableModel {
 
 
     public PluginInfoTableModel() {
-        bundles = ProtegeApplication.getBundleManager().getPlugins();
+        bundles = new ArrayList<Bundle>();
+        for (Bundle b : ProtegeApplication.getContext().getBundles()) {
+        	if (ProtegeApplication.isPlugin(b)) {
+        		bundles.add(b);
+        	}
+        }
     }
 
 
