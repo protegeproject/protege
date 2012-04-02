@@ -1,19 +1,16 @@
 package org.protege.editor.core;
 
-import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -23,7 +20,10 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.Version;
-import org.protege.editor.core.editorkit.*;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.editorkit.EditorKitManager;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.platform.OSGi;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
@@ -83,6 +83,10 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 public class ProtegeApplication implements BundleActivator {
 
     private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
+    
+    public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
+    
+    public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
 
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
 
@@ -94,8 +98,6 @@ public class ProtegeApplication implements BundleActivator {
 
     private static BundleContext context;
 
-    private static BundleManager bundleManager;
-
     private List<URI> commandLineURIs;
 
     private static ErrorLog errorLog = new ErrorLog();
@@ -104,25 +106,39 @@ public class ProtegeApplication implements BundleActivator {
 
     private static boolean quitting = false;
 
-    public void start(BundleContext context) {
-        try {
-            ProtegeApplication.context = context;
-            displayPlatform();
-            initApplication();
+    public void start(final BundleContext context) {
+    	
+    	context.addFrameworkListener(new FrameworkListener() {
+    		@Override
+    		public void frameworkEvent(FrameworkEvent event) {
+    			if (event.getType() == FrameworkEvent.STARTED) {
+    				reallyStart(context);
+    			}
+
+    		}
+    	});
+
+    }
+    
+    public void reallyStart(BundleContext context) {
+    	try {
+    		ProtegeApplication.context = context;
+    		displayPlatform();
+    		initApplication();
 
 
-            if (OSUtils.isOSX()) {
-                ProtegeAppleApplication.getInstance();
-            }
+    		if (OSUtils.isOSX()) {
+    			ProtegeAppleApplication.getInstance();
+    		}
 
-            ProtegeManager.getInstance().initialise(this);
-            startApplication();
+    		ProtegeManager.getInstance().initialise(this);
+    		startApplication();
 
 
-        }
-        catch (Throwable t) {
-            logger.error("Exception caught starting Protege", t);
-        }
+    	}
+    	catch (Throwable t) {
+    		logger.error("Exception caught starting Protege", t);
+    	}
     }
 
 
@@ -146,9 +162,9 @@ public class ProtegeApplication implements BundleActivator {
     // If this isn't liked info can be replaced with debug.
     // It helps with diagnosing problems with the FaCT++ plugin.
     private void displayPlatform() {
-        Bundle b = context.getBundle();
-        Version v = PluginUtilities.getBundleVersion(b);
-        logger.info("Starting Protege 4 OWL Editor (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + PluginUtilities.getBuildNumber(b) + ")");
+        Bundle thisBundle = context.getBundle();
+        Version v = PluginUtilities.getBundleVersion(thisBundle);
+        logger.info("Starting Protege 4 OWL Editor (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + PluginUtilities.getBuildNumber(thisBundle) + ")");
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
                 " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
@@ -157,6 +173,53 @@ public class ProtegeApplication implements BundleActivator {
         logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
         logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME) + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
         logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
+        for (Bundle plugin : context.getBundles()) {
+        	if (isPlugin(plugin)) {
+        		logger.info("Plugin: " + getNiceBundleName(plugin) + " (" + plugin.getVersion() + ")");
+        	}
+        }
+        for (Bundle plugin : context.getBundles()) {
+        	if (isPlugin(plugin)) {
+        		pluginSanityCheck(plugin);
+        	}
+        }
+    }
+    
+    
+    private boolean pluginSanityCheck(Bundle b) {
+    	boolean passed = true;
+        boolean hasPluginXml = (b.getResource("/plugin.xml") != null);
+        if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && !hasPluginXml) {
+            logger.info("\t" + getNiceBundleName(b) + " Plugin has no plugin.xml resource");
+            passed = false;
+        }
+        if (hasPluginXml && !isSingleton(b)) {
+            logger.warn("\t" + getNiceBundleName(b) + " plugin is not a singleton so its plugin.xml will not be seen by the registry." );
+            passed = false;
+        }
+        return passed;
+    }
+    
+    public static boolean isPlugin(Bundle b) {
+    	String location = b.getLocation();
+    	return location != null && location.contains("plugin");
+    }
+    
+    public static boolean isSingleton(Bundle b) {
+        StringBuffer singleton1 = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
+        singleton1.append(":=true");
+        StringBuffer singleton2 = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
+        singleton2.append(":=\"true\"");
+        return ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton1.toString()) ||
+                ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton2.toString());
+    }
+    
+    public static String getNiceBundleName(Bundle b) {
+        String name = (String) b.getHeaders().get(Constants.BUNDLE_NAME);
+        if (name == null) {
+            name = b.getSymbolicName();
+        }
+        return name;
     }
 
     protected ProtegeApplication initApplication() throws Exception {
@@ -165,7 +228,6 @@ public class ProtegeApplication implements BundleActivator {
         initializeLookAndFeel();
         checkConfiguration();
         setupExceptionHandler();
-        loadPlugins();
         processCommandLineURIs();  // plugins may set arguments
         loadRecentEditorKits();
         return this;
@@ -283,11 +345,6 @@ public class ProtegeApplication implements BundleActivator {
         });
     }
 
-    private void loadPlugins() {
-        bundleManager = new BundleManager(context);
-        bundleManager.loadPlugins();
-    }
-
 
     private void processCommandLineURIs() {
         try {
@@ -385,11 +442,6 @@ public class ProtegeApplication implements BundleActivator {
 
     public static BackgroundTaskManager getBackgroundTaskManager() {
         return backgroundTaskManager;
-    }
-
-
-    public static BundleManager getBundleManager() {
-        return bundleManager;
     }
 
 
