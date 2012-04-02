@@ -180,6 +180,7 @@ public class PluginInstaller {
     		try {
     			FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
     			logger.info("Save of plugin to user plugin directory succeeded");
+    			logger.info("Update only seen by invoking user");
     		}
     		catch (IOException ioe) {
     			logger.error("Could not save plugin", ioe);
