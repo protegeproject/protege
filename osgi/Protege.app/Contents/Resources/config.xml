@@ -1,8 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
 <launch>
-  <pluginDirectory dir="Contents/Resources/Java/plugins"/>
-  <systemProperties/>
+  <systemProperties>
+      <property name="org.protege.plugin.dir" value="Contents/Resources/Java/plugins"/>
+  </systemProperties>
   <frameworkProperties>
     <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*"/>
     <property name="org.osgi.framework.system.packages.extra" 
@@ -10,8 +11,14 @@
     <property name="org.osgi.framework.storage.clean" 
               value="onFirstInit"/>
   </frameworkProperties>
-  <bundles dir="Contents/Resources/Java/bundle">
+  <bundles>
+    <search path="Contents/Resources/Java/bundle"/>
+    <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.protege.common.jar"/>
+  </bundles>
+  <bundles verbose = "true">
+    <search path="Contents/Resources/Java/bundle"/>
+    <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.eclipse.equinox.common.jar"/>
     <bundle name="org.eclipse.equinox.registry.jar"/>
     <bundle name="org.eclipse.equinox.supplement.jar"/>
@@ -19,6 +26,11 @@
     <bundle name="org.protege.editor.core.application.jar"/>
     <bundle name="org.apache.felix.configadmin.jar"/>
     <bundle name="org.apache.felix.scr.jar"/>
+  </bundles>
+  
+  <bundles>
+  	<search path="Contents/Resources/Java/plugins"/>
+  	<search path="${user.home}/.Protege/plugins"/>
   </bundles>
 
 </launch>
