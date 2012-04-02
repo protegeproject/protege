@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -18,17 +20,19 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
+import org.osgi.framework.startlevel.BundleStartLevel;
 import org.xml.sax.SAXException;
 
 
 public class Launcher {    
+	private Logger logger = Logger.getLogger(Launcher.class.getCanonicalName());
     public static final String ARG_PROPERTY = "command.line.arg.";
     public static final String LAUNCH_LOCATION_PROPERTY = "org.protege.launch.config";
     public static final String PROTEGE_DIR_PROPERTY = "protege.dir";
     public static String PROTEGE_DIR = System.getProperty(PROTEGE_DIR_PROPERTY);
 
     private Map<String, String> frameworkProperties;
-    private List<DirectoryWithBundles> directories;
+    private List<BundleSearchPath> searchPaths;
     private String     factoryClass;
     private Framework  framework;
     private File frameworkDir;
@@ -39,6 +43,7 @@ public class Launcher {
         locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
         frameworkProperties.put("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
+        frameworkProperties.put("org.osgi.framework.startlevel.beginning", "" + searchPaths.size());
     }
     
     public Framework getFramework() {
@@ -49,7 +54,7 @@ public class Launcher {
         Parser p = new Parser();
         p.parse(config);
         setSystemProperties(p);
-        directories = p.getDirectories();
+        searchPaths = p.getSearchPaths();
         frameworkProperties = p.getFrameworkProperties();
     }
     
@@ -63,7 +68,6 @@ public class Launcher {
     
     private void setSystemProperties(Parser p) {
         Map<String, String> systemProperties = p.getSystemProperties();
-        System.setProperty("org.protege.plugin.dir", p.getPluginDirectory());
         System.setProperty("org.protege.osgi.launcherHandlesExit", "True");
         for (Entry<String, String> entry : systemProperties.entrySet()) {
             System.setProperty(entry.getKey(), entry.getValue());
@@ -73,13 +77,16 @@ public class Launcher {
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
         framework = factory.newFramework(frameworkProperties);
-        framework.start();
+        framework.init();
         BundleContext context = framework.getBundleContext();
         List<Bundle> bundles = new ArrayList<Bundle>();
-        for (DirectoryWithBundles directory : directories) {
-            bundles.addAll(installBundles(context, directory.getDirectory(), directory.getBundles()));
+        int startLevel = 1;
+        for (BundleSearchPath searchPath : searchPaths) {
+            bundles.addAll(installBundles(context, null, searchPath, startLevel++));
         }
         startBundles(context, bundles);
+        framework.start();
+
         Thread shutdownThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -98,25 +105,17 @@ public class Launcher {
         shutdownThread.start();
     }
 
-    private List<Bundle> installBundles(BundleContext context, String dir, List<String> bundles) throws BundleException {
-        File directory;
-        if (PROTEGE_DIR != null) {
-            directory = new File(PROTEGE_DIR, dir);
-        }
-        else {
-            directory = new File(dir);
-        }
+    private List<Bundle> installBundles(BundleContext context, String dir, BundleSearchPath searchPath, int startLevel) throws BundleException {
+    	Collection<File> bundles = searchPath.search();
         List<Bundle> core = new ArrayList<Bundle>();
-        for (String bundleName :  bundles) {
-            boolean success = false;
+        for (File bundleFile :  bundles) {
             try {
-                core.add(context.installBundle(new File(directory, bundleName).toURI().toString()));
-                success = true;
+            	Bundle newBundle = context.installBundle(bundleFile.getAbsoluteFile().toURI().toString());
+            	newBundle.adapt(BundleStartLevel.class).setStartLevel(startLevel);
+                core.add(newBundle);
             }
-            finally {
-                if (!success) {
-                    System.out.println("Core Bundle " + bundleName + " failed to install.");
-                }
+            catch (Throwable t) {
+            	logger.log(Level.WARNING, "Bundle " + bundleFile + " failed to install.", t);
             }
         }
         return core;
@@ -124,15 +123,11 @@ public class Launcher {
     
     private void startBundles(BundleContext context, List<Bundle> bundles) throws BundleException {
         for (Bundle b : bundles) {
-            boolean success = false;
             try {
                 b.start();
-                success = true;
             }
-            finally {
-                if (!success) {
-                    System.out.println("Core Bundle " + b.getBundleId() + " failed to start.");
-                }
+            catch (Throwable t) {
+            	logger.log(Level.WARNING, "Core Bundle " + b.getBundleId() + " failed to start.", t);
             }
         }
     }

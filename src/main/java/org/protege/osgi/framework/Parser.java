@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -29,18 +27,13 @@ public class Parser {
 	public static final String DEFAULT_PLUGIN_DIRECTORY = "plugins";
 	
 	private DocumentBuilderFactory factory;
-	
-	private String pluginDirectory;
+
     private Map<String, String> frameworkProperties = null;
     private Map<String, String> systemProperties = null;
-    private List<DirectoryWithBundles> directories = new ArrayList<DirectoryWithBundles>();
+    private List<BundleSearchPath> searchPaths = new ArrayList<BundleSearchPath>();
     
     public Parser() {
         factory = DocumentBuilderFactory.newInstance();
-    }
-    
-    public String getPluginDirectory() {
-        return pluginDirectory;
     }
     
     public Map<String,String> getFrameworkProperties() {
@@ -51,15 +44,14 @@ public class Parser {
         return systemProperties;
     }
 
-    public List<DirectoryWithBundles> getDirectories() {
-        return directories;
+    public List<BundleSearchPath> getSearchPaths() {
+        return searchPaths;
     }
 
     public void reset() {
-        pluginDirectory = null;
         frameworkProperties = null;
         systemProperties = null;
-        directories.clear();
+        searchPaths.clear();
     }
     
     public void parse(File f) throws ParserConfigurationException, SAXException, IOException {
@@ -78,9 +70,6 @@ public class Parser {
         NodeList nodes = topNode.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node job = nodes.item(i);
-            if (job instanceof Element && job.getNodeName().equals("pluginDirectory")) {
-                setPluginDirectory(job);
-            }
             if (job instanceof Element && job.getNodeName().equals("systemProperties")) {
                 systemProperties = readProperties(job.getChildNodes());
             }
@@ -88,23 +77,12 @@ public class Parser {
                 frameworkProperties = readProperties(job.getChildNodes());
             }
             else if (job instanceof Element && job.getNodeName().equals("bundles")) {
-                DirectoryWithBundles directory = readDirectories(job);
+                BundleSearchPath directory = readDirectories(job);
                 if (directory != null) {
-                    directories.add(directory);
+                    searchPaths.add(directory);
                 }
             }
 
-        }
-    }
-    
-    private void setPluginDirectory(Node node) {
-        NamedNodeMap attributes = node.getAttributes();
-        Node dir = attributes.getNamedItem(DIRECTORY);
-        if (dir != null) {
-            String value = dir.getNodeValue();
-            if (value != null) {
-                pluginDirectory = value;
-            }
         }
     }
     
@@ -124,20 +102,22 @@ public class Parser {
         return properties;
     }
     
-    private DirectoryWithBundles readDirectories(Node node) {
-        Node dirNameNode = node.getAttributes().getNamedItem(DIRECTORY);
-        if (dirNameNode == null) {
-            return null;
-        }
-        DirectoryWithBundles directories = new DirectoryWithBundles(dirNameNode.getNodeValue());
+    private BundleSearchPath readDirectories(Node node) {
+        BundleSearchPath directories = new BundleSearchPath();
         NodeList children = node.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             if (child instanceof Element && child.getNodeName().equals("bundle")) {
                 Node bundleNameNode = child.getAttributes().getNamedItem(NAME);
                 if (bundleNameNode != null) {
-                    directories.addBundle(bundleNameNode.getNodeValue());
+                    directories.addAllowedBundle(bundleNameNode.getNodeValue());
                 }
+            }
+            else if (child instanceof Element && child.getNodeName().equals("search")) {
+            	Node searchPathNode = child.getAttributes().getNamedItem("path");
+            	if (searchPathNode != null) {
+            		directories.addSearchPath(searchPathNode.getNodeValue());
+            	}
             }
         }
         return directories;
