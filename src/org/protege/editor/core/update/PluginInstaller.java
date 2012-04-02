@@ -19,10 +19,10 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
-import org.protege.editor.core.BundleManager;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.protege.common.CommonProtegeProperties;
 
 
 /**
@@ -151,45 +151,45 @@ public class PluginInstaller {
 
 
     private static File copyPluginToInstallLocation(File pluginFile, PluginInfo info) throws URISyntaxException {
-        logger.info("Copying " + info.getLabel());
-        boolean doCopy = true;
-        File pluginsFolder = new File(System.getProperty(BundleManager.BUNDLE_DIR_PROP));
-        File oldPluginFile = null;
-        File newPluginFile = null;
-        
-        if (info.getPluginDescriptor() != null) {
-            String location = info.getPluginDescriptor().getLocation();
-            location = location.substring(location.indexOf(":")+1, location.length());
-            File existingPlugin = new File(location);
-            if (existingPlugin.exists()) {
-                oldPluginFile = new File(existingPlugin.getAbsolutePath() + "-old");
-                doCopy = existingPlugin.renameTo(oldPluginFile);
-                newPluginFile = existingPlugin;
-            }
-        }
-        if (newPluginFile == null) {
-            newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
-        }
+    	logger.info("Copying " + info.getLabel());
+    	File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
+    	File oldPluginFile = null;
+    	File newPluginFile = null;
 
-        if (doCopy){
-            try{
-                FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
-                if (oldPluginFile != null && oldPluginFile.exists()){
-                    FileUtils.deleteRecursively(oldPluginFile);
-                }
-                return newPluginFile;
-            }
-            catch(IOException e){
-                logger.error("Could not create plugin: " + newPluginFile, e);
-            }
-        }
-        else {
-            logger.error("Could not safely install new version of the plugin.");
-        }
-        return null;
+    	if (info.getPluginDescriptor() != null) {
+    		String location = info.getPluginDescriptor().getLocation();
+    		location = location.substring(location.indexOf(":")+1, location.length());
+    		File existingPlugin = new File(location);
+    		if (existingPlugin.exists()) {
+    			oldPluginFile = new File(existingPlugin.getAbsolutePath() + "-old");
+    			if (!existingPlugin.renameTo(oldPluginFile)) {
+    				oldPluginFile = null;
+    			}
+    			newPluginFile = existingPlugin;
+    		}
+    	}
+    	if (newPluginFile == null) {
+    		newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
+    	}
+    	try{
+    		FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
+    	}
+    	catch(IOException e){
+    		logger.error("Could not save plugin to system directory, trying user plugin directory. (" + e.getMessage() + ")");
+    		newPluginFile = new File(CommonProtegeProperties.getUserPluginDirectory(), info.getId() + ".jar");
+    		try {
+    			FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
+    			logger.info("Save of plugin to user plugin directory succeeded");
+    		}
+    		catch (IOException ioe) {
+    			logger.error("Could not save plugin", ioe);
+    		}
+    	}
+    	if (oldPluginFile != null && oldPluginFile.exists()){
+    		FileUtils.deleteRecursively(oldPluginFile);
+    	}
+    	return newPluginFile;
     }
-
-
 
     /**
      * Extracts the contents of a zip file, which is assumed to contain a plugin,
