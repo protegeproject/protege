@@ -6,8 +6,8 @@
 	<artifactId>org.protege.common</artifactId>
 	<packaging>jar</packaging>
 	<name>Core Protege Libraries</name>
-	<!-- <version>4.1.0.213_SNAPSHOT</version> -->
-    <version>4.2.0.b269_2012_04_03_0637</version>
+	<version>4.1.0.213_SNAPSHOT</version>
+    <!-- <version>4.2.0.b269_2012_04_03_0637</version> -->
 
 	<parent>
 		<groupId>protege4</groupId>
