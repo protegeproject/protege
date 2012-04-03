@@ -93,6 +93,7 @@
        <path id = "project.classpath">    
            <pathelement location="${protege.osgi}"/>
            <pathelement location = "${protege.lib}"/>
+           <pathelement location = "${common.lib}"/>
            <pathelement location="${equinox.common}"/>
            <pathelement location="${equinox.registry}"/>
            <fileset dir="${lib}"/>
