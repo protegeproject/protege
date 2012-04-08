@@ -1327,19 +1327,7 @@
 	    <class value="org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager"/>
 	    <editorKitId value="OWLEditorKit"/>
 	</extension>
-	
-	<extension id="BasicExplanation"
-			   point="org.protege.editor.owl.explanation">
-        <name value="Basic Explanation"/>
-        <class value="org.protege.editor.owl.ui.explanation.impl.BasicBlackboxExplanationService"/>
-    </extension>
 
-
-    <extension id="HeuristicInconsistentOntologyExplanation"
-               point="org.protege.editor.owl.inconsistentOntologyExplanation">
-      <class value="org.protege.editor.owl.ui.explanation.io.ProtegeHeuristics"/>
-      <name value="Protege Explanation Heuristics"/>
-    </extension>
 
     <!-- Preferences -->  
 
