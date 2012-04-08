@@ -159,23 +159,6 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
     }
 
 
-//    private void setupCopyer() {
-//        if(this instanceof Copyable) {
-//            getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(
-//                    KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-//            ), INPUT_MAP_KEY);
-//            getActionMap().put(INPUT_MAP_KEY, new AbstractAction() {
-//                public void actionPerformed(ActionEvent e) {
-//                    handleFind();
-//                }
-//            });
-//        }
-//    }
-
-//    private void handleCopy() {
-//
-//    }
-
 
     protected OWLDataFactory getOWLDataFactory() {
         return getOWLModelManager().getOWLDataFactory();
