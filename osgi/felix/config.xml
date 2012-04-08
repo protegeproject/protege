@@ -24,8 +24,12 @@
     <search path="bundles"/>
     <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.eclipse.equinox.common.jar"/>
-    <bundle name="org.eclipse.equinox.registry.jar"/>
     <bundle name="org.eclipse.equinox.supplement.jar"/>
+  </bundles>
+  <bundles>
+    <search path="bundles"/>
+    <search path="${user.home}/.Protege/bundles"/>
+    <bundle name="org.eclipse.equinox.registry.jar"/>
     <bundle name="org.protege.jaxb.jar"/>
     <bundle name="org.protege.editor.core.application.jar"/>
     <bundle name="org.apache.felix.configadmin.jar"/>
