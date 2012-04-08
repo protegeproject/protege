@@ -111,7 +111,8 @@ public class Launcher {
         for (File bundleFile :  bundles) {
             try {
             	Bundle newBundle = context.installBundle(bundleFile.getAbsoluteFile().toURI().toString());
-            	newBundle.adapt(BundleStartLevel.class).setStartLevel(startLevel);
+            	// the cast to BundleStartLevel is not needed in Java 6 but it is in Java 7
+            	((BundleStartLevel) newBundle.adapt(BundleStartLevel.class)).setStartLevel(startLevel);
                 core.add(newBundle);
             }
             catch (Throwable t) {
