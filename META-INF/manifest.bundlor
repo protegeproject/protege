@@ -14,6 +14,7 @@ Bundle-ClassPath: .,
  lib/protege-owlapi-extensions.jar,
  lib/xmlcatalog.jar
 Bundle-Activator: org.protege.editor.owl.ProtegeOWL
+Import-Package: org.coode.owlapi.rdf.renderer;version="3.2.4"
 Import-Template: org.eclipse.core.runtime;registry="split";version="3.4.0",
  javax.*;version="0.0.0",
  org.apache.log4j.*;version="1.2.14",
