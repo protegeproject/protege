@@ -75,8 +75,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private static final Logger logger = Logger.getLogger(OWLCellRenderer.class);
     
-    private final Icon deprecatedIcon = OWLIcons.getIcon("Deprecated.gif");
-
     private boolean forceReadOnlyRendering;
 
     private OWLEditorKit owlEditorKit;
@@ -122,8 +120,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JTextPane textPane;
     
-    private JLabel deprecatedLabel;
-
     private int preferredWidth;
 
     private int minTextHeight;
@@ -171,14 +167,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         textPane = new JTextPane();
         textPane.setOpaque(false);
         
-        deprecatedLabel = new JLabel("");
-        deprecatedLabel.setOpaque(false);
-        deprecatedLabel.setVerticalAlignment(SwingConstants.CENTER);
-
         renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
-        renderingComponent.add(deprecatedLabel);
 
         entityColorProviders = new ArrayList<OWLEntityColorProvider>();
         OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
@@ -518,11 +509,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             entity.accept(activeEntityVisitor);
             if (OWLUtilities.isDeprecated(getOWLModelManager(), entity)) {
-            	deprecatedLabel.setIcon(deprecatedIcon);
-            	deprecatedLabel.setPreferredSize(new Dimension(deprecatedIcon.getIconWidth(), plainFontHeight));
+                setStrikeThrough(true);
             }
             else {
-            	deprecatedLabel.setIcon(null);
+                setStrikeThrough(false);
             }
         }
 
@@ -853,6 +843,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 else if (highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
                     highlightPropertyIfUnsatisfiable(curEntity, doc, tokenStartIndex, tokenLength);
                 }
+                if(OWLUtilities.isDeprecated(owlEditorKit.getOWLModelManager(), curEntity)) {
+                    setStrikeThrough(true);
+                }
+                else {
+                    setStrikeThrough(false);
+                }
                 strikeoutEntityIfCrossedOut(curEntity, doc, tokenStartIndex, tokenLength);
 
                 if (renderLinks) {
@@ -938,7 +934,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void strikeoutEntityIfCrossedOut(OWLEntity entity, StyledDocument doc, int tokenStartIndex,
                                              int tokenLength) {
-        if(crossedOutEntities.contains(entity)) {
+        if(crossedOutEntities.contains(entity) || strikeThrough) {
             doc.setCharacterAttributes(tokenStartIndex, tokenLength, strikeOutStyle, false);
         }
     }
@@ -1067,21 +1063,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             int iconWidth;
             int iconHeight;
-            int deprecatedWidth;
-            int deprecatedHeight;
             int textWidth;
             int textHeight;
             int width;
             int height;
             iconWidth = iconLabel.getPreferredSize().width;
             iconHeight = iconLabel.getPreferredSize().height;
-            deprecatedWidth = deprecatedLabel.getPreferredSize().width;
-            deprecatedHeight = deprecatedLabel.getPreferredSize().height;
             Insets insets = parent.getInsets();
             Insets rcInsets = renderingComponent.getInsets();
 
             if (preferredWidth != -1) {
-                textWidth = preferredWidth - iconWidth - deprecatedWidth - rcInsets.left - rcInsets.right;
+                textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
                 View v = textPane.getUI().getRootView(textPane);
                 v.setSize(textWidth, Integer.MAX_VALUE);
                 textHeight = (int) v.getMinimumSpan(View.Y_AXIS);
@@ -1090,10 +1082,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             else {
                 textWidth = textPane.getPreferredSize().width;
                 textHeight = textPane.getPreferredSize().height;
-                width = textWidth + iconWidth + deprecatedWidth;
+                width = textWidth + iconWidth;
             }
-            if (textHeight < iconHeight || textHeight < deprecatedHeight) {
-                height = iconHeight > deprecatedHeight ? iconHeight : deprecatedHeight;
+            if (textHeight < iconHeight) {
+                height = iconHeight;
             }
             else {
                 height = textHeight;
@@ -1122,8 +1114,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
             iconWidth = iconLabel.getPreferredSize().width;
             iconHeight = iconLabel.getPreferredSize().height;
-            deprecatedWidth = deprecatedLabel.getPreferredSize().width;
-            deprecatedHeight = deprecatedLabel.getPreferredSize().height;
             if (preferredWidth != -1) {
                 textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
                 View v = textPane.getUI().getRootView(textPane);
@@ -1141,7 +1131,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int topOffset = rcInsets.top;
             iconLabel.setBounds(leftOffset, topOffset, iconWidth, iconHeight);
             textPane.setBounds(leftOffset + iconWidth, topOffset, textWidth, textHeight);
-            deprecatedLabel.setBounds(leftOffset + iconWidth + textWidth, topOffset, deprecatedWidth, deprecatedHeight);
         }
 
         /**
