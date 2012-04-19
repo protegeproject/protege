@@ -49,6 +49,15 @@ public class AxiomAnnotationButton extends MListButton {
         super("Annotations", ROLL_OVER_COLOR, actionListener);
     }
 
+    @Override
+    public Color getBackground() {
+        if (annotationPresent) {
+            return Color.ORANGE;
+        }
+        else {
+            return super.getBackground();
+        }
+    }
 
     public void paintButtonContent(Graphics2D g) {
 
@@ -64,9 +73,9 @@ public class AxiomAnnotationButton extends MListButton {
         int baseline = fontMetrics.getLeading() + fontMetrics.getAscent();
         g.drawString(ANNOTATE_STRING, x + w / 2 - stringBounds.width / 2, y + (h - stringBounds.height) / 2 + baseline );
 
-        if (annotationPresent) {
-            g.drawOval(x + 2, y + 2, w - 4, h - 4);
-        }
+//        if (annotationPresent) {
+//            g.drawOval(x + 2, y + 2, w - 4, h - 4);
+//        }
 
         g.setFont(font);
     }
