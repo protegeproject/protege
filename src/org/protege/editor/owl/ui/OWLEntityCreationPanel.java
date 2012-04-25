@@ -37,6 +37,10 @@ import java.util.Collections;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implements VerifiedInputEditor {
+	
+	public enum EntityCreationMode {
+		PREVIEW, CREATE;
+	}
 
     /**
      *
@@ -48,8 +52,6 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private OWLEditorKit owlEditorKit;
 
     private JTextField userSuppliedNameField;
-
-    private final Icon warningIcon = Icons.getIcon("warning.png");
 
     private Class<T> type;
 
@@ -215,6 +217,10 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
      * @throws RuntimeException which wraps an {@link OWLEntityCreationException} if there was a problem
      */
     public OWLEntityCreationSet<T> getOWLEntityCreationSet() throws RuntimeException {
+    	return getOWLEntityCreationSet(EntityCreationMode.CREATE);
+    }
+    
+    public OWLEntityCreationSet<T> getOWLEntityCreationSet(EntityCreationMode preview) throws RuntimeException {
         try {
             if (isEntityIRI()) {
                 IRI iri = getRawIRI();
@@ -225,7 +231,14 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 return new OWLEntityCreationSet<T>(owlEntity, Collections.singletonList(addDecl));
             }
             else {
-                return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type, getEntityName(), getBaseIRI());
+            	switch (preview) {
+            	case CREATE:
+                    return owlEditorKit.getModelManager().getOWLEntityFactory().createOWLEntity(type, getEntityName(), getBaseIRI());
+            	case PREVIEW: 
+                    return owlEditorKit.getModelManager().getOWLEntityFactory().preview(type, getEntityName(), getBaseIRI());
+            	default:
+            		throw new IllegalStateException("Programmer error - report this (with stack trace) to the Protege 4 mailing list");
+            	}
             }
         }
         catch (OWLEntityCreationException e) {
@@ -272,7 +285,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 setValid(false);
                 return;
             }
-            OWLEntityCreationSet<?> creationSet = getOWLEntityCreationSet();
+            OWLEntityCreationSet<?> creationSet = getOWLEntityCreationSet(EntityCreationMode.PREVIEW);
             if(creationSet == null) {
                 setValid(false);
                 return;
@@ -280,22 +293,6 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             OWLEntity owlEntity = creationSet.getOWLEntity();
             String iriString = owlEntity.getIRI().toString();
             entityIRIField.setText(iriString);
-
-//            for (OWLOntologyChange chg : creationSet.getOntologyChanges()) {
-//                if (chg.isAxiomChange()) {
-//                    OWLAxiomChange axiomChange = (OWLAxiomChange) chg;
-//                    if (chg instanceof AddAxiom) {
-//                        AddAxiom addAxiomChange = (AddAxiom) chg;
-//                        OWLAxiom ax = axiomChange.getAxiom();
-//                        if (ax instanceof OWLAnnotationAxiom) {
-//                            OWLAnnotationAssertionAxiom annoAx = (OWLAnnotationAssertionAxiom) ax;
-//                            if (annoAx.getSubject().equals(owlEntity.getIRI())) {
-//                                messageArea.setText(annoAx.getAnnotation().toString());
-//                            }
-//                        }
-//                    }
-//                }
-//            }
             setValid(true);
         }
         catch (RuntimeException e) {
