@@ -16,7 +16,7 @@ Bundle-ClassPath: .,
 Bundle-Activator: org.protege.editor.owl.ProtegeOWL
 Import-Package: org.coode.owlapi.rdf.renderer;version="3.2.4"
 Import-Template: org.eclipse.core.runtime;registry="split";version="3.4.0",
- javax.*;version="0.0.0",
+ javax.*;version="0.0.0";resolution:=optional,
  org.apache.log4j.*;version="1.2.14",
  org.osgi.*;version="0.0.0",
  org.w3c.*;version="0.0.0",
@@ -32,4 +32,5 @@ Import-Template: org.eclipse.core.runtime;registry="split";version="3.4.0",
  org.protege.common.*;version="4.1.0",
  org.protege.editor.*;version="4.1.0"
 Excluded-Imports: junit.framework
+Excluded-Exports: org.apache.log4j.*
 Export-Template: org.protege.editor.owl.*
