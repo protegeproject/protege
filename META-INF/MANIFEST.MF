@@ -21,53 +21,53 @@ Export-Package: com.jgoodies.looks;version="2.2.1";uses:="javax.swing,
  pache.log4j.config;version="1.2.14";uses:="org.apache.log4j",org.apac
  he.log4j.helpers;version="1.2.14";uses:="org.apache.log4j,org.apache.
  log4j.spi",org.apache.log4j.jdbc;version="1.2.14";uses:="org.apache.l
- og4j,org.apache.log4j.spi",org.apache.log4j.jmx;version="1.2.14";uses
- :="javax.management,org.apache.log4j,org.apache.log4j.spi",org.apache
- .log4j.lf5;version="1.2.14";uses:="org.apache.log4j,org.apache.log4j.
- lf5.viewer,org.apache.log4j.spi",org.apache.log4j.lf5.config;version=
- "1.2.14",org.apache.log4j.lf5.util;version="1.2.14";uses:="org.apache
- .log4j.lf5,org.apache.log4j.lf5.viewer",org.apache.log4j.lf5.viewer;v
- ersion="1.2.14";uses:="javax.swing,javax.swing.event,javax.swing.tabl
- e,org.apache.log4j.lf5,org.apache.log4j.lf5.util,org.apache.log4j.lf5
- .viewer.categoryexplorer",org.apache.log4j.lf5.viewer.categoryexplore
- r;version="1.2.14";uses:="javax.swing,javax.swing.event,javax.swing.t
- able,javax.swing.tree,org.apache.log4j.lf5",org.apache.log4j.lf5.view
- er.configure;version="1.2.14";uses:="javax.swing.tree,org.apache.log4
- j.lf5.viewer,org.w3c.dom",org.apache.log4j.lf5.viewer.images;version=
- "1.2.14",org.apache.log4j.net;version="1.2.14";uses:="javax.jms,javax
- .mail,javax.mail.internet,javax.naming,org.apache.log4j,org.apache.lo
- g4j.spi",org.apache.log4j.nt;version="1.2.14";uses:="org.apache.log4j
- ,org.apache.log4j.spi",org.apache.log4j.or;version="1.2.14";uses:="or
- g.apache.log4j.spi",org.apache.log4j.or.jms;version="1.2.14";uses:="o
- rg.apache.log4j.or",org.apache.log4j.or.sax;version="1.2.14";uses:="o
- rg.apache.log4j.or",org.apache.log4j.spi;version="1.2.14";uses:="org.
- apache.log4j,org.apache.log4j.or",org.apache.log4j.varia;version="1.2
- .14";uses:="org.apache.log4j,org.apache.log4j.spi",org.apache.log4j.x
- ml;version="1.2.14";uses:="javax.xml.parsers,org.apache.log4j,org.apa
- che.log4j.config,org.apache.log4j.helpers,org.apache.log4j.spi,org.w3
- c.dom,org.xml.sax",org.protege.common;version="4.2.0.b270_2012_05_07_
- 0244";uses:="org.osgi.framework",org.protege.common.log;version="4.2.
- 0.b270_2012_05_07_0244";uses:="org.apache.log4j"
+ og4j,org.apache.log4j.spi",org.apache.log4j.lf5;version="1.2.14";uses
+ :="org.apache.log4j,org.apache.log4j.lf5.viewer,org.apache.log4j.spi"
+ ,org.apache.log4j.lf5.config;version="1.2.14",org.apache.log4j.lf5.ut
+ il;version="1.2.14";uses:="org.apache.log4j.lf5,org.apache.log4j.lf5.
+ viewer",org.apache.log4j.lf5.viewer;version="1.2.14";uses:="javax.swi
+ ng,javax.swing.event,javax.swing.table,org.apache.log4j.lf5,org.apach
+ e.log4j.lf5.util,org.apache.log4j.lf5.viewer.categoryexplorer",org.ap
+ ache.log4j.lf5.viewer.categoryexplorer;version="1.2.14";uses:="javax.
+ swing,javax.swing.event,javax.swing.table,javax.swing.tree,org.apache
+ .log4j.lf5",org.apache.log4j.lf5.viewer.configure;version="1.2.14";us
+ es:="javax.swing.tree,org.apache.log4j.lf5.viewer,org.w3c.dom",org.ap
+ ache.log4j.lf5.viewer.images;version="1.2.14",org.apache.log4j.nt;ver
+ sion="1.2.14";uses:="org.apache.log4j,org.apache.log4j.spi",org.apach
+ e.log4j.or;version="1.2.14";uses:="org.apache.log4j.spi",org.apache.l
+ og4j.or.jms;version="1.2.14";uses:="org.apache.log4j.or",org.apache.l
+ og4j.or.sax;version="1.2.14";uses:="org.apache.log4j.or",org.apache.l
+ og4j.varia;version="1.2.14";uses:="org.apache.log4j,org.apache.log4j.
+ spi",org.apache.log4j.xml;version="1.2.14";uses:="javax.xml.parsers,o
+ rg.apache.log4j,org.apache.log4j.config,org.apache.log4j.helpers,org.
+ apache.log4j.spi,org.w3c.dom,org.xml.sax",org.protege.common;version=
+ "4.2.0.b270_2012_05_07_0512";uses:="org.osgi.framework",org.protege.c
+ ommon.log;version="4.2.0.b270_2012_05_07_0512";uses:="org.apache.log4
+ j"
 Bundle-ClassPath: .,lib/log4j.jar,lib/looks.jar
-Built-By: vendetti
+Built-By: tredmond
 Tool: Bundlor 1.1.0.M04
 Bundle-Category: protege
 Bundle-Name: Common Protege Libraries
 Bundle-Vendor: Protege Development Team
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
-Bundle-Version: 4.2.0.b270_2012_05_07_0244
+Bundle-Version: 4.2.0.b270_2012_05_07_0512
 Bundle-Activator: org.protege.common.Activator
 Bundle-ManifestVersion: 2
 Bundle-Description: Some common libraries
 Bundle-SymbolicName: org.protege.common;singleton:="true"
 Bundle-DocURL: http://protege.stanford.edu
-Import-Package: javax.management;version="0.0.0",javax.naming;version=
- "0.0.0",javax.swing;version="0.0.0",javax.swing.border;version="0.0.0
- ",javax.swing.event;version="0.0.0",javax.swing.filechooser;version="
- 0.0.0",javax.swing.plaf;version="0.0.0",javax.swing.plaf.basic;versio
- n="0.0.0",javax.swing.plaf.metal;version="0.0.0",javax.swing.table;ve
- rsion="0.0.0",javax.swing.text;version="0.0.0",javax.swing.tree;versi
- on="0.0.0",javax.xml.parsers;version="0.0.0",org.osgi.framework;versi
- on="0.0.0",org.w3c.dom;version="0.0.0",org.xml.sax;version="0.0.0",or
- g.xml.sax.helpers;version="0.0.0"
+Import-Package: javax.management;version="0.0.0";resolution:="optional
+ ",javax.naming;version="0.0.0";resolution:="optional",javax.swing;ver
+ sion="0.0.0";resolution:="optional",javax.swing.border;version="0.0.0
+ ";resolution:="optional",javax.swing.event;version="0.0.0";resolution
+ :="optional",javax.swing.filechooser;version="0.0.0";resolution:="opt
+ ional",javax.swing.plaf;version="0.0.0";resolution:="optional",javax.
+ swing.plaf.basic;version="0.0.0";resolution:="optional",javax.swing.p
+ laf.metal;version="0.0.0";resolution:="optional",javax.swing.table;ve
+ rsion="0.0.0";resolution:="optional",javax.swing.text;version="0.0.0"
+ ;resolution:="optional",javax.swing.tree;version="0.0.0";resolution:=
+ "optional",javax.xml.parsers;version="0.0.0";resolution:="optional",o
+ rg.osgi.framework;version="0.0.0",org.w3c.dom;version="0.0.0",org.xml
+ .sax;version="0.0.0",org.xml.sax.helpers;version="0.0.0"
 

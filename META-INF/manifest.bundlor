@@ -11,10 +11,11 @@ Bundle-Category: protege
 Bundle-ClassPath: .,lib/log4j.jar,lib/looks.jar
 Bundle-Activator: org.protege.common.Activator
 Excluded-Imports: com.sun.*,javax.jms,javax.mail.*
-Excluded-Exports: lib
+Excluded-Exports: lib,
+ org.apache.log4j.jmx,org.apache.log4j.net,org.apache.log4j.spi
 Export-Template: org.apache.log4j.*;version="1.2.14",
  com.jgoodies.looks.*;version="2.2.1"
-Import-Template: javax.*;version="0.0.0",
+Import-Template: javax.*;version="0.0.0";resolution:=optional,
  org.w3c.*;version="0.0.0",
  org.xml.*;version="0.0.0",
  org.osgi.*;version="0.0.0"
