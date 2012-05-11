@@ -40,7 +40,6 @@ public class UniqueIdGenerator extends AbstractIDGenerator implements AutoIDGene
 
     private UUID nextId = UUID.randomUUID();
 
-    private Stack<UUID> checkpoints = new Stack<UUID>();
     
     public String getNextID(Class<? extends OWLEntity> type) throws AutoIDException {
         UUID id = nextId;
@@ -54,12 +53,10 @@ public class UniqueIdGenerator extends AbstractIDGenerator implements AutoIDGene
 
 
     public void checkpoint() {
-        checkpoints.push(nextId);
     }
 
 
     public void revert() {
-        nextId = checkpoints.pop();
     }
 
 }
