@@ -32,7 +32,13 @@ package org.protege.editor.owl.model.entity;
  */
 public class AutoIDException extends Exception{
 
-    public AutoIDException(String s) {
+	private static final long serialVersionUID = 7843272693263950056L;
+
+	public AutoIDException(String s) {
         super(s);
+    }
+    
+    public AutoIDException(String message, Throwable t) {
+    	super(message, t);
     }
 }
