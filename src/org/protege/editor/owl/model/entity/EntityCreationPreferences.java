@@ -122,7 +122,7 @@ public class EntityCreationPreferences {
             return (Class<AutoIDGenerator>)Class.forName(className);
         }
         catch (ClassNotFoundException e) {
-        	ProtegeApplication.getErrorLog().logError(new AutoIDException("Cannot find preferred auto id generator", e));
+        	logger.warn("Cannot find preferred auto id generator");
         }
         prefs.putString(AUTO_ID_GENERATOR, DEFAULT_AUTO_ID_GENERATOR_CLASS.getCanonicalName());
         return DEFAULT_AUTO_ID_GENERATOR_CLASS;
