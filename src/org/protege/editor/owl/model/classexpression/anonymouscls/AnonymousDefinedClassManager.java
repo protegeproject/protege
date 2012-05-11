@@ -1,40 +1,27 @@
 package org.protege.editor.owl.model.classexpression.anonymouscls;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.Disposable;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.entity.AutoIDException;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.entity.PseudoRandomAutoIDGenerator;
-import org.protege.editor.owl.model.io.IOListener;
-import org.protege.editor.owl.model.io.IOListenerEvent;
-import org.semanticweb.owlapi.model.*;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-* Modifications to the initial code base are copyright of their
-* respective authors, or their employers as appropriate.  Authorship
-* of the modifications may be determined from the ChangeLog placed at
-* the end of this file.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
+import java.util.Stack;
 
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.AbstractIDGenerator;
+import org.protege.editor.owl.model.entity.AutoIDException;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.entity.Revertable;
+import org.protege.editor.owl.model.io.IOListener;
+import org.protege.editor.owl.model.io.IOListenerEvent;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 /**
  * Author: drummond<br>
@@ -169,5 +156,29 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     public URI getURI() {
         return DEFAULT_ANON_CLASS_ANNOTATION_URI;
+    }
+    
+    public class PseudoRandomAutoIDGenerator extends AbstractIDGenerator implements Revertable {
+
+        private long nextId = System.nanoTime();
+
+        private Stack<Long> checkpoints = new Stack<Long>();
+
+        protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
+            long id = nextId;
+            nextId = System.nanoTime();
+            return id;
+        }
+
+
+        public void checkpoint() {
+            checkpoints.push(nextId);
+        }
+
+
+        public void revert() {
+            nextId = checkpoints.pop();
+        }
+
     }
 }
