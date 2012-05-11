@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.entity;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -58,7 +59,7 @@ public class EntityCreationPreferences {
     private static final String ID_LABEL_LANG = "ID_LABEL_LANG";
 
     private static final String AUTO_ID_GENERATOR = "AUTO_ID_GENERATOR_CLASS";
-    private static final String DEFAULT_AUTO_ID_GENERATOR_CLASS_NAME = "org.protege.editor.owl.model.entity.PseudoRandomAutoIDGenerator";
+    private static final Class<? extends AutoIDGenerator> DEFAULT_AUTO_ID_GENERATOR_CLASS = UniqueIdGenerator.class;
 
     private static final String AUTO_ID_PREFIX = "AUTO_ID_PREFIX";
     private static final String AUTO_ID_SUFFIX = "AUTO_ID_SUFFIX";
@@ -113,21 +114,18 @@ public class EntityCreationPreferences {
     }
 
 
-    public static Class<? extends AutoIDGenerator> getAutoIDGeneratorClass(){
+    @SuppressWarnings("unchecked")
+	public static Class<? extends AutoIDGenerator> getAutoIDGeneratorClass(){
         Preferences prefs = getPrefs();
-        String className = prefs.getString(AUTO_ID_GENERATOR, DEFAULT_AUTO_ID_GENERATOR_CLASS_NAME);
+        String className = prefs.getString(AUTO_ID_GENERATOR, DEFAULT_AUTO_ID_GENERATOR_CLASS.getCanonicalName());
         try {
             return (Class<AutoIDGenerator>)Class.forName(className);
         }
         catch (ClassNotFoundException e) {
-            logger.error("Cannot find an Auto ID generator.", e);
+        	ProtegeApplication.getErrorLog().logError(new AutoIDException("Cannot find preferred auto id generator", e));
         }
-        try {
-            return (Class<AutoIDGenerator>)Class.forName(DEFAULT_AUTO_ID_GENERATOR_CLASS_NAME);
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        prefs.putString(AUTO_ID_GENERATOR, DEFAULT_AUTO_ID_GENERATOR_CLASS.getCanonicalName());
+        return DEFAULT_AUTO_ID_GENERATOR_CLASS;
     }
 
 
