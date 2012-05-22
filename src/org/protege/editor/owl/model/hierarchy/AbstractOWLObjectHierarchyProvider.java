@@ -28,7 +28,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     private static final Logger logger = Logger.getLogger(AbstractOWLObjectHierarchyProvider.class);
 
 
-    private boolean fireEvents;
+    private volatile boolean fireEvents;
 
     private List<OWLObjectHierarchyProviderListener<N>> listeners;
 
@@ -48,7 +48,9 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public void dispose() {
-        listeners.clear();
+    	synchronized (listeners) {
+    		listeners.clear();
+    	}
     }
 
 
@@ -146,28 +148,36 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public void addListener(OWLObjectHierarchyProviderListener<N> listener) {
-        listeners.add(listener);
+    	synchronized (listeners) {
+    		listeners.add(listener);
+    	}
     }
 
 
     public void removeListener(OWLObjectHierarchyProviderListener<N> listener) {
-        listeners.remove(listener);
+    	synchronized (listeners) {
+    		listeners.remove(listener);
+    	}
     }
 
+    private List<OWLObjectHierarchyProviderListener<N>> getListeners() {
+    	synchronized (listeners) {
+    		return new ArrayList<OWLObjectHierarchyProviderListener<N>>(listeners);
+    	}
+    }
 
     protected void fireNodeChanged(N node) {
         if (!fireEvents) {
             return;
         }
-        for (OWLObjectHierarchyProviderListener<N> listener : new ArrayList<OWLObjectHierarchyProviderListener<N>>(
-                listeners)) {
+        for (OWLObjectHierarchyProviderListener<N> listener : getListeners()) {
             try {
                 listener.nodeChanged(node);
             }
             catch (Throwable e) {
                 e.printStackTrace();
                 logger.warn(getClass().getName() + ": Listener" + listener + " has thrown an exception.  Removing bad listener!");
-                listeners.remove(listener);
+                removeListener(listener);
                 throw new RuntimeException(e);
             }
         }
@@ -178,8 +188,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         if (!fireEvents) {
             return;
         }
-        for (OWLObjectHierarchyProviderListener<N> listener : new ArrayList<OWLObjectHierarchyProviderListener<N>>(
-                listeners)) {
+        for (OWLObjectHierarchyProviderListener<N> listener : getListeners()) {
             try {
                 listener.hierarchyChanged();
             }
