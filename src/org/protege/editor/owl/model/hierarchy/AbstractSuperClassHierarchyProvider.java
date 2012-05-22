@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public abstract class AbstractSuperClassHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLClass> {
 
-    private OWLClass rootClass;
+    private volatile OWLClass rootClass;
 
 
     public AbstractSuperClassHierarchyProvider(OWLOntologyManager manager) {
