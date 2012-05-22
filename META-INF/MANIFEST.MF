@@ -3,7 +3,7 @@ Export-Package: org.coode.mdock;version="1.0.0";uses:="javax.swing,jav
  ax.swing.border,javax.swing.event,javax.swing.plaf.basic,javax.xml.pa
  rsers,junit.framework,org.w3c.dom,org.xml.sax,org.xml.sax.helpers",or
  g.coode.mdock.examples;version="1.0.0";uses:="javax.swing,org.coode.m
- dock",org.jdesktop.swingworker;version="4.2.0.b275_2012_05_21_0432",o
+ dock",org.jdesktop.swingworker;version="4.2.0.b276_2012_05_21_0541",o
  rg.onemind.commons.invoke;version="1.2.0",org.onemind.commons.java.da
  tastructure;version="1.2.0";uses:="javax.xml.parsers,org.onemind.comm
  ons.java.xml.digest,org.xml.sax",org.onemind.commons.java.event;versi
@@ -20,84 +20,84 @@ Export-Package: org.coode.mdock;version="1.0.0";uses:="javax.swing,jav
  .jxp.config;version="1.2.0";uses:="org.onemind.commons.java.xml.diges
  t,org.onemind.jxp,org.xml.sax",org.onemind.jxp.parser;version="1.2.0"
  ,org.onemind.jxp.util;version="1.2.0";uses:="org.onemind.commons.invo
- ke",org.protege.editor.core;version="4.2.0.b275_2012_05_21_0432";uses
+ ke",org.protege.editor.core;version="4.2.0.b276_2012_05_21_0541";uses
  :="org.apache.log4j,org.eclipse.core.runtime,org.osgi.framework,org.p
  rotege.editor.core.editorkit,org.protege.editor.core.plugin,org.prote
  ge.editor.core.ui.error,org.protege.editor.core.ui.progress,org.prote
  ge.editor.core.ui.workspace",org.protege.editor.core.editorkit;versio
- n="4.2.0.b275_2012_05_21_0432";uses:="org.eclipse.core.runtime,org.pr
+ n="4.2.0.b276_2012_05_21_0541";uses:="org.eclipse.core.runtime,org.pr
  otege.editor.core,org.protege.editor.core.ui.workspace",org.protege.e
- ditor.core.editorkit.plugin;version="4.2.0.b275_2012_05_21_0432";uses
+ ditor.core.editorkit.plugin;version="4.2.0.b276_2012_05_21_0541";uses
  :="org.eclipse.core.runtime,org.protege.editor.core.editorkit,org.pro
  tege.editor.core.plugin",org.protege.editor.core.platform;version="4.
- 2.0.b275_2012_05_21_0432";uses:="org.osgi.framework",org.protege.edit
- or.core.platform.apple;version="4.2.0.b275_2012_05_21_0432";uses:="or
+ 2.0.b276_2012_05_21_0541";uses:="org.osgi.framework",org.protege.edit
+ or.core.platform.apple;version="4.2.0.b276_2012_05_21_0541";uses:="or
  g.protege.editor.core.editorkit",org.protege.editor.core.plugin;versi
- on="4.2.0.b275_2012_05_21_0432";uses:="org.eclipse.core.runtime,org.o
+ on="4.2.0.b276_2012_05_21_0541";uses:="org.eclipse.core.runtime,org.o
  sgi.framework,org.osgi.service.packageadmin,org.protege.editor.core,o
  rg.protege.editor.core.editorkit",org.protege.editor.core.prefs;versi
- on="4.2.0.b275_2012_05_21_0432",org.protege.editor.core.ui;version="4
- .2.0.b275_2012_05_21_0432";uses:="javax.swing,javax.swing.event,javax
+ on="4.2.0.b276_2012_05_21_0541",org.protege.editor.core.ui;version="4
+ .2.0.b276_2012_05_21_0541";uses:="javax.swing,javax.swing.event,javax
  .swing.table,org.apache.log4j,org.protege.editor.core,org.protege.edi
  tor.core.ui.list,org.protege.editor.core.ui.util",org.protege.editor.
- core.ui.about;version="4.2.0.b275_2012_05_21_0432";uses:="javax.swing
+ core.ui.about;version="4.2.0.b276_2012_05_21_0541";uses:="javax.swing
  ,javax.swing.table",org.protege.editor.core.ui.action;version="4.2.0.
- b275_2012_05_21_0432";uses:="javax.swing,org.eclipse.core.runtime,org
+ b276_2012_05_21_0541";uses:="javax.swing,org.eclipse.core.runtime,org
  .protege.editor.core.editorkit,org.protege.editor.core.plugin,org.pro
  tege.editor.core.ui.util,org.protege.editor.core.ui.workspace",org.pr
- otege.editor.core.ui.action.start;version="4.2.0.b275_2012_05_21_0432
+ otege.editor.core.ui.action.start;version="4.2.0.b276_2012_05_21_0541
  ";uses:="javax.swing,org.eclipse.core.runtime,org.protege.editor.core
- .plugin",org.protege.editor.core.ui.error;version="4.2.0.b275_2012_05
- _21_0432";uses:="javax.swing,org.xml.sax",org.protege.editor.core.ui.
- list;version="4.2.0.b275_2012_05_21_0432";uses:="javax.swing,javax.sw
+ .plugin",org.protege.editor.core.ui.error;version="4.2.0.b276_2012_05
+ _21_0541";uses:="javax.swing,org.xml.sax",org.protege.editor.core.ui.
+ list;version="4.2.0.b276_2012_05_21_0541";uses:="javax.swing,javax.sw
  ing.border,javax.swing.event",org.protege.editor.core.ui.menu;version
- ="4.2.0.b275_2012_05_21_0432";uses:="javax.swing,javax.swing.event,or
+ ="4.2.0.b276_2012_05_21_0541";uses:="javax.swing,javax.swing.event,or
  g.eclipse.core.runtime,org.protege.editor.core.editorkit,org.protege.
  editor.core.plugin,org.protege.editor.core.ui.action",org.protege.edi
- tor.core.ui.preferences;version="4.2.0.b275_2012_05_21_0432";uses:="j
+ tor.core.ui.preferences;version="4.2.0.b276_2012_05_21_0541";uses:="j
  avax.swing,org.eclipse.core.runtime,org.protege.editor.core,org.prote
  ge.editor.core.editorkit,org.protege.editor.core.plugin,org.protege.e
  ditor.core.ui.action",org.protege.editor.core.ui.preferences.node;ver
- sion="4.2.0.b275_2012_05_21_0432";uses:="javax.swing",org.protege.edi
- tor.core.ui.progress;version="4.2.0.b275_2012_05_21_0432";uses:="java
- x.swing",org.protege.editor.core.ui.split;version="4.2.0.b275_2012_05
- _21_0432";uses:="javax.swing,javax.swing.plaf.basic",org.protege.edit
- or.core.ui.tabbedpane;version="4.2.0.b275_2012_05_21_0432";uses:="jav
+ sion="4.2.0.b276_2012_05_21_0541";uses:="javax.swing",org.protege.edi
+ tor.core.ui.progress;version="4.2.0.b276_2012_05_21_0541";uses:="java
+ x.swing",org.protege.editor.core.ui.split;version="4.2.0.b276_2012_05
+ _21_0541";uses:="javax.swing,javax.swing.plaf.basic",org.protege.edit
+ or.core.ui.tabbedpane;version="4.2.0.b276_2012_05_21_0541";uses:="jav
  ax.swing,javax.swing.plaf.basic",org.protege.editor.core.ui.toolbar;v
- ersion="4.2.0.b275_2012_05_21_0432";uses:="javax.swing,org.eclipse.co
+ ersion="4.2.0.b276_2012_05_21_0541";uses:="javax.swing,org.eclipse.co
  re.runtime,org.protege.editor.core.editorkit,org.protege.editor.core.
  plugin,org.protege.editor.core.ui.action",org.protege.editor.core.ui.
- tree;version="4.2.0.b275_2012_05_21_0432";uses:="javax.swing.plaf.bas
+ tree;version="4.2.0.b276_2012_05_21_0541";uses:="javax.swing.plaf.bas
  ic,javax.swing.tree",org.protege.editor.core.ui.util;version="4.2.0.b
- 275_2012_05_21_0432";uses:="com.jgoodies.looks.plastic.theme,javax.sw
+ 276_2012_05_21_0541";uses:="com.jgoodies.looks.plastic.theme,javax.sw
  ing,javax.swing.border,javax.swing.event,javax.swing.filechooser,java
  x.swing.plaf,javax.swing.table,javax.swing.text,org.eclipse.core.runt
  ime,org.protege.editor.core.ui.workspace",org.protege.editor.core.ui.
- view;version="4.2.0.b275_2012_05_21_0432";uses:="javax.swing,org.apac
+ view;version="4.2.0.b276_2012_05_21_0541";uses:="javax.swing,org.apac
  he.log4j,org.coode.mdock,org.eclipse.core.runtime,org.protege.editor.
  core,org.protege.editor.core.editorkit,org.protege.editor.core.plugin
  ,org.protege.editor.core.prefs,org.protege.editor.core.ui.action,org.
  protege.editor.core.ui.split,org.protege.editor.core.ui.util,org.prot
  ege.editor.core.ui.workspace",org.protege.editor.core.ui.view.button;
- version="4.2.0.b275_2012_05_21_0432";uses:="javax.swing,javax.swing.p
- laf.basic",org.protege.editor.core.ui.wizard;version="4.2.0.b275_2012
- _05_21_0432";uses:="javax.swing,org.protege.editor.core,org.protege.e
+ version="4.2.0.b276_2012_05_21_0541";uses:="javax.swing,javax.swing.p
+ laf.basic",org.protege.editor.core.ui.wizard;version="4.2.0.b276_2012
+ _05_21_0541";uses:="javax.swing,org.protege.editor.core,org.protege.e
  ditor.core.editorkit",org.protege.editor.core.ui.workspace;version="4
- .2.0.b275_2012_05_21_0432";uses:="javax.swing,org.eclipse.core.runtim
+ .2.0.b276_2012_05_21_0541";uses:="javax.swing,org.eclipse.core.runtim
  e,org.protege.editor.core,org.protege.editor.core.editorkit,org.prote
  ge.editor.core.plugin,org.protege.editor.core.prefs,org.protege.edito
  r.core.ui.util,org.protege.editor.core.ui.view,org.xml.sax.helpers",o
- rg.protege.editor.core.ui.workspace.tabs;version="4.2.0.b275_2012_05_
- 21_0432";uses:="javax.swing,javax.swing.event,javax.swing.table,org.a
+ rg.protege.editor.core.ui.workspace.tabs;version="4.2.0.b276_2012_05_
+ 21_0541";uses:="javax.swing,javax.swing.event,javax.swing.table,org.a
  pache.log4j,org.protege.editor.core.ui.action,org.protege.editor.core
  .ui.workspace",org.protege.editor.core.ui.workspace.views;version="4.
- 2.0.b275_2012_05_21_0432";uses:="javax.swing,org.protege.editor.core.
+ 2.0.b276_2012_05_21_0541";uses:="javax.swing,org.protege.editor.core.
  ui.action,org.protege.editor.core.ui.view,org.protege.editor.core.ui.
- workspace",org.protege.editor.core.update;version="4.2.0.b275_2012_05
- _21_0432";uses:="javax.swing,javax.swing.event,javax.swing.table,org.
+ workspace",org.protege.editor.core.update;version="4.2.0.b276_2012_05
+ _21_0541";uses:="javax.swing,javax.swing.event,javax.swing.table,org.
  apache.log4j,org.osgi.framework,org.protege.editor.core.ui.preference
  s,org.protege.editor.core.ui.progress",org.protege.editor.core.util;v
- ersion="4.2.0.b275_2012_05_21_0432"
+ ersion="4.2.0.b276_2012_05_21_0541"
 Bundle-ClassPath: .,lib/jxp.jar,lib/mdock.jar,lib/swing-worker.jar
 Built-By: vendetti
 Bundle-Category: protege
@@ -105,9 +105,9 @@ Tool: Bundlor 1.1.0.M04
 Bundle-Name: Protege Editor Framework
 Bundle-Vendor: Protege Development Team (First working version written
   at the University of Manchester by Matthew Horridge)
-Build-Number: 275
+Build-Number: 276
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
-Bundle-Version: 4.2.0.b275_2012_05_21_0432
+Bundle-Version: 4.2.0.b276_2012_05_21_0541
 Bundle-Activator: org.protege.editor.core.ProtegeApplication
 Bundle-ManifestVersion: 2
 Bundle-Description: Generic Ontology Editor Bundle
