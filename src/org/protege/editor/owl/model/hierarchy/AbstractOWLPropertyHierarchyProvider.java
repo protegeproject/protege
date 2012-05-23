@@ -1,11 +1,28 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-
+import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObjectInverseOf;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
+import org.semanticweb.owlapi.model.OWLPropertyRange;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 
 /**
@@ -17,7 +34,17 @@ import java.util.Set;
 public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression<R, E>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
 
 //    private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
+	
+	private ReadLock ontologySetReadLock;
+	private WriteLock ontologySetWriteLock;
 
+	/*
+	 * The ontologies variable is protected by the ontologySetReadLock and the ontologySetWriteLock.
+	 * These locks are always taken and held inside of the getReadLock() and getWriteLock()'s for the
+	 * OWL Ontology Manager.  This is necessary because when the set of ontologies changes, everything
+	 * about this class changes.  So when the set of ontologies is changed we need to make sure that nothing
+	 * else is running.
+	 */
     private Set<OWLOntology> ontologies;
 
     private Set<P> subPropertiesOfRoot;
@@ -28,7 +55,10 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     public AbstractOWLPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
         this.subPropertiesOfRoot = new HashSet<P>();
-        ontologies = new HashSet<OWLOntology>();
+        ontologies = new FakeSet<OWLOntology>();
+        ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
+        ontologySetReadLock = locks.readLock();
+        ontologySetWriteLock = locks.writeLock();
         listener = new OWLOntologyChangeListener() {
             /**
              * Called when some changes have been applied to various ontologies.  These
@@ -50,6 +80,10 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
+    /*
+     * This call holds the write lock so no other thread can hold the either the OWL ontology 
+     * manager read or write locks or the ontologies 
+     */
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
         Set<P> properties = new HashSet<P>(getPropertiesReferencedInChange(changes));
         for (P prop : properties) {
@@ -148,79 +182,119 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
      * in order to determine the hierarchy.
      */
     final public void setOntologies(Set<OWLOntology> ontologies) {
-        this.ontologies.clear();
-        this.ontologies.addAll(ontologies);
-        rebuildRoots();
-        fireHierarchyChanged();
+    	getReadLock().lock();
+    	ontologySetWriteLock.lock();
+    	try {
+    		this.ontologies.clear();
+    		this.ontologies.addAll(ontologies);
+    		rebuildRoots();
+    		fireHierarchyChanged();
+    	}
+    	finally {
+    		ontologySetWriteLock.unlock();
+    		getReadLock().unlock();
+    	}
     }
 
 
     public boolean containsReference(P object) {
-        for (OWLOntology ont : ontologies) {
-            if (getReferencedProperties(ont).contains(object)) {
-                return true;
-            }
-        }
-        return false;
+    	getReadLock().lock();
+    	ontologySetReadLock.lock();
+    	try {
+    		for (OWLOntology ont : ontologies) {
+    			if (getReferencedProperties(ont).contains(object)) {
+    				return true;
+    			}
+    		}
+    		return false;
+    	}
+    	finally {
+    		ontologySetReadLock.unlock();
+    		getReadLock().unlock();
+    	}
     }
 
 
     public Set<P> getChildren(P object) {
-        if (object.equals(getRoot())){
-            return Collections.unmodifiableSet(subPropertiesOfRoot);
-        }
+    	getReadLock().lock();
+    	ontologySetReadLock.lock();
+    	try {
+    		if (object.equals(getRoot())){
+    			return Collections.unmodifiableSet(subPropertiesOfRoot);
+    		}
 
-        final Set<P> result = new HashSet<P>();
-        for (E subProp : object.getSubProperties(ontologies)){
-            // Don't add the sub property if it is a parent of
-            // itself - i.e. prevent cycles
-            if (!subProp.isAnonymous() &&
-                !getAncestors((P)subProp).contains(subProp)) {
-                result.add((P)subProp);
-            }
-        }
-        return result;
+    		final Set<P> result = new HashSet<P>();
+    		for (E subProp : object.getSubProperties(ontologies)){
+    			// Don't add the sub property if it is a parent of
+    			// itself - i.e. prevent cycles
+    			if (!subProp.isAnonymous() &&
+    					!getAncestors((P)subProp).contains(subProp)) {
+    				result.add((P)subProp);
+    			}
+    		}
+    		return result;
+    	}
+    	finally {
+    		ontologySetReadLock.unlock();
+    		getReadLock().unlock();
+    	}
     }
 
 
     public Set<P> getEquivalents(P object) {
-        Set<P> result = new HashSet<P>();
-        Set<P> ancestors = getAncestors(object);
-        if (ancestors.contains(object)) {
-            for (P anc : ancestors) {
-                if (getAncestors(anc).contains(object)) {
-                    result.add(anc);
-                }
-            }
-        }
+    	getReadLock().lock();
+    	ontologySetReadLock.lock();
+    	try {
+    		Set<P> result = new HashSet<P>();
+    		Set<P> ancestors = getAncestors(object);
+    		if (ancestors.contains(object)) {
+    			for (P anc : ancestors) {
+    				if (getAncestors(anc).contains(object)) {
+    					result.add(anc);
+    				}
+    			}
+    		}
 
-        for (E prop : object.getEquivalentProperties(ontologies)) {
-            if (!prop.isAnonymous()) {
-                result.add((P)prop);
-            }
-        }
+    		for (E prop : object.getEquivalentProperties(ontologies)) {
+    			if (!prop.isAnonymous()) {
+    				result.add((P)prop);
+    			}
+    		}
 
-        result.remove(object);
-        return result;
+    		result.remove(object);
+    		return result;
+    	}
+    	finally {
+    		ontologySetReadLock.unlock();
+    		getReadLock().unlock();
+    	}
     }
 
 
     public Set<P> getParents(P object) {
-        if (object.equals(getRoot())){
-            return Collections.emptySet();
-        }
+    	getReadLock().lock();
+    	ontologySetReadLock.lock();
+    	try {
+    		if (object.equals(getRoot())){
+    			return Collections.emptySet();
+    		}
 
-        Set<P> result = new HashSet<P>();
-        for (E prop : object.getSuperProperties(ontologies)) {
-            if (!prop.isAnonymous()) {
-                result.add((P) prop);
-            }
-        }
-        if (result.isEmpty() && isReferenced(object)){
-            result.add(getRoot());
-        }
+    		Set<P> result = new HashSet<P>();
+    		for (E prop : object.getSuperProperties(ontologies)) {
+    			if (!prop.isAnonymous()) {
+    				result.add((P) prop);
+    			}
+    		}
+    		if (result.isEmpty() && isReferenced(object)){
+    			result.add(getRoot());
+    		}
 
-        return result;
+    		return result;
+    	}
+    	finally {
+    		ontologySetReadLock.unlock();
+    		getReadLock().unlock();
+    	}
     }
     
     
@@ -250,6 +324,35 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
         		}
         	}
         	return false;
+    	}
+    }
+    
+    private class FakeSet<X> extends AbstractSet<X> {
+    	private List<X> elements = new ArrayList<X>();
+    	
+    	@Override
+    	public Iterator<X> iterator() {
+    		return elements.iterator();
+    	}
+    	
+    	@Override
+    	public int size() {
+    		return elements.size();
+    	}
+    	
+    	@Override
+    	public boolean add(X e) {
+    		if (!elements.contains(e)) {
+    			elements.add(e);
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+    	
+    	@Override
+    	public void clear() {
+    		elements.clear();
     	}
     }
 }

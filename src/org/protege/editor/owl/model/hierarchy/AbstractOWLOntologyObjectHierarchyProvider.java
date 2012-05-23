@@ -3,10 +3,15 @@ package org.protege.editor.owl.model.hierarchy;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.*;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+/*
+ * This is abstract but has no subclasses.  Looks like dead code?  I am not modifying this for thread safety yet.
+ */
 
 
 /**
@@ -45,7 +50,7 @@ public abstract class AbstractOWLOntologyObjectHierarchyProvider<N extends OWLOb
     }
 
 
-    public Set<OWLOntology> getOntologies() {
+    public Collection<OWLOntology> getOntologies() {
         return Collections.unmodifiableSet(ontologies);
     }
 

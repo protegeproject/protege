@@ -20,7 +20,7 @@ import java.util.Set;
  * Children are superclasses of their parents.
  */
 public abstract class AbstractSuperClassHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLClass> {
-
+	
     private volatile OWLClass rootClass;
 
 
@@ -36,11 +36,12 @@ public abstract class AbstractSuperClassHierarchyProvider extends AbstractOWLObj
 
 
     public Set<OWLClass> getRoots() {
-        if (rootClass == null) {
+    	OWLClass myRoot = rootClass;
+        if (myRoot == null) {
             return Collections.emptySet();
         }
         else {
-            return Collections.singleton(rootClass);
+            return Collections.singleton(myRoot);
         }
     }
 }

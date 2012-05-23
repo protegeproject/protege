@@ -37,28 +37,36 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     protected Set<? extends OWLClassExpression> getEquivalentClasses(OWLClass cls) {
+    	OWLReasoner myReasoner = reasoner;
         // Get the equivalent classes from the reasoner
-        if (reasoner == null) {
+        if (myReasoner == null) {
             return Collections.emptySet();
         }
-        if (!reasoner.isSatisfiable(cls)) {
+        if (!myReasoner.isSatisfiable(cls)) {
             // We don't want every class in the ontology
             return Collections.emptySet();
         }
-        return reasoner.getEquivalentClasses(cls).getEntities();
+        return myReasoner.getEquivalentClasses(cls).getEntities();
     }
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-        // Simply get the superclasses from the reasoner
-        if (reasoner == null) {
-            return Collections.emptySet();
-        }
-        if (!reasoner.isSatisfiable(object)) {
-            // We don't want every class in the ontology!!
-            return Collections.emptySet();
-        }
-        return reasoner.getSuperClasses(object, true).getFlattened();
+    	OWLReasoner myReasoner = reasoner;
+    	getReadLock().lock();
+    	try {
+    		// Simply get the superclasses from the reasoner
+    		if (myReasoner == null) {
+    			return Collections.emptySet();
+    		}
+    		if (!myReasoner.isSatisfiable(object)) {
+    			// We don't want every class in the ontology!!
+    			return Collections.emptySet();
+    		}
+    		return myReasoner.getSuperClasses(object, true).getFlattened();
+    	}
+    	finally {
+    		getReadLock().unlock();
+    	}
     }
 
 
@@ -68,15 +76,22 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
 
     public Set<OWLClass> getParents(OWLClass object) {
-        // Simply get the superclasses from the reasoner
-        if (reasoner == null) {
-            return Collections.emptySet();
-        }
-        if (!reasoner.isSatisfiable(object)) {
-            // We don't want every class in the ontology!!
-            return Collections.emptySet();
-        }
-        return reasoner.getSubClasses(object, true).getFlattened();
+    	OWLReasoner myReasoner = reasoner;
+    	getReadLock().lock();
+    	try {
+    		// Simply get the superclasses from the reasoner
+    		if (myReasoner == null) {
+    			return Collections.emptySet();
+    		}
+    		if (!myReasoner.isSatisfiable(object)) {
+    			// We don't want every class in the ontology!!
+    			return Collections.emptySet();
+    		}
+    		return myReasoner.getSubClasses(object, true).getFlattened();
+    	}
+    	finally {
+    		getReadLock().unlock();
+    	}
     }
 
 

@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -32,7 +35,17 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLAnnotationProperty> {
 
 //    private static final Logger logger = Logger.getLogger(OWLAnnotationPropertyHierarchyProvider.class);
+	
+	private ReadLock ontologySetReadLock;
+	private WriteLock ontologySetWriteLock;
 
+	/*
+	 * The ontologies variable is protected by the ontologySetReadLock and the ontologySetWriteLock.
+	 * These locks are always taken and held inside of the getReadLock() and getWriteLock()'s for the
+	 * OWL Ontology Manager.  This is necessary because when the set of ontologies changes, everything
+	 * about this class changes.  So when the set of ontologies is changed we need to make sure that nothing
+	 * else is running.
+	 */
     private Set<OWLOntology> ontologies;
 
     private Set<OWLAnnotationProperty> roots;
@@ -54,6 +67,9 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         super(owlOntologyManager);
         this.roots = new HashSet<OWLAnnotationProperty>();
         ontologies = new HashSet<OWLOntology>();
+        ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
+        ontologySetReadLock = locks.readLock();
+        ontologySetWriteLock = locks.writeLock();
         owlOntologyManager.addOntologyChangeListener(ontologyListener);
     }
 
@@ -63,67 +79,108 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
 
     final public void setOntologies(Set<OWLOntology> ontologies) {
-        this.ontologies.clear();
-        this.ontologies.addAll(ontologies);
-        rebuildRoots();
-        fireHierarchyChanged();
+        getReadLock().lock();
+        ontologySetWriteLock.lock();
+        try {
+            this.ontologies.clear();
+            this.ontologies.addAll(ontologies);
+            rebuildRoots();
+            fireHierarchyChanged();
+        }
+        finally {
+            ontologySetWriteLock.unlock();
+            getReadLock().unlock();
+        }
     }
 
 
     public boolean containsReference(OWLAnnotationProperty object) {
-        for (OWLOntology ont : ontologies) {
-            if (ont.getAnnotationPropertiesInSignature().contains(object)) {
-                return true;
+        getReadLock().lock();
+        ontologySetReadLock.lock();
+        try {
+            for (OWLOntology ont : ontologies) {
+                if (ont.getAnnotationPropertiesInSignature().contains(object)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        finally {
+            ontologySetReadLock.unlock();
+            getReadLock().unlock();
+        }
+
     }
 
 
     public Set<OWLAnnotationProperty> getChildren(OWLAnnotationProperty object) {
-        Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
-        for (OWLOntology ont : ontologies) {
-            for (OWLSubAnnotationPropertyOfAxiom ax : ont.getAxioms(AxiomType.SUB_ANNOTATION_PROPERTY_OF)) {
-                if (ax.getSuperProperty().equals(object)){
-                    OWLAnnotationProperty subProp = ax.getSubProperty();
-                    // prevent cycles
-                    if (!getAncestors(subProp).contains(subProp)) {
-                        result.add(subProp);
+        getReadLock().lock();
+        ontologySetReadLock.lock();
+        try {
+            Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
+            for (OWLOntology ont : ontologies) {
+                for (OWLSubAnnotationPropertyOfAxiom ax : ont.getAxioms(AxiomType.SUB_ANNOTATION_PROPERTY_OF)) {
+                    if (ax.getSuperProperty().equals(object)){
+                        OWLAnnotationProperty subProp = ax.getSubProperty();
+                        // prevent cycles
+                        if (!getAncestors(subProp).contains(subProp)) {
+                            result.add(subProp);
+                        }
                     }
                 }
             }
+            return result;
         }
-        return result;
+        finally {
+            ontologySetReadLock.unlock();
+            getReadLock().unlock();
+        }
     }
 
-
     public Set<OWLAnnotationProperty> getEquivalents(OWLAnnotationProperty object) {
-        Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
-        Set<OWLAnnotationProperty> ancestors = getAncestors(object);
-        if (ancestors.contains(object)) {
-            for (OWLAnnotationProperty anc : ancestors) {
-                if (getAncestors(anc).contains(object)) {
-                    result.add(anc);
+        getReadLock().lock();
+        ontologySetReadLock.lock();
+        try {
+            Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
+            Set<OWLAnnotationProperty> ancestors = getAncestors(object);
+            if (ancestors.contains(object)) {
+                for (OWLAnnotationProperty anc : ancestors) {
+                    if (getAncestors(anc).contains(object)) {
+                        result.add(anc);
+                    }
                 }
             }
+            result.remove(object);
+            return result;
         }
-        result.remove(object);
-        return result;
+        finally {
+            ontologySetReadLock.unlock();
+            getReadLock().unlock();
+        }
+
     }
 
 
     public Set<OWLAnnotationProperty> getParents(OWLAnnotationProperty object) {
-        Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
+        getReadLock().lock();
+        ontologySetReadLock.lock();
+        try {
+            Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
 
-        for (OWLOntology ont : ontologies) {
-            for (OWLSubAnnotationPropertyOfAxiom ax : ont.getSubAnnotationPropertyOfAxioms(object)){
-                if (ax.getSubProperty().equals(object)){
-                    OWLAnnotationProperty superProp = ax.getSuperProperty();
-                    result.add(superProp);
+            for (OWLOntology ont : ontologies) {
+                for (OWLSubAnnotationPropertyOfAxiom ax : ont.getSubAnnotationPropertyOfAxioms(object)){
+                    if (ax.getSubProperty().equals(object)){
+                        OWLAnnotationProperty superProp = ax.getSuperProperty();
+                        result.add(superProp);
+                    }
                 }
             }
+            return result;
         }
-        return result;
+        finally {
+            ontologySetReadLock.unlock();
+            getReadLock().unlock();
+        }
     }
 
 
@@ -133,6 +190,10 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
+    /*
+     * This call holds the write lock so no other thread can hold the either the OWL ontology 
+     * manager read or write locks or the ontologies 
+     */
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
         Set<OWLAnnotationProperty> properties = new HashSet<OWLAnnotationProperty>(getPropertiesReferencedInChange(changes));
         for (OWLAnnotationProperty prop : properties) {
