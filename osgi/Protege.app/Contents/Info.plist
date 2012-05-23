@@ -60,6 +60,7 @@
 		</dict>
 		<key>VMOptions</key>
 		<array>
+            <string>-server</string>
 			<string>-Xms250M</string>
 			<string>-Xmx500M</string>
 		</array>
