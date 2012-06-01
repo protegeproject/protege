@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.util.JunitUtil;
+import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -34,7 +35,7 @@ public class AssertedClassHierarchyTest extends TestCase {
     AssertedClassHierarchyProvider hierarchy;
     
     protected void init() {
-        manager = OWLManager.createOWLOntologyManager();
+        manager = ProtegeOWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();
         hierarchy = new AssertedClassHierarchyProvider(manager);
     }
