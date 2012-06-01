@@ -46,7 +46,7 @@
         <dependency>
             <groupId>protege4</groupId>
             <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.2.4.2011_09_08_1008</version>
+            <version>3.2.4.2012_06_01_1005</version>
         </dependency>
         <dependency>
             <groupId>protege4</groupId>
