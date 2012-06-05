@@ -62,6 +62,9 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     }
 
     public void setOWLEntity(OWLEntity owlEntity) {
+    	if (owlEntity == null) {
+    		return;
+    	}
         this.entity = owlEntity;
         axiomsByEntityMap.clear();
         usageCount = 0;
