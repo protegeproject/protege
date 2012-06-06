@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
+import java.awt.event.ActionEvent;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.rename.RenameEntitiesPanel;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -41,12 +42,14 @@ import java.util.List;
  */
 public class RenameEntitiesBySearchAndReplaceAction extends ProtegeOWLAction {
 
-    public void actionPerformed(ActionEvent event) {
+	private static final long serialVersionUID = 323702328213956558L;
+
+
+	public void actionPerformed(ActionEvent event) {
         RenameEntitiesPanel panel = new RenameEntitiesPanel(getOWLEditorKit());
         final UIHelper uiHelper = new UIHelper(getOWLEditorKit());
         if (uiHelper.showValidatingDialog("Change multiple entity URIs", panel, panel.getFocusComponent()) == JOptionPane.OK_OPTION){
-            EntityFindAndReplaceURIRenamer renamer = panel.getRenamer();
-            List<OWLOntologyChange> changes = renamer.getChanges();
+            List<OWLOntologyChange> changes = panel.getChanges();
             getOWLModelManager().applyChanges(changes);
         }
     }
