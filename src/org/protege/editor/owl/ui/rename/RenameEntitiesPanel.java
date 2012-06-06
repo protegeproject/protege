@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,15 +41,13 @@ import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.protege.editor.owl.model.refactor.EntityFindAndReplaceURIRenamer;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
 /**
  * Author: drummond<br>
@@ -60,8 +58,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * Date: Jul 1, 2008<br><br>
  */
 public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
+	private static final long serialVersionUID = 259808389697631045L;
 
-    private Logger logger = Logger.getLogger(RenameEntitiesPanel.class);
+	private Logger logger = Logger.getLogger(RenameEntitiesPanel.class);
 
     // editor pause
     private static final int SEARCH_PAUSE_MILLIS = 1000;
@@ -75,12 +74,11 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private JComboBox findCombo;
 
     private CheckTable<OWLEntity> list;
+    
+    private Map<OWLEntity, IRI> entity2IRIMap = new HashMap<OWLEntity, IRI>();
 
-    private OWLModelManagerEntityRenderer fragRenderer;
+    private Map<OWLEntity, String> errorMap = new HashMap<OWLEntity, String>();
 
-    private Set<OWLEntity> errors = Collections.emptySet();
-
-    private EntityFindAndReplaceURIRenamer renamer;
 
     private ItemListener findListener = new ItemListener(){
         public void itemStateChanged(ItemEvent event) {
@@ -93,7 +91,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private ItemListener replaceListener = new ItemListener(){
         public void itemStateChanged(ItemEvent event) {
             if (event.getStateChange() == ItemEvent.SELECTED){
-                updateErrors();
+                updateEntityMap();
                 handleStateChanged();
             }
         }
@@ -101,7 +99,6 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private ListSelectionListener listSelListener = new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
-            updateErrors();
             handleStateChanged();
         }
     };
@@ -111,7 +108,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
         setLayout(new BorderLayout(6, 6));
         this.eKit = eKit;
 
-        refreshMap();
+        buildEntityNamespaceMap();
 
         JComponent subPanel = new JPanel();
         subPanel.setBorder(new TitledBorder("Find & Replace"));
@@ -169,7 +166,27 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
 
 
-    public String getFindValue(){
+    private void buildEntityNamespaceMap() {
+	    for (OWLOntology ont : getOntologies()){
+	        for (OWLEntity entity : ont.getSignature()){
+	            extractNSFromEntity(entity);
+	        }
+	    }
+	}
+
+
+	private void extractNSFromEntity(OWLEntity entity) {
+	    String ns = getBase(entity.getIRI());
+	    Set<OWLEntity> matchingEntities = nsMap.get(ns);
+	    if (matchingEntities == null){
+	        matchingEntities = new HashSet<OWLEntity>();
+	    }
+	    matchingEntities.add(entity);
+	    nsMap.put(ns, matchingEntities);
+	}
+
+
+	public String getFindValue(){
         return (String) findCombo.getSelectedItem();
     }
 
@@ -184,19 +201,33 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
 
 
-    public EntityFindAndReplaceURIRenamer getRenamer(){
-        return renamer;
-    }
+    public List<OWLOntologyChange> getChanges() {
+		OWLOntologyManager mngr = eKit.getModelManager().getOWLOntologyManager();
+		OWLEntityRenamer renamer = new OWLEntityRenamer(mngr, getOntologies());
+		Map<OWLEntity, IRI> filteredIRIMap = new HashMap<OWLEntity, IRI>();
+		for (OWLEntity e : list.getFilteredValues()) {
+			filteredIRIMap.put(e, entity2IRIMap.get(e));
+		}
+		return renamer.changeIRI(filteredIRIMap);
+	}
 
 
-    private void reloadEntityList() {
+	private void reloadEntityList() {
         final ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>(getEntities());
         Collections.sort(sortedEntities, eKit.getModelManager().getOWLObjectComparator());
         list.getModel().setData(sortedEntities, true);
-        updateErrors();
+        updateEntityMap();
         handleStateChanged();
     }
 
+	/*
+	 * The getEntities() and the updateEntityMap should be consistent with one another.
+	 * Currently both assume that the user is changing a namespace prefix if the findValue
+	 * is found in the namespace map but is using a regular expression otherwise.
+	 * 
+	 * The other assumption that we will make is that the entity2IRIMap is unfiltered by the
+	 * changes list.  
+	 */
 
     private Set<OWLEntity> getEntities(){
         Set<OWLEntity> matches = nsMap.get(getFindValue());
@@ -206,72 +237,74 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
             for (OWLOntology ont : getOntologies()){
                 ents.addAll(ont.getSignature());
             }
-            OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
-            String matchingVal = getFindValue();
-            if (!prefs.isUseRegularExpressions()){
-                matchingVal = "(?i).*" + matchingVal + ".*";
-            }
+            String matchingVal = ".*" + getFindValue() + ".*";
             Pattern p = Pattern.compile(matchingVal);
             for (OWLEntity ent : ents){
                 if (p.matcher(ent.getIRI().toString()).matches()){
                     matches.add(ent);
                 }
             }
-//            matches = eKit.getModelManager().getEntityFinder().getEntities(prefix + getFindValue());
         }
         return matches;
     }
+    
+    private void updateEntityMap() {
+    	entity2IRIMap.clear();
+    	errorMap.clear();
+        Set<OWLEntity> matches = nsMap.get(getFindValue());
+        if (matches != null) {
+        	updateEntityMapUsingPrefixes(getFindValue(), matches);
+        }
+        else {
+        	updateEntityMapUsingRegexp();
+        }
+	    list.repaint();
+	}
 
+    
+    private void updateEntityMapUsingPrefixes(String prefix, Set<OWLEntity> matches) {
+    	int prefixLength = prefix.length();
+    	String replacementText = getReplaceWithValue();
+    	for (OWLEntity entity : matches) {
+    		String iriString = entity.getIRI().toString();
+    		StringBuffer sb = new StringBuffer(replacementText);
+    		sb.append(iriString.substring(prefixLength));
+    		addToEntityMap(entity, sb.toString());
+    	}
+    }
+    
+    private void updateEntityMapUsingRegexp() {
+    	Set<OWLEntity> entities = new HashSet<OWLEntity>();
+    	for (OWLOntology includedOntology : getOntologies()) {
+    		entities.addAll(includedOntology.getSignature());
+    	}
+        for (OWLEntity entity : entities){
+            String newURIStr = entity.getIRI().toString().replaceAll(getFindValue(), getReplaceWithValue());
+            addToEntityMap(entity, newURIStr);
+        }
+    }
+    
+    private void addToEntityMap(OWLEntity entity, String newURIStr) {
+        try {
+            URI newURI = new URI(newURIStr);
+            if (!newURI.isAbsolute()){
+                throw new URISyntaxException(newURIStr, "IRI must be absolute");
+            }
+            entity2IRIMap.put(entity, IRI.create(newURI));
+        }
+        catch (URISyntaxException e) {
+            errorMap.put(entity, newURIStr);
+        }
+    }
 
-    private Set<OWLOntology> getOntologies() {
+	private Set<OWLOntology> getOntologies() {
         return eKit.getModelManager().getOntologies();
     }
 
 
-    private void updateErrors() {
-        final OWLModelManager mngr = eKit.getModelManager();
-        renamer = new EntityFindAndReplaceURIRenamer(mngr.getOWLOntologyManager(),
-                                                     list.getFilteredValues(),
-                                                     getOntologies(),
-                                                     getFindValue(), getReplaceWithValue());
-        errors = renamer.getErrors().keySet();
-        list.repaint();
-    }
-
-
-    private void refreshMap() {
-        for (OWLOntology ont : getOntologies()){
-            for (OWLEntity entity : ont.getSignature()){
-                extractNSFromEntity(entity);
-            }
-        }
-    }
-
-
-    private void extractNSFromEntity(OWLEntity entity) {
-        String ns = getBase(entity.getIRI());
-        Set<OWLEntity> matchingEntities = nsMap.get(ns);
-        if (matchingEntities == null){
-            matchingEntities = new HashSet<OWLEntity>();
-        }
-        matchingEntities.add(entity);
-        nsMap.put(ns, matchingEntities);
-    }
-
-
     private String getBase(IRI uri){
-
         String frag = getShortForm(uri);
-        final String uriStr;
-        try {
-            uriStr = URLDecoder.decode(uri.toString(), "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        if (frag.startsWith("'")){
-            frag = frag.substring(1, frag.length()-1);
-        }
+        final String uriStr = uri.toString();
         return uriStr.substring(0, uriStr.lastIndexOf(frag));
     }
 
@@ -287,7 +320,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
                 }
                 return uri.toURI().getPath().substring(path.lastIndexOf("/") + 1);
             }
-            return RenderingEscapeUtils.getEscapedRendering(rendering);
+            return rendering;
         }
         catch (Exception e) {
             return "<Error! " + e.getMessage() + ">";
@@ -325,7 +358,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private boolean getStatus() {
         return findCombo.getSelectedItem() != null &&!findCombo.getSelectedItem().equals("") &&
                 replaceWithCombo.getSelectedItem() != null && !replaceWithCombo.getSelectedItem().equals("") &&
-                !list.getFilteredValues().isEmpty() && errors.isEmpty();
+                !list.getFilteredValues().isEmpty() && errorMap.isEmpty();
     }
 
 
@@ -375,7 +408,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            if (errors.contains(value)){
+            if (errorMap.containsKey(value)){
                 setStrikeThrough(true);
             }
             else{
@@ -418,15 +451,17 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
                 }
                 final String s = getFindValue().toLowerCase();
                 curToken = curToken.toLowerCase();
-                int cur = 0;
-                do {
-                    cur = curToken.indexOf(s, cur);
-                    if (cur != -1){
-                        doc.setCharacterAttributes(tokenStartIndex + cur,  s.length(), highlightedStyle, true);
-                        cur++;
-                    }
+                if (!s.isEmpty()) {
+                	int cur = 0;
+                	do {
+                		cur = curToken.indexOf(s, cur);
+                		if (cur != -1){
+                			doc.setCharacterAttributes(tokenStartIndex + cur,  s.length(), highlightedStyle, true);
+                			cur++;
+                		}
+                	}
+                	while (cur != -1);
                 }
-                while (cur != -1);
 
             }
         }
