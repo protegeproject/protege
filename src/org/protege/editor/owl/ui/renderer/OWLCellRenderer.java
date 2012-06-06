@@ -128,8 +128,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean commentedOut;
 
-    private boolean inferred;
-
     private boolean highlightKeywords;
 
     private boolean wrap = true;
@@ -250,7 +248,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         ontology = null;
         focusedEntity = null;
         commentedOut = false;
-        inferred = false;
         strikeThrough = false;
         highlightUnsatisfiableClasses = true;
         highlightUnsatisfiableProperties = true;
@@ -284,7 +281,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
      * default value is false)
      */
     public void setInferred(boolean inferred) {
-        this.inferred = inferred;
+    	/*
+    	 * Currently doesn't do anything.  Inferred defaults to false.
+    	 */
     }
 
 
@@ -710,9 +709,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         if (commentedOut) {
             doc.setParagraphAttributes(0, doc.getLength(), commentedOutStyle, false);
             return;
-        }
-        else if (inferred) {
-
         }
 
         if (strikeThrough) {
