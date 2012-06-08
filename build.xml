@@ -360,11 +360,11 @@
    <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
    <property name="readme.file"            value="${svn.root}/etc/owleditor-readme.html"/>
 
-   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1-2011-03-11/${plugin}.jar"/>
-
-
    <target name = "dist" depends="jar">
-       <echo file="./etc/update.properties" append="false">
+     <property name="download.short"         value="${plugin}-${bundle.version}.jar"/>
+     <property name="download"               value="https://protege.googlecode.com/files/${download.short}"/>
+     <copy file="${build}/${plugin}.jar" tofile="${build}/${download.short}"/>
+     <echo file="./etc/update.properties" append="false">
 id=${plugin}
 version=${bundle.version}
 download=${download}
