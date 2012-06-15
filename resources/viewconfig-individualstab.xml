@@ -10,11 +10,8 @@
             </Component>
         </CNode>
         <CNode>
-            <Component label="Members list">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
-            </Component>
-            <Component label="Members list (inferred)">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLInferredMembersList"/>
+            <Component label="Individuals">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
             </Component>
         </CNode>
         <HSNode splits="0.375 0.625">
