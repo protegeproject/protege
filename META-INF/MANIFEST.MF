@@ -21,37 +21,41 @@ Export-Package: com.jgoodies.looks;version="2.2.1";uses:="javax.swing,
  pache.log4j.config;version="1.2.14";uses:="org.apache.log4j",org.apac
  he.log4j.helpers;version="1.2.14";uses:="org.apache.log4j,org.apache.
  log4j.spi",org.apache.log4j.jdbc;version="1.2.14";uses:="org.apache.l
- og4j,org.apache.log4j.spi",org.apache.log4j.lf5;version="1.2.14";uses
- :="org.apache.log4j,org.apache.log4j.lf5.viewer,org.apache.log4j.spi"
- ,org.apache.log4j.lf5.config;version="1.2.14",org.apache.log4j.lf5.ut
- il;version="1.2.14";uses:="org.apache.log4j.lf5,org.apache.log4j.lf5.
- viewer",org.apache.log4j.lf5.viewer;version="1.2.14";uses:="javax.swi
- ng,javax.swing.event,javax.swing.table,org.apache.log4j.lf5,org.apach
- e.log4j.lf5.util,org.apache.log4j.lf5.viewer.categoryexplorer",org.ap
- ache.log4j.lf5.viewer.categoryexplorer;version="1.2.14";uses:="javax.
- swing,javax.swing.event,javax.swing.table,javax.swing.tree,org.apache
- .log4j.lf5",org.apache.log4j.lf5.viewer.configure;version="1.2.14";us
- es:="javax.swing.tree,org.apache.log4j.lf5.viewer,org.w3c.dom",org.ap
- ache.log4j.lf5.viewer.images;version="1.2.14",org.apache.log4j.nt;ver
- sion="1.2.14";uses:="org.apache.log4j,org.apache.log4j.spi",org.apach
- e.log4j.or;version="1.2.14";uses:="org.apache.log4j.spi",org.apache.l
- og4j.or.jms;version="1.2.14";uses:="org.apache.log4j.or",org.apache.l
- og4j.or.sax;version="1.2.14";uses:="org.apache.log4j.or",org.apache.l
- og4j.varia;version="1.2.14";uses:="org.apache.log4j,org.apache.log4j.
- spi",org.apache.log4j.xml;version="1.2.14";uses:="javax.xml.parsers,o
- rg.apache.log4j,org.apache.log4j.config,org.apache.log4j.helpers,org.
- apache.log4j.spi,org.w3c.dom,org.xml.sax",org.protege.common;version=
- "4.2.0.b276_2012_05_21_0541";uses:="org.osgi.framework",org.protege.c
- ommon.log;version="4.2.0.b276_2012_05_21_0541";uses:="org.apache.log4
- j"
+ og4j,org.apache.log4j.spi",org.apache.log4j.jmx;version="1.2.14";uses
+ :="javax.management,org.apache.log4j,org.apache.log4j.spi",org.apache
+ .log4j.lf5;version="1.2.14";uses:="org.apache.log4j,org.apache.log4j.
+ lf5.viewer,org.apache.log4j.spi",org.apache.log4j.lf5.config;version=
+ "1.2.14",org.apache.log4j.lf5.util;version="1.2.14";uses:="org.apache
+ .log4j.lf5,org.apache.log4j.lf5.viewer",org.apache.log4j.lf5.viewer;v
+ ersion="1.2.14";uses:="javax.swing,javax.swing.event,javax.swing.tabl
+ e,org.apache.log4j.lf5,org.apache.log4j.lf5.util,org.apache.log4j.lf5
+ .viewer.categoryexplorer",org.apache.log4j.lf5.viewer.categoryexplore
+ r;version="1.2.14";uses:="javax.swing,javax.swing.event,javax.swing.t
+ able,javax.swing.tree,org.apache.log4j.lf5",org.apache.log4j.lf5.view
+ er.configure;version="1.2.14";uses:="javax.swing.tree,org.apache.log4
+ j.lf5.viewer,org.w3c.dom",org.apache.log4j.lf5.viewer.images;version=
+ "1.2.14",org.apache.log4j.net;version="1.2.14";uses:="javax.jms,javax
+ .mail,javax.mail.internet,javax.naming,org.apache.log4j,org.apache.lo
+ g4j.spi",org.apache.log4j.nt;version="1.2.14";uses:="org.apache.log4j
+ ,org.apache.log4j.spi",org.apache.log4j.or;version="1.2.14";uses:="or
+ g.apache.log4j.spi",org.apache.log4j.or.jms;version="1.2.14";uses:="o
+ rg.apache.log4j.or",org.apache.log4j.or.sax;version="1.2.14";uses:="o
+ rg.apache.log4j.or",org.apache.log4j.spi;version="1.2.14";uses:="org.
+ apache.log4j,org.apache.log4j.or",org.apache.log4j.varia;version="1.2
+ .14";uses:="org.apache.log4j,org.apache.log4j.spi",org.apache.log4j.x
+ ml;version="1.2.14";uses:="javax.xml.parsers,org.apache.log4j,org.apa
+ che.log4j.config,org.apache.log4j.helpers,org.apache.log4j.spi,org.w3
+ c.dom,org.xml.sax",org.protege.common;version="4.2.0.b276_2012_06_18_
+ 1036";uses:="org.osgi.framework",org.protege.common.log;version="4.2.
+ 0.b276_2012_06_18_1036";uses:="org.apache.log4j"
 Bundle-ClassPath: .,lib/log4j.jar,lib/looks.jar
-Built-By: vendetti
-Tool: Bundlor 1.1.0.M04
+Built-By: redmond
+Tool: Bundlor 1.1.0.M05
 Bundle-Category: protege
 Bundle-Name: Common Protege Libraries
 Bundle-Vendor: Protege Development Team
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
-Bundle-Version: 4.2.0.b276_2012_05_21_0541
+Bundle-Version: 4.2.0.b276_2012_06_18_1036
 Bundle-Activator: org.protege.common.Activator
 Bundle-ManifestVersion: 2
 Bundle-Description: Some common libraries
