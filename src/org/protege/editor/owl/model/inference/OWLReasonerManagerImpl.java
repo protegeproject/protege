@@ -11,7 +11,9 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
@@ -21,7 +23,9 @@ import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.semanticweb.owlapi.util.ProgressMonitor;
 
 
 /**
@@ -76,11 +80,14 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     }
 
 
-    public void dispose() {
+    public void dispose() throws Exception {
         if (preferences != null) {
             preferences.save();
         }
         clearAndDisposeReasoners();
+        if (reasonerProgressMonitor instanceof Disposable) {
+        	((Disposable) reasonerProgressMonitor).dispose();
+        }
     }
     
     private void clearAndDisposeReasoners() {
@@ -351,6 +358,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 	logger.info(currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms");
                 }
             }
+            catch (ReasonerInterruptedException rie) {
+            	reasonerChanged = true;
+            	SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						owlModelManager.fireEvent(EventType.REASONER_INTERRUPTED);
+					}
+				});
+            }
             catch (InconsistentOntologyException ioe) {
             	inconsistencyFound = true;
             }
@@ -361,6 +377,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             		}
             	}
             	installRunningReasoner(inconsistencyFound, reasonerChanged);
+            	if (reasonerProgressMonitor instanceof Resettable) {
+            		((Resettable) reasonerProgressMonitor).reset();
+            	}
             }
         }
         
