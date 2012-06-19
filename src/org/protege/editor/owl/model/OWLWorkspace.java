@@ -90,11 +90,13 @@ import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
+import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
 import org.protege.editor.owl.ui.inference.ExplainInconsistentOntologyAction;
 import org.protege.editor.owl.ui.inference.PrecomputeAction;
 import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
+import org.protege.editor.owl.ui.inference.StopReasonerAction;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
@@ -187,6 +189,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private PrecomputeAction startReasonerAction = new PrecomputeAction();
 
     private PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
+    
+    private ProtegeOWLAction stopReasonerAction = new StopReasonerAction();
 
     private ExplainInconsistentOntologyAction explainInconsistentOntologyAction = new ExplainInconsistentOntologyAction();
 
@@ -198,6 +202,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     public static final String REASONER_INITIALIZE = "Start reasoner";
 
     public static final String REASONER_RESYNC = "Synchronize reasoner";
+    
+    public static final String REASONER_STOP   = "Stop reasoner";
 
     public static final String REASONER_EXPLAIN = "Explain inconsistent ontology";
 
@@ -509,6 +515,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         synchronizeReasonerAction.setEditorKit(getOWLEditorKit());
         synchronizeReasonerAction.putValue(Action.NAME, REASONER_RESYNC);
         reasonerMenu.add(synchronizeReasonerAction);
+        
+        stopReasonerAction.setEditorKit(getOWLEditorKit());
+        stopReasonerAction.putValue(Action.NAME, REASONER_STOP);
+        reasonerMenu.add(stopReasonerAction);
 
         explainInconsistentOntologyAction.setEditorKit(getOWLEditorKit());
         explainInconsistentOntologyAction.putValue(Action.NAME, REASONER_EXPLAIN);
@@ -751,10 +761,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void updateReasonerStatus(ReasonerStatus status) {
         reasonerStatus.setText(status.getDescription());
+        
         startReasonerAction.setEnabled(status.isEnableInitialization());
         startReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getInitializationTooltip());
+        
         synchronizeReasonerAction.setEnabled(status.isEnableSynchronization());
         synchronizeReasonerAction.putValue(Action.SHORT_DESCRIPTION, status.getSynchronizationTooltip());
+        
+        stopReasonerAction.setEnabled(status.isEnableStop());
+        
         explainInconsistentOntologyAction.setEnabled(status == ReasonerStatus.INCONSISTENT);
 
         KeyStroke shortcut = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
