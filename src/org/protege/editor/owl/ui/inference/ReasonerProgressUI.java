@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -13,13 +12,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
-import org.apache.log4j.Logger;
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
@@ -33,8 +31,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ReasonerProgressUI implements ReasonerProgressMonitor {
-	private static final Logger log = Logger.getLogger(ReasonerProgressUI.class);
+public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, Resettable {
 	public static final long CLOSE_PROGRESS_TIMEOUT = 1000;
 
     private OWLEditorKit owlEditorKit;
@@ -47,13 +44,10 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
     private JDialog window;
 
-    private boolean cancelled = false;
-
     private Action cancelledAction;
-
-    private static final int CANCEL_TIMEOUT_MS = 5000;
     
-    private boolean running = false;
+    private InterruptedReasonerListener reasonerListener;
+
 
 
     public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
@@ -71,7 +65,9 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
                              "Reasoner progress",
                              true);
         cancelledAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent e) {
+			private static final long serialVersionUID = 2843243451134187772L;
+
+			public void actionPerformed(ActionEvent e) {
                 setCancelled();
             }
         };
@@ -88,15 +84,19 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
         Dimension windowSize = window.getSize();
         window.setSize(400, windowSize.height);
         window.setResizable(false);
+        
+        reasonerListener = new InterruptedReasonerListener(owlEditorKit) {
+			
+			@Override
+			protected void onInterrupt() {
+				window.setVisible(false);
+			}
+		};
+        owlEditorKit.getOWLModelManager().addListener(reasonerListener);
     }
     
     public void setCancelled() {
-    	synchronized (this) {
-    		cancelled = true;
-    		running = false;
-    	}
     	owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
-    	hideWindow();
     }
 
     public void reasonerTaskBusy() {
@@ -116,9 +116,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
 
     public void reasonerTaskStarted(String taskName) {
-    	synchronized (this) {
-    		running = true;
-    	}
     	progressBar.setIndeterminate(false);
     	progressBar.setValue(0);
     	showWindow();
@@ -129,10 +126,7 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
 
 
     public void reasonerTaskStopped() {
-    	synchronized (this) {
-    		running = false;
-    	}
-    	hideWindow();
+    	window.setVisible(false);
     	taskLabel.setText("");
     }
 
@@ -151,41 +145,15 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor {
     	});
     }
 
-
-    private void hideWindow() {
-    	new Thread() {  // ToDo probably can be written better with an executor and rescheduling
-    		@Override
-    		public void run() {
-    			try {
-					Thread.sleep(CLOSE_PROGRESS_TIMEOUT);
-				} catch (InterruptedException e) {
-					log.error("ow, ow, ow.  Don't prod me with that stick", e);
-				}
-    			boolean localRunning;
-    			final boolean localCancelled;
-    			synchronized (ReasonerProgressUI.this) {
-    				localRunning = running;
-    				localCancelled = cancelled;
-    			}
-    			if (!localRunning) {
-    				SwingUtilities.invokeLater(new Runnable() {
-    					public void run() {
-    						if (localCancelled) {
-    							JOptionPane.showMessageDialog(window,
-    									null,
-    									"Reasoning Task Cancelled",
-    									JOptionPane.INFORMATION_MESSAGE);
-    						}
-    						window.setVisible(false);
-    					}
-    				});
-    			}
-    		}
-    	}.start();
+    public void reset() {
+    	window.setVisible(false);
+    	reasonerListener.reset();
     }
 
-
-
+    @Override
+    public void dispose() throws Exception {
+    	owlEditorKit.getOWLModelManager().removeListener(reasonerListener);
+    }
 
 
 }
