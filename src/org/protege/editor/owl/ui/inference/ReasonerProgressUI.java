@@ -146,7 +146,13 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     }
 
     public void reset() {
-    	window.setVisible(false);
+    	SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+		    	window.setVisible(false);				
+			}
+		});
     	reasonerListener.reset();
     }
 
