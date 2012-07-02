@@ -13,6 +13,7 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.inference.TrivialInferenceVisitor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -348,6 +349,13 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     protected void addRow(OWLFrameSectionRow<R, A, E> row) {
         rows.add(row);
+    }
+    
+    protected void addInferredRowIfNontrivial(OWLFrameSectionRow<R, A, E> row) {
+    	if (row.isInferred() && TrivialInferenceVisitor.isTrivialInference(row.getAxiom())) {
+    		return;
+    	}
+    	addRow(row);
     }
 
 
