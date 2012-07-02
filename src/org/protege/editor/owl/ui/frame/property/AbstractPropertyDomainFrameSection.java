@@ -132,8 +132,8 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     protected void refillInferred() {
         for (Node<OWLClass> domains : getInferredDomains()) {
             for (OWLClassExpression domain : domains){
-                if (!addedDomains.contains(domain) && !getOWLDataFactory().getOWLThing().equals(domain)) {
-                    addRow(createFrameSectionRow(createAxiom(domain), null));
+                if (!addedDomains.contains(domain)) {
+                    addInferredRowIfNontrivial(createFrameSectionRow(createAxiom(domain), null));
                     addedDomains.add(domain);
                 }
             }
