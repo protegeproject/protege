@@ -45,6 +45,18 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 
+
+/**
+ * This class performs simple heuristics to detect vacuous axioms.
+ * <p/>
+ * The motivation for this class is that certain inference processes will generate vacuous axioms as entailments.  The vacuous axioms 
+ * are distracting and do not provide any addition information.  We break this characterization a bit with equivalent and inverse object 
+ * properties where we reject, for example, a property equivalence between a property expression and an inverse property because we expect an inference engine
+ * to provide the same result elsewhere as an inverse properties axiom.
+ * 
+ * @author tredmond
+ *
+ */
 public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {	
 	private OWLDataFactory factory;
 	
