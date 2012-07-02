@@ -71,13 +71,12 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
                 	if (!getOWLModelManager().getReasoner().isConsistent()) {
                 		return;
                 	}
-                	OWLDataProperty topProperty = getOWLModelManager().getOWLDataFactory().getOWLTopDataProperty();
                     for (OWLDataPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperDataProperties(getRootObject(), true).getFlattened()) {
-                        if (!added.contains(infSup) && !topProperty.equals(infSup)) {
+                        if (!added.contains(infSup)) {
                             final OWLSubDataPropertyOfAxiom ax = getOWLDataFactory().getOWLSubDataPropertyOfAxiom(
                                                                                                                   getRootObject(),
                                                                                                                   infSup);
-                            addRow(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                            addInferredRowIfNontrivial(new OWLSubDataPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
                                                                                            OWLSubDataPropertyAxiomSuperPropertyFrameSection.this,
                                                                                            null,
                                                                                            getRootObject(),
