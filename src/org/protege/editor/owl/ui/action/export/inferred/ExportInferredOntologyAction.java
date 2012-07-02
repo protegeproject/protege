@@ -15,7 +15,7 @@ import org.protege.editor.owl.model.inference.NoOpReasoner;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.ReasonerStatus;
 import org.protege.editor.owl.model.inference.ReasonerUtilities;
-import org.protege.editor.owl.model.inference.TrivialInferenceVisitor;
+import org.protege.editor.owl.model.inference.VacuousAxiomVisitor;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -192,7 +192,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 	    
 	    private void deleteTrivialAxioms(List<OWLOntologyChange> changes) {
 	    	for (OWLAxiom axiom : exportedOntology.getAxioms()) {
-	    		if (TrivialInferenceVisitor.isTrivialInference(axiom)) {
+	    		if (VacuousAxiomVisitor.isVacuousAxiom(axiom)) {
 	    			changes.add(new RemoveAxiom(exportedOntology, axiom));
 	    		}
 	    	}
