@@ -1,5 +1,15 @@
 package org.protege.editor.owl.ui.view;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -7,8 +17,7 @@ import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import javax.swing.*;
-import java.awt.*;
+
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -31,7 +40,6 @@ import java.awt.*;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 
 /**
  * Author: Matthew Horridge<br>
@@ -67,13 +75,18 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
     };
 
     protected void initialiseOntologyView() throws Exception {
+        add(getCenterPane(), BorderLayout.CENTER);
+        // considered adding a refresh button here...
+        updateHeader();
+        getOWLModelManager().addListener(listener);
+    }
+    
+    private JComponent getCenterPane() {
         setLayout(new BorderLayout());
         frame = new InferredAxiomsFrame(getOWLEditorKit());
         frameList = new OWLFrameList<OWLOntology>(getOWLEditorKit(), frame);
         frameList.setRootObject(getOWLModelManager().getActiveOntology());
-        updateHeader();
-        add(new JScrollPane(frameList));
-        getOWLModelManager().addListener(listener);
+        return new JScrollPane(frameList);
     }
 
 
