@@ -76,7 +76,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
                         for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
                             if (!added.contains(inferredType)) {
                                 OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
-                                addRow(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
+                                addInferredRowIfNontrivial(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
                                                                                      OWLClassAssertionAxiomTypeFrameSection.this,
                                                                                      null,
                                                                                      getRootObject(),
