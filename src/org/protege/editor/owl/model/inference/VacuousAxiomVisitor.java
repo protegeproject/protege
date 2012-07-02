@@ -45,15 +45,15 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 
-public class TrivialInferenceVisitor implements OWLAxiomVisitorEx<Boolean> {	
+public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {	
 	private OWLDataFactory factory;
 	
 
-	public static boolean isTrivialInference(OWLAxiom axiom) {
-		return axiom.accept(new TrivialInferenceVisitor());
+	public static boolean isVacuousAxiom(OWLAxiom axiom) {
+		return axiom.accept(new VacuousAxiomVisitor());
 	}
 
-	public TrivialInferenceVisitor() {
+	public VacuousAxiomVisitor() {
 		factory = OWLManager.getOWLDataFactory();
 	}
 	
