@@ -73,11 +73,10 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
                 public void run() {
                     if (getOWLModelManager().getReasoner().isConsistent()) {
-                    	OWLClass thing = getOWLModelManager().getOWLDataFactory().getOWLThing();
                         for (Node<OWLClass> inferredSuperClasses : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
                             for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
-                                if (!added.contains(inferredSuperClass) && !thing.equals(inferredSuperClass)) {
-                                    addRow(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
+                                if (!added.contains(inferredSuperClass)) {
+                                    addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                OWLSubClassAxiomFrameSection.this,
                                                                                null,
                                                                                getRootObject(),
