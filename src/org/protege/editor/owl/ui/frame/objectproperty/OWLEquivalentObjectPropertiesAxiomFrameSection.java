@@ -71,7 +71,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
                 if (!equivs.isEmpty()){
                     OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
                     if (!added.contains(ax)) {
-                        addRow(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                        addInferredRowIfNontrivial(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                      OWLEquivalentObjectPropertiesAxiomFrameSection.this,
                                                                                      null,
                                                                                      getRootObject(),
