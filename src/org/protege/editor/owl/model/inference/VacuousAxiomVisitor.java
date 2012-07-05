@@ -50,9 +50,7 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * This class performs simple heuristics to detect vacuous axioms.
  * <p/>
  * The motivation for this class is that certain inference processes will generate vacuous axioms as entailments.  The vacuous axioms 
- * are distracting and do not provide any addition information.  We break this characterization a bit with equivalent and inverse object 
- * properties where we reject, for example, a property equivalence between a property expression and an inverse property because we expect an inference engine
- * to provide the same result elsewhere as an inverse properties axiom.
+ * are distracting and do not provide any addition information.  
  * 
  * @author tredmond
  *
@@ -63,6 +61,40 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 
 	public static boolean isVacuousAxiom(OWLAxiom axiom) {
 		return axiom.accept(new VacuousAxiomVisitor());
+	}
+	
+	/**
+	 * Detect axioms that say that p is equivalent to inverse q or say that p inverseof inverse(q).
+	 * 
+	 * These are not vacuous axioms but they are axioms that we might want to exclude from the inferred output.  The idea is that
+	 * there are two ways of indicating that p and q are inverse properties of one another and we want the inferred output to only contain 
+	 * one of the cases.
+	 * 
+	 * @param axiom
+	 * @return
+	 */
+	public static boolean involvesInverseSquared(OWLAxiom axiom) {
+		if (axiom instanceof OWLEquivalentObjectPropertiesAxiom) {
+			OWLEquivalentObjectPropertiesAxiom equivalentObjectProperties = (OWLEquivalentObjectPropertiesAxiom) axiom;
+			boolean inverseFound = false;
+			boolean namedFound = false;
+			if (equivalentObjectProperties.getProperties().size() == 2) {
+				for (OWLObjectPropertyExpression p : equivalentObjectProperties.getProperties()) {
+					if (p.isAnonymous()) {
+						inverseFound = true;
+					}
+					else {
+						namedFound = true;
+					}
+				}
+				return inverseFound && namedFound;
+			}
+		}
+		if (axiom instanceof OWLInverseObjectPropertiesAxiom) {
+			OWLInverseObjectPropertiesAxiom inverseObjectProperties = (OWLInverseObjectPropertiesAxiom) axiom;
+			return inverseObjectProperties.getFirstProperty().isAnonymous() ^ inverseObjectProperties.getSecondProperty().isAnonymous();
+		}
+		return false;
 	}
 
 	public VacuousAxiomVisitor() {
@@ -105,18 +137,6 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 	}
 
 	@Override
-	public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-		if (axiom.getProperties().size() == 2) {
-			for (OWLObjectPropertyExpression p : axiom.getProperties()) {
-				if (p.isAnonymous()) {
-					return true; // better to have this appear in an inverse property axiom
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
 		if (axiom.getProperties().size() == 2 && axiom.getProperties().contains(factory.getOWLBottomDataProperty())) {
 			return true;
@@ -146,12 +166,6 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 	public Boolean visit(OWLSubDataPropertyOfAxiom axiom) {
 		return axiom.getSuperProperty().equals(factory.getOWLTopDataProperty()) || axiom.getSubProperty().equals(factory.getOWLBottomDataProperty());
 	}
-
-	@Override
-	public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
-		return axiom.getFirstProperty().isAnonymous() || axiom.getSecondProperty().isAnonymous();
-	}
-	
 
 	@Override
 	public Boolean visit(OWLObjectPropertyAssertionAxiom axiom) {
@@ -193,6 +207,18 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 	/*
 	 * Returning false is safe.
 	 */
+	
+
+	@Override
+	public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
+		return false;
+	}
+	
+
+	@Override
+	public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
+		return false;
+	}
 
 	@Override
 	public Boolean visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
