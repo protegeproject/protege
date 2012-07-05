@@ -68,7 +68,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
             	}
                 Set<OWLObjectPropertyExpression> equivs = new HashSet<OWLObjectPropertyExpression>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
                 equivs.remove(getRootObject());
-                if (!equivs.isEmpty()){
+                if (equivs.size() > 1) {
                     OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
                     if (!added.contains(ax)) {
                         addInferredRowIfNontrivial(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
