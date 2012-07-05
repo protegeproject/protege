@@ -352,7 +352,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     }
     
     protected void addInferredRowIfNontrivial(OWLFrameSectionRow<R, A, E> row) {
-    	if (row.isInferred() && VacuousAxiomVisitor.isVacuousAxiom(row.getAxiom())) {
+    	if (row.isInferred() && 
+    			(VacuousAxiomVisitor.isVacuousAxiom(row.getAxiom()) || VacuousAxiomVisitor.involvesInverseSquared(row.getAxiom()))) {
     		return;
     	}
     	addRow(row);
