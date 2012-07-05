@@ -192,7 +192,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 	    
 	    private void deleteTrivialAxioms(List<OWLOntologyChange> changes) {
 	    	for (OWLAxiom axiom : exportedOntology.getAxioms()) {
-	    		if (VacuousAxiomVisitor.isVacuousAxiom(axiom)) {
+	    		if (VacuousAxiomVisitor.isVacuousAxiom(axiom) || VacuousAxiomVisitor.involvesInverseSquared(axiom)) {
 	    			changes.add(new RemoveAxiom(exportedOntology, axiom));
 	    		}
 	    	}
