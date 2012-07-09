@@ -82,7 +82,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         propertySelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restricted property"));
 
         fillerSelectorPanel = createFillerSelectorPanel();
-        propertySelectorPanel.addSelectionListener(selListener);
+        fillerSelectorPanel.addSelectionListener(selListener);
         fillerSelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restriction filler"));
 
         panel.setLayout(new BorderLayout());
