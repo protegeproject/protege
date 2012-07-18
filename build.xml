@@ -35,6 +35,7 @@
 	   <javac srcdir="${src}" 
               destdir="${classes}" 
               classpath="./osgi/felix/bin/felix.jar"
+	   		  includeantruntime="false"
               debug="true"/>
 	   <jar basedir="${classes}" destfile="${launcher}"/>
    </target>
