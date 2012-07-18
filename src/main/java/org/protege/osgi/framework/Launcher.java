@@ -67,11 +67,11 @@ public class Launcher {
     }
     
     private void setSystemProperties(Parser p) {
-        Map<String, String> systemProperties = p.getSystemProperties();
-        System.setProperty("org.protege.osgi.launcherHandlesExit", "True");
-        for (Entry<String, String> entry : systemProperties.entrySet()) {
-            System.setProperty(entry.getKey(), entry.getValue());
-        }
+    	Map<String, String> systemProperties = p.getSystemProperties();
+    	System.setProperty("org.protege.osgi.launcherHandlesExit", "True");
+    	for (Entry<String, String> entry : systemProperties.entrySet()) {
+    		System.setProperty(entry.getKey(), entry.getValue());
+    	}
     }
 
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {

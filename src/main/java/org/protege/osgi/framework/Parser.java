@@ -3,6 +3,7 @@ package org.protege.osgi.framework;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,8 +29,8 @@ public class Parser {
 	
 	private DocumentBuilderFactory factory;
 
-    private Map<String, String> frameworkProperties = null;
-    private Map<String, String> systemProperties = null;
+    private Map<String, String> frameworkProperties;
+    private Map<String, String> systemProperties;
     private List<BundleSearchPath> searchPaths = new ArrayList<BundleSearchPath>();
     
     public Parser() {
@@ -49,8 +50,8 @@ public class Parser {
     }
 
     public void reset() {
-        frameworkProperties = null;
-        systemProperties = null;
+        frameworkProperties = new TreeMap<String, String>();
+        systemProperties = new TreeMap<String, String>();
         searchPaths.clear();
     }
     
