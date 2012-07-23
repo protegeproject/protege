@@ -230,7 +230,8 @@ public class OWLAutoCompleter {
             int wordIndex = getWordIndex();
             String expression = textComponent.getDocument().getText(0, wordIndex);
             // Add a bit to the end to force a parse error
-            expression += "**";
+            // note that the + was added to the string below because "p min 2 **" parses.
+            expression += "+**";
             try {
                 checker.check(expression);
             }
