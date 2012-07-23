@@ -36,8 +36,9 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PhysicalLocationPanel extends AbstractWizardPanel {
+	private static final long serialVersionUID = 6938908942192087326L;
 
-    public static final String ID = PhysicalLocationPanel.class.getName();
+	public static final String ID = PhysicalLocationPanel.class.getName();
 
     public static final String DEFAULT_LOCAL_BASE_KEY = "DEFAULT_LOCAL_BASE_KEY";
 

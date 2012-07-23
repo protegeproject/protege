@@ -45,8 +45,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     private JDialog window;
 
     private Action cancelledAction;
-    
-    private InterruptedReasonerListener reasonerListener;
 
 
 
@@ -84,15 +82,6 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
         Dimension windowSize = window.getSize();
         window.setSize(400, windowSize.height);
         window.setResizable(false);
-        
-        reasonerListener = new InterruptedReasonerListener(owlEditorKit) {
-			
-			@Override
-			protected void onInterrupt() {
-				window.setVisible(false);
-			}
-		};
-        owlEditorKit.getOWLModelManager().addListener(reasonerListener);
     }
     
     public void setCancelled() {
@@ -153,12 +142,10 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
 		    	window.setVisible(false);				
 			}
 		});
-    	reasonerListener.reset();
     }
 
     @Override
     public void dispose() throws Exception {
-    	owlEditorKit.getOWLModelManager().removeListener(reasonerListener);
     }
 
 
