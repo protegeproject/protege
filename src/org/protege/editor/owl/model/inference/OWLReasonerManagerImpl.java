@@ -359,12 +359,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             }
             catch (ReasonerInterruptedException rie) {
             	reasonerChanged = true;
-            	SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						owlModelManager.fireEvent(EventType.REASONER_INTERRUPTED);
-					}
-				});
+            	OWLReasoner reasonerInBadState = runningReasoner;
+            	runningReasoner = null;
+            	reasonerInBadState.dispose();
             }
             catch (InconsistentOntologyException ioe) {
             	inconsistencyFound = true;

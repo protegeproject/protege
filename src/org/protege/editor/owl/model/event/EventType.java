@@ -44,8 +44,6 @@ public enum EventType {
     ENTITY_RENDERING_CHANGED,
 
     REASONER_CHANGED,
-    
-    REASONER_INTERRUPTED,
 
     ABOUT_TO_CLASSIFY,
     
