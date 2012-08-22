@@ -86,7 +86,29 @@ public class Launcher {
         }
         startBundles(context, bundles);
         framework.start();
-
+        addShutdownHook();
+        addCleanupOnExit(exitOnOSGiShutDown);
+    }
+    
+    private void addShutdownHook() {
+        Thread hook = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (framework.getState() == Bundle.ACTIVE) {
+                        framework.stop();
+                        framework.waitForStop(0);
+                    }
+                }
+                catch (Throwable t) {
+                    logger.log(Level.WARNING, "Error shuting down OSGi session", t);
+                }
+            } 
+        }, "Close OSGi Session");
+        Runtime.getRuntime().addShutdownHook(hook);
+    }
+    
+    private void addCleanupOnExit(final boolean exitOnOSGiShutDown) {
         Thread shutdownThread = new Thread(new Runnable() {
             @Override
             public void run() {
