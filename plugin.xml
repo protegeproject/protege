@@ -1384,6 +1384,11 @@
         <name value="Axioms by profile (select axioms in a sublanguage of OWL)" />
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.byprofile.MoveAxiomsByProfileKit" />
     </extension>
+
+    <extension id="MoveAxiomsByDefinition" point="org.protege.editor.owl.moveaxiomskit">
+        <name value="Axioms by definition (select axioms that define entities)"/>
+        <class value="org.protege.editor.owl.ui.ontology.wizard.move.bydefinition.MoveAxiomsByDefinitionKit"/>
+    </extension>
     
 
 </plugin>
