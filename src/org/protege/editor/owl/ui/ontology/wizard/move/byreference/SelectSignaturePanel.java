@@ -68,8 +68,7 @@ public class SelectSignaturePanel extends MoveAxiomsKitConfigurationPanel {
 
 
     public String getInstructions() {
-        return "Select entities in that will be used as a signature for your extraction." +
-               "\nAll axioms referencing entities in the signature will be selected by default.";
+        return "Select entities in that should be in the signature for the copy/move/delete operation.";
     }
 
 

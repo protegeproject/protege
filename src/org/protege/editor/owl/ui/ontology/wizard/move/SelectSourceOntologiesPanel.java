@@ -40,7 +40,7 @@ public class SelectSourceOntologiesPanel extends AbstractSelectOntologiesPage {
 
     public SelectSourceOntologiesPanel(OWLEditorKit owlEditorKit) {
         super(ID, owlEditorKit, "Select source ontology");
-        setInstructions("Select the ontology that you want to extract axioms from");
+        setInstructions("Select the ontology that you want to copy/move/delete axioms from");
     }
 
 

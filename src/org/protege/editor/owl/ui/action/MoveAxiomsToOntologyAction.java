@@ -20,7 +20,7 @@ public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
 
         if (wiz.showModalDialog() == Wizard.FINISH_RETURN_CODE){
             try {
-                getOWLModelManager().applyChanges(wiz.getChanges());
+                wiz.applyChanges();
             }
             catch (OWLOntologyCreationException e) {
                 logger.error(e);

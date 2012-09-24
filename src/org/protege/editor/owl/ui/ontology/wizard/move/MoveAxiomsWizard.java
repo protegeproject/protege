@@ -1,12 +1,20 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.ui.util.OpenRequestHandler;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owlapi.model.*;
 
+import javax.swing.*;
 import java.net.URI;
 import java.util.*;
 
@@ -33,9 +41,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private URI physicalURI;
 
-    private boolean deleteFromOriginalOntology;
-
-    private boolean addToTargetOntology;
+    private MoveType moveType;
 
     private OntologyFormatPage ontologyFormatPage;
 
@@ -68,7 +74,9 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
         // We finish or cancel
 
-        registerWizardPanel(SelectSourceOntologiesPanel.ID, new SelectSourceOntologiesPanel(editorKit));
+//        registerWizardPanel(SelectSourceOntologiesPanel.ID, new SelectSourceOntologiesPanel(editorKit));
+        // Always use the active ontologies - it's less confusing
+        setSourceOntologies(editorKit.getOWLModelManager().getOntologies());
 
         registerWizardPanel(SelectKitPanel.ID, new SelectKitPanel(editorKit));
 
@@ -118,7 +126,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
             }
         }
 
-        setCurrentPanel(SelectSourceOntologiesPanel.ID);
+        setCurrentPanel(SelectKitPanel.ID);
     }
 
 
@@ -196,16 +204,25 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
     //
     //  Implementation of the model
 
-    public List<OWLOntologyChange> getChanges() throws OWLOntologyCreationException {
+    public void applyChanges() throws OWLOntologyCreationException {
         OWLOntology targetOntology = null;
-        if (addToTargetOntology){
+        OWLEditorKit targetEditorKit = editorKit;
+        if (moveType == MoveType.COPY || moveType == MoveType.MOVE){
             OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
             if(man.contains(getTargetOntologyID())) {
                 targetOntology = man.getOntology(getTargetOntologyID());
             }
             else {
-                targetOntology = editorKit.getModelManager().createNewOntology(getTargetOntologyID(), ontologyPhysicalLocationPage.getLocationURL());
-                editorKit.getModelManager().getOWLOntologyManager().setOntologyFormat(targetOntology, ontologyFormatPage.getFormat());
+                try {
+                    OWLEditorKit editorKit = (OWLEditorKit) ProtegeManager.getInstance().createAndSetupNewEditorKit(new OWLEditorKitFactory());
+                    targetOntology = editorKit.getOWLModelManager().getActiveOntology();
+                    targetEditorKit = editorKit;
+
+                }
+                catch (Exception e) {
+                    ProtegeApplication.getErrorLog().logError(e);
+                }
+
             }
         }
 
@@ -216,16 +233,19 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         for(OWLAxiom ax : axiomsToBeMoved) {
             for (OWLOntology ont : getSourceOntologies()) {
                 if (ont.containsAxiom(ax)) {
-                    if(deleteFromOriginalOntology) {
+                    if(moveType == MoveType.DELETE) {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
-                    if(targetOntology != null){
+                    if(moveType == MoveType.COPY || moveType == MoveType.MOVE) {
                         changes.add(new AddAxiom(targetOntology, ax));
                     }
                 }
             }
         }
-        return changes;
+        targetEditorKit.getOWLModelManager().applyChanges(changes);
+        if(editorKit.getOWLModelManager().getOWLOntologyManager().contains(targetOntologyID)) {
+            JOptionPane.showMessageDialog(getOwner(), "Axioms successfully " + moveType.getCompletedName(), "Finished", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
 
@@ -253,13 +273,17 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         this.targetOntologyID = targetOntologyID;
     }
 
-
-    public void setDeleteFromOriginalOntology(boolean deleteFromOriginalOntology) {
-        this.deleteFromOriginalOntology = deleteFromOriginalOntology;
+    public void setMoveType(MoveType moveType) {
+        this.moveType = moveType;
     }
 
+    //    public void setDeleteFromOriginalOntology(boolean deleteFromOriginalOntology) {
+//        this.deleteFromOriginalOntology = deleteFromOriginalOntology;
+//    }
+//
+//
+//    public void setAddToTargetOntology(boolean addToTargetOntology) {
+//        this.addToTargetOntology = addToTargetOntology;
+//    }
 
-    public void setAddToTargetOntology(boolean addToTargetOntology) {
-        this.addToTargetOntology = addToTargetOntology;
-    }
 }

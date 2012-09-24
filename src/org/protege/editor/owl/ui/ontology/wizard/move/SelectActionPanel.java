@@ -88,7 +88,7 @@ public class SelectActionPanel extends AbstractMoveAxiomsWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        if (isAddToTargetOntology()){
+        if (moveAxiomsButton.isSelected() || copyAxiomsButton.isSelected()){
             return SelectTargetOntologyTypePanel.ID;
         }
         return WizardPanel.FINISH;
@@ -100,19 +100,18 @@ public class SelectActionPanel extends AbstractMoveAxiomsWizardPanel {
 
     }
 
-    private boolean isDeleteFromOriginalOntology() {
-        return deleteAxiomsButton.isSelected() || moveAxiomsButton.isSelected();
-    }
-
-
-    private boolean isAddToTargetOntology() {
-        return moveAxiomsButton.isSelected() || copyAxiomsButton.isSelected();
-    }
-
-
+ 
     public void aboutToHidePanel() {
         super.aboutToHidePanel();
-        getWizard().setDeleteFromOriginalOntology(isDeleteFromOriginalOntology());
-        getWizard().setAddToTargetOntology(isAddToTargetOntology());
+ 
+        if(deleteAxiomsButton.isSelected()) {
+            getWizard().setMoveType(MoveType.DELETE);
+        }
+        else if(moveAxiomsButton.isSelected()) {
+            getWizard().setMoveType(MoveType.MOVE);
+        }
+        else {
+            getWizard().setMoveType(MoveType.COPY);
+        }
     }
 }
