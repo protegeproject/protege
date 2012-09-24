@@ -170,7 +170,7 @@ public class WizardModel {
     }
 
 
-    void setNextFinishButtonText(Object newText) {
+    public void setNextFinishButtonText(Object newText) {
 
         Object oldText = getNextFinishButtonText();
         if (!newText.equals(oldText)) {
