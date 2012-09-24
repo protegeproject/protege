@@ -274,6 +274,6 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     private boolean isValidLocation() {
         File f = new File(locationField.getText());
-        return f.getName() != null && f.getName().indexOf(".") > 0;
+        return f.getName() != null;
     }
 }
