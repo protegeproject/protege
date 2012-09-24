@@ -130,6 +130,10 @@ public class ProtegeManager {
      */
     public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
+        return createAndSetupNewEditorKit(editorKitFactory) != null;
+    }
+
+    public EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory) throws Exception {
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
@@ -141,7 +145,7 @@ public class ProtegeManager {
                     if(getEditorKitManager().getEditorKitCount() == 1) {
                         firstEditorKit = new WeakReference<EditorKit>(editorKit);
                     }
-                    return true;
+                    return editorKit;
                 }
             }
             finally {
@@ -150,7 +154,7 @@ public class ProtegeManager {
                 }
             }
         }
-        return false;
+        return null;
     }
 
 
