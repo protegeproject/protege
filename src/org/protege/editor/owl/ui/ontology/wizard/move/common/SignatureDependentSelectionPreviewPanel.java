@@ -124,7 +124,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
             }
         });
 
-        previewTimer = new Timer(1200, new ActionListener() {
+        previewTimer = new Timer(500, new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 doPreviewUpdate();
@@ -145,7 +145,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
 
     public String getInstructions() {
-        return "Confirm the signature for computing the module";
+        return "Confirm the signature";
     }
 
 
@@ -168,24 +168,19 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
                 final Set<OWLAxiom> axioms = signatureSelection.getAxioms(sourceOntologies, entities);
                 final java.util.List<OWLAxiom> axs = new ArrayList<OWLAxiom>(new TreeSet<OWLAxiom>(axioms));
                 final int upperBound = 500 > axs.size() ? axs.size() : 500;
-//                System.out.println("Updating for sig: " + entities);
                 Runnable runnable = new Runnable() {
                     public void run() {
-//                        System.out.println("Filling list");
-                        previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " in module)");
+                        previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " axioms)");
                     }
                 };
 
 
                 SwingUtilities.invokeLater(runnable);
 
-//                System.out.println(axioms.size());
-
                 Runnable runnable2 = new Runnable() {
                     public void run() {
 
                         previewList.setListData(axs.subList(0, upperBound).toArray());
-//                        System.out.println("Done");
                     }
                 };
                 SwingUtilities.invokeLater(runnable2);

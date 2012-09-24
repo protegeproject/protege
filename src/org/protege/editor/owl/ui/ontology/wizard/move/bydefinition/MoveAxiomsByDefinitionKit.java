@@ -80,9 +80,19 @@ public class MoveAxiomsByDefinitionKit extends MoveAxiomsKit implements Signatur
 
     public void initialise() throws Exception {
         selectedEntities = new HashSet<OWLEntity>();
-        selectSignaturePanel = new SelectSignaturePanel(this);
+        selectSignaturePanel = new SelectSignaturePanel(this) {
+            @Override
+            public String getID() {
+                return "MoveAxiomsByDefinition.Select.Signature";
+            }
+        };
 
-        selectPreviewPanel = new SignatureDependentSelectionPreviewPanel(this);
+        selectPreviewPanel = new SignatureDependentSelectionPreviewPanel(this) {
+            @Override
+            public String getID() {
+                return "MoveAxiomsByDefinition.Signature.Preview";
+            }
+        };
     }
 
 

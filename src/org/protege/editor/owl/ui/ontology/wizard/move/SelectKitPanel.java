@@ -13,6 +13,10 @@ public class SelectKitPanel extends AbstractMoveAxiomsWizardPanel {
 
     public static final String ID = "AxiomSelectionStrategyPanel";
 
+    public static final int DEFAULT_PREFERRED_WIDTH = 1200;
+
+    public static final int DEFAULT_PREFERRED_HEIGHT = 800;
+
     private ButtonGroup bGroup;
 
     private JPanel holder;
@@ -25,6 +29,10 @@ public class SelectKitPanel extends AbstractMoveAxiomsWizardPanel {
         setInstructions("Select the method of choosing axioms from the source ontology.");
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(DEFAULT_PREFERRED_WIDTH, DEFAULT_PREFERRED_HEIGHT);
+    }
 
     public void aboutToDisplayPanel() {
         createStrategyRadioButtons();

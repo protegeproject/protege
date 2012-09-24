@@ -10,11 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -115,7 +111,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         dataPropertySelectorPanel = new OWLDataPropertySelectorPanel(owlEditorKit, false);
         dataPropertySelectorPanel.setBorder(null);
 
-        individualSelectorPanel = new OWLIndividualSelectorPanel(owlEditorKit, false);
+        individualSelectorPanel = new OWLIndividualSelectorPanel(owlEditorKit, false, owlEditorKit.getOWLModelManager().getOntologies(), ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         individualSelectorPanel.setBorder(null);
 
         datatypeSelectorPanel = new OWLDataTypeSelectorPanel(owlEditorKit, false);

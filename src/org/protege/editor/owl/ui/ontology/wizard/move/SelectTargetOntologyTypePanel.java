@@ -1,10 +1,15 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.ui.wizard.WizardModel;
+import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /*
  * Copyright (C) 2008, University of Manchester
  *
@@ -60,8 +65,25 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
         ButtonGroup bg = new ButtonGroup();
         bg.add(mergeIntoNew);
         bg.add(mergeIntoExisting);
+        mergeIntoExisting.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                getWizard().resetButtonStates();
+            }
+        });
+        mergeIntoNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                getWizard().resetButtonStates();
+                getWizard().setTargetOntologyID(null);
+            }
+        });
     }
 
+    @Override
+    public void aboutToHidePanel() {
+        if(mergeIntoNew.isSelected()) {
+            getWizard().setTargetOntologyID(null);
+        }
+    }
 
     public void displayingPanel() {
         super.displayingPanel();
@@ -76,7 +98,7 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
 
     public Object getNextPanelDescriptor() {
         if (mergeIntoNew.isSelected()) {
-            return OntologyIDPanel.ID;
+            return WizardPanel.FINISH;
         }
         else {
             return SelectTargetOntologyPanel.ID;
