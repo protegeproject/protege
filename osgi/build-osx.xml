@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<project name = "Protege Felix Distribution Build File" default = "run" basedir = ".">
+<project name = "Protege Felix Distribution Build File" default = "install" basedir = ".">
 
 
     <!-- ===================================================================  -->
@@ -18,6 +18,10 @@
             <fileset dir="./osgi/felix/bundles" includes="*.jar"/>
             <fileset dir = "./osgi/common" includes = "*.jar"/>
         </copy>
+    	
+    	<replace file="${protege.home}/Contents/Info.plist"
+    			 token="@shortVersion@"
+    	         value="${core.major.version}.${core.minor.version}.${core.micro.version} b${core.build.number}"/>
 
         <chmod file="${protege.home}/Contents/MacOS/JavaApplicationStub" perm="u+x"/>
     </target>
