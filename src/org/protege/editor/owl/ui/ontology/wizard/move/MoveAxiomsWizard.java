@@ -233,7 +233,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         for(OWLAxiom ax : axiomsToBeMoved) {
             for (OWLOntology ont : getSourceOntologies()) {
                 if (ont.containsAxiom(ax)) {
-                    if(moveType == MoveType.DELETE) {
+                    if(moveType == MoveType.DELETE || moveType == MoveType.MOVE) {
                         changes.add(new RemoveAxiom(ont, ax));
                     }
                     if(moveType == MoveType.COPY || moveType == MoveType.MOVE) {
