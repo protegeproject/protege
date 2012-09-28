@@ -47,8 +47,6 @@
 		<dict>
 			<key>org.protege.launch.config</key>
 			<string>Contents/Resources/config.xml</string>
-			<key>apple.laf.useScreenMenuBar</key>
-			<string>true</string>
 			<key>com.apple.mrj.application.growbox.intrudes</key>
 			<string>true</string>
             <key>apple.laf.useScreenMenuBar</key>
