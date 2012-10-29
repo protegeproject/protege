@@ -110,7 +110,7 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     public void reasonerTaskStarted(String taskName) {
     	progressBar.setIndeterminate(false);
     	progressBar.setValue(0);
-    	showWindow();
+    	showWindow(taskName);
     	taskLabel.setText(taskName);
     }
 
@@ -124,12 +124,12 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
 
 
 
-    private void showWindow() {
+    private void showWindow(final String message) {
     	SwingUtilities.invokeLater(new Runnable() {
     		public void run() {
     			if (!window.isVisible()) {
     				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    taskLabel.setText(DEFAULT_MESSAGE);
+                    taskLabel.setText(message);
                     cancelledAction.setEnabled(true);
                     window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
     						screenSize.height / 2 - window.getHeight() / 2);
