@@ -1,9 +1,6 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -34,10 +31,12 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, Resettable {
 	public static final long CLOSE_PROGRESS_TIMEOUT = 1000;
 
+    public static final int PADDING = 5;
+
+    public static final String DEFAULT_MESSAGE = "Classifying...";
+
     private OWLEditorKit owlEditorKit;
 
-    private JLabel label;
-    
     private JLabel taskLabel;
 
     private JProgressBar progressBar;
@@ -50,21 +49,17 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
 
     public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        JPanel panel = new JPanel(new BorderLayout(7, 7));
+        JPanel panel = new JPanel(new BorderLayout(PADDING, PADDING));
         progressBar = new JProgressBar();
         panel.add(progressBar, BorderLayout.SOUTH);
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        label = new JLabel("Classifying...");
-        panel.add(label, BorderLayout.NORTH);
-        taskLabel = new JLabel();
+        taskLabel = new JLabel(DEFAULT_MESSAGE);
         panel.add(taskLabel, BorderLayout.NORTH);
 
-        window = new JDialog((Frame) (SwingUtilities.getAncestorOfClass(Frame.class, owlEditorKit.getWorkspace())),
+        Frame parent = (Frame) (SwingUtilities.getAncestorOfClass(Frame.class, owlEditorKit.getWorkspace()));
+        window = new JDialog(parent,
                              "Reasoner progress",
                              true);
         cancelledAction = new AbstractAction("Cancel") {
-			private static final long serialVersionUID = 2843243451134187772L;
-
 			public void actionPerformed(ActionEvent e) {
                 setCancelled();
             }
@@ -72,19 +67,27 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
         JButton cancelledButton = new JButton(cancelledAction);
 
         window.setLocation(400, 400);
-        JPanel holderPanel = new JPanel(new BorderLayout(7, 7));
+        
+        JPanel buttonHolder = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        buttonHolder.add(cancelledButton);
+        
+        JPanel holderPanel = new JPanel(new BorderLayout(PADDING, PADDING));
         holderPanel.add(panel, BorderLayout.NORTH);
-        holderPanel.add(cancelledButton, BorderLayout.EAST);
-        holderPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
+        holderPanel.add(buttonHolder, BorderLayout.SOUTH);
+        
+        holderPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
         window.getContentPane().setLayout(new BorderLayout());
         window.getContentPane().add(holderPanel, BorderLayout.NORTH);
         window.pack();
-        Dimension windowSize = window.getSize();
+        Dimension windowSize = window.getPreferredSize();
         window.setSize(400, windowSize.height);
         window.setResizable(false);
     }
     
     public void setCancelled() {
+        taskLabel.setText("Cancelled.  Waiting for reasoner to terminate...");
+        cancelledAction.setEnabled(false);
     	owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
     }
 
@@ -126,7 +129,9 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     		public void run() {
     			if (!window.isVisible()) {
     				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    				window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
+                    taskLabel.setText(DEFAULT_MESSAGE);
+                    cancelledAction.setEnabled(true);
+                    window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
     						screenSize.height / 2 - window.getHeight() / 2);
     				window.setVisible(true);
     			}
@@ -137,16 +142,13 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     public void reset() {
     	SwingUtilities.invokeLater(new Runnable() {
 			
-			@Override
 			public void run() {
 		    	window.setVisible(false);				
 			}
 		});
     }
 
-    @Override
     public void dispose() throws Exception {
     }
-
 
 }
