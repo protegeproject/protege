@@ -106,7 +106,10 @@ public class PluginInfo {
         this.label = label;
     }
 
-
+    /**
+     * Gets hold of the label.
+     * @return The label.  Not {@code null}.
+     */
     public String getLabel() {
         if (label == null){
             return id;
