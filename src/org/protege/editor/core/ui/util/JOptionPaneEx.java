@@ -23,8 +23,7 @@ public class JOptionPaneEx {
     private static Logger logger = Logger.getLogger(JOptionPaneEx.class);
 
 
-    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType,
-                                        int optionType, final JComponent defaultFocusedComponent) {
+    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent) {
 
         JOptionPane optionPane = new JOptionPane(content, messageType, optionType);
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
@@ -32,9 +31,7 @@ public class JOptionPaneEx {
         return getReturnValue(optionPane);
     }
 
-    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType,
-                                        int optionType, final JComponent defaultFocusedComponent,
-                                        Object[] options, Object defaultOption) {
+    public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent, Object[] options, Object defaultOption) {
 
         JOptionPane optionPane = new JOptionPane(content, messageType, optionType, null, options, defaultOption);
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
@@ -43,18 +40,20 @@ public class JOptionPaneEx {
     }
 
 
-    public static int showValidatingConfirmDialog(Component parent, String title, JComponent component, int messageType,
-                                                  int optionType, final JComponent defaultFocusedComponent) {
-        if (component instanceof VerifiedInputEditor){
+    public static int showValidatingConfirmDialog(Component parent, String title, JComponent component, int messageType, int optionType, final JComponent defaultFocusedComponent) {
+        if (component instanceof VerifiedInputEditor) {
             final VerifyingOptionPane optionPane = new VerifyingOptionPane(component, messageType, optionType) {
                 /**
-                 * 
+                 *
                  */
                 private static final long serialVersionUID = 7128847118051849761L;
 
                 public void selectInitialValue() {
                     // This is overridden so that the option pane dialog default
                     // button doesn't get the focus.
+                    if (defaultFocusedComponent != null) {
+                        defaultFocusedComponent.requestFocusInWindow();
+                    }
                 }
             };
             final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
@@ -69,9 +68,8 @@ public class JOptionPaneEx {
             dlg.setVisible(true);
             return getReturnValue(optionPane);
         }
-        else{
-            logger.warn("Component should implement VerifiedInputEditor for validating dialog to work. " +
-                        "Using normal dialog with no validating");
+        else {
+            logger.warn("Component should implement VerifiedInputEditor for validating dialog to work. " + "Using normal dialog with no validating");
             return showConfirmDialog(parent, title, component, messageType, optionType, null);
         }
     }
@@ -95,10 +93,21 @@ public class JOptionPaneEx {
 
     private static int getReturnValue(JOptionPane optionPane) {
         Object value = optionPane.getValue();
-        if (value != null && optionPane.getOptions() != null){
-            value = Arrays.binarySearch(optionPane.getOptions(), value);
+        if (value == null) {
+            return JOptionPane.CLOSED_OPTION;
         }
-        return (value != null) ? (Integer) value : JOptionPane.CLOSED_OPTION;
+        final Object[] options = optionPane.getOptions();
+        if (options == null) {
+            return JOptionPane.CLOSED_OPTION;
+        }
+
+        for (int i = 0; i < options.length; i++) {
+            Object option = options[i];
+            if (option.equals(value)) {
+                return i;
+            }
+        }
+        return JOptionPane.CLOSED_OPTION;
     }
 
 }
