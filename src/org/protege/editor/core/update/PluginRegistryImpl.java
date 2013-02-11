@@ -6,12 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -107,8 +102,19 @@ public class PluginRegistryImpl implements PluginRegistry {
             }
             checkBundles();
             visit(root);
+            sortPlugins();
         }
-        
+
+        private void sortPlugins() {
+            Collections.sort(plugins, new Comparator<PluginInfo>() {
+                public int compare(PluginInfo o1, PluginInfo o2) {
+                    final String l1 = o1.getLabel();
+                    final String l2 = o2.getLabel();
+                    return l1.compareToIgnoreCase(l2);
+                }
+            });
+        }
+
         private void checkBundles() {
             if (context != null) {
                 for (Bundle bundle : context.getBundles()) {
