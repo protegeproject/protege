@@ -93,21 +93,10 @@ public class JOptionPaneEx {
 
     private static int getReturnValue(JOptionPane optionPane) {
         Object value = optionPane.getValue();
-        if (value == null) {
-            return JOptionPane.CLOSED_OPTION;
+        if (value != null && optionPane.getOptions() != null){
+            value = Arrays.binarySearch(optionPane.getOptions(), value);
         }
-        final Object[] options = optionPane.getOptions();
-        if (options == null) {
-            return JOptionPane.CLOSED_OPTION;
-        }
-
-        for (int i = 0; i < options.length; i++) {
-            Object option = options[i];
-            if (option.equals(value)) {
-                return i;
-            }
-        }
-        return JOptionPane.CLOSED_OPTION;
+        return (value != null) ? (Integer) value : JOptionPane.CLOSED_OPTION;
     }
 
 }
