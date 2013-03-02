@@ -27,7 +27,7 @@
    <!-- 
         these properties probably don't need changing
         -->
-   <property name = "src"               location = "./src"/>  
+   <property name = "src"               location = "./src/main/java"/>  
    <property name = "build"             location = "./build"/>
    <property name = "classes"           location = "${build}/classes"/>
    <property name = "lib"               location = "./lib"/>
