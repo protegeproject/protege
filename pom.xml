@@ -1,158 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>protege4</groupId>
-	<artifactId>org.protege.common</artifactId>
-	<packaging>jar</packaging>
-	<name>Core Protege Libraries</name>
-	<version>4.1.0.213_SNAPSHOT</version>
-    <!-- <version>4.2.0.b269_2012_04_03_0637</version> -->
 
 	<parent>
-		<groupId>protege4</groupId>
-		<artifactId>masterpom</artifactId>
-		<version>1.0.3</version>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
 	</parent>
 
-	<properties>
-		<maven.compiler.source>1.5</maven.compiler.source>
-		<maven.compiler.target>1.5</maven.compiler.target>
-	</properties>
-
-	<distributionManagement>
-		<!-- If this pom.xml is executed on a developer's machine (mvn deploy) 
-			the developer's local repositories will be used, if executed on the BMIR the BMIR repositories. -->
-		<repository>
-			<id>releases</id>
-			<name>Releases</name>
-			<url>${nexus.path}/bmir-release</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Snapshots</name>
-			<url>${nexus.path}/snapshots</url>
-			<!-- <uniqueVersion>false</uniqueVersion> -->
-		</snapshotRepository>
-		
-		
-	</distributionManagement>
+	<groupId>edu.stanford.protege</groupId>
+	<artifactId>org.protege.common</artifactId>
+	<version>4.2.0-rc1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	
+	<name>Protege Common</name>
+	<description>Core Protege Libraries</description>
+	<url>http://protege.stanford.edu</url>
+	<organization>
+		<name>Stanford Center for Biomedical Informatics Research</name>
+		<url>http://bmir.stanford.edu/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>Timothy Redmond</name>
+			<email>tredmond@stanford.edu</email>
+		</developer>
+	</developers>
+	
+	<mailingLists>
+		<mailingList>
+			<name>p4-feedback</name>
+			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
+			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
+			<post>p4-feedback@lists.stanford.edu</post>
+			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
+			<otherArchives>
+				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
 
 	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</connection>
-		<!--<developerConnection>scm:svn:https://127.0.0.1/svn/my-project</developerConnection>-->
-		<tag>HEAD</tag>
-		<url>http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</url>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/</url>
 	</scm>
 
+    <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 	<dependencies>
-        <dependency>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>osgi-core-prerelease</artifactId>
-          <version>4.0.1</version>
-        </dependency>
-        <dependency>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-          <version>1.2.16</version>
-        </dependency>
-        <dependency>
-          <groupId>com.jgoodies</groupId>
-          <artifactId>looks</artifactId>
-          <version>2.2.1</version>
-        </dependency>
-        <dependency>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-          <version>1.1.1</version>
-        </dependency>
-        <dependency>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
-          <version>1.0</version>
-        </dependency>
 		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>5.10</version>
-			<classifier>jdk15</classifier>
-			<scope>test</scope>
-		</dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.main</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+        <dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+        </dependency>
 	</dependencies>
 
-	<description>Common Protege Libraries</description>
-	<organization>
-		<name>Stanford University, BMIR</name>
-	</organization>
-
 	<build>
-        <!-- Backwards compatibility fixes that should be removed -->
-        <sourceDirectory>src</sourceDirectory>
-        <resources>
-          <resource>
-            <directory>resources</directory>
-          </resource>
-        </resources>
-        <testSourceDirectory>junit</testSourceDirectory>
-        <testResources>
-          <testResource>
-            <directory>junit/ontologies</directory>
-          </testResource>
-        </testResources>
-        <!-- End of backwards compatibility fixes that should be removed -->
-
 		<plugins>
-	        <!-- property reader for version information found in
-	             maven branch at svn revision 21046 -->
-
-            <!-- the old maven-bundle-plugin configuration can be
-                 found in svn revision 24037 -->
-
-			<!-- Create jar file -->
-			<plugin>
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-		
-		
-			<!-- Execution of unit tests Generates output for reporting plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
 				<configuration>
-					<!-- We set skip to true. So the unit tests can be explicitly defined 
-						in xml file reference below -->
-					<skip>true</skip>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
+            </plugin>
+            
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 				<executions>
 					<execution>
-						<id>unit-tests</id>
-						<phase>test</phase>
+						<id>attach-sources</id>
 						<goals>
-							<goal>test</goal>
+							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<skip>false</skip>
-							<suiteXmlFiles>
-								<suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
-							</suiteXmlFiles>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- Compile Java Code -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
