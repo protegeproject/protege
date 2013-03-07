@@ -11,7 +11,6 @@ public class OSGi {
      * Protege does not know when to exit.  This routine tells the Protege core application plugin if the 
      * System.exit should be called in the Protege core application handling.
      * 
-     * @return
      */
     public static boolean systemExitHandledByLauncher() {
         String forceExit = System.getProperty("org.protege.osgi.launcherHandlesExit");
