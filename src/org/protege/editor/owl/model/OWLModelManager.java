@@ -110,7 +110,6 @@ public interface OWLModelManager extends ModelManager {
     /**
      * Checks if the ontology has been changed since it was loaded or last saved.
      * @param ontology
-     * @return
      */
     boolean isDirty(OWLOntology ontology);
     

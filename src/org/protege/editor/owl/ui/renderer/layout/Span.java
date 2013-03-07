@@ -74,7 +74,6 @@ public class Span {
 
     /**
      * Determines if this span is empty.  A span is empty if its start index is equal to its end index.
-     * @return
      */
     public boolean isEmpty() {
         return endIndex <= startIndex;

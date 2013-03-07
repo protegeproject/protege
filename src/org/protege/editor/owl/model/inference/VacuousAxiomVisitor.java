@@ -71,7 +71,6 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 	 * one of the cases.
 	 * 
 	 * @param axiom
-	 * @return
 	 */
 	public static boolean involvesInverseSquared(OWLAxiom axiom) {
 		if (axiom instanceof OWLEquivalentObjectPropertiesAxiom) {
