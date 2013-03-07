@@ -54,7 +54,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     /**
      * Clears the reference ontology.
-     * @see {OWLAnnotationCellRenderer2#setOntology()}
+     * @see OWLAnnotationCellRenderer2#setOntology()
      */
     public void clearReferenceOntology() {
         ontology = null;
