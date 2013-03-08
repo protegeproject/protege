@@ -16,7 +16,7 @@ import java.util.Map;
  *     {@link #DEFAULT_CACHE_SIZE} field value.
  * </p>
  * <p>
- *     Pages are cached by {@PageCacheKey}s, which describe some object represented by the page, and whether or not
+ *     Pages are cached by @PageCacheKey, which describe some object represented by the page, and whether or not
  *     the page is rendered as selected and with or without focus.
  * </p>
  */
