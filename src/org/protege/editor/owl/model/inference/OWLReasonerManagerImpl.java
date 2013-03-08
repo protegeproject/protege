@@ -243,10 +243,10 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 		return ReasonerStatus.OUT_OF_SYNC;
                 	}
                 }
-                catch (Exception e) {
+                catch (Throwable t) {
                 	killCurrentReasoner();
-                	logger.warn("Reasoner died.");
-                	throw new ReasonerDiedException(e);
+                	logger.warn("Protege terminated reasoner.");
+                	throw new ReasonerDiedException(t);
                 }
     		}
     	}
