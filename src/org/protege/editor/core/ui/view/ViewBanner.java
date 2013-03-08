@@ -186,7 +186,7 @@ public class ViewBanner extends JPanel {
     /**
      * Sets the font for this component.
      * @param font the desired <code>Font</code> for this component
-     * @beaninfo preferred: true
+     * beaninfo preferred: true
      * bound: true
      * attribute: visualUpdate true
      * description: The font for the component.
