@@ -34,8 +34,9 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Jun 8, 2009<br><br>
  *
- * @TODO remove when added to the OWL API
  */
+
+// TODO Remove when added to the OWL API
 public interface AnnotationContainer {
 
     Set<OWLAnnotation> getAnnotations();
