@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
- 1148";uses:="org.osgi.framework,org.protege.editor.core,org.protege.e
+Export-Package: org.protege.editor.owl;version="4.2.0.b292_2013_03_12_
+ 0500";uses:="org.osgi.framework,org.protege.editor.core,org.protege.e
  ditor.core.editorkit,org.protege.editor.core.ui.workspace,org.protege
  .editor.owl.model,org.semanticweb.owlapi.model",org.protege.editor.ow
- l.model;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,org.e
+ l.model;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,org.e
  clipse.core.runtime,org.protege.editor.core,org.protege.editor.core.e
  ditorkit,org.protege.editor.core.editorkit.plugin,org.protege.editor.
  core.plugin,org.protege.editor.core.ui.error,org.protege.editor.core.
@@ -19,79 +19,79 @@ Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
  r,org.protege.editor.owl.ui.util,org.protege.owlapi.model,org.protege
  .xmlcatalog,org.semanticweb.owlapi.model,org.semanticweb.owlapi.reaso
  ner,org.semanticweb.owlapi.util",org.protege.editor.owl.model.cache;v
- ersion="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.core,or
+ ersion="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.core,or
  g.protege.editor.owl.model,org.protege.editor.owl.model.event,org.pro
  tege.editor.owl.ui.renderer,org.semanticweb.owlapi.model,org.semantic
  web.owlapi.util",org.protege.editor.owl.model.classexpression;version
- ="4.2.0.b291_2013_03_08_1148";uses:="org.semanticweb.owlapi.model",or
+ ="4.2.0.b292_2013_03_12_0500";uses:="org.semanticweb.owlapi.model",or
  g.protege.editor.owl.model.classexpression.anonymouscls;version="4.2.
- 0.b291_2013_03_08_1148";uses:="org.protege.editor.core,org.protege.ed
+ 0.b292_2013_03_12_0500";uses:="org.protege.editor.core,org.protege.ed
  itor.owl.model,org.protege.editor.owl.model.entity,org.protege.editor
  .owl.model.io,org.semanticweb.owlapi.model,org.semanticweb.owlapi.uti
- l",org.protege.editor.owl.model.entity;version="4.2.0.b291_2013_03_08
- _1148";uses:="org.protege.editor.core.prefs,org.protege.editor.owl.mo
+ l",org.protege.editor.owl.model.entity;version="4.2.0.b292_2013_03_12
+ _0500";uses:="org.protege.editor.core.prefs,org.protege.editor.owl.mo
  del,org.semanticweb.owlapi.model",org.protege.editor.owl.model.event;
- version="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.owl.mo
- del",org.protege.editor.owl.model.find;version="4.2.0.b291_2013_03_08
- _1148";uses:="org.protege.editor.core.prefs,org.protege.editor.owl.mo
+ version="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.owl.mo
+ del",org.protege.editor.owl.model.find;version="4.2.0.b292_2013_03_12
+ _0500";uses:="org.protege.editor.core.prefs,org.protege.editor.owl.mo
  del,org.protege.editor.owl.model.cache,org.semanticweb.owlapi.model",
- org.protege.editor.owl.model.hierarchy;version="4.2.0.b291_2013_03_08
- _1148";uses:="org.protege.editor.core,org.protege.editor.owl.model,or
+ org.protege.editor.owl.model.hierarchy;version="4.2.0.b292_2013_03_12
+ _0500";uses:="org.protege.editor.core,org.protege.editor.owl.model,or
  g.protege.editor.owl.model.event,org.protege.owlapi.inference.orphan,
  org.semanticweb.owlapi.model,org.semanticweb.owlapi.reasoner,org.sema
  nticweb.owlapi.util",org.protege.editor.owl.model.hierarchy.cls;versi
- on="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.owl.model,o
+ on="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.owl.model,o
  rg.protege.editor.owl.model.event,org.protege.editor.owl.model.hierar
  chy,org.semanticweb.owlapi.model,org.semanticweb.owlapi.reasoner",org
- .protege.editor.owl.model.hierarchy.property;version="4.2.0.b291_2013
- _03_08_1148";uses:="org.protege.editor.owl.model,org.protege.editor.o
+ .protege.editor.owl.model.hierarchy.property;version="4.2.0.b292_2013
+ _03_12_0500";uses:="org.protege.editor.owl.model,org.protege.editor.o
  wl.model.hierarchy,org.semanticweb.owlapi.model,org.semanticweb.owlap
  i.reasoner",org.protege.editor.owl.model.hierarchy.tabbed;version="4.
- 2.0.b291_2013_03_08_1148";uses:="org.protege.editor.owl.model.entity,
+ 2.0.b292_2013_03_12_0500";uses:="org.protege.editor.owl.model.entity,
  org.semanticweb.owlapi.model",org.protege.editor.owl.model.history;ve
- rsion="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.owl.mode
+ rsion="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.owl.mode
  l,org.semanticweb.owlapi.model",org.protege.editor.owl.model.inferenc
- e;version="4.2.0.b291_2013_03_08_1148";uses:="org.apache.log4j,org.ec
+ e;version="4.2.0.b292_2013_03_12_0500";uses:="org.apache.log4j,org.ec
  lipse.core.runtime,org.protege.editor.core,org.protege.editor.core.pl
  ugin,org.protege.editor.core.prefs,org.protege.editor.owl.model,org.s
  emanticweb.owlapi.model,org.semanticweb.owlapi.reasoner,org.semanticw
- eb.owlapi.util",org.protege.editor.owl.model.io;version="4.2.0.b291_2
- 013_03_08_1148";uses:="org.eclipse.core.runtime,org.protege.editor.co
+ eb.owlapi.util",org.protege.editor.owl.model.io;version="4.2.0.b292_2
+ 013_03_12_0500";uses:="org.eclipse.core.runtime,org.protege.editor.co
  re,org.protege.editor.core.plugin,org.protege.editor.owl,org.protege.
  editor.owl.model,org.semanticweb.owlapi.model",org.protege.editor.owl
- .model.library;version="4.2.0.b291_2013_03_08_1148";uses:="org.eclips
+ .model.library;version="4.2.0.b292_2013_03_12_0500";uses:="org.eclips
  e.core.runtime,org.protege.editor.core.plugin,org.protege.editor.owl.
  ui.library,org.protege.xmlcatalog,org.protege.xmlcatalog.entry",org.p
- rotege.editor.owl.model.library.folder;version="4.2.0.b291_2013_03_08
- _1148";uses:="org.apache.log4j,org.protege.editor.owl.model.library,o
+ rotege.editor.owl.model.library.folder;version="4.2.0.b292_2013_03_12
+ _0500";uses:="org.apache.log4j,org.protege.editor.owl.model.library,o
  rg.protege.editor.owl.ui.library,org.protege.xmlcatalog,org.protege.x
  mlcatalog.entry,org.semanticweb.owlapi.model,org.xml.sax,org.xml.sax.
- helpers",org.protege.editor.owl.model.namespace;version="4.2.0.b291_2
- 013_03_08_1148",org.protege.editor.owl.model.parser;version="4.2.0.b2
- 91_2013_03_08_1148";uses:="org.protege.editor.owl.model.classexpressi
+ helpers",org.protege.editor.owl.model.namespace;version="4.2.0.b292_2
+ 013_03_12_0500",org.protege.editor.owl.model.parser;version="4.2.0.b2
+ 92_2013_03_12_0500";uses:="org.protege.editor.owl.model.classexpressi
  on,org.protege.editor.owl.model.find,org.semanticweb.owlapi.expressio
  n,org.semanticweb.owlapi.model",org.protege.editor.owl.model.refactor
- ;version="4.2.0.b291_2013_03_08_1148";uses:="org.semanticweb.owlapi.m
+ ;version="4.2.0.b292_2013_03_12_0500";uses:="org.semanticweb.owlapi.m
  odel",org.protege.editor.owl.model.refactor.ontology;version="4.2.0.b
- 291_2013_03_08_1148";uses:="org.protege.editor.core,org.protege.edito
+ 292_2013_03_12_0500";uses:="org.protege.editor.core,org.protege.edito
  r.owl.model,org.protege.editor.owl.model.entity,org.semanticweb.owlap
  i.model,org.semanticweb.owlapi.util",org.protege.editor.owl.model.rep
- ository;version="4.2.0.b291_2013_03_08_1148";uses:="org.protege.edito
+ ository;version="4.2.0.b292_2013_03_12_0500";uses:="org.protege.edito
  r.core,org.protege.editor.core.editorkit,org.protege.editor.owl.model
  .repository.extractors,org.semanticweb.owlapi.model",org.protege.edit
- or.owl.model.repository.extractors;version="4.2.0.b291_2013_03_08_114
- 8";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi.rdf.syn
+ or.owl.model.repository.extractors;version="4.2.0.b292_2013_03_12_050
+ 0";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi.rdf.syn
  tax,org.xml.sax",org.protege.editor.owl.model.selection;version="4.2.
- 0.b291_2013_03_08_1148";uses:="javax.swing.event,org.protege.editor.c
+ 0.b292_2013_03_12_0500";uses:="javax.swing.event,org.protege.editor.c
  ore,org.protege.editor.owl,org.protege.editor.owl.model.util,org.sema
  nticweb.owlapi.model",org.protege.editor.owl.model.selection.axioms;v
- ersion="4.2.0.b291_2013_03_08_1148",org.protege.editor.owl.model.sele
- ction.ontologies;version="4.2.0.b291_2013_03_08_1148";uses:="org.prot
+ ersion="4.2.0.b292_2013_03_12_0500",org.protege.editor.owl.model.sele
+ ction.ontologies;version="4.2.0.b292_2013_03_12_0500";uses:="org.prot
  ege.editor.owl.model",org.protege.editor.owl.model.util;version="4.2.
- 0.b291_2013_03_08_1148";uses:="org.apache.log4j,org.protege.editor.ow
+ 0.b292_2013_03_12_0500";uses:="org.apache.log4j,org.protege.editor.ow
  l.model,org.protege.editor.owl.model.hierarchy,org.semanticweb.owlapi
  .model,org.semanticweb.owlapi.util",org.protege.editor.owl.ui;version
- ="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,ja
+ ="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,ja
  vax.swing.tree,org.protege.editor.core,org.protege.editor.core.ui.uti
  l,org.protege.editor.core.ui.view,org.protege.editor.core.ui.wizard,o
  rg.protege.editor.core.ui.workspace,org.protege.editor.owl,org.proteg
@@ -101,7 +101,7 @@ Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
  .protege.editor.owl.ui.list,org.protege.editor.owl.ui.ontology.locati
  on,org.protege.editor.owl.ui.tree,org.protege.editor.owl.ui.view,org.
  semanticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.edi
- tor.owl.ui.action;version="4.2.0.b291_2013_03_08_1148";uses:="javax.s
+ tor.owl.ui.action;version="4.2.0.b292_2013_03_12_0500";uses:="javax.s
  wing,javax.swing.event,javax.swing.tree,org.protege.editor.core.edito
  rkit,org.protege.editor.core.prefs,org.protege.editor.core.ui.action,
  org.protege.editor.core.ui.util,org.protege.editor.core.ui.view,org.p
@@ -112,201 +112,201 @@ Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
  rg.protege.editor.owl.model.selection,org.protege.editor.owl.model.se
  lection.ontologies,org.protege.editor.owl.ui.view,org.semanticweb.owl
  api.model,org.semanticweb.owlapi.util",org.protege.editor.owl.ui.acti
- on.export.inferred;version="4.2.0.b291_2013_03_08_1148";uses:="javax.
+ on.export.inferred;version="4.2.0.b292_2013_03_12_0500";uses:="javax.
  swing,org.protege.editor.core.ui.wizard,org.protege.editor.core.ui.wo
  rkspace,org.protege.editor.owl,org.protege.editor.owl.ui,org.protege.
  editor.owl.ui.action,org.protege.editor.owl.ui.ontology.wizard.create
  ,org.semanticweb.owlapi.model,org.semanticweb.owlapi.reasoner,org.sem
  anticweb.owlapi.util",org.protege.editor.owl.ui.axiom;version="4.2.0.
- b291_2013_03_08_1148";uses:="javax.swing,org.protege.editor.owl,org.p
+ b292_2013_03_12_0500";uses:="javax.swing,org.protege.editor.owl,org.p
  rotege.editor.owl.model.util,org.protege.editor.owl.ui.list,org.seman
  ticweb.owlapi.model",org.protege.editor.owl.ui.clsdescriptioneditor;v
- ersion="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.bo
+ ersion="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.bo
  rder,javax.swing.event,javax.swing.text,org.coode.owlapi.manchesterow
  lsyntax,org.protege.editor.core.prefs,org.protege.editor.core.ui,org.
  protege.editor.core.ui.util,org.protege.editor.owl,org.protege.editor
  .owl.model,org.protege.editor.owl.model.classexpression,org.semanticw
  eb.owlapi.expression,org.semanticweb.owlapi.model",org.protege.editor
- .owl.ui.editor;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swin
+ .owl.ui.editor;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swin
  g,javax.swing.event,org.eclipse.core.runtime,org.protege.editor.core,
  org.protege.editor.core.plugin,org.protege.editor.core.ui.util,org.pr
  otege.editor.owl,org.protege.editor.owl.model.classexpression,org.pro
  tege.editor.owl.ui.clsdescriptioneditor,org.protege.editor.owl.ui.fra
  me,org.protege.editor.owl.ui.frame.individual,org.protege.editor.owl.
  ui.selector,org.semanticweb.owlapi.model,org.semanticweb.owlapi.util"
- ,org.protege.editor.owl.ui.error;version="4.2.0.b291_2013_03_08_1148"
+ ,org.protege.editor.owl.ui.error;version="4.2.0.b292_2013_03_12_0500"
  ;uses:="javax.swing,javax.swing.text,org.protege.editor.core.ui.error
  ,org.protege.editor.owl,org.semanticweb.owlapi.expression,org.semanti
  cweb.owlapi.io,org.semanticweb.owlapi.model,org.semanticweb.owlapi.rd
- f.syntax",org.protege.editor.owl.ui.explanation;version="4.2.0.b291_2
- 013_03_08_1148";uses:="javax.swing,org.eclipse.core.runtime,org.prote
+ f.syntax",org.protege.editor.owl.ui.explanation;version="4.2.0.b292_2
+ 013_03_12_0500";uses:="javax.swing,org.eclipse.core.runtime,org.prote
  ge.editor.core.plugin,org.protege.editor.owl,org.protege.editor.owl.m
  odel,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.explanat
- ion.io;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,org.ec
+ ion.io;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,org.ec
  lipse.core.runtime,org.protege.editor.core.editorkit,org.protege.edit
  or.core.plugin,org.protege.editor.owl,org.protege.editor.owl.model,or
  g.semanticweb.owlapi.model",org.protege.editor.owl.ui.find;version="4
- .2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,org.p
+ .2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,org.p
  rotege.editor.core.ui.util,org.protege.editor.owl,org.protege.editor.
  owl.ui.view,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.f
- rame;version="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.c
+ rame;version="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.c
  ore.ui.list,org.protege.editor.owl,org.protege.editor.owl.model,org.p
  rotege.editor.owl.model.event,org.protege.editor.owl.ui.editor,org.se
  manticweb.owlapi.model,org.semanticweb.owlapi.reasoner,org.semanticwe
  b.owlapi.util",org.protege.editor.owl.ui.frame.annotationproperty;ver
- sion="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.owl,org.p
+ sion="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.owl,org.p
  rotege.editor.owl.ui.editor,org.protege.editor.owl.ui.frame,org.seman
  ticweb.owlapi.model",org.protege.editor.owl.ui.frame.cls;version="4.2
- .0.b291_2013_03_08_1148";uses:="org.protege.editor.owl,org.protege.ed
+ .0.b292_2013_03_12_0500";uses:="org.protege.editor.owl,org.protege.ed
  itor.owl.ui.editor,org.protege.editor.owl.ui.frame,org.semanticweb.ow
  lapi.model",org.protege.editor.owl.ui.frame.dataproperty;version="4.2
- .0.b291_2013_03_08_1148";uses:="org.protege.editor.owl,org.protege.ed
+ .0.b292_2013_03_12_0500";uses:="org.protege.editor.owl,org.protege.ed
  itor.owl.ui.editor,org.protege.editor.owl.ui.frame,org.protege.editor
  .owl.ui.frame.property,org.semanticweb.owlapi.model,org.semanticweb.o
  wlapi.reasoner",org.protege.editor.owl.ui.frame.datatype;version="4.2
- .0.b291_2013_03_08_1148";uses:="org.protege.editor.owl,org.protege.ed
+ .0.b292_2013_03_12_0500";uses:="org.protege.editor.owl,org.protege.ed
  itor.owl.ui.editor,org.protege.editor.owl.ui.frame,org.semanticweb.ow
  lapi.model",org.protege.editor.owl.ui.frame.individual;version="4.2.0
- .b291_2013_03_08_1148";uses:="org.protege.editor.owl,org.protege.edit
+ .b292_2013_03_12_0500";uses:="org.protege.editor.owl,org.protege.edit
  or.owl.ui.editor,org.protege.editor.owl.ui.frame,org.semanticweb.owla
  pi.model,org.semanticweb.owlapi.reasoner",org.protege.editor.owl.ui.f
- rame.objectproperty;version="4.2.0.b291_2013_03_08_1148";uses:="org.p
+ rame.objectproperty;version="4.2.0.b292_2013_03_12_0500";uses:="org.p
  rotege.editor.owl,org.protege.editor.owl.ui.editor,org.protege.editor
  .owl.ui.frame,org.protege.editor.owl.ui.frame.property,org.semanticwe
  b.owlapi.model,org.semanticweb.owlapi.reasoner",org.protege.editor.ow
- l.ui.frame.ontology;version="4.2.0.b291_2013_03_08_1148";uses:="org.p
+ l.ui.frame.ontology;version="4.2.0.b292_2013_03_12_0500";uses:="org.p
  rotege.editor.owl,org.protege.editor.owl.ui.frame",org.protege.editor
- .owl.ui.frame.property;version="4.2.0.b291_2013_03_08_1148";uses:="or
+ .owl.ui.frame.property;version="4.2.0.b292_2013_03_12_0500";uses:="or
  g.protege.editor.owl,org.protege.editor.owl.ui.editor,org.protege.edi
  tor.owl.ui.frame,org.semanticweb.owlapi.model,org.semanticweb.owlapi.
- reasoner",org.protege.editor.owl.ui.framelist;version="4.2.0.b291_201
- 3_03_08_1148";uses:="javax.swing,javax.swing.border,javax.swing.event
+ reasoner",org.protege.editor.owl.ui.framelist;version="4.2.0.b292_201
+ 3_03_12_0500";uses:="javax.swing,javax.swing.border,javax.swing.event
  ,javax.swing.plaf.basic,org.protege.editor.core.ui,org.protege.editor
  .core.ui.list,org.protege.editor.core.ui.util,org.protege.editor.owl,
  org.protege.editor.owl.model,org.protege.editor.owl.ui.editor,org.pro
  tege.editor.owl.ui.explanation,org.protege.editor.owl.ui.frame,org.pr
  otege.editor.owl.ui.renderer,org.protege.editor.owl.ui.view,org.seman
  ticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.editor.o
- wl.ui.hierarchy.creation;version="4.2.0.b291_2013_03_08_1148";uses:="
+ wl.ui.hierarchy.creation;version="4.2.0.b292_2013_03_12_0500";uses:="
  javax.swing,org.protege.editor.core.ui.wizard,org.protege.editor.owl,
  org.protege.editor.owl.ui,org.semanticweb.owlapi.model",org.protege.e
- ditor.owl.ui.inference;version="4.2.0.b291_2013_03_08_1148";uses:="ja
+ ditor.owl.ui.inference;version="4.2.0.b292_2013_03_12_0500";uses:="ja
  vax.swing,javax.swing.table,org.eclipse.core.runtime,org.protege.edit
  or.core,org.protege.editor.core.plugin,org.protege.editor.core.ui.uti
  l,org.protege.editor.owl,org.protege.editor.owl.model.event,org.prote
  ge.editor.owl.ui.action,org.protege.editor.owl.ui.preferences,org.sem
  anticweb.owlapi.reasoner",org.protege.editor.owl.ui.library;version="
- 4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,java
+ 4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,java
  x.swing.tree,org.protege.editor.owl,org.protege.editor.owl.ui.action,
  org.protege.xmlcatalog,org.protege.xmlcatalog.entry",org.protege.edit
- or.owl.ui.library.plugins;version="4.2.0.b291_2013_03_08_1148";uses:=
+ or.owl.ui.library.plugins;version="4.2.0.b292_2013_03_12_0500";uses:=
  "javax.swing,org.protege.editor.owl.ui.library,org.protege.xmlcatalog
  ,org.protege.xmlcatalog.entry",org.protege.editor.owl.ui.list;version
- ="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.border,o
+ ="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.border,o
  rg.protege.editor.core.ui.list,org.protege.editor.owl,org.protege.edi
  tor.owl.model,org.protege.editor.owl.ui.editor,org.protege.editor.owl
  .ui.renderer,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.
- metrics;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax
+ metrics;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax
  .swing.table,javax.swing.tree,org.protege.editor.owl,org.protege.edit
  or.owl.model,org.protege.editor.owl.model.event,org.protege.editor.ow
  l.ui,org.protege.editor.owl.ui.view,org.semanticweb.owlapi.metrics,or
  g.semanticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.e
- ditor.owl.ui.navigation;version="4.2.0.b291_2013_03_08_1148";uses:="j
+ ditor.owl.ui.navigation;version="4.2.0.b292_2013_03_12_0500";uses:="j
  avax.swing,javax.swing.event,org.protege.editor.owl,org.protege.edito
- r.owl.model",org.protege.editor.owl.ui.ontology;version="4.2.0.b291_2
- 013_03_08_1148";uses:="javax.swing,javax.swing.event,org.protege.edit
+ r.owl.model",org.protege.editor.owl.ui.ontology;version="4.2.0.b292_2
+ 013_03_12_0500";uses:="javax.swing,javax.swing.event,org.protege.edit
  or.owl,org.protege.editor.owl.model,org.protege.editor.owl.model.even
  t,org.protege.editor.owl.model.io,org.protege.editor.owl.ui.preferenc
  es,org.protege.editor.owl.ui.view,org.semanticweb.owlapi.model",org.p
- rotege.editor.owl.ui.ontology.annotation;version="4.2.0.b291_2013_03_
- 08_1148";uses:="org.protege.editor.owl,org.protege.editor.owl.ui.list
+ rotege.editor.owl.ui.ontology.annotation;version="4.2.0.b292_2013_03_
+ 12_0500";uses:="org.protege.editor.owl,org.protege.editor.owl.ui.list
  ,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.ontology.imp
- orts;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,org.prot
+ orts;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,org.prot
  ege.editor.core.ui.list,org.protege.editor.owl,org.protege.editor.owl
  .ui.renderer,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.
- ontology.imports.missing;version="4.2.0.b291_2013_03_08_1148";uses:="
+ ontology.imports.missing;version="4.2.0.b292_2013_03_12_0500";uses:="
  javax.swing,javax.swing.event,org.protege.editor.core.ui.wizard,org.p
  rotege.editor.owl,org.protege.editor.owl.model,org.protege.editor.owl
  .ui,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.ontology.
- imports.wizard;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swin
+ imports.wizard;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swin
  g,org.protege.editor.core.ui.wizard,org.protege.editor.owl,org.proteg
  e.xmlcatalog,org.protege.xmlcatalog.entry,org.semanticweb.owlapi.mode
  l",org.protege.editor.owl.ui.ontology.imports.wizard.page;version="4.
- 2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.border,javax
+ 2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.border,javax
  .swing.event,org.protege.editor.core.ui,org.protege.editor.core.ui.ut
  il,org.protege.editor.core.ui.wizard,org.protege.editor.owl,org.prote
  ge.editor.owl.ui,org.protege.editor.owl.ui.ontology.imports.wizard",o
- rg.protege.editor.owl.ui.ontology.location;version="4.2.0.b291_2013_0
- 3_08_1148";uses:="javax.swing,javax.swing.table,org.protege.editor.co
+ rg.protege.editor.owl.ui.ontology.location;version="4.2.0.b292_2013_0
+ 3_12_0500";uses:="javax.swing,javax.swing.table,org.protege.editor.co
  re.ui.list,org.protege.editor.owl,org.protege.editor.owl.model,org.pr
  otege.editor.owl.ui.action,org.semanticweb.owlapi.model",org.protege.
- editor.owl.ui.ontology.wizard;version="4.2.0.b291_2013_03_08_1148";us
+ editor.owl.ui.ontology.wizard;version="4.2.0.b292_2013_03_12_0500";us
  es:="javax.swing,javax.swing.event,org.protege.editor.owl,org.protege
  .editor.owl.ui",org.protege.editor.owl.ui.ontology.wizard.create;vers
- ion="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event
+ ion="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event
  ,org.protege.editor.core.editorkit,org.protege.editor.core.ui.wizard,
  org.protege.editor.owl,org.semanticweb.owlapi.model",org.protege.edit
- or.owl.ui.ontology.wizard.merge;version="4.2.0.b291_2013_03_08_1148";
+ or.owl.ui.ontology.wizard.merge;version="4.2.0.b292_2013_03_12_0500";
  uses:="javax.swing,org.protege.editor.core.ui.wizard,org.protege.edit
  or.owl,org.protege.editor.owl.ui,org.semanticweb.owlapi.model",org.pr
- otege.editor.owl.ui.ontology.wizard.move;version="4.2.0.b291_2013_03_
- 08_1148";uses:="javax.swing,org.eclipse.core.runtime,org.protege.edit
+ otege.editor.owl.ui.ontology.wizard.move;version="4.2.0.b292_2013_03_
+ 12_0500";uses:="javax.swing,org.eclipse.core.runtime,org.protege.edit
  or.core.plugin,org.protege.editor.core.ui.wizard,org.protege.editor.o
  wl,org.protege.editor.owl.model,org.protege.editor.owl.ui,org.protege
  .editor.owl.ui.ontology.wizard,org.protege.editor.owl.ui.ontology.wiz
  ard.create,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.on
- tology.wizard.move.bydefinition;version="4.2.0.b291_2013_03_08_1148";
+ tology.wizard.move.bydefinition;version="4.2.0.b292_2013_03_12_0500";
  uses:="org.protege.editor.owl.ui.ontology.wizard.move,org.protege.edi
  tor.owl.ui.ontology.wizard.move.byreference,org.protege.editor.owl.ui
  .ontology.wizard.move.common,org.semanticweb.owlapi.model",org.proteg
- e.editor.owl.ui.ontology.wizard.move.byprofile;version="4.2.0.b291_20
- 13_03_08_1148";uses:="org.protege.editor.owl.ui.ontology.wizard.move,
+ e.editor.owl.ui.ontology.wizard.move.byprofile;version="4.2.0.b292_20
+ 13_03_12_0500";uses:="org.protege.editor.owl.ui.ontology.wizard.move,
  org.semanticweb.owlapi.profiles",org.protege.editor.owl.ui.ontology.w
- izard.move.byreference;version="4.2.0.b291_2013_03_08_1148";uses:="or
+ izard.move.byreference;version="4.2.0.b292_2013_03_12_0500";uses:="or
  g.protege.editor.owl.ui.ontology.wizard.move,org.protege.editor.owl.u
  i.ontology.wizard.move.common",org.protege.editor.owl.ui.ontology.wiz
- ard.move.bytype;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swi
+ ard.move.bytype;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swi
  ng,org.protege.editor.core.ui.list,org.protege.editor.owl.ui.ontology
  .wizard.move,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.
- ontology.wizard.move.common;version="4.2.0.b291_2013_03_08_1148";uses
+ ontology.wizard.move.common;version="4.2.0.b292_2013_03_12_0500";uses
  :="javax.swing,javax.swing.event,org.protege.editor.core.ui.util,org.
  protege.editor.owl.ui.list,org.protege.editor.owl.ui.ontology.wizard.
- move",org.protege.editor.owl.ui.preferences;version="4.2.0.b291_2013_
- 03_08_1148";uses:="javax.swing,javax.swing.event,org.protege.editor.c
+ move",org.protege.editor.owl.ui.preferences;version="4.2.0.b292_2013_
+ 03_12_0500";uses:="javax.swing,javax.swing.event,org.protege.editor.c
  ore.ui.preferences,org.protege.editor.owl,org.protege.editor.owl.mode
  l,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.prefix;vers
- ion="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event
+ ion="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event
  ,javax.swing.table,org.protege.editor.owl,org.protege.editor.owl.mode
  l,org.protege.editor.owl.model.event,org.protege.editor.owl.ui.table,
  org.protege.editor.owl.ui.view,org.semanticweb.owlapi.model,org.seman
  ticweb.owlapi.vocab",org.protege.editor.owl.ui.rename;version="4.2.0.
- b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,javax.swin
+ b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,javax.swin
  g.text,org.apache.log4j,org.protege.editor.core.ui.util,org.protege.e
  ditor.owl,org.protege.editor.owl.ui.renderer,org.semanticweb.owlapi.m
- odel",org.protege.editor.owl.ui.renderer;version="4.2.0.b291_2013_03_
- 08_1148";uses:="javax.swing,javax.swing.event,javax.swing.table,javax
+ odel",org.protege.editor.owl.ui.renderer;version="4.2.0.b292_2013_03_
+ 12_0500";uses:="javax.swing,javax.swing.event,javax.swing.table,javax
  .swing.text,javax.swing.tree,org.eclipse.core.runtime,org.protege.edi
  tor.core,org.protege.editor.core.plugin,org.protege.editor.owl,org.pr
  otege.editor.owl.model,org.protege.editor.owl.ui.renderer.layout,org.
  protege.editor.owl.ui.renderer.plugin,org.protege.editor.owl.ui.rende
  rer.prefix,org.semanticweb.owlapi.model,org.semanticweb.owlapi.util,u
  k.ac.manchester.cs.owl.owlapi.mansyntaxrenderer",org.protege.editor.o
- wl.ui.renderer.conf;version="4.2.0.b291_2013_03_08_1148";uses:="javax
+ wl.ui.renderer.conf;version="4.2.0.b292_2013_03_12_0500";uses:="javax
  .swing,javax.swing.event,org.protege.editor.owl.ui.preferences,org.pr
  otege.editor.owl.ui.renderer.plugin",org.protege.editor.owl.ui.render
- er.layout;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,jav
+ er.layout;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,jav
  ax.swing.table,org.protege.editor.owl,org.semanticweb.owlapi.model",o
- rg.protege.editor.owl.ui.renderer.menu;version="4.2.0.b291_2013_03_08
- _1148";uses:="javax.swing,org.protege.editor.core.ui.action,org.prote
+ rg.protege.editor.owl.ui.renderer.menu;version="4.2.0.b292_2013_03_12
+ _0500";uses:="javax.swing,org.protege.editor.core.ui.action,org.prote
  ge.editor.owl.model,org.protege.editor.owl.model.event,org.protege.ed
  itor.owl.ui.action,org.protege.editor.owl.ui.renderer.plugin,org.sema
  nticweb.owlapi.model",org.protege.editor.owl.ui.renderer.plugin;versi
- on="4.2.0.b291_2013_03_08_1148";uses:="org.eclipse.core.runtime,org.p
+ on="4.2.0.b292_2013_03_12_0500";uses:="org.eclipse.core.runtime,org.p
  rotege.editor.core.plugin,org.protege.editor.owl.ui.renderer,org.sema
  nticweb.owlapi.model",org.protege.editor.owl.ui.renderer.prefix;versi
- on="4.2.0.b291_2013_03_08_1148";uses:="org.semanticweb.owlapi.model",
- org.protege.editor.owl.ui.selector;version="4.2.0.b291_2013_03_08_114
- 8";uses:="javax.swing,javax.swing.event,org.protege.editor.core,org.p
+ on="4.2.0.b292_2013_03_12_0500";uses:="org.semanticweb.owlapi.model",
+ org.protege.editor.owl.ui.selector;version="4.2.0.b292_2013_03_12_050
+ 0";uses:="javax.swing,javax.swing.event,org.protege.editor.core,org.p
  rotege.editor.core.plugin,org.protege.editor.core.ui.util,org.protege
  .editor.core.ui.view,org.protege.editor.core.ui.workspace,org.protege
  .editor.owl,org.protege.editor.owl.model,org.protege.editor.owl.model
@@ -316,27 +316,27 @@ Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
  itor.owl.ui.view.cls,org.protege.editor.owl.ui.view.dataproperty,org.
  protege.editor.owl.ui.view.individual,org.protege.editor.owl.ui.view.
  objectproperty,org.semanticweb.owlapi.model",org.protege.editor.owl.u
- i.table;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax
+ i.table;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax
  .swing.table,org.protege.editor.owl,org.protege.editor.owl.ui.rendere
  r,org.protege.editor.owl.ui.transfer,org.semanticweb.owlapi.model",or
- g.protege.editor.owl.ui.transfer;version="4.2.0.b291_2013_03_08_1148"
+ g.protege.editor.owl.ui.transfer;version="4.2.0.b292_2013_03_12_0500"
  ;uses:="javax.swing,org.protege.editor.owl,org.protege.editor.owl.mod
  el,org.protege.editor.owl.ui.list,org.protege.editor.owl.ui.table,org
  .protege.editor.owl.ui.tree",org.protege.editor.owl.ui.tree;version="
- 4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,java
+ 4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,java
  x.swing.tree,org.protege.editor.core.prefs,org.protege.editor.core.ui
  ,org.protege.editor.owl,org.protege.editor.owl.model,org.protege.edit
  or.owl.model.event,org.protege.editor.owl.model.hierarchy,org.protege
  .editor.owl.ui.preferences,org.protege.editor.owl.ui.renderer,org.pro
  tege.editor.owl.ui.transfer,org.semanticweb.owlapi.model",org.protege
- .editor.owl.ui.usage;version="4.2.0.b291_2013_03_08_1148";uses:="java
+ .editor.owl.ui.usage;version="4.2.0.b292_2013_03_12_0500";uses:="java
  x.swing,javax.swing.tree,org.protege.editor.owl,org.protege.editor.ow
  l.model,org.protege.editor.owl.ui.renderer,org.protege.editor.owl.ui.
  tree,org.semanticweb.owlapi.model",org.protege.editor.owl.ui.util;ver
- sion="4.2.0.b291_2013_03_08_1148";uses:="org.protege.editor.core,org.
+ sion="4.2.0.b292_2013_03_12_0500";uses:="org.protege.editor.core,org.
  protege.editor.owl,org.protege.editor.owl.ui.editor,org.protege.edito
  r.owl.ui.selector,org.semanticweb.owlapi.model",org.protege.editor.ow
- l.ui.view;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,jav
+ l.ui.view;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,jav
  ax.swing.event,javax.swing.tree,org.protege.editor.core.ui,org.proteg
  e.editor.core.ui.list,org.protege.editor.core.ui.util,org.protege.edi
  tor.core.ui.view,org.protege.editor.owl,org.protege.editor.owl.model,
@@ -346,75 +346,75 @@ Export-Package: org.protege.editor.owl;version="4.2.0.b291_2013_03_08_
  ,org.protege.editor.owl.ui.axiom,org.protege.editor.owl.ui.framelist,
  org.protege.editor.owl.ui.renderer,org.protege.editor.owl.ui.tree,org
  .semanticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.ed
- itor.owl.ui.view.annotationproperty;version="4.2.0.b291_2013_03_08_11
- 48";uses:="javax.swing,javax.swing.tree,org.protege.editor.owl.model.
+ itor.owl.ui.view.annotationproperty;version="4.2.0.b292_2013_03_12_05
+ 00";uses:="javax.swing,javax.swing.tree,org.protege.editor.owl.model.
  hierarchy,org.protege.editor.owl.ui.action,org.protege.editor.owl.ui.
  tree,org.protege.editor.owl.ui.view,org.semanticweb.owlapi.model,org.
  semanticweb.owlapi.util",org.protege.editor.owl.ui.view.cls;version="
- 4.2.0.b291_2013_03_08_1148";uses:="javax.swing,javax.swing.tree,org.p
+ 4.2.0.b292_2013_03_12_0500";uses:="javax.swing,javax.swing.tree,org.p
  rotege.editor.owl.model.event,org.protege.editor.owl.model.hierarchy,
  org.protege.editor.owl.model.hierarchy.cls,org.protege.editor.owl.ui.
  action,org.protege.editor.owl.ui.framelist,org.protege.editor.owl.ui.
  tree,org.protege.editor.owl.ui.view,org.semanticweb.owlapi.model,org.
  semanticweb.owlapi.util",org.protege.editor.owl.ui.view.dataproperty;
- version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,org.protege.e
+ version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,org.protege.e
  ditor.owl.model.entity,org.protege.editor.owl.model.hierarchy,org.pro
  tege.editor.owl.ui.view,org.semanticweb.owlapi.model,org.semanticweb.
  owlapi.util",org.protege.editor.owl.ui.view.datatype;version="4.2.0.b
- 291_2013_03_08_1148";uses:="javax.swing,javax.swing.event,org.protege
+ 292_2013_03_12_0500";uses:="javax.swing,javax.swing.event,org.protege
  .editor.core.ui.view,org.protege.editor.owl.model.event,org.protege.e
  ditor.owl.ui.list,org.protege.editor.owl.ui.view,org.semanticweb.owla
  pi.model",org.protege.editor.owl.ui.view.individual;version="4.2.0.b2
- 91_2013_03_08_1148";uses:="javax.swing,javax.swing.event,org.protege.
+ 92_2013_03_12_0500";uses:="javax.swing,javax.swing.event,org.protege.
  editor.core.ui,org.protege.editor.core.ui.view,org.protege.editor.owl
  .model.event,org.protege.editor.owl.model.hierarchy,org.protege.edito
  r.owl.model.selection,org.protege.editor.owl.ui.list,org.protege.edit
  or.owl.ui.tree,org.protege.editor.owl.ui.view,org.semanticweb.owlapi.
  model,org.semanticweb.owlapi.util",org.protege.editor.owl.ui.view.obj
- ectproperty;version="4.2.0.b291_2013_03_08_1148";uses:="javax.swing,o
+ ectproperty;version="4.2.0.b292_2013_03_12_0500";uses:="javax.swing,o
  rg.protege.editor.owl.model.entity,org.protege.editor.owl.model.event
  ,org.protege.editor.owl.model.hierarchy,org.protege.editor.owl.ui.vie
  w,org.semanticweb.owlapi.model,org.semanticweb.owlapi.util",org.prote
- ge.editor.owl.ui.view.ontology;version="4.2.0.b291_2013_03_08_1148";u
+ ge.editor.owl.ui.view.ontology;version="4.2.0.b292_2013_03_12_0500";u
  ses:="javax.swing.event,org.protege.editor.owl.model.event,org.proteg
  e.editor.owl.ui.ontology.imports,org.protege.editor.owl.ui.view,org.s
  emanticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.owla
- pi.apibinding;version="4.2.0.b291_2013_03_08_1148";uses:="org.protege
+ pi.apibinding;version="4.2.0.b292_2013_03_12_0500";uses:="org.protege
  .owlapi.model,org.semanticweb.owlapi.model",org.protege.owlapi.concur
- rent;version="4.2.0.b291_2013_03_08_1148";uses:="org.semanticweb.owla
+ rent;version="4.2.0.b292_2013_03_12_0500";uses:="org.semanticweb.owla
  pi.io,org.semanticweb.owlapi.model,uk.ac.manchester.cs.owl.owlapi",or
- g.protege.owlapi.inconsistent;version="4.2.0.b291_2013_03_08_1148";us
+ g.protege.owlapi.inconsistent;version="4.2.0.b292_2013_03_12_0500";us
  es:="org.semanticweb.owlapi.model,org.semanticweb.owlapi.reasoner",or
- g.protege.owlapi.inconsistent.trivialModel;version="4.2.0.b291_2013_0
- 3_08_1148";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi
- .reasoner",org.protege.owlapi.inference;version="4.2.0.b291_2013_03_0
- 8_1148";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi.re
+ g.protege.owlapi.inconsistent.trivialModel;version="4.2.0.b292_2013_0
+ 3_12_0500";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi
+ .reasoner",org.protege.owlapi.inference;version="4.2.0.b292_2013_03_1
+ 2_0500";uses:="org.semanticweb.owlapi.model,org.semanticweb.owlapi.re
  asoner,org.semanticweb.owlapi.util",org.protege.owlapi.inference.cls;
- version="4.2.0.b291_2013_03_08_1148";uses:="org.protege.owlapi.infere
+ version="4.2.0.b292_2013_03_12_0500";uses:="org.protege.owlapi.infere
  nce.orphan,org.semanticweb.owlapi.model,org.semanticweb.owlapi.reason
  er,org.semanticweb.owlapi.util",org.protege.owlapi.inference.orphan;v
- ersion="4.2.0.b291_2013_03_08_1148";uses:="org.apache.log4j,org.seman
+ ersion="4.2.0.b292_2013_03_12_0500";uses:="org.apache.log4j,org.seman
  ticweb.owlapi.model,org.semanticweb.owlapi.util",org.protege.owlapi.m
- odel;version="4.2.0.b291_2013_03_08_1148";uses:="org.protege.owlapi.u
+ odel;version="4.2.0.b292_2013_03_12_0500";uses:="org.protege.owlapi.u
  til,org.semanticweb.owlapi.model,uk.ac.manchester.cs.owl.owlapi",org.
- protege.owlapi.rdf;version="4.2.0.b291_2013_03_08_1148";uses:="org.se
+ protege.owlapi.rdf;version="4.2.0.b292_2013_03_12_0500";uses:="org.se
  manticweb.owlapi.model",org.protege.owlapi.rdf.report;version="4.2.0.
- b291_2013_03_08_1148";uses:="org.protege.owlapi.rdf,org.semanticweb.o
- wlapi.model",org.protege.owlapi.util;version="4.2.0.b291_2013_03_08_1
- 148";uses:="org.semanticweb.owlapi.model",org.protege.xmlcatalog;vers
- ion="4.2.0.b291_2013_03_08_1148";uses:="org.protege.xmlcatalog.entry"
- ,org.protege.xmlcatalog.entry;version="4.2.0.b291_2013_03_08_1148";us
+ b292_2013_03_12_0500";uses:="org.protege.owlapi.rdf,org.semanticweb.o
+ wlapi.model",org.protege.owlapi.util;version="4.2.0.b292_2013_03_12_0
+ 500";uses:="org.semanticweb.owlapi.model",org.protege.xmlcatalog;vers
+ ion="4.2.0.b292_2013_03_12_0500";uses:="org.protege.xmlcatalog.entry"
+ ,org.protege.xmlcatalog.entry;version="4.2.0.b292_2013_03_12_0500";us
  es:="org.protege.xmlcatalog",org.protege.xmlcatalog.exception;version
- ="4.2.0.b291_2013_03_08_1148",org.protege.xmlcatalog.owlapi;version="
- 4.2.0.b291_2013_03_08_1148";uses:="org.protege.xmlcatalog,org.semanti
- cweb.owlapi.model",org.protege.xmlcatalog.parser;version="4.2.0.b291_
- 2013_03_08_1148";uses:="org.protege.xmlcatalog,org.xml.sax,org.xml.sa
- x.helpers",org.protege.xmlcatalog.redirect;version="4.2.0.b291_2013_0
- 3_08_1148";uses:="org.protege.xmlcatalog,org.protege.xmlcatalog.entry
- ",org.protege.xmlcatalog.swing;version="4.2.0.b291_2013_03_08_1148";u
+ ="4.2.0.b292_2013_03_12_0500",org.protege.xmlcatalog.owlapi;version="
+ 4.2.0.b292_2013_03_12_0500";uses:="org.protege.xmlcatalog,org.semanti
+ cweb.owlapi.model",org.protege.xmlcatalog.parser;version="4.2.0.b292_
+ 2013_03_12_0500";uses:="org.protege.xmlcatalog,org.xml.sax,org.xml.sa
+ x.helpers",org.protege.xmlcatalog.redirect;version="4.2.0.b292_2013_0
+ 3_12_0500";uses:="org.protege.xmlcatalog,org.protege.xmlcatalog.entry
+ ",org.protege.xmlcatalog.swing;version="4.2.0.b292_2013_03_12_0500";u
  ses:="javax.swing,javax.swing.tree,org.protege.xmlcatalog,org.protege
- .xmlcatalog.entry",org.protege.xmlcatalog.write;version="4.2.0.b291_2
- 013_03_08_1148";uses:="javax.xml.parsers,javax.xml.transform,org.prot
+ .xmlcatalog.entry",org.protege.xmlcatalog.write;version="4.2.0.b292_2
+ 013_03_12_0500";uses:="javax.xml.parsers,javax.xml.transform,org.prot
  ege.xmlcatalog,org.protege.xmlcatalog.entry,org.w3c.dom"
 Bundle-ClassPath: .,lib/protege-owlapi-extensions.jar,lib/xmlcatalog.j
  ar
@@ -425,7 +425,7 @@ Bundle-Name: The Protege 4 OWL Editor
 Bundle-Vendor: Protege Development Team (First working version written
   at the University of Manchester by Matthew Horridge)
 Bundle-ContactAddress: p4-feedback@lists.stanford.edu
-Bundle-Version: 4.2.0.b291_2013_03_08_1148
+Bundle-Version: 4.2.0.b292_2013_03_12_0500
 Bundle-Activator: org.protege.editor.owl.ProtegeOWL
 Bundle-ManifestVersion: 2
 Bundle-Description: An OWL plugin for the Protege Editor Framework
