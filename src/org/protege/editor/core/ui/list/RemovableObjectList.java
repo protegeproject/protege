@@ -97,15 +97,12 @@ public class RemovableObjectList<O> extends MList {
         }
     }
 
-    public void setListData(final Vector<?> listData) {
-        MutableObjectListModel model = (MutableObjectListModel) getModel();
-        model.clear();
-        for (Object o : listData) {
-                model.addElement(o);
-            }
-
-    }
-
+/*  
+ * At SVN revision: 26201, method: 
+ * public void setListData(final Vector<?> listData)
+ * was deleted because it was not compiling against Java 1.7.
+ * This method seems to be never called (even by internal Java methods)
+*/
 
     public void setListData(final Object[] listData) {
         MutableObjectListModel model = (MutableObjectListModel) getModel();
