@@ -11,7 +11,7 @@
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>org.protege.common</artifactId>
 	<version>4.2.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	
 	<name>Protege Common</name>
 	<description>Core Protege Libraries</description>
@@ -68,10 +68,33 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
         </dependency>
+		<dependency>
+			<groupId>com.jgoodies</groupId>
+			<artifactId>looks</artifactId>
+			<version>2.2.2</version>
+		</dependency>        
 	</dependencies>
 
 	<build>
 		<plugins>
+            <plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.protege.common.Activator</Bundle-Activator>
+						<Bundle-ClassPath>.</Bundle-ClassPath>
+						<Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
+						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Embed-Dependency>log4j, looks</Embed-Dependency>
+						<Export-Package>org.protege.common.*, org.apache.log4j.*, com.jgoodies.*</Export-Package>
+						<Import-Package>!com.ibm.*, !com.sun.*, !javax.jms, !javax.mail.*, !javax.jmdns, *</Import-Package>
+					</instructions>
+				</configuration>
+            </plugin>
+		
             <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
