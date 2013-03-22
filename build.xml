@@ -25,7 +25,7 @@
    <!-- 
         these properties probably don't need changing
         -->
-   <property name = "src"               location = "./src"/>  
+   <property name = "src"               location = "./src/main/java"/>  
    <property name = "build"             location = "./build"/>
    <property name = "bundle.dir"        location = "${build}"/>
    <property name = "classes"           location = "${build}/classes"/>
@@ -129,25 +129,26 @@
         viewconfig and the plugin.xml.  This will be sufficient in
         many cases. 
      -->
-   <target name="copy.resources">
-     <copy todir="${classes}">
-       <fileset dir="${src}">
-         <include name="**/*"/>
-         <exclude name="**/*.java"/>
-         <exclude name="**/MANIFEST.MF"/>
-         <exclude name="**/manifest.mf"/>
-       </fileset>
-     </copy>
-     <copy todir="${classes}/lib">
-       <fileset dir="${lib}" excludes="junit*.jar"/>
-     </copy>
-     <copy todir="${classes}">
-       <fileset dir="." includes="*.xml">
-           <exclude name="build.xml"/>
-       </fileset>
-       <fileset dir="./icons"/>
-     </copy>
-   </target>
+	<target name="copy.resources">
+		<copy todir="${classes}">
+			<fileset dir="${src}">
+				<include name="**/*"/>
+				<exclude name="**/*.java"/>
+				<exclude name="**/MANIFEST.MF"/>
+				<exclude name="**/manifest.mf"/>
+			</fileset>
+		</copy>
+		<copy todir="${classes}/lib">
+			<fileset dir="${lib}" excludes="junit*.jar"/>
+		</copy>
+		<copy todir="${classes}">
+			<fileset dir="." includes="*.xml">
+				<exclude name="build.xml"/>
+				<exclude name="pom.xml"/>
+			</fileset>
+			<fileset dir="./src/main/resources"/>
+		</copy>
+	</target>
 
 
    <!-- 

@@ -1,186 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>protege4</groupId>
-	<artifactId>org.protege.editor.core.application</artifactId>
-	<packaging>bundle</packaging>
-	<name>Ontology Editing Infrastructure</name>
-	<version>4.1.0.213_SNAPSHOT</version>
-    <!-- <version>4.2.0.b282_2012_30_09_2345</version> -->
 
 	<parent>
-		<groupId>protege4</groupId>
-		<artifactId>masterpom</artifactId>
-		<version>1.0.3</version>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
 	</parent>
+	
+	<groupId>edu.stanford.protege</groupId>
+	<artifactId>org.protege.editor.core.application</artifactId>
+	<version>4.2.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
 
+	<name>Ontology Editing Infrastructure</name>
+    <description>Ontology Editing Infrastructure</description>
+	<url>http://protege.stanford.edu</url>
+	<organization>
+		<name>Stanford Center for Biomedical Informatics Research</name>
+		<url>http://bmir.stanford.edu/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+		</license>
+	</licenses>
 
-	<properties>
-		<maven.compiler.source>1.5</maven.compiler.source>
-		<maven.compiler.target>1.5</maven.compiler.target>
-	</properties>
+	<developers>
+		<developer>
+			<name>Matthew Horridge</name>
+			<email>matthew.horridge@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Nick Drummond</name>
+			<email>nickdrummond@yahoo.com</email>
+		</developer>
+		<developer>
+			<name>Timothy Redmond</name>
+			<email>tredmond@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Tania Tudorache</name>
+			<email>tudorache@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Jennifer Vendetti</name>
+			<email>vendetti@stanford.edu</email>
+		</developer>
+	</developers>
+	
+	<mailingLists>
+		<mailingList>
+			<name>p4-feedback</name>
+			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
+			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
+			<post>p4-feedback@lists.stanford.edu</post>
+			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
+			<otherArchives>
+				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
+	
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.core.application</url>
+	</scm>
 
-	<distributionManagement>
-		<!-- If this pom.xml is executed on a developer's machine (mvn deploy) 
-			the developer's local repositories will be used, if executed on the BMIR the BMIR repositories. -->
-		<repository>
-			<id>releases</id>
-			<name>Releases</name>
-			<url>${nexus.path}/bmir-release</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Snapshots</name>
-			<url>${nexus.path}/snapshots</url>
-			<!-- <uniqueVersion>false</uniqueVersion> -->
-		</snapshotRepository>
-		
-		
-	</distributionManagement>
+    <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.eclipse.osgi</groupId>
-            <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.6.0.v20100517</version>
-            <scope>provided</scope>
+		<dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.main</artifactId>
+            <version>4.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>org.eclipse.equinox.registry</artifactId>
-            <version>3.5.0.v20100503</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>protege4</groupId>
-          <artifactId>org.protege.common</artifactId>
-          <version>4.2.0.b269_2012_04_03_0637</version>
-        </dependency>
-        <dependency>
-            <groupId>mdock</groupId>
-            <artifactId>mdock</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swing-worker</artifactId>
-            <version>1.1</version>
-        </dependency>
+
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>registry</artifactId>
+			<version>3.3.0-v20070522</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.common</artifactId>
+			<version>4.2.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.mdock</groupId>
+			<artifactId>mdock</artifactId>
+			<version>1.1</version>
+		</dependency>        
+		
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.10</version>
-			<classifier>jdk15</classifier>
-			<scope>test</scope>
+			<version>6.8</version>
 		</dependency>
 	</dependencies>
 
-	<description>Ontology Editing Infrastructure</description>
-	<organization>
-		<name>Stanford University, BMIR</name>
-	</organization>
-
 	<build>
-        <!-- Backwards compatibility fixes that should be removed -->
-        <sourceDirectory>src</sourceDirectory>
-        <resources>
-          <resource>
-            <directory>resources</directory>
-          </resource>
-        </resources>
-        <testSourceDirectory>junit</testSourceDirectory>
-        <testResources>
-          <testResource>
-            <directory>junit/ontologies</directory>
-          </testResource>
-        </testResources>
-        <!-- End of backwards compatibility fixes that should be removed -->
-
 		<plugins>
-	        <!-- property reader for version information found in
-	             maven branch at svn revision 21046 -->
             <plugin>
-              <groupId>org.apache.felix</groupId>
-              <artifactId>maven-bundle-plugin</artifactId>
-              <version>1.4.0</version>
-              <extensions>true</extensions>
-              <configuration>
-                <instructions>
-                  <Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
-                  <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                  <Export-Package>
-                    org.protege.editor.core,
-                    org.protege.editor.core.*
-                  </Export-Package>
-                  <Import-Package>
-                      !junit.framework,!com.sun.*,
-                      org.eclipse.core.runtime;registry=split,
-                      *
-                  </Import-Package>
-                  <Embed-Dependency>
-                      mdock
-                  </Embed-Dependency>
-                  <Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
-                  <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-                  <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
-                </instructions>
-                <executions>
-                  <execution>
-                    <id>bundle-manifest</id>
-                    <phase>install</phase>
-                    <goals>    
-                      <goal>manifest</goal>
-                    </goals>   
-                  </execution>
-                </executions>
-              </configuration>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
+						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
+						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Embed-Dependency>mdock</Embed-Dependency>
+						<Export-Package>org.protege.editor.core, org.protege.editor.core.*</Export-Package>
+						<Import-Package>!com.sun.*, org.eclipse.core.runtime;registry="split", *</Import-Package>
+						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
+					</instructions>
+					<executions>
+						<execution>
+							<id>bundle-manifest</id>
+							<phase>install</phase>
+							<goals>    
+								<goal>manifest</goal>
+							</goals>   
+						</execution>
+					</executions>
+				</configuration>
+			</plugin>
+
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
             </plugin>
 
-			<!-- Create jar file -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-		
-		
-			<!-- Execution of unit tests Generates output for reporting plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<!-- We set skip to true. So the unit tests can be explicitly defined 
-						in xml file reference below -->
-					<skip>true</skip>
-				</configuration>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 				<executions>
 					<execution>
-						<id>unit-tests</id>
-						<phase>test</phase>
+						<id>attach-sources</id>
 						<goals>
-							<goal>test</goal>
+							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<skip>false</skip>
-							<suiteXmlFiles>
-								<suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
-							</suiteXmlFiles>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- Compile Java Code -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
