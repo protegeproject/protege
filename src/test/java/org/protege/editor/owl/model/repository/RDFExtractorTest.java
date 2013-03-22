@@ -8,15 +8,15 @@ import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 public class RDFExtractorTest extends TestCase {
-    public static final String PIZZA_LOCATION  = "junit/ontologies/pizza.owl";
-    public static final String PIZZA_LOCATION2 = "junit/ontologies/pizza-functional.owl";
+    public static final String PIZZA_LOCATION  = "src/test/resources/ontologies/pizza.owl";
+    public static final String PIZZA_LOCATION2 = "src/test/resources/ontologies/pizza-functional.owl";
     public static final String PIZZA_NAME      = "http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl";
     
-    public static final String AMBIGUOUS_LOCATION = "junit/ontologies/AmbiguousName.owl";
+    public static final String AMBIGUOUS_LOCATION = "src/test/resources/ontologies/AmbiguousName.owl";
     public static final String AMBIGUOUS_NAME     = "http://www.test.com/right.owl";
     
-    public static final String VERSIONED_LOCATION  = "junit/ontologies/VersionedOntology.owl";
-    public static final String VERSIONED_LOCATION2 = "junit/ontologies/VersionedOntology-functional.owl";
+    public static final String VERSIONED_LOCATION  = "src/test/resources/ontologies/VersionedOntology.owl";
+    public static final String VERSIONED_LOCATION2 = "src/test/resources/ontologies/VersionedOntology-functional.owl";
     public static final String VERSIONED_NAME      = "http://www.tigraworld.com/protege/VersionedOntology.owl";
     public static final String VERSIONED_VERSION   = "http://www.tigraworld.com/protege/Version1.owl";
     

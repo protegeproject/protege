@@ -1,145 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>protege4</groupId>
-	<artifactId>org.protege.editor.owl</artifactId>
-	<packaging>bundle</packaging>
-	<name>OWL Editor</name>
-	<version>4.1.0.213_SNAPSHOT</version>
-    <!-- <version>4.1.0.b220_2011_03_23_1149</version> -->
-
+	
 	<parent>
-		<groupId>protege4</groupId>
-		<artifactId>masterpom</artifactId>
-		<version>1.0.0</version>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
 	</parent>
+	
+	<groupId>edu.stanford.protege</groupId>
+	<artifactId>org.protege.editor.owl</artifactId>
+	<version>4.2.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<name>OWL Editor</name>
+    <description>OWL Editor</description>
+	<url>http://protege.stanford.edu</url>
+	<organization>
+		<name>Stanford Center for Biomedical Informatics Research</name>
+		<url>http://bmir.stanford.edu/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Matthew Horridge</name>
+			<email>matthew.horridge@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Nick Drummond</name>
+			<email>nickdrummond@yahoo.com</email>
+		</developer>
+		<developer>
+			<name>Timothy Redmond</name>
+			<email>tredmond@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Tania Tudorache</name>
+			<email>tudorache@stanford.edu</email>
+		</developer>
+		<developer>
+			<name>Jennifer Vendetti</name>
+			<email>vendetti@stanford.edu</email>
+		</developer>
+	</developers>
+	
+	<mailingLists>
+		<mailingList>
+			<name>p4-feedback</name>
+			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
+			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
+			<post>p4-feedback@lists.stanford.edu</post>
+			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
+			<otherArchives>
+				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
+	
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/</url>
+	</scm>
+
+    <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.eclipse.osgi</groupId>
-            <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.6.0.v20100517</version>
-            <scope>provided</scope>
+		<dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.main</artifactId>
+            <version>4.0.3</version>
         </dependency>
+
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.registry</artifactId>
+			<version>3.5.0.v20100503</version>
+		</dependency>
+      		
         <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>org.eclipse.equinox.registry</artifactId>
-            <version>3.5.0.v20100503</version>
-            <scope>provided</scope>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.common</artifactId>
+			<version>4.2.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
-          <groupId>protege4</groupId>
-          <artifactId>org.protege.common</artifactId>
-          <version>4.1.0.b213_2010_12_15_1123</version>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.core.application</artifactId>
+			<version>4.2.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-          <groupId>protege4</groupId>
-          <artifactId>org.protege.editor.core.application</artifactId>
-          <version>4.2.0.b282_2012_30_09_2345</version>
-        </dependency>
-        <dependency>
-          <groupId>owlapi</groupId>
-          <artifactId>owlapi</artifactId>
-          <version>3.2.5.svn1925_2012_02_15_0727</version>
-        </dependency>
-        <dependency>
-            <groupId>protege4</groupId>
-            <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.2.4.2012_06_01_1005</version>
-        </dependency>
-        <dependency>
-            <groupId>protege4</groupId>
-            <artifactId>xmlcatalog</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>protege-owlapi-extensions</artifactId>
+			<version>3.2.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.xmlcatalog</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-distribution</artifactId>
+			<version>3.4.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.10</version>
-			<classifier>jdk15</classifier>
-			<scope>test</scope>
+			<version>6.8</version>
 		</dependency>
 	</dependencies>
 
-	<description>OWL Editor</description>
-	<organization>
-		<name>The Protege Development Team</name>
-	</organization>
-
 	<build>
-        <!-- Backwards compatibility fixes that should be removed -->
-        <sourceDirectory>src</sourceDirectory>
-        <resources>
-          <resource>
-            <directory>resources</directory>
-          </resource>
-        </resources>
-        <testSourceDirectory>junit</testSourceDirectory>
-        <testResources>
-          <testResource>
-            <directory>junit/ontologies</directory>
-          </testResource>
-        </testResources>
-        <!-- End of backwards compatibility fixes that should be removed -->
-
 		<plugins>
-	        <!-- property reader for version information found in
-	             maven branch at svn revision 21046 -->
             <plugin>
-              <groupId>org.apache.felix</groupId>
-              <artifactId>maven-bundle-plugin</artifactId>
-              <version>1.4.0</version>
-              <extensions>true</extensions>
-              <configuration>
-                <instructions>
-                  <Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
-                  <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                  <Export-Package>
-                    org.protege.editor.owl,
-                    org.protege.editor.owl.*
-                  </Export-Package>
-                  <Import-Package>
-                      org.eclipse.core.runtime;registry=split,
-                      *
-                  </Import-Package>
-                  <Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
-                  <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-                  <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
-                  <Embed-Dependency>
-                      protege-owlapi-extensions, xmlcatalog
-                  </Embed-Dependency>
-                  <Include-Resource>
-                      plugin.xml, resources, {maven-resources}
-                  </Include-Resource>
-                </instructions>
-                <executions>
-                  <execution>
-                    <id>bundle-manifest</id>
-                    <phase>install</phase>
-                    <goals>    
-                      <goal>manifest</goal>
-                    </goals>   
-                  </execution>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
+						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+						<Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
+						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
+						<Export-Package>org.protege.editor.owl, org.protege.editor.owl.*</Export-Package>
+						<Import-Package>org.eclipse.core.runtime;registry=split, *</Import-Package>
+						<Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+					</instructions>
+					<executions>
+						<execution>
+							<id>bundle-manifest</id>
+							<phase>install</phase>
+							<goals>    
+								<goal>manifest</goal>
+							</goals>   
+					</execution>
                 </executions>
               </configuration>
             </plugin>
 
-			<!-- Create jar file -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-		
-		
-			<!-- Execution of unit tests Generates output for reporting plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.14</version>
 				<configuration>
-					<!-- We set skip to true. So the unit tests can be explicitly defined 
-						in xml file reference below -->
+					<!-- We set skip to true so the unit tests can be explicitly defined in the XML file reference below -->
 					<skip>true</skip>
                     <systemPropertyVariables>
                         <log4j.configuration>file:log4j.xml</log4j.configuration>
@@ -155,7 +174,7 @@
 						<configuration>
 							<skip>false</skip>
 							<suiteXmlFiles>
-								<suiteXmlFile>junit/unit-tests.xml</suiteXmlFile>
+								<suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
 							</suiteXmlFiles>
                             <systemProperties>
                                 <property>
@@ -168,25 +187,63 @@
 				</executions>
 			</plugin>
 
-			<!-- Compile Java Code -->
-			<plugin>
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>3.0</version>
 				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-		</plugins>
-	</build>
-	<reporting>
-		<plugins>
-			<!-- JavaDoc -->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<reporting>
+		<plugins>
 
 			<!-- JXR Plugin produces a cross-reference of the project's sources. The 
 				generated reports make it easier for the user to reference or find specific 
@@ -195,6 +252,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
 			</plugin>
 
 			<!--PMD scans Java source code and looks for potential problems like: 
@@ -206,6 +264,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.0.1</version>
 				<configuration>
 					<linkXref>true</linkXref>
 					<targetJdk>1.5</targetJdk>
@@ -216,13 +275,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.1.4</version>
 			</plugin>
 
-			<!-- JDepend determines architecture metrics as (cyclic) dependencies 
-				of packages -->
+			<!-- JDepend determines architecture metrics as (cyclic) dependencies of packages -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0-beta-2</version>
 			</plugin>
 
 			<!-- Cobertura determines statement and branch coverage -->
@@ -238,7 +298,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Checkstyle verifies compliance with coding stanards/guidelines -->
+			<!-- Checkstyle verifies compliance with coding standards/guidelines -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

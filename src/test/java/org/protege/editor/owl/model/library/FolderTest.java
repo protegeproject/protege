@@ -23,7 +23,7 @@ public class FolderTest extends TestCase {
 	public static final int SUFFICIENTLY_LONG_TIME = 1000;
 	
     public static final File TEST_DIR=new File("target/folder.test");
-    public static final File SOURCE_DIR=new File("junit/ontologies");
+    public static final File SOURCE_DIR=new File("src/test/resources/ontologies");
     
     public static final String AMINO_ACID_FILE  = "amino-acid.owl";
     public static final String PIZZA_FILE       = "pizza.owl";
@@ -75,6 +75,7 @@ public class FolderTest extends TestCase {
     public void testUpdateNoChange() throws IOException, InterruptedException {
         copy(new File(SOURCE_DIR, AMINO_ACID_FILE), new File(TEST_DIR, AMINO_ACID_FILE));
         copy(new File(SOURCE_DIR, PIZZA_FILE), new File(TEST_DIR, PIZZA_FILE));
+        Thread.sleep(SUFFICIENTLY_LONG_TIME);
         
         OntologyCatalogManager catalogManager = new OntologyCatalogManager(Collections.singletonList(new FolderGroupManager()));
         XMLCatalog catalog = catalogManager.ensureCatalogExists(TEST_DIR);

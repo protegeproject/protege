@@ -25,7 +25,7 @@
    <!-- 
         these properties probably don't need changing
         -->
-   <property name = "src"               location = "./src"/>
+   <property name = "src"               location = "./src/main/java"/>
    <property name = "junit.src"         location = "./junit"/>
    <property name = "build"             location = "./build"/>
    <property name = "bundle.dir"        location = "${build}"/>
@@ -160,10 +160,10 @@
      <copy todir="${classes}">
        <fileset dir="." includes="*.xml">
            <exclude name="build.xml"/>
+           <exclude name="pom.xml"/>
            <exclude name="**/log4j.xml"/>
        </fileset>
-       <fileset dir="./icons"/>
-       <fileset dir="./resources"/>
+       <fileset dir="./src/main/resources"/>
      </copy>
    </target>
 
