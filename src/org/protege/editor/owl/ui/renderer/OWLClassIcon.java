@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -32,8 +31,7 @@ public class OWLClassIcon extends OWLEntityIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.translate(x + getPadding(), y + getPadding());
-
+        g.translate(getPadding(), getPadding());
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -45,7 +43,7 @@ public class OWLClassIcon extends OWLEntityIcon {
 
         g.fillOval(x + 1, y + 1, size - 2, size - 2);
 
-        if(type.equals(Type.DEFINED)) {
+        if (type.equals(Type.DEFINED)) {
             g2.setColor(Color.WHITE);
             int centreSize = (int) Math.sqrt(size / 2 * size / 2);
             int boxWidth = (centreSize / 2) * 2;
@@ -61,7 +59,7 @@ public class OWLClassIcon extends OWLEntityIcon {
 
         g.setColor(oldColor);
 
-        g.translate(-x - getPadding(), -y - getPadding());
+        g.translate(-getPadding(), -getPadding());
 
     }
 }

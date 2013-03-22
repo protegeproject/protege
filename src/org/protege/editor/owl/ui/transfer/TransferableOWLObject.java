@@ -33,7 +33,7 @@ public class TransferableOWLObject implements Transferable {
     private TransferHandler stringTransferHandler;
 
 
-    public TransferableOWLObject(final OWLModelManager owlModelManager, List<OWLObject> objects) {
+    public TransferableOWLObject(final OWLModelManager owlModelManager, List<? extends OWLObject> objects) {
         this.owlModelManager = owlModelManager;
         owlObjects = new ArrayList<OWLObject>(objects);
         dataFlavorMap = new HashMap<DataFlavor, TransferHandler>();
@@ -58,7 +58,7 @@ public class TransferableOWLObject implements Transferable {
 
 
     public DataFlavor[] getTransferDataFlavors() {
-        DataFlavor [] dataFlavors = new DataFlavor[dataFlavorMap.size()];
+        DataFlavor[] dataFlavors = new DataFlavor[dataFlavorMap.size()];
         System.arraycopy(dataFlavorMap.keySet().toArray(), 0, dataFlavors, 0, dataFlavors.length);
         return dataFlavors;
     }

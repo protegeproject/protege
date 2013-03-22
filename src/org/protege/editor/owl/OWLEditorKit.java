@@ -1,10 +1,5 @@
 package org.protege.editor.owl;
 
-import java.io.File;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.util.*;
-
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -14,7 +9,10 @@ import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.editorkit.*;
+import org.protege.editor.core.editorkit.AbstractEditorKit;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
@@ -23,6 +21,8 @@ import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
+import org.protege.editor.owl.model.search.SearchManager;
+import org.protege.editor.owl.model.search.SearchMetadataImportManager;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -33,6 +33,14 @@ import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+
+import java.io.File;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -63,10 +71,12 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private OntologyLoadErrorHandlerUI loadErrorHandler;
 
     private ServiceRegistration registration;
-    
+
     private boolean modifiedDocument = false;
 
     private OWLOntologyChangeListener ontologyChangeListener;
+
+    private SearchManager searchManager;
 
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
@@ -94,6 +104,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         };
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
+        searchManager = new SearchManager(this, new SearchMetadataImportManager());
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
@@ -104,16 +115,19 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     /**
      * Determines if this editor kit has modified the contents if its documents in any way.
-     * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise <code>false</code>.
+     * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise
+     *         <code>false</code>.
      */
     public boolean hasModifiedDocument() {
         return modifiedDocument;
     }
 
     /**
-     * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this call
+     * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this
+     *             call
      *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that
-     *             you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing list:
+     *             you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing
+     *             list:
      *             http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
      */
     @Deprecated
@@ -172,6 +186,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         return getModelManager();
     }
 
+    public SearchManager getSearchManager() {
+        return searchManager;
+    }
 
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
         URI uri = descriptor.getURI(URI_KEY);
@@ -229,7 +246,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     public void handleSave() throws Exception {
         Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
         getWorkspace().save();
-        if(dirtyOntologies.isEmpty()) {
+        if (dirtyOntologies.isEmpty()) {
             return;
         }
         try {
@@ -365,6 +382,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     public void dispose() {
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
+        searchManager.dispose();
         workspace.dispose();
         try {
             modelManager.dispose();
