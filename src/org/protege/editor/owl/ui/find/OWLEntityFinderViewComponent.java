@@ -41,7 +41,7 @@ public class OWLEntityFinderViewComponent extends AbstractOWLViewComponent {
         add(ComponentFactory.createScrollPane(list));
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting() == false) {
+                if (!e.getValueIsAdjusting()) {
                     OWLEntity selEntity = (OWLEntity) list.getSelectedValue();
                     getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
                 }

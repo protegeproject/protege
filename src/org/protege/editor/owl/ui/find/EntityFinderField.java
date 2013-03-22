@@ -1,35 +1,19 @@
 package org.protege.editor.owl.ui.find;
 
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.semanticweb.owlapi.model.OWLEntity;
+import org.protege.editor.owl.model.search.SearchResult;
+import org.protege.editor.owl.ui.search.SearchPanel;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 
 /**
@@ -42,15 +26,23 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class EntityFinderField extends AugmentedJTextField {
-	private static final long serialVersionUID = -5383341925424297227L;
 
-	private OWLEditorKit editorKit;
+    private static final long serialVersionUID = -5383341925424297227L;
 
-    private JList resultsList;
+
+    public static final int WINDOW_WIDTH = 800;
+
+    private OWLEditorKit editorKit;
+
+//    private JList resultsList;
+
+//    EntityFinderResultsList resultsList;
 
     private JWindow window;
 
     private JComponent parent;
+
+    private SearchPanel searchPanel;
 
 
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
@@ -58,12 +50,13 @@ public class EntityFinderField extends AugmentedJTextField {
         putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         this.editorKit = editorKit;
+        searchPanel = new SearchPanel(editorKit);
         addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     closeResults();
                 }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER && resultsList.getSelectedValue() instanceof OWLEntity) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     selectEntity();
                 }
             }
@@ -93,57 +86,42 @@ public class EntityFinderField extends AugmentedJTextField {
             }
         });
         // tooltip and fixed cell size code at svn revision 23344
-        resultsList = new JList();
-        resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
-        resultsList.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
-                if (e.getClickCount() == 2 && resultsList.getSelectedValue() instanceof OWLEntity) {
-                    selectEntity();
-                }
-            }
-        });
+//        resultsList = new EntityFinderResultsList(editorKit);
+//        resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
+//        resultsList.getMainComponent().addMouseListener(new MouseAdapter() {
+//            public void mouseReleased(MouseEvent e) {
+//                if (e.getClickCount() == 2) {
+//                    selectEntity();
+//                }
+//            }
+//        });
+
     }
 
 
     private void selectEntity() {
-        OWLEntity selEntity = (OWLEntity) resultsList.getSelectedValue();
-        if (selEntity != null) {
-            closeResults();
-            EntityFinderField.this.editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
-            editorKit.getWorkspace().displayOWLEntity(selEntity);
-        }
+//        OWLEntity selEntity = resultsList.getSelectedEntity();
+//        if (selEntity != null) {
+//            closeResults();
+//            EntityFinderField.this.editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
+//            editorKit.getWorkspace().displayOWLEntity(selEntity);
+//        }
     }
 
 
     private void incrementListSelection() {
-        if (resultsList.getModel().getSize() > 0) {
-            int selIndex = resultsList.getSelectedIndex();
-            selIndex++;
-            if (selIndex > resultsList.getModel().getSize() - 1) {
-                selIndex = 0;
-            }
-            resultsList.setSelectedIndex(selIndex);
-            resultsList.scrollRectToVisible(resultsList.getCellBounds(selIndex, selIndex));
-        }
+        searchPanel.moveSelectionDown();
     }
 
 
     private void decrementListSelection() {
-        if (resultsList.getModel().getSize() > 0) {
-            int selIndex = resultsList.getSelectedIndex();
-            selIndex--;
-            if (selIndex < 0) {
-                selIndex = resultsList.getModel().getSize() - 1;
-            }
-            resultsList.setSelectedIndex(selIndex);
-            resultsList.scrollRectToVisible(resultsList.getCellBounds(selIndex, selIndex));
-        }
+        searchPanel.moveSelectionUp();
     }
 
 
     private void closeResults() {
         getWindow().setVisible(false);
-        resultsList.setListData(new Object []{});
+//        searchPanel.clearData();
     }
 
 
@@ -156,13 +134,32 @@ public class EntityFinderField extends AugmentedJTextField {
 
 
     private void executeFind() {
-        if (getText().trim().length() > 0) {
-            Set<OWLEntity> results = editorKit.getModelManager().getOWLEntityFinder().getMatchingOWLEntities(getText());
-            showResults(results);
-        }
-        else {
-            closeResults();
-        }
+        showResults();
+//        String trimmedText = getText().trim();
+//        if(trimmedText.isEmpty()) {
+//            closeResults();
+//            return;
+//        }
+//
+//        boolean useRegularExpressions = OWLEntityFinderPreferences.getInstance().isUseRegularExpressions();
+//        String searchString;
+//        if(useRegularExpressions) {
+//            searchString = trimmedText;
+//        }
+//        else {
+//            searchString = Pattern.quote(trimmedText);
+//        }
+//
+//        Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+//
+//
+//        SearchRequest searchRequest = new SearchRequest(pattern);
+//        SearchManager searchManager = editorKit.getSearchManager();
+//        searchManager.performSearch(searchRequest, new SearchResultHandler() {
+//            public void searchFinished(List<SearchResult> searchResults) {
+//                showResults(searchResults);
+//            }
+//        });
     }
 
 
@@ -177,13 +174,12 @@ public class EntityFinderField extends AugmentedJTextField {
             Window w = (Window) SwingUtilities.getAncestorOfClass(Window.class, parent);
             window = new JWindow(w);
             window.setFocusableWindowState(false);
-            JScrollPane sp = ComponentFactory.createScrollPane(resultsList);
-            sp.setBorder(null);
-            window.setContentPane(sp);
+            JPanel popupContent = new JPanel(new BorderLayout(3, 3));
+            popupContent.add(searchPanel);
+            window.setContentPane(popupContent);
             addFocusListener(new FocusAdapter() {
                 public void focusLost(FocusEvent e) {
                     window.setVisible(false);
-                    resultsList.setListData(new Object []{});
                 }
             });
             SwingUtilities.getRoot(this).addComponentListener(new ComponentAdapter() {
@@ -196,50 +192,56 @@ public class EntityFinderField extends AugmentedJTextField {
     }
 
 
-    private void showResults(Set<OWLEntity> results) {
+    private void showResults() {
         JWindow window = getWindow();
-        if (results.size() > 0) {
-            Point pt = new Point(0, 0);
-            SwingUtilities.convertPointToScreen(pt, this);
-            window.setLocation(pt.x, pt.y + getHeight() + 2);
-            window.setSize(getWidth(), 400);
-            resultsList.setListData(getSortedResults(results));
-            window.setVisible(true);
-            window.validate();
-            resultsList.setSelectedIndex(0);
+//        if (results.size() > 0) {
+        Point pt = new Point(0, 0);
+        SwingUtilities.convertPointToScreen(pt, this);
+        window.setLocation(pt.x + (getWidth() - WINDOW_WIDTH), pt.y + getHeight() + 2);
+
+        Container parent = window.getParent();
+        int height = 400;
+        if (parent != null) {
+            height = (parent.getHeight() * 3) / 4;
         }
-        else {
-            resultsList.setListData(new Object [0]);
-        }
+        window.setSize(WINDOW_WIDTH, height);
+
+//            searchOptionsPanel.refresh();
+
+        searchPanel.setSearchString(getText().trim());
+
+        window.setVisible(true);
+        window.validate();
+//        }
+//        else {
+//            closeResults();
+//        }
     }
-    
+
     /*
-     * This is an opportunity to add some code to deal with large result sets.  The problem
-     * is that if you give a big set of results to a JList then it will will take a very long time 
-     * (35 seconds on my work desktop to display 29000 entities beginning with an 'a').  A sort already 
-     * involves calculating the browser text for each item (and this is not the bottleneck).  So a potential
-     * solution is to use the setProtypicalItem method of the jlist to set the width and height to the max.
-     * But for some reason this only worked the first time when I tried it and the results would probably not be
-     * optimal.
-     * 
-     * The More... could perhaps be instrumented to completely fill the list when clicked.
-     */
-    private Object[] getSortedResults(Set<OWLEntity> results) {
-        TreeSet<OWLEntity> ts = new TreeSet<OWLEntity>(editorKit.getModelManager().getOWLObjectComparator());
+    * This is an opportunity to add some code to deal with large result sets.  The problem
+    * is that if you give a big set of results to a JList then it will will take a very long time
+    * (35 seconds on my work desktop to display 29000 entities beginning with an 'a').  A sort already
+    * involves calculating the browser text for each item (and this is not the bottleneck).  So a potential
+    * solution is to use the setProtypicalItem method of the jlist to set the width and height to the max.
+    * But for some reason this only worked the first time when I tried it and the results would probably not be
+    * optimal.
+    *
+    * The More... could perhaps be instrumented to completely fill the list when clicked.
+    */
+    private List<SearchResult> getSortedResults(List<SearchResult> results) {
+        TreeSet<SearchResult> ts = new TreeSet<SearchResult>();
         ts.addAll(results);
-        int maxSize = 150;
-        boolean tooMany = ts.size() > maxSize;
-        Object[] arrayResults = new Object[tooMany ? maxSize : ts.size()];
+
+
+        List<SearchResult> resultsList = new ArrayList<SearchResult>();
         int i = 0;
-        for (OWLEntity e : ts) {
-        	if (tooMany && i >= arrayResults.length - 1) {
-        		break;
-        	}
-        	arrayResults[i++] = e;
+        for (SearchResult e : ts) {
+            resultsList.add(e);
         }
-        if (tooMany) {
-        	arrayResults[maxSize - 1] = "More...";
-        }
-        return arrayResults;
+//        if (tooMany) {
+//        	arrayResults[maxSize - 1] = "More...";
+//        }
+        return resultsList;
     }
 }
