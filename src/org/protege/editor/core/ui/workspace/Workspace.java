@@ -151,51 +151,54 @@ public abstract class Workspace extends JComponent implements Disposable {
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             JMenu menu = menuBar.getMenu(i);
-            if (menu.getText().equals(WINDOW_MENU_NAME)) {
-                installLookAndFeelMenu(menu);
-            }
-            else if (menu.getText().equals(FILE_MENU_NAME)) {
-                if (!OSUtils.isOSX()) {
-                    final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences...") {
-                        /**
-                         *
-                         */
-                        private static final long serialVersionUID = -4897769796985728041L;
-
-                        public void actionPerformed(ActionEvent event) {
-                            PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
-                        }
-                    });
-                    KeyStroke ks = KeyStroke.getKeyStroke(",");
-                    menuItem.setAccelerator(ks);
-                    menu.addSeparator();
-                    menu.add(menuItem);
-                    menu.addSeparator();
-                    menu.add(new AbstractAction("Exit") {
-                        /**
-                         *
-                         */
-                        private static final long serialVersionUID = -3497054762240815779L;
-
-                        public void actionPerformed(ActionEvent event) {
-                            ProtegeApplication.handleQuit();
-                        }
-                    });
+            if (menu != null) {
+                String menuText = menu.getText();
+                if (WINDOW_MENU_NAME.equals(menuText)) {
+                    installLookAndFeelMenu(menu);
                 }
-            }
-            else if (menu.getText().equals(HELP_MENU_NAME)) {
-                if (!OSUtils.isOSX()) {
-                    menu.addSeparator();
-                    menu.add(new AbstractAction("About") {
-                        /**
-                         *
-                         */
-                        private static final long serialVersionUID = 3773470646910947172L;
+                else if (FILE_MENU_NAME.equals(menuText)) {
+                    if (!OSUtils.isOSX()) {
+                        final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences...") {
+                            /**
+                             *
+                             */
+                            private static final long serialVersionUID = -4897769796985728041L;
 
-                        public void actionPerformed(ActionEvent event) {
-                            AboutPanel.showDialog();
-                        }
-                    });
+                            public void actionPerformed(ActionEvent event) {
+                                PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
+                            }
+                        });
+                        KeyStroke ks = KeyStroke.getKeyStroke(",");
+                        menuItem.setAccelerator(ks);
+                        menu.addSeparator();
+                        menu.add(menuItem);
+                        menu.addSeparator();
+                        menu.add(new AbstractAction("Exit") {
+                            /**
+                             *
+                             */
+                            private static final long serialVersionUID = -3497054762240815779L;
+
+                            public void actionPerformed(ActionEvent event) {
+                                ProtegeApplication.handleQuit();
+                            }
+                        });
+                    }
+                }
+                else if (HELP_MENU_NAME.equals(menuText)) {
+                    if (!OSUtils.isOSX()) {
+                        menu.addSeparator();
+                        menu.add(new AbstractAction("About") {
+                            /**
+                             *
+                             */
+                            private static final long serialVersionUID = 3773470646910947172L;
+
+                            public void actionPerformed(ActionEvent event) {
+                                AboutPanel.showDialog();
+                            }
+                        });
+                    }
                 }
             }
         }
