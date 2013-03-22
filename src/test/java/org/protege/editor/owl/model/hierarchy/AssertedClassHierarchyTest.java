@@ -6,10 +6,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.owl.util.JunitUtil;
 import org.protege.owlapi.apibinding.ProtegeOWLManager;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
@@ -25,8 +23,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 public class AssertedClassHierarchyTest extends TestCase {
-    private Logger log = Logger.getLogger(AssertedClassHierarchyTest.class);
-    
     
     public static String NEW_ONTOLOGY_URI = "http://www.tigraworld.com/protege/1";
     
@@ -56,7 +52,7 @@ public class AssertedClassHierarchyTest extends TestCase {
     
     public void testSimpleLoop() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException {
         String namespace = "http://tigraworld.com/protege/simpleLoop.owl#";
-        installOntology("junit/ontologies/tree/simpleLoop.owl");
+        installOntology("src/test/resources/ontologies/tree/simpleLoop.owl");
         OWLOntology ontology = manager.getOntologies().iterator().next();
         
         OWLClass a = factory.getOWLClass(IRI.create(namespace + "A"));
@@ -90,7 +86,7 @@ public class AssertedClassHierarchyTest extends TestCase {
     
     public void testTwoParents() throws OWLOntologyCreationException, URISyntaxException {
         String namespace = "http://tigraworld.com/protege/twoParents.owl#";
-        installOntology("junit/ontologies/tree/twoParents.owl");
+        installOntology("src/test/resources/ontologies/tree/twoParents.owl");
         
         OWLClass a = factory.getOWLClass(IRI.create(namespace + "A"));
         OWLClass b = factory.getOWLClass(IRI.create(namespace + "B"));
@@ -113,7 +109,7 @@ public class AssertedClassHierarchyTest extends TestCase {
     public void testAddGCA() 
     throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException, OWLRendererException {
         String namespace = "http://tigraworld.com/protege/twoParents.owl#";
-        installOntology("junit/ontologies/tree/twoParents.owl");
+        installOntology("src/test/resources/ontologies/tree/twoParents.owl");
         
         OWLOntology ontology = manager.getOntologies().iterator().next();
         
