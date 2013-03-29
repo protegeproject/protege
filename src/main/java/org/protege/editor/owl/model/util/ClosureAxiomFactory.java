@@ -1,8 +1,20 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.*;
-
 import java.util.Set;
+import java.util.TreeSet;
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction;
+import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -19,9 +31,11 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
     protected OWLDataFactory owlDataFactory;
 
     private Set<OWLOntology> onts;
+    
+    private Set<OWLClass> visitedClasses = new TreeSet<OWLClass>();
 
 
-    public ClosureAxiomFactory(OWLObjectProperty objectProperty, OWLDataFactory df, Set<OWLOntology> onts) {
+    private ClosureAxiomFactory(OWLObjectProperty objectProperty, OWLDataFactory df, Set<OWLOntology> onts) {
         super(df, objectProperty);
         this.owlDataFactory = df;
         this.onts = onts;
@@ -65,7 +79,11 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
     /* Get the inherited restrictions also */
     public void visit(OWLClass cls) {
-        if (onts != null){
+    	if (visitedClasses.contains(cls)) {
+    		return;
+    	}
+    	else if (onts != null){
+    		visitedClasses.add(cls);
             for (OWLClassExpression superCls : cls.getSuperClasses(onts)){
                 superCls.accept(this);
             }
