@@ -10,7 +10,7 @@
 
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>ProtegeLauncher</artifactId>
-	<version>4.2.0-rc2-SNAPSHOT</version>
+	<version>4.2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Protege Base</name>
