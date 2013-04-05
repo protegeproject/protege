@@ -10,7 +10,7 @@
 
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>org.protege.common</artifactId>
-	<version>4.2.1</version>
+	<version>4.2.2-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	
 	<name>Protege Common</name>
@@ -48,9 +48,9 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/tags/org.protege.common-4.2.1</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/tags/org.protege.common-4.2.1</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/tags/org.protege.common-4.2.1</url>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/</url>
 	</scm>
 
     <properties>
