@@ -49,7 +49,7 @@
     <!-- OSGI Targets -->
     <!-- ===================================================================  -->
 
-	<!-- Equinox -->
+	<!-- Equinox (not using anymore) -->
     <target name="equinox" depends="build.launcher">
 		<delete  dir="${protege.home}"/>
         <mkdir dir="${protege.home}"/>
@@ -65,7 +65,7 @@
 		<antcall target="add.version"/>
     </target>
 
-	<!-- Knoplerfish -->
+	<!-- Knoplerfish (not using anymore) -->
     <target name="knopflerfish">
 		<delete  dir="${protege.home}"/>
 		<mkdir dir="${protege.home}"/>
