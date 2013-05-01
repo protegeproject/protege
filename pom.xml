@@ -14,7 +14,7 @@
 	<packaging>bundle</packaging>
 
 	<name>Ontology Editing Infrastructure</name>
-    <description>Ontology Editing Infrastructure</description>
+    <description>Ontology editing infrastructure used by the Protege desktop application.</description>
 	<url>http://protege.stanford.edu</url>
 	<organization>
 		<name>Stanford Center for Biomedical Informatics Research</name>
