@@ -10,7 +10,7 @@
 	
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>org.protege.editor.owl</artifactId>
-	<version>4.3.0</version>
+	<version>4.3.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<name>OWL Editor</name>
@@ -64,9 +64,9 @@
 	</mailingLists>
 	
 	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/tags/org.protege.editor.owl-4.3.0</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/tags/org.protege.editor.owl-4.3.0</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/tags/org.protege.editor.owl-4.3.0</url>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/</url>
 	</scm>
 
     <properties>
