@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>edu.stanford.protege</groupId>
+    <artifactId>protege-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>5.0.0-beta-01-SNAPSHOT</version>
+    
+    <name>Protege Desktop</name>
+	<description>Protege is an ontology editor that supports the full OWL 2 standard.</description>
+	<url>http://protege.stanford.edu</url>
+	<organization>
+		<name>Stanford Center for Biomedical Informatics Research</name>
+		<url>http://bmir.stanford.edu/</url>
+	</organization>
+	
+	
+    
+</project>
