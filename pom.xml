@@ -3,99 +3,34 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
+		<groupId>edu.stanford.protege</groupId>
+		<artifactId>protege-parent</artifactId>
+		<version>5.0.0-beta-01-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>edu.stanford.protege</groupId>
 	<artifactId>org.protege.editor.owl</artifactId>
-	<version>4.3.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
-	<name>OWL Editor</name>
-    <description>OWL Editor</description>
-	<url>http://protege.stanford.edu</url>
-	<organization>
-		<name>Stanford Center for Biomedical Informatics Research</name>
-		<url>http://bmir.stanford.edu/</url>
-	</organization>
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License</name>
-			<url>http://www.gnu.org/copyleft/lesser.html</url>
-		</license>
-	</licenses>
+	<name>Protege Editor OWL</name>
+    <description>OWL ontology editing infrastructure used by the Protege desktop application.</description>
 
-	<developers>
-		<developer>
-			<name>Matthew Horridge</name>
-			<email>matthew.horridge@stanford.edu</email>
-		</developer>
-		<developer>
-			<name>Nick Drummond</name>
-			<email>nickdrummond@yahoo.com</email>
-		</developer>
-		<developer>
-			<name>Timothy Redmond</name>
-			<email>tredmond@stanford.edu</email>
-		</developer>
-		<developer>
-			<name>Tania Tudorache</name>
-			<email>tudorache@stanford.edu</email>
-		</developer>
-		<developer>
-			<name>Jennifer Vendetti</name>
-			<email>vendetti@stanford.edu</email>
-		</developer>
-	</developers>
-	
-	<mailingLists>
-		<mailingList>
-			<name>p4-feedback</name>
-			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
-			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
-			<post>p4-feedback@lists.stanford.edu</post>
-			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
-			<otherArchives>
-				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-	
 	<scm>
 		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</connection>
 		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</developerConnection>
 		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/</url>
 	</scm>
 
-    <properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
 	<dependencies>
-		<dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.main</artifactId>
-            <version>4.0.3</version>
-        </dependency>
-
-		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>org.eclipse.equinox.registry</artifactId>
-			<version>3.5.0.v20100503</version>
-		</dependency>
-      		
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.common</artifactId>
-			<version>4.3.0</version>
+			<version>${project.version}</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.core.application</artifactId>
-			<version>4.3.0</version>
+			<version>${project.version}</version>
         </dependency>
 
 		<dependency>
@@ -108,18 +43,6 @@
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.xmlcatalog</artifactId>
 			<version>1.0.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owlapi-distribution</artifactId>
-			<version>3.4.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.8</version>
 		</dependency>
 	</dependencies>
 
@@ -158,7 +81,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.14</version>
 				<configuration>
-					<!-- We set skip to true so the unit tests can be explicitly defined in the XML file reference below -->
 					<skip>true</skip>
                     <systemPropertyVariables>
                         <log4j.configuration>file:log4j.xml</log4j.configuration>
@@ -186,167 +108,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-            </plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-	
-	<reporting>
-		<plugins>
-
-			<!-- JXR Plugin produces a cross-reference of the project's sources. The 
-				generated reports make it easier for the user to reference or find specific 
-				lines of code. It is also handy when used with the PMD Plugin for referencing 
-				errors found in the code -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-
-			<!--PMD scans Java source code and looks for potential problems like: 
-				- Possible bugs - empty try/catch/finally/switch statements - Dead code - 
-				unused local variables, parameters and private methods - Suboptimal code 
-				- wasteful String/StringBuffer usage - Overcomplicated expressions - unnecessary 
-				if statements, for loops that could be while loops - Duplicate code - copied/pasted 
-				code means copied/pasted bugs -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-					<linkXref>true</linkXref>
-					<targetJdk>1.5</targetJdk>
-				</configuration>
-			</plugin>
-
-			<!-- creates the web interface version of the test results -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.1.4</version>
-			</plugin>
-
-			<!-- JDepend determines architecture metrics as (cyclic) dependencies of packages -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-				<version>2.0-beta-2</version>
-			</plugin>
-
-			<!-- Cobertura determines statement and branch coverage -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<formats>
-						<format>xml</format>
-						<format>html</format>
-					</formats>
-				</configuration>
-			</plugin>
-
-			<!-- Checkstyle verifies compliance with coding standards/guidelines -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<configLocation>
-						${basedir}/src/main/resources/checkstyle/protege.xml
-					</configLocation>
-				</configuration>
-			</plugin>
-
-			<!-- Findbugs -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>1.1.1</version>
-			</plugin>
-
-			<!-- source measurement suite for Java which produces quantity & complexity 
-				metrics -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>javancss-maven-plugin</artifactId>
-				<version>2.0-beta-2</version>
-			</plugin>
-
-			<!-- XRadar summarizing/consolidating reports -->
-			<plugin>
-				<groupId>net.sf.xradar</groupId>
-				<artifactId>maven-xradar-plugin</artifactId>
-				<version>1.2.2</version>
-				<configuration>
-					<autoRadar>false</autoRadar>
-					<!--false to execute only the plugins declared -->
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-	
-	<profiles>
-		<profile>
-			<id>sign-artifacts</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
