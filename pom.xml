@@ -3,76 +3,35 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
+		<groupId>edu.stanford.protege</groupId>
+		<artifactId>protege-parent</artifactId>
+		<version>5.0.0-beta-01-SNAPSHOT</version>
 	</parent>
 
-	<groupId>edu.stanford.protege</groupId>
 	<artifactId>org.protege.common</artifactId>
-	<version>4.3.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	
 	<name>Protege Common</name>
 	<description>Core Protege Libraries</description>
-	<url>http://protege.stanford.edu</url>
-	<organization>
-		<name>Stanford Center for Biomedical Informatics Research</name>
-		<url>http://bmir.stanford.edu/</url>
-	</organization>
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License</name>
-			<url>http://www.gnu.org/copyleft/lesser.html</url>
-		</license>
-	</licenses>
 	
-	<developers>
-		<developer>
-			<name>Timothy Redmond</name>
-			<email>tredmond@stanford.edu</email>
-		</developer>
-	</developers>
-	
-	<mailingLists>
-		<mailingList>
-			<name>p4-feedback</name>
-			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
-			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
-			<post>p4-feedback@lists.stanford.edu</post>
-			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
-			<otherArchives>
-				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-
 	<scm>
 		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</connection>
 		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</developerConnection>
 		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/</url>
 	</scm>
 
-    <properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
 	<dependencies>
-		<dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.main</artifactId>
-            <version>4.0.3</version>
-        </dependency>
-        <dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-        </dependency>
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>looks</artifactId>
 			<version>2.2.2</version>
-		</dependency>        
+		</dependency>
+		
+        <dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -86,79 +45,26 @@
 					<instructions>
 						<Bundle-Activator>org.protege.common.Activator</Bundle-Activator>
 						<Bundle-ClassPath>.</Bundle-ClassPath>
-						<Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
 						<Embed-Dependency>log4j, looks</Embed-Dependency>
-						<Export-Package>org.protege.common.*, org.apache.log4j.*, com.jgoodies.*</Export-Package>
-						<Import-Package>!com.ibm.*, !com.sun.*, !javax.jms, !javax.mail.*, !javax.jmdns, *</Import-Package>
+						<Export-Package>
+							${project.artifactId}*;version=${project.version}, 
+							org.apache.log4j.*;version="1.2.17", 
+							com.jgoodies.*;version="2.2.2"
+						</Export-Package>
+						<Import-Package>
+							!com.ibm.*, 
+							!com.sun.*, 
+							!javax.jms, 
+							!javax.mail.*, 
+							!javax.jmdns, 
+							*
+						</Import-Package>
 					</instructions>
 				</configuration>
             </plugin>
-		
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-            </plugin>
-            
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-	
-	<profiles>
-		<profile>
-			<id>sign-artifacts</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+
 </project>
