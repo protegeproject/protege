@@ -17,10 +17,13 @@
 	<description>Protege is an ontology editor that supports the full OWL 2 standard.</description>
 
 	<modules>
-		<module>protege-base</module>
+		<module>org.coode.dlquery</module>
+		<module>org.coode.owlviz</module>
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
+		<module>org.semanticweb.owl.owlapi</module>
+		<module>protege-base</module>
 	</modules>
 
 	<url>http://protege.stanford.edu</url>
