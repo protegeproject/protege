@@ -7,7 +7,7 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-
+	
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
     <packaging>pom</packaging>
@@ -17,11 +17,17 @@
 	<description>Protege is an ontology editor that supports the full OWL 2 standard.</description>
 
 	<modules>
+		<module>ca.uvic.cs.chisel.cajun</module>
 		<module>org.coode.dlquery</module>
 		<module>org.coode.owlviz</module>
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
+		<module>org.protege.editor.owl.codegeneration</module>
+		<module>org.protege.editor.owl.diff</module>
+		<module>org.protege.explanation</module>
+		<module>org.protege.ontograf</module>
+		<module>org.protege.owl.diff</module>
 		<module>org.semanticweb.owl.owlapi</module>
 		<module>protege-base</module>
 	</modules>
@@ -80,25 +86,9 @@
 		</mailingList>
 	</mailingLists>
 
-    <properties>
+	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.0</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+	</properties>
 
 	<dependencies>
 		<!-- Apache Felix -->
@@ -130,6 +120,22 @@
 		</dependency>
 	</dependencies>
 	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 	<!-- Sign artifacts and generate -sources and -javadoc JAR files.  Required for Sonatype OSSRH sync to Maven Central. -->
 	<profiles>
 		<profile>
