@@ -23,13 +23,19 @@
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
-		<module>org.protege.editor.owl.codegeneration</module>
-		<module>org.protege.editor.owl.diff</module>
+		<module>org.protege.editor.owl.rdf</module>
 		<module>org.protege.explanation</module>
 		<module>org.protege.ontograf</module>
-		<module>org.protege.owl.diff</module>
+		<module>org.protege.owl.rdf</module>
 		<module>org.semanticweb.owl.owlapi</module>
 		<module>protege-base</module>
+
+		<!-- Tests fail when run as part of a multi module build.  -->
+		<!-- <module>org.protege.editor.owl.codegeneration</module> -->
+
+		<!-- Version of this plug-in that's generated with the maven bundle plug-in throws exceptions at runtime.
+		<module>org.protege.editor.owl.diff</module>
+		<module>org.protege.owl.diff</module> -->
 	</modules>
 
 	<url>http://protege.stanford.edu</url>
@@ -111,6 +117,13 @@
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 			<version>3.5.0.v20100503</version>
 		</dependency>
+		
+		<!-- Log4j -->
+        <dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+        </dependency>
 		
 		<!-- TestNG -->
 		<dependency>
