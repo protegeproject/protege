@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<!-- Inherit from Sonatype OSS Parent POM.  Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+    
+    <groupId>edu.stanford.protege</groupId>
+    <artifactId>aggregator</artifactId>
+    <packaging>pom</packaging>
+
+	<!-- Increment version number each time list of modules changes. -->
+    <version>1</version>
+
+    <name>Protege Desktop</name>
+	<description>Protege Desktop Aggregator POM</description>
+
+	<modules>
+		<module>ca.uvic.cs.chisel.cajun</module>
+		<module>org.coode.dlquery</module>
+		<module>org.coode.owlviz</module>
+		<module>org.protege.common</module>
+		<module>org.protege.editor.core.application</module>
+		<module>org.protege.editor.owl</module>
+		<module>org.protege.editor.owl.rdf</module>
+		<module>org.protege.explanation</module>
+		<module>org.protege.ontograf</module>
+		<module>org.protege.owl.rdf</module>
+		<module>org.semanticweb.owl.owlapi</module>
+		<module>protege-base</module>
+
+		<!-- Tests fail when run as part of a multi module build.  -->
+		<!-- <module>org.protege.editor.owl.codegeneration</module> -->
+
+		<!-- Version of this plug-in that's generated with the maven bundle plug-in throws exceptions at runtime.
+		<module>org.protege.editor.owl.diff</module>
+		<module>org.protege.owl.diff</module> -->
+	</modules>
+</project>
