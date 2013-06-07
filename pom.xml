@@ -15,7 +15,7 @@
 	<!-- Increment version number each time list of modules changes. -->
     <version>1</version>
 
-    <name>Protege Desktop</name>
+    <name>Protege Desktop Aggregator</name>
 	<description>Protege Desktop Aggregator POM</description>
 
 	<modules>
