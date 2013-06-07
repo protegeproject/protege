@@ -4,7 +4,7 @@
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.0.0-beta-02-SNAPSHOT</version>
+    <version>5.0.0-beta-01-SNAPSHOT</version>
 
     <name>Protege Desktop</name>
 	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
