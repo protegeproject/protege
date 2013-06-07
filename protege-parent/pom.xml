@@ -7,7 +7,7 @@
     <version>5.0.0-beta-01-SNAPSHOT</version>
 
     <name>Protege Desktop</name>
-	<description>Protege is an ontology editor that supports the full OWL 2 standard.</description>
+	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
 	<url>http://protege.stanford.edu</url>
 	<inceptionYear>1987</inceptionYear>
 	<organization>
