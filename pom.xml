@@ -84,7 +84,7 @@
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.main</artifactId>
-			<version>4.0.3</version>
+			<version>4.2.1</version>
 		</dependency>
 		
 		<!-- OWL API -->
@@ -94,7 +94,7 @@
 			<version>3.4.3</version>
 		</dependency>
 		
-		<!-- Eclipse Extension Registry Support -->
+		<!-- Eclipse Equinox Extension Registry -->
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>org.eclipse.equinox.registry</artifactId>
@@ -112,7 +112,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.8</version>
+			<version>6.8.5</version>
 		</dependency>
 	</dependencies>
 	
