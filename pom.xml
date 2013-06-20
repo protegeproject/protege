@@ -25,6 +25,7 @@
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
+		<module>org.protege.editor.owl.client</module>
 		<module>org.protege.editor.owl.codegeneration</module>
 		<module>org.protege.editor.owl.diff</module>
 		<module>org.protege.editor.owl.rdf</module>
