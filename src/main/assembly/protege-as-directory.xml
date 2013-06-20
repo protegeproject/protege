@@ -1,0 +1,94 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<baseDirectory>Protege</baseDirectory>
+	
+	<fileSets>
+		<fileSet>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>*</include>
+			</includes>
+			<directory>../protege-base/osgi/felix</directory>
+		</fileSet>
+
+		<fileSet>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>log4j.xml</include>
+			</includes>
+			<directory>../protege-base</directory>
+		</fileSet>
+
+		<fileSet>
+			<outputDirectory>bin</outputDirectory>
+			<includes>
+				<include>*</include>
+			</includes>
+			<directory>../protege-base/osgi/felix/bin</directory>
+		</fileSet>
+
+		<fileSet>
+			<outputDirectory>bundles</outputDirectory>
+			<includes>
+				<include>org.apache.felix.bundlerepository-1.4.2.jar</include>
+			</includes>
+			<directory>../protege-base/osgi/felix/bundles</directory>
+		</fileSet>
+
+		<fileSet>
+			<outputDirectory>bundles</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<directory>../protege-base/osgi/common</directory>
+		</fileSet>
+	</fileSets>
+	
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>bin</outputDirectory>
+			<includes>
+				<include>edu.stanford.protege:ProtegeLauncher:jar</include>
+			</includes>
+			<useStrictFiltering>true</useStrictFiltering>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+		</dependencySet>
+	
+		<dependencySet>
+			<outputDirectory>bundles</outputDirectory>
+			<includes>
+				<include>edu.stanford.protege:org.protege.common:jar</include>
+				<include>edu.stanford.protege:org.protege.editor.core.application:jar</include>
+			</includes>
+			<useStrictFiltering>true</useStrictFiltering>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+		</dependencySet>
+		
+		<dependencySet>
+			<outputDirectory>plugins</outputDirectory>
+			<includes>
+				<include>edu.stanford.protege:ca.uvic.cs.chisel.cajun:jar</include>
+				<include>edu.stanford.protege:org.coode.dlquery:jar</include>
+				<include>edu.stanford.protege:org.coode.owlviz:jar</include>
+				<include>edu.stanford.protege:org.protege.editor.owl:jar</include>
+				<include>edu.stanford.protege:org.protege.editor.owl.codegeneration:jar</include>
+				<include>edu.stanford.protege:org.protege.editor.owl.diff:jar</include>
+				<include>edu.stanford.protege:org.protege.editor.owl.rdf:jar</include>
+				<include>edu.stanford.protege:org.protege.explanation:jar</include>
+				<include>edu.stanford.protege:org.protege.ontograf:jar</include>
+				<include>edu.stanford.protege:org.protege.owl.diff:jar</include>
+				<include>edu.stanford.protege:org.protege.owl.rdf:jar</include>
+				<include>edu.stanford.protege:org.protege.owl.server:jar</include>
+				<include>edu.stanford.protege:org.semanticweb.owl.owlapi:jar</include>
+				<include>HermiT:org.semanticweb.HermiT</include>
+			</includes>
+			<useStrictFiltering>true</useStrictFiltering>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+		</dependencySet>
+    </dependencySets>
+</assembly>
