@@ -25,18 +25,34 @@
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
+		<module>org.protege.editor.owl.codegeneration</module>
+		<module>org.protege.editor.owl.diff</module>
 		<module>org.protege.editor.owl.rdf</module>
 		<module>org.protege.explanation</module>
 		<module>org.protege.ontograf</module>
+		<module>org.protege.owl.diff</module>
 		<module>org.protege.owl.rdf</module>
+		<module>org.protege.owl.server</module>
 		<module>org.semanticweb.owl.owlapi</module>
 		<module>protege-base</module>
-
-		<!-- Tests fail when run as part of a multi module build.  -->
-		<!-- <module>org.protege.editor.owl.codegeneration</module> -->
-
-		<!-- Version of this plug-in that's generated with the maven bundle plug-in throws exceptions at runtime.
-		<module>org.protege.editor.owl.diff</module>
-		<module>org.protege.owl.diff</module> -->
+		<module>protege-distribution</module>
+		<module>protege-parent</module>
 	</modules>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<descriptors>
+							<descriptor>protege-distribution/src/main/assembly/protege-as-directory.xml</descriptor>
+							<descriptor>protege-distribution/src/main/assembly/protege-as-app.xml</descriptor>
+						</descriptors>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
