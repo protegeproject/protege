@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.common</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 		<dependency>
@@ -46,7 +46,7 @@
 					<instructions>
 						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
 						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
-						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
+						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
 						<Embed-Dependency>mdock</Embed-Dependency>
 						<Export-Package>
