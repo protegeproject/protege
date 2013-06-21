@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-01</version>
+		<version>5.0.0-beta-02</version>
 		<relativePath>../protege-parent/pom.xml</relativePath>
 	</parent>
 	
