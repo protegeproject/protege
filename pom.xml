@@ -25,13 +25,13 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.common</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.core.application</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
         </dependency>
 
 		<dependency>
@@ -58,11 +58,16 @@
 					<instructions>
 						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
 						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-						<Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
+						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
 						<Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
-						<Export-Package>org.protege.editor.owl, org.protege.editor.owl.*</Export-Package>
-						<Import-Package>org.eclipse.core.runtime;registry=split, *</Import-Package>
+						<Export-Package>
+							${project.artifactId}*;version=${project.version}						
+						</Export-Package>
+						<Import-Package>
+							org.eclipse.core.runtime;registry=split, 
+							*
+						</Import-Package>
 						<Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
 					</instructions>
 					<executions>
