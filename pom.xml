@@ -37,7 +37,7 @@
 		<module>org.semanticweb.owl.owlapi</module>
 		<module>protege-base</module>
 		<module>protege-distribution</module>
-		<!-- <module>protege-parent</module> -->
+		<module>protege-parent</module>
 	</modules>
 	
 	<build>
