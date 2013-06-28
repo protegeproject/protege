@@ -34,7 +34,7 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>ca.uvic.cs.chisel.cajun</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.2</version>
         </dependency>
 
         <dependency>
