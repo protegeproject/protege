@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-02</version>
+		<version>5.0.0-beta-03</version>
 		<relativePath>../protege-parent/pom.xml</relativePath>
 	</parent>
 
@@ -20,5 +20,12 @@
 		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/protege-base/trunk/</developerConnection>
 		<url>http://smi-protege.stanford.edu/svn/protege4/protege-base/</url>
 	</scm>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.main</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>
