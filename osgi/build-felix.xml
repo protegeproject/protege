@@ -9,11 +9,13 @@
             <fileset dir = "." includes = "log4j.xml"/>
         </copy>
         <copy todir = "${protege.home}/bin" file="${launcher}"/>
-        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.common.jar"/>
-        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.registry.jar"/>
-        <copy todir = "${protege.home}/bundles" file="./osgi/common/org.eclipse.equinox.supplement.jar"/>
-    	<copy todir = "${protege.home}/bundles" file="./osgi/common/org.apache.felix.configadmin.jar"/>
-    	<copy todir = "${protege.home}/bundles" file="./osgi/common/org.apache.felix.scr.jar"/>
+        
+    	<copy todir = "${protege.home}/bundles">
+			<fileset dir = "./osgi/common">
+				<include name = "**/*.jar" />
+			</fileset>
+    	</copy>
+
         <chmod file = "${protege.home}/run.sh" perm = "u+x"/>
         <chmod file = "${protege.home}/run.command" perm = "u+x"/>
     </target>
