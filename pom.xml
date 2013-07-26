@@ -31,6 +31,7 @@
 		<module>org.protege.editor.owl.rdf</module>
 		<module>org.protege.explanation</module>
 		<module>org.protege.ontograf</module>
+		<module>org.protege.osgi.debug</module>
 		<module>org.protege.owl.diff</module>
 		<module>org.protege.owl.rdf</module>
 		<module>org.protege.owl.server</module>
