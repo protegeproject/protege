@@ -123,7 +123,7 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         registryLocHolder.add(resetToDefaultRegistry);
 
         registryHolder.add(Box.createVerticalStrut(12));
-        registryHolder.add(new JLabel("This is the location P4 will check to see which plugins are available."));
+        registryHolder.add(new JLabel("This is the location Protege will check to see which plugins are available."));
         registryHolder.add(Box.createVerticalStrut(12));
         registryHolder.add(registryLocHolder);
         registryHolder.add(Box.createVerticalStrut(12));
