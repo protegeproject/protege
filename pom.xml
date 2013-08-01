@@ -11,7 +11,7 @@
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.0.0-beta-04</version>
+    <version>5.0.0-beta-05-SNAPSHOT</version>
 
     <name>Protege Desktop</name>
 	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
@@ -70,9 +70,9 @@
 	</mailingLists>
 	
 	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-parent/tags/protege-parent-5.0.0-beta-04</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-parent/tags/protege-parent-5.0.0-beta-04</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/misc/composite/protege-parent/tags/protege-parent-5.0.0-beta-04</url>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-parent/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-parent/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/misc/composite/protege-parent/</url>
 	</scm>
 
 	<properties>
