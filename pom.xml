@@ -35,7 +35,6 @@
 		<module>org.protege.owl.diff</module>
 		<module>org.protege.owl.rdf</module>
 		<module>org.protege.owl.server</module>
-		<module>org.semanticweb.owl.owlapi</module>
 		<module>protege-base</module>
 		<module>protege-distribution</module>
 		<module>protege-parent</module>
@@ -45,6 +44,7 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.4</version>
 					<configuration>
