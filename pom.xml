@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-03</version>
+		<version>5.0.0-beta-04</version>
 		<relativePath>../protege-parent/pom.xml</relativePath>
 	</parent>
 	
@@ -31,6 +31,7 @@
 	
 		<!-- NOTE: These dependency declarations are required to sort this project to the end of the line in the multimodule build. -->
 		
+		<!-- edu.stanford.protege dependency list -->
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>ca.uvic.cs.chisel.cajun</artifactId>
@@ -46,7 +47,7 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.coode.owlviz</artifactId>
-			<version>4.1.3</version>
+			<version>4.1.4</version>
         </dependency>
 
         <dependency>
@@ -122,22 +123,25 @@
         </dependency>
         
         <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>ProtegeLauncher</artifactId>
+			<version>${project.parent.version}</version>
+        </dependency>
+        
+		<!-- HermiT dependency -->
+        <dependency>
 			<groupId>HermiT</groupId>
 			<artifactId>org.semanticweb.HermiT</artifactId>
 			<version>1.3.8</version>
         </dependency>
         
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.semanticweb.owl.owlapi</artifactId>
-			<version>3.4.4</version>
-        </dependency>
-        
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>ProtegeLauncher</artifactId>
-			<version>${project.parent.version}</version>
-        </dependency>
+        <!-- OWL API dependency -->
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-distribution</artifactId>
+			<version>3.4.5</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
