@@ -50,6 +50,7 @@ public class ViewMenuAction extends ProtegeDynamicAction {
         // First categorise them
 
         Map<String, List<ViewComponentPlugin>> categoriesMap = new HashMap<String, List<ViewComponentPlugin>>();
+        String miscellaneousKey = "Miscellaneous";
 
         ViewComponentPluginLoader loader = new ViewComponentPluginLoader(workspace);
         for (ViewComponentPlugin plugin : loader.getPlugins()) {
@@ -65,10 +66,10 @@ public class ViewMenuAction extends ProtegeDynamicAction {
                 }
             }
             else {
-                List<ViewComponentPlugin> plugins = categoriesMap.get("Misc");
+                List<ViewComponentPlugin> plugins = categoriesMap.get(miscellaneousKey);
                 if (plugins == null) {
                     plugins = new ArrayList<ViewComponentPlugin>();
-                    categoriesMap.put("Misc", plugins);
+                    categoriesMap.put(miscellaneousKey, plugins);
                 }
                 plugins.add(plugin);
             }
