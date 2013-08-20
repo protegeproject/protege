@@ -1,6 +1,6 @@
 [submodule "ca.uvic.cs.chisel.cajun"]
 	path = ca.uvic.cs.chisel.cajun
-	url = git://github.com/protegeproject/ca.uvic.cs.chisel.cajun.git
+	url = https://github.com/protegeproject/ca.uvic.cs.chisel.cajun.git
 
 [submodule "org.coode.dlquery"]
 	path = org.coode.dlquery
