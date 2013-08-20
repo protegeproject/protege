@@ -4,72 +4,72 @@
 
 [submodule "org.coode.dlquery"]
 	path = org.coode.dlquery
-	url = git://github.com/protegeproject/org.coode.dlquery.git
+	url = https://github.com/protegeproject/org.coode.dlquery.git
 
 [submodule "org.coode.owlviz"]
 	path = org.coode.owlviz
-	url = git://github.com/protegeproject/org.coode.owlviz.git
+	url = https://github.com/protegeproject/org.coode.owlviz.git
 
 [submodule "org.protege.common"]
 	path = org.protege.common
-	url = git://github.com/protegeproject/org.protege.common.git
+	url = https://github.com/protegeproject/org.protege.common.git
 
 [submodule "org.protege.editor.core.application"]
 	path = org.protege.editor.core.application
-	url = git://github.com/protegeproject/org.protege.editor.core.application.git
+	url = https://github.com/protegeproject/org.protege.editor.core.application.git
 
 [submodule "org.protege.editor.owl"]
 	path = org.protege.editor.owl
-	url = git://github.com/protegeproject/org.protege.editor.owl.git
+	url = https://github.com/protegeproject/org.protege.editor.owl.git
 
 [submodule "org.protege.editor.owl.client"]
 	path = org.protege.editor.owl.client
-	url = git://github.com/protegeproject/org.protege.editor.owl.client.git
+	url = https://github.com/protegeproject/org.protege.editor.owl.client.git
 
 [submodule "org.protege.editor.owl.codegeneration"]
 	path = org.protege.editor.owl.codegeneration
-	url = git://github.com/protegeproject/org.protege.editor.owl.codegeneration.git
+	url = https://github.com/protegeproject/org.protege.editor.owl.codegeneration.git
 
 [submodule "org.protege.editor.owl.diff"]
 	path = org.protege.editor.owl.diff
-	url = git://github.com/protegeproject/org.protege.editor.owl.diff.git
+	url = https://github.com/protegeproject/org.protege.editor.owl.diff.git
 
 [submodule "org.protege.editor.owl.rdf"]
 	path = org.protege.editor.owl.rdf
-	url = git://github.com/protegeproject/org.protege.editor.owl.rdf.git
+	url = https://github.com/protegeproject/org.protege.editor.owl.rdf.git
 
 [submodule "org.protege.explanation"]
 	path = org.protege.explanation
-	url = git://github.com/protegeproject/org.protege.explanation.git
+	url = https://github.com/protegeproject/org.protege.explanation.git
 
 [submodule "org.protege.ontograf"]
 	path = org.protege.ontograf
-	url = git://github.com/protegeproject/org.protege.ontograf.git
+	url = https://github.com/protegeproject/org.protege.ontograf.git
 
 [submodule "org.protege.osgi.debug"]
 	path = org.protege.osgi.debug
-	url = git://github.com/protegeproject/org.protege.osgi.debug.git
+	url = https://github.com/protegeproject/org.protege.osgi.debug.git
 
 [submodule "org.protege.owl.diff"]
 	path = org.protege.owl.diff
-	url = git://github.com/protegeproject/org.protege.owl.diff.git
+	url = https://github.com/protegeproject/org.protege.owl.diff.git
 
 [submodule "org.protege.owl.rdf"]
 	path = org.protege.owl.rdf
-	url = git://github.com/protegeproject/org.protege.owl.rdf.git
+	url = https://github.com/protegeproject/org.protege.owl.rdf.git
 
 [submodule "org.protege.owl.server"]
 	path = org.protege.owl.server
-	url = git://github.com/protegeproject/org.protege.owl.server.git
+	url = https://github.com/protegeproject/org.protege.owl.server.git
 
 [submodule "protege-base"]
 	path = protege-base
-	url = git://github.com/protegeproject/protege-base.git
+	url = https://github.com/protegeproject/protege-base.git
 
 [submodule "protege-distribution"]
 	path = protege-distribution
-	url = git://github.com/protegeproject/protege-distribution.git
+	url = https://github.com/protegeproject/protege-distribution.git
 
 [submodule "protege-parent"]
 	path = protege-parent
-	url = git://github.com/protegeproject/protege-parent.git
+	url = https://github.com/protegeproject/protege-parent.git
