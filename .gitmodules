@@ -54,6 +54,10 @@
 	path = org.protege.owl.diff
 	url = git://github.com/protegeproject/org.protege.owl.diff.git
 
+[submodule "org.protege.owl.rdf"]
+	path = org.protege.owl.rdf
+	url = git://github.com/protegeproject/org.protege.owl.rdf.git
+
 [submodule "org.protege.owl.server"]
 	path = org.protege.owl.server
 	url = git://github.com/protegeproject/org.protege.owl.server.git
