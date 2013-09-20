@@ -1,0 +1,200 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+	<parent>
+		<groupId>edu.stanford.protege</groupId>
+		<artifactId>protege-parent</artifactId>
+		<version>5.0.0-beta-04</version>
+		<relativePath>../protege-parent/pom.xml</relativePath>
+	</parent>
+	
+	<artifactId>protege-distribution</artifactId>
+	<packaging>pom</packaging>
+	
+	<name>Protege Desktop Distribution</name>
+	<description>Standard distribution of the Protege Desktop ontology editor.</description>
+	
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-distribution/trunk/</connection>
+		<developerConnection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/misc/composite/protege-distribution/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/misc/composite/protege-distribution/trunk/</url>
+	</scm>
+	
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://github.com/protegeproject/mvn-repo/raw/master/releases</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+	
+		<!-- NOTE: These dependency declarations are required to sort this project to the end of the line in the multimodule build. -->
+		
+		<!-- edu.stanford.protege dependency list -->
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>ca.uvic.cs.chisel.cajun</artifactId>
+			<version>1.0.2</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.coode.dlquery</artifactId>
+			<version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.coode.owlviz</artifactId>
+			<version>4.1.4</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.common</artifactId>
+			<version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.core.application</artifactId>
+			<version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl</artifactId>
+			<version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl.client</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl.codegeneration</artifactId>
+			<version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl.diff</artifactId>
+			<version>4.1.0.213</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl.rdf</artifactId>
+			<version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.explanation</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.ontograf</artifactId>
+			<version>1.0.3</version>
+        </dependency>
+
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.owl.diff</artifactId>
+			<version>1.0.0</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.owl.rdf</artifactId>
+			<version>1.0.2</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.owl.server</artifactId>
+			<version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>ProtegeLauncher</artifactId>
+			<version>${project.parent.version}</version>
+        </dependency>
+        
+		<!-- HermiT dependency -->
+        <dependency>
+			<groupId>HermiT</groupId>
+			<artifactId>org.semanticweb.HermiT</artifactId>
+			<version>1.3.8</version>
+        </dependency>
+        
+        <!-- OWL API dependency -->
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-distribution</artifactId>
+			<version>3.4.5</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>protege-desktop-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/protege-as-directory.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+					<execution>
+						<id>protege-desktop-osx-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/protege-as-app.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<replace file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/Info.plist" token="@shortVersion@" value="${project.parent.version}"/>
+								<chmod file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/MacOS/JavaApplicationStub" perm="u+x"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
