@@ -1,0 +1,2 @@
+Use the checkboxes below to control which inferences are displayed in Protege.
+Selectively disabling automatic inferences may improve performance.

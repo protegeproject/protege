@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog id="XML Catalog File (see http://www.oasis-open.org/committees/entity/spec-2001-08-06.html) - Created By Protégé 4" prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=/home/tredmond/dev/workspaces/protege4.1/org.protege.editor.owl/build/folder.test, Auto-Update=false" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1271787610995" name="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1271787610995" name="http://www.co-ode.org/ontologies/amino-acid/2009/02/16/amino-acid.owl" uri="amino-acid.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1271787610995" name="http://www.co-ode.org/ontologies/photography/photography.owl" uri="photography.owl"/>
+    </group>
+</catalog>

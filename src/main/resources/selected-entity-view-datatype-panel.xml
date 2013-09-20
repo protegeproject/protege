@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <HSNode splits="0.375 0.625">
+        <CNode>
+            <Component label="Annotations">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLDatatypeAnnotations"/>
+            </Component>
+            <Component label="Datatype Usage">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLDatatypeUsageView"/>
+            </Component>
+        </CNode>
+
+            <CNode>
+                <Component label="Description">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLDatatypeDescription"/>
+                </Component>
+            </CNode>
+
+    </HSNode>
+</layout>

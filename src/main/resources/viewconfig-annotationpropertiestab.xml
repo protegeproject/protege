@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.375 0.625">
+        <CNode>
+            <Component label="Annotation property hierarchy">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyTree"/>
+            </Component>
+        </CNode>
+        <HSNode splits="0.375 0.625">
+            <CNode>
+                <Component label="Annotations">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyAnnotations"/>
+                </Component>
+                <Component label="Usage">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyUsageView"/>
+                </Component>
+            </CNode>
+            <CNode>
+                <Component label="Description">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyDescription"/>
+                </Component>
+            </CNode>
+        </HSNode>
+    </VSNode>
+</layout>
