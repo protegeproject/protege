@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.stanford.protege</groupId>
+		<artifactId>protege-parent</artifactId>
+		<version>5.0.0-beta-04</version>
+		<relativePath>../protege-parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>org.protege.common</artifactId>
+	<packaging>bundle</packaging>
+	
+	<name>Protege Common</name>
+	<description>Core Protege Libraries</description>
+	
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>	
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.main</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jgoodies</groupId>
+			<artifactId>looks</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+            <plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.protege.common.Activator</Bundle-Activator>
+						<Bundle-ClassPath>.</Bundle-ClassPath>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Embed-Dependency>log4j, looks</Embed-Dependency>
+						<Export-Package>
+							${project.artifactId}*;version=${project.version}, 
+							org.apache.log4j.*;version="1.2.17", 
+							com.jgoodies.*;version="2.2.2"
+						</Export-Package>
+						<Import-Package>
+							!com.ibm.*, 
+							!com.sun.*, 
+							!javax.jms, 
+							!javax.mail.*, 
+							!javax.jmdns, 
+							*
+						</Import-Package>
+					</instructions>
+				</configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>
