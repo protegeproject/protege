@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="EditorKitFactory" name="EditorKitFactory" 
+                    schema="schema/EditorKitFactory.exsd"/>
+   <extension-point id="WorkspaceTab" name="WorkspaceTab"
+                    schema="schema/WorkspaceTab.exsd"/>
+   <extension-point id="ViewComponent" name="ViewComponent" 
+                    schema="schema/ViewComponent.exsd"/>
+   <extension-point id="ViewAction" name="ViewAction"
+                    schema="schema/ViewAction.exsd"/>
+   <extension-point id="EditorKitMenuAction"
+                    name="EditorKitMenuAction"
+                    schema="schema/EditorKitMenuAction.exsd"/>
+   <extension-point id="ToolBarAction" name="ToolBarAction"
+                    schema="schema/ToolBarAction.exsd"/>
+   <extension-point id="preferencespanel" 
+                    name="preferencespanel"
+                    schema="schema/preferencespanel.exsd"/>
+   <extension-point id="EditorKitHook"
+                     name="EditorKit Hook"
+                     schema="schema/EditorKitHook.exsd"/>
+   <extension-point id="OntologyRepositoryFactory" 
+                    name="Ontology Repository Factory" 
+                    schema="schema/OntologyRepositoryFactory.exsd"/>
+   <extension-point id="OntologyLoader" 
+                    name="Ontology Loader" 
+                    schema="schema/OntologyLoader.exsd"/>
+   <extension-point id="OtherStartupActions"
+                    name="OtherStartupActions" 
+                    schema="schema/OtherStartupActions.exsd"/>
+
+    <!-- Set up standard menus -->
+
+    <!-- File menu -->
+
+
+   <extension
+         id="menu.FileMenu"
+         name="FileMenu"
+         point="org.protege.editor.core.application.EditorKitMenuAction">
+      <name value="File"/>
+      <path value="/SlotA-A"/>
+      <editorKitId value="any"/>
+   </extension>
+
+    <extension id="menu.file.new" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="New..."/>
+        <toolTip value="Create a new empty ontology"/>
+        <class value="org.protege.editor.core.ui.action.NewAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-E"/>
+        <editorKitId value="any"/>
+        <accelerator value="N"/>
+    </extension>
+
+    <extension id="menu.file.open" 
+    		   point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Open..."/>
+        <toolTip value="Open an ontology"/>
+        <class value="org.protege.editor.core.ui.action.OpenAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-F"/>
+        <editorKitId value="any"/>
+        <accelerator value="O"/>
+    </extension>
+
+    <extension id="menu.file.openrecent" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Open recent"/>
+        <toolTip value="Open a recent ontology"/>
+        <class value="org.protege.editor.core.ui.action.OpenRecentAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAA-Z"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
+    </extension>
+
+    <extension id="menu.file.close" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Close"/>
+        <toolTip value="Close the current set of ontologies"/>
+        <class value="org.protege.editor.core.ui.action.CloseAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotY-M"/>
+        <editorKitId value="any"/>
+        <accelerator value="W"/>
+    </extension>
+
+    <extension id="menu.file.save" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Save"/>
+        <toolTip value="Save"/>
+        <class value="org.protege.editor.core.ui.action.SaveAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-A"/>
+        <editorKitId value="any"/>
+        <accelerator value="S"/>
+    </extension>
+
+    <extension id="menu.file.saveas" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Save as..."/>
+        <toolTip value="Save as"/>
+        <class value="org.protege.editor.core.ui.action.SaveAsAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-B"/>
+        <editorKitId value="any"/>
+        <accelerator value="shift S"/>
+    </extension>
+
+
+    <extension id="menu.plugins" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Check for plugins..."/>
+        <toolTip value="Search for plugin downloads and updates"/>
+        <class value="org.protege.editor.core.ui.action.CheckPluginsAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotP-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <!-- Edit menu -->
+
+    <extension id="menu.EditMenu"
+                point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Edit"/>
+        <toolTip value=""/>
+        <path value="/SlotB-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <!-- Window menu -->
+
+    <extension id="menu.window" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Window"/>
+        <path value="/SlotW-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.window.captureView" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Capture view..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotC-A"/>
+        <toolTip value="Capture the focused view as a png image on the clipboard"/>
+        <class value="org.protege.editor.core.ui.view.CaptureScreenshotAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.window.views" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Views"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotA-A"/>
+        <toolTip value="Configure Views"/>
+        <class value="org.protege.editor.core.ui.workspace.views.ViewMenuAction"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
+    </extension>
+
+
+
+
+    <extension id="menu.window.tabs" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Tabs"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotA-C"/>
+        <toolTip value="Set default tabs"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.TabsMenuAction"/>
+        <editorKitId value="any"/>
+        <dynamic value="true"/>
+    </extension>
+
+    <extension id="menu.window.createTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Create new tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-D"/>
+        <toolTip value="Create a new custom tab"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.CreateTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.deleteTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Delete custom tabs..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-E"/>
+        <toolTip value="Delete selected custom tabs"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.DeleteCustomTabsAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+        
+    <extension id="menu.window.exportTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Export current tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-F"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ExportTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.importTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Import tab..."/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-F"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ImportTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+    
+    <extension id="menu.window.saveTabs" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Store current layout"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-G"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.SaveAllTabsAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.window.resetCurrentTab" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Reset selected tab to default state"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotB-H"/>
+        <class value="org.protege.editor.core.ui.workspace.tabs.ResetCurrentTabAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <!-- Got rid of increase/decrease font size menu items in favour of a fonts preferences panel -->
+
+    <extension id="menu.window.increasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Increase font size"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-A"/>
+        <toolTip value="Increase the font size"/>
+        <class value="org.protege.editor.core.ui.action.IncreaseFontSizeAction"/>
+        <editorKitId value="any"/>
+        <accelerator value="EQUALS"/>
+    </extension>
+
+    <extension id="menu.window.decreasefontsize" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Decrease font size"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotD-B"/>
+        <toolTip value="Decrease the font size"/>
+        <class value="org.protege.editor.core.ui.action.DecreaseFontSizeAction"/>
+        <editorKitId value="any"/>
+        <accelerator value="MINUS"/>
+    </extension>
+
+    <extension id="menu.window.timestamp" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Timestamp log / console"/>
+        <path value="org.protege.editor.core.application.menu.window/SlotE-A"/>
+        <toolTip value="Prints a timestamp and optional message into the logs or console"/>
+        <class value="org.protege.editor.core.ui.action.TimestampOutputAction"/>
+        <editorKitId value="any"/>
+    </extension>
+
+
+    <!-- Help menu -->
+
+    <extension id="menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Help"/>
+        <path value="/SlotZZZZ-Z"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Release notes"/>
+        <toolTip value="View online release notes"/>
+        <url value="http://protegewiki.stanford.edu/wiki/P4_3_Release_Announcement"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Protege documentation"/>
+        <toolTip value="View online documentation"/>
+        <url value="http://protegewiki.stanford.edu/index.php/Protege4UserDocs"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <extension id="menu.CiteProtegeMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="How to cite Protege"/>
+        <toolTip value="Instructions for citing Protege in scientific publications"/>
+        <url value="http://protegewiki.stanford.edu/wiki/HowToCiteProtege"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotG-A"/>
+        <editorKitId value="any"/>
+    </extension>
+
+    <!-- Autoupdate preferences -->
+
+    <extension id="ui.preferences.update"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Plugins"/>
+        <class value="org.protege.editor.core.update.PluginPreferencesPanel"/>
+    </extension>
+    
+    <!-- Other startup actions --> 
+    
+    <extension id ="AltCheckForPluginsAction"
+               point="org.protege.editor.core.application.OtherStartupActions">
+       <name value="Check for plugins..."/>
+       <class value="org.protege.editor.core.ui.action.start.CheckPluginsAction"/>
+       <sortIndex value="B"/>
+    </extension>
+    
+    <extension id="ResetPreferencesAction"
+               point="org.protege.editor.core.application.OtherStartupActions">
+        <name value="Reset Protege preferences..."/>
+        <class value="org.protege.editor.core.ui.action.start.ResetPreferencesAction"/>
+        <sortIndex value="A"/>
+	</extension>
+
+</plugin>

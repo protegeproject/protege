@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.stanford.protege</groupId>
+		<artifactId>protege-parent</artifactId>
+		<version>5.0.0-beta-04</version>
+		<relativePath>../protege-parent/pom.xml</relativePath>
+	</parent>
+	
+	<artifactId>org.protege.editor.core.application</artifactId>
+	<packaging>bundle</packaging>
+
+	<name>Protege Editor Core</name>
+    <description>Core ontology editing infrastructure used by the Protege desktop application.</description>
+
+	<scm>
+		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</connection>
+		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</developerConnection>
+		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.core.application</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.registry</artifactId>
+		</dependency>
+			
+		<dependency>
+			<groupId>com.googlecode.mdock</groupId>
+			<artifactId>mdock</artifactId>
+			<version>1.1</version>
+		</dependency>        
+	</dependencies>
+
+	<build>
+		<plugins>
+            <plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
+						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
+						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+						<Embed-Dependency>mdock</Embed-Dependency>
+						<Export-Package>
+							org.protege.editor.core, 
+							org.protege.editor.core.*
+						</Export-Package>
+						<Import-Package>
+							!com.sun.*,
+							org.eclipse.core.runtime;registry="split",
+							org.apache.log4j*;version="[1.2,2)",
+							*
+						</Import-Package>
+						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
+					</instructions>
+					<executions>
+						<execution>
+							<id>bundle-manifest</id>
+							<phase>install</phase>
+							<goals>    
+								<goal>manifest</goal>
+							</goals>   
+						</execution>
+					</executions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

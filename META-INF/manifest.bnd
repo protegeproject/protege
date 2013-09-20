@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Protege Editor Framework
+Bundle-SymbolicName: org.protege.editor.core.application;singleton:=true
+Bundle-Version: 4.1.0
+Bundle-Vendor: Protege Development Team (First working version written\
+               at the University of Manchester by Matthew Horridge)
+Bundle-ContactAddress: p4-feedback@lists.stanford.edu
+Bundle-DocURL: http://protege.stanford.edu
+Bundle-ClassPath: .,lib/mdock.jar,lib/swing-worker.jar
+Bundle-Activator: org.protege.editor.core.ProtegeApplication
+Require-Bundle: org.eclipse.equinox.registry,org.eclipse.equinox.common,org.protege.common
+Update-Url: http://protege.stanford.edu/download/prerelease-alpha/pluginupdate.xml
+Bundle-Description: Generic Ontology Editor Bundle
+Bundle-Category: protege
+Import-Package: !sun.reflect.*,!com.sun.*,!junit.framework.*,!org.eclipse.core.runtime,\
+                 javax.swing.plaf.basic,javax.swing.plaf.metal,\
+                 javax.swing.plaf.multi,javax.swing.plaf.synth,*
+Export-Package: *;-noimport:=true
+-sources= true
+-failok=  false
+-nouses=  true
