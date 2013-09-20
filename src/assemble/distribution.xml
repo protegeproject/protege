@@ -1,0 +1,65 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>distribution</id>
+	<!-- Define what the target is (directory, a zip, a jar,... -->
+	<formats>
+		<format>dir</format>
+	</formats>
+
+
+	<!-- Define which files to include (with exception of jars) -->
+	<files>
+		<!-- include log4j.xml -->
+		<file>
+			<source>osgi/felix/build.properties</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>log4j.xml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.bat</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.command</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>osgi/felix/run.sh</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+
+	</files>
+
+
+	<!-- Define which jars to include and where to copy -->
+	<dependencySets>
+      <dependencySet>
+        <includes>
+          <include>org.apache.felix:felix-parent</include>
+        </includes>
+        <outputFileNameMapping>felix.jar</outputFileNameMapping>
+		<outputDirectory>bin</outputDirectory>
+      </dependencySet>
+	  <dependencySet>
+		<includes>
+		  <include>protege4:org.protege.common</include>
+          <include>protege4:org.protege.editor.core.application</include>
+		</includes>
+        <outputFileNameMapping>${artifact.artifactId}.jar</outputFileNameMapping>
+		<outputDirectory>bundles</outputDirectory>
+	  </dependencySet>
+	  <dependencySet>
+		<includes>
+          <include>protege4:org.semanticweb.owl.owlapi</include>
+		  <include>protege4:org.protege.editor.owl</include>
+		</includes>
+        <outputFileNameMapping>${artifact.artifactId}.jar</outputFileNameMapping>
+		<outputDirectory>plugins</outputDirectory>
+	  </dependencySet>
+	</dependencySets>
+</assembly>

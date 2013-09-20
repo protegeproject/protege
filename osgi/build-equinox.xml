@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Protege Equinox Distribution Build File" default = "run" basedir = ".">
+
+    <!-- ===================================================================  -->
+    <!-- EQUINOX - create an equinox-based distribution -->
+    <!-- ===================================================================  -->
+    <target name = "install">
+        <!-- flush cache -->
+        <copy todir = "${protege.home}">
+            <fileset dir = "./osgi/equinox"/>
+            <fileset dir = "." includes = "log4j.xml"/>
+        </copy>
+
+        <copy todir="${protege.home}/bundles">
+          <fileset dir="./osgi/common" />
+        </copy>
+        <copy todir = "${protege.home}/bin" file="${launcher}"/>
+
+        <chmod file = "${protege.home}/run.sh" perm = "a+x"/>
+        <chmod file = "${protege.home}/run.command" perm = "a+x"/>
+
+    </target>
+
+
+</project>
