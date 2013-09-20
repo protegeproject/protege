@@ -1,0 +1,24 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "Protege Felix Distribution Build File" default = "install" basedir = ".">
+    <!-- ===================================================================  -->
+    <!-- FELIX - create a felix-based distribution -->
+    <!-- ===================================================================  -->
+    <target name = "install">
+        <copy todir = "${protege.home}">
+            <fileset dir = "./osgi/felix"/>
+            <fileset dir = "." includes = "log4j.xml"/>
+        </copy>
+        <copy todir = "${protege.home}/bin" file="${launcher}"/>
+        
+    	<copy todir = "${protege.home}/bundles">
+			<fileset dir = "./osgi/common">
+				<include name = "**/*.jar" />
+			</fileset>
+    	</copy>
+
+        <chmod file = "${protege.home}/run.sh" perm = "u+x"/>
+        <chmod file = "${protege.home}/run.command" perm = "u+x"/>
+    </target>
+
+
+</project>

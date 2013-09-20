@@ -1,0 +1,43 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ***CHANGE ME*** SAMPLE: DL Query Tab
+Bundle-SymbolicName: ***CHANGE ME*** SAMPLE: org.coode.dlquery;singleton:=true
+Bundle-Category: protege
+Bundle-Description: ***CHANGE ME*** SAMPLE: A Plugin allowing dl queries in the  Protege OWL Editor
+Bundle-Vendor: ***CHANGE ME*** SAMPLE: The CO-ODE Group
+Bundle-DocURL: ***CHANGE ME*** SAMPLE: http://www.co-ode.org
+Bundle-ClassPath: .
+Import-Package: org.osgi.framework,
+ org.apache.log4j,
+ javax.swing,
+ javax.swing.border,
+ javax.swing.colorchooser,
+ javax.swing.event,
+ javax.swing.filechooser,
+ javax.swing.plaf,
+ javax.swing.plaf.basic,
+ javax.swing.plaf.metal,
+ javax.swing.plaf.multi,
+ javax.swing.plaf.synth,
+ javax.swing.table,
+ javax.swing.text,
+ javax.swing.text.html,
+ javax.swing.text.html.parser,
+ javax.swing.text.rtf,
+ javax.swing.tree,
+ javax.swing.undo,
+ org.w3c.dom,
+ org.w3c.dom.bootstrap,
+ org.w3c.dom.events,
+ org.w3c.dom.ls,
+ org.xml.sax,
+ org.xml.sax.ext,
+ org.xml.sax.helpers,
+ javax.xml.parsers
+Bundle-Version: 1.0.3
+Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator 
+Require-Bundle: org.eclipse.equinox.registry,
+ org.eclipse.equinox.common,
+ org.protege.editor.core.application,
+ org.protege.editor.owl,
+ org.semanticweb.owl.owlapi

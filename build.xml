@@ -1,0 +1,147 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "protege" default = "run" basedir = ".">
+
+   <property environment = "env"/>
+   <property name = "protege.home" location="${env.PROTEGE_HOME}"/>
+
+   <property file = "local.properties"/>
+   <property file = "version.properties"/>
+	
+   <property name="build"      location="./build"/>
+   <property name="src"        location="./src/main/java"/>
+   <property name="classes"    location="${build}/classes"/>
+   <property name="launcher"   location="${build}/ProtegeLauncher.jar"/>
+
+   <target name="init">
+       <echo message="**********************************************************"/>
+       <echo message="Using Protege Home = ${protege.home}"/>
+       <echo message="Using Java Version = ${ant.java.version}" />
+       <echo message="**********************************************************"/>
+   </target>
+
+
+	
+   <target name = "add.version">
+		<echo append = "true" file = "${protege.home}/build.properties" message = "core.major.version=${core.major.version}${line.separator}"/>
+		<echo append = "true" file = "${protege.home}/build.properties" message = "core.minor.version=${core.minor.version}${line.separator}"/>
+		<echo append = "true" file = "${protege.home}/build.properties" message = "core.micro.version=${core.micro.version}${line.separator}"/>
+		<echo append = "true" file = "${protege.home}/build.properties" message = "core.build.number=${core.build.number}${line.separator}"/>
+   </target>
+
+
+	
+   <target name="build.launcher" depends="init">
+	   <mkdir dir="${classes}"/>
+	   <javac srcdir="${src}" 
+              destdir="${classes}" 
+              classpath="./osgi/felix/bin/felix.jar"
+	   		  includeantruntime="false"
+              debug="true"/>
+	   <jar basedir="${classes}" destfile="${launcher}"/>
+   </target>
+
+   <target name="install.launcher" depends="build.launcher">
+     <property file="${protege.home}/build.properties"/>
+     <copy file="${launcher}" tofile="${protege.launcher}"/>
+   	</target>
+
+    <!-- ===================================================================  -->
+    <!-- OSGI Targets -->
+    <!-- ===================================================================  -->
+
+	<!-- Equinox (not using anymore) -->
+    <target name="equinox" depends="build.launcher">
+		<delete  dir="${protege.home}"/>
+        <mkdir dir="${protege.home}"/>
+        <ant antfile="osgi/build-equinox.xml" target="install"/>
+        <antcall target="add.version"/>
+    </target>
+
+	<!-- Felix -->
+    <target name="felix" depends="build.launcher">
+		<delete  dir="${protege.home}"/>
+		<mkdir dir="${protege.home}"/>
+		<ant antfile="osgi/build-felix.xml" target="install"/>
+		<antcall target="add.version"/>
+    </target>
+
+	<!-- Knoplerfish (not using anymore) -->
+    <target name="knopflerfish">
+		<delete  dir="${protege.home}"/>
+		<mkdir dir="${protege.home}"/>
+		<ant antfile="osgi/build-knopflerfish.xml" target="install"/>
+		<antcall target="add.version"/>
+    </target>
+
+	<!-- Apple -->
+    <target name="osx" depends="build.launcher">
+		<delete  dir="${protege.home}"/>
+		<mkdir dir="${protege.home}"/>
+		<ant antfile="osgi/build-osx.xml" target="install"/>
+		<antcall target="add.version"/>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEFAULTS -->
+    <!-- ===================================================================  -->
+    <target name = "install" depends = "felix"/>
+
+    <!-- ===================================================================  -->
+    <!-- USAGE -->
+    <!-- ===================================================================  -->
+    <target name = "usage">
+		<echo message = "equinox - build an eclipse-based distribution"/>
+		<echo message = "run - build and run the default distribution"/>
+		<echo message = "clean - clean all build output except for manifests"/>
+		<echo message = "debug - start a remote debug (hard-core people only)"/>
+		<echo message = "felix - build a felix distribution"/>
+		<echo message = "knopflerfish - build a knopflerfish distribution"/>
+		<echo message = "osx - build a standalone os x application (based on felix)"/>
+        <echo message = "build.launcher - builds the launcher (non-destructive)"/>
+    	<echo message = "install.launcher - installs the launcher (non-destructive)"/>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN -->
+    <!-- ===================================================================  -->
+    <target name = "run" depends="init">
+        <property file="${protege.home}/build.properties"/>
+        <property name="run.config" location="${protege.home}/config.xml"/>
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:${basedir}/log4j.xml"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG -->
+    <!-- ===================================================================  -->
+    <target name = "debug" depends="init">
+        <property file="${protege.home}/build.properties"/>
+        <property name="run.config" location="${protege.home}/config.xml"/>
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:${basedir}/log4j.xml"/>
+            <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=y"/>
+            <jvmarg value = "-Dorg.protege.launch.config=${run.config}"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+    </target>
+
+
+
+</project>

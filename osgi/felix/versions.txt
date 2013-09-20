@@ -1,0 +1,16 @@
+aQute Bundle Tool (bnd) 0.0.249
+
+Apache Felix Bundle Repository (org.apache.felix.bundlerepository) 1.6.6
+
+Apache Felix Configuration Admin (org.apache.felix.configadmin) 1.6.0
+
+Apache Felix Framework (felix) 4.2.1
+
+Apache Felix SCR Declarative Services (org.apache.felix.scr) 1.6.2
+
+Equinox Common Utility Bundle (org.eclipse.equinox.common) 3.6.0.v20100503
+
+Equinox Extension Registry (org.eclipse.equinox.registry) 3.5.0.v20100503
+
+Equinox Supplemental Bundle/JAR (org.eclipse.equinox.supplement) 1.3.0.v20100503
+
