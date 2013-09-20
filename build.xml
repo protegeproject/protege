@@ -1,0 +1,392 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<project name = "core protege owl editor project" default = "install" basedir = ".">    
+
+   <!-- 
+        To run this build file set the environment variable
+        PROTEGE_HOME to point to a protege distribution and type ant
+        install or jar.
+     -->
+
+   <property environment="env"/>
+   <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
+   <property file = "${protege.home}/build.properties"/>
+
+   <property file="local.properties"/>
+   <property name = "bundlor.home"      location="${env.BUNDLOR_HOME}"/>
+
+   <!-- 
+        This setting defines the name of the plugin.
+        This may be the only setting that the developer needs to
+        change.
+     -->
+   <property name = "plugin"          value = "org.protege.editor.owl"/>
+
+   
+   <!-- 
+        these properties probably don't need changing
+        -->
+   <property name = "src"               location = "./src/main/java"/>
+   <property name = "junit.src"         location = "./junit"/>
+   <property name = "build"             location = "./build"/>
+   <property name = "bundle.dir"        location = "${build}"/>
+   <property name = "classes"           location = "${build}/classes"/>
+   <property name = "junit.classes"     location = "${build}/junit.classes"/>
+   <property name = "lib"               location = "./lib"/>
+   <property name = "genlib"            location = "${build}/lib"/>
+   <property name = "manifest"          location = "${build}/manifest.mf"/>
+   <property name = "manifest.bundlor"  location = "./META-INF/manifest.bundlor"/>
+
+   <property name = "protege.common"    location="${protege.home}/bundles"/>
+   <property name = "protege.plugins"   location="${protege.home}/plugins"/>
+
+   <property name = "junit.lib"           location = "./lib/junit.jar"/>
+   <property name = "junit.filtertrace"   value = "false"/>
+   <property name = "junit.showoutput"    value = "true"/>
+   <property name = "junit.haltonerror"   value = "true"/>
+   <property name = "junit.haltonfailure" value = "true"/>
+
+   <target name = "init">
+     <tstamp>
+       <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
+     </tstamp>
+     <property name="bundle.version" 
+               value="${core.major.version}.${core.minor.version}.${core.micro.version}.b${core.build.number}_${build.time}"/>
+     <mkdir dir = "${build}"/>
+   	 <mkdir dir = "${junit.classes}"/>
+     <mkdir dir = "${classes}"/>
+     <mkdir dir = "${classes}/lib"/>
+     <mkdir dir = "${genlib}"/>
+     <condition property="use.bundlor">
+       <and>
+         <available file="${bundlor.home}"     type = "dir"/>
+         <available file="${manifest.bundlor}" type = "file"/>
+       </and>
+     </condition>
+   </target>  
+
+   <!-- ============================================================= -->
+   <!--             Configuring the Compile Classpath                 -->
+   <!-- ============================================================= -->
+
+
+    <target name="checkProtegeLibsAndReport" depends="checkProtegeLibs"
+            unless="libs.found">
+      <echo message="Missing protege libraries.  You need to set "/>
+      <echo message="the PROTEGE_HOME environment variable to a"/>
+      <echo message="protege installation directory where the"/>
+      <echo message="appropriate plugins have been installed."/>
+      <echo message="Alternatively set the jar libs in local.properties (protege.lib=...)"/>
+      <echo message="Use the -v option to ant to see what jars are missing."/>
+      <fail message = "missing protege libraries"/>
+    </target>
+
+   <!-- 
+        The following target only needs to be modified if the user
+        needs to change the classpath.  It is preconfigured to use
+        the common protege 4 jars, the lib directory and the
+        libraries that have been uncovered in buildlibs. 
+     -->
+   <target name = "checkProtegeLibs" depends="init">
+       <echo message="**********************************************************"/>
+	   <echo message="Using Protege Home = ${protege.home}"/>
+       <echo message="Using Java Version = ${ant.java.version}" />
+       <echo message="**********************************************************"/>
+       <condition property="libs.found">
+           <and>
+               <available file="${protege.osgi}" type="file"/>
+	           <available file="${equinox.common}" type = "file"/>
+	           <available file="${equinox.registry}" type = "file"/>
+               <available file="${common.lib}" type="file"/>
+               <available file="${owl.lib}" type="file"/>
+           </and>
+       </condition>
+       <path id = "project.classpath">    
+           <pathelement location="${protege.osgi}"/>
+           <pathelement location="${common.lib}"/>
+           <pathelement location="${protege.lib}"/>
+           <pathelement location="${equinox.common}"/>
+           <pathelement location="${equinox.registry}"/>
+           <pathelement location="${owl.lib}"/>
+           <fileset dir="${lib}"/>
+           <fileset dir="${genlib}"/>
+       </path>
+   </target>
+
+
+   <!-- 
+        The following target only needs to be modified if the
+        developer needs to obtain some jar files that are contained in
+        the Protege bundles.  The contents of these jar files are
+        found when Protege 4 runs but may be needed in order to
+        compile the plugin. 
+     -->
+   <target name = "buildlibs" depends="checkProtegeLibsAndReport">
+       <unjar dest="${build}"
+              src="${common.lib}">
+           <patternset>
+               <include name = "**/log4j.jar"/>
+               <include name = "**/looks.jar"/>
+           </patternset>
+       </unjar>
+       <unjar dest="${build}"
+              src="${owl.lib}">
+           <patternset>
+               <include name = "**/protege-owlapi-extensions.jar"/>
+           </patternset>
+       </unjar>
+       <!-- see svn revision 16765 to see how to build xmlcatalog with externals -->
+   </target>
+
+   <!-- 
+        Here is the copy.resources target.  It may need modification
+        to copy the right resources into the classes directory.  By
+        default it already copies non-java files found in the source
+        directory, the libraries needed by the project and the
+        viewconfig and the plugin.xml.  This will be sufficient in
+        many cases. 
+     -->
+   <target name="copy.resources">
+     <copy todir="${classes}">
+       <fileset dir="${src}">
+         <include name="**/*"/>
+         <exclude name="**/*.java"/>
+         <exclude name="**/MANIFEST.MF"/>
+         <exclude name="**/manifest.mf"/>
+       </fileset>
+     </copy>
+     <copy todir="${classes}/lib">
+       <fileset dir="${lib}" excludes="junit*.jar"/>
+     </copy>
+     <copy todir="${classes}">
+       <fileset dir="." includes="*.xml">
+           <exclude name="build.xml"/>
+           <exclude name="pom.xml"/>
+           <exclude name="**/log4j.xml"/>
+       </fileset>
+       <fileset dir="./src/main/resources"/>
+     </copy>
+   </target>
+
+
+   <!-- 
+        It is less likely that the developer will want to make changes
+        below this line 
+        -->
+   <!-- ============================================================= -->
+
+   <target name="add.source" depends="init">
+       <zip destfile="${classes}/${plugin}src.zip">
+           <fileset dir="${src}"/>
+       </zip>
+   </target>
+
+
+   <target name = "compile" depends = "buildlibs, checkProtegeLibsAndReport">
+     <javac srcdir = "${src}"
+            destdir = "${classes}" 
+            debug="on"
+            includeAntRuntime="false">
+       <classpath refid = "project.classpath"/>  
+     </javac>
+   </target>
+
+   <target name="use.existing.manifest" depends="init" unless="use.bundlor">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
+     </manifest>
+   </target>
+
+   <target name="bundlor.manifest" depends="copy.resources, compile" if="use.bundlor">
+      <java classname="org.eclipse.virgo.bundlor.commandline.Bundlor"
+            failonerror="true" fork="true">
+        <classpath>
+          <fileset dir="${bundlor.home}/plugins" includes="*.jar"/>
+          <fileset dir="${genlib}"/>
+        </classpath>
+        <jvmarg value="-Dbundle.version=${bundle.version}"/>
+        <jvmarg value="-Duser.name=${user.name}"/>
+        <jvmarg value="-Dplugin=${plugin}"/>
+        <arg value = "-i"/> <arg value="${classes}"/>
+        <arg value = "-m"/> <arg value="./META-INF/manifest.bundlor"/>
+        <arg value = "-o"/> <arg value = "."/>
+      </java>
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+   </target>
+
+
+   <target name = "jar" depends = "compile, use.existing.manifest, bundlor.manifest">
+     <jar jarfile = "${build}/${plugin}.jar"
+          basedir = "${classes}" 
+          manifest = "${build}/manifest.mf"/>
+   </target>
+
+   <target name = "orphanAlg" depends="compile,use.existing.manifest, bundlor.manifest">
+     <jar jarfile  = "${build}/orphanNodesAlg.jar"
+          basedir  = "${classes}" 
+          manifest = "${build}/manifest.mf"
+          includes = "org/protege/editor/owl/model/hierarchy/roots/*.class"/>
+   </target>
+
+   <target name = "install" depends = "jar">
+     <!-- flush cache -->
+     <delete dir = "${protege.home}/configuration/org.eclipse.core.runtime"/>
+     <delete dir = "${protege.home}/configuration/org.eclipse.osgi"/>
+     <copy file="${build}/${plugin}.jar" 
+           todir = "${protege.plugins}"
+           overwrite = "true"/>
+   </target>
+
+   <target name = "junit.compile" depends="compile">
+    <javac srcdir = "${junit.src}"
+           destdir = "${junit.classes}" 
+           debug="on"
+           includeAntRuntime="false">
+    	<classpath>
+    		<path        refid    = "project.classpath"/>
+    		<pathelement location = "${classes}"/>
+    		<pathelement location = "${junit.lib}"/>
+    	</classpath> 
+    </javac>
+   </target>
+	
+   <target name = "junit" depends="junit.compile">
+       <junit dir           = "."
+              printsummary  = "withOutAndErr" 
+   	      filtertrace   = "${junit.filtertrace}"
+   	      showoutput    = "${junit.showoutput}"
+   	      fork          = "true" 
+   	      haltonerror   = "${junit.haltonerror}" 
+   	      haltonfailure = "${junit.haltonfailure}">
+         <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y"/> -->
+   	   <jvmarg value="-Dlog4j.configuration=file:log4j.xml"/>
+   	   <batchtest>
+   	       <fileset dir="${junit.src}">
+   	  	   <include name="**/*Test.java"/>
+   	       </fileset>
+   	   </batchtest>
+    	   <classpath>
+    	       <path        refid    = "project.classpath"/>
+    	       <pathelement location = "${classes}"/>
+    	       <pathelement location = "${junit.classes}"/>
+    	       <pathelement location = "${junit.lib}"/>
+    	   </classpath> 
+       </junit>
+   </target>
+
+    <!-- ===================================================================  -->
+    <!-- RUN -->
+    <!-- ===================================================================  -->
+    <target name = "run" depends="init">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================  -->
+    <!-- DEBUG -->
+    <!-- ===================================================================  -->
+    <target name = "debug" depends="init">
+        <java fork = "true" dir = "${protege.home}" 
+              classname = "org.protege.osgi.framework.Launcher">
+            <jvmarg value = "-Dlog4j.configuration=file:log4j.xml"/>
+            <jvmarg value = "-agentlib:jdwp=transport=dt_socket,address=8500,server=y,suspend=y"/>
+            <jvmarg value = "-Xmx1500M"/>
+            <classpath>
+              <pathelement path="${protege.osgi}"/>
+              <pathelement path="${protege.launcher}"/>
+            </classpath>
+        </java>
+    </target>
+
+	
+   <target name = "clean">
+     <delete dir = "${build}"/>
+   </target>
+
+
+   <target name = "usage">
+     <echo message = "To run this script set the PROTEGE_HOME environment"/>
+     <echo message = "variable and use one of the following targets"/>
+   	 <echo message = ""/>
+     <echo message = "jar            - builds the jar (bundle) file for this project"/>
+     <echo message = "install        - installs  the bundle into the Protege distribution"/>
+     <echo message = "copy.resources - copies resources into the classes directory"/>
+     <echo message = "                 this can  be useful for ide developers - "/>
+     <echo message = "                 see the wiki for more details."/>
+   	 <echo message = "junit          - runs the junits but requires local.properties"/>
+   	 <echo message = "                 to find junit.jar"/>
+     <echo message = "run - runs Protege (requires that Protege has been installed)"/>
+     <echo message = "debug - starts Protege with the debugger using port 8500"/>
+   </target>
+
+
+   <!-- 
+        Standard properties that should not require changing
+        -->
+   <property name="equinox.common" 
+             location="${protege.common}/org.eclipse.equinox.common.jar"/>
+   <property name="equinox.registry"
+             location="${protege.common}/org.eclipse.equinox.registry.jar"/>
+   <property name="protege.lib" 
+             location="${protege.common}/org.protege.editor.core.application.jar"/>
+   <property name="common.lib"
+             location="${protege.common}/org.protege.common.jar"/>
+
+   <property name="owl.lib"
+             location="${protege.plugins}/org.semanticweb.owl.owlapi.jar"/>
+
+   <property name="owl.editor.jar"
+	     location="${protege.plugins}/org.protege.editor.owl.jar"/>
+
+
+   <!-- ===================================================================  -->
+   <!-- Distribution Support - Optional                                      -->
+   <!-- ===================================================================  -->
+
+   <property name="svn.root" value="http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk"/>
+
+
+   <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
+   <property name="readme.file"            value="${svn.root}/etc/owleditor-readme.html"/>
+
+   <target name = "dist" depends="jar">
+     <property name="download.short"         value="${plugin}-${bundle.version}.jar"/>
+     <property name="download"               value="https://protege.googlecode.com/files/${download.short}"/>
+     <copy file="${build}/${plugin}.jar" tofile="${build}/${download.short}"/>
+     <echo file="./etc/update.properties" append="false">
+id=${plugin}
+version=${bundle.version}
+download=${download}
+name=OWL Editor
+readme=${readme.file}
+license=http://www.gnu.org/licenses/lgpl.html
+author=Protege Development Team (First working version by Matthew Horridge)
+       </echo>
+       <echo message="The build file should ensure that"/>
+       <echo message="1. The bundle version and id is correct."/>
+       <echo message="Check the following things"/>
+       <echo message="1. The main repository uses "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="   to find this update"/>
+       <echo message="2. The update.properties can be found at "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="3. The readme file for this update can be found at"/>
+       <echo message="      ${readme.file}"/>
+       <echo message="4. The download for this update can be found at"/>
+       <echo message="      ${download}"/>
+   </target>
+
+
+
+</project>

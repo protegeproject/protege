@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <HSNode splits="0.375 0.625">
+        <CNode>
+            <Component label="Class Annotations">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLClassAnnotations"/>
+            </Component>
+            <Component label="Class Usage">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLClassUsageView"/>
+            </Component>
+        </CNode>
+        <CNode>
+            <Component label="Class description">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLClassDescription"/>
+            </Component>
+        </CNode>
+    </HSNode>
+</layout>

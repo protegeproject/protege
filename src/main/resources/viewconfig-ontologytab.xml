@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.625">
+        <HSNode splits="0.625 0.375">
+            <CNode>
+                <Component label="Annotations">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyAnnotationsView"/>
+                </Component>
+            </CNode>
+            <CNode>
+                <Component label="Ontology imports">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
+                </Component>
+                <Component label="Ontology Prefixes">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyPrefixesView"/>
+                </Component>
+                <Component label="General class axioms">
+                    <Property id="pluginId" value="org.protege.editor.owl.GeneralClassAxioms"/>
+                </Component>
+            </CNode>
+        </HSNode>
+    </VSNode>
+</layout>

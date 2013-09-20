@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <VSNode splits="0.17102917458542274 0.1611743932860385 0.48029643212853873">
+        <CNode>
+            <Component label="Class hierarchy">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+            </Component>
+            <Component label="Class hierarchy (inferred)">
+                <Property id="pluginId" value="org.protege.editor.owl.InferredOWLClassHierarchy"/>
+            </Component>
+        </CNode>
+        <CNode>
+            <Component label="Individuals">
+                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
+            </Component>
+        </CNode>
+        <HSNode splits="0.375 0.625">
+            <CNode>
+                <Component label="Annotations">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualAnnotations"/>
+                </Component>
+                <Component label="Usage">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualUsageView"/>
+                </Component>
+            </CNode>
+            <VSNode splits="0.5 0.5">
+                <CNode>
+                    <Component label="Description">
+                        <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualTypes"/>
+                    </Component>
+                </CNode>
+                <CNode>
+                    <Component label="Relationships">
+                        <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualRelationships"/>
+                    </Component>
+                </CNode>
+            </VSNode>
+        </HSNode>
+    </VSNode>
+</layout>
