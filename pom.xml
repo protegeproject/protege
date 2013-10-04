@@ -13,28 +13,15 @@
     <packaging>pom</packaging>
 
 	<!-- Increment version number each time list of modules changes. -->
-    <version>1</version>
+    <version>2</version>
 
     <name>Protege Desktop Aggregator</name>
 	<description>Protege Desktop Aggregator POM</description>
 
 	<modules>
-		<!-- <module>ca.uvic.cs.chisel.cajun</module> -->
-		<!-- <module>org.coode.dlquery</module> -->
-		<!-- <module>org.coode.owlviz</module> -->
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
-		<!-- <module>org.protege.editor.owl.client</module> -->
-		<!-- <module>org.protege.editor.owl.codegeneration</module> -->
-		<!-- <module>org.protege.editor.owl.diff</module> -->
-		<!-- <module>org.protege.editor.owl.rdf</module> -->
-		<!-- <module>org.protege.explanation</module> -->
-		<!-- <module>org.protege.ontograf</module> -->
-		<!-- <module>org.protege.osgi.debug</module> -->
-		<!-- <module>org.protege.owl.diff</module> -->
-		<!-- <module>org.protege.owl.rdf</module> -->
-		<!-- <module>org.protege.owl.server</module> -->
 		<module>protege-base</module>
 		<module>protege-distribution</module>
 		<module>protege-parent</module>
