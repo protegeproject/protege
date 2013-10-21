@@ -130,14 +130,6 @@
 						<target>1.6</target>
 					</configuration>
 				</plugin>
-				
-				<plugin>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
-					<configuration>
-						<pde>true</pde>
-					</configuration>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
