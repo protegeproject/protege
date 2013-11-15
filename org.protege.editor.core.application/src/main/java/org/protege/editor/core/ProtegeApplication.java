@@ -164,7 +164,7 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
-        logger.info("Starting Protege 4 OWL Editor (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + PluginUtilities.getBuildNumber(thisBundle) + ")");
+        logger.info("Starting Protege Desktop (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + v.getQualifier() + ")");
         logger.info("Platform:");
         logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
                 " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
