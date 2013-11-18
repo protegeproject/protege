@@ -184,29 +184,32 @@ public class PluginManager {
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("searching for plugins");
         Runnable runnable = new Runnable() {
             public void run() {
-                PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-                List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
-                if (!updates.isEmpty()) {
-                    ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
-                    Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-                    map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
-                    map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
-                    showUpdatesDialog(map);
-                }
-                else{
-                    PluginRegistry registry = getPluginRegistry();
-                    final List<PluginInfo> downloads = registry.getAvailableDownloads();
-                    ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
-                    if (!downloads.isEmpty()){
-                        Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-                        map.put("Downloads", registry);
-                        map.put("Updates", updatesProvider);
-                        showUpdatesDialog(map);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "No additional plugins / updates available at this time.");                        
-                    }
-                }
+            	try {
+            		PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
+            		List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
+            		if (!updates.isEmpty()) {
+            			Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
+            			map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
+            			map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
+            			showUpdatesDialog(map);
+            		}
+            		else{
+            			PluginRegistry registry = getPluginRegistry();
+            			final List<PluginInfo> downloads = registry.getAvailableDownloads();
+            			if (!downloads.isEmpty()){
+            				Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
+            				map.put("Downloads", registry);
+            				map.put("Updates", updatesProvider);
+            				showUpdatesDialog(map);
+            			}
+            			else {
+            				JOptionPane.showMessageDialog(null, "No additional plugins / updates available at this time.");                        
+            			}
+            		}
+            	}
+            	finally {
+            		ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
+            	}
             }
         };
         Thread t = new Thread(runnable, "Check plugins");
