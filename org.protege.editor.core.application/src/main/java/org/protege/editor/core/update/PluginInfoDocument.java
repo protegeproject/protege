@@ -1,12 +1,13 @@
 package org.protege.editor.core.update;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+import org.protege.editor.core.ProtegeApplication;
 
 /**
  * Author: Matthew Horridge<br>
@@ -18,7 +19,7 @@ import java.util.Properties;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginInfoDocument {
-
+	
     public static final String ID_PROPERTY_NAME = "id";
     private static final String LABEL_PROPERTY_NAME = "name";
     public static final String VERSION_PROPERTY_NAME = "version";
@@ -41,7 +42,14 @@ public class PluginInfoDocument {
         String versionString = properties.getProperty(VERSION_PROPERTY_NAME);
         Version version = null;
         if (versionString != null){
-            version = new Version(versionString);
+            try {
+				version = new Version(versionString);
+			} catch (java.lang.IllegalArgumentException e) {
+				ProtegeApplication.getErrorLog().logError(e);
+				System.out.println("Check for updates found invalid version number for "
+								+ properties.getProperty(LABEL_PROPERTY_NAME)
+								+ ": " + e.getMessage());
+			}
         }
         final String downloadURLStr = properties.getProperty(DOWNLOAD_PROPERTY_NAME);
         URL downloadURL = null;
