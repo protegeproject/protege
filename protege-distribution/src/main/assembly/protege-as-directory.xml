@@ -85,7 +85,7 @@
 				<include>edu.stanford.protege:org.protege.owl.diff:jar</include>
 				<include>edu.stanford.protege:org.protege.owl.rdf:jar</include>
 				<include>edu.stanford.protege:org.protege.owl.server:jar</include>
-				<include>HermiT:org.semanticweb.HermiT:jar</include>
+				<include>com.hermit-reasoner:org.semanticweb.hermit:jar</include>
 				<include>net.sourceforge.owlapi:owlapi-distribution:jar</include>
 			</includes>
 			<useStrictFiltering>true</useStrictFiltering>
