@@ -24,7 +24,6 @@
 		<repository>
 			<releases>
 				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
 			</releases>
 			<id>github</id>
 			<url>https://raw.github.com/protegeproject/mvn-repo/master/releases</url>
@@ -102,6 +101,12 @@
 			<artifactId>org.protege.explanation</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
         </dependency> -->
+        
+        <dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.integration.hermit</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
@@ -133,20 +138,12 @@
 			<version>${project.parent.version}</version>
         </dependency>
         
-		<!-- HermiT dependency -->
-		<dependency>
-			<groupId>com.hermit-reasoner</groupId>
-			<artifactId>org.semanticweb.hermit</artifactId>
-			<version>1.3.8.3</version>
-		</dependency>
-        
         <!-- OWL API dependency -->
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
 			<version>3.4.5</version>
 		</dependency>
-		
 	</dependencies>
 	
 	<build>
