@@ -13,15 +13,7 @@
 			<includes>
 				<include>*</include>
 			</includes>
-			<directory>../protege-base/osgi/felix</directory>
-		</fileSet>
-
-		<fileSet>
-			<outputDirectory>.</outputDirectory>
-			<includes>
-				<include>log4j.xml</include>
-			</includes>
-			<directory>../protege-base</directory>
+			<directory>src/main/config/distributions/felix</directory>
 		</fileSet>
 
 		<fileSet>
@@ -29,7 +21,7 @@
 			<includes>
 				<include>*</include>
 			</includes>
-			<directory>../protege-base/osgi/felix/bin</directory>
+			<directory>src/main/config/distributions/felix/bin</directory>
 		</fileSet>
 
 		<fileSet>
@@ -37,7 +29,7 @@
 			<includes>
 				<include>org.apache.felix.bundlerepository-1.4.2.jar</include>
 			</includes>
-			<directory>../protege-base/osgi/felix/bundles</directory>
+			<directory>src/main/config/distributions/felix/bundles</directory>
 		</fileSet>
 
 		<fileSet>
@@ -45,7 +37,7 @@
 			<includes>
 				<include>*.jar</include>
 			</includes>
-			<directory>../protege-base/osgi/common</directory>
+			<directory>src/main/config/distributions/common</directory>
 		</fileSet>
 	</fileSets>
 	
