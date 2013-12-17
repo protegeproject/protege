@@ -13,6 +13,10 @@
 			<includes>
 				<include>*</include>
 			</includes>
+			<excludes>
+				<exclude>run.command</exclude>
+				<exclude>run.sh</exclude>
+			</excludes>
 			<directory>src/main/config/distributions/felix</directory>
 		</fileSet>
 
@@ -40,6 +44,19 @@
 			<directory>src/main/config/distributions/common</directory>
 		</fileSet>
 	</fileSets>
+
+	<files>
+		<file>
+			<source>src/main/config/distributions/felix/run.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<fileMode>744</fileMode>
+		</file>
+		<file>
+			<source>src/main/config/distributions/felix/run.command</source>
+			<outputDirectory>.</outputDirectory>
+			<fileMode>744</fileMode>
+		</file>
+	</files>
 	
 	<dependencySets>
 		<dependencySet>
