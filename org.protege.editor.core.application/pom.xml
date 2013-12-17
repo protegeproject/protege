@@ -56,6 +56,7 @@
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
 						<Embed-Dependency>mdock</Embed-Dependency>
 						<Export-Package>
+							org.coode.mdock.*,
 							org.protege.editor.core, 
 							org.protege.editor.core.*
 						</Export-Package>
