@@ -63,12 +63,13 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
-						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
 						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
 						<Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
 						<Export-Package>
-							${project.artifactId}*;version=${project.version}						
+							${project.artifactId}*;version=${project.version},
+							org.protege.xmlcatalog.*			
 						</Export-Package>
 						<Import-Package>
 							org.eclipse.core.runtime;registry=split, 
