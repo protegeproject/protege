@@ -22,7 +22,7 @@ public class JunitUtil {
         }
         try {
             StringWriter writer = new StringWriter();
-            OWLFunctionalSyntaxRenderer renderer = new OWLFunctionalSyntaxRenderer(manager);
+            OWLFunctionalSyntaxRenderer renderer = new OWLFunctionalSyntaxRenderer();
             renderer.render(ontology, writer);
             log.debug(writer.toString());
         }
