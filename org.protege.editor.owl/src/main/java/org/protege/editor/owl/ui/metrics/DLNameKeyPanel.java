@@ -40,7 +40,7 @@ public class DLNameKeyPanel extends JPanel {
 
 //        addExplanation(OWLIcons.getIcon("F.png"), "Attributive language", box);
         addExplanation(OWLIcons.getIcon("FLM.png"),
-                       "A sub-langauge of AL, which is obtained by disallowing atomic negation",
+                       "A sub-language of AL, which is obtained by disallowing atomic negation",
                        box);
 
         addExplanation(OWLIcons.getIcon("FLO.png"),
