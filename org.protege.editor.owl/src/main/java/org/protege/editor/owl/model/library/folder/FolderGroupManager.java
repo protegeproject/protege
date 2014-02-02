@@ -143,7 +143,7 @@ public class FolderGroupManager extends CatalogEntryManager {
             }
     
             retainEntries();
-            examineDiskEntries(folder, new HashSet<URI>());
+            examineDirectoryContents(folder, new HashSet<URI>());
             if (modified) {
             	clearEntries();
             	writeEntries();
@@ -247,51 +247,61 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
     
     
-    private  void examineDiskEntries(File tree, Set<URI> webLocationsFoundInParentDirectory) {
+    private  void examineDirectoryContents(File directory, Set<URI> webLocationsFoundInParentDirectory) {
     	Set<URI> newWebLocations = new HashSet<URI>();
-        if (algorithms == null || algorithms.isEmpty()) {
+        if (algorithms == null || algorithms.isEmpty() || directory == null) {
             return;
         }
         Set<File> subFolders = new HashSet<File>();
-        for (File physicalLocation : tree.listFiles()) {
+        File[] directoryEntries = directory.listFiles();
+        if (directoryEntries == null) { // I think that this means that there was an I/O error
+        	return;
+        }
+        for (File physicalLocation : directoryEntries) {
         	if (recursive && physicalLocation.exists() && physicalLocation.isDirectory()) {
         	    subFolders.add(physicalLocation);
         	}
         	else if (physicalLocation.exists() 
                         && physicalLocation.isFile() 
                         && isValidOWLFile(physicalLocation)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Applying algorithms to " + physicalLocation);
-                }
-    			URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
-                Collection<URI> retainedSuggestions = null;
-                try {
-                	retainedSuggestions = retainedFileToWebLocationMap.get(physicalLocation.getCanonicalFile());
-                }
-                catch (IOException e) {
-                	logger.warn("IO Exception caught processing file " + physicalLocation + " for repository library update", e);
-                }
-                if (retainedSuggestions != null) {
-                	if (logger.isDebugEnabled()) {
-                		logger.debug("Adding mappings retained from previous version of the catalog");
-                	}
-                	recordEntries(retainedSuggestions, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
-                }
-                else {
-                	if (logger.isDebugEnabled()) {
-                		logger.debug("Adding new mappings not found in the previous version of the catalog");
-                	}
-                	for (Algorithm algorithm : algorithms) {
-                		Set<URI> webLocations = algorithm.getSuggestions(physicalLocation);
-                		modified = modified || !webLocations.isEmpty();
-                		recordEntries(webLocations, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
-                	}
-                }
+        		examineSingleFile(physicalLocation, webLocationsFoundInParentDirectory, newWebLocations);
             }
         }
         webLocationsFoundInParentDirectory.addAll(newWebLocations);
         for (File physicalLocation : subFolders) {
-            examineDiskEntries(physicalLocation, webLocationsFoundInParentDirectory);
+            examineDirectoryContents(physicalLocation, webLocationsFoundInParentDirectory);
+        }
+    }
+    
+    private void examineSingleFile(File physicalLocation, 
+    								Set<URI> webLocationsFoundInParentDirectory,
+    								Set<URI> newWebLocations) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Applying algorithms to " + physicalLocation);
+        }
+		URI shortLocation = folder.toURI().relativize(physicalLocation.toURI());
+        Collection<URI> retainedSuggestions = null;
+        try {
+        	retainedSuggestions = retainedFileToWebLocationMap.get(physicalLocation.getCanonicalFile());
+        }
+        catch (IOException e) {
+        	logger.warn("IO Exception caught processing file " + physicalLocation + " for repository library update", e);
+        }
+        if (retainedSuggestions != null) {
+        	if (logger.isDebugEnabled()) {
+        		logger.debug("Adding mappings retained from previous version of the catalog");
+        	}
+        	recordEntries(retainedSuggestions, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
+        }
+        else {
+        	if (logger.isDebugEnabled()) {
+        		logger.debug("Adding new mappings not found in the previous version of the catalog");
+        	}
+        	for (Algorithm algorithm : algorithms) {
+        		Set<URI> webLocations = algorithm.getSuggestions(physicalLocation);
+        		modified = modified || !webLocations.isEmpty();
+        		recordEntries(webLocations, shortLocation, webLocationsFoundInParentDirectory, newWebLocations);
+        	}
         }
     }
     
@@ -309,7 +319,8 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
     
     private void recordEntries(Collection<URI> webLocations, URI physicalLocation, 
-    		                   Set<URI> webLocationsFoundInParentDirectory, Set<URI> newWebLocations) {
+    		                   Set<URI> webLocationsFoundInParentDirectory, 
+    		                   Set<URI> newWebLocations) {
     	for (URI webLocation : webLocations) {
     		if (!webLocationsFoundInParentDirectory.contains(webLocation)) {
     			newWebLocations.add(webLocation);
