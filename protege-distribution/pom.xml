@@ -142,7 +142,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
-			<version>3.4.8</version>
+			<version>3.4.10</version>
 		</dependency>
 	</dependencies>
 	
