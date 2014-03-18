@@ -243,9 +243,11 @@ public class PluginTable extends JPanel {
                         versionString.append(version.getMinor());
                         versionString.append(".");
                         versionString.append(version.getMicro());
-                        if (version.getQualifier() != null){
+                        
+                        String qualifier = version.getQualifier();
+                        if ((qualifier != null) && (!qualifier.isEmpty())){
                             versionString.append(".");
-                            versionString.append(version.getQualifier());
+                            versionString.append(qualifier);
                         }
                     }
                     return versionString;
