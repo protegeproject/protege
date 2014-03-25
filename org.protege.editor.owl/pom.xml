@@ -1,219 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
-	<parent>
-		<groupId>edu.stanford.protege</groupId>
-		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-05-SNAPSHOT</version>
-		<relativePath>../protege-parent/pom.xml</relativePath>
-	</parent>
-	
-	<artifactId>org.protege.editor.owl</artifactId>
-	<packaging>bundle</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<name>Protege Editor OWL</name>
+    <parent>
+        <groupId>edu.stanford.protege</groupId>
+        <artifactId>protege-parent</artifactId>
+        <version>5.0.0-beta-05-SNAPSHOT</version>
+        <relativePath>../protege-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>org.protege.editor.owl</artifactId>
+    <packaging>bundle</packaging>
+
+    <name>Protege Editor OWL</name>
     <description>OWL ontology editing infrastructure used by the Protege desktop application.</description>
 
-	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/</url>
-	</scm>
+    <scm>
+        <connection>
+            scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/
+        </connection>
+        <developerConnection>
+            scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.owl/trunk/
+        </developerConnection>
+        <url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.owl/</url>
+    </scm>
 
-	<dependencies>
+    <dependencies>
         <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.protege.common</artifactId>
-			<version>${project.parent.version}</version>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>org.protege.common</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.protege.editor.core.application</artifactId>
-			<version>${project.parent.version}</version>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>org.protege.editor.core.application</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
-		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>protege-owlapi-extensions</artifactId>
-			<version>3.2.4</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.protege.xmlcatalog</artifactId>
-			<version>1.0.4</version>
-		</dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <version>3.4.10</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.8.7</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>protege-owlapi-extensions</artifactId>
+            <version>3.2.4</version>
+        </dependency>
 
-	<build>
-		<plugins>
+        <dependency>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>org.protege.xmlcatalog</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8.7</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
             <plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.4.0</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
-						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
-						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-						<Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
-						<Export-Package>
-							${project.artifactId}*;version=${project.version},
-							org.protege.xmlcatalog.*			
-						</Export-Package>
-						<Import-Package>
-							org.eclipse.core.runtime;registry=split, 
-							*
-						</Import-Package>
-						<Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
-					</instructions>
-					<executions>
-						<execution>
-							<id>bundle-manifest</id>
-							<phase>install</phase>
-							<goals>    
-								<goal>manifest</goal>
-							</goals>   
-					</execution>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
+                        <Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
+                        <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                        <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+                        <Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
+                        <Export-Package>
+                            ${project.artifactId}*;version=${project.version},
+                            org.protege.xmlcatalog.*
+                        </Export-Package>
+                        <Import-Package>
+                            org.eclipse.core.runtime;registry=split,
+                            *
+                        </Import-Package>
+                        <Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
                 </executions>
-              </configuration>
+
             </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.14</version>
-				<configuration>
-					<skip>true</skip>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.14</version>
+                <configuration>
+                    <skip>true</skip>
                     <systemPropertyVariables>
                         <log4j.configuration>file:log4j.xml</log4j.configuration>
                     </systemPropertyVariables>
-				</configuration>
-				<executions>
-					<execution>
-						<id>unit-tests</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<skip>false</skip>
-							<suiteXmlFiles>
-								<suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
-							</suiteXmlFiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>unit-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
+                            </suiteXmlFiles>
                             <systemProperties>
                                 <property>
                                     <name>log4j.configuration</name>
                                     <value>file:log4j.xml</value>
                                 </property>
                             </systemProperties>
-				        </configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<pde>true</pde>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	
-	<profiles>
-		<profile>
-			<id>ide</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<!-- Including this plug-in eliminates the "maven-dependency-plugin (goals "copy-dependencies", "unpack") is not supported by m2e" Eclipse error. -->
-						<!-- See stackoverflow for full discussion: http://stackoverflow.com/q/8706017. -->
-						<!-- This plugin's configuration is used to store Eclipse m2e settings only.  It has no influence on the Maven build itself. -->
-						<plugin>
-							<groupId>org.eclipse.m2e</groupId>
-							<artifactId>lifecycle-mapping</artifactId>
-							<version>1.0.0</version>
-							<configuration>
-								<lifecycleMappingMetadata>
-									<pluginExecutions>
-										<pluginExecution>
-											<pluginExecutionFilter>
-												<groupId>org.apache.maven.plugins</groupId>
-												<artifactId>maven-dependency-plugin</artifactId>
-												<versionRange>[2.1,)</versionRange>
-												<goals>
-													<goal>copy-dependencies</goal>
-												</goals>
-											</pluginExecutionFilter>
-											<action>
-												<ignore></ignore>
-											</action>
-										</pluginExecution>
-									</pluginExecutions>
-								</lifecycleMappingMetadata>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>			
-			
-				<plugins>
-					<!-- Copy all Maven dependencies to project root.  Necessary for one mode of running Protege in Eclipse (PDE + m2e + OSGi Framework launcher). -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<version>2.8</version>
-						<executions>
-							<execution>
-								<id>copy-dependencies</id>
-								<phase>process-sources</phase>
-								<goals>
-									<goal>copy-dependencies</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${basedir}</outputDirectory>
-									<overWriteReleases>false</overWriteReleases>
-									<overWriteSnapshots>false</overWriteSnapshots>
-									<overWriteIfNewer>true</overWriteIfNewer>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-		 
-					<!-- Remove all Maven dependencies from project root, placed there by maven-dependency-plugin. -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-clean-plugin</artifactId>
-						<version>2.5</version>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>${basedir}</directory>
-									<includes>
-										<include>*.jar</include>
-									</includes>
-									<followSymlinks>false</followSymlinks>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
-				</plugins>			
-			</build>
-		</profile>
-	</profiles>	
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <pde>true</pde>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ide</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <!-- Including this plug-in eliminates the "maven-dependency-plugin (goals "copy-dependencies", "unpack") is not supported by m2e" Eclipse error. -->
+                        <!-- See stackoverflow for full discussion: http://stackoverflow.com/q/8706017. -->
+                        <!-- This plugin's configuration is used to store Eclipse m2e settings only.  It has no influence on the Maven build itself. -->
+                        <plugin>
+                            <groupId>org.eclipse.m2e</groupId>
+                            <artifactId>lifecycle-mapping</artifactId>
+                            <version>1.0.0</version>
+                            <configuration>
+                                <lifecycleMappingMetadata>
+                                    <pluginExecutions>
+                                        <pluginExecution>
+                                            <pluginExecutionFilter>
+                                                <groupId>org.apache.maven.plugins</groupId>
+                                                <artifactId>maven-dependency-plugin</artifactId>
+                                                <versionRange>[2.1,)</versionRange>
+                                                <goals>
+                                                    <goal>copy-dependencies</goal>
+                                                </goals>
+                                            </pluginExecutionFilter>
+                                            <action>
+                                                <ignore></ignore>
+                                            </action>
+                                        </pluginExecution>
+                                    </pluginExecutions>
+                                </lifecycleMappingMetadata>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <!-- Copy all Maven dependencies to project root.  Necessary for one mode of running Protege in Eclipse (PDE + m2e + OSGi Framework launcher). -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Remove all Maven dependencies from project root, placed there by maven-dependency-plugin. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}</directory>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
