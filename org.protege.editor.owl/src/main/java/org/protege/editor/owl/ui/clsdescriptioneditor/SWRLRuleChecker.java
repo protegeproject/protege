@@ -9,6 +9,7 @@ import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
 import org.semanticweb.owlapi.expression.ParserException;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.SWRLRule;
+ import static org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax.*;
 
 /**
  * Author: drummond<br>
@@ -42,12 +43,7 @@ class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
    */
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), 
-                                                                                     ManchesterOWLSyntaxEditorParser.RULE + " " + text) {
-            public IRI parseVariable() throws ParserException {
-                consumeToken("?");
-                return IRI.create("urn:swrl#" + consumeToken());
-            }
-        };
+                                                                                     RULE + " " + text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return (SWRLRule) parser.parseRuleFrame().iterator().next().getAxiom();
