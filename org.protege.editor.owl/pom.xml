@@ -39,16 +39,11 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>net.sourceforge.owlapi</groupId>
-            <artifactId>owlapi-distribution</artifactId>
-            <version>3.4.10</version>
-        </dependency>
 
         <dependency>
             <groupId>edu.stanford.protege</groupId>
             <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.2.4</version>
+            <version>3.2.5</version>
         </dependency>
 
         <dependency>
