@@ -8,4 +8,4 @@ java -Xmx500M -Xms250M \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
      -classpath bin/felix.jar:bin/ProtegeLauncher.jar \
-     org.protege.osgi.framework.Launcher
+     $CMD_OPTIONS org.protege.osgi.framework.Launcher
