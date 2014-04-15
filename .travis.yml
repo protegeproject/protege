@@ -1,0 +1,14 @@
+language: java
+
+jdk:
+  - oraclejdk7
+  - openjdk7
+
+notifications:
+  email:
+    recipients:
+      - vendetti@stanford.edu
+    on_success: never
+    on_failure: always
+
+
