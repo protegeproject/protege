@@ -58,14 +58,27 @@
 	</developers>
 	
 	<mailingLists>
+		<!-- For end users of Protege Desktop. -->
 		<mailingList>
-			<name>p4-feedback</name>
-			<subscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</subscribe>
-			<unsubscribe>http://mailman.stanford.edu/mailman/listinfo/p4-feedback</unsubscribe>
-			<post>p4-feedback@lists.stanford.edu</post>
-			<archive>https://mailman.stanford.edu/pipermail/p4-feedback/</archive>
+			<name>protege-user</name>
+			<subscribe>https://mailman.stanford.edu/mailman/listinfo/protege-user</subscribe>
+			<unsubscribe>https://mailman.stanford.edu/mailman/listinfo/protege-user</unsubscribe>
+			<post>protege-user@lists.stanford.edu</post>
+			<archive>http://protege-project.136.n4.nabble.com/</archive>
 			<otherArchives>
-				<otherArchive>http://protege-ontology-editor-knowledge-acquisition-system.136.n4.nabble.com/Protege-OWL-4-x-Support-f21363.html</otherArchive>
+				<otherArchive>https://mailman.stanford.edu/pipermail/protege-user/</otherArchive>
+			</otherArchives>
+		</mailingList>
+		
+		<!-- For developers with questions about source code, developing Protege Desktop plug-ins, and/or programmatic access of ontologies.  -->
+		<mailingList>
+			<name>protege-dev</name>
+			<subscribe>https://mailman.stanford.edu/mailman/listinfo/protege-dev</subscribe>
+			<unsubscribe>https://mailman.stanford.edu/mailman/listinfo/protege-dev</unsubscribe>
+			<post>protege-dev@lists.stanford.edu</post>
+			<archive>http://protege-project.136.n4.nabble.com/</archive>
+			<otherArchives>
+				<otherArchive>https://mailman.stanford.edu/pipermail/protege-dev/</otherArchive>
 			</otherArchives>
 		</mailingList>
 	</mailingLists>
