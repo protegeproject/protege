@@ -86,7 +86,7 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.diff</artifactId>
-			<version>4.1.0.213</version>
+			<version>4.1.1</version>
         </dependency>
 
         <dependency>
@@ -117,7 +117,7 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.diff</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
         </dependency>
         
         <dependency>
