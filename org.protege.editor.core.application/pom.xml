@@ -15,12 +15,6 @@
 	<name>Protege Editor Core</name>
     <description>Core ontology editing infrastructure used by the Protege desktop application.</description>
 
-	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.editor.core.application/trunk/</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.editor.core.application</url>
-	</scm>
-
 	<dependencies>
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
