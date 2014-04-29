@@ -15,12 +15,6 @@
 	<name>Protege Common</name>
 	<description>Core Protege Libraries</description>
 	
-	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.protege.common/trunk/</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/plugins/org.protege.common/</url>
-	</scm>
-
 	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>

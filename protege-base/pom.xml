@@ -15,12 +15,6 @@
 	<name>Protege Base</name>
 	<description>The Protege Launcher</description>
 	
-	<scm>
-		<connection>scm:svn:http://smi-protege.stanford.edu/repos/protege/protege4/protege-base/trunk/</connection>
-		<developerConnection>scm:svn:https://smi-protege.stanford.edu/repos/protege/protege4/protege-base/trunk/</developerConnection>
-		<url>http://smi-protege.stanford.edu/svn/protege4/protege-base/</url>
-	</scm>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
