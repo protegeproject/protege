@@ -28,6 +28,17 @@
 	</modules>
 	
 	<build>
+		<!-- Prevent the aggregator POM from getting deployed to Maven Central. -->
+		<plugins>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.1</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -39,15 +50,6 @@
 							<descriptor>protege-distribution/src/main/assembly/protege-as-directory.xml</descriptor>
 							<descriptor>protege-distribution/src/main/assembly/protege-as-app.xml</descriptor>
 						</descriptors>
-					</configuration>
-				</plugin>
-				
-				<!-- Prevent the aggregator POM from getting deployed to Maven Central. -->
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.1</version>
-					<configuration>
-						<skip>true</skip>
 					</configuration>
 				</plugin>
 			</plugins>
