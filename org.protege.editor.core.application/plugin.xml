@@ -251,7 +251,7 @@
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Release notes"/>
         <toolTip value="View online release notes"/>
-        <url value="http://protegewiki.stanford.edu/wiki/P4_3_Release_Announcement"/>
+        <url value="http://protegewiki.stanford.edu/wiki/Protege_5.0_Beta_Release_Notes"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
@@ -267,7 +267,7 @@
     <extension id="menu.CiteProtegeMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="How to cite Protege"/>
         <toolTip value="Instructions for citing Protege in scientific publications"/>
-        <url value="http://protegewiki.stanford.edu/wiki/HowToCiteProtege"/>
+        <url value="http://protege.stanford.edu/about.php#citing"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotG-A"/>
         <editorKitId value="any"/>
     </extension>
