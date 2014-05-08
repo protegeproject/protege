@@ -30,8 +30,8 @@ public class PluginManager {
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
-    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-4.2-release.url";
-    public static final String DEFAULT_REGISTRY = "http://protege.googlecode.com/svn/trunk/autoupdate/4_2/4.2-plugins-2012-03-19.repository";
+    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-5.0.url";
+    public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/plugins.repository";
 
     private PluginRegistry pluginRegistry;
 
