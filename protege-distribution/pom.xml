@@ -67,12 +67,6 @@
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.protege.editor.owl.client</artifactId>
-			<version>2.0.5</version>
-        </dependency>
-
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.codegeneration</artifactId>
 			<version>1.0.2</version>
         </dependency>
@@ -118,12 +112,6 @@
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.rdf</artifactId>
 			<version>1.0.2</version>
-        </dependency>
-        
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>org.protege.owl.server</artifactId>
-			<version>2.0.5</version>
         </dependency>
         
         <dependency>

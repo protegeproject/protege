@@ -68,7 +68,6 @@
 				<include>edu.stanford.protege:org.coode.dlquery:jar</include>
 				<include>edu.stanford.protege:org.coode.owlviz:jar</include>
 				<include>edu.stanford.protege:org.protege.editor.owl:jar</include>
-				<include>edu.stanford.protege:org.protege.editor.owl.client:jar</include>
 				<include>edu.stanford.protege:org.protege.editor.owl.codegeneration:jar</include>
 				<include>edu.stanford.protege:org.protege.editor.owl.diff:jar</include>
 				<include>edu.stanford.protege:org.protege.editor.owl.rdf:jar</include>
@@ -77,7 +76,6 @@
 				<include>edu.stanford.protege:org.protege.ontograf:jar</include>
 				<include>edu.stanford.protege:org.protege.owl.diff:jar</include>
 				<include>edu.stanford.protege:org.protege.owl.rdf:jar</include>
-				<include>edu.stanford.protege:org.protege.owl.server:jar</include>
 				<include>net.sourceforge.owlapi:owlapi-distribution:jar</include>
 			</includes>
 			<useStrictFiltering>true</useStrictFiltering>
