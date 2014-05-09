@@ -14,7 +14,13 @@
 
 	<name>Protege Editor Core</name>
     <description>Core ontology editing infrastructure used by the Protege desktop application.</description>
-
+    
+	<scm>
+		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
+		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
+		<url>https://github.com/protegeproject/protege</url>
+	</scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
