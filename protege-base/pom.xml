@@ -6,26 +6,20 @@
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
 		<version>5.0.0-beta-05-SNAPSHOT</version>
-		<relativePath>../protege-parent/pom.xml</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
+	<!-- groupId and version are inherited from the parent -->	
 	<artifactId>ProtegeLauncher</artifactId>
 	<packaging>jar</packaging>
 
 	<name>Protege Base</name>
 	<description>The Protege Launcher</description>
 	
-	<scm>
-		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
-		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
-		<url>https://github.com/protegeproject/protege</url>
-	</scm>
-		
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.main</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

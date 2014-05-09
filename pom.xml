@@ -1,28 +1,95 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<!-- Inherit from Sonatype OSS Parent POM.  Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-    
     <groupId>edu.stanford.protege</groupId>
-    <artifactId>aggregator</artifactId>
-    <version>2.0.0</version>
+    <artifactId>protege-parent</artifactId>
+    <version>5.0.0-beta-05-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Protege Desktop Aggregator</name>
-	<description>Protege Desktop Aggregator POM</description>
-
+    <name>Protege Desktop</name>
+	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
+	<url>http://protege.stanford.edu</url>
+	<inceptionYear>1987</inceptionYear>
+	<organization>
+		<name>Stanford Center for Biomedical Informatics Research</name>
+		<url>http://bmir.stanford.edu/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/copyleft/lesser.html</url>
+		</license>
+	</licenses>
+	
+	<!-- Alphabetical by last name -->
+	<developers>
+		<developer>
+			<id>matthewhorridge</id>
+			<name>Matthew Horridge</name>
+			<email>matthew.horridge@stanford.edu</email>
+		</developer>
+		<developer>
+			<id>csnyulas</id>
+			<name>Csongor Nyulas</name>
+			<email>csongor.nyulas@stanford.edu</email>
+		</developer>
+		<developer>
+			<id>stdotjohn</id>
+			<name>Timothy Redmond</name>
+			<email>tredmond@stanford.edu</email>
+		</developer>
+		<developer>
+			<id>tudorache</id>
+			<name>Tania Tudorache</name>
+			<email>tudorache@stanford.edu</email>
+		</developer>
+		<developer>
+			<id>jvendetti</id>
+			<name>Jennifer Vendetti</name>
+			<email>vendetti@stanford.edu</email>
+		</developer>
+	</developers>
+	
+	<!-- Developers that no longer have commit privileges in the SCM -->
+	<contributors>
+		<contributor>
+			<name>Nick Drummond</name>
+			<email>nickdrummond@yahoo.com</email>
+		</contributor>
+	</contributors>
+	
+	<mailingLists>
+		<!-- For end users of Protege Desktop. -->
+		<mailingList>
+			<name>protege-user</name>
+			<subscribe>https://mailman.stanford.edu/mailman/listinfo/protege-user</subscribe>
+			<unsubscribe>https://mailman.stanford.edu/mailman/listinfo/protege-user</unsubscribe>
+			<post>protege-user@lists.stanford.edu</post>
+			<archive>http://protege-project.136.n4.nabble.com/</archive>
+			<otherArchives>
+				<otherArchive>https://mailman.stanford.edu/pipermail/protege-user/</otherArchive>
+			</otherArchives>
+		</mailingList>
+		
+		<!-- For developers with questions about source code, developing Protege Desktop plug-ins, and/or programmatic access of ontologies.  -->
+		<mailingList>
+			<name>protege-dev</name>
+			<subscribe>https://mailman.stanford.edu/mailman/listinfo/protege-dev</subscribe>
+			<unsubscribe>https://mailman.stanford.edu/mailman/listinfo/protege-dev</unsubscribe>
+			<post>protege-dev@lists.stanford.edu</post>
+			<archive>http://protege-project.136.n4.nabble.com/</archive>
+			<otherArchives>
+				<otherArchive>https://mailman.stanford.edu/pipermail/protege-dev/</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
+		
 	<modules>
 		<module>org.protege.common</module>
 		<module>org.protege.editor.core.application</module>
 		<module>org.protege.editor.owl</module>
 		<module>protege-base</module>
 		<module>protege-distribution</module>
-		<module>protege-parent</module>
 	</modules>
 	
 	<scm>
@@ -30,21 +97,50 @@
 		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
 		<url>https://github.com/protegeproject/protege</url>
 	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/protegeproject/protege/issues</url>
+	</issueManagement>
 	
+	<!-- Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	
+	<properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.main</artifactId>
+				<version>4.2.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+				
 	<build>
-		<!-- Prevent the aggregator POM from getting deployed to Maven Central. -->
-		<plugins>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
-	
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+							
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -59,4 +155,60 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<!-- Sign artifacts and generate -sources and -javadoc JAR files.  Required for Sonatype OSSRH sync to Maven Central. -->
+		<profile>
+			<id>prepare-release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>	
 </project>

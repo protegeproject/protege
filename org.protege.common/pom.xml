@@ -6,21 +6,16 @@
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
 		<version>5.0.0-beta-05-SNAPSHOT</version>
-		<relativePath>../protege-parent/pom.xml</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
+	<!-- groupId and version are inherited from the parent -->	
 	<artifactId>org.protege.common</artifactId>
 	<packaging>bundle</packaging>
 	
 	<name>Protege Common</name>
 	<description>Core Protege Libraries</description>
 	
-	<scm>
-		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
-		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
-		<url>https://github.com/protegeproject/protege</url>
-	</scm>
-		
 	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>
