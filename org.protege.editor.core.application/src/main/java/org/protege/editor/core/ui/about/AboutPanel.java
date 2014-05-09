@@ -53,8 +53,10 @@ public class AboutPanel extends JPanel {
         logoPanel.add(label, BorderLayout.SOUTH);
         logoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 20, 5));
         add(logoPanel, BorderLayout.NORTH);
-        JLabel copy = new JLabel(
-                "<html><body>Protege is a collaborative development effort between Stanford University and University of Manchester.<br><br>" + "Protege-OWL 4 and Protege-Core Framework Copyright (c) The University of Manchester 2006");
+		JLabel copy = new JLabel(
+				"<html><body>Prot\u00E9g\u00E9 is developed by the Stanford Center for Biomedical Informatics Research. Prot\u00E9g\u00E9 is a national "
+						+ "resource for biomedical ontologies and knowledge bases supported by the National Institute of General Medical Sciences.<br><br>"
+						+ "Previous versions of the Prot\u00E9g\u00E9 4 series were developed in collaboration with The University of Manchester.");
         copy.setFont(copy.getFont().deriveFont(10.0f));
         copy.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         add(copy, BorderLayout.SOUTH);
