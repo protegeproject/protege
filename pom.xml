@@ -3,7 +3,7 @@
 
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
-    <version>5.0.0-beta-05</version>
+    <version>5.0.0-beta-06-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Protege Desktop</name>
@@ -96,7 +96,7 @@
 		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
 		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
 		<url>https://github.com/protegeproject/protege</url>
-	  <tag>protege-parent-5.0.0-beta-05</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<issueManagement>
 		<system>GitHub</system>
