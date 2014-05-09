@@ -15,6 +15,12 @@
 	<name>Protege Base</name>
 	<description>The Protege Launcher</description>
 	
+	<scm>
+		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
+		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
+		<url>https://github.com/protegeproject/protege</url>
+	</scm>
+		
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.felix</groupId>

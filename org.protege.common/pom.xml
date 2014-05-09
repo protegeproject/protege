@@ -15,6 +15,12 @@
 	<name>Protege Common</name>
 	<description>Core Protege Libraries</description>
 	
+	<scm>
+		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
+		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
+		<url>https://github.com/protegeproject/protege</url>
+	</scm>
+		
 	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>

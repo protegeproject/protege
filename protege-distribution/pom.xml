@@ -14,6 +14,12 @@
 	<name>Protege Desktop Distribution</name>
 	<description>Standard distribution of the Protege Desktop ontology editor.</description>
 	
+	<scm>
+		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
+		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
+		<url>https://github.com/protegeproject/protege</url>
+	</scm>
+		
 	<repositories>
 		<repository>
 			<releases>
