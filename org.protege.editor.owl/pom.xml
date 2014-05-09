@@ -7,21 +7,16 @@
         <groupId>edu.stanford.protege</groupId>
         <artifactId>protege-parent</artifactId>
         <version>5.0.0-beta-05-SNAPSHOT</version>
-        <relativePath>../protege-parent/pom.xml</relativePath>
+        <relativePath>../</relativePath>
     </parent>
 
+	<!-- groupId and version are inherited from the parent -->	
     <artifactId>org.protege.editor.owl</artifactId>
     <packaging>bundle</packaging>
 
     <name>Protege Editor OWL</name>
     <description>OWL ontology editing infrastructure used by the Protege desktop application.</description>
     
-	<scm>
-		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
-		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
-		<url>https://github.com/protegeproject/protege</url>
-	</scm>
-	
     <dependencies>
         <dependency>
             <groupId>edu.stanford.protege</groupId>
@@ -34,7 +29,6 @@
             <artifactId>org.protege.editor.core.application</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>edu.stanford.protege</groupId>
