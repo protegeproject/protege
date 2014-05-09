@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-06-SNAPSHOT</version>
+		<version>5.0.0-beta-05-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 	
@@ -170,8 +170,8 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-								<replace file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/Info.plist" token="@shortVersion@" value="${project.parent.version}" />
-								<chmod file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/MacOS/JavaApplicationStub" perm="u+x" />
+								<replace file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/Info.plist" token="@shortVersion@" value="${project.parent.version}"/>
+								<chmod file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/MacOS/JavaApplicationStub" perm="u+x"/>
 							</target>
 						</configuration>
 						<goals>
