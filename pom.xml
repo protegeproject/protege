@@ -10,10 +10,8 @@
     
     <groupId>edu.stanford.protege</groupId>
     <artifactId>aggregator</artifactId>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
-
-	<!-- Increment version number each time list of modules changes. -->
-    <version>2</version>
 
     <name>Protege Desktop Aggregator</name>
 	<description>Protege Desktop Aggregator POM</description>
@@ -26,6 +24,12 @@
 		<module>protege-distribution</module>
 		<module>protege-parent</module>
 	</modules>
+	
+	<scm>
+		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
+		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
+		<url>https://github.com/protegeproject/protege</url>
+	</scm>
 	
 	<build>
 		<!-- Prevent the aggregator POM from getting deployed to Maven Central. -->
