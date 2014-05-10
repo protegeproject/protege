@@ -93,7 +93,7 @@
                 <include>edu.stanford.protege:org.protege.editor.owl.codegeneration:jar</include>
                 <include>edu.stanford.protege:org.protege.editor.owl.diff:jar</include>
                 <include>edu.stanford.protege:org.protege.editor.owl.rdf:jar</include>
-                <!-- <include>edu.stanford.protege:org.protege.explanation:jar</include> -->
+                <include>edu.stanford.protege:org.protege.explanation:jar</include>
                 <include>edu.stanford.protege:org.protege.integration.hermit:jar</include>
                 <include>edu.stanford.protege:org.protege.ontograf:jar</include>
                 <include>edu.stanford.protege:org.protege.owl.diff:jar</include>
