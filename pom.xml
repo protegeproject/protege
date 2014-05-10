@@ -96,7 +96,7 @@
 		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
 		<url>https://github.com/protegeproject/protege</url>
 	  <tag>HEAD</tag>
-  </scm>
+	</scm>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/protegeproject/protege/issues</url>
