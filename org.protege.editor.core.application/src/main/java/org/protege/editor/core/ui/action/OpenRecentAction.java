@@ -41,7 +41,7 @@ public class OpenRecentAction extends ProtegeDynamicAction {
             thisMenuItem.add(new RecentEditorKitAction(descriptor));
         }
         thisMenuItem.addSeparator();
-        thisMenuItem.add(new AbstractAction("Clear Menu") {
+        thisMenuItem.add(new AbstractAction("Clear menu") {
             /**
              * 
              */
