@@ -257,7 +257,7 @@
     </extension>
 
     <extension id="menu.DocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Protege documentation"/>
+        <name value="Prot\u00E9g\u00E9 documentation"/>
         <toolTip value="View online documentation"/>
         <url value="http://protegewiki.stanford.edu/index.php/Protege4UserDocs"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-A"/>
@@ -265,8 +265,8 @@
     </extension>
 
     <extension id="menu.CiteProtegeMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="How to cite Protege"/>
-        <toolTip value="Instructions for citing Protege in scientific publications"/>
+        <name value="How to cite Prot\u00E9g\u00E9"/>
+        <toolTip value="Instructions for citing Prot\u00E9g\u00E9 in scientific publications"/>
         <url value="http://protege.stanford.edu/about.php#citing"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotG-A"/>
         <editorKitId value="any"/>

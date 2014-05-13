@@ -42,7 +42,11 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
      * that will be used for the menu item text etc.
      */
     public String getName() {
-        return PluginUtilities.getAttribute(extension, NAME_PARAM);
+    	String name = new String(PluginUtilities.getAttribute(extension, NAME_PARAM));
+    	if ((name != null) && (name.indexOf("\\u") != -1)) {
+    		name = decode(name);
+    	}
+        return name;
     }
 
 
@@ -53,7 +57,11 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
      *         plugin shouldn't have any tooltip text.
      */
     public String getToolTipText() {
-        return PluginUtilities.getAttribute(extension, TOOL_TIP_PARAM);
+    	String tooltip = PluginUtilities.getAttribute(extension, TOOL_TIP_PARAM);
+    	if ((tooltip != null) && (tooltip.indexOf("\\u") != -1)) {
+    		tooltip = decode(tooltip);
+    	}
+        return tooltip;
     }
 
 
@@ -75,5 +83,21 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
     public EditorKit getEditorKit() {
         return editorKit;
     }
-
+    
+    static final String decode(final String in) {
+        String str = in;
+        int index = str.indexOf("\\u");
+        while (index > -1) {
+            if (index > (str.length() - 6)) {
+            	break;
+            }
+            String substring = str.substring(index + 2, index + 6);
+            int hexVal = Integer.parseInt(substring, 16);
+            String start = str.substring(0, index);
+            String end = str.substring(index + 6);
+            str = start + ((char) hexVal) + end;
+            index = str.indexOf("\\u");
+        }
+        return str;
+    }
 }
