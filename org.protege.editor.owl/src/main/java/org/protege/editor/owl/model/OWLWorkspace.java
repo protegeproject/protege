@@ -487,7 +487,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         JMenu windowMenu = getWindowMenu(menuBar);
         windowMenu.addSeparator();
-        windowMenu.add(new AbstractAction("Refresh User Interface") {
+        windowMenu.add(new AbstractAction("Refresh user interface") {
 
             /**
              *
