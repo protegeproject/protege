@@ -1289,8 +1289,8 @@
     <!-- Help menu -->
 
     <extension id="menu.PluginsMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Protege plugins"/>
-        <toolTip value="Find Protege plugins in the Protege Wiki plugin library"/>
+        <name value="Prot\u00E9g\u00E9 plugins"/>
+        <toolTip value="Find plugins in the Prot\u00E9g\u00E9 Wiki plugin library"/>
         <url value="http://protegewiki.stanford.edu/wiki/Protege_Plugin_Library"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
         <editorKitId value="any"/>
