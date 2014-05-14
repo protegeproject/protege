@@ -9,3 +9,6 @@ java -Xmx500M -Xms250M \
      -Dfile.encoding=UTF-8 \
      -classpath bin/felix.jar:bin/ProtegeLauncher.jar \
      $CMD_OPTIONS org.protege.osgi.framework.Launcher
+
+
+
