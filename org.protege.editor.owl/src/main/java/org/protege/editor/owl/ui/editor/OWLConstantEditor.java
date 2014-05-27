@@ -93,20 +93,29 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             }
         });
 
-        int numItems = datatypeComboBox.getItemCount();
-        for (int i = 0; i < numItems; i++) {
-            OWLDatatype owlDatatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
-
-            if (owlDatatype == null) continue;
-
-            if (owlDatatype.isRDFPlainLiteral()) {
-                datatypeComboBox.removeItemAt(i);
-                break;
-            }
-        }
+        removeNonSelectableDatatypes(datatypeComboBox);
 
         setupAutoCompleter(owlEditorKit);
         layoutComponents();
+    }
+
+    /**
+     * Removes rdf:PlainLiteral.  Also removes datatypes that should not be the concrete types of constants e.g.
+     * owl:real.
+     * @param datatypeComboBox The combobox from which the datatypes should be removed.  Not {@code null}.
+     */
+    private static void removeNonSelectableDatatypes(JComboBox datatypeComboBox) {
+        for (int i = 0; i < datatypeComboBox.getItemCount(); i++) {
+            OWLDatatype datatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
+            if (datatype != null) {
+                if (datatype.isRDFPlainLiteral()) {
+                    datatypeComboBox.removeItemAt(i);
+                }
+                else if(datatype.isBuiltIn() && datatype.getBuiltInDatatype().equals(OWL2Datatype.OWL_REAL)) {
+                    datatypeComboBox.removeItemAt(i);
+                }
+            }
+        }
     }
 
     private void toggleLanguage(boolean b) {
