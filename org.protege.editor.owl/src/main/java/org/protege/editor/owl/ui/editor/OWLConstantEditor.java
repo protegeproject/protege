@@ -41,12 +41,14 @@ import javax.swing.JTextArea;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
+import org.protege.editor.owl.model.parser.OWLLiteralParser;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 /**
  * Author: Matthew Horridge<br>
@@ -56,21 +58,22 @@ import org.semanticweb.owlapi.model.OWLLiteral;
  */
 public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLiteral> {
 
-	private static final long serialVersionUID = 3199534896795886986L;
+    private static final long serialVersionUID = 3199534896795886986L;
 
-	private JTextArea annotationContent;
+    private JTextArea annotationContent;
 
-	private JComboBox langComboBox;
+    private JComboBox langComboBox;
 
     private JLabel langLabel = new JLabel("Lang");
 
-	private JComboBox datatypeComboBox;
-	
-	private OWLDataFactory dataFactory;
+    private JComboBox datatypeComboBox;
 
-	private String lastLanguage;
+    private OWLDataFactory dataFactory;
 
-	private OWLDatatype lastDatatype;
+    private String lastLanguage;
+
+    private OWLDatatype lastDatatype;
+
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
@@ -80,35 +83,35 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
         langComboBox = uiHelper.getLanguageSelector();
-        
+
         datatypeComboBox = uiHelper.getDatatypeSelector();
         datatypeComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				OWLDatatype owlDatatype = (OWLDatatype) getSelectedDatatype();
-				boolean b = owlDatatype == null ? true : false;
-				toggleLanguage(b);
-			}
-		});
-        
-        int numItems = datatypeComboBox.getItemCount();
-        for (int i=0; i<numItems; i++) {
-        	OWLDatatype owlDatatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
+            public void actionPerformed(ActionEvent e) {
+                OWLDatatype owlDatatype = (OWLDatatype) getSelectedDatatype();
+                boolean b = owlDatatype == null;
+                toggleLanguage(b);
+            }
+        });
 
-        	if (owlDatatype == null) continue;
-        	
-        	if (owlDatatype.isRDFPlainLiteral()) {
-        		datatypeComboBox.removeItemAt(i);
-        		break;
-        	}
+        int numItems = datatypeComboBox.getItemCount();
+        for (int i = 0; i < numItems; i++) {
+            OWLDatatype owlDatatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
+
+            if (owlDatatype == null) continue;
+
+            if (owlDatatype.isRDFPlainLiteral()) {
+                datatypeComboBox.removeItemAt(i);
+                break;
+            }
         }
 
         setupAutoCompleter(owlEditorKit);
         layoutComponents();
     }
-    
+
     private void toggleLanguage(boolean b) {
-		langLabel.setEnabled(b);
-		langComboBox.setEnabled(b);
+        langLabel.setEnabled(b);
+        langComboBox.setEnabled(b);
     }
 
     public boolean canEdit(Object object) {
@@ -126,22 +129,18 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
         lastLanguage = null;
-        String value = annotationContent.getText();
-        OWLLiteral constant;
+        String value = annotationContent.getText().trim();
         if (isDatatypeSelected()) {
-        	constant = dataFactory.getOWLLiteral(value, getSelectedDatatype());
             lastDatatype = getSelectedDatatype();
+            return dataFactory.getOWLLiteral(value, getSelectedDatatype());
         }
-        else {
-            if (isLangSelected()) {
-            	constant = dataFactory.getOWLLiteral(value, getSelectedLang());
-                lastLanguage = getSelectedLang();
-            }
-            else {
-                constant = dataFactory.getOWLStringLiteral(value, null);
-            }
+        if (isLangSelected()) {
+            lastLanguage = getSelectedLang();
+            return dataFactory.getOWLLiteral(value, getSelectedLang());
         }
-        return constant;
+        OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
+
+        return parser.parseLiteral(value);
     }
 
     public Set<OWLLiteral> getEditedObjects() {
@@ -154,8 +153,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             annotationContent.setText(constant.getLiteral());
             if (!constant.isRDFPlainLiteral()) {
                 datatypeComboBox.setSelectedItem(constant.getDatatype());
-            }
-            else {
+            } else {
                 langComboBox.setSelectedItem(constant.getLang());
             }
         }
@@ -167,7 +165,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     public String getEditorTypeName() {
-        return "Constant";
+        return "Literal";
     }
 
     public void clear() {
@@ -190,109 +188,110 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     /**
      * Gets the selected datatype
+     *
      * @return The selected datatype, or <code>null</code>
-     *         if no datatype is selected.
+     * if no datatype is selected.
      */
     private OWLDatatype getSelectedDatatype() {
         return (OWLDatatype) datatypeComboBox.getSelectedItem();
     }
 
-	private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
-		new OWLAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
-			public void check(String text) throws OWLExpressionParserException {
-				throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<String>());
-			}
+    private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
+        new OWLAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
+            public void check(String text) throws OWLExpressionParserException {
+                throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<String>());
+            }
 
-			public Object createObject(String text)
-					throws OWLExpressionParserException {
-				return null;
-			}
-		});
-	}
+            public Object createObject(String text)
+                    throws OWLExpressionParserException {
+                return null;
+            }
+        });
+    }
 
     private void layoutComponents() {
         setLayout(new GridBagLayout());
 
         add(new JScrollPane(annotationContent),
-            new GridBagConstraints(1,
-                                   1,
-                                   5,
-                                   1,
-                                   100.0,
-                                   100.0,
-                                   GridBagConstraints.NORTHWEST,
-                                   GridBagConstraints.BOTH,
-                                   new Insets(7, 7, 7, 7),
-                                   0,
-                                   0));
+                new GridBagConstraints(1,
+                        1,
+                        5,
+                        1,
+                        100.0,
+                        100.0,
+                        GridBagConstraints.NORTHWEST,
+                        GridBagConstraints.BOTH,
+                        new Insets(7, 7, 7, 7),
+                        0,
+                        0));
 
         add(new JLabel("Value"),
-            new GridBagConstraints(1,
-                                   0,
-                                   5,
-                                   1,
-                                   0.0,
-                                   0.0,
-                                   GridBagConstraints.NORTHWEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(7, 7, 0, 7),
-                                   0,
-                                   0));
+                new GridBagConstraints(1,
+                        0,
+                        5,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.NORTHWEST,
+                        GridBagConstraints.NONE,
+                        new Insets(7, 7, 0, 7),
+                        0,
+                        0));
 
 
         add(new JLabel("Type"),
-            new GridBagConstraints(1,
-                                   3,
-                                   1,
-                                   1,
-                                   0.0,
-                                   0.0,
-                                   GridBagConstraints.WEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(0, 7, 0, 7),
-                                   0,
-                                   0));
+                new GridBagConstraints(1,
+                        3,
+                        1,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.NONE,
+                        new Insets(0, 7, 0, 7),
+                        0,
+                        0));
 
 
         add(datatypeComboBox,
-            new GridBagConstraints(2,
-                                   3,
-                                   1,
-                                   1,
-                                   0.0,
-                                   0.0,
-                                   GridBagConstraints.WEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(5, 5, 5, 5),
-                                   40,
-                                   0));
+                new GridBagConstraints(2,
+                        3,
+                        1,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.NONE,
+                        new Insets(5, 5, 5, 5),
+                        40,
+                        0));
 
         add(langLabel,
-            new GridBagConstraints(3,
-                                   3,
-                                   1,
-                                   1,
-                                   0.0,
-                                   0.0,
-                                   GridBagConstraints.WEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(0, 20, 0, 0),
-                                   0,
-                                   0));
+                new GridBagConstraints(3,
+                        3,
+                        1,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.NONE,
+                        new Insets(0, 20, 0, 0),
+                        0,
+                        0));
         langLabel.setEnabled(true);
 
         add(langComboBox,
-            new GridBagConstraints(4,
-                                   3,
-                                   1,
-                                   1,
-                                   100.0,
-                                   0.0,
-                                   GridBagConstraints.WEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(5, 5, 5, 5),
-                                   40,
-                                   0));
+                new GridBagConstraints(4,
+                        3,
+                        1,
+                        1,
+                        100.0,
+                        0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.NONE,
+                        new Insets(5, 5, 5, 5),
+                        40,
+                        0));
     }
 
     public void dispose() {
@@ -302,6 +301,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     public OWLObjectEditorHandler<OWLLiteral> getHandler() {
-        return null; 
+        return null;
     }
 }

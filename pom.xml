@@ -120,11 +120,13 @@
 	
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
+
+            <dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
 				<version>4.2.1</version>
 			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 				

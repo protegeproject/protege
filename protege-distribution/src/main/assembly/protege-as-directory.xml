@@ -99,6 +99,7 @@
                 <include>edu.stanford.protege:org.protege.owl.diff:jar</include>
                 <include>edu.stanford.protege:org.protege.owl.rdf:jar</include>
                 <include>net.sourceforge.owlapi:owlapi-distribution:jar</include>
+                <include>com.google.guava:guava:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
