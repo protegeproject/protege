@@ -39,6 +39,8 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
     public static final String LABEL = "Members";
 
+    public static final boolean SHOW_DIRECT_INSTANCES = true;
+
     private Set<OWLNamedIndividual> added = new HashSet<OWLNamedIndividual>();
 
 
@@ -83,7 +85,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
                 		return;
                 	}
                     final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-                    NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), false);
+                    NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), SHOW_DIRECT_INSTANCES);
                     if (instances != null) {
                         for (OWLIndividual ind : instances.getFlattened()) {
                             if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
