@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
@@ -17,8 +17,12 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.coode.mdock.UIComponentFactory;
+import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.error.ErrorPanel;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
 import org.semanticweb.owlapi.model.IRI;
@@ -35,21 +39,21 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OntologyIDPanel extends AbstractWizardPanel {
-	
-	public static final String INSTRUCTIONS = "Please specify the ontology IRI.  \n\nThe ontology IRI is used to identify" +
-    	" the ontology in the context of the world wide web. It is recommended that you " +
-    	" set the ontology IRI to be the URL where the latest version of the ontology" +
-    	" will be published.  If you use a version IRI, then it is recommended that you" +
-    	" set the version IRI to be the URL where this version of the ontology" +
-    	" will be published.";
+
+    public static final String INSTRUCTIONS = "Please specify the ontology IRI.  \n\nThe ontology IRI is used to identify" +
+            " the ontology in the context of the world wide web. It is recommended that you " +
+            " set the ontology IRI to be the URL where the latest version of the ontology" +
+            " will be published.  If you use a version IRI, then it is recommended that you" +
+            " set the version IRI to be the URL where this version of the ontology" +
+            " will be published.";
 
     public static final String ID = "ONTOLOGY_ID_PANEL";
 
-    private JTextField ontologyIRIField;
+    private AugmentedJTextField ontologyIRIField;
 
-    private JCheckBox enableVersionCheckBox;
-    
-    private JTextField versionIRIField;
+//    private JCheckBox enableVersionCheckBox;
+
+    private AugmentedJTextField versionIRIField;
 
 
     public OntologyIDPanel(OWLEditorKit editorKit) {
@@ -63,33 +67,52 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
 
     private boolean isValidData() {
+        final String ontTxt = getOntologyIRIString();
+        final String versionTxt = getOntologyVersionIRIString();
+        if (ontTxt.isEmpty()) {
+            return versionTxt.isEmpty(); // cannot have a version IRI without an ontology IRI
+        }
         try {
-            final String ontTxt = ontologyIRIField.getText();
-            final String versionTxt = versionIRIField.getText();
-            if (ontTxt == null){
-                return versionTxt == null; // cannot have a version IRI without an ontology IRI
-            }
-            else{
-                URI ontologyURI = new URI(ontTxt);
-                if (versionTxt != null){
+            URI ontologyURI = new URI(ontTxt);
+            ontologyIRIField.clearErrorMessage();
+            ontologyIRIField.clearErrorLocation();
+            try {
+                if (!versionTxt.isEmpty()) {
                     URI versionURI = new URI(versionTxt);
+                    versionIRIField.clearErrorMessage();
+                    versionIRIField.clearErrorLocation();
                     return ontologyURI.isAbsolute() && versionURI.isAbsolute();
                 }
-                return ontologyURI.isAbsolute();
+            } catch (URISyntaxException e) {
+                versionIRIField.setErrorMessage(e.getMessage());
+                versionIRIField.setErrorLocation(e.getIndex());
+                versionIRIField.setToolTipText(e.getMessage());
+                return false;
             }
+            return ontologyURI.isAbsolute();
+        } catch (URISyntaxException e) {
+            ontologyIRIField.setErrorLocation(e.getIndex());
+            ontologyIRIField.setErrorMessage(e.getMessage());
+            ontologyIRIField.setToolTipText(e.getMessage());
+            return false;
         }
-        catch (URISyntaxException e) {
-        }
-        return false;
+    }
+
+    private String getOntologyVersionIRIString() {
+        return versionIRIField.getText().trim();
+    }
+
+    private String getOntologyIRIString() {
+        return ontologyIRIField.getText().trim();
     }
 
 
     protected void createUI(JComponent parent) {
         setInstructions(INSTRUCTIONS);
 
-        ontologyIRIField = new JTextField(OntologyPreferences.getInstance().generateURI().toString());
-        ontologyIRIField.setSelectionStart(ontologyIRIField.getText().lastIndexOf("/") + 1);
-        ontologyIRIField.setSelectionEnd(ontologyIRIField.getText().lastIndexOf(".owl"));
+        ontologyIRIField = new AugmentedJTextField(OntologyPreferences.getInstance().generateURI().toString(), "Enter ontology IRI");
+        ontologyIRIField.setSelectionStart(getOntologyIRIString().lastIndexOf("/") + 1);
+        ontologyIRIField.setSelectionEnd(getOntologyIRIString().lastIndexOf(".owl"));
         ontologyIRIField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
@@ -103,18 +126,8 @@ public class OntologyIDPanel extends AbstractWizardPanel {
             }
         });
 
-        enableVersionCheckBox = new JCheckBox("Enable Version Iri");
-        enableVersionCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                versionIRIField.setEnabled(enableVersionCheckBox.isSelected());
-                if (versionIRIField.isEnabled()) {
-                    versionIRIField.setText(ontologyIRIField.getText());
-                }
-            }
-        });
-        
-        versionIRIField = new JTextField(ontologyIRIField.getText());
-        versionIRIField.setEnabled(false);
+        versionIRIField = new AugmentedJTextField("Enter version IRI e.g. " + getOntologyIRIString());
+//        versionIRIField.setEnabled(false);
         versionIRIField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
@@ -139,36 +152,62 @@ public class OntologyIDPanel extends AbstractWizardPanel {
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.add(but, BorderLayout.EAST);
 
-        Box holderPanel = new Box(BoxLayout.PAGE_AXIS);
-        holderPanel.add(new JLabel("Ontology IRI"));
-        holderPanel.add(ontologyIRIField);
-        holderPanel.add(Box.createVerticalStrut(12));
-        holderPanel.add(new JLabel("Version IRI"));
-        holderPanel.add(versionIRIField);
-        holderPanel.add(enableVersionCheckBox);
+        JPanel holderPanel = new JPanel(new GridBagLayout());
+
+        Insets insets = new Insets(0, 0, 0, 0);
+        holderPanel.add(createLabel("Ontology IRI"),
+                new GridBagConstraints(0, 0, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+
+        holderPanel.add(ontologyIRIField,
+                new GridBagConstraints(0, 1, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+
+        holderPanel.add(Box.createVerticalStrut(12),
+                new GridBagConstraints(0, 2, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+
+//        holderPanel.add(enableVersionCheckBox,
+//                new GridBagConstraints(0, 3, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 10));
+
+
+        Insets versionIRIInsets = new Insets(0, 0, 0, 0);
+
+        holderPanel.add(createLabel("Ontology Version IRI (Optional)"),
+                new GridBagConstraints(0, 4, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.NONE, versionIRIInsets, 0, 5));
+
+
+        holderPanel.add(versionIRIField,
+                new GridBagConstraints(0, 5, 1, 1, 100, 100, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, versionIRIInsets, 0, 0));
+
 
         parent.setLayout(new BorderLayout());
         parent.add(holderPanel, BorderLayout.NORTH);
         parent.add(buttonPanel, BorderLayout.SOUTH);
+
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(label.getFont().deriveFont(Font.BOLD));
+        return label;
     }
 
 
     public OWLOntologyID getOntologyID() {
         try {
-            URI ontologyURI = new URI(ontologyIRIField.getText());
+            URI ontologyURI = new URI(getOntologyIRIString());
             IRI ontologyIRI = IRI.create(ontologyURI);
-            
-            if (enableVersionCheckBox.isSelected()) {
-                URI versionURI = new URI(versionIRIField.getText());
-                IRI versionIRI = IRI.create(versionURI);
 
-                return new OWLOntologyID(ontologyIRI, versionIRI);
-            }
-            else {
+            String ontologyVersionIRIString = getOntologyVersionIRIString();
+            if(ontologyVersionIRIString.isEmpty()) {
                 return new OWLOntologyID(ontologyIRI);
             }
-        }
-        catch (URISyntaxException e) {
+            else {
+                URI versionURI = new URI(ontologyVersionIRIString);
+                IRI versionIRI = IRI.create(versionURI);
+                return new OWLOntologyID(ontologyIRI, versionIRI);
+            }
+        } catch (URISyntaxException e) {
             return null;
         }
     }
