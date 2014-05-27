@@ -11,7 +11,7 @@
         </CNode>
         <CNode>
             <Component label="Individuals">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
+                <Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
             </Component>
         </CNode>
         <HSNode splits="0.375 0.625">
