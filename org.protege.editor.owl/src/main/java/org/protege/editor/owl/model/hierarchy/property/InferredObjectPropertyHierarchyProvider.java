@@ -36,6 +36,7 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     public Set<OWLObjectProperty> getChildren(OWLObjectProperty objectProperty) {
         Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
+        subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());
         Set<OWLObjectProperty> children = new HashSet<OWLObjectProperty>();
         for (OWLObjectPropertyExpression p : subs) {
             if (p instanceof OWLObjectProperty) {
