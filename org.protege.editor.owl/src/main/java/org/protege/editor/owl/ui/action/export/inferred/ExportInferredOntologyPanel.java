@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -8,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
+import javax.swing.*;
 
+import org.protege.editor.owl.ui.UIHelper;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
@@ -78,23 +78,34 @@ public class ExportInferredOntologyPanel extends JPanel {
         checkBoxBox = new Box(BoxLayout.Y_AXIS);
         setLayout(new BorderLayout(7, 7));
         add(checkBoxBox);
-        addCheckBox(new InferredSubClassAxiomGenerator());
-        addCheckBox(new InferredEquivalentClassAxiomGenerator());
-        addCheckBox(new InferredSubObjectPropertyAxiomGenerator());
-        addCheckBox(new InferredSubDataPropertyAxiomGenerator());
-        addCheckBox(new InferredEquivalentObjectPropertyAxiomGenerator());
-        addCheckBox(new InferredEquivalentDataPropertiesAxiomGenerator());
-        addCheckBox(new InferredObjectPropertyCharacteristicAxiomGenerator());
-        addCheckBox(new InferredDataPropertyCharacteristicAxiomGenerator());
-        addCheckBox(new InferredInverseObjectPropertiesAxiomGenerator());
-        addCheckBox(new InferredClassAssertionAxiomGenerator());
-        addCheckBox(new InferredDisjointClassesAxiomGenerator());
-        addCheckBox(new InferredPropertyAssertionGenerator());
+        addCheckBox(new InferredSubClassAxiomGenerator(), true, false);
+        addCheckBox(new InferredEquivalentClassAxiomGenerator(), true, false);
+        addCheckBox(new InferredSubObjectPropertyAxiomGenerator(), true, false);
+        addCheckBox(new InferredSubDataPropertyAxiomGenerator(), true, false);
+        addCheckBox(new InferredEquivalentObjectPropertyAxiomGenerator(), true, false);
+        addCheckBox(new InferredEquivalentDataPropertiesAxiomGenerator(), true, false);
+        addCheckBox(new InferredObjectPropertyCharacteristicAxiomGenerator(), false, false);
+        addCheckBox(new InferredDataPropertyCharacteristicAxiomGenerator(), false, false);
+        addCheckBox(new InferredInverseObjectPropertiesAxiomGenerator(), false, false);
+        addCheckBox(new InferredClassAssertionAxiomGenerator(), false, false);
+        addCheckBox(new InferredPropertyAssertionGenerator(), false, true);
+        addCheckBox(new InferredDisjointClassesAxiomGenerator(), false, true);
     }
 
 
-    private void addCheckBox(InferredAxiomGenerator<? extends OWLAxiom> gen) {
-        JCheckBox box = new JCheckBox(gen.getLabel(), true);
+    private void addCheckBox(final InferredAxiomGenerator<? extends OWLAxiom> gen, boolean selected, boolean expensive) {
+        String label = gen.getLabel();
+        final JCheckBox box = new JCheckBox(label, selected);
+        if(expensive) {
+            box.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(box.isSelected()) {
+                        JOptionPane.showMessageDialog(ExportInferredOntologyPanel.this, "<html><body>Warning: Exporting <b>" + gen.getLabel() + "</b> may take a long time.</body></html>",  "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+        }
         checkBoxBox.add(box);
         checkBoxBox.add(Box.createVerticalStrut(4));
         map.put(box, gen);
