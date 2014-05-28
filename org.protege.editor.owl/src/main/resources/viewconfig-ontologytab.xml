@@ -2,11 +2,18 @@
 <layout>
     <VSNode splits="0.625">
         <HSNode splits="0.625 0.375">
-            <CNode>
-                <Component label="Annotations">
-                    <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyAnnotationsView"/>
-                </Component>
-            </CNode>
+            <VSNode splits="0.625 0.375">
+                    <CNode>
+                        <Component label="Annotations">
+                            <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyAnnotationsView"/>
+                        </Component>
+                    </CNode>
+                    <CNode>
+                        <Component label="Metrics">
+                            <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyMetricsView"/>
+                        </Component>
+                    </CNode>
+            </VSNode>
             <CNode>
                 <Component label="Ontology imports">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLOntologyImportsTable"/>
