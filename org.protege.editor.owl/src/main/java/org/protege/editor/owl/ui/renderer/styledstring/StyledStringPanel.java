@@ -40,7 +40,7 @@ public class StyledStringPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Insets insets = getInsets();
         if (insets != null) {
             g.translate(insets.left, insets.top);
