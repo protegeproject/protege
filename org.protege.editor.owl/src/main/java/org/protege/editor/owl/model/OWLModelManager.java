@@ -37,7 +37,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public interface OWLModelManager extends ModelManager {
+public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
     public static final String OWL_OBJECT_COMPARATOR_KEY = "OWL_OBJECT_COMPARATOR_KEY";
 

@@ -121,7 +121,7 @@
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
-    
+
     <extension id="ui.view.menu.byprop"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by annotation property"/>
@@ -171,6 +171,28 @@
         <class value="org.protege.editor.owl.ui.action.AllOntologiesStrategyAction"/>
         <toolTip value="All loaded ontologies are visible"/>
         <path value="org.protege.editor.owl.ui.view.menu/SlotAB-B"/>
+        <editorKitId value="OWLEditorKit"/>
+        <radiobutton value="true"/>
+    </extension>
+
+    <!-- Fresh axiom location strategies in edit menu -->
+
+    <extension id="axioms.addtoactiveontology"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Add fresh axioms to active ontology"/>
+        <class value="org.protege.editor.owl.ui.axiom.AddFreshAxiomsInActiveOntologyStrategy"/>
+        <toolTip value="Add newly created axioms into the active ontology"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotABC-A"/>
+        <editorKitId value="OWLEditorKit"/>
+        <radiobutton value="true"/>
+    </extension>
+
+    <extension id="axioms.addtosubjectontology"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Add fresh axioms to defining ontology"/>
+        <class value="org.protege.editor.owl.ui.axiom.AddFreshAxiomsInDefiningOntologyStrategy"/>
+        <toolTip value="Add newly created axioms into the ontology that currently defines the subject of the axiom"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotABC-B"/>
         <editorKitId value="OWLEditorKit"/>
         <radiobutton value="true"/>
     </extension>
