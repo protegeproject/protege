@@ -5,12 +5,11 @@ import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryTy
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.swing.JOptionPane;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -26,6 +25,9 @@ import org.protege.editor.core.ui.progress.BackgroundTask;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginManager {
+
+    private static final String LAST_RUN_PREFS_KEY = "last.run";
+
     private static PluginManager instance;
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
@@ -152,6 +154,17 @@ public class PluginManager {
 
     }
 
+    /**
+     * Gets the date that auto-update was last run.
+     * @return The date which auto-update was last run.  Not {@code null}.
+     */
+    public Date getLastAutoUpdateDate() {
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.DAY_OF_MONTH, 20);
+//        getPrefs().putLong(LAST_RUN_PREFS_KEY, c.getTimeInMillis());
+        long lastRun = getPrefs().getLong(LAST_RUN_PREFS_KEY, 0);
+        return new Date(lastRun);
+    }
 
     public void performAutoUpdate() {
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
@@ -162,7 +175,8 @@ public class PluginManager {
             	try {
             		updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
             		updates = updatesProvider.getAvailableDownloads();
-            	}
+                    getPrefs().putLong(LAST_RUN_PREFS_KEY, System.currentTimeMillis());
+                }
             	finally {
             		ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
             	}
