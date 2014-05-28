@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
@@ -41,15 +42,13 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         for (OWLAnnotationAssertionAxiom ax : ontology.getAnnotationAssertionAxioms(annotationSubject)) {
             if (!getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(ax.getAnnotation().getProperty().getIRI().toURI())) {
                 addRow(new OWLAnnotationsFrameSectionRow(getOWLEditorKit(), this, ontology, annotationSubject, ax));
-            }
-            else {
+            } else {
                 hidden = true;
             }
         }
         if (hidden) {
             setLabel(LABEL + " (some annotations are hidden)");
-        }
-        else {
+        } else {
             setLabel(LABEL);
         }
     }
@@ -68,8 +67,9 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
     /**
      * Obtains a comparator which can be used to sort the rows
      * in this section.
+     *
      * @return A comparator if to sort the rows in this section,
-     *         or <code>null</code> if the rows shouldn't be sorted.
+     * or <code>null</code> if the rows shouldn't be sorted.
      */
     public Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> getRowComparator() {
         return comparator;
@@ -90,11 +90,10 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLAnnotation) {
-                OWLAnnotation annot = (OWLAnnotation)obj;
+                OWLAnnotation annot = (OWLAnnotation) obj;
                 OWLAxiom ax = getOWLDataFactory().getOWLAnnotationAssertionAxiom(getRootObject(), annot);
                 changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -104,9 +103,9 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
 
     @Override
     protected boolean isResettingChange(OWLOntologyChange change) {
-    	return change.isAxiomChange() &&
-    			change.getAxiom() instanceof OWLAnnotationAssertionAxiom &&
-    			((OWLAnnotationAssertionAxiom) change.getAxiom()).getSubject().equals(getRootObject());
+        return change.isAxiomChange() &&
+                change.getAxiom() instanceof OWLAnnotationAssertionAxiom &&
+                ((OWLAnnotationAssertionAxiom) change.getAxiom()).getSubject().equals(getRootObject());
     }
 
 
@@ -127,10 +126,10 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
 
         private int getAnnotationDifference(OWLAnnotation annotation1, OWLAnnotation annotation2) {
             int diff = getAnnotationPropertyDifference(annotation1.getProperty(), annotation2.getProperty());
-            if(diff == 0) {
+            if (diff == 0) {
                 diff = getAnnotationLanguageDifference(annotation1.getValue(), annotation2.getValue());
             }
-            if(diff == 0) {
+            if (diff == 0) {
                 diff = getAnnotationValueDifference(annotation1.getValue(), annotation2.getValue());
             }
             return diff;
@@ -146,28 +145,16 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
             if (index1 != -1 && index2 != -1) {
                 diff = index1 - index2;
             }
-            if(diff == 0) {
-                // Labels come first
-                if(property1.isLabel()) {
-                    if(!property2.isLabel()) {
-                        diff = -1;
-                    }
-                }
-                else {
-                    if(property2.isLabel()) {
-                        diff = 1;
-                    }
-                }
+            if (diff != 0) {
+                return diff;
             }
-            if(diff == 0) {
-                diff = owlObjectComparator.compare(property1, property2);
-            }
-            return diff;
+            AnnotationPropertyComparator comparator = AnnotationPropertyComparator.withDefaultOrdering(owlObjectComparator);
+            return comparator.compare(property1, property2);
         }
 
         private int getAnnotationLanguageDifference(OWLAnnotationValue value1, OWLAnnotationValue value2) {
             int diff = 0;
-            if(value1 instanceof OWLLiteral && value2 instanceof OWLLiteral) {
+            if (value1 instanceof OWLLiteral && value2 instanceof OWLLiteral) {
                 OWLLiteral lit1 = (OWLLiteral) value1;
                 String lang1 = lit1.getLang();
                 OWLLiteral lit2 = (OWLLiteral) value2;
@@ -175,13 +162,11 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
                 List<String> langs = OWLRendererPreferences.getInstance().getAnnotationLangs();
                 int langIndex1 = langs.indexOf(lang1);
                 int langIndex2 = langs.indexOf(lang2);
-                if(langIndex1 == -1) {
+                if (langIndex1 == -1) {
                     diff = 1;
-                }
-                else if(langIndex2 == -1) {
-                    diff = - 1;
-                }
-                else {
+                } else if (langIndex2 == -1) {
+                    diff = -1;
+                } else {
                     diff = langIndex1 - langIndex2;
                 }
 
