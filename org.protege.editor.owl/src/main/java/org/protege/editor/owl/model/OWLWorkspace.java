@@ -609,18 +609,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         JPanel topBarPanel = new JPanel(new GridBagLayout());
         topBarPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 3, 10));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.insets = new Insets(0, 4, 0, 4);
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        topBarPanel.add(new OWLEntityNavPanel(getOWLEditorKit()), gbc);
+        topBarPanel.add(new OWLEntityNavPanel(getOWLEditorKit()),
+                new GridBagConstraints(
+                        0, 0,
+                        1, 1,
+                        0, 0,
+                        GridBagConstraints.BASELINE, GridBagConstraints.NONE,
+                        new Insets(0, 0, 0, 2),
+                        0, 0));
 
         final OWLModelManager mngr = getOWLModelManager();
 
@@ -630,16 +626,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
         rebuildOntologyDropDown();
 
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 100; // Grow along the x axis
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.CENTER;
-        topBarPanel.add(ontologiesList, gbc);
+        topBarPanel.add(ontologiesList, new GridBagConstraints(
+                1, 0,
+                1, 1,
+                100, 0,
+                GridBagConstraints.BASELINE,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(0, 2, 0, 2),
+                0, 0
+        ));
 
         ontologiesList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -650,34 +645,40 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-// Global find field
-        JPanel finderHolder = new JPanel();
-        finderHolder.setLayout(new BoxLayout(finderHolder, BoxLayout.LINE_AXIS));
         final EntityFinderField entityFinderField = new EntityFinderField(this, getOWLEditorKit());
-        final int height = entityFinderField.getPreferredSize().height;
-        finderHolder.setMinimumSize(new Dimension(FINDER_MIN_WIDTH, height + ((FINDER_BORDER + 1) * 2)));
-        finderHolder.add(entityFinderField);
+        entityFinderField.setPreferredSize(new Dimension(250, 30));
+        entityFinderField.setMinimumSize(new Dimension(250, 30));
+        topBarPanel.add(entityFinderField, new GridBagConstraints(
+                2, 0,
+                1, 1,
+                0, 0,
+                GridBagConstraints.BASELINE,
+                GridBagConstraints.NONE,
+                new Insets(0, 2, 0, 2),
+                0, 0
+        ));
 
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        topBarPanel.add(finderHolder, gbc);
-
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        topBarPanel.add(backgroundTaskLabel);
-        topBarPanel.add(errorNotificationLabel);
+        topBarPanel.add(backgroundTaskLabel,
+                new GridBagConstraints(
+                        3, 0,
+                        1, 1,
+                        0, 0,
+                        GridBagConstraints.EAST,
+                        GridBagConstraints.NONE,
+                        new Insets(0, 0, 0, 0),
+                        0, 0
+                ));
+        topBarPanel.add(errorNotificationLabel,
+                new GridBagConstraints(
+                        4, 0,
+                        1, 1,
+                        0, 0,
+                        GridBagConstraints.EAST,
+                        GridBagConstraints.NONE,
+                        new Insets(0, 0, 0, 0),
+                        0, 0
+                )
+                );
 
         add(topBarPanel, BorderLayout.NORTH);
 
