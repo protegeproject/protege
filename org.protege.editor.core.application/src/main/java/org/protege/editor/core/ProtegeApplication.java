@@ -3,9 +3,7 @@ package org.protege.editor.core;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
@@ -390,9 +388,15 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     private void checkForUpdates() {
-        if (PluginManager.getInstance().isAutoUpdateEnabled()) {
+        if(!PluginManager.getInstance().isAutoUpdateEnabled()) {
+            return;
+        }
+        if (hasAutoUpdateBeenRunToday()) {
+            logger.info("Auto-update has been run today.  Not running it again.");
+            return;
+        }
+        logger.info("Auto-update has not been performed today.  Running it.");
             PluginManager.getInstance().performAutoUpdate();
-
             context.addFrameworkListener(new FrameworkListener() {
                 public void frameworkEvent(FrameworkEvent event) {
                     if (event.getType() == FrameworkEvent.STARTED) {
@@ -401,7 +405,21 @@ public class ProtegeApplication implements BundleActivator {
                 }
             });
 
-        }
+    }
+
+    private static boolean hasAutoUpdateBeenRunToday() {
+        Date lastRun = PluginManager.getInstance().getLastAutoUpdateDate();
+        logger.info("Auto-update last performed: " + lastRun);
+        Date startOfToday = getStartOfToday();
+        return lastRun.after(startOfToday);
+    }
+
+    private static Date getStartOfToday() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
     }
 
     /**
