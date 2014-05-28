@@ -13,6 +13,9 @@ import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.axiom.FreshActionStrategySelector;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationStrategy;
 import org.protege.editor.owl.model.inference.VacuousAxiomVisitor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
@@ -229,7 +232,11 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         for (E editedObject : editedObjects) {
             final A ax = createAxiom(editedObject);
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+            FreshAxiomLocationPreferences prefs = FreshAxiomLocationPreferences.getPreferences();
+            FreshActionStrategySelector strategySelector = new FreshActionStrategySelector(prefs, owlEditorKit);
+            FreshAxiomLocationStrategy strategy = strategySelector.getFreshAxiomLocationStrategy();
+            OWLOntology ontology = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
+            changes.add(new AddAxiom(ontology, ax));
             axioms.add(ax);
         }
         getOWLModelManager().applyChanges(changes);
