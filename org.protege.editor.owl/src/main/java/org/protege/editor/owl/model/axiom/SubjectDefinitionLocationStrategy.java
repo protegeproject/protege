@@ -33,19 +33,14 @@ public class SubjectDefinitionLocationStrategy implements FreshAxiomLocationStra
         if(!subject.isPresent()) {
             return getDefaultLocation(hasActiveOntology);
         }
-        if(!(subject.get() instanceof OWLEntity)) {
-            return getDefaultLocation(hasActiveOntology);
-        }
-
-        OWLEntity entity = (OWLEntity) subject.get();
-        return getDefiningImportsClosureRootOntology(hasActiveOntology, entity);
+        return getDefiningImportsClosureRootOntology(hasActiveOntology, subject.get());
     }
 
-    private OWLOntology getDefiningImportsClosureRootOntology(HasActiveOntology hasActiveOntology, OWLEntity entity) {
+    private OWLOntology getDefiningImportsClosureRootOntology(HasActiveOntology hasActiveOntology, OWLObject subject) {
         OWLOntology activeOntology = hasActiveOntology.getActiveOntology();
         List<OWLOntology> sortedImportsClosure = importsClosureProvider.getTopologicallySortedImportsClosure(activeOntology);
         for(OWLOntology ont : sortedImportsClosure) {
-            Set<? extends OWLAxiom> definingAxioms = subjectDefinitionExtractor.getDefiningAxioms(entity, ont);
+            Set<? extends OWLAxiom> definingAxioms = subjectDefinitionExtractor.getDefiningAxioms(subject, ont);
             if(!definingAxioms.isEmpty()) {
                 return ont;
             }

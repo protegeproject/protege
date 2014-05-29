@@ -4,6 +4,8 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.view.View;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocation;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 
@@ -25,9 +27,9 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     //@@TODO centralise this when tidying up prefs
     public static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
     
-    private JRadioButton simpleSearchButton;
+//    private JRadioButton simpleSearchButton;
 
-    private JRadioButton regularExpressionSearchButton;
+//    private JRadioButton regularExpressionSearchButton;
 
     private JSpinner findDelaySpinner;
 
@@ -37,6 +39,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox alwaysCentreDialogsCheckbox;
     private JCheckBox detachedWindowsFloat;
+    private JRadioButton addFreshAxiomsToActiveOntologyRadioButton;
+    private JRadioButton addFreshAxiomsToSubjectDefiningOntology;
 
 
     public void applyChanges() {
@@ -44,11 +48,19 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
         OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         prefs.setSearchDelay(((Double) findDelaySpinner.getModel().getValue()).intValue());
-        prefs.setUseRegularExpressions(regularExpressionSearchButton.isSelected());
+//        prefs.setUseRegularExpressions(regularExpressionSearchButton.isSelected());
 
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
         appPrefs.putBoolean(DIALOGS_ALWAYS_CENTRED, alwaysCentreDialogsCheckbox.isSelected());
         appPrefs.putBoolean(View.DETACHED_WINDOWS_FLOAT, detachedWindowsFloat.isSelected());
+
+        FreshAxiomLocationPreferences axiomPrefs = FreshAxiomLocationPreferences.getPreferences();
+        if(addFreshAxiomsToActiveOntologyRadioButton.isSelected()) {
+            axiomPrefs.setFreshAxiomLocation(FreshAxiomLocation.ACTIVE_ONTOLOGY);
+        }
+        else if (addFreshAxiomsToSubjectDefiningOntology.isSelected()) {
+            axiomPrefs.setFreshAxiomLocation(FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY);
+        }
     }
 
 
@@ -81,27 +93,6 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         findDelayPanel.add(new JLabel("Search delay (ms)"));
         findDelayPanel.add(findDelaySpinner);
 
-        simpleSearchButton = new JRadioButton("Simple search (using simple wildcards *)",
-                                              !prefs.isUseRegularExpressions());
-        regularExpressionSearchButton = new JRadioButton("Full regular expression search",
-                                                         prefs.isUseRegularExpressions());
-
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(simpleSearchButton);
-        bg.add(regularExpressionSearchButton);
-
-        findDelayPanel.setAlignmentX(LEFT_ALIGNMENT);
-        simpleSearchButton.setAlignmentX(LEFT_ALIGNMENT);
-        regularExpressionSearchButton.setAlignmentX(LEFT_ALIGNMENT);
-
-        Box searchPanel = new Box(BoxLayout.PAGE_AXIS);
-
-        searchPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Search"),
-                                                                 BorderFactory.createEmptyBorder(7, 7, 7, 7)));
-        searchPanel.add(findDelayPanel);
-        searchPanel.add(simpleSearchButton);
-        searchPanel.add(regularExpressionSearchButton);
-
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
         alwaysCentreDialogsCheckbox = new JCheckBox("Centre dialogs on workspace");
         alwaysCentreDialogsCheckbox.setSelected(appPrefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false));
@@ -109,17 +100,41 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         detachedWindowsFloat.setSelected(appPrefs.getBoolean(View.DETACHED_WINDOWS_FLOAT, true));
 
         editorPanel.setAlignmentX(LEFT_ALIGNMENT);
-        searchPanel.setAlignmentX(LEFT_ALIGNMENT);
+//        searchPanel.setAlignmentX(LEFT_ALIGNMENT);
+
+
+        // Dialogs
+        Box dialogsPanel = new Box(BoxLayout.PAGE_AXIS);
+        dialogsPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Dialogs"),
+                BorderFactory.createEmptyBorder(7, 7, 7, 7)));
         alwaysCentreDialogsCheckbox.setAlignmentX(LEFT_ALIGNMENT);
         detachedWindowsFloat.setAlignmentX(LEFT_ALIGNMENT);
+        dialogsPanel.add(alwaysCentreDialogsCheckbox);
+        dialogsPanel.add(detachedWindowsFloat);
+
+
+        // Axioms
+        Box axiomsPanel = new Box(BoxLayout.PAGE_AXIS);
+        axiomsPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Axioms"),
+                BorderFactory.createEmptyBorder(7, 7, 7, 7)));
+        ButtonGroup axiomButtonGroup = new ButtonGroup();
+        addFreshAxiomsToActiveOntologyRadioButton = new JRadioButton("Add fresh axioms to active ontology",
+                FreshAxiomLocationPreferences.getPreferences().getFreshAxiomLocation() == FreshAxiomLocation.ACTIVE_ONTOLOGY);
+        addFreshAxiomsToSubjectDefiningOntology = new JRadioButton("Add fresh axioms to subject defining ontology",
+                FreshAxiomLocationPreferences.getPreferences().getFreshAxiomLocation() == FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY);
+        addFreshAxiomsToSubjectDefiningOntology.setToolTipText("Adds fresh axioms to the ontology where their subject is defined.  " +
+                "If no such ontology exists then axioms are added to the active ontology.");
+        axiomButtonGroup.add(addFreshAxiomsToActiveOntologyRadioButton);
+        axiomButtonGroup.add(addFreshAxiomsToSubjectDefiningOntology);
+        axiomsPanel.add(addFreshAxiomsToActiveOntologyRadioButton);
+        axiomsPanel.add(addFreshAxiomsToSubjectDefiningOntology);
 
         Box holder = new Box(BoxLayout.PAGE_AXIS);
         holder.add(editorPanel);
         holder.add(Box.createVerticalStrut(7));
-        holder.add(searchPanel);
+        holder.add(dialogsPanel);
         holder.add(Box.createVerticalStrut(7));
-        holder.add(alwaysCentreDialogsCheckbox);
-        holder.add(detachedWindowsFloat);
+        holder.add(axiomsPanel);
 
         add(holder, BorderLayout.NORTH);
     }
