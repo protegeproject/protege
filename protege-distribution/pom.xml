@@ -152,7 +152,7 @@
 							</descriptors>
 						</configuration>
 					</execution>
-					<execution>
+					<!-- <execution>
 						<id>protege-desktop-osx-assembly</id>
 						<phase>package</phase>
 						<goals>
@@ -163,11 +163,11 @@
 								<descriptor>src/main/assembly/protege-as-app.xml</descriptor>
 							</descriptors>
 						</configuration>
-					</execution>
+					</execution> -->
 				</executions>
 			</plugin>
 			
-			<plugin>
+			<!-- <plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
@@ -184,7 +184,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>
