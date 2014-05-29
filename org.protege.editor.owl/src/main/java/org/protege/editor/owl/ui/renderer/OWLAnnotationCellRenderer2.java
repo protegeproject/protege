@@ -18,6 +18,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
+import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.*;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -38,9 +41,36 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private OWLOntology ontology;
 
+    private InlineAnnotationRendering inlineAnnotationRendering = RENDER_COMPOUND_ANNOTATIONS_INLINE;
+
+    private InlineDatatypeRendering datatypeRendering = RENDER_DATATYPE_INLINE;
+
+    private AnnotationRenderingStyle annotationRenderingStyle = AnnotationRenderingStyle.COMFORTABLE;
+
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
         this.editorKit = editorKit;
+    }
+
+    public void setInlineAnnotationRendering(InlineAnnotationRendering inlineAnnotationRendering) {
+        if (this.inlineAnnotationRendering != inlineAnnotationRendering) {
+            this.inlineAnnotationRendering = inlineAnnotationRendering;
+            invalidateCache();
+        }
+    }
+
+    public void setInlineDatatypeRendering(InlineDatatypeRendering datatypeRendering) {
+        if (this.datatypeRendering != datatypeRendering) {
+            this.datatypeRendering = datatypeRendering;
+            invalidateCache();
+        }
+    }
+
+    public void setAnnotationRenderingStyle(AnnotationRenderingStyle annotationRenderingStyle) {
+        if (this.annotationRenderingStyle != annotationRenderingStyle) {
+            this.annotationRenderingStyle = annotationRenderingStyle;
+            invalidateCache();
+        }
     }
 
     /**
@@ -145,9 +175,29 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         if (annotation != null) {
             renderAnnotationProperty(page, annotation, foreground, background, isSelected);
             renderAnnotationValue(page, annotation, foreground, background, isSelected);
+            if (inlineAnnotationRendering == RENDER_COMPOUND_ANNOTATIONS_INLINE &&  value instanceof HasAnnotations) {
+                Page subAnnotationPage = new Page();
+                for(OWLAnnotation anno : ((HasAnnotations) value).getAnnotations()) {
+                    renderCellValue(subAnnotationPage, anno, foreground, background, isSelected);
+                }
+                subAnnotationPage.setMarginLeft(40);
+                subAnnotationPage.setOpacity(0.6);
+                page.add(subAnnotationPage);
+            }
         }
-        page.setMargin(2);
-        page.setMarginBottom(6);
+        switch (annotationRenderingStyle){
+            case COMFORTABLE:
+                page.setMargin(2);
+                page.setMarginBottom(6);
+                break;
+            case COSY:
+                page.setMargin(1);
+                page.setMarginBottom(3);
+                break;
+            case COMPACT:
+                page.setMargin(0);
+                page.setMarginBottom(1);
+        }
 
     }
 
@@ -158,7 +208,10 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     protected OWLAnnotation extractOWLAnnotationFromCellValue(Object value) {
         OWLAnnotation annotation = null;
-        if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
+        if(value instanceof OWLAnnotationAssertionAxiom) {
+            annotation = ((OWLAnnotationAssertionAxiom) value).getAnnotation();
+        }
+        else if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
             annotation = ((AbstractAnnotationsList.AnnotationsListItem) value).getAnnotation();
         }
         else if (value instanceof OWLAnnotation) {
@@ -193,7 +246,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @param defaultBackground The default background color.
      * @param isSelected Specifies whether the associated cell is selected or not.
      */
-    private void renderAnnotationProperty(Page page, OWLAnnotation annotation, Color defaultForeground, Color defaultBackground, boolean isSelected) {
+    private Paragraph renderAnnotationProperty(Page page, OWLAnnotation annotation, Color defaultForeground, Color defaultBackground, boolean isSelected) {
         OWLAnnotationProperty property = annotation.getProperty();
         String rendering = editorKit.getOWLModelManager().getRendering(property);
         Paragraph paragraph = page.addParagraph(rendering);
@@ -207,7 +260,18 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             paragraph.append("    ", foreground);
             appendTag(paragraph, literalValue, foreground, isSelected);
         }
-        paragraph.setMarginBottom(4);
+        switch (annotationRenderingStyle) {
+            case COMFORTABLE:
+                paragraph.setMarginBottom(4);
+                break;
+            case COSY:
+                paragraph.setMarginBottom(2);
+                break;
+            case COMPACT:
+                paragraph.setMarginBottom(1);
+                break;
+        }
+        return paragraph;
     }
 
     private Color getAnnotationPropertyForeground(Color defaultForeground, boolean isSelected) {
@@ -361,7 +425,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             tagParagraph.append(literal.getLang(), tagValueColor);
             tagParagraph.append("]", tagColor);
         }
-        else if(!literal.isRDFPlainLiteral()) {
+        else if(datatypeRendering == RENDER_DATATYPE_INLINE && !literal.isRDFPlainLiteral()) {
             tagParagraph.append("[type: ", tagColor);
             tagParagraph.append(editorKit.getOWLModelManager().getRendering(literal.getDatatype()), tagValueColor);
             tagParagraph.append("]", tagColor);

@@ -4,9 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.renderer.*;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -16,6 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
 
 
 /**
@@ -137,8 +137,13 @@ public class OWLFrameListRenderer implements ListCellRenderer {
             if (axiom instanceof OWLAnnotationAssertionAxiom && annotationRendererEnabled) {
                 OWLAnnotationAssertionAxiom annotationAssertionAxiom = (OWLAnnotationAssertionAxiom) axiom;
                 annotationRenderer.setReferenceOntology(row.getOntology());
+                annotationRenderer.setInlineAnnotationRendering(
+                        getRenderAnnotationAnnotationsInline());
+                annotationRenderer.setInlineDatatypeRendering(
+                        getAnnotationLiteralDatatypeRendering()
+                );
                 return annotationRenderer.getListCellRendererComponent(list,
-                                                                       annotationAssertionAxiom.getAnnotation(),
+                                                                       annotationAssertionAxiom,
                                                                        index,
                                                                        isSelected,
                                                                        cellHasFocus);
@@ -159,6 +164,14 @@ public class OWLFrameListRenderer implements ListCellRenderer {
                                                                 isSelected,
                                                                 cellHasFocus);
         }
+    }
+
+    private InlineDatatypeRendering getAnnotationLiteralDatatypeRendering() {
+        return OWLRendererPreferences.getInstance().isDisplayLiteralDatatypesInline() ? InlineDatatypeRendering.RENDER_DATATYPE_INLINE : InlineDatatypeRendering.DO_NOT_RENDER_DATATYPE_INLINE;
+    }
+
+    private InlineAnnotationRendering getRenderAnnotationAnnotationsInline() {
+        return OWLRendererPreferences.getInstance().isDisplayAnnotationAnnotationsInline() ? RENDER_COMPOUND_ANNOTATIONS_INLINE : DO_NOT_RENDER_COMPOUND_ANNOTATIONS_INLINE;
     }
 
     public void setWrap(boolean b) {

@@ -31,6 +31,10 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
         setOpaque(false);
     }
 
+    protected void invalidateCache() {
+        pageCache.invalidate();
+    }
+
     /**
      * Given the value being rendered, returns an object that represents a key for this value.  Subclasses may
      * override this method to provide an appropriate key.

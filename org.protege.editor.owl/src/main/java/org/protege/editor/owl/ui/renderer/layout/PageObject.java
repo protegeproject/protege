@@ -32,9 +32,9 @@ public abstract class PageObject {
 
     private boolean mouseOver = false;
 
+    private double opacity = 1.0;
+
     private PageObjectBorder pageObjectBorder = EmptyPageObjectBorder.getEmptyPageObjectBorder();
-
-
 
     /**
      * Adds a child to the page object.  The parent of the child will become this page object. If the specified child
@@ -283,7 +283,7 @@ public abstract class PageObject {
     }
 
     public int getPaddingTop() {
-        return marginInsets.top;
+        return paddingInsets.top;
     }
 
     public int getPaddingBottom() {
@@ -459,6 +459,14 @@ public abstract class PageObject {
         }
     }
 
+    public void setOpacity(double opacity) {
+        this.opacity = opacity;
+    }
+
+    public double getOpacity() {
+        return opacity;
+    }
+
     /**
      * Lays out this {@link PageObject} using the specified {@link java.awt.font.FontRenderContext} to determine sizes of rendered
      * text.
@@ -518,7 +526,15 @@ public abstract class PageObject {
         if (!g2.getClip().intersects(getBounds())) {
             return;
         }
+        double compoundOpacity = getOpacity();
+        PageObject parent = getParent();
+        while(parent != null) {
+            compoundOpacity *= parent.getOpacity();
+            parent = parent.getParent();
+        }
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) compoundOpacity));
         requestPaintContent(g2);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         for (PageObject pageObject : children) {
             pageObject.draw(g2);
         }

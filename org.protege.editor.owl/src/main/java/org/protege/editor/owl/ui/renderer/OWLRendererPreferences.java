@@ -6,19 +6,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.workspace.WorkspaceManager;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
-import javax.swing.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -53,6 +47,10 @@ public class OWLRendererPreferences {
     public static final String FONT_NAME = "FONT_NAME";
 
     public static final String ANNOTATIONS = "ANNOTATIONS";
+
+    public static final String DISPLAY_ANNOTATION_ANNOTATIONS_INLINE = "DISPLAY_ANNOTATION_ANNOTATIONS_INLINE";
+
+    public static final String DISPLAY_LITERAL_DATATYPES_INLINE = "DISPLAY_LITERAL_DATATYPES_INLINE";
     
     public static final int DEFAULT_FONT_SIZE = 12;
 
@@ -105,6 +103,10 @@ public class OWLRendererPreferences {
     private RendererPlugin currentRendererPlugin;
     
     private boolean allowProtegeToOverrideRenderer;
+
+    private boolean displayAnnotationAnnotationsInline;
+
+    private boolean displayLiteralDatatypesInline;
 
     /*
      * HELP!
@@ -167,6 +169,23 @@ public class OWLRendererPreferences {
         resetFont();
     }
 
+    public boolean isDisplayAnnotationAnnotationsInline() {
+        return displayAnnotationAnnotationsInline;
+    }
+
+    public void setDisplayAnnotationAnnotationsInline(boolean displayAnnotationAnnotationsInline) {
+        this.displayAnnotationAnnotationsInline = displayAnnotationAnnotationsInline;
+        getPreferences().putBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, displayAnnotationAnnotationsInline);
+    }
+
+    public boolean isDisplayLiteralDatatypesInline() {
+        return displayLiteralDatatypesInline;
+    }
+
+    public void setDisplayLiteralDatatypesInline(boolean displayLiteralDatatypesInline) {
+        this.displayLiteralDatatypesInline = displayLiteralDatatypesInline;
+        getPreferences().putBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, displayLiteralDatatypesInline);
+    }
 
     public void setAnnotations(List<IRI> iris){
         annotationIRIS = iris;
@@ -226,6 +245,8 @@ public class OWLRendererPreferences {
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
         fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
+        displayAnnotationAnnotationsInline = p.getBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, true);
+        displayLiteralDatatypesInline = p.getBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, true);
         loadAnnotations();
         resetFont();
     }
@@ -315,6 +336,8 @@ public class OWLRendererPreferences {
         highlightChangedEntities = false;
         highlightKeyWords = true;
         useThatKeyword = false;
+        displayAnnotationAnnotationsInline = true;
+        displayLiteralDatatypesInline = true;
         fontSize = DEFAULT_FONT_SIZE;
     }
 
