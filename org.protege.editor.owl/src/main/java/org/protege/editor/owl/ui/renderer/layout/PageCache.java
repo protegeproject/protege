@@ -26,7 +26,6 @@ public class PageCache {
     
     private int lastFontSize = OWLRendererPreferences.getInstance().getFontSize();
 
-
     private int cacheSize = DEFAULT_CACHE_SIZE;
 
     private Map<PageCacheKey, Page> map = new LinkedHashMap<PageCacheKey, Page>();
@@ -66,5 +65,9 @@ public class PageCache {
             return true;
         }
         return false;
+    }
+
+    public void invalidate() {
+        map.clear();
     }
 }

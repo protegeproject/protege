@@ -143,7 +143,29 @@
     </extension>
 
 
-	<!-- Active ontology strategies in View menu-->
+    <extension id="ui.view.menu.inlineannotationrendering"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display axiom annotations inline"/>
+        <toolTip value="Display axiom annotations inline"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-A"/>
+        <class value="org.protege.editor.owl.ui.renderer.InlineAnnotationRenderingAction"/>
+        <editorKitId value="OWLEditorKit"/>
+        <!--<dynamic value="true"/>-->
+        <checkbox value="true"/>
+    </extension>
+
+    <extension id="ui.view.menu.inlinedatatyperendering"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display datatypes on annotation values"/>
+        <toolTip value="Display datatypes on annotation values"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AB"/>
+        <class value="org.protege.editor.owl.ui.renderer.InlineDatatypeRenderingAction"/>
+        <editorKitId value="OWLEditorKit"/>
+        <!--<dynamic value="true"/>-->
+        <checkbox value="true"/>
+    </extension>
+
+    <!-- Active ontology strategies in View menu-->
 
     <extension id="ontologies.activeontology"
                 point="org.protege.editor.core.application.EditorKitMenuAction">
@@ -228,7 +250,6 @@
        <class value="org.protege.editor.owl.ui.renderer.PrefixedOWLEntityAnnotationValueRenderer"/>
        <sortPosition value="D"/>
     </extension>
-
 
 
     <!-- Ontology Tab -->
