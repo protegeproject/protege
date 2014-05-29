@@ -65,8 +65,9 @@ public class AnnotationPropertyComparator implements Comparator<OWLAnnotationPro
 
                     // Important OBO annotations.  Ordering derived from documents shared by Chris M.
                     Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasExactSynonym.getIRI(),
-                    Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasNarrowSynonym.getIRI(),
+                    Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym.getIRI(),
                     Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasBroadSynonym.getIRI(),
+                    Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasNarrowSynonym.getIRI(),
 
                     Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasDbXref.getIRI(),
                     Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_Subset.getIRI()
