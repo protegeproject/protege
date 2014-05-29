@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.axiom;
 
+import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
@@ -48,6 +49,16 @@ public class DefaultSubjectDefinitionExtractor implements SubjectDefinitionExtra
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLAnnotationProperty property) {
                     return ontology.getAxioms(property);
+                }
+
+                @Override
+                public Set<? extends OWLAxiom> visit(IRI iri) {
+                    Set<OWLAxiom> axioms = Sets.newHashSet();
+                    axioms.addAll(ontology.getAnnotationAssertionAxioms(iri));
+                    for(OWLEntity entity : ontology.getEntitiesInSignature(iri, true)) {
+                        axioms.addAll(getDefiningAxioms(entity, ontology));
+                    }
+                    return axioms;
                 }
             }));
     }

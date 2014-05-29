@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationStrategy;
+import org.protege.editor.owl.model.axiom.FreshAxiomLocationStrategyFactory;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.FilteringOWLOntologyChangeListener;
 
@@ -178,8 +181,11 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
             		return;
             	}
                 if (checkBox.isSelected()) {
-                    OWLOntology ont = getOWLModelManager().getActiveOntology();
+                    FreshAxiomLocationPreferences preferences = FreshAxiomLocationPreferences.getPreferences();
+                    FreshAxiomLocationStrategyFactory strategyFactory = preferences.getFreshAxiomLocation().getStrategyFactory();
+                    FreshAxiomLocationStrategy strategy = strategyFactory.getStrategy(getOWLEditorKit());
                     OWLAxiom ax = setter.getAxiom();
+                    OWLOntology ont = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
                     getOWLModelManager().applyChange(new AddAxiom(ont, ax));
                 }
                 else {
