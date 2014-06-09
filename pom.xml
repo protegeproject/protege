@@ -3,7 +3,7 @@
 
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
-    <version>5.0.0-beta-14-SNAPSHOT</version>
+    <version>5.0.0-beta-13-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Protege Desktop</name>
