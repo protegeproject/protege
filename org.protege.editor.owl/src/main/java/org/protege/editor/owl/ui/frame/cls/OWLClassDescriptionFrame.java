@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
+import org.protege.editor.owl.ui.frame.OWLGeneralClassAxiomsFrameSection;
 import org.semanticweb.owlapi.model.OWLClass;
 
 
@@ -17,6 +18,7 @@ public class OWLClassDescriptionFrame extends AbstractOWLFrame<OWLClass> {
         super(editorKit.getModelManager().getOWLOntologyManager());
         addSection(new OWLEquivalentClassesAxiomFrameSection(editorKit, this));
         addSection(new OWLSubClassAxiomFrameSection(editorKit, this));
+        addSection(new OWLClassGeneralClassAxiomFrameSection(editorKit, this));
         addSection(new InheritedAnonymousClassesFrameSection(editorKit, this));
         addSection(new OWLClassAssertionAxiomMembersSection(editorKit, this));
         addSection(new OWLKeySection(editorKit, this));
