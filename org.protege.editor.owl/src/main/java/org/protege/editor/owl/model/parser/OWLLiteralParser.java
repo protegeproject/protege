@@ -31,7 +31,7 @@ public class OWLLiteralParser {
         if(value == null) {
             throw new NullPointerException("value must not be null");
         }
-        String normalisedValue = value.trim().toLowerCase();
+        String normalisedValue = value.trim();
         return parse(normalisedValue,
                 BOOLEAN_LITERAL_PARSER,
                 INTEGER_LITERAL_PARSER,

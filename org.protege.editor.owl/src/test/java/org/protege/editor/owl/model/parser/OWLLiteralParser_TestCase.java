@@ -111,4 +111,10 @@ public class OWLLiteralParser_TestCase {
         OWLLiteral literal = parser.parseLiteral("Blah");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.RDF_PLAIN_LITERAL);
     }
+
+    @Test
+    public void shouldPreserveCase() {
+        OWLLiteral literal = parser.parseLiteral("Blah");
+        assertThat(literal.getLiteral(), is("Blah"));
+    }
 }
