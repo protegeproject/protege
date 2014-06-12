@@ -119,12 +119,12 @@ public class OntologyImportsList extends MList {
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
 
         	for (ImportInfo importParameters : wizard.getImports()) {
-        		IRI importLocation = importParameters.getImportLocation();
+        		IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
         		URI physicalLocation = importParameters.getPhysicalLocation();
-        		if (willRedirectTotheWrongPlace(catalogManager, importLocation, physicalLocation)) {
-        		    addImportMapping(activeOntology, importLocation, IRI.create(physicalLocation));
+        		if (willRedirectTotheWrongPlace(catalogManager, importedOntologyDocumentIRI, physicalLocation)) {
+        		    addImportMapping(activeOntology, importedOntologyDocumentIRI, IRI.create(physicalLocation));
         		}
-                OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importLocation);
+                OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
                 changes.add(new AddImport(ont, decl));
                 if (manager.contains(importParameters.getOntologyID())) {
                 	continue;
