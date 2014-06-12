@@ -281,6 +281,7 @@ public class MList extends JList {
                 return label;
             }
             JComponent component = (JComponent) this.contentRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            Dimension prefSize = component.getPreferredSize();
             component.setOpaque(true);
             if (value instanceof MListItem) {
                 Border paddingBorder = MList.this.createPaddingBorder(list, value, index, isSelected, cellHasFocus);
@@ -292,6 +293,13 @@ public class MList extends JList {
                 if (!isSelected) {
                     component.setBackground(MList.this.getItemBackgroundColor((MListItem) value));
                 }
+                if (!(component instanceof LegacyRenderer)) {
+                    Insets insets = component.getInsets();
+                    int prefHeight = prefSize.height + insets.top + insets.bottom;
+                    prefSize.height = prefHeight;
+                    component.setPreferredSize(prefSize);
+                }
+
             }
             if (isSelected) {
                 component.setBackground(list.getSelectionBackground());
@@ -303,7 +311,7 @@ public class MList extends JList {
             this.contentRenderer = renderer;
         }
     }
-    
+
     public int getButtonDimension() {
         Font font = getFont();
         if(font == null) {

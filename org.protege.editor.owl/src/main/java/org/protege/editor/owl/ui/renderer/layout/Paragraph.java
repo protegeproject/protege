@@ -64,6 +64,9 @@ public class Paragraph extends PageObject {
     }
 
     public void append(String text, Color foreground) {
+        if(text.length() == 0) {
+            throw new IllegalArgumentException("text must not be empty");
+        }
         AttributedString replacementText = new AttributedString(plainText + text);
         replacementText.addAttributes(paragraphText.getIterator().getAttributes(), 0, plainText.length());
         AttributedCharacterIterator charIt = paragraphText.getIterator();
