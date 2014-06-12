@@ -70,16 +70,18 @@ public class OntologyImportsList extends MList {
 
     public OntologyImportsList(OWLEditorKit eKit) {
         this.eKit = eKit;
+        setFixedCellHeight(-1);
 
-        setCellRenderer(new OWLOntologyCellRenderer(eKit){
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if (value instanceof OntologyImportItem){
-                    value = ((OntologyImportItem)value).getImportDeclaration().getIRI();
-                }
-                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            }
-        });
+//        setCellRenderer(new OWLOntologyCellRenderer(eKit){
+//            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+//                if (value instanceof OntologyImportItem){
+//                    value = ((OntologyImportItem)value).getImportDeclaration().getIRI();
+//                }
+//                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+//            }
+//        });
 
+        setCellRenderer(new OntologyImportsItemRenderer(eKit));
 
         directImportsHeader = new MListSectionHeader() {
 
@@ -125,30 +127,29 @@ public class OntologyImportsList extends MList {
         		    addImportMapping(activeOntology, importedOntologyDocumentIRI, IRI.create(physicalLocation));
         		}
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
-                changes.add(new AddImport(ont, decl));
-                if (manager.contains(importParameters.getOntologyID())) {
-                	continue;
-                }
-                try {
-                	manager.makeLoadImportRequest(decl);
-                	eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
+                if (!manager.contains(importParameters.getOntologyID())) {
+                    try {
+                        manager.makeLoadImportRequest(decl);
+                        eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
 
-                	if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
-                		OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
-                		if (importedOnt == null) {
-                			logger.warn("Imported ontology has unexpected id. "  + 
-                					"During imports processing we anticipated " + importParameters.getOntologyID());
-                			logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
-                			continue;
-                		}
-                    	eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
-                	}
+                        if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
+                            OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+                            if (importedOnt == null) {
+                                logger.warn("Imported ontology has unexpected id. "  +
+                                        "During imports processing we anticipated " + importParameters.getOntologyID());
+                                logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+                                continue;
+                            }
+                            eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
+                        }
+                    }
+                    catch (OWLOntologyCreationException ooce) {
+                        if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
+                            logger.debug("Exception caught importing ontologies", ooce);
+                        }
+                    }
                 }
-                catch (OWLOntologyCreationException ooce) {
-                	if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
-                		logger.debug("Exception caught importing ontologies", ooce);
-                	}
-                }
+                changes.add(new AddImport(ont, decl));
         	}
             eKit.getModelManager().applyChanges(changes);
         }
@@ -237,5 +238,10 @@ public class OntologyImportsList extends MList {
 
     public void dispose(){
         eKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return true;
     }
 }

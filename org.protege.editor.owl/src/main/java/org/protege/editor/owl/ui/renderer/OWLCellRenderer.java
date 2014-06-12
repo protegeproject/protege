@@ -1,16 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -42,6 +32,7 @@ import javax.swing.tree.TreeCellRenderer;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.list.LegacyRenderer;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
@@ -147,6 +138,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean opaque = false;
 
 
+    private class OWLCellRendererPanel extends JPanel implements LegacyRenderer {
+        private OWLCellRendererPanel(LayoutManager layout) {
+            super(layout);
+        }
+    }
+
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
     }
@@ -165,7 +162,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         textPane = new JTextPane();
         textPane.setOpaque(false);
         
-        renderingComponent = new JPanel(new OWLCellRendererLayoutManager());
+        renderingComponent = new OWLCellRendererPanel(new OWLCellRendererLayoutManager());
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
 
