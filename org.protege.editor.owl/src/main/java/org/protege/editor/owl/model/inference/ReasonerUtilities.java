@@ -61,8 +61,8 @@ public class ReasonerUtilities {
 		Throwable t = died.getCause();
 		ProtegeApplication.getErrorLog().logError(t);
 		JOptionPane.showMessageDialog(owner, 
-				                      "Reasoner died (see the logs for more info).",
-				                      "Fatal reasoner error",
+				                      "Internal reasoner error (see the logs for more info).",
+				                      "Reasoner error",
 				                      JOptionPane.WARNING_MESSAGE);
 	}
 
