@@ -104,8 +104,8 @@
     
     <extension id="ui.view.menu.byid"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Render by name (rdf:id)"/>
-        <toolTip value="Render entity by name (rdf:id)"/>
+        <name value="Render by entity IRI short name (Id)"/>
+        <toolTip value="Render entity by IRI (path element or fragment)"/>
         <path value="org.protege.editor.owl.ui.view.menu/SlotAA-A"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderById"/>
         <editorKitId value="OWLEditorKit"/>
@@ -202,14 +202,14 @@
     
     <extension id="OWLEntityRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by name (rdf:id)"/>
+       <name value="Render by Entity IRI short name (Id)"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl"/>
        <sortPosition value="A"/>
     </extension>
 
     <extension id="OWLEntityQNameRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by qualified name"/>
+       <name value="Render by prefixed name"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer"/>
        <sortPosition value="B"/>
     </extension>
