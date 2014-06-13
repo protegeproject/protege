@@ -22,8 +22,6 @@ import java.util.List;
  */
 public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntityRenderer {
 
-    private static final Logger logger = Logger.getLogger(AbstractOWLEntityRenderer.class);
-
     private OWLModelManager mngr;
 
     private List<OWLEntityRendererListener> listeners = new ArrayList<OWLEntityRendererListener>();

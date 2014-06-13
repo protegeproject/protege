@@ -2,6 +2,14 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -18,24 +26,48 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
 
+    private Map<IRI, String> wellKnownRenderings = new HashMap<>();
+
 
     public void initialise() {
-        // do nothing
+        for(OWLRDFVocabulary vocabulary : OWLRDFVocabulary.values()) {
+            addOWLRDFVocabulary(vocabulary);
+        }
+        for(OWL2Datatype dt : OWL2Datatype.values()) {
+            wellKnownRenderings.put(dt.getIRI(), dt.getPrefixedName());
+        }
     }
 
+    private void addOWLRDFVocabulary(OWLRDFVocabulary vocabulary) {
+        wellKnownRenderings.put(vocabulary.getIRI(), vocabulary.getPrefixedName());
+    }
+
+    private String getSubstringFromLastCharacter(String iriString, char lastChar) {
+        int index = iriString.lastIndexOf(lastChar);
+        if(index != -1 && index < iriString.length()) {
+            return RenderingEscapeUtils.getEscapedRendering(iriString.substring(index + 1));
+        }
+        else {
+            return null;
+        }
+    }
 
     public String render(IRI iri) {
         try {
-            String rendering = iri.getFragment();
-            if (rendering == null) {
-                // Get last bit of path
-                String path = iri.toURI().getPath();
-                if (path == null) {
-                    return iri.toQuotedString();
-                }
-                return iri.toURI().getPath().substring(path.lastIndexOf("/") + 1);
+            String wellKnownName = wellKnownRenderings.get(iri);
+            if(wellKnownName != null) {
+                return wellKnownName;
             }
-            return RenderingEscapeUtils.getEscapedRendering(rendering);
+            String iriString = iri.toString();
+            String fragment = getSubstringFromLastCharacter(iriString, '#');
+            if(fragment != null) {
+                return fragment;
+            }
+            String pathElement = getSubstringFromLastCharacter(iriString, '/');
+            if(pathElement != null) {
+                return pathElement;
+            }
+            return RenderingEscapeUtils.getEscapedRendering(iri.toQuotedString());
         }
         catch (Exception e) {
             return "<Error! " + e.getMessage() + ">";
