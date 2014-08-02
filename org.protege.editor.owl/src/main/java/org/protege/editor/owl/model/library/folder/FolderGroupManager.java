@@ -23,15 +23,6 @@ import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
 
 
-/**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: 23-Aug-2006<br><br>
- * <p/>
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
- */
 public class FolderGroupManager extends CatalogEntryManager {
     private static final Logger logger = Logger.getLogger(FolderGroupManager.class);
 
