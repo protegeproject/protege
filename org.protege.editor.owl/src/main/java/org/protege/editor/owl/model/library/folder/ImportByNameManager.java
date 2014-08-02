@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.library.folder;
 import java.io.IOException;
 import java.net.URI;
 
+import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.Prefer;
@@ -14,12 +15,12 @@ import org.protege.xmlcatalog.entry.GroupEntry;
 public class ImportByNameManager extends FolderGroupManager {
 	
 	public static final String ID_PREFIX = "Import By Name Repository";
-	
+
     public static GroupEntry createGroupEntry(URI folder, boolean recursive, boolean autoUpdate, XmlBaseContext context) throws IOException {
         return new GroupEntry(getIdString(ID_PREFIX, folder, recursive, autoUpdate), context, Prefer.PUBLIC, folder);
     }
 
-	@Override
+    @Override
 	public boolean update(Entry entry) {
 		String dir = LibraryUtilities.getStringProperty(entry, FolderGroupManager.DIR_PROP);
 		boolean recursive = LibraryUtilities.getBooleanProperty(entry, FolderGroupManager.RECURSIVE_PROP, true);
