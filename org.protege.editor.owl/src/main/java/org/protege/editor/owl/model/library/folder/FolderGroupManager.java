@@ -3,16 +3,11 @@ package org.protege.editor.owl.model.library.folder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
@@ -49,6 +44,8 @@ public class FolderGroupManager extends CatalogEntryManager {
 
     public static final String FILE_KEY = "FILE";
 
+    private final ErrorLog errorLog;
+
     private Set<Algorithm> algorithms;
     private boolean autoUpdate = true;
     private boolean warnedUserOfBadRepositoryDeclaration = false;
@@ -72,21 +69,13 @@ public class FolderGroupManager extends CatalogEntryManager {
     public FolderGroupManager() {
         algorithms = new HashSet<Algorithm>();
         algorithms.add(new XmlBaseAlgorithm());
+        // Can't inject here because this thing is a plugin instance and it needs a zero arg constructor.
+        this.errorLog = ProtegeApplication.getErrorLog();
     }
 
     public void setAlgorithms(Algorithm... algorithms) {
         this.algorithms.clear();
-        for (Algorithm algorithm : algorithms) {
-            this.algorithms.add(algorithm);
-        }
-    }
-
-    public void setAutoUpdate(boolean autoUpdate) {
-        this.autoUpdate = autoUpdate;
-    }
-
-    public boolean isAutoUpdate() {
-        return autoUpdate;
+        Collections.addAll(this.algorithms, algorithms);
     }
 
     protected static String getIdString(String idPrefix, URI folderUri, boolean recursive, boolean autoUpdate) {
@@ -117,7 +106,7 @@ public class FolderGroupManager extends CatalogEntryManager {
             logger.warn("Folder repository probably came from another system");
             logger.warn("Could not be updated because directory " + dir + " does not exist");
             if (!warnedUserOfBadRepositoryDeclaration) {
-                ProtegeApplication.getErrorLog().logError(new IOException("Bad ontology library declaration - check logs. Warnings now disabled for this session."));
+                errorLog.logError(new IOException("Bad ontology library declaration - check logs. Warnings now disabled for this session."));
                 warnedUserOfBadRepositoryDeclaration = true;
             }
             return false;
@@ -147,7 +136,6 @@ public class FolderGroupManager extends CatalogEntryManager {
             }
             if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Catalog Update Complete ************************************************");
-
             }
             return modified;
         } finally {
@@ -173,7 +161,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
 
     public String getDescription(Entry ge) {
-        StringBuffer sb = new StringBuffer("<html><body><b>Folder Repository for ");
+        StringBuilder sb = new StringBuilder("<html><body><b>Folder Repository for ");
         sb.append(getDirectory((GroupEntry) ge));
         sb.append("</b>");
         if (LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true)) {
@@ -207,7 +195,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
 
     private void retainEntries() {
-        for (Entry e : new ArrayList<Entry>(ge.getEntries())) {
+        for (Entry e : new ArrayList<>(ge.getEntries())) {
             if (e instanceof UriEntry) {
                 UriEntry ue = (UriEntry) e;
                 try {
@@ -242,11 +230,11 @@ public class FolderGroupManager extends CatalogEntryManager {
 
 
     private void examineDirectoryContents(File directory, Set<URI> webLocationsFoundInParentDirectory) {
-        Set<URI> newWebLocations = new HashSet<URI>();
+        Set<URI> newWebLocations = new HashSet<>();
         if (algorithms == null || algorithms.isEmpty() || directory == null) {
             return;
         }
-        Set<File> subFolders = new HashSet<File>();
+        Set<File> subFolders = new HashSet<>();
         File[] directoryEntries = directory.listFiles();
         if (directoryEntries == null) { // I think that this means that there was an I/O error
             return;
@@ -296,7 +284,7 @@ public class FolderGroupManager extends CatalogEntryManager {
         }
     }
 
-    protected boolean isValidOWLFile(File physicalLocation) {
+    protected static boolean isValidOWLFile(File physicalLocation) {
         if (physicalLocation.getName().startsWith(".")) {
             return false;
         }
@@ -327,7 +315,7 @@ public class FolderGroupManager extends CatalogEntryManager {
         }
         Collection<URI> possibleFileLocations = webLocationToFileLocationMap.get(webLocation);
         if (possibleFileLocations == null) {
-            possibleFileLocations = new ArrayList<URI>();
+            possibleFileLocations = new ArrayList<>();
             webLocationToFileLocationMap.put(webLocation, possibleFileLocations);
         }
         possibleFileLocations.add(physicalLocation);
@@ -336,7 +324,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     private void recordRetainedEntry(URI webLocation, File f) {
         Collection<URI> possibleWebLocations = retainedFileToWebLocationMap.get(f);
         if (possibleWebLocations == null) {
-            possibleWebLocations = new ArrayList<URI>();
+            possibleWebLocations = new ArrayList<>();
             retainedFileToWebLocationMap.put(f, possibleWebLocations);
         }
         possibleWebLocations.add(removeIgnoredSchemes(webLocation));
@@ -375,12 +363,12 @@ public class FolderGroupManager extends CatalogEntryManager {
         }
     }
 
-    private URI appendScheme(URI u, String scheme) {
+    private static URI appendScheme(URI u, String scheme) {
         String uString = u.toString();
         return URI.create(scheme + uString);
     }
 
-    private URI removeIgnoredSchemes(URI u) {
+    private static URI removeIgnoredSchemes(URI u) {
         String uString = u.toString();
         for (String iScheme : CatalogEntryManager.IGNORED_SCHEMES) {
             if (uString.startsWith(iScheme)) {
@@ -390,7 +378,7 @@ public class FolderGroupManager extends CatalogEntryManager {
         return u;
     }
 
-    private boolean isIgnored(URI u) {
+    private static boolean isIgnored(URI u) {
         String uString = u.toString();
         for (String iScheme : CatalogEntryManager.IGNORED_SCHEMES) {
             if (uString.startsWith(iScheme)) {
@@ -400,12 +388,12 @@ public class FolderGroupManager extends CatalogEntryManager {
         return false;
     }
 
-    private File getDirectory(GroupEntry ge) {
-        File folder = null;
+    private static File getDirectory(GroupEntry ge) {
         String dirName = LibraryUtilities.getStringProperty(ge, DIR_PROP);
         if (dirName == null) {
             return null;
         }
+        final File folder;
         if (LibraryUtilities.getVersion(ge) < FOLDER_BY_URI_VERSION) {
             folder = new File(dirName);
         }
