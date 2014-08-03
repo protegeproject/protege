@@ -22,6 +22,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * Author: drummond<br>
@@ -49,21 +51,25 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     private IOListener ioListener = new IOListener(){
 
+        @Override
         public void beforeSave(IOListenerEvent event) {
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
 
+        @Override
         public void afterSave(IOListenerEvent event) {
             // do nothing
         }
 
 
+        @Override
         public void beforeLoad(IOListenerEvent event) {
             // do nothing
         }
 
 
+        @Override
         public void afterLoad(IOListenerEvent event) {
             OWLOntologyID ontologyID = event.getOntologyID();
             OWLOntology ont = mngr.getOWLOntologyManager().getOntology(ontologyID);
@@ -89,7 +95,7 @@ public class AnonymousDefinedClassManager implements Disposable {
     public boolean isAnonymous(OWLClass cls){
         if(cls.getIRI().toString().startsWith(DEFAULT_ANON_CLASS_URI_PREFIX)){
             for (OWLOntology ont : mngr.getActiveOntologies()){
-                if (ont.containsClassInSignature(cls.getIRI())){
+                if (ont.containsClassInSignature(cls.getIRI(), Imports.EXCLUDED)) {
                     return true;
                 }
             }
@@ -126,7 +132,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     private boolean entityExists(IRI iri) {
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsClassInSignature(iri)){
+            if (ont.containsClassInSignature(iri, Imports.EXCLUDED)) {
                 return true;
             }
         }
@@ -135,7 +141,8 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
     public OWLClassExpression getExpression(OWLClass cls) {
-        for (OWLClassExpression descr : cls.getEquivalentClasses(mngr.getActiveOntologies())){
+        for (OWLClassExpression descr : EntitySearcher.getEquivalentClasses(
+                cls, mngr.getActiveOntologies())) {
             if (!descr.equals(cls)){
                 return descr;
             }
@@ -149,6 +156,7 @@ public class AnonymousDefinedClassManager implements Disposable {
         return adcRewriter;
     }
 
+    @Override
     public void dispose() throws Exception {
         mngr = null;
     }
@@ -164,6 +172,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
         private Stack<Long> checkpoints = new Stack<Long>();
 
+        @Override
         protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
             long id = nextId;
             nextId = System.nanoTime();
@@ -171,11 +180,13 @@ public class AnonymousDefinedClassManager implements Disposable {
         }
 
 
+        @Override
         public void checkpoint() {
             checkpoints.push(nextId);
         }
 
 
+        @Override
         public void revert() {
             nextId = checkpoints.pop();
         }

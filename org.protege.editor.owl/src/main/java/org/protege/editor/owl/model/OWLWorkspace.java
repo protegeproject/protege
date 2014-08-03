@@ -217,6 +217,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    @Override
     public void initialise() {
         entityDisplayProviders = new ArrayList<OWLEntityDisplayProvider>();
         iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getModelManager());
@@ -225,7 +226,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         keyWordColorMap = new KeywordColourMap();
 
         defaultAnnotationProperties = new ArrayList<URI>();
-        defaultAnnotationProperties.add(OWLRDFVocabulary.RDFS_COMMENT.getURI());
+        defaultAnnotationProperties.add(OWLRDFVocabulary.RDFS_COMMENT.getIRI()
+                .toURI());
 
         super.initialise();
 
@@ -248,6 +250,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         final OWLModelManager mngr = getOWLModelManager();
 
         owlModelManagerListener = new OWLModelManagerListener() {
+            @Override
             public void handleChange(OWLModelManagerChangeEvent event) {
                 try {
                     handleModelManagerEvent(event.getType());
@@ -260,10 +263,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         mngr.addListener(owlModelManagerListener);
 
         listener = new OWLEntityCollectingOntologyChangeListener() {
+            @Override
             public void ontologiesChanged() {
                 verifySelection(getEntities());
             }
 
+            @Override
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
                 super.ontologiesChanged(changes);
                 handleOntologiesChanged(changes);
@@ -278,6 +283,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         displayReasonerResults.setSelected(mngr.getOWLReasonerManager().getReasonerPreferences().isShowInferences());
         displayReasonerResults.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
                 prefs.setShowInferences(displayReasonerResults.isSelected());
@@ -477,6 +483,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    @Override
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
 
@@ -494,6 +501,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
              */
             private static final long serialVersionUID = 9136219526373256639L;
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 refreshComponents();
             }
@@ -542,6 +550,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             reasonerMenu.add(item);
             bg.add(item);
             item.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
                 }
@@ -555,6 +564,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         registry.addListener(new IRegistryEventListener() {
 
+            @Override
             public void added(IExtension[] extensions) {
                 OWLReasonerManagerImpl reasonerManager = (OWLReasonerManagerImpl) getOWLModelManager().getOWLReasonerManager();
                 Set<ProtegeOWLReasonerPlugin> plugins = new HashSet<ProtegeOWLReasonerPlugin>();
@@ -566,12 +576,15 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 menuBar.repaint();
             }
 
+            @Override
             public void added(IExtensionPoint[] extensionPoints) {
             }
 
+            @Override
             public void removed(IExtension[] extensions) {
             }
 
+            @Override
             public void removed(IExtensionPoint[] extensionPoints) {
             }
 
@@ -637,6 +650,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         ));
 
         ontologiesList.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
                 if (ont != null) {
@@ -691,6 +705,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
              */
             private static final long serialVersionUID = -2205711779338124168L;
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 entityFinderField.requestFocus();
             }
@@ -703,6 +718,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         updateTitleBar();
     }
 
+    @Override
     protected String getTitle() {
         if (altTitle != null) {
             return altTitle;
@@ -724,7 +740,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
 
         String ontShortName = mngr.getRendering(activeOntology);
-        IRI defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
+        IRI defaultDocumentIRI = activeOntology.getOntologyID()
+                .getDefaultDocumentIRI().orNull();
         String documentIRIPart = "";
         if (defaultDocumentIRI != null) {
             documentIRIPart = " (" + defaultDocumentIRI + ") ";
@@ -774,8 +791,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         explainInconsistentOntologyAction.setEnabled(status == ReasonerStatus.INCONSISTENT);
 
         KeyStroke shortcut = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        startReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
-        synchronizeReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
+        startReasonerAction.putValue(Action.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
+        synchronizeReasonerAction.putValue(Action.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
     }
 
 
@@ -801,6 +818,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    @Override
     public CustomWorkspaceTabsManager getCustomTabsManager() {
         return new OWLCustomWorkspaceTabsManager();
     }
@@ -831,6 +849,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    @Override
     public void dispose() {
         // Save our workspace!
         super.dispose();
@@ -861,7 +880,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public void setOWLIconProvider(OWLIconProvider provider) {
-        this.iconProvider = provider;
+        iconProvider = provider;
     }
 
 
@@ -938,10 +957,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
+    @Override
     public boolean sendErrorReport(ErrorLog errorLog) {
         return true;
     }
 
+    @Override
     public JComponent getStatusArea() {
         if (statusArea == null) {
             statusArea = new JPanel();
@@ -957,29 +978,35 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return statusArea;
     }
 
+    @Override
     public WorkspaceTab createWorkspaceTab(final String name) {
         final OWLWorkspaceViewsTab tab = new OWLWorkspaceViewsTab();
         tab.setup(new WorkspaceTabPlugin() {
+            @Override
             public TabbedWorkspace getWorkspace() {
                 return OWLWorkspace.this;
             }
 
 
+            @Override
             public String getLabel() {
                 return name;
             }
 
 
+            @Override
             public Icon getIcon() {
                 return null;
             }
 
 
+            @Override
             public String getIndex() {
                 return "Z";
             }
 
 
+            @Override
             public URL getDefaultViewConfigFile() {
                 try {
                     return new File(getId() + "-config.xml").toURI().toURL();
@@ -991,16 +1018,19 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
 
 
+            @Override
             public String getId() {
                 return "WorkspaceTab" + System.nanoTime();
             }
 
 
+            @Override
             public String getDocumentation() {
                 return null;
             }
 
 
+            @Override
             public WorkspaceTab newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
                 return tab;
             }

@@ -1,11 +1,10 @@
 package org.protege.editor.owl.ui.prefix;
 
-import static org.protege.editor.owl.ui.prefix.PrefixMapperTableModel.Column;
 import javax.swing.event.ChangeEvent;
-import javax.swing.table.TableModel;
 
+import org.protege.editor.owl.ui.prefix.PrefixMapperTableModel.Column;
 import org.protege.editor.owl.ui.table.BasicOWLTable;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 
 
 /**
@@ -19,9 +18,9 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
  */
 public class PrefixMapperTable extends BasicOWLTable {
 	private static final long serialVersionUID = 7960180034430124925L;
-	private PrefixOWLOntologyFormat prefixManager;
+    private PrefixDocumentFormat prefixManager;
 
-    public PrefixMapperTable(PrefixOWLOntologyFormat prefixManager) {
+    public PrefixMapperTable(PrefixDocumentFormat prefixManager) {
         super(new PrefixMapperTableModel(prefixManager));
         setShowGrid(true);
         setRowHeight(getRowHeight() + 3);
@@ -32,7 +31,7 @@ public class PrefixMapperTable extends BasicOWLTable {
         this.prefixManager = prefixManager;
     }
 
-    public PrefixOWLOntologyFormat getPrefixMapperManager() {
+    public PrefixDocumentFormat getPrefixMapperManager() {
 		return prefixManager;
 	}
     
@@ -51,6 +50,7 @@ public class PrefixMapperTable extends BasicOWLTable {
     }
 
 
+    @Override
     protected boolean isHeaderVisible() {
         return true;
     }

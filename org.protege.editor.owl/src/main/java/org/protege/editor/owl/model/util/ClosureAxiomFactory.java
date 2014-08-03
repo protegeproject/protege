@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 
 /**
@@ -37,7 +38,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
     private ClosureAxiomFactory(OWLObjectProperty objectProperty, OWLDataFactory df, Set<OWLOntology> onts) {
         super(df, objectProperty);
-        this.owlDataFactory = df;
+        owlDataFactory = df;
         this.onts = onts;
     }
 
@@ -46,7 +47,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
         ClosureAxiomFactory fac = new ClosureAxiomFactory(prop, df, onts);
         cls.accept(fac);
         final OWLObjectAllValuesFrom closure = fac.getClosureRestriction();
-        return (closure != null) ? df.getOWLSubClassOfAxiom(cls, closure) : null;
+        return closure != null ? df.getOWLSubClassOfAxiom(cls, closure) : null;
     }
 
 
@@ -78,22 +79,26 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
 
     /* Get the inherited restrictions also */
+    @Override
     public void visit(OWLClass cls) {
     	if (visitedClasses.contains(cls)) {
     		return;
     	}
     	else if (onts != null){
     		visitedClasses.add(cls);
-            for (OWLClassExpression superCls : cls.getSuperClasses(onts)){
+            for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(
+                    cls, onts)) {
                 superCls.accept(this);
             }
-            for (OWLClassExpression equiv : cls.getEquivalentClasses(onts)){
+            for (OWLClassExpression equiv : EntitySearcher
+                    .getEquivalentClasses(cls, onts)) {
                 equiv.accept(this);
             }
         }
     }
 
 
+    @Override
     public void visit(OWLObjectIntersectionOf owlObjectIntersectionOf) {
         for (OWLClassExpression op : owlObjectIntersectionOf.getOperands()){
             op.accept(this);
@@ -102,16 +107,19 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
 
     /* Get min cardinality restriction fillers */
+    @Override
     public void visit(OWLObjectMinCardinality restr) {
         handleCardinality(restr);
     }
 
     /* Get exact cardinality fillers */
+    @Override
     public void visit(OWLObjectExactCardinality restr) {
         handleCardinality(restr);
     }
 
 
+    @Override
     public void visit(OWLObjectSomeValuesFrom restr) {
         if (restr.getProperty().equals(getObjectProperty())){
             OWLClassExpression filler = restr.getFiller();

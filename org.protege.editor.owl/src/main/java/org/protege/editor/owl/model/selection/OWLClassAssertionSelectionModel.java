@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.selection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 public class OWLClassAssertionSelectionModel implements Disposable {
 	public static Logger LOGGER = Logger.getLogger(OWLClassAssertionSelectionModel.class);
@@ -28,7 +29,8 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 	private List<OWLSelectionModelListener> listeners = new ArrayList<OWLSelectionModelListener>();
 	
 	private OWLSelectionModelListener mainSelectionListener = new OWLSelectionModelListener() {
-		public void selectionChanged() throws Exception {
+		@Override
+        public void selectionChanged() throws Exception {
 			mainSelectionChanged();
 		}
 	};
@@ -60,10 +62,11 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			fireSelectionChanged();
 		}
 		else if (e instanceof OWLIndividual) {
-			individual = (OWLIndividual) individual;
+			individual = individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
-			Set<OWLClassExpression> types = individual.getTypes(modelManager.getActiveOntologies());
+            Collection<OWLClassExpression> types = EntitySearcher.getTypes(
+                    individual, modelManager.getActiveOntologies());
 			if (types != null && !types.contains(owlClass)) {
 				owlClass = null;
 				for (OWLClassExpression type : types) {
@@ -128,7 +131,8 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 		}
 	}
 
-	public void dispose() throws Exception {
+	@Override
+    public void dispose() throws Exception {
 		mainSelectionModel.removeListener(mainSelectionListener);
 	}
 }

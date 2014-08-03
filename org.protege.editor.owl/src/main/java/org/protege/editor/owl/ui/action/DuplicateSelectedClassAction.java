@@ -1,5 +1,23 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -12,16 +30,21 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitor;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -44,10 +67,12 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
     private static final String DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY = "DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY";
 
 
+    @Override
     protected void initialiseAction() throws Exception {
     }
 
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
 
@@ -123,7 +148,8 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         LiteralExtractor literalExtractor = new LiteralExtractor();
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAnnotationAssertionAxiom ax : selectedClass.getAnnotationAssertionAxioms(ont)){
+            for (OWLAnnotationAssertionAxiom ax : EntitySearcher
+                    .getAnnotationAssertionAxioms(selectedClass, ont)) {
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){
 
@@ -149,16 +175,19 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
             return label;
         }
 
+        @Override
         public void visit(IRI iri) {
             // do nothing
         }
 
 
+        @Override
         public void visit(OWLAnonymousIndividual owlAnonymousIndividual) {
             // do nothing
         }
 
 
+        @Override
         public void visit(OWLLiteral literal) {
             label = literal.getLiteral();
         }
@@ -224,11 +253,13 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         }
 
 
+        @Override
         public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
             entityNamePanel.addStatusChangedListener(listener);
         }
 
 
+        @Override
         public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
             entityNamePanel.removeStatusChangedListener(listener);
         }

@@ -1,11 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -32,6 +29,23 @@ import java.io.Writer;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -52,6 +66,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
     private JScrollPane scroller;
 
 
+    @Override
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
 
@@ -65,6 +80,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
         updateView();
     }
 
+    @Override
     protected OWLObject updateView() {
         final OWLEntity owlEntity = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
         if (owlEntity != null){
@@ -76,6 +92,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
                 textArea.setText(w.getBuffer().toString());
 
                 SwingUtilities.invokeLater(new Runnable(){
+                    @Override
                     public void run() {
                         scroller.getViewport().setViewPosition(new Point(0, 0));
                     }
@@ -96,6 +113,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
     }
 
 
+    @Override
     public void disposeView() {
         // do nothing
     }
@@ -106,38 +124,44 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
         private ManchesterOWLSyntaxFrameRenderer ren;
 
         OWLEntityFrameRendererAdapter(OWLModelManager mngr, Writer writer) {
-            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getOWLOntologyManager(),
-                                                       mngr.getActiveOntology(),
+            ren = new ManchesterOWLSyntaxFrameRenderer(
+                    mngr.getActiveOntology(),
                                                        writer,
                                                        mngr.getOWLEntityRenderer());
         }
 
 
+        @Override
         public void visit(OWLClass owlClass) {
             ren.write(owlClass);
         }
 
 
+        @Override
         public void visit(OWLObjectProperty owlObjectProperty) {
             ren.write(owlObjectProperty);
         }
 
 
+        @Override
         public void visit(OWLDataProperty owlDataProperty) {
             ren.write(owlDataProperty);
         }
 
 
+        @Override
         public void visit(OWLNamedIndividual owlNamedIndividual) {
             ren.write(owlNamedIndividual);
         }
 
 
+        @Override
         public void visit(OWLDatatype owlDatatype) {
             ren.write(owlDatatype);
         }
 
 
+        @Override
         public void visit(OWLAnnotationProperty owlAnnotationProperty) {
             ren.write(owlAnnotationProperty);
         }

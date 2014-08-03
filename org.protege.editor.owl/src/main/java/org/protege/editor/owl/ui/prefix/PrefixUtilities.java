@@ -10,12 +10,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.prefix.ActiveOntologyComparator;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 public class PrefixUtilities {
 	public static final Logger LOGGER = Logger.getLogger(PrefixUtilities.class);
@@ -32,9 +32,9 @@ public class PrefixUtilities {
 		}
 		Set<String> prefixValues = new HashSet<String>();
 		for (OWLOntology ontology : ontologies) {
-			OWLOntologyFormat format = owlManager.getOntologyFormat(ontology);
-			if (format instanceof PrefixOWLOntologyFormat) {
-				PrefixOWLOntologyFormat newPrefixes = (PrefixOWLOntologyFormat) format;
+            OWLDocumentFormat format = owlManager.getOntologyFormat(ontology);
+            if (format instanceof PrefixDocumentFormat) {
+                PrefixDocumentFormat newPrefixes = (PrefixDocumentFormat) format;
 				for (Entry<String, String> entry : newPrefixes.getPrefixName2PrefixMap().entrySet()) {
 					String prefixName = entry.getKey();
 					String prefix     = entry.getValue();
@@ -51,17 +51,18 @@ public class PrefixUtilities {
 		return prefixes;
 	}
 
-	public static PrefixOWLOntologyFormat getPrefixOWLOntologyFormat(OWLOntology ontology) {
-		PrefixOWLOntologyFormat prefixManager = null;
+    public static PrefixDocumentFormat getPrefixOWLOntologyFormat(
+            OWLOntology ontology) {
+        PrefixDocumentFormat prefixManager = null;
 		if (ontology != null) {
 			OWLOntologyManager manager = ontology.getOWLOntologyManager();
-			OWLOntologyFormat format = manager.getOntologyFormat(ontology);
+            OWLDocumentFormat format = manager.getOntologyFormat(ontology);
 			if (format != null && format.isPrefixOWLOntologyFormat()) {
 				prefixManager = format.asPrefixOWLOntologyFormat();
 			}
 		}
 		if (prefixManager == null) {
-			prefixManager = new PrefixOWLOntologyFormat();
+            prefixManager = new PrefixDocumentFormat();
 		}
 		return prefixManager;
 	}

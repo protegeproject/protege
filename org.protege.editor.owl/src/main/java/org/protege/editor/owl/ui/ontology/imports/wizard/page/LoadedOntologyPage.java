@@ -77,7 +77,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
     
     @Override
     public void aboutToHidePanel() {
-    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	OntologyImportWizard wizard = getWizard();
         wizard.setImportsAreFinal(false);
     	wizard.clearImports();
         for (Object o : ontologyList.getSelectedValues()){
@@ -87,7 +87,8 @@ public class LoadedOntologyPage extends OntologyImportPage {
         	ImportInfo parameter = new ImportInfo();
         	parameter.setOntologyID(ontology.getOntologyID());
         	parameter.setPhysicalLocation(physicalLocation.toURI());
-        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI() : physicalLocation);
+            parameter.setImportLocation(!id.isAnonymous() ? id
+                    .getDefaultDocumentIRI().get() : physicalLocation);
         	wizard.addImport(parameter);
         }
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);
@@ -96,11 +97,13 @@ public class LoadedOntologyPage extends OntologyImportPage {
     }
 
 
+    @Override
     protected void createUI(JComponent parent) {
         setInstructions("Please select an existing (pre-loaded) ontology that you want to import.");
         ontologyList = new OWLObjectList(getOWLEditorKit());
         ontologyList.setCellRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
         ontologyList.addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     updateState();
@@ -118,16 +121,19 @@ public class LoadedOntologyPage extends OntologyImportPage {
     }
 
 
+    @Override
     public Object getNextPanelDescriptor() {
         return getWizard().isCustomizeImports() ? SelectImportLocationPage.ID : ImportConfirmationPage.ID;
     }
 
 
+    @Override
     public Object getBackPanelDescriptor() {
         return ImportTypePage.ID;
     }
 
 
+    @Override
     public void displayingPanel() {
         fillList();
         updateState();

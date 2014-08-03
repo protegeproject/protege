@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
@@ -41,6 +42,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     }
 
 
+    @Override
     protected void clear() {
 
     }
@@ -50,6 +52,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
      * Refills the section with rows.  This method will be called
      * by the system and should be directly called.
      */
+    @Override
     protected void refill(OWLOntology ontology) {
         added.clear();
         for (OWLObjectPropertyAssertionAxiom ax : ontology.getObjectPropertyAssertionAxioms(getRootObject())) {
@@ -63,15 +66,20 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     }
 
 
+    @Override
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, new Runnable() {
+                @Override
                 public void run() {
                 	if (!getOWLModelManager().getReasoner().isConsistent()) {
                 		return;
                 	}
                     OWLDataFactory factory = getOWLDataFactory();
                     if (!getRootObject().isAnonymous()){
-                        for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
+                            for (OWLObjectProperty prop : getReasoner()
+                                    .getRootOntology()
+                                    .getObjectPropertiesInSignature(
+                                            Imports.INCLUDED)) {
                             if (prop.equals(factory.getOWLTopObjectProperty())) {
                                 continue;
                             }
@@ -95,6 +103,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     }
 
 
+    @Override
     protected OWLObjectPropertyAssertionAxiom createAxiom(OWLObjectPropertyIndividualPair object) {
         return getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(object.getProperty(),
                                                                       getRootObject(),
@@ -102,6 +111,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
     }
 
 
+    @Override
     public OWLObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
         return new OWLObjectPropertyIndividualPairEditor(getOWLEditorKit());
     }
@@ -113,6 +123,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
+    @Override
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair>> getRowComparator() {
         return null;
     }

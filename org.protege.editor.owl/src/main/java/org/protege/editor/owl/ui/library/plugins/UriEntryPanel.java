@@ -55,7 +55,8 @@ public class UriEntryPanel extends NewEntryPanel {
 		physicalLocationPanel.add(physicalLocationField);
 		JButton browse = new JButton("Browse");
 		browse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+            public void actionPerformed(ActionEvent e) {
 				File f =  UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File",UIHelper.OWL_EXTENSIONS);
 				if (f != null) {
 					physicalLocationField.setText(f.getPath());
@@ -69,7 +70,8 @@ public class UriEntryPanel extends NewEntryPanel {
 		JButton generate = new JButton("Generate Import Suggestions");
 		generate.setAlignmentX(CENTER_ALIGNMENT);
 		generate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			@Override
+            public void actionPerformed(ActionEvent e) {
 			    regenerateImportSuggestions();
 			}
 		});
@@ -81,7 +83,8 @@ public class UriEntryPanel extends NewEntryPanel {
 		importDeclarationComboBox = new JComboBox();
 		importDeclarationComboBox.setEditable(true);
 		importDeclarationComboBox.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
+		    @Override
+            public void actionPerformed(ActionEvent e) {
 		        fireListeners();
 		    }
 		});
@@ -105,10 +108,10 @@ public class UriEntryPanel extends NewEntryPanel {
             extractor.setPhysicalAddress(u);
             OWLOntologyID id = extractor.getOntologyId();
             if (!id.isAnonymous()) {
-                preferred  = id.getOntologyIRI();
+                preferred = id.getOntologyIRI().get();
                 locations.add(preferred);
-                if (id.getVersionIRI() != null) {
-                    preferred  = id.getVersionIRI();
+                if (id.getVersionIRI().isPresent()) {
+                    preferred = id.getVersionIRI().get();
                     locations.add(preferred);
                 }
             }

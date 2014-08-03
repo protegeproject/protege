@@ -1,12 +1,74 @@
 package org.protege.editor.owl.ui.usage;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.*;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomVisitor;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectInverseOf;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitor;
+import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
+import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.SWRLRule;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -61,17 +123,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         return entity != null ? "Found " + usageCount + " uses of " + mngr.getRendering(entity) : "";
     }
 
+    @Override
     public void setOWLEntity(OWLEntity owlEntity) {
     	if (owlEntity == null) {
     		return;
     	}
-        this.entity = owlEntity;
+        entity = owlEntity;
         axiomsByEntityMap.clear();
         usageCount = 0;
 
         for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
             currentOntology = ont;
-            Set<OWLAxiom> axioms = ont.getReferencingAxioms(owlEntity);
+            Set<OWLAxiom> axioms = ont.getReferencingAxioms(owlEntity,
+                    Imports.EXCLUDED);
             for (OWLAxiom ax : axioms) {
                 axiomSorter.setAxiom(ax);
                 ax.accept(axiomSorter);
@@ -96,16 +160,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     }
 
 
+    @Override
     public void addFilter(UsageFilter filter) {
         filters.add(filter);
     }
 
 
+    @Override
     public void addFilters(Set<UsageFilter> filters) {
         this.filters.addAll(filters);
     }
 
 
+    @Override
     public void removeFilter(UsageFilter filter) {
         filters.remove(filter);
     }
@@ -127,6 +194,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     }
 
 
+    @Override
     public void refresh(){
         setOWLEntity(entity);
     }
@@ -157,66 +225,81 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLClass cls) {
             add(cls);
         }
 
 
+        @Override
         public void visit(OWLDatatype dataType) {
             add(dataType);
         }
 
 
+        @Override
         public void visit(OWLNamedIndividual individual) {
             add(individual);
         }
 
 
+        @Override
         public void visit(OWLDataProperty property) {
             add(property);
         }
 
 
+        @Override
         public void visit(OWLObjectProperty property) {
             add(property);
         }
 
 
+        @Override
         public void visit(OWLAnnotationProperty property) {
             add(property);
         }
 
 
+        @Override
         public void visit(OWLObjectInverseOf property) {
             property.getInverse().accept(this);
         }
 
 
+        @Override
         public void visit(OWLAsymmetricObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLAnnotationAssertionAxiom axiom) {
             if (axiom.getSubject() instanceof IRI){
                 IRI subjectIRI = (IRI)axiom.getSubject();
                 for (OWLOntology ont : owlModelManager.getActiveOntologies()){
-                    if (ont.containsClassInSignature(subjectIRI)){
+                    if (ont.containsClassInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLClass(subjectIRI));
                     }
-                    if (ont.containsObjectPropertyInSignature(subjectIRI)){
+                    if (ont.containsObjectPropertyInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectIRI));
                     }
-                    if (ont.containsDataPropertyInSignature(subjectIRI)){
+                    if (ont.containsDataPropertyInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectIRI));
                     }
-                    if (ont.containsIndividualInSignature(subjectIRI)){
+                    if (ont.containsIndividualInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectIRI));
                     }
-                    if (ont.containsAnnotationPropertyInSignature(subjectIRI)){
+                    if (ont.containsAnnotationPropertyInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectIRI));
                     }
-                    if (ont.containsDatatypeInSignature(subjectIRI)){
+                    if (ont.containsDatatypeInSignature(subjectIRI,
+                            Imports.EXCLUDED)) {
                         add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectIRI));
                     }
                 }
@@ -224,21 +307,25 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-            axiom.getSubProperty().accept(this);
+            axiom.getSubProperty().accept((OWLPropertyExpressionVisitor) this);
         }
 
 
+        @Override
         public void visit(OWLAnnotationPropertyDomainAxiom axiom) {
-            axiom.getProperty().accept(this);
+            axiom.getProperty().accept((OWLPropertyExpressionVisitor) this);
         }
 
 
+        @Override
         public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
-            axiom.getProperty().accept(this);
+            axiom.getProperty().accept((OWLPropertyExpressionVisitor) this);
         }
 
 
+        @Override
         public void visit(OWLClassAssertionAxiom axiom) {
             if (!axiom.getIndividual().isAnonymous()){
                 axiom.getIndividual().asOWLNamedIndividual().accept(this);
@@ -246,6 +333,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDataPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
@@ -253,26 +341,31 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDataPropertyDomainAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLDataPropertyRangeAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLSubDataPropertyOfAxiom axiom) {
             axiom.getSubProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLDeclarationAxiom axiom) {
             axiom.getEntity().accept(this);
         }
 
 
+        @Override
         public void visit(OWLDifferentIndividualsAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
                 if (!ind.isAnonymous()){
@@ -282,6 +375,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDisjointClassesAxiom axiom) {
             boolean hasBeenIndexed = false;
             if (!isFilterSet(UsageFilter.filterDisjoints)){
@@ -299,6 +393,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDisjointDataPropertiesAxiom axiom) {
             if (!isFilterSet(UsageFilter.filterDisjoints)){
                 for (OWLDataPropertyExpression prop : axiom.getProperties()) {
@@ -308,6 +403,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
             if (!isFilterSet(UsageFilter.filterDisjoints)){
                 for (OWLObjectPropertyExpression prop : axiom.getProperties()) {
@@ -317,6 +413,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLDisjointUnionAxiom axiom) {
             if (!isFilterSet(UsageFilter.filterDisjoints)){
                 axiom.getOWLClass().accept(this);
@@ -324,6 +421,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLEquivalentClassesAxiom axiom) {
             boolean hasBeenIndexed = false;
             for (OWLClassExpression desc : axiom.getClassExpressions()) {
@@ -339,6 +437,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
             for (OWLDataPropertyExpression prop : axiom.getProperties()) {
                 prop.accept(this);
@@ -346,6 +445,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
             for (OWLObjectPropertyExpression prop : axiom.getProperties()) {
                 prop.accept(this);
@@ -353,21 +453,25 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLFunctionalDataPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLInverseObjectPropertiesAxiom axiom) {
             for (OWLObjectPropertyExpression prop : axiom.getProperties()) {
                 prop.accept(this);
@@ -375,21 +479,25 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLHasKeyAxiom axiom) {
             //@@TODO implement
         }
 
 
+        @Override
         public void visit(OWLDatatypeDefinitionAxiom axiom) {
             axiom.getDatatype().accept(this);
         }
 
 
+        @Override
         public void visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
@@ -397,6 +505,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
@@ -404,6 +513,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLObjectPropertyAssertionAxiom axiom) {
             if (!axiom.getSubject().isAnonymous()){
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
@@ -411,31 +521,37 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLSubPropertyChainOfAxiom axiom) {
             axiom.getSuperProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLObjectPropertyDomainAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLObjectPropertyRangeAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLSubObjectPropertyOfAxiom axiom) {
             axiom.getSubProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLReflexiveObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLSameIndividualAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
                 if (!ind.isAnonymous()){
@@ -445,10 +561,11 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLSubClassOfAxiom axiom) {
             if (!axiom.getSubClass().isAnonymous()) {
                 if (!isFilterSet(UsageFilter.filterNamedSubsSupers) ||
-                    (!axiom.getSubClass().equals(entity) && !axiom.getSuperClass().equals(entity))){
+                    !axiom.getSubClass().equals(entity) && !axiom.getSuperClass().equals(entity)){
                     axiom.getSubClass().asOWLClass().accept(this);
                 }
             }
@@ -459,16 +576,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         }
 
 
+        @Override
         public void visit(OWLSymmetricObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(OWLTransitiveObjectPropertyAxiom axiom) {
             axiom.getProperty().accept(this);
         }
 
 
+        @Override
         public void visit(SWRLRule rule) {
 
         }

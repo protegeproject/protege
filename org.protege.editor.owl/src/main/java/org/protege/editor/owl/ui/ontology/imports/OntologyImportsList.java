@@ -1,13 +1,11 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -21,7 +19,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
-import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;
@@ -32,7 +29,6 @@ import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.RemoveImport;
@@ -63,6 +59,7 @@ public class OntologyImportsList extends MList {
     private OntologyImportWizard wizard;
 
     private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
+        @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
             handleOntologyChanges(changes);
         }
@@ -85,10 +82,12 @@ public class OntologyImportsList extends MList {
 
         directImportsHeader = new MListSectionHeader() {
 
+            @Override
             public String getName() {
                 return "Direct Imports";
             }
 
+            @Override
             public boolean canAdd() {
                 return true;
             }
@@ -96,10 +95,12 @@ public class OntologyImportsList extends MList {
 
         indirectImportsHeader = new MListSectionHeader() {
 
+            @Override
             public String getName() {
                 return "Indirect Imports";
             }
 
+            @Override
             public boolean canAdd() {
                 return false;
             }
@@ -109,6 +110,7 @@ public class OntologyImportsList extends MList {
     }
 
 
+    @Override
     protected void handleAdd() {
         // don't need to check the section as only the direct imports can be added
     	wizard = new OntologyImportWizard((Frame) SwingUtilities.getAncestorOfClass(Frame.class, eKit.getWorkspace()), eKit);
@@ -143,7 +145,7 @@ public class OntologyImportsList extends MList {
                             eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                         }
                     }
-                    catch (OWLOntologyCreationException ooce) {
+ catch (OWLRuntimeException ooce) {
                         if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
                             logger.debug("Exception caught importing ontologies", ooce);
                         }

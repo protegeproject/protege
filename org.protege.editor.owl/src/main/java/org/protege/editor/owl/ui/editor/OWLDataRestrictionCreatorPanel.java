@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
-import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +26,23 @@ import java.util.Set;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
+import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataExactCardinality;
+import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
+import org.semanticweb.owlapi.model.OWLDataMinCardinality;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -50,10 +60,12 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
     private CardinalityRestrictionCreator<OWLDataProperty, OWLDatatype> max;
     
 
+    @Override
     protected List<RestrictionCreator<OWLDataProperty, OWLDatatype>> createTypes() {
         List<RestrictionCreator<OWLDataProperty, OWLDatatype>> types = new ArrayList<RestrictionCreator<OWLDataProperty, OWLDatatype>>();
 
         types.add(some = new RestrictionCreator<OWLDataProperty, OWLDatatype>("Some (existential)") {
+            @Override
             public void createRestrictions(Set<OWLDataProperty> properties, Set<OWLDatatype> fillers,
                                            Set<OWLClassExpression> result) {
                 for (OWLDataProperty prop : properties) {
@@ -64,6 +76,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
             }
         });
         types.add(only = new RestrictionCreator<OWLDataProperty, OWLDatatype>("Only (universal)") {
+            @Override
             public void createRestrictions(Set<OWLDataProperty> properties, Set<OWLDatatype> fillers,
                                            Set<OWLClassExpression> result) {
                 for (OWLDataProperty prop : properties) {
@@ -76,16 +89,19 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
             }
         });
         types.add(min = new CardinalityRestrictionCreator<OWLDataProperty, OWLDatatype>("Min (min cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLDataProperty prop, OWLDatatype filler, int card) {
                 return getDataFactory().getOWLDataMinCardinality(card, prop, filler);
             }
         });
         types.add(exactly = new CardinalityRestrictionCreator<OWLDataProperty, OWLDatatype>("Exactly (exact cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLDataProperty prop, OWLDatatype filler, int card) {
                 return getDataFactory().getOWLDataExactCardinality(card, prop, filler);
             }
         });
         types.add(max = new CardinalityRestrictionCreator<OWLDataProperty, OWLDatatype>("Max (max cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLDataProperty prop, OWLDatatype filler, int card) {
                 return getDataFactory().getOWLDataMaxCardinality(card, prop, filler);
             }
@@ -95,16 +111,19 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
     }
 
 
+    @Override
     protected AbstractSelectorPanel<OWLDatatype> createFillerSelectorPanel() {
         return new OWLDataTypeSelectorPanel(getOWLEditorKit());
     }
 
 
+    @Override
     protected AbstractHierarchySelectorPanel<OWLDataProperty> createPropertySelectorPanel() {
         return new OWLDataPropertySelectorPanel(getOWLEditorKit());
     }
 
 
+    @Override
     public boolean setDescription(OWLClassExpression description) {
         if (description == null){
             return true;
@@ -131,36 +150,43 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
         private RestrictionCreator t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLDataRange, OWLDataPropertyExpression, OWLDataRange>  r) {
+        private void
+                handleRestriction(OWLQuantifiedRestriction<OWLDataRange> r) {
             if (!r.getProperty().isAnonymous() && r.getFiller().isDatatype()){
-                p = r.getProperty().asOWLDataProperty();
+                p = ((OWLDataPropertyExpression) r.getProperty())
+                        .asOWLDataProperty();
                 f = r.getFiller().asOWLDatatype();
                 isAcceptable = true;
             }
         }
 
+        @Override
         public void visit(OWLDataSomeValuesFrom r) {
             t = some;
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLDataAllValuesFrom r) {
             t = only;
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLDataMinCardinality r) {
             t = min;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLDataExactCardinality r) {
             t = exactly;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLDataMaxCardinality r) {
             t = max;
             cardinality = r.getCardinality();

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.SplitSubClassAxioms;
 
 import java.awt.event.ActionEvent;
 /*
@@ -26,6 +25,7 @@ import java.awt.event.ActionEvent;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import org.semanticweb.owlapi.change.SplitSubClassAxioms;
 
 /**
  * Author: Matthew Horridge<br>
@@ -36,14 +36,17 @@ import java.awt.event.ActionEvent;
 public class SplitSubClassAxiomsAction extends ProtegeOWLAction {
 
 
+    @Override
     public void initialise() throws Exception {
     }
 
 
+    @Override
     public void dispose() throws Exception {
     }
 
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         SplitSubClassAxioms change = new SplitSubClassAxioms(getOWLModelManager().getActiveOntologies(),
                                                              getOWLDataFactory());

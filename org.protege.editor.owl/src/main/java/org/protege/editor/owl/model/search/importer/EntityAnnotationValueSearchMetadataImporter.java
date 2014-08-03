@@ -1,12 +1,17 @@
 package org.protege.editor.owl.model.search.importer;
 
-import org.protege.editor.owl.model.search.*;
+import java.util.Set;
+
+import org.protege.editor.owl.model.search.EntityBasedSearchMDImporter;
+import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchMetadata;
+import org.protege.editor.owl.model.search.SearchMetadataDB;
+import org.protege.editor.owl.model.search.SearchMetadataImportContext;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * Author: Matthew Horridge<br>
@@ -24,7 +29,8 @@ public class EntityAnnotationValueSearchMetadataImporter extends EntityBasedSear
     @Override
     public void generateSearchMetadataFor(OWLEntity entity, String entityRendering, final SearchMetadataImportContext context, SearchMetadataDB db) {
         for (OWLOntology ontology : context.getOntologies()) {
-            for (final OWLAnnotation annotation : entity.getAnnotations(ontology)) {
+            for (final OWLAnnotation annotation : EntitySearcher
+                    .getAnnotations(entity, ontology)) {
                 String groupDescription = context.getRendering(annotation.getProperty());
                 StyledString ren = context.getStyledStringRendering(annotation);
                 SearchMetadata md = new SearchMetadata(SearchCategory.ANNOTATION_VALUE, groupDescription, entity, entityRendering, ren.getString()) {

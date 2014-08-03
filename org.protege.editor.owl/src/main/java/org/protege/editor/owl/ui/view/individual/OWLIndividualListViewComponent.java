@@ -1,5 +1,23 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -13,21 +31,18 @@ import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Deleteable;
 import org.protege.editor.owl.ui.view.Findable;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
@@ -62,6 +77,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     protected Set<OWLNamedIndividual> individualsInList;
 
     private ListSelectionListener listSelectionListener = new ListSelectionListener() {
+        @Override
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null && selectionChangedByUser) {
@@ -73,6 +89,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     };
 
 
+    @Override
     public void initialiseIndividualsView() throws Exception {
         list = new OWLObjectList<OWLNamedIndividual>(getOWLEditorKit());
         list.setSelectionMode(selectionMode);
@@ -80,11 +97,13 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         add(new JScrollPane(list));
         list.addListSelectionListener(listSelectionListener);
         list.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseReleased(MouseEvent e) {
                 setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
             }
         });
         listener = new OWLOntologyChangeListener() {
+            @Override
             public void ontologiesChanged(
                     List<? extends OWLOntologyChange> changes) {
                 processChanges(changes);
@@ -97,6 +116,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         individualsInList = new TreeSet<OWLNamedIndividual>(getOWLModelManager().getOWLObjectComparator());
         refill();
         modelManagerListener = new OWLModelManagerListener() {
+            @Override
             public void handleChange(OWLModelManagerChangeEvent event) {
                 if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
                     refill();
@@ -111,13 +131,15 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         addAction(new AddIndividualAction(), "A", "A");
         addAction(new DeleteIndividualAction(getOWLEditorKit(),
                                              new OWLEntitySetProvider<OWLNamedIndividual>() {
-                                                 public Set<OWLNamedIndividual> getEntities() {
+                                                 @Override
+                                                public Set<OWLNamedIndividual> getEntities() {
                                                      return getSelectedIndividuals();
                                                  }
                                              }), "B", "A");
     }
 
 
+    @Override
     public void refreshComponent() {
         refill();
     }
@@ -155,6 +177,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         }
     }
 
+    @Override
     public OWLNamedIndividual updateView(OWLNamedIndividual selelectedIndividual) {
         if (!isPinned()) {
             list.setSelectedValue(selelectedIndividual, true);
@@ -162,6 +185,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         return (OWLNamedIndividual) list.getSelectedValue();
     }
 
+    @Override
     public void disposeView() {
         getOWLModelManager().removeOntologyChangeListener(listener);
         getOWLModelManager().removeListener(modelManagerListener);
@@ -206,7 +230,8 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             if (ent instanceof OWLIndividual) {
                 boolean stillReferenced = false;
                 for (OWLOntology ont : getOntologies()) {
-                    if (ont.containsIndividualInSignature(ent.getIRI())) {
+                    if (ont.containsIndividualInSignature(ent.getIRI(),
+                            Imports.EXCLUDED)) {
                         stillReferenced = true;
                         break;
                     }
@@ -244,10 +269,12 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
 
+    @Override
     public List<OWLNamedIndividual> find(String match) {
         return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
+    @Override
     public void show(OWLNamedIndividual owlEntity) {
         list.setSelectedValue(owlEntity, true);
     }
@@ -268,39 +295,47 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             super("Add individual", OWLIcons.getIcon("individual.add.png"));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             addIndividual();
         }
 
+        @Override
         public void dispose() {
         }
     }
 
+    @Override
     public void addChangeListener(ChangeListener listener) {
         changeListenerMediator.addChangeListener(listener);
     }
 
+    @Override
     public void removeChangeListener(ChangeListener listener) {
         changeListenerMediator.removeChangeListener(listener);
     }
 
+    @Override
     public void handleDelete() {
-        OWLEntityRemover entityRemover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                                              getOWLModelManager().getOntologies());
+        OWLEntityRemover entityRemover = new OWLEntityRemover(
+                getOWLModelManager().getOntologies());
         for (OWLNamedIndividual ind : getSelectedIndividuals()) {
             ind.accept(entityRemover);
         }
         getOWLModelManager().applyChanges(entityRemover.getChanges());
     }
 
+    @Override
     public boolean canDelete() {
         return !getSelectedIndividuals().isEmpty();
     }
 
+    @Override
     public boolean canCreateNew() {
         return true;
     }
 
+    @Override
     public void createNewObject() {
         addIndividual();
     }

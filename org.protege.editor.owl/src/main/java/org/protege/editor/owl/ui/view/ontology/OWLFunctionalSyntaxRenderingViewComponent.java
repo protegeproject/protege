@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.coode.owlapi.functionalrenderer.OWLFunctionalSyntaxRenderer;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.io.Writer;
+
+import org.semanticweb.owlapi.functional.renderer.OWLFunctionalSyntaxRenderer;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -15,8 +15,9 @@ import java.io.Writer;
 public class OWLFunctionalSyntaxRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
     private static final long serialVersionUID = -2015539464417134185L;
 
+    @Override
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
-        OWLFunctionalSyntaxRenderer ren = new OWLFunctionalSyntaxRenderer(getOWLModelManager().getOWLOntologyManager());
+        OWLFunctionalSyntaxRenderer ren = new OWLFunctionalSyntaxRenderer();
         ren.render(ontology, writer);
     }
 }

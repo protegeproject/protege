@@ -1,13 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -31,6 +24,16 @@ import java.awt.*;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -48,6 +51,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     }
 
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         // Pass an empty string as the value.... some toString operations may be expensive.
         JLabel label = (JLabel) super.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
@@ -68,7 +72,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
             return ont.getOntologyID().toString();
         }
 
-        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
+        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI().orNull();
 
         return getOntologyLabelText(iri, mngr);
     }

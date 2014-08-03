@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 
 
 /**
@@ -35,12 +35,12 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     private Map<String, String> prefixValueMap;
     
-    private PrefixOWLOntologyFormat prefixManager;
+    private PrefixDocumentFormat prefixManager;
     
     private boolean changed = false;
 
 
-    public PrefixMapperTableModel(PrefixOWLOntologyFormat prefixManager) {
+    public PrefixMapperTableModel(PrefixDocumentFormat prefixManager) {
     	this.prefixManager = prefixManager;
         prefixValueMap = new HashMap<String, String>();
         prefixes = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
     public int addMapping(String prefix, String value) {
-    	changed = changed || (value != null && value.length() != 0);
+    	changed = changed || value != null && value.length() != 0;
     	if (LOGGER.isDebugEnabled()) {
     		LOGGER.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
     	}
@@ -89,7 +89,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     public void removeMapping(String prefix) {
     	prefixes.remove(prefix);
 	    String prefixValue = prefixValueMap.remove(prefix);
-	    changed = changed || (prefixValue != null & prefixValue.length() != 0);
+	    changed = changed || prefixValue != null & prefixValue.length() != 0;
     	if (LOGGER.isDebugEnabled()) {
     		LOGGER.debug("removing mapping " + prefix + " -> " + prefixValue + " changed = " + changed);
     	}
@@ -101,7 +101,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     		if (LOGGER.isDebugEnabled()) {
     			LOGGER.debug("committing prefix changes and clearing changed flag");
     		}
-    		prefixManager.clearPrefixes();
+            prefixManager.clear();
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixValueMap.entrySet()) {
     			String prefixName = prefixName2PrefixEntry.getKey();
     			String prefix     = prefixName2PrefixEntry.getValue();
@@ -138,12 +138,14 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	}
 
 
-	public int getRowCount() {
+	@Override
+    public int getRowCount() {
 	    return prefixes.size();
 	}
 
 
-	public int getColumnCount() {
+	@Override
+    public int getColumnCount() {
 	    return Column.values().length;
 	}
 
@@ -154,7 +156,8 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	}
 
 
-	public Object getValueAt(int rowIndex, int columnIndex) {
+	@Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
 	    String prefix = prefixes.get(rowIndex);
 		switch (Column.values()[columnIndex]) {
 		case PREFIX_NAME:
@@ -180,7 +183,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	        	Collections.sort(prefixes);
 	        	String prefixValue = prefixValueMap.remove(currentPrefixName);
 	        	prefixValueMap.put(newPrefix, prefixValue);
-	        	changed = changed || (prefixValue != null && prefixValue.length() != 0);
+	        	changed = changed || prefixValue != null && prefixValue.length() != 0;
 	        	if (LOGGER.isDebugEnabled()) {
 	        		LOGGER.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
 	        	}

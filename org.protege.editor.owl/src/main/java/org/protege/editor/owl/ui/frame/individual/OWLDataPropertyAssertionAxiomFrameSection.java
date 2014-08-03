@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -35,6 +36,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
     private Set<OWLDataPropertyAssertionAxiom> added = new HashSet<OWLDataPropertyAssertionAxiom>();
 
 
+    @Override
     protected void clear() {
         if (editor != null) {
             editor.clear();
@@ -51,6 +53,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
      * Refills the section with rows.  This method will be called
      * by the system and should be directly called.
      */
+    @Override
     protected void refill(OWLOntology ontology) {
         added.clear();
         for (OWLDataPropertyAssertionAxiom ax : ontology.getDataPropertyAssertionAxioms(getRootObject())) {
@@ -63,14 +66,19 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
         }
     }
 
+    @Override
     protected void refillInferred() {
     	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS, new Runnable() {
-    		public void run() {
+    		@Override
+            public void run() {
             	if (!getOWLModelManager().getReasoner().isConsistent()) {
             		return;
             	}
     			if (!getRootObject().isAnonymous()){
-    				for (OWLDataProperty dp : getReasoner().getRootOntology().getDataPropertiesInSignature(true)) {
+                            for (OWLDataProperty dp : getReasoner()
+                                    .getRootOntology()
+                                    .getDataPropertiesInSignature(
+                                            Imports.INCLUDED)) {
     					Set<OWLLiteral> values = getReasoner().getDataPropertyValues(getRootObject().asOWLNamedIndividual(), dp);
     					for (OWLLiteral constant : values) {
     						OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(dp,
@@ -91,6 +99,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
     }
 
 
+    @Override
     protected OWLDataPropertyAssertionAxiom createAxiom(OWLDataPropertyConstantPair object) {
         return getOWLDataFactory().getOWLDataPropertyAssertionAxiom(object.getProperty(),
                                                                     getRootObject(),
@@ -98,6 +107,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
     }
 
 
+    @Override
     public OWLObjectEditor<OWLDataPropertyConstantPair> getObjectEditor() {
         if (editor == null) {
             editor = new OWLDataPropertyRelationshipEditor(getOWLEditorKit());
@@ -112,6 +122,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
      * @return A comparator if to sort the rows in this section,
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
+    @Override
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLDataPropertyAssertionAxiom, OWLDataPropertyConstantPair>> getRowComparator() {
         return null;
     }

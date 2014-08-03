@@ -1,6 +1,17 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -37,7 +48,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.model.util.OWLUtilities;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -50,6 +60,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
@@ -153,7 +164,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.owlEditorKit = owlEditorKit;
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
-        this.equivalentObjects = new HashSet<OWLObject>();
+        equivalentObjects = new HashSet<OWLObject>();
 
         iconLabel = new JLabel("");
         iconLabel.setOpaque(false);
@@ -203,7 +214,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     public void setHighlightKeywords(boolean hightlighKeywords) {
-        this.highlightKeywords = hightlighKeywords;
+        highlightKeywords = hightlighKeywords;
     }
 
 
@@ -219,7 +230,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public void setOntology(OWLOntology ont) {
         forceReadOnlyRendering = false;
-        this.ontology = ont;
+        ontology = ont;
     }
 
 
@@ -354,6 +365,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean renderLinks;
 
 
+    @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
         setupLinkedObjectComponent(table, table.getCellRect(row, column, true));
@@ -385,6 +397,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
         componentBeingRendered = tree;
@@ -405,6 +418,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                   boolean cellHasFocus) {
         componentBeingRendered = list;
@@ -448,6 +462,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private class ActiveEntityVisitor implements OWLEntityVisitor {
 
+        @Override
         public void visit(OWLClass cls) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(cls).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -455,6 +470,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
+        @Override
         public void visit(OWLDatatype dataType) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(dataType).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -462,6 +478,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
+        @Override
         public void visit(OWLNamedIndividual individual) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(individual).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -469,6 +486,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
+        @Override
         public void visit(OWLDataProperty property) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -476,6 +494,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
+        @Override
         public void visit(OWLObjectProperty property) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -483,6 +502,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
 
+        @Override
         public void visit(OWLAnnotationProperty property) {
             if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
@@ -536,7 +556,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     protected String getRendering(Object object) {
         if (object instanceof OWLObject) {
-            String rendering = getOWLModelManager().getRendering(((OWLObject) object));
+            String rendering = getOWLModelManager().getRendering((OWLObject) object);
             for (OWLObject eqObj : equivalentObjects) {
                 // Add in the equivalent class symbol
                 rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);
@@ -590,7 +610,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     protected boolean activeOntologyContainsAxioms(OWLEntity owlEntity) {
-        return !getOWLModelManager().getActiveOntology().getReferencingAxioms(owlEntity).isEmpty();
+        return !getOWLModelManager().getActiveOntology()
+                .getReferencingAxioms(owlEntity, Imports.EXCLUDED).isEmpty();
     }
 
 
@@ -818,7 +839,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 	try {
                 		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
                 				new Runnable() {
-                			public void run() {
+                			@Override
+                            public void run() {
                 				OWLReasoner reasoner = getOWLModelManager().getReasoner();
                 				boolean consistent = reasoner.isConsistent();
                 				if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
@@ -937,7 +959,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     	try {
     		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, 
     				new Runnable() {
-    			public void run() {
+    			@Override
+                public void run() {
     				OWLObjectProperty prop = (OWLObjectProperty) entity;
     				OWLReasoner reasoner = getOWLModelManager().getReasoner();
     				boolean consistent = reasoner.isConsistent();
@@ -972,6 +995,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * @param comp        the component to be added
          * @param constraints where/how the component is added to the layout.
          */
+        @Override
         public void addLayoutComponent(Component comp, Object constraints) {
             // We only have three components the label that holds the icon
             // the text area
@@ -984,6 +1008,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * @see java.awt.Component#getMaximumSize
          * @see java.awt.LayoutManager
          */
+        @Override
         public Dimension maximumLayoutSize(Container target) {
             return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
         }
@@ -996,6 +1021,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * where 0 represents alignment along the origin, 1 is aligned
          * the furthest away from the origin, 0.5 is centered, etc.
          */
+        @Override
         public float getLayoutAlignmentX(Container target) {
             return 0;
         }
@@ -1008,6 +1034,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * where 0 represents alignment along the origin, 1 is aligned
          * the furthest away from the origin, 0.5 is centered, etc.
          */
+        @Override
         public float getLayoutAlignmentY(Container target) {
             return 0;
         }
@@ -1017,6 +1044,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * Invalidates the layout, indicating that if the layout manager
          * has cached information it should be discarded.
          */
+        @Override
         public void invalidateLayout(Container target) {
         }
 
@@ -1029,6 +1057,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * @param name the string to be associated with the component
          * @param comp the component to be added
          */
+        @Override
         public void addLayoutComponent(String name, Component comp) {
         }
 
@@ -1037,6 +1066,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * Removes the specified component from the layout.
          * @param comp the component to be removed
          */
+        @Override
         public void removeLayoutComponent(Component comp) {
         }
 
@@ -1047,6 +1077,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * @param parent the container to be laid out
          * @see #minimumLayoutSize
          */
+        @Override
         public Dimension preferredLayoutSize(Container parent) {
             if (componentBeingRendered instanceof JList) {
                 JList list = (JList) componentBeingRendered;
@@ -1096,6 +1127,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * Lays out the specified container.
          * @param parent the container to be laid out
          */
+        @Override
         public void layoutContainer(Container parent) {
             int iconWidth;
             int iconHeight;
@@ -1132,6 +1164,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
          * @param parent the component to be laid out
          * @see #preferredLayoutSize
          */
+        @Override
         public Dimension minimumLayoutSize(Container parent) {
             return new Dimension(0, 0);
         }

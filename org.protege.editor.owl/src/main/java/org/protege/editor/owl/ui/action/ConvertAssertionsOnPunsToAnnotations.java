@@ -1,13 +1,27 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.*;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -19,6 +33,7 @@ import java.util.Set;
 public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
     private static Logger log = Logger.getLogger(ConvertAssertionsOnPunsToAnnotations.class);
 
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         OWLDataFactory df = getOWLDataFactory();
@@ -72,7 +87,8 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
         for (OWLOntology ont : onts) {
             for (OWLDataProperty prop : ont.getDataPropertiesInSignature()) {
                 for (OWLOntology o : onts) {
-                    for (OWLAxiom ax : o.getReferencingAxioms(prop)) {
+                    for (OWLAxiom ax : o.getReferencingAxioms(prop,
+                            Imports.EXCLUDED)) {
                         log.info(ax);
                     }
                 }
@@ -86,7 +102,8 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
             return false;
         }
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            if (ont.containsClassInSignature(ind.asOWLNamedIndividual().getIRI())) {
+            if (ont.containsClassInSignature(ind.asOWLNamedIndividual()
+                    .getIRI(), Imports.EXCLUDED)) {
                 return true;
             }
         }
@@ -94,11 +111,13 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
     }
 
 
+    @Override
     public void dispose() throws Exception {
 
     }
 
 
+    @Override
     public void initialise() throws Exception {
 
     }

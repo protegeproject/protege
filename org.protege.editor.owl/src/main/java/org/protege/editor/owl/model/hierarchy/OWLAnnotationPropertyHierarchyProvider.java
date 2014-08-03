@@ -8,8 +8,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -20,9 +18,9 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 
 /**
  * Author: drummond<br>
@@ -57,6 +55,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
          * @param changes A list of changes that have occurred.  Each change may be examined
          *                to determine which ontology it was applied to.
          */
+        @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             handleChanges(changes);
         }
@@ -65,7 +64,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
     public OWLAnnotationPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
-        this.roots = new HashSet<OWLAnnotationProperty>();
+        roots = new HashSet<OWLAnnotationProperty>();
         ontologies = new HashSet<OWLOntology>();
         ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
         ontologySetReadLock = locks.readLock();
@@ -73,11 +72,13 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         owlOntologyManager.addOntologyChangeListener(ontologyListener);
     }
 
+    @Override
     public Set<OWLAnnotationProperty> getRoots() {
         return Collections.unmodifiableSet(roots);
     }
 
 
+    @Override
     final public void setOntologies(Set<OWLOntology> ontologies) {
         getReadLock().lock();
         ontologySetWriteLock.lock();
@@ -94,12 +95,14 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
+    @Override
     public boolean containsReference(OWLAnnotationProperty object) {
         getReadLock().lock();
         ontologySetReadLock.lock();
         try {
             for (OWLOntology ont : ontologies) {
-                if (ont.getAnnotationPropertiesInSignature().contains(object)) {
+                if (ont.getAnnotationPropertiesInSignature(Imports.EXCLUDED)
+                        .contains(object)) {
                     return true;
                 }
             }
@@ -113,6 +116,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
+    @Override
     public Set<OWLAnnotationProperty> getChildren(OWLAnnotationProperty object) {
         getReadLock().lock();
         ontologySetReadLock.lock();
@@ -137,6 +141,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
     }
 
+    @Override
     public Set<OWLAnnotationProperty> getEquivalents(OWLAnnotationProperty object) {
         getReadLock().lock();
         ontologySetReadLock.lock();
@@ -161,6 +166,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
+    @Override
     public Set<OWLAnnotationProperty> getParents(OWLAnnotationProperty object) {
         getReadLock().lock();
         ontologySetReadLock.lock();
@@ -184,6 +190,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
+    @Override
     public void dispose() {
         super.dispose();
         getManager().removeOntologyChangeListener(ontologyListener);
@@ -224,11 +231,13 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         for (OWLOntologyChange chg : changes){
             if(chg.isAxiomChange()){
                 chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                    @Override
                     public void visit(OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
                         props.add(owlSubAnnotationPropertyOfAxiom.getSubProperty());
                         props.add(owlSubAnnotationPropertyOfAxiom.getSuperProperty());
                     }
 
+                    @Override
                     public void visit(OWLDeclarationAxiom owlDeclarationAxiom) {
                         if (owlDeclarationAxiom.getEntity().isOWLAnnotationProperty()){
                             props.add(owlDeclarationAxiom.getEntity().asOWLAnnotationProperty());
@@ -269,7 +278,8 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         final Set<OWLAnnotationProperty> annotationProperties = new HashSet<OWLAnnotationProperty>();
 
         for (OWLOntology ont : ontologies) {
-            annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
+            annotationProperties.addAll(ont
+                    .getAnnotationPropertiesInSignature(Imports.EXCLUDED));
         }
         for (OWLAnnotationProperty prop : annotationProperties) {
             if (isRoot(prop)) {

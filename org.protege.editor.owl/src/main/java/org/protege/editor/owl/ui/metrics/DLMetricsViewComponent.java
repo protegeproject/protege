@@ -1,20 +1,19 @@
 package org.protege.editor.owl.ui.metrics;
 
+import java.awt.BorderLayout;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.DLExpressivityChecker;
-
-import java.awt.*;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.util.List;
 
 
 /**
@@ -34,12 +33,14 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
     private boolean changed;
 
     private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             handleChanges(changes);
         }
     };
 
     private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
+        @Override
         public void handleChange(OWLModelManagerChangeEvent event) {
             if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
                 changed = true;
@@ -49,6 +50,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
     };
 
     private HierarchyListener hierarchyListener = new HierarchyListener() {
+        @Override
         public void hierarchyChanged(HierarchyEvent e) {
             changed = true;
             refresh();
@@ -58,6 +60,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
     private DLNamePanel namePanel;
 
 
+    @Override
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
         DLExpressivityChecker expressivityChecker = new DLExpressivityChecker(getOWLModelManager().getActiveOntologies());
@@ -74,6 +77,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
     }
 
 
+    @Override
     protected void disposeOWLView() {
         getOWLModelManager().removeOntologyChangeListener(listener);
         getOWLModelManager().removeListener(modelManagerListener);
@@ -98,8 +102,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
         try {
             DLExpressivityChecker checker = new DLExpressivityChecker(getOWLModelManager().getActiveOntologies());
             namePanel.setConstructs(checker.getConstructs());
-        }
-        catch (OWLException e) {
+        } catch (RuntimeException e) {
             logger.error(e);
         }
     }
