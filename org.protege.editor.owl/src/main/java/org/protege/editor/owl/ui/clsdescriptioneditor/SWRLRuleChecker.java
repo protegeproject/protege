@@ -43,7 +43,7 @@ class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
    */
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), 
-                                                                                     RULE + " " + text);
+                                                                                     RULE + ": " + text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return (SWRLRule) parser.parseRuleFrame().iterator().next().getAxiom();
