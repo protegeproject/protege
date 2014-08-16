@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.prefix.ActiveOntologyComparator;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormatImpl;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -62,7 +63,7 @@ public class PrefixUtilities {
 			}
 		}
 		if (prefixManager == null) {
-            prefixManager = new PrefixDocumentFormat();
+            prefixManager = new PrefixDocumentFormatImpl();
 		}
 		return prefixManager;
 	}
