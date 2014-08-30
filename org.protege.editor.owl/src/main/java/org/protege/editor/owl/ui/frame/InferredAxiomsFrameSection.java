@@ -13,7 +13,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
@@ -57,25 +56,30 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
     }
 
 
+    @Override
     protected void clear() {
 
     }
 
 
+    @Override
     protected OWLAxiom createAxiom(OWLAxiom object) {
         return object;
     }
 
 
+    @Override
     public OWLObjectEditor<OWLAxiom> getObjectEditor() {
         return null;
     }
 
 
+    @Override
     protected void refill(OWLOntology ontology) {
     }
 
 
+    @Override
     protected void refillInferred() {
         try {
             for (OWLClass cls : getReasoner().getUnsatisfiableClasses()) {
@@ -92,7 +96,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
             ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
             ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
-            ontGen.fillOntology(man, inferredOnt);
+            ontGen.fillOntology(man.getOWLDataFactory(), inferredOnt);
 
 
             for (OWLAxiom ax : new TreeSet<OWLAxiom>(inferredOnt.getAxioms())) {
@@ -119,9 +123,11 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
     }
 
 
+    @Override
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>> getRowComparator() {
         return new Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>>() {
 
+            @Override
             public int compare(OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o1,
                     OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o2) {
 

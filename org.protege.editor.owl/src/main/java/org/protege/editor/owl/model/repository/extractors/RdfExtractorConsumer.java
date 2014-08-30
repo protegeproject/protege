@@ -7,14 +7,13 @@ import java.util.Set;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.rdf.syntax.RDFConsumer;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFConsumer;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.xml.sax.SAXException;
 
 public class RdfExtractorConsumer implements RDFConsumer {
     private Set<String> ontologyProperties        = new HashSet<String>();
     
-    private String      xmlBase;
+    private IRI xmlBase;
     private Set<String> possibleOntologyNames     = new HashSet<String>();
     private Map<String, String> nameToVersionMap  = new HashMap<String, String>();
     private Set<String> notPossibleOntologyNames  = new HashSet<String>();
@@ -41,16 +40,19 @@ public class RdfExtractorConsumer implements RDFConsumer {
         }
     }
     
-    public String getXmlBase() {
+    public IRI getXmlBase() {
 		return xmlBase;
 	}
 
-    public void logicalURI(String logicalURI) throws SAXException {
+    @Override
+    public void logicalURI(IRI logicalURI) {
     	xmlBase = logicalURI;
     }
 
 
-    public void statementWithResourceValue(String subject, String predicate, String object) throws SAXException {
+    @Override
+    public void statementWithResourceValue(String subject, String predicate,
+            String object) {
         if (ontologyProperties.contains(predicate)) {
             notPossibleOntologyNames.add(object);
             possibleOntologyNames.remove(object);
@@ -69,25 +71,40 @@ public class RdfExtractorConsumer implements RDFConsumer {
         }
     }
     
-    public void addModelAttribte(String key, String value) throws SAXException {
+    @Override
+    public void endModel() {
 
     }
 
-    public void endModel() throws SAXException {
+    @Override
+    public void includeModel(String logicalURI, String physicalURI) {
 
     }
 
-    public void includeModel(String logicalURI, String physicalURI) throws SAXException {
+    @Override
+    public void startModel(IRI physicalURI) {
 
     }
 
-    public void startModel(String physicalURI) throws SAXException {
+    @Override
+    public void statementWithLiteralValue(String subject, String predicate,
+            String object, String language, String datatype) {
 
     }
 
-    public void statementWithLiteralValue(String subject, String predicate, String object, String language, String datatype) throws SAXException {
-
+    @Override
+    public void statementWithResourceValue(IRI subject, IRI predicate,
+            IRI object) {
+        statementWithResourceValue(subject.toString(), predicate.toString(),
+                object.toString());
     }
 
+    @Override
+    public void statementWithLiteralValue(IRI subject, IRI predicate,
+            String object, String language, IRI datatype) {
+        statementWithLiteralValue(subject.toString(), predicate.toString(),
+                object, language,
+                datatype == null ? (String) null : datatype.toString());
+    }
 
 }

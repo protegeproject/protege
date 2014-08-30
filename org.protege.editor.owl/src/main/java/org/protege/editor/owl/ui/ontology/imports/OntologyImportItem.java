@@ -1,13 +1,8 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,6 +31,18 @@ import java.util.List;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveImport;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -54,6 +61,7 @@ class OntologyImportItem implements MListItem {
 
 
     private MListButton fixImportsButton = new FixImportsButton(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
             handleImportsFix();
         }
@@ -89,7 +97,10 @@ class OntologyImportItem implements MListItem {
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
             // @@TODO what about anonymous ontologies?
-            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI())));
+            changes.add(new AddImport(ont, mngr.getOWLDataFactory()
+                    .getOWLImportsDeclaration(
+                            impOnt.getOntologyID().getDefaultDocumentIRI()
+                                    .get())));
             mngr.applyChanges(changes);
         }
     }
@@ -100,7 +111,7 @@ class OntologyImportItem implements MListItem {
         sb.append("<html><body>");
         sb.append("The imports URI:<br>");
         sb.append("<font color=\"blue\">");
-        sb.append(decl.getURI());
+        sb.append(decl.getIRI());
         sb.append("</font>");
         sb.append("<br>");
         sb.append("does not match the URI of the ontology that has been imported:<br>");
@@ -116,27 +127,32 @@ class OntologyImportItem implements MListItem {
     }
 
 
+    @Override
     public boolean isEditable() {
         return false;
     }
 
 
+    @Override
     public void handleEdit() {
         // do nothing
     }
 
 
+    @Override
     public boolean isDeleteable() {
         return true;
     }
 
 
+    @Override
     public boolean handleDelete() {
         eKit.getModelManager().applyChange(new RemoveImport(ont, decl));
         return true;
     }
 
 
+    @Override
     public String getTooltip() {
         return "";
     }
@@ -154,6 +170,7 @@ class OntologyImportItem implements MListItem {
         }
 
 
+        @Override
         public void paintButtonContent(Graphics2D g) {
             Rectangle bounds = getBounds();
             g.translate(bounds.x, bounds.y - 1);
@@ -164,6 +181,7 @@ class OntologyImportItem implements MListItem {
         }
 
 
+        @Override
         public Color getBackground() {
             return Color.ORANGE;
         }

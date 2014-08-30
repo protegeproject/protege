@@ -1,13 +1,13 @@
 package org.protege.editor.owl.util;
 
+import java.io.StringWriter;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.coode.owlapi.functionalrenderer.OWLFunctionalSyntaxRenderer;
+import org.semanticweb.owlapi.functional.renderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-
-import java.io.StringWriter;
 
 public class JunitUtil {
     private static Logger log = Logger.getLogger(JunitUtil.class);

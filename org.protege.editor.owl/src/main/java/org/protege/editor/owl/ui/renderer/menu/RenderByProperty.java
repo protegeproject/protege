@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 public class RenderByProperty extends ProtegeDynamicAction {
 
@@ -37,7 +38,8 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	private JMenu menu;	
 	private OWLModelManagerListener listener;
 
-	public void actionPerformed(ActionEvent e) {}
+	@Override
+    public void actionPerformed(ActionEvent e) {}
 
 	@Override
 	public void rebuildChildMenuItems(JMenu thisMenuItem) {
@@ -56,19 +58,21 @@ public class RenderByProperty extends ProtegeDynamicAction {
 		Set<OWLAnnotationProperty> annotationProperties = new HashSet<OWLAnnotationProperty>();
 		Set<OWLOntology> ontologies = getOWLModelManager().getActiveOntologies();
 		for (OWLOntology ontology : ontologies) {
-			annotationProperties.addAll(ontology.getAnnotationPropertiesInSignature());
+            annotationProperties.addAll(ontology
+                    .getAnnotationPropertiesInSignature(Imports.EXCLUDED));
 		}
 		return annotationProperties;
 	}
 	
 	
 	public OWLModelManager getOWLModelManager() {
-		return ((OWLModelManager)getEditorKit().getModelManager());
+		return (OWLModelManager)getEditorKit().getModelManager();
 	}
 
 	private Comparator<OWLAnnotationProperty> getComparator() {
 		return new Comparator<OWLAnnotationProperty>() {
-			public int compare(OWLAnnotationProperty p1, OWLAnnotationProperty p2) {
+			@Override
+            public int compare(OWLAnnotationProperty p1, OWLAnnotationProperty p2) {
 				return getOWLModelManager().getRendering(p1).compareTo(getOWLModelManager().getRendering(p2));
 			}		
 		};
@@ -85,10 +89,12 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	 */
 	
 
-	public void initialise() throws Exception {
+	@Override
+    public void initialise() throws Exception {
 		listener = new OWLModelManagerListener() {
 			
-			public void handleChange(OWLModelManagerChangeEvent event) {
+			@Override
+            public void handleChange(OWLModelManagerChangeEvent event) {
 				if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
 					updateCheckedStatus();
 				}
@@ -121,7 +127,8 @@ public class RenderByProperty extends ProtegeDynamicAction {
 		}		
 	}
 	
-	public void dispose() throws Exception {
+	@Override
+    public void dispose() throws Exception {
 		getOWLModelManager().removeListener(listener);
 	}
 	
@@ -170,7 +177,8 @@ public class RenderByProperty extends ProtegeDynamicAction {
 			property = prop;
 			setToolTipText(property.getIRI().toString());			
 			addActionListener(new ActionListener() {				
-				public void actionPerformed(ActionEvent arg0) {
+				@Override
+                public void actionPerformed(ActionEvent arg0) {
 					onStateChanged();
 				}
 			});

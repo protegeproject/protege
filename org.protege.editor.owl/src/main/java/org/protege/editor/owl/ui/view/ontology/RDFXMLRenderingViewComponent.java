@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.coode.owlapi.rdf.rdfxml.RDFXMLRenderer;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.io.Writer;
+
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLRenderer;
 
 
 /**
@@ -19,8 +19,9 @@ public class RDFXMLRenderingViewComponent extends AbstractOntologyRenderingViewC
      */
     private static final long serialVersionUID = 5902721119543731047L;
 
+    @Override
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
-        RDFXMLRenderer renderer = new RDFXMLRenderer(getOWLModelManager().getOWLOntologyManager(),
+        RDFXMLRenderer renderer = new RDFXMLRenderer(
                                                      getOWLModelManager().getActiveOntology(),
                                                      writer);
         renderer.render();

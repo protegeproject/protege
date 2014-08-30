@@ -1,10 +1,19 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -20,12 +29,13 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
     }
 
 
+    @Override
     protected Set<OWLObjectProperty> getPropertiesReferencedInChange(List<? extends OWLOntologyChange> changes) {
         Set<OWLObjectProperty> properties = new HashSet<OWLObjectProperty>();
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 OWLAxiomChange axiomChange = (OWLAxiomChange) change;
-                for (OWLEntity entity : axiomChange.getEntities()) {
+                for (OWLEntity entity : axiomChange.getSignature()) {
                     if (entity.isOWLObjectProperty()) {
                         properties.add(entity.asOWLObjectProperty());
                     }
@@ -43,22 +53,27 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
      * ontology.
      * @param ont The ontology
      */
+    @Override
     protected Set<? extends OWLObjectProperty> getReferencedProperties(OWLOntology ont) {
         return ont.getObjectPropertiesInSignature();
     }
 
 
+    @Override
     protected Set<? extends OWLSubPropertyAxiom> getSubPropertyAxiomForRHS(OWLObjectProperty prop, OWLOntology ont) {
         return ont.getObjectSubPropertyAxiomsForSuperProperty(prop);
     }
 
 
+    @Override
     protected OWLObjectProperty getRoot() {
         return getManager().getOWLDataFactory().getOWLTopObjectProperty();
     }
 
 
+    @Override
     protected boolean containsReference(OWLOntology ont, OWLObjectProperty prop) {
-        return ont.containsObjectPropertyInSignature(prop.getIRI());
+        return ont.containsObjectPropertyInSignature(prop.getIRI(),
+                Imports.EXCLUDED);
     }
 }

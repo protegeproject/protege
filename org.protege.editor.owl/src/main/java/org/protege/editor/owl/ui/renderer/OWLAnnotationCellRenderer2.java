@@ -1,14 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.coode.string.EscapeUtils;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
-import org.protege.editor.owl.ui.renderer.layout.*;
-import org.semanticweb.owlapi.model.*;
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
+import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_DATATYPE_INLINE;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Insets;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -18,8 +14,35 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
-import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.*;
+import javax.swing.Icon;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
+import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
+import org.protege.editor.owl.ui.renderer.layout.LinkSpan;
+import org.protege.editor.owl.ui.renderer.layout.OWLEntityLink;
+import org.protege.editor.owl.ui.renderer.layout.Page;
+import org.protege.editor.owl.ui.renderer.layout.PageCellRenderer;
+import org.protege.editor.owl.ui.renderer.layout.Paragraph;
+import org.protege.editor.owl.ui.renderer.layout.Span;
+import org.semanticweb.owlapi.model.HasAnnotations;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.EscapeUtils;
 
 /**
  * Author: Matthew Horridge<br>
@@ -291,14 +314,17 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     private List<Paragraph> renderAnnotationValue(final Page page, OWLAnnotation annotation, final Color defaultForeground, final Color defaultBackground, final boolean isSelected) {
         OWLAnnotationValue annotationValue = annotation.getValue();
         List<Paragraph> paragraphs = annotationValue.accept(new OWLAnnotationValueVisitorEx<List<Paragraph>>() {
+            @Override
             public List<Paragraph> visit(IRI iri) {
                 return renderIRI(page, iri, defaultForeground, defaultBackground, isSelected, hasFocus());
             }
 
+            @Override
             public List<Paragraph> visit(OWLAnonymousIndividual individual) {
                 return renderAnonymousIndividual(page, individual);
             }
 
+            @Override
             public List<Paragraph> visit(OWLLiteral literal) {
                 return renderLiteral(page, literal, defaultForeground, defaultBackground, isSelected);
             }

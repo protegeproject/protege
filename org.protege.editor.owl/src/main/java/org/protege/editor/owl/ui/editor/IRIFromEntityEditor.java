@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -30,16 +31,18 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
 
 
     public IRIFromEntityEditor(OWLEditorKit owlEditorKit) {
-        this.eKit = owlEditorKit;
+        eKit = owlEditorKit;
         entitySelectorPanel = new OWLEntitySelectorPanel(owlEditorKit, false);
     }
 
 
+    @Override
     public boolean canEdit(Object object) {
 		boolean contained = false;
     	if (object instanceof IRI) {
     		for (OWLOntology ontology : eKit.getModelManager().getActiveOntologies()) {
-    			if (ontology.containsEntityInSignature((IRI) object)) {
+                if (ontology.containsEntityInSignature((IRI) object,
+                        Imports.EXCLUDED)) {
     				contained = true;
     				break;
     			}
@@ -54,27 +57,32 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Override
     public void setHandler(OWLObjectEditorHandler<IRI> iriEditorHandler) {
-        this.handler = iriEditorHandler;
+        handler = iriEditorHandler;
     }
 
 
+    @Override
     public OWLObjectEditorHandler<IRI> getHandler() {
         return handler;
     }
 
 
+    @Override
     public JComponent getEditorComponent() {
         return entitySelectorPanel;
     }
 
 
+    @Override
     public IRI getEditedObject() {
         final OWLEntity entity = entitySelectorPanel.getSelectedObject();
         return entity != null ? entity.getIRI() : null;
     }
 
 
+    @Override
     public Set<IRI> getEditedObjects() {
         IRI selObj = getEditedObject();
         if (selObj != null) {
@@ -85,37 +93,44 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Override
     public boolean isMultiEditSupported() {
         return false;
     }
 
 
+    @Override
     public void clear() {
         setEditedObject(null);
     }
 
 
+    @Override
     public boolean setEditedObject(IRI object) {
         if (object != null){
             final OWLDataFactory df = eKit.getOWLModelManager().getOWLDataFactory();
             for (OWLOntology ont : eKit.getOWLModelManager().getActiveOntologies()){
-                if (ont.containsClassInSignature(object)){
+                if (ont.containsClassInSignature(object, Imports.EXCLUDED)) {
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLClass(object)));
                     break;
                 }
-                else if (ont.containsObjectPropertyInSignature(object)){
+ else if (ont.containsObjectPropertyInSignature(object,
+                        Imports.EXCLUDED)) {
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLObjectProperty(object)));
                     break;
                 }
-                else if (ont.containsDataPropertyInSignature(object)){
+ else if (ont.containsDataPropertyInSignature(object,
+                        Imports.EXCLUDED)) {
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLDataProperty(object)));
                     break;
                 }
-                else if (ont.containsIndividualInSignature(object)){
+ else if (ont.containsIndividualInSignature(object,
+                        Imports.EXCLUDED)) {
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLNamedIndividual(object)));
                     break;
                 }
-                else if (ont.containsAnnotationPropertyInSignature(object)){
+ else if (ont.containsAnnotationPropertyInSignature(object,
+                        Imports.EXCLUDED)) {
                     entitySelectorPanel.setSelection(Collections.singleton(df.getOWLAnnotationProperty(object)));
                     break;
                 }
@@ -128,6 +143,7 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Override
     public String getEditorTypeName() {
         return "Entity IRI";
     }
@@ -138,6 +154,7 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Override
     public void dispose() {
         entitySelectorPanel.dispose();
     }

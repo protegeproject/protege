@@ -1,8 +1,5 @@
 package org.protege.editor.owl.model.util;
 
-import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.io.IOProperties;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +10,9 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipInputStream;
 
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+
 public class URIUtilities {
     private static Logger logger = Logger.getLogger(URIUtilities.class);
       
@@ -20,14 +20,15 @@ public class URIUtilities {
      * Stolen from the owlapi - AbstractOWLParser.getInputStream.  I would have used
      * the owlapi method but it is not public or static.
      */
-    public static InputStream getInputStream(URI uri) throws IOException {
+    public static InputStream getInputStream(URI uri,
+            OWLOntologyLoaderConfiguration config) throws IOException {
         String requestType = getRequestTypes();
         URLConnection conn = uri.toURL().openConnection();
         conn.addRequestProperty("Accept", requestType);
-        if (IOProperties.getInstance().isConnectionAcceptHTTPCompression()) {
+        if (config.isAcceptingHTTPCompression()) {
             conn.setRequestProperty("Accept-Encoding","gzip, deflate");
         }
-        conn.setConnectTimeout(IOProperties.getInstance().getConnectionTimeout());
+        conn.setConnectTimeout(config.getConnectionTimeout());
         InputStream is;
         if ("gzip".equals(conn.getContentEncoding())) { // test works OK even if CE is null
             logger.debug("URL connection input stream is compressed using gzip");

@@ -1,13 +1,28 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLAxiomVisitor;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
 
 /**
@@ -26,6 +41,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
 
+        @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
             handleOntologyChanges(changes);
         }
@@ -38,6 +54,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
+    @Override
     public void setOntologies(Set<OWLOntology> ontologies) {
         this.ontologies.clear();
         this.ontologies.addAll(ontologies);
@@ -68,6 +85,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
+    @Override
     public Set<OWLObject> getRoots() {
         Set<OWLObject> roots = new HashSet<OWLObject>(classes);
         roots.addAll(untypedIndividuals);
@@ -75,8 +93,9 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
+    @Override
     public Set<OWLObject> getChildren(OWLObject object) {
-        if (object instanceof OWLClass && classes.contains((OWLClass)object)) {
+        if (object instanceof OWLClass && classes.contains(object)) {
             OWLClass cls = (OWLClass) object;
             Set<OWLObject> individuals = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
@@ -94,6 +113,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
+    @Override
     public Set<OWLObject> getParents(OWLObject object) {
         if (object instanceof OWLNamedIndividual) {
             OWLIndividual ind = (OWLNamedIndividual) object;
@@ -111,17 +131,20 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
+    @Override
     public Set<OWLObject> getEquivalents(OWLObject object) {
         return Collections.emptySet();
     }
 
 
+    @Override
     public boolean containsReference(OWLObject object) {
         return object instanceof OWLNamedIndividual ||
-               (object instanceof OWLClass && classes.contains((OWLClass)object));
+               object instanceof OWLClass && classes.contains(object);
     }
 
 
+    @Override
     public void dispose() {
         getManager().removeOntologyChangeListener(ontChangeListener);
         super.dispose();
@@ -162,12 +185,14 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         Set<OWLNamedIndividual> checkIndividuals = new HashSet<OWLNamedIndividual>();
 
         private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitorAdapter(){
+            @Override
             public void visit(OWLClassAssertionAxiom ax) {
                 handleAddClassAssertionAxiom(ax);
             }
         };
 
         private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitorAdapter(){
+            @Override
             public void visit(OWLClassAssertionAxiom ax) {
                 handleRemoveClassAssertionAxiom(ax);
             }
@@ -194,6 +219,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         }
 
 
+        @Override
         public void visit(AddAxiom addAxiom) {
             if (ontologies.contains(addAxiom.getOntology())){
 
@@ -204,6 +230,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         }
 
 
+        @Override
         public void visit(RemoveAxiom removeAxiom) {
             if (ontologies.contains(removeAxiom.getOntology())){
 
@@ -263,7 +290,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
         private boolean isReferenced(OWLNamedIndividual ind) {
             for (OWLOntology ont : ontologies){
-                if (ont.containsIndividualInSignature(ind.getIRI())){
+                if (ont.containsIndividualInSignature(ind.getIRI(),
+                        Imports.EXCLUDED)) {
                     return true;
                 }
             }

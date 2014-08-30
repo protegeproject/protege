@@ -11,10 +11,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -23,6 +26,7 @@ import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 
 /**
@@ -31,7 +35,8 @@ import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression<R, E>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
+public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression, P extends E>
+        extends AbstractOWLObjectHierarchyProvider<P> {
 
 //    private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
 	
@@ -66,6 +71,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
              * @param changes A list of changes that have occurred.  Each change may be examined
              *                to determine which ontology it was applied to.
              */
+            @Override
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
                 handleChanges(changes);
             }
@@ -74,6 +80,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
+    @Override
     public void dispose() {
         super.dispose();
         getManager().removeOntologyChangeListener(listener);
@@ -172,6 +179,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     /**
      * Gets the objects that represent the roots of the hierarchy.
      */
+    @Override
     public Set<P> getRoots() {
         return Collections.singleton(getRoot());
     }
@@ -181,6 +189,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
      * Sets the ontologies that this hierarchy provider should use
      * in order to determine the hierarchy.
      */
+    @Override
     final public void setOntologies(Set<OWLOntology> ontologies) {
     	getReadLock().lock();
     	ontologySetWriteLock.lock();
@@ -197,6 +206,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
+    @Override
     public boolean containsReference(P object) {
     	getReadLock().lock();
     	ontologySetReadLock.lock();
@@ -215,6 +225,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
+    @Override
     public Set<P> getChildren(P object) {
     	getReadLock().lock();
     	ontologySetReadLock.lock();
@@ -222,17 +233,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     		if (object.equals(getRoot())){
     			return Collections.unmodifiableSet(subPropertiesOfRoot);
     		}
-
-    		final Set<P> result = new HashSet<P>();
-    		for (E subProp : object.getSubProperties(ontologies)){
-    			// Don't add the sub property if it is a parent of
-    			// itself - i.e. prevent cycles
-    			if (!subProp.isAnonymous() &&
-    					!getAncestors((P)subProp).contains(subProp)) {
-    				result.add((P)subProp);
-    			}
-    		}
-    		return result;
+            return object.accept(new SubPropertyVisitor(ontologies));
     	}
     	finally {
     		ontologySetReadLock.unlock();
@@ -240,7 +241,199 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     	}
     }
 
+    private class SubPropertyVisitor implements
+            OWLPropertyExpressionVisitorEx<Set<P>> {
 
+        private Iterable<OWLOntology> ontologies;
+
+        public SubPropertyVisitor(Iterable<OWLOntology> onts) {
+            this.ontologies = onts;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getSubProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectInverseOf property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getSubProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        /**
+         * Don't add the sub property if it is a parent of itself - i.e. prevent
+         * cycles
+         * 
+         * @param result
+         *        final collection
+         * @param subProp
+         *        property to check
+         */
+        protected void
+                filter(final Set<P> result, OWLPropertyExpression subProp) {
+            if (!subProp.isAnonymous()
+                    && !getAncestors((P) subProp).contains(subProp)) {
+                result.add((P) subProp);
+            }
+        }
+
+        @Override
+        public Set<P> visit(OWLDataProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLDataPropertyExpression subProp : EntitySearcher
+                    .getSubProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLAnnotationProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLAnnotationProperty subProp : EntitySearcher
+                    .getSubProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+    }
+
+    private class SuperPropertyVisitor implements
+            OWLPropertyExpressionVisitorEx<Set<P>> {
+
+        private Iterable<OWLOntology> ontologies;
+
+        public SuperPropertyVisitor(Iterable<OWLOntology> onts) {
+            this.ontologies = onts;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getSuperProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectInverseOf property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getSuperProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        /**
+         * Don't add anonymous expressions
+         * 
+         * @param result
+         *        final collection
+         * @param subProp
+         *        property to check
+         */
+        protected void
+                filter(final Set<P> result, OWLPropertyExpression subProp) {
+
+            if (!subProp.isAnonymous()
+) {
+                result.add((P) subProp);
+            }
+        }
+
+        @Override
+        public Set<P> visit(OWLDataProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLDataPropertyExpression subProp : EntitySearcher
+                    .getSuperProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLAnnotationProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLAnnotationProperty subProp : EntitySearcher
+                    .getSuperProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+    }
+
+    private class EqPropertyVisitor implements
+            OWLPropertyExpressionVisitorEx<Set<P>> {
+
+        private Iterable<OWLOntology> ontologies;
+
+        public EqPropertyVisitor(Iterable<OWLOntology> onts) {
+            this.ontologies = onts;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getEquivalentProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLObjectInverseOf property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLObjectPropertyExpression subProp : EntitySearcher
+                    .getEquivalentProperties(property, ontologies)) {
+                filter(result, subProp);
+            }
+            return result;
+        }
+
+        /**
+         * Don't add anonymous expressions
+         * 
+         * @param result
+         *        final collection
+         * @param prop
+         *        property to check
+         */
+        protected void filter(final Set<P> result, OWLPropertyExpression prop) {
+            if (!prop.isAnonymous()) {
+                result.add((P) prop);
+            }
+        }
+
+        @Override
+        public Set<P> visit(OWLDataProperty property) {
+            final Set<P> result = new HashSet<P>();
+            for (OWLDataPropertyExpression subProp : EntitySearcher
+                    .getEquivalentProperties(property, ontologies)) {
+                filter(result, subProp);
+    }
+            return result;
+        }
+
+        @Override
+        public Set<P> visit(OWLAnnotationProperty property) {
+            return Collections.emptySet();
+        }
+    }
+    @Override
     public Set<P> getEquivalents(P object) {
     	getReadLock().lock();
     	ontologySetReadLock.lock();
@@ -254,12 +447,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     				}
     			}
     		}
-
-    		for (E prop : object.getEquivalentProperties(ontologies)) {
-    			if (!prop.isAnonymous()) {
-    				result.add((P)prop);
-    			}
-    		}
+            result.addAll(object.accept(new EqPropertyVisitor(ontologies)));
 
     		result.remove(object);
     		return result;
@@ -271,6 +459,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
+    @Override
     public Set<P> getParents(P object) {
     	getReadLock().lock();
     	ontologySetReadLock.lock();
@@ -279,12 +468,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     			return Collections.emptySet();
     		}
 
-    		Set<P> result = new HashSet<P>();
-    		for (E prop : object.getSuperProperties(ontologies)) {
-    			if (!prop.isAnonymous()) {
-    				result.add((P) prop);
-    			}
-    		}
+            Set<P> result = object.accept(new SuperPropertyVisitor(ontologies));
     		if (result.isEmpty() && isReferenced(object)){
     			result.add(getRoot());
     		}
@@ -304,18 +488,25 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     
     private class IsReferencePropertyExpressionVisitor implements OWLPropertyExpressionVisitorEx<Boolean> {
 
-		public Boolean visit(OWLObjectProperty property) {
+		@Override
+        public Boolean visit(OWLObjectProperty property) {
 			return isReferenced(property);
 		}
 
-		public Boolean visit(OWLObjectInverseOf property) {
+		@Override
+        public Boolean visit(OWLObjectInverseOf property) {
 			return property.getInverse().accept(this);
 		}
 
-		public Boolean visit(OWLDataProperty property) {
+		@Override
+        public Boolean visit(OWLDataProperty property) {
 			return isReferenced(property);
 		}
-    	
+
+        @Override
+        public Boolean visit(OWLAnnotationProperty property) {
+            return isReferenced(property);
+        }
     	
     	private boolean isReferenced(OWLEntity e) {
         	for (OWLOntology ontology : ontologies) {

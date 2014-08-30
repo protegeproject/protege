@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxObjectRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -15,8 +16,6 @@ import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
-
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 
 
 /**
@@ -44,10 +43,12 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         this.mngr = mngr;
         writerDelegate = new WriterDelegate();
         delegate = new PatchedManchesterOWLSyntaxObjectRenderer(writerDelegate, new ShortFormProvider(){
+            @Override
             public String getShortForm(OWLEntity owlEntity) {
                 return OWLObjectRendererImpl.this.mngr.getRendering(owlEntity);
             }
 
+            @Override
             public void dispose() {
                 // do nothing
             }
@@ -57,6 +58,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
     }
 
 
+    @Override
     public String render(OWLObject object) {
         if (object instanceof OWLOntology){
             return renderOntology((OWLOntology) object);
@@ -73,7 +75,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         }
 
         // shows the version uri or the ont uri if there is no version
-        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI();
+        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI().orNull();
         return ontURISFP.getShortForm(iri);
     }
     
@@ -125,21 +127,25 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         }
 
 
+        @Override
         public String toString() {
             return delegate.getBuffer().toString();
         }
 
 
+        @Override
         public void close() throws IOException {
             delegate.close();
         }
 
 
+        @Override
         public void flush() throws IOException {
             delegate.flush();
         }
 
 
+        @Override
         public void write(char cbuf[], int off, int len) throws IOException {
             delegate.write(cbuf, off, len);
         }

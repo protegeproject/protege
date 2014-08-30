@@ -47,6 +47,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 * License along with this library; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 /**
  * Author: drummond<br>
@@ -95,36 +96,43 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 	}
 
 
-	public OWLEntityCreationSet<OWLClass> createOWLClass(String shortName, IRI baseIRI) throws OWLEntityCreationException {
+	@Override
+    public OWLEntityCreationSet<OWLClass> createOWLClass(String shortName, IRI baseIRI) throws OWLEntityCreationException {
         return createOWLEntity(OWLClass.class, shortName, baseIRI);
     }
 
 
+    @Override
     public OWLEntityCreationSet<OWLObjectProperty> createOWLObjectProperty(String shortName, IRI baseURI) throws OWLEntityCreationException {
         return createOWLEntity(OWLObjectProperty.class, shortName, baseURI);
     }
 
 
+    @Override
     public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty(String shortName, IRI baseURI) throws OWLEntityCreationException {
         return createOWLEntity(OWLDataProperty.class, shortName, baseURI);
     }
 
 
+    @Override
     public OWLEntityCreationSet<OWLAnnotationProperty> createOWLAnnotationProperty(String shortName, IRI baseURI) throws OWLEntityCreationException {
         return createOWLEntity(OWLAnnotationProperty.class, shortName, baseURI);
     }
 
 
+    @Override
     public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual(String shortName, IRI baseURI) throws OWLEntityCreationException {
         return createOWLEntity(OWLNamedIndividual.class, shortName, baseURI);
     }
 
 
+    @Override
     public OWLEntityCreationSet<OWLDatatype> createOWLDatatype(String shortName, IRI baseIRI) throws OWLEntityCreationException {
         return createOWLEntity(OWLDatatype.class, shortName, baseIRI);
     }
 
 
+    @Override
     public <T extends OWLEntity> OWLEntityCreationSet<T> createOWLEntity(Class<T> type, String shortName, IRI baseURI) throws OWLEntityCreationException {
         try {
 
@@ -145,6 +153,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
 
+    @Override
     public <T extends OWLEntity> OWLEntityCreationSet<T> preview(Class<T> type, String shortName, IRI base) throws OWLEntityCreationException {
         // There is probably a better way round this.
         if (getAutoIDGenerator() instanceof Revertable){
@@ -169,7 +178,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 baseURI = getDefaultBaseIRI();
             }
             else{
-                baseURI = mngr.getActiveOntology().getOntologyID().getOntologyIRI();
+                baseURI = mngr.getActiveOntology().getOntologyID()
+                        .getOntologyIRI().orNull();
             }
         }
 
@@ -228,7 +238,8 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 baseIRI = EntityCreationPreferences.getDefaultBaseIRI();
             }
             else{
-                baseIRI = mngr.getActiveOntology().getOntologyID().getOntologyIRI();
+                baseIRI = mngr.getActiveOntology().getOntologyID()
+                        .getOntologyIRI().orNull();
             }
         }
         String base = baseIRI.toString().replace(" ", "_");
@@ -288,12 +299,21 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private <T extends OWLEntity> boolean isIRIAlreadyUsed(Class<T> type, IRI iri) {
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if ((OWLClass.class.isAssignableFrom(type) && ont.containsClassInSignature(iri)) ||
-                (OWLObjectProperty.class.isAssignableFrom(type) && ont.containsObjectPropertyInSignature(iri)) ||
-                (OWLDataProperty.class.isAssignableFrom(type) && ont.containsDataPropertyInSignature(iri)) ||
-                (OWLIndividual.class.isAssignableFrom(type) && ont.containsIndividualInSignature(iri)) ||
-                (OWLAnnotationProperty.class.isAssignableFrom(type) && ont.containsAnnotationPropertyInSignature(iri)) ||
-                (OWLDatatype.class.isAssignableFrom(type) && ont.containsDatatypeInSignature(iri))){
+            if (OWLClass.class.isAssignableFrom(type)
+                    && ont.containsClassInSignature(iri, Imports.EXCLUDED)
+                    || OWLObjectProperty.class.isAssignableFrom(type)
+                    && ont.containsObjectPropertyInSignature(iri,
+                            Imports.EXCLUDED)
+                    || OWLDataProperty.class.isAssignableFrom(type)
+                    && ont.containsDataPropertyInSignature(iri,
+                            Imports.EXCLUDED)
+                    || OWLIndividual.class.isAssignableFrom(type)
+                    && ont.containsIndividualInSignature(iri, Imports.EXCLUDED)
+                    || OWLAnnotationProperty.class.isAssignableFrom(type)
+                    && ont.containsAnnotationPropertyInSignature(iri,
+                            Imports.EXCLUDED)
+                    || OWLDatatype.class.isAssignableFrom(type)
+                    && ont.containsDatatypeInSignature(iri, Imports.EXCLUDED)) {
                 return true;
             }
         }
@@ -303,7 +323,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private boolean isIRIAlreadyUsed(IRI iri) {
         for (OWLOntology ont : mngr.getOntologies()){
-            if (ont.containsEntityInSignature(iri)){
+            if (ont.containsEntityInSignature(iri, Imports.EXCLUDED)) {
                 return true;
             }
         }

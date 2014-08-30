@@ -7,19 +7,26 @@ import java.net.URI;
 import org.apache.log4j.Logger;
 import org.protege.owlapi.util.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.rdf.syntax.RDFParser;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParser;
 import org.xml.sax.InputSource;
 
 public class RdfXmlExtractor implements OntologyIdExtractor {
     private Logger log = Logger.getLogger(RdfXmlExtractor.class);
     private URI location;
 
+    @Override
     public OWLOntologyID getOntologyId() {
         RdfExtractorConsumer consumer = new RdfExtractorConsumer();
         RDFParser parser = new RDFParser();
         InputStream iStream = null;
         try {
-        	iStream = IOUtils.getInputStream(location);
+            OWLOntologyLoaderConfiguration owlOntologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
+            iStream = IOUtils.getInputStream(location,
+ owlOntologyLoaderConfiguration
+                            .isAcceptingHTTPCompression(),
+                            owlOntologyLoaderConfiguration
+                                    .getConnectionTimeout());
             InputSource is = new InputSource(iStream);
             is.setSystemId(location.toURL().toString());
             parser.parse(is, consumer);
@@ -43,6 +50,7 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
         return consumer.getOntologyID();
     }
 
+    @Override
     public void setPhysicalAddress(URI location) {
         this.location = location;
     }

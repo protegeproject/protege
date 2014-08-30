@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +45,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     public AnticipateOntologyIdPage(OWLEditorKit owlEditorKit) {
         super(ID, "Import verification", owlEditorKit);
         checker = new Runnable() {
+            @Override
             public void run() {
                 checkImport();
             }
@@ -53,6 +53,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     }
 
 
+    @Override
     public Object getNextPanelDescriptor() {
         return needsImportPage() ? SelectImportLocationPage.ID : ImportConfirmationPage.ID;
     }
@@ -69,9 +70,10 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
             
     	OWLOntologyID id = parameters.getOntologyID();
     	if (id != null && !id.isAnonymous()) {
-    	    importOptions.add(id.getOntologyIRI());
-    	    if (id.getVersionIRI() != null && !importOptions.contains(id.getVersionIRI())) {
-    	        importOptions.add(id.getVersionIRI());
+            importOptions.add(id.getOntologyIRI().get());
+            if (id.getVersionIRI().isPresent()
+                    && !importOptions.contains(id.getVersionIRI().get())) {
+                importOptions.add(id.getVersionIRI().get());
     	    }
     	}
         URI physicalLocation = parameters.getPhysicalLocation();
@@ -96,6 +98,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     	}
     }
 
+    @Override
     protected void createUI(final JComponent parent) {
         JPanel panel = new JPanel(new BorderLayout(7, 7));
         panel.add(new JLabel("Please wait.  Verifying import..."), BorderLayout.NORTH);
@@ -127,6 +130,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     		}
     	}
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 getWizard().setCurrentPanel(getNextPanelDescriptor());
             }
@@ -134,6 +138,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     }
 
 
+    @Override
     public void displayingPanel() {
         getWizard().setNextFinishButtonEnabled(false);
         Thread t = new Thread(checker);

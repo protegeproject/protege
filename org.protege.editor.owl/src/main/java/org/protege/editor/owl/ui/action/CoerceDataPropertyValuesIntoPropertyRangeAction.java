@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.CoerceConstantsIntoDataPropertyRange;
-
 import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -26,6 +24,8 @@ import java.awt.event.ActionEvent;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import org.semanticweb.owlapi.change.CoerceConstantsIntoDataPropertyRange;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 public class CoerceDataPropertyValuesIntoPropertyRangeAction extends ProtegeOWLAction {
 
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         CoerceConstantsIntoDataPropertyRange refactor = new CoerceConstantsIntoDataPropertyRange(getOWLDataFactory(),
                                                                                                  getOWLModelManager().getOntologies());
@@ -44,10 +45,12 @@ public class CoerceDataPropertyValuesIntoPropertyRangeAction extends ProtegeOWLA
     }
 
 
+    @Override
     public void initialise() throws Exception {
     }
 
 
+    @Override
     public void dispose() throws Exception {
     }
 }

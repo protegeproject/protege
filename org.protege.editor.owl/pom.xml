@@ -32,13 +32,13 @@
         <dependency>
             <groupId>edu.stanford.protege</groupId>
             <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.2.6</version>
+            <version>3.2.7-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.stanford.protege</groupId>
             <artifactId>org.protege.xmlcatalog</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
 
         <dependency>

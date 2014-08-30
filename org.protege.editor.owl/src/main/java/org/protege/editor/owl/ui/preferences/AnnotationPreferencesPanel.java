@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.preferences;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -30,6 +27,19 @@ import java.util.*;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -43,12 +53,14 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
     private Map<JCheckBox, URI> checkBoxURIMap;
 
 
+    @Override
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
         Set<OWLAnnotationProperty> annotationProperties = new TreeSet<OWLAnnotationProperty>();
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
-            annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
+            annotationProperties.addAll(ont
+                    .getAnnotationPropertiesInSignature(Imports.EXCLUDED));
         }
         checkBoxURIMap = new HashMap<JCheckBox, URI>();
         for (OWLAnnotationProperty property : annotationProperties) {
@@ -66,6 +78,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
     }
 
 
+    @Override
     public void applyChanges() {
         Set<URI> hiddenURIs = new HashSet<URI>();
         for (JCheckBox cb : checkBoxURIMap.keySet()) {
@@ -77,6 +90,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
     }
 
 
+    @Override
     public void dispose() throws Exception {
     }
 }

@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
-import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +26,22 @@ import java.util.Set;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
+import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -53,10 +62,12 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
     private CardinalityRestrictionCreator<OWLObjectProperty, OWLClass> max;
 
 
+    @Override
     protected List<RestrictionCreator<OWLObjectProperty, OWLClass>> createTypes() {
         List<RestrictionCreator<OWLObjectProperty, OWLClass>> types = new ArrayList<RestrictionCreator<OWLObjectProperty, OWLClass>>();
 
         types.add(some = new RestrictionCreator<OWLObjectProperty, OWLClass>("Some (existential)") {
+            @Override
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
                                            Set<OWLClassExpression> result) {
                 for (OWLObjectProperty prop : properties) {
@@ -67,6 +78,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
             }
         });
         types.add(only = new RestrictionCreator<OWLObjectProperty, OWLClass>("Only (universal)") {
+            @Override
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
                                            Set<OWLClassExpression> result) {
                 for (OWLObjectProperty prop : properties) {
@@ -85,16 +97,19 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
             }
         });
         types.add(min = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Min (min cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
                 return getDataFactory().getOWLObjectMinCardinality(card, prop, filler);
             }
         });
         types.add(exactly = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Exactly (exact cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
                 return getDataFactory().getOWLObjectExactCardinality(card, prop, filler);
             }
         });
         types.add(max = new CardinalityRestrictionCreator<OWLObjectProperty, OWLClass>("Max (max cardinality)") {
+            @Override
             public OWLClassExpression createRestriction(OWLObjectProperty prop, OWLClass filler, int card) {
                 return getDataFactory().getOWLObjectMaxCardinality(card, prop, filler);
             }
@@ -104,16 +119,19 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
     }
 
 
+    @Override
     protected AbstractSelectorPanel<OWLClass> createFillerSelectorPanel() {
         return new OWLClassSelectorPanel(getOWLEditorKit());
     }
 
 
+    @Override
     protected AbstractHierarchySelectorPanel<OWLObjectProperty> createPropertySelectorPanel() {
         return new OWLObjectPropertySelectorPanel(getOWLEditorKit());
     }
 
 
+    @Override
     public boolean setDescription(OWLClassExpression description) {
         if (description == null){
             return true;
@@ -139,36 +157,43 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         private RestrictionCreator<OWLObjectProperty, OWLClass> t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression, OWLObjectPropertyExpression, OWLClassExpression> r) {
+        private void handleRestriction(
+                OWLQuantifiedRestriction<OWLClassExpression> r) {
             if (!r.getProperty().isAnonymous() && !r.getFiller().isAnonymous()){
-                p = r.getProperty().asOWLObjectProperty();
+                p = ((OWLObjectPropertyExpression) r.getProperty())
+                        .asOWLObjectProperty();
                 f = r.getFiller().asOWLClass();
                 isAcceptable = true;
             }
         }
 
+        @Override
         public void visit(OWLObjectSomeValuesFrom r) {
             t = some;
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLObjectAllValuesFrom r) {
             t = only;
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLObjectMinCardinality r) {
             t = min;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLObjectExactCardinality r) {
             t = exactly;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
+        @Override
         public void visit(OWLObjectMaxCardinality r) {
             t = max;
             cardinality = r.getCardinality();

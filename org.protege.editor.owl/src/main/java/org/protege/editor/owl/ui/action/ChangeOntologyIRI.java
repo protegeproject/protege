@@ -1,11 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.protege.editor.owl.ui.ontology.OntologyIDJDialog;
 import org.semanticweb.owlapi.model.AddImport;
@@ -17,7 +14,6 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.RemoveImport;
 import org.semanticweb.owlapi.model.SetOntologyID;
-import org.semanticweb.owlapi.util.OWLOntologyURIChanger;
 
 
 /**
@@ -30,7 +26,8 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
 	private static final long serialVersionUID = -6080240335045735182L;
 
 
-	public void actionPerformed(ActionEvent e) {
+	@Override
+    public void actionPerformed(ActionEvent e) {
 		OWLOntology ont = getOWLModelManager().getActiveOntology();
 		OWLOntologyID id = OntologyIDJDialog.showDialog(getOWLEditorKit(), ont.getOntologyID());
 		if (id != null) {
@@ -49,11 +46,15 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
         		for (OWLImportsDeclaration decl : ont.getImportsDeclarations()) {
         			if (decl.getIRI().equals(oldId.getVersionIRI())) {
         				changes.add(new RemoveImport(ont, decl));
-        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getDefaultDocumentIRI())));
+                        changes.add(new AddImport(ont, factory
+                                .getOWLImportsDeclaration(id
+                                        .getDefaultDocumentIRI().get())));
         			}
         			else if (decl.getIRI().equals(oldId.getOntologyIRI())) {
         				changes.add(new RemoveImport(ont, decl));
-        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getOntologyIRI())));
+                        changes.add(new AddImport(ont, factory
+                                .getOWLImportsDeclaration(id.getOntologyIRI()
+                                        .get())));
         			}
         		}
         	}
@@ -62,10 +63,12 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
     }
 
 
+    @Override
     public void initialise() throws Exception {
     }
 
 
+    @Override
     public void dispose() throws Exception {
     }
 }

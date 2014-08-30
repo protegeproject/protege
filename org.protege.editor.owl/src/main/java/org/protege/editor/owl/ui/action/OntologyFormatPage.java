@@ -7,7 +7,7 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -53,6 +53,7 @@ public class OntologyFormatPage extends AbstractWizardPanel {
     }
 
 
+    @Override
     protected void createUI(JComponent parent) {
         setInstructions("Please select the format in which the ontology will be saved (by default).\n\n" +
         		        "Note that the Manchester OWL Syntax does not support all OWL constructs (e.g. GCI's and\n" +
@@ -64,16 +65,18 @@ public class OntologyFormatPage extends AbstractWizardPanel {
     }
 
 
-    public OWLOntologyFormat getFormat() {
+    public OWLDocumentFormat getFormat() {
         return panel.getSelectedFormat();
     }
 
 
+    @Override
     public Object getBackPanelDescriptor() {
         return PhysicalLocationPanel.ID;
     }
 
 
+    @Override
     public Object getNextPanelDescriptor() {
         return WizardPanel.FINISH;
     }

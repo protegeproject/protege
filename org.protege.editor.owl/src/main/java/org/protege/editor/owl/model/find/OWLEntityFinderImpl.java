@@ -1,16 +1,26 @@
 package org.protege.editor.owl.model.find;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.OWLModelManagerImpl;
-import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
-import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.semanticweb.owlapi.model.*;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.OWLModelManagerImpl;
+import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -41,6 +51,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     private static final String ESCAPE_CHAR = "'";
 
+    @Override
     public OWLClass getOWLClass(String rendering) {
         OWLClass cls = renderingCache.getOWLClass(rendering);
         if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -50,6 +61,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
         OWLObjectProperty prop = renderingCache.getOWLObjectProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -59,6 +71,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLDataProperty getOWLDataProperty(String rendering) {
         OWLDataProperty prop = renderingCache.getOWLDataProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -68,6 +81,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
         OWLAnnotationProperty prop = renderingCache.getOWLAnnotationProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -77,6 +91,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLNamedIndividual getOWLIndividual(String rendering) {
         OWLNamedIndividual individual = renderingCache.getOWLIndividual(rendering);
         if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -86,6 +101,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLDatatype getOWLDatatype(String rendering) {
         OWLDatatype dataType = renderingCache.getOWLDatatype(rendering);
         if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -95,6 +111,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public OWLEntity getOWLEntity(String rendering) {
         OWLEntity entity = renderingCache.getOWLEntity(rendering);
         if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
@@ -104,130 +121,153 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
 
+    @Override
     public Set<String> getOWLEntityRenderings() {
         return renderingCache.getOWLEntityRenderings();
     }
 
 
+    @Override
     public Set<OWLClass> getMatchingOWLClasses(String match) {
         return getEntities(match, OWLClass.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp) {
         return getEntities(match, OWLClass.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLClass> getMatchingOWLClasses(String match, boolean fullRegExp, int flags) {
     	return getEntities(match, OWLClass.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match) {
         return getEntities(match, OWLObjectProperty.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLObjectProperty.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLObjectProperty> getMatchingOWLObjectProperties(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLObjectProperty.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLDataProperty> getMatchingOWLDataProperties(String match) {
         return getEntities(match, OWLDataProperty.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLDataProperty.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLDataProperty> getMatchingOWLDataProperties(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLDataProperty.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match) {
         return getEntities(match, OWLNamedIndividual.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp) {
         return getEntities(match, OWLNamedIndividual.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLNamedIndividual> getMatchingOWLIndividuals(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLNamedIndividual.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLDatatype> getMatchingOWLDatatypes(String match) {
         return getEntities(match, OWLDatatype.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp) {
         return getEntities(match, OWLDatatype.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLDatatype> getMatchingOWLDatatypes(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLDatatype.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match) {
         return getEntities(match, OWLAnnotationProperty.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp) {
         return getEntities(match, OWLAnnotationProperty.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLAnnotationProperty> getMatchingOWLAnnotationProperties(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLAnnotationProperty.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLEntity> getMatchingOWLEntities(String match) {
         return getEntities(match, OWLEntity.class, OWLEntityFinderPreferences.getInstance().isUseRegularExpressions());
     }
 
 
+    @Override
     public Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp) {
         return getEntities(match, OWLEntity.class, fullRegExp);
     }
     
+    @Override
     public Set<OWLEntity> getMatchingOWLEntities(String match, boolean fullRegExp, int flags) {
         return getEntities(match, OWLEntity.class, fullRegExp, flags);
     }
 
 
+    @Override
     public Set<OWLEntity> getEntities(IRI iri) {
 
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
 
         for (OWLOntology ont : mngr.getActiveOntologies()){
-            if (ont.containsClassInSignature(iri)){
+            if (ont.containsClassInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLClass(iri));
             }
-            if (ont.containsObjectPropertyInSignature(iri)){
+            if (ont.containsObjectPropertyInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLObjectProperty(iri));
             }
-            if (ont.containsDataPropertyInSignature(iri)){
+            if (ont.containsDataPropertyInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLDataProperty(iri));
             }
-            if (ont.containsIndividualInSignature(iri)){
+            if (ont.containsIndividualInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLNamedIndividual(iri));
             }
-            if (ont.containsAnnotationPropertyInSignature(iri)){
+            if (ont.containsAnnotationPropertyInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLAnnotationProperty(iri));
             }
-            if (ont.containsDatatypeInSignature(iri)){
+            if (ont.containsDatatypeInSignature(iri, Imports.EXCLUDED)) {
                 entities.add(mngr.getOWLDataFactory().getOWLDatatype(iri));
             }
         }
@@ -289,6 +329,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                 if (match.length() > 1 && match.endsWith(WILDCARD)) {
                     // Contains
                     matcher = new SimpleWildCardMatcher() {
+                        @Override
                         public boolean matches(String rendering, String s) {
                             return rendering.indexOf(s) != -1;
                         }
@@ -298,6 +339,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                 else {
                     // Ends with
                     matcher = new SimpleWildCardMatcher() {
+                        @Override
                         public boolean matches(String rendering, String s) {
                             return rendering.indexOf(s) != -1;
                         }
@@ -312,6 +354,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                 }
                 // @@TODO handle matches exactly?
                 matcher = new SimpleWildCardMatcher() {
+                    @Override
                     public boolean matches(String rendering, String s) {
                         return rendering.startsWith(s) || rendering.startsWith("'" + s);
                     }
@@ -357,14 +400,15 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                 else if (type.equals(OWLObjectProperty.class)){
                     entities.addAll((Set<T>)ont.getObjectPropertiesInSignature());
                 }
-                else if (type.equals((OWLDataProperty.class))){
+                else if (type.equals(OWLDataProperty.class)){
                     entities.addAll((Set<T>)ont.getDataPropertiesInSignature());
                 }
                 else if (type.equals(OWLIndividual.class)){
                     entities.addAll((Set<T>)ont.getIndividualsInSignature());
                 }
                 else if (type.equals(OWLAnnotationProperty.class)){
-                    entities.addAll((Set<T>)ont.getAnnotationPropertiesInSignature());
+                    entities.addAll((Set<T>) ont
+                            .getAnnotationPropertiesInSignature(Imports.EXCLUDED));
                 }
                 else if (type.equals(OWLDatatype.class)){
                     entities.addAll((Set<T>)ont.getDatatypesInSignature());

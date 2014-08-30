@@ -1,20 +1,7 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.core.ui.list.MList;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +29,21 @@ import java.util.Set;
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+import javax.swing.JList;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
@@ -64,12 +66,14 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
     private java.util.List<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
 
+    @Override
     protected void initialiseOntologyView() throws Exception {
         setLayout(new BorderLayout());
 
         list = new MList();
         final MList.MListCellRenderer ren = (MList.MListCellRenderer)list.getCellRenderer();
         ren.setContentRenderer(new OWLCellRenderer(getOWLEditorKit(), true, true){
+            @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value instanceof AnonymousClassItem){
                     value = ((AnonymousClassItem)value).getOWLClass();
@@ -81,6 +85,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
         add(list, BorderLayout.CENTER);
 
         list.addListSelectionListener(new ListSelectionListener(){
+            @Override
             public void valueChanged(ListSelectionEvent event) {
                 for (ChangeListener l : new ArrayList<ChangeListener>(listeners)){
                     l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
@@ -93,16 +98,17 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
         });
 
 
-        remover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                       getOWLModelManager().getOntologies());
+        remover = new OWLEntityRemover(getOWLModelManager().getOntologies());
     }
 
 
+    @Override
     protected void disposeOntologyView() {
         // do nothing
     }
 
 
+    @Override
     protected void updateView(OWLOntology activeOntology) throws Exception {
         Set<AnonymousClassItem> clses = new HashSet<AnonymousClassItem>();
         AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
@@ -117,11 +123,13 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
     }
 
 
+    @Override
     public boolean canDelete() {
         return list.getSelectedIndex() >= 0;
     }
 
 
+    @Override
     public void handleDelete() {
         remover.reset();
         for (Object clsItem : list.getSelectedValues()){
@@ -131,11 +139,13 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
     }
 
 
+    @Override
     public boolean canCopy() {
         return list.getSelectedIndex() >= 0;
     }
 
 
+    @Override
     public java.util.List<OWLObject> getObjectsToCopy() {
         List<OWLObject> sel = new ArrayList<OWLObject>();
 for (Object clsItem : list.getSelectedValues()){
@@ -145,11 +155,13 @@ for (Object clsItem : list.getSelectedValues()){
     }
 
 
+    @Override
     public void addChangeListener(ChangeListener listener) {
         listeners.add(listener);
     }
 
 
+    @Override
     public void removeChangeListener(ChangeListener listener) {
         listeners.remove(listener);
     }
@@ -165,21 +177,25 @@ for (Object clsItem : list.getSelectedValues()){
         }
 
 
+        @Override
         public boolean isEditable() {
             return false;
         }
 
 
+        @Override
         public void handleEdit() {
             // do nothing
         }
 
 
+        @Override
         public boolean isDeleteable() {
             return true;
         }
 
 
+        @Override
         public boolean handleDelete() {
             remover.reset();
             cls.accept(remover);
@@ -188,6 +204,7 @@ for (Object clsItem : list.getSelectedValues()){
         }
 
 
+        @Override
         public String getTooltip() {
             return "";
         }
