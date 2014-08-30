@@ -2,14 +2,14 @@ package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import java.util.Set;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 
 /**
@@ -29,14 +29,18 @@ class OWLObjectPropertySetChecker implements OWLExpressionChecker<Set<OWLObjectP
     }
 
 
+    @Override
     public void check(String text) throws OWLExpressionParserException {
         createObject(text);
     }
 
 
+    @Override
     public Set<OWLObjectPropertyExpression> createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
-        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
+        ManchesterOWLSyntaxParser parser = OWLManager.createManchesterParser();
+        parser.setStringToParse(text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr
+                .getOWLEntityFinder()));
         try {
             return parser.parseObjectPropertyList();
         }

@@ -10,19 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.coode.owlapi.latex.LatexOntologyFormat;
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.owlapi.obo.parser.OBOOntologyFormat;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
+import org.semanticweb.owlapi.formats.KRSS2DocumentFormat;
+import org.semanticweb.owlapi.formats.LatexDocumentFormat;
 import org.semanticweb.owlapi.formats.ManchesterSyntaxDocumentFormat;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.formats.OBODocumentFormat;
+import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 
-import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
 
 
 /**
@@ -48,15 +47,15 @@ public class OntologyFormatPanel extends JPanel {
 
     public OntologyFormatPanel() {
         List<Object> formats = new ArrayList<Object>();
-        formats.add(new RDFXMLOntologyFormat());
-        formats.add(new OWLXMLOntologyFormat());
-        formats.add(new OWLFunctionalSyntaxOntologyFormat());
-        formats.add(new ManchesterOWLSyntaxOntologyFormat());
+        formats.add(new RDFXMLDocumentFormat());
+        formats.add(new OWLXMLDocumentFormat());
+        formats.add(new FunctionalSyntaxDocumentFormat());
+        formats.add(new ManchesterSyntaxDocumentFormat());
         
-        formats.add(new OBOOntologyFormat());
-        formats.add(new KRSS2OntologyFormat());
-        formats.add(new LatexOntologyFormat());
-        formats.add(new TurtleOntologyFormat());
+        formats.add(new OBODocumentFormat());
+        formats.add(new KRSS2DocumentFormat());
+        formats.add(new LatexDocumentFormat());
+        formats.add(new TurtleDocumentFormat());
 
         formatComboBox = new JComboBox(formats.toArray());
         setLayout(new BorderLayout(12, 12));

@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -26,6 +25,8 @@ import java.util.HashMap;
 * License along with this library; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 
 /**
  * Author: drummond<br>

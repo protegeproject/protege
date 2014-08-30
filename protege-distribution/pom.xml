@@ -33,19 +33,19 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>ca.uvic.cs.chisel.cajun</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.coode.dlquery</artifactId>
-			<version>1.1.4</version>
+			<version>1.1.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.coode.owlviz</artifactId>
-			<version>4.1.4</version>
+			<version>4.1.6-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -69,49 +69,49 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.codegeneration</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.diff</artifactId>
-			<version>4.1.1</version>
+			<version>4.1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.rdf</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.explanation</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
         </dependency>
         
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.integration.hermit</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.ontograf</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.4-SNAPSHOT</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.diff</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
         </dependency>
         
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.rdf</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3-SNAPSHOT</version>
         </dependency>
         
         <dependency>
@@ -123,15 +123,15 @@
         <!-- OWL API dependency -->
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owlapi-distribution</artifactId>
-			<version>3.5.0</version>
+			<artifactId>owlapi-osgidistribution</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-        </dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>17.0</version>
+		</dependency>
 	</dependencies>
 	
 	<build>

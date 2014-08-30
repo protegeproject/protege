@@ -24,10 +24,8 @@ import java.io.Writer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxRenderer;
-
 
 /**
  * Author: Matthew Horridge<br>

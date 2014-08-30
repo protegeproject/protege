@@ -6,13 +6,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
 import org.protege.editor.owl.ui.renderer.context.NullClassSatisfiabilityChecker;
 import org.protege.editor.owl.ui.renderer.context.NullDataPropertySatisfiabilityChecker;
 import org.protege.editor.owl.ui.renderer.context.NullDeprecatedObjectChecker;
 import org.protege.editor.owl.ui.renderer.context.NullLinkFactory;
 import org.protege.editor.owl.ui.renderer.context.NullObjectPropertySatisfiabilityChecker;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
