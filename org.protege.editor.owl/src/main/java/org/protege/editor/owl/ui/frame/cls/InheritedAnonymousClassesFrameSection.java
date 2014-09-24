@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -74,7 +75,11 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
     }
     
     private void refillInferredDoIt() {
-        if (!getOWLModelManager().getReasoner().isConsistent()) {
+        OWLReasoner reasoner = getOWLModelManager().getReasoner();
+        if (!reasoner.isConsistent()) {
+            return;
+        }
+        if(!reasoner.isSatisfiable(getRootObject())) {
             return;
         }
         Set<OWLClass> clses = getReasoner().getSuperClasses(getRootObject(), true).getFlattened();

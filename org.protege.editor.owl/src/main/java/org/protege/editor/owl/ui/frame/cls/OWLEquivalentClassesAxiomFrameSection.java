@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
 
@@ -85,20 +86,23 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
                                                                   new Runnable() {
 
             public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
+                final OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                if (!reasoner.isConsistent()) {
             		return;
             	}
-            	OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
-                if (!getOWLModelManager().getReasoner().isSatisfiable(getRootObject()) && !nothing.equals(getRootObject())) {
-                    addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                        OWLEquivalentClassesAxiomFrameSection.this,
-                                                                        null,
-                                                                        getRootObject(),
-                                                                        getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                                                                     nothing))));
+                if (!reasoner.isSatisfiable(getRootObject())) {
+                    if (!getRootObject().isOWLNothing()) {
+                        OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
+                        addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                            OWLEquivalentClassesAxiomFrameSection.this,
+                                                                            null,
+                                                                            getRootObject(),
+                                                                            getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
+                                                                                                                                                         nothing))));
+                    }
                 }
                 else{
-                    for (OWLClassExpression cls : getOWLModelManager().getReasoner().getEquivalentClasses(getRootObject())) {
+                    for (OWLClassExpression cls : reasoner.getEquivalentClasses(getRootObject())) {
                         if (!added.contains(cls) && !cls.equals(getRootObject())) {
                             addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                 OWLEquivalentClassesAxiomFrameSection.this,
