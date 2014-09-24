@@ -46,6 +46,9 @@ import org.semanticweb.owlapi.model.SWRLRule;
  * Date: 06-Jul-2007<br><br>
  */
 public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements VerifiedInputEditor {
+
+    private static final String PREFIX = "Rule: ";
+
     private OWLModelManager mngr;
 
     private ExpressionEditor<SWRLRule> editor;
@@ -54,7 +57,7 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
     
     public SWRLRuleEditor(OWLEditorKit editorKit) {
         final OWLExpressionCheckerFactory fac = editorKit.getModelManager().getOWLExpressionCheckerFactory();
-        editor = new ExpressionEditor<SWRLRule>(editorKit, fac.getSWRLChecker());
+        editor = new ExpressionEditor<>(editorKit, fac.getSWRLChecker());
 
         scrollpane = new JScrollPane(editor);
         scrollpane.setPreferredSize(new Dimension(500, 200));
@@ -94,10 +97,10 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
    */
     public boolean setEditedObject(SWRLRule rule) {
         if (rule == null){
-            editor.setText("");
+            editor.setText(PREFIX);
         }
         else{
-            editor.setText(mngr.getRendering(rule));
+            editor.setText(PREFIX + mngr.getRendering(rule));
         }
         return true;
     }
