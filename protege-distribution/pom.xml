@@ -30,6 +30,14 @@
 		<!-- NOTE: These dependency declarations are required to sort this project to the end of the line in the multimodule build. -->
 		
 		<!-- edu.stanford.protege dependency list -->
+
+        <!-- OWL API dependency -->
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-osgidistribution</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>ca.uvic.cs.chisel.cajun</artifactId>
@@ -119,13 +127,6 @@
 			<artifactId>ProtegeLauncher</artifactId>
 			<version>${project.parent.version}</version>
         </dependency>
-        
-        <!-- OWL API dependency -->
-		<dependency>
-			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owlapi-distribution</artifactId>
-			<version>3.5.0</version>
-		</dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
