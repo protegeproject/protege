@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
 /**
@@ -70,25 +71,31 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
+        final OWLReasoner reasoner = getOWLModelManager().getReasoner();
+        if(!reasoner.isConsistent()) {
+            return;
+        }
+        if(!reasoner.isSatisfiable(getRootObject())) {
+            return;
+        }
+            getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
                 public void run() {
-                    if (getOWLModelManager().getReasoner().isConsistent()) {
-                        for (Node<OWLClass> inferredSuperClasses : getOWLModelManager().getReasoner().getSuperClasses(getRootObject(), true)) {
+                        for (Node<OWLClass> inferredSuperClasses : reasoner.getSuperClasses(getRootObject(), true)) {
                             for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
                                 if (!added.contains(inferredSuperClass)) {
                                     addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                               OWLSubClassAxiomFrameSection.this,
-                                                                               null,
-                                                                               getRootObject(),
-                                                                               getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
-                                                                                                                                              inferredSuperClass)));
+                                                                                                   OWLSubClassAxiomFrameSection.this,
+                                                                                                   null,
+                                                                                                   getRootObject(),
+                                                                                                   getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
+                                                                                                                                                                  inferredSuperClass)));
                                     added.add(inferredSuperClass);
                                 }
                             }
                         }
-                    }
                 }
             });
+
     }
 
 
@@ -98,7 +105,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
 
     public OWLObjectEditor<OWLClassExpression> getObjectEditor() {
-        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, AxiomType.SUBCLASS_OF);        
+        return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(null, AxiomType.SUBCLASS_OF);
     }
 
 
