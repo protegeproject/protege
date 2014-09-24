@@ -86,6 +86,7 @@
         <dependencySet>
             <outputDirectory>plugins</outputDirectory>
             <includes>
+                <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
                 <include>edu.stanford.protege:ca.uvic.cs.chisel.cajun:jar</include>
                 <include>edu.stanford.protege:org.coode.dlquery:jar</include>
                 <include>edu.stanford.protege:org.coode.owlviz:jar</include>
@@ -98,7 +99,6 @@
                 <include>edu.stanford.protege:org.protege.ontograf:jar</include>
                 <include>edu.stanford.protege:org.protege.owl.diff:jar</include>
                 <include>edu.stanford.protege:org.protege.owl.rdf:jar</include>
-                <include>net.sourceforge.owlapi:owlapi-distribution:jar</include>
                 <include>com.google.guava:guava:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
