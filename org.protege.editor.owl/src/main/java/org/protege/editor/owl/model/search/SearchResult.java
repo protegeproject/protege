@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.search;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Ordering;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -18,17 +20,11 @@ public class SearchResult implements Comparable<SearchResult> {
 
     private SearchMetadata searchMetadata;
 
-    private Pattern searchPattern;
+    private final ImmutableList<SearchResultMatch> matches;
 
-    private int matchStart;
-
-    private int matchEnd;
-
-    public SearchResult(SearchMetadata searchMetadata, Pattern searchPattern, int matchStart, int matchEnd) {
+    public SearchResult(SearchMetadata searchMetadata, ImmutableList<SearchResultMatch> matches) {
         this.searchMetadata = searchMetadata;
-        this.searchPattern = searchPattern;
-        this.matchStart = matchStart;
-        this.matchEnd = matchEnd;
+        this.matches = matches;
     }
 
     public SearchCategory getCategory() {
@@ -55,33 +51,21 @@ public class SearchResult implements Comparable<SearchResult> {
         return searchMetadata.getSubjectRendering();
     }
 
-    public Pattern getSearchPattern() {
-        return searchPattern;
-    }
-
-    public int getMatchStart() {
-        return matchStart;
-    }
-
-    public int getMatchEnd() {
-        return matchEnd;
+    public ImmutableList<SearchResultMatch> getMatches() {
+        return matches;
     }
 
     public int compareTo(SearchResult o) {
-        int mdDiff = searchMetadata.compareTo(o.searchMetadata);
-        if (mdDiff != 0) {
-            return mdDiff;
+        int matchesDiff = Ordering.<SearchResultMatch>natural().lexicographical().compare(this.matches, o.matches);
+        if(matchesDiff != 0) {
+            return matchesDiff;
         }
-        int startDiff = this.matchStart - o.matchStart;
-        if (startDiff != 0) {
-            return startDiff;
-        }
-        return this.matchEnd - o.matchEnd;
+        return searchMetadata.compareTo(o.searchMetadata);
     }
 
     @Override
     public int hashCode() {
-        return SearchResult.class.getSimpleName().hashCode() + searchMetadata.hashCode() + matchStart + matchEnd;
+        return SearchResult.class.getSimpleName().hashCode() + searchMetadata.hashCode() + matches.hashCode();
     }
 
     @Override
@@ -93,6 +77,6 @@ public class SearchResult implements Comparable<SearchResult> {
             return false;
         }
         SearchResult other = (SearchResult) obj;
-        return this.searchMetadata.equals(other.searchMetadata) && this.matchStart == other.matchStart && this.matchEnd == other.matchEnd;
+        return this.searchMetadata.equals(other.searchMetadata) && this.matches.equals(other.matches);
     }
 }

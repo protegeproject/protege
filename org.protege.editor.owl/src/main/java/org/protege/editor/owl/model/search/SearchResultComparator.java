@@ -46,6 +46,10 @@ public class SearchResultComparator implements Comparator<SearchResult> {
     }
 
     private int compareOWLEntities(SearchResult result1, SearchResult result2) {
+        int diff = result1.compareTo(result2);
+        if(diff != 0) {
+            return diff;
+        }
         String subjectRendering1 = result1.getSubjectRendering();
         String subjectRendering2 = result2.getSubjectRendering();
         String strippedRendering1 = subjectRendering1.startsWith("'") ? subjectRendering1.substring(1) : subjectRendering1;
@@ -59,12 +63,12 @@ public class SearchResultComparator implements Comparator<SearchResult> {
             return false;
         }
         String rendering = searchResult.getSearchString();
-
+        SearchResultMatch firstMatch = searchResult.getMatches().get(0);
         if (rendering.startsWith("'")) {
-            return searchResult.getMatchStart() == 1;
+            return firstMatch.getStart() == 1;
         }
         else {
-            return searchResult.getMatchStart() == 0;
+            return firstMatch.getStart() == 0;
         }
     }
 

@@ -1,5 +1,8 @@
 package org.protege.editor.owl.model.search;
 
+
+import com.google.common.collect.ImmutableList;
+
 import java.util.regex.Pattern;
 
 /**
@@ -13,27 +16,27 @@ import java.util.regex.Pattern;
  */
 public class SearchRequest {
 
-    private Pattern searchPattern;
+    private ImmutableList<Pattern> searchPatterns;
 
     /**
      * Constructs a search request from a regular expression pattern.
-     * @param searchPattern The pattern to match against.
+     * @param searchPatterns A list of search patterns.  All patterns must be matched for the search to succeed.
      */
-    public SearchRequest(Pattern searchPattern) {
-        this.searchPattern = searchPattern;
+    public SearchRequest(ImmutableList<Pattern> searchPatterns) {
+        this.searchPatterns = searchPatterns;
     }
 
     /**
-     * Gets the search request as a regular expression pattern.
-     * @return The search request as a regular expression pattern.
+     * Gets the search request as a regular expression pattern list.
+     * @return The search request as a regular expression pattern list.
      */
-    public Pattern getSearchPattern() {
-        return searchPattern;
+    public ImmutableList<Pattern> getSearchPatterns() {
+        return searchPatterns;
     }
 
     @Override
     public int hashCode() {
-        return SearchRequest.class.getSimpleName().hashCode() + this.searchPattern.hashCode();
+        return SearchRequest.class.getSimpleName().hashCode() + this.searchPatterns.hashCode();
     }
 
     @Override
@@ -45,6 +48,6 @@ public class SearchRequest {
             return false;
         }
         SearchRequest other = (SearchRequest) obj;
-        return this.searchPattern.equals(other.searchPattern);
+        return this.searchPatterns.equals(other.searchPatterns);
     }
 }

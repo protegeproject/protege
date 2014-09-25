@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.search;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
@@ -153,9 +154,17 @@ public class SearchManager implements Disposable {
         }
 
         public void run() {
-            logger.info("Starting search " + searchId + " (pattern: " + searchRequest.getSearchPattern().pattern() + ")");
+            StringBuilder patternString = new StringBuilder();
+            for(Iterator<Pattern> it = searchRequest.getSearchPatterns().iterator(); it.hasNext(); ) {
+                Pattern pattern = it.next();
+                patternString.append(pattern.pattern());
+                if (it.hasNext()) {
+                    patternString.append("  AND  ");
+                }
+            }
+            logger.info("Starting search " + searchId + " (pattern: " + patternString.toString() + ")");
             List<SearchResult> results = new ArrayList<SearchResult>();
-            Pattern pattern = searchRequest.getSearchPattern();
+
 
             long searchStartTime = System.currentTimeMillis();
             fireSearchStarted();
@@ -169,9 +178,28 @@ public class SearchManager implements Disposable {
                     return;
                 }
                 String text = searchMetadata.getSearchString();
-                Matcher matcher = pattern.matcher(text);
-                if (matcher.find()) {
-                    results.add(new SearchResult(searchMetadata, pattern, matcher.start(), matcher.end()));
+                boolean matchedAllPatterns = true;
+                int startIndex = 0;
+                ImmutableList.Builder<SearchResultMatch> matchesBuilder = ImmutableList.builder();
+                for(Pattern pattern : searchRequest.getSearchPatterns()) {
+                    if(startIndex >= text.length()) {
+                        matchedAllPatterns = false;
+                        break;
+                    }
+                    Matcher matcher = pattern.matcher(text);
+                    if (matcher.find()) {
+                        SearchResultMatch match = new SearchResultMatch(pattern, matcher.start(), matcher.end());
+                        matchesBuilder.add(match);
+                        startIndex = matcher.end() + 1;
+                    }
+                    else {
+                        matchedAllPatterns = false;
+                        break;
+                    }
+                }
+                if (matchedAllPatterns) {
+
+                    results.add(new SearchResult(searchMetadata, matchesBuilder.build()));
                 }
                 count++;
                 int nextPercent = (int) ((count * 100) / total);
