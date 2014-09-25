@@ -5,6 +5,7 @@ import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
 import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchResult;
+import org.protege.editor.owl.model.search.SearchResultMatch;
 import org.protege.editor.owl.model.search.SearchResultSet;
 import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
@@ -319,9 +320,11 @@ public class SearchResultsPanel extends JPanel {
                     styledStringPanel.setForeground(table.getForeground());
                 }
                 Style highlightStyle = ProtegeStyles.getStyles().getHighlightStyle();
-                int from = searchResult.getMatchStart();
-                int to = searchResult.getMatchEnd();
-                builder.applyStyle(from, to, highlightStyle);
+                for (SearchResultMatch match : searchResult.getMatches()) {
+                    int from = match.getStart();
+                    int to = match.getEnd();
+                    builder.applyStyle(from, to, highlightStyle);
+                }
                 styledStringPanel.setStyledString(builder.build());
 
                 return styledStringPanel;
@@ -382,9 +385,11 @@ public class SearchResultsPanel extends JPanel {
 
                 SearchResult searchResult = model.getSearchResult(row);
                 if (searchResult.getCategory() == SearchCategory.DISPLAY_NAME) {
-                    int start = searchResult.getMatchStart();
-                    int end = searchResult.getMatchEnd();
-                    builder.applyStyleAttributes(start, end, FontWeightAttribute.getBoldFontWeight());
+                    for (SearchResultMatch match : searchResult.getMatches()) {
+                        int start = match.getStart();
+                        int end = match.getEnd();
+                        builder.applyStyleAttributes(start, end, FontWeightAttribute.getBoldFontWeight());
+                    }
                 }
 
                 if (OWLUtilities.isDeprecated(editorKit.getOWLModelManager(), owlObject)) {

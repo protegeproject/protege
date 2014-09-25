@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.search;
 
+import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.*;
@@ -70,37 +71,40 @@ public class SearchPanel extends JPanel {
         OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
 
+        ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
+
         String preparedSearchString;
-        if (prefs.isUseRegularExpressions()) {
-            preparedSearchString = searchString;
-            if (prefs.isIgnoreWhiteSpace()) {
-                preparedSearchString = preparedSearchString.replace(" ", "\\s+");
-            }
-        }
-        else {
-            if (prefs.isIgnoreWhiteSpace()) {
-                StringBuilder sb = new StringBuilder();
-                String[] split = searchString.split("\\s+");
-                for (int i = 0; i < split.length; i++) {
-                    String s = split[i];
-                    sb.append(Pattern.quote(s));
-                    if (i < split.length - 1) {
-                        sb.append("\\s+");
-                    }
+        for (String splitSearchString : searchString.split("\\s+")) {
+            if (prefs.isUseRegularExpressions()) {
+                preparedSearchString = splitSearchString;
+                if (prefs.isIgnoreWhiteSpace()) {
+                    preparedSearchString = preparedSearchString.replace(" ", "\\s+");
                 }
-                preparedSearchString = sb.toString();
             }
             else {
-                preparedSearchString = Pattern.quote(searchString);
+                if (prefs.isIgnoreWhiteSpace()) {
+                    StringBuilder sb = new StringBuilder();
+                    String[] split = splitSearchString.split("\\s+");
+                    for (int i = 0; i < split.length; i++) {
+                        String s = split[i];
+                        sb.append(Pattern.quote(s));
+                        if (i < split.length - 1) {
+                            sb.append("\\s+");
+                        }
+                    }
+                    preparedSearchString = sb.toString();
+                }
+                else {
+                    preparedSearchString = Pattern.quote(splitSearchString);
+                }
             }
+            if (prefs.isWholeWords()) {
+                preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
+            }
+            builder.add(Pattern.compile(preparedSearchString, flags));
         }
-
-
-        if (prefs.isWholeWords()) {
-            preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
-        }
-        Pattern searchPattern = Pattern.compile(preparedSearchString, flags);
-        return new SearchRequest(searchPattern);
+//        Pattern searchPattern = Pattern.compile(preparedSearchString, flags);
+        return new SearchRequest(builder.build());
     }
 
     private void doSearch() {
