@@ -38,7 +38,7 @@ public class IntroductoryPanel extends JPanel {
         center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
         JTextPane tp = new JTextPane();
         tp.setEditable(false);
-        URL help = getClass().getResource("InconsistentOntologyHelp.html");
+        URL help = getClass().getResource("/InconsistentOntologyHelp.html");
         tp.setPage(help);
 		Font font = UIManager.getFont("TextArea.font");
 		if (font != null) {
