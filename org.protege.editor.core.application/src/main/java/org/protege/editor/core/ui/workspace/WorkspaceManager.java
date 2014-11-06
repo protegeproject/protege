@@ -23,7 +23,9 @@ public class WorkspaceManager {
 
     private static final Logger logger = Logger.getLogger(WorkspaceManager.class);
 
-    public static final String SAVE_CONFIRMATION_MESSAGE = "<html><body><b>Do you want to save changes that you made to the ontologies in this workspace?</b><br>Your changes will be lost if you don't save them.</body></html>";
+    public static final String SAVE_CONFIRMATION_MESSAGE = "<html><body><b>Do you want to save changes that " +
+            "you made to the ontologies in this workspace?</b><br>" +
+            "Your changes will be lost if you don't save them.</body></html>";
 
     private Map<Workspace, WorkspaceFrame> workspaceFrameMap;
 
@@ -70,8 +72,14 @@ public class WorkspaceManager {
             boolean dirty = workspace.getEditorKit().getModelManager().isDirty();
             if (dirty) {
                 // Ask user if they want to save?
-                int ret = JOptionPane.showConfirmDialog(workspace, SAVE_CONFIRMATION_MESSAGE, "Save workspace?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (ret == JOptionPane.CANCEL_OPTION) {
+                int ret = JOptionPane.showConfirmDialog(workspace,
+                        SAVE_CONFIRMATION_MESSAGE,
+                        "Save workspace?",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+
+                // The default option is returned when the escape button is pressed.
+                if (ret == JOptionPane.CANCEL_OPTION || ret == JOptionPane.DEFAULT_OPTION) {
                     return false;
                 }
                 if (ret == JOptionPane.YES_OPTION) {
