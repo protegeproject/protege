@@ -2,14 +2,7 @@ package org.protege.editor.core.ui.menu;
 
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -22,6 +15,8 @@ import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -49,15 +44,15 @@ public class MenuBuilder {
 	private EditorKit editorKit;
 	private Set<ProtegeAction> actions;
 
-	private Map<MenuActionPlugin, Set<MenuActionPlugin>> parentChildMap; 
+	private Multimap<MenuActionPlugin, MenuActionPlugin> parentChildMap;
 	private Map<String, ButtonGroup> group2ButtonGroupMap;
 
 
 	public MenuBuilder(EditorKit editorKit) {
 		this.editorKit = editorKit;
-		parentChildMap = new HashMap<MenuActionPlugin, Set<MenuActionPlugin>>();
-		group2ButtonGroupMap = new HashMap<String, ButtonGroup>();
-		actions = new HashSet<ProtegeAction>();
+		parentChildMap = HashMultimap.create();
+		group2ButtonGroupMap = new HashMap<>();
+		actions = new HashSet<>();
 	}
 
 
@@ -66,6 +61,7 @@ public class MenuBuilder {
 		parentChildMap.clear();
 		Map<String, MenuActionPlugin> idPluginMap = getPlugins();
 		for (MenuActionPlugin plugin : idPluginMap.values()) {
+			System.out.println("PROC: " + plugin.getId() + " ======>>>> " + plugin.getParentId());
 			MenuActionPlugin parent = idPluginMap.get(plugin.getParentId());
 			getChildren(parent).add(plugin);
 			if (logger.isDebugEnabled()) {
@@ -264,23 +260,19 @@ public class MenuBuilder {
 		Map<String, MenuActionPlugin> result = new HashMap<String, MenuActionPlugin>();
 		MenuActionPluginLoader pluginLoader = new MenuActionPluginLoader(editorKit);
 		for (MenuActionPlugin plugin : pluginLoader.getPlugins()) {
+			System.out.println("Adding " + plugin.getId() + " ---> " + plugin);
 			result.put(plugin.getId(), plugin);
 		}
 		return result;
 	}
 
 
-	private Set<MenuActionPlugin> getChildren(MenuActionPlugin plugin) {
-		Set<MenuActionPlugin> children = parentChildMap.get(plugin);
-		if (children == null) {
-			children = new HashSet<MenuActionPlugin>();
-			parentChildMap.put(plugin, children);
-		}
-		return children;
+	private Collection<MenuActionPlugin> getChildren(MenuActionPlugin plugin) {
+		return parentChildMap.get(plugin);
 	}
 
 
-	private static List<MenuActionPlugin> getSortedList(Set<MenuActionPlugin> plugins) {
+	private static List<MenuActionPlugin> getSortedList(Collection<MenuActionPlugin> plugins) {
 		List<MenuActionPlugin> list = new ArrayList<MenuActionPlugin>(plugins);
 		Collections.sort(list, new MenuActionPluginComparator());
 		return list;
