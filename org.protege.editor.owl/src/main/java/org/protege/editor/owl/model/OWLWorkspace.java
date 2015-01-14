@@ -595,14 +595,18 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private static JMenu getMenu(JMenuBar menuBar, String name) {
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
-            if (menuBar.getMenu(i).getText() != null) {
-                if (menuBar.getMenu(i).getText().equals(name)) {
-                    return menuBar.getMenu(i);
+            JMenu menu = menuBar.getMenu(i);
+            if (menu != null) {
+                if (menu.getText() != null) {
+                    if (menu.getText().equals(name)) {
+                        return menu;
+                    }
                 }
             }
         }
         return null;
     }
+
 
 
     private void createActiveOntologyPanel() {
