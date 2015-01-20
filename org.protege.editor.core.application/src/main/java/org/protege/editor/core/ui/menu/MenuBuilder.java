@@ -61,7 +61,6 @@ public class MenuBuilder {
 		parentChildMap.clear();
 		Map<String, MenuActionPlugin> idPluginMap = getPlugins();
 		for (MenuActionPlugin plugin : idPluginMap.values()) {
-			System.out.println("PROC: " + plugin.getId() + " ======>>>> " + plugin.getParentId());
 			MenuActionPlugin parent = idPluginMap.get(plugin.getParentId());
 			getChildren(parent).add(plugin);
 			if (logger.isDebugEnabled()) {
@@ -260,7 +259,6 @@ public class MenuBuilder {
 		Map<String, MenuActionPlugin> result = new HashMap<String, MenuActionPlugin>();
 		MenuActionPluginLoader pluginLoader = new MenuActionPluginLoader(editorKit);
 		for (MenuActionPlugin plugin : pluginLoader.getPlugins()) {
-			System.out.println("Adding " + plugin.getId() + " ---> " + plugin);
 			result.put(plugin.getId(), plugin);
 		}
 		return result;
