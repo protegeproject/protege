@@ -6,7 +6,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.DLExpressivityChecker;
@@ -99,7 +98,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
             DLExpressivityChecker checker = new DLExpressivityChecker(getOWLModelManager().getActiveOntologies());
             namePanel.setConstructs(checker.getConstructs());
         }
-        catch (OWLException e) {
+        catch (Exception e) {
             logger.error(e);
         }
     }
