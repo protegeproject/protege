@@ -49,8 +49,12 @@ public class MoveAxiomsByReferenceKit extends MoveAxiomsKit implements Signature
         Set<OWLAxiom> result = new HashSet<OWLAxiom>();
         for (OWLEntity e : entities) {
             for(OWLOntology ont : ontologies) {
-                result.addAll(ont.getReferencingAxioms(e));
-                result.addAll(ont.getAnnotationAssertionAxioms(e.getIRI()));
+            	for(OWLAxiom axiom : ont.getReferencingAxioms(e)) {
+            		result.add(axiom);
+            		for(OWLEntity ent : axiom.getSignature()) {
+            			result.addAll(ont.getAnnotationAssertionAxioms(ent.getIRI()));
+            		}
+            	}
             }
         }
         return result;

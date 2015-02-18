@@ -209,7 +209,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         OWLEditorKit targetEditorKit = editorKit;
         if (moveType == MoveType.COPY || moveType == MoveType.MOVE){
             OWLOntologyManager man = editorKit.getModelManager().getOWLOntologyManager();
-            if(man.contains(getTargetOntologyID())) {
+            if(targetOntologyID != null && man.contains(getTargetOntologyID())) {
                 targetOntology = man.getOntology(getTargetOntologyID());
             }
             else {
@@ -243,7 +243,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
             }
         }
         targetEditorKit.getOWLModelManager().applyChanges(changes);
-        if(editorKit.getOWLModelManager().getOWLOntologyManager().contains(targetOntologyID)) {
+        if(targetOntologyID != null && editorKit.getOWLModelManager().getOWLOntologyManager().contains(targetOntologyID)) {
             JOptionPane.showMessageDialog(getOwner(), "Axioms successfully " + moveType.getCompletedName(), "Finished", JOptionPane.INFORMATION_MESSAGE);
         }
     }
