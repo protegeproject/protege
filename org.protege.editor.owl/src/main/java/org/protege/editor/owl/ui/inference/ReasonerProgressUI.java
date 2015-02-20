@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.util.Resettable;
@@ -45,110 +46,139 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
 
     private Action cancelledAction;
 
+    private boolean taskIsRunning = false;
 
 
     public ReasonerProgressUI(final OWLEditorKit owlEditorKit) {
-        this.owlEditorKit = owlEditorKit;
-        JPanel panel = new JPanel(new BorderLayout(PADDING, PADDING));
-        progressBar = new JProgressBar();
+        this.owlEditorKit = owlEditorKit;        
+        progressBar = new JProgressBar();        
+    }
+    
+	public void initWindow() {
+		if (window != null)
+			return;		
+		JPanel panel = new JPanel(new BorderLayout(PADDING, PADDING));
         panel.add(progressBar, BorderLayout.SOUTH);
         taskLabel = new JLabel(DEFAULT_MESSAGE);
         panel.add(taskLabel, BorderLayout.NORTH);
-
-        Frame parent = (Frame) (SwingUtilities.getAncestorOfClass(Frame.class, owlEditorKit.getWorkspace()));
-        window = new JDialog(parent,
-                             "Reasoner progress",
-                             true);
-        cancelledAction = new AbstractAction("Cancel") {
+		Frame parent = (Frame) (SwingUtilities.getAncestorOfClass(Frame.class,
+				owlEditorKit.getWorkspace()));
+		window = new JDialog(parent, "Reasoner progress", true);
+		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); 
+		cancelledAction = new AbstractAction("Cancel") {
+			private static final long serialVersionUID = 3688085823398242640L;
 			public void actionPerformed(ActionEvent e) {
-                setCancelled();
-            }
-        };
-        JButton cancelledButton = new JButton(cancelledAction);
+				setCancelled();
+			}
+		};
+		JButton cancelledButton = new JButton(cancelledAction);
+		JPanel buttonHolder = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+		buttonHolder.add(cancelledButton);
 
-        window.setLocation(400, 400);
-        
-        JPanel buttonHolder = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        buttonHolder.add(cancelledButton);
-        
-        JPanel holderPanel = new JPanel(new BorderLayout(PADDING, PADDING));
-        holderPanel.add(panel, BorderLayout.NORTH);
-        holderPanel.add(buttonHolder, BorderLayout.SOUTH);
-        
-        holderPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		JPanel holderPanel = new JPanel(new BorderLayout(PADDING, PADDING));
+		holderPanel.add(panel, BorderLayout.NORTH);
+		holderPanel.add(buttonHolder, BorderLayout.SOUTH);
 
-        window.getContentPane().setLayout(new BorderLayout());
-        window.getContentPane().add(holderPanel, BorderLayout.NORTH);
-        window.pack();
-        Dimension windowSize = window.getPreferredSize();
-        window.setSize(400, windowSize.height);
-        window.setResizable(false);
-    }
+		holderPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+		window.getContentPane().setLayout(new BorderLayout());
+		window.getContentPane().add(holderPanel, BorderLayout.NORTH);
+		window.pack();
+		Dimension windowSize = window.getPreferredSize();
+		window.setSize(400, windowSize.height);
+		window.setResizable(false);		
+	}
     
-    public void setCancelled() {
-        taskLabel.setText("Cancelled.  Waiting for reasoner to terminate...");
-        cancelledAction.setEnabled(false);
-    	owlEditorKit.getOWLModelManager().getOWLReasonerManager().killCurrentClassification();
-    }
+	public void setCancelled() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				initWindow();
+				taskLabel
+						.setText("Cancelled.  Waiting for reasoner to terminate...");
+				cancelledAction.setEnabled(false);
+			}
+		});
+		owlEditorKit.getOWLModelManager().getOWLReasonerManager()
+				.killCurrentClassification();
+	}
 
-    public void reasonerTaskBusy() {
-    	progressBar.setIndeterminate(true);
-    }
+	public void reasonerTaskBusy() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				progressBar.setIndeterminate(true);
+			}
+		});
+	}
 
+	public void reasonerTaskProgressChanged(final int value, final int max) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				progressBar.setIndeterminate(false);
+				progressBar.setMaximum(max);
+				progressBar.setValue(value);
+			}
+		});
+	}
 
-
-
-    public void reasonerTaskProgressChanged(int value, int max) {
-    	progressBar.setIndeterminate(false);
-    	progressBar.setMaximum(max);
-    	progressBar.setValue(value);
-    }
-
-
-
-
-    public void reasonerTaskStarted(String taskName) {
-    	progressBar.setIndeterminate(false);
-    	progressBar.setValue(0);
-    	showWindow(taskName);
-    	taskLabel.setText(taskName);
-    }
-
-
+	public void reasonerTaskStarted(String taskName) {
+		if (taskIsRunning)
+			return;
+		taskIsRunning = true;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				progressBar.setIndeterminate(false);
+				progressBar.setValue(0);
+			}
+		});
+		showWindow(taskName);
+	}
 
 
     public void reasonerTaskStopped() {
-    	window.setVisible(false);
-    	taskLabel.setText("");
+    	if (!taskIsRunning)
+    		return;
+    	taskIsRunning = false;    	
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (taskIsRunning)
+					return;				
+				initWindow();
+				if (!window.isVisible())
+					return;
+				taskLabel.setText("");
+				window.setVisible(false);
+			}
+		});		
     }
 
 
-
-    private void showWindow(final String message) {
+    private void showWindow(final String message) {    	
     	SwingUtilities.invokeLater(new Runnable() {
     		public void run() {
-    			if (!window.isVisible()) {
-    				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    taskLabel.setText(message);
-                    cancelledAction.setEnabled(true);
-                    window.setLocation(screenSize.width / 2 - window.getWidth() / 2,
-    						screenSize.height / 2 - window.getHeight() / 2);
-    				window.setVisible(true);
-    			}
+    			if (!taskIsRunning)
+    				return;    			
+    			initWindow();    			
+    			taskLabel.setText(message);
+				if (window.isVisible())
+					return;				
+				cancelledAction.setEnabled(true);
+				window.setLocationRelativeTo(window.getOwner());
+				window.setVisible(true);
     		}
     	});
     }
 
-    public void reset() {
-    	SwingUtilities.invokeLater(new Runnable() {
-			
+	public void reset() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-		    	window.setVisible(false);				
+				initWindow();
+				window.dispose();
 			}
 		});
-    }
+	}
 
     public void dispose() throws Exception {
+    	reset();
     }
 
 }
