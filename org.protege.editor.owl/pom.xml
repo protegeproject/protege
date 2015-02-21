@@ -5,7 +5,7 @@
     <parent>
         <groupId>edu.stanford.protege</groupId>
         <artifactId>protege-parent</artifactId>
-        <version>5.0.0-beta-16-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT-beta-16</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>edu.stanford.protege</groupId>
             <artifactId>org.protege.xmlcatalog</artifactId>
-            <version>1.0.4</version>
+            <version>[1.0.4,2)</version>
         </dependency>
 
         <dependency>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>[4,5)</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -94,7 +94,8 @@
                         <Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
                         <Export-Package>
                             ${project.artifactId}*;version=${project.version},
-                            org.protege.xmlcatalog.*
+                            org.protege.xmlcatalog.*,
+                            org.protege.owlapi.model
                         </Export-Package>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,

@@ -1,15 +1,15 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFConsumer;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.xml.sax.SAXException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class RdfExtractorConsumer implements RDFConsumer {
     private Set<String> ontologyProperties        = new HashSet<String>();
@@ -82,6 +82,43 @@ public class RdfExtractorConsumer implements RDFConsumer {
     }
 
     public void startModel(String physicalURI) throws SAXException {
+
+    }
+
+    /**
+     * for iris that need to be mapped to blank nodes, e.g., SWRL rules with an
+     * IRI - the IRI should be dropped for such constructs.
+     *
+     * @param i iri to remap if not blank
+     * @return blank iri remapping i
+     */
+    @Override
+    public IRI remapIRI(IRI i) {
+        return null;
+    }
+
+    /**
+     * for iris that have been remapped to blank nodes, e.g., SWRL rules: the
+     * triple subject swrl:body object, for example, needs the subject to be
+     * remapped consistently.
+     *
+     * @param i iri to remap if not blank
+     * @return blank iri remapping i, or i if i has not been remapped earlier.
+     */
+    @Override
+    public String remapOnlyIfRemapped(String i) {
+        return i;
+    }
+
+    /**
+     * Add a prefix to the underlying ontology format, if prefixes are
+     * supported.
+     *
+     * @param abbreviation short name for prefix
+     * @param value
+     */
+    @Override
+    public void addPrefix(String abbreviation, String value) {
 
     }
 
