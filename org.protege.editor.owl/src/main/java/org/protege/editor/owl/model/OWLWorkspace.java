@@ -1,55 +1,5 @@
 package org.protege.editor.owl.model;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.text.JTextComponent;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -57,33 +7,24 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
-import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
-import org.protege.editor.core.ui.workspace.TabbedWorkspace;
-import org.protege.editor.core.ui.workspace.WorkspaceManager;
-import org.protege.editor.core.ui.workspace.WorkspaceTab;
-import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
+import org.protege.editor.core.ui.workspace.*;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.inference.OWLReasonerManager;
-import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPlugin;
-import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPluginJPFImpl;
-import org.protege.editor.owl.model.inference.ReasonerDiedException;
-import org.protege.editor.owl.model.inference.ReasonerInfoComparator;
-import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.protege.editor.owl.model.inference.ReasonerStatus;
-import org.protege.editor.owl.model.inference.ReasonerUtilities;
+import org.protege.editor.owl.model.inference.*;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -92,40 +33,31 @@ import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.find.EntityFinderField;
-import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
-import org.protege.editor.owl.ui.inference.ExplainInconsistentOntologyAction;
-import org.protege.editor.owl.ui.inference.PrecomputeAction;
-import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
-import org.protege.editor.owl.ui.inference.StopReasonerAction;
+import org.protege.editor.owl.ui.inference.*;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
-import org.protege.editor.owl.ui.renderer.KeywordColourMap;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLIconProvider;
-import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
-import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.ImportChange;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.SetOntologyID;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -476,11 +408,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
     }
 
+    private List<ProtegeAction> extraReasonerMenuActions;
 
     protected void initialiseExtraMenuItems(JMenuBar menuBar) {
         super.initialiseExtraMenuItems(menuBar);
 
         getOntologiesMenu(menuBar);
+        this.extraReasonerMenuActions = initialiseExtraReasonerMenuActions();
+
         rebuildReasonerMenu(menuBar);
         addReasonerListener(menuBar);
         updateTitleBar();
@@ -500,6 +435,73 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         });
     }
 
+    private class ExtraReasonerMenuActionPlugin extends ProtegeActionPluginJPFImpl {
+        protected ExtraReasonerMenuActionPlugin(EditorKit editorKit, IExtension extension) {
+            super(editorKit, extension);
+        }
+
+        public String getAccelerator() {
+            return PluginUtilities.getAttribute(getIExtension(), "accelerator");
+        }
+    }
+
+    private class ExtraReasonerMenuActionPluginLoader extends AbstractPluginLoader<ExtraReasonerMenuActionPlugin> {
+
+        /**
+         * Creates a loader that will load (a subset) of the plugins
+         * that extend the specified plugin at the specified plugin
+         * extension point.
+         */
+        public ExtraReasonerMenuActionPluginLoader() {
+            super(ProtegeOWL.ID, "ExtraReasonerMenuAction");
+        }
+
+        /**
+         * This method needs to be overriden to create an instance
+         * of the desired plugin, based on the plugin <code>Extension</code>
+         *
+         * @param extension The <code>Extension</code> that describes the
+         *                  Java Plugin Framework extension.
+         * @return A plugin object (typically some sort of wrapper around
+         * the extension)
+         */
+        @Override
+        protected ExtraReasonerMenuActionPlugin createInstance(IExtension extension) {
+
+            return new ExtraReasonerMenuActionPlugin(getOWLEditorKit(), extension);
+        }
+    }
+
+    private List<ProtegeAction> initialiseExtraReasonerMenuActions() {
+        List<ProtegeAction> result = new ArrayList<>();
+        ExtraReasonerMenuActionPluginLoader loader = new ExtraReasonerMenuActionPluginLoader();
+        for (ExtraReasonerMenuActionPlugin extraReasonerMenuActionPlugin : loader.getPlugins()) {
+            try {
+                ProtegeAction action = extraReasonerMenuActionPlugin.newInstance();
+                action.setEditorKit(getOWLEditorKit());
+                String name = extraReasonerMenuActionPlugin.getName();
+                if (name == null) {
+                    logger.warn("extra reasoner menu action plugin has no name: " + extraReasonerMenuActionPlugin);
+                }
+                action.putValue(Action.NAME, name);
+                String toolTipText = extraReasonerMenuActionPlugin.getToolTipText();
+                if (toolTipText != null) {
+                    action.putValue(Action.SHORT_DESCRIPTION, toolTipText);
+                }
+                String accelerator = extraReasonerMenuActionPlugin.getAccelerator();
+                if(accelerator != null) {
+                    action.putValue(Action.ACCELERATOR_KEY,accelerator);
+                }
+                result.add(action);
+                logger.debug("action = " + action);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                logger.error("Caught Exception", e); //To change body of catch statement use File | Settings | File Templates.
+            }
+
+        }
+
+        return result;
+    }
 
     private void rebuildReasonerMenu(JMenuBar menuBar) {
         final OWLModelManager mngr = getOWLModelManager();
@@ -529,6 +531,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         configureAction.setEditorKit(getOWLEditorKit());
         configureAction.putValue(Action.NAME, "Configure...");
         reasonerMenu.add(configureAction);
+
+         if (extraReasonerMenuActions != null && extraReasonerMenuActions.size() > 0) {
+             reasonerMenu.addSeparator();
+             for (ProtegeAction action : extraReasonerMenuActions) {
+                 reasonerMenu.add(action);
+             }
+         }
 
         reasonerMenu.addSeparator();
 
