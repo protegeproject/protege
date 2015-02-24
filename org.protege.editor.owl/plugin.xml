@@ -26,6 +26,7 @@
 
 	<extension-point id="repository" name="OWL Ontology Repository Factory"/>
     <extension-point id="entity_renderer" name="Renderer Plugin" schema="schema/entity_renderer.exsd"/>
+    <extension-point id="ExtraReasonerMenuAction" name="Extra Reasoner Menu Item" />
 
     <!-- PLUGINS -->
 
