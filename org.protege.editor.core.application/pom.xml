@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-16-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT-beta-16</version>
 		<relativePath>../</relativePath>
 	</parent>
 	
@@ -63,17 +63,17 @@
 						</Import-Package>
 						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
 					</instructions>
-					<executions>
-						<execution>
-							<id>bundle-manifest</id>
-							<phase>install</phase>
-							<goals>    
-								<goal>manifest</goal>
-							</goals>   
-						</execution>
-					</executions>
 				</configuration>
-			</plugin>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 				
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
