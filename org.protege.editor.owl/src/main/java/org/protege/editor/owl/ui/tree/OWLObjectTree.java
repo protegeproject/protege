@@ -258,15 +258,17 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     /**
      * Causes the tree to be reloaded.  Note that this will collapse
-     * all expanded paths.
+     * all expanded paths except for the current selection.
      */
     public void reload() {
+    	N currentSelection = getSelectedOWLObject();    	
         // Reload the tree
         nodeMap.clear();
         // TODO: getRoots needs to be changed - the user might have specified specific roots
         Set<N> roots = provider.getRoots();
         OWLObjectTreeRootNode<N> rootNode = new OWLObjectTreeRootNode<N>(this, roots);
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
+        setSelectedOWLObject(currentSelection);
     }
 
 
