@@ -67,8 +67,11 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
        	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
        		OWLReasoner reasoner = getCurrentReasoner();       		
        		if (reasoner instanceof NoOpReasoner || reasoner.getBufferingMode() != BufferingMode.NON_BUFFERING)
-   				return;       		
+   				return;
+       		OWLOntology activeOntology = owlModelManager.getActiveOntology();
+       		Set<OWLOntology> importClosure = null;
        		boolean needsRefresh = false;
+       		
 			for (OWLOntologyChange change : changes) {
 				if (change instanceof AnnotationChange)
 					continue;
@@ -76,6 +79,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 					continue;
 				if (change instanceof OWLAxiomChange && !change.getAxiom().isLogicalAxiom())
 					continue;
+				OWLOntology changedOntology = change.getOntology();
+				if (!changedOntology.equals(activeOntology)) {
+					if (importClosure == null) {
+						importClosure = activeOntology.getImportsClosure();
+					}	
+					if (!importClosure.contains(changedOntology)) {
+						continue;
+					}	
+				}
 				// otherwise
 				needsRefresh = true;
 				break;
