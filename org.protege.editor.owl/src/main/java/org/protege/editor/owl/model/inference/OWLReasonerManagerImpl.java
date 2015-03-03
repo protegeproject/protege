@@ -17,7 +17,13 @@ import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
+import org.semanticweb.owlapi.model.AnnotationChange;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -57,6 +63,35 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     
     private List<ReasonerFilter> reasonerFilters = new ArrayList<ReasonerFilter>();
     
+    private OWLOntologyChangeListener nonBufferingOntologyChangeListener = new OWLOntologyChangeListener() {
+       	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+       		OWLReasoner reasoner = getCurrentReasoner();       		
+       		if (reasoner instanceof NoOpReasoner || reasoner.getBufferingMode() != BufferingMode.NON_BUFFERING)
+   				return;       		
+       		boolean needsRefresh = false;
+			for (OWLOntologyChange change : changes) {
+				if (change instanceof AnnotationChange)
+					continue;
+				if (change instanceof SetOntologyID)
+					continue;
+				if (change instanceof OWLAxiomChange && !change.getAxiom().isLogicalAxiom())
+					continue;
+				// otherwise
+				needsRefresh = true;
+				break;
+			}
+			if (needsRefresh) {
+				// too tricky... too tricky... wait until after the reasoner has reacted to the changes.
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
+							fireReclassified();
+						}						
+					}
+				});
+			}
+       	}
+    };     
 
     public OWLReasonerManagerImpl(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
@@ -66,8 +101,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
         exceptionHandler = new DefaultOWLReasonerExceptionHandler();
+   		owlModelManager.addOntologyChangeListener(nonBufferingOntologyChangeListener);
     }
-
 
     public void setReasonerExceptionHandler(OWLReasonerExceptionHandler handler) {
         if(handler != null) {
@@ -87,6 +122,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         if (reasonerProgressMonitor instanceof Disposable) {
         	((Disposable) reasonerProgressMonitor).dispose();
         }
+        owlModelManager.removeOntologyChangeListener(nonBufferingOntologyChangeListener);
     }
     
     private void clearAndDisposeReasoners() {
