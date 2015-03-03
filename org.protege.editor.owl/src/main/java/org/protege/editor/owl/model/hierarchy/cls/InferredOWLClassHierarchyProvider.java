@@ -63,37 +63,6 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
             }
         }
     };
-    private OWLOntologyChangeListener owlOntologyChangeListener = new OWLOntologyChangeListener() {
-    	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-    		OWLReasoner reasoner = owlModelManager.getReasoner();
-    		// the reasoner may not know it has updates yet - but we can check if it believes it will handle them
-    		if (!(reasoner instanceof NoOpReasoner) && reasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
-    			boolean needsRefresh = false;
-    			for (OWLOntologyChange change : changes) {
-    				if (change instanceof OWLAxiomChange && ((OWLAxiomChange) change).getAxiom().isLogicalAxiom()) {
-    					needsRefresh = true;
-    					break;
-    				}
-    			}
-    			if (needsRefresh) {
-    				// too tricky... too tricky... wait until after the reasoner has reacted to the changes.
-    				SwingUtilities.invokeLater(new Runnable() {
-    					public void run() {
-    						try {
-    							if (owlModelManager.getOWLReasonerManager().getReasonerStatus() == ReasonerStatus.INITIALIZED) {
-    								fireHierarchyChanged();
-    							}
-    						}
-    						catch (ReasonerDiedException rde) {
-    							ReasonerUtilities.warnThatReasonerDied(null, rde);
-    						}
-    					}
-    				});
-    			}
-    		}
-    	}
-    };
-
 
     public InferredOWLClassHierarchyProvider(OWLModelManager owlModelManager, OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
@@ -103,7 +72,6 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
         owlNothing = owlModelManager.getOWLDataFactory().getOWLNothing();
 
         owlModelManager.addListener(owlModelManagerListener);
-        owlOntologyManager.addOntologyChangeListener(owlOntologyChangeListener);
     }
 
 
@@ -114,7 +82,6 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public void dispose() {
         super.dispose();
         owlModelManager.removeListener(owlModelManagerListener);
-        owlModelManager.getOWLOntologyManager().removeOntologyChangeListener(owlOntologyChangeListener);
     }
 
 
