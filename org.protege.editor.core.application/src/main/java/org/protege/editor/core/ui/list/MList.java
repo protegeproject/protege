@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.management.Query;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -293,13 +294,12 @@ public class MList extends JList {
                 if (!isSelected) {
                     component.setBackground(MList.this.getItemBackgroundColor((MListItem) value));
                 }
-                if (!(component instanceof LegacyRenderer)) {
+                if (component instanceof RendererWithInsets) {
+                    System.out.println(component.getClass().getName());
                     Insets insets = component.getInsets();
-                    int prefHeight = prefSize.height + insets.top + insets.bottom;
-                    prefSize.height = prefHeight;
+                    prefSize.height = prefSize.height + insets.top + insets.bottom;
                     component.setPreferredSize(prefSize);
                 }
-
             }
             if (isSelected) {
                 component.setBackground(list.getSelectionBackground());
