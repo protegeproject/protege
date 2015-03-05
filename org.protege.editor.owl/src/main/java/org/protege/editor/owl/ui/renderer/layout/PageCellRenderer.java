@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.RendererWithInsets;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -16,7 +17,7 @@ import java.awt.event.MouseEvent;
  *     A cell render for JLists and JTables that renders {@link Page} objects into the cells.
  * </p>
  */
-public abstract class PageCellRenderer extends JPanel implements ListCellRenderer, TableCellRenderer {
+public abstract class PageCellRenderer extends JPanel implements ListCellRenderer, TableCellRenderer, RendererWithInsets {
 
     private PageCache pageCache = new PageCache();
 

@@ -32,12 +32,10 @@ import javax.swing.tree.TreeCellRenderer;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.list.LegacyRenderer;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.model.util.OWLUtilities;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -138,7 +136,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean opaque = false;
 
 
-    private class OWLCellRendererPanel extends JPanel implements LegacyRenderer {
+    private class OWLCellRendererPanel extends JPanel {
         private OWLCellRendererPanel(LayoutManager layout) {
             super(layout);
         }
