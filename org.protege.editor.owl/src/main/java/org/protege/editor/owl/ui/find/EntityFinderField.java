@@ -69,6 +69,9 @@ public class EntityFinderField extends AugmentedJTextField {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     incrementListSelection();
                 }
+                if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    handleBackSpaceDown();
+                }
             }
         });
         getDocument().addDocumentListener(new DocumentListener() {
@@ -106,6 +109,12 @@ public class EntityFinderField extends AugmentedJTextField {
 //            EntityFinderField.this.editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
 //            editorKit.getWorkspace().displayOWLEntity(selEntity);
 //        }
+    }
+
+    private void handleBackSpaceDown() {
+        if(getText().isEmpty()) {
+            closeResults();
+        }
     }
 
 
