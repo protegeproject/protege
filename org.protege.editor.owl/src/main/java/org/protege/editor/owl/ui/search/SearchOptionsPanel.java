@@ -182,7 +182,6 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     private void handleSearchTypeChanged() {
-        System.out.println("Search type changed");
         editorKit.getSearchManager().setCategories(getSearchTypes());
         fireSearchRequestOptionChanged();
     }
