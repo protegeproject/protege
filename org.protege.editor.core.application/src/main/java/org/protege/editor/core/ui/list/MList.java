@@ -295,7 +295,6 @@ public class MList extends JList {
                     component.setBackground(MList.this.getItemBackgroundColor((MListItem) value));
                 }
                 if (component instanceof RendererWithInsets) {
-                    System.out.println(component.getClass().getName());
                     Insets insets = component.getInsets();
                     prefSize.height = prefSize.height + insets.top + insets.bottom;
                     component.setPreferredSize(prefSize);
