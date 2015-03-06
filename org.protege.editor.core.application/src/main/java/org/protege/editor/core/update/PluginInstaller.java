@@ -121,12 +121,12 @@ public class PluginInstaller {
     
     private File downloadPlugin(PluginInfo info) throws IOException {
         URL downloadURL = info.getDownloadURL();
-        final String[] path = downloadURL.getFile().split("/");
-        String downloadFileName = path[path.length-1];
-
-        String tmpPath = System.getProperty("java.io.tmpdir");
-        File tempPluginFile = new File(tmpPath, downloadFileName);
+        File tempPluginFile = File.createTempFile(info.getId(), ".jar");
         tempPluginFile.deleteOnExit();
+
+        logger.debug("Download URL: " + downloadURL.toString());
+        logger.debug("Temp file: " + tempPluginFile.getAbsolutePath());
+
         URLConnection conn = downloadURL.openConnection();
         BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
