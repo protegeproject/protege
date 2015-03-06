@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
 
@@ -66,10 +67,9 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
             	if (!getOWLModelManager().getReasoner().isConsistent()) {
             		return;
             	}
-                Set<OWLObjectPropertyExpression> equivs = new HashSet<OWLObjectPropertyExpression>(getReasoner().getEquivalentObjectProperties(getRootObject()).getEntities());
-                equivs.remove(getRootObject());
-                if (equivs.size() > 1) {
-                    OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivs);
+                Node<OWLObjectPropertyExpression> equivalentObjectProperties = getReasoner().getEquivalentObjectProperties(getRootObject());
+                if (!equivalentObjectProperties.getEntitiesMinus(getRootObject()).isEmpty()) {
+                    OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivalentObjectProperties.getEntities());
                     if (!added.contains(ax)) {
                         addInferredRowIfNontrivial(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                      OWLEquivalentObjectPropertiesAxiomFrameSection.this,
