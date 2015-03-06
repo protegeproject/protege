@@ -25,6 +25,7 @@ import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
+import org.protege.editor.owl.model.inference.ReasonerPreferencesListener;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
@@ -973,6 +974,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public OWLReasonerManager getOWLReasonerManager() {
         if (owlReasonerManager == null) {
             owlReasonerManager = new OWLReasonerManagerImpl(this);
+            owlReasonerManager.getReasonerPreferences().addListener(new ReasonerPreferencesListener() {
+                @Override
+                public void preferencesChanged() {
+                    fireEvent(EventType.ONTOLOGY_CLASSIFIED);
+                }
+            });
         }
         return owlReasonerManager;
     }
