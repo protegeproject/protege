@@ -6,7 +6,7 @@
     <formats>
         <format>dir</format>
     </formats>
-    <baseDirectory>Protege_5.0_beta</baseDirectory>
+    <baseDirectory>Protege 5.0 Beta</baseDirectory>
 
     <fileSets>
         <fileSet>
