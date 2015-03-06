@@ -96,8 +96,10 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
         protected void initialiseOWLView() throws Exception {
             setLayout(new BorderLayout());
 
-            list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
-            list.setListData(makeDatatypeList().toArray());
+            list = new OWLObjectList<>(getOWLEditorKit());
+            List<OWLDatatype> datatypes = getDatatypeList();
+            OWLDatatype[] objects = datatypes.toArray(new OWLDatatype[datatypes.size()]);
+            list.setListData(objects);
             list.setSelectedIndex(0);
 
             add(ComponentFactory.createScrollPane(list));
@@ -199,17 +201,17 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
         return l;
     }
     
-    private List<OWLDatatype> makeDatatypeList() {
+    private List<OWLDatatype> getDatatypeList() {
         OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
+        List<OWLDatatype> datatypeList = new ArrayList<>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
         return datatypeList;
     }
     
     private void rebuildDatatypeList() {
-        Object selected = list.getSelectedValue();
-        List<OWLDatatype> datatypes = makeDatatypeList();
-        list.setListData(datatypes.toArray());
+        OWLDatatype selected = list.getSelectedValue();
+        List<OWLDatatype> datatypes = getDatatypeList();
+        list.setListData(datatypes.toArray(new OWLDatatype[datatypes.size()]));
         if (datatypes.contains(selected)) {
             list.setSelectedValue(selected, true);
         }

@@ -200,7 +200,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
 
-        list.setListData(datatypeList.toArray());
+        list.setListData(datatypeList.toArray(new OWLDatatype[datatypeList.size()]));
         final OWLDatatype sel = getOWLWorkspace().getOWLSelectionModel().getLastSelectedDatatype();
         if (datatypeList.contains(sel)){
             list.setSelectedValue(sel, true);
