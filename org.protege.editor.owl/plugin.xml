@@ -1134,7 +1134,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Rename entity..."/>
         <class value="org.protege.editor.owl.ui.action.RenameEntityAction"/>
-        <toolTip value="Change the URI of the selected entity"/>
+        <toolTip value="Change the IRI of the selected entity"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-B"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="U"/>
@@ -1144,16 +1144,16 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Rename multiple entities..."/>
         <class value="org.protege.editor.owl.ui.action.RenameEntitiesBySearchAndReplaceAction"/>
-        <toolTip value="Change the URI of entities using search and replace"/>
+        <toolTip value="Change the IRI of entities using search and replace"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <extension id="menu.ChangeOntologyURI"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Change ontology URI..."/>
+        <name value="Change ontology IRI..."/>
         <class value="org.protege.editor.owl.ui.action.ChangeOntologyIRI"/>
-        <toolTip value="Change the URI of the active ontology"/>
+        <toolTip value="Change the IRI of the active ontology"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-X"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -1161,9 +1161,9 @@
 
     <extension id="menu.ConvertEntityURIsToLabels"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Convert entity URIs to labels..."/>
+        <name value="Convert entity IRIs to labels..."/>
         <class value="org.protege.editor.owl.ui.action.ConvertEntityURIsToLabels"/>
-        <toolTip value="Change the URI of all entities to an ID and move the name to a label annotation on the entity as per settings in the New Entity preferences"/>
+        <toolTip value="Change the IRI of all entities to an ID and move the name to a label annotation on the entity as per settings in the New Entity preferences"/>
         <path value="org.protege.editor.owl.menu.Refactor/SlotA-Y"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
