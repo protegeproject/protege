@@ -19,7 +19,7 @@ public enum ReasonerStatus {
 		}
 	},
 
-	REASONER_NOT_INITIALIZED("To use the reasoner click Reasoner->Start reasoner",
+	REASONER_NOT_INITIALIZED("To use the reasoner click Reasoner \u2794 Start reasoner",
 			"<html>Starts a new reasoner and initializes a cache of reasoning results<br>" +
 					"including the inferred class hierarchy and the inferred types of</br><br>" +
 					"of individuals.</br></html>", "No reasoner running. Nothing to synchronize.") {
