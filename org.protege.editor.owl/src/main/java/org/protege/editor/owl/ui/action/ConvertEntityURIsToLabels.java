@@ -40,7 +40,7 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
         if (getOWLModelManager().getOntologies().size() == 1){
             JComponent selPanel = createConfirmPanel(false);
 
-            int ret = new UIHelper(getOWLEditorKit()).showDialog("Convert entity URIs to labels",
+            int ret = new UIHelper(getOWLEditorKit()).showDialog("Convert entity IRIs to labels",
                                                                  selPanel);
             if (ret == JOptionPane.OK_OPTION) {
                 performConversion(null);
@@ -49,7 +49,7 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
         else{
             JComponent selPanel = createConfirmPanel(true);
 
-            int ret = new UIHelper(getOWLEditorKit()).showDialog("Convert entity URIs to labels",
+            int ret = new UIHelper(getOWLEditorKit()).showDialog("Convert entity IRIs to labels",
                                                                  selPanel);
             if (ret == JOptionPane.OK_OPTION) {
 
@@ -103,7 +103,7 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
 
         StringBuffer html = new StringBuffer("<html><body>");
         html.append("For each entity missing a label in the currently loaded ontologies:<ul>");
-        html.append("<li>create a label annotation using its current URI fragment</li>");
+        html.append("<li>create a label annotation using its current IRI fragment</li>");
         html.append("<li>change its URI to an auto ID</li>");
         html.append("</ul>This conversion uses the current settings in <a href='#'>Preferences | New Entities</a>.");
 
