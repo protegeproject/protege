@@ -58,7 +58,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null && selectionChangedByUser) {
-                    setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
+                    setGlobalSelection(list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
             }
@@ -67,14 +67,14 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     public void initialiseIndividualsView() throws Exception {
-        list = new OWLObjectList<OWLNamedIndividual>(getOWLEditorKit());
+        list = new OWLObjectList<>(getOWLEditorKit());
         list.setSelectionMode(selectionMode);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
         list.addListSelectionListener(listSelectionListener);
         list.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
-                setGlobalSelection((OWLNamedIndividual)list.getSelectedValue());
+                setGlobalSelection(list.getSelectedValue());
             }
         });
         listener = new OWLOntologyChangeListener() {
@@ -87,7 +87,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
         setupActions();
         changeListenerMediator = new ChangeListenerMediator();
-        individualsInList = new TreeSet<OWLNamedIndividual>(getOWLModelManager().getOWLObjectComparator());
+        individualsInList = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
         refill();
         modelManagerListener = new OWLModelManagerListener() {
             public void handleChange(OWLModelManagerChangeEvent event) {
@@ -137,7 +137,8 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     protected void reset() {
-        list.setListData(individualsInList.toArray());
+        OWLNamedIndividual[] objects = individualsInList.toArray(new OWLNamedIndividual[individualsInList.size()]);
+        list.setListData(objects);
         OWLNamedIndividual individual = getSelectedOWLIndividual();
         selectionChangedByUser = false;
         try {
@@ -152,7 +153,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         if (!isPinned()) {
             list.setSelectedValue(selelectedIndividual, true);
         }
-        return (OWLNamedIndividual) list.getSelectedValue();
+        return list.getSelectedValue();
     }
 
     public void disposeView() {
@@ -161,20 +162,16 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
     public OWLNamedIndividual getSelectedIndividual() {
-        return (OWLNamedIndividual) list.getSelectedValue();
+        return list.getSelectedValue();
     }
 
     public Set<OWLNamedIndividual> getSelectedIndividuals() {
-        Set<OWLNamedIndividual> inds = new HashSet<OWLNamedIndividual>();
-        for (Object obj : list.getSelectedValues()) {
-            inds.add((OWLNamedIndividual) obj);
-        }
-        return inds;
+        return new LinkedHashSet<>(list.getSelectedValuesList());
     }
 
     protected void processChanges(List<? extends OWLOntologyChange> changes) {
-    	Set<OWLEntity> possiblyAddedObjects = new HashSet<OWLEntity>();
-    	Set<OWLEntity> possiblyRemovedObjects = new HashSet<OWLEntity>();
+    	Set<OWLEntity> possiblyAddedObjects = new HashSet<>();
+    	Set<OWLEntity> possiblyRemovedObjects = new HashSet<>();
         OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedObjects);
         OWLEntityCollector removedCollector = new OWLEntityCollector(possiblyRemovedObjects);
         for (OWLOntologyChange chg : changes) {
@@ -205,7 +202,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                     }
                 }
                 if (!stillReferenced) {
-                    if (individualsInList.remove(ent)) {
+                    if (individualsInList.remove((OWLNamedIndividual) ent)) {
                         mod = true;
                     }
                 }
@@ -233,12 +230,12 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     protected List<OWLOntologyChange> dofurtherCreateSteps(OWLIndividual newIndividual) {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 
     public List<OWLNamedIndividual> find(String match) {
-        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
     public void show(OWLNamedIndividual owlEntity) {
@@ -299,7 +296,6 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
     public void setSelectionMode(int selectionMode) {
-        selectionMode = selectionMode;
         if (list != null) {
             list.setSelectionMode(selectionMode);
         }

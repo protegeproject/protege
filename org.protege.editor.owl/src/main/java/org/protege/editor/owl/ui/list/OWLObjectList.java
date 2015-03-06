@@ -25,7 +25,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectList<O extends OWLObject> extends JList {
+public class OWLObjectList<O extends OWLObject> extends JList<O> {
     private static final long serialVersionUID = -817749022854204056L;
 
 
