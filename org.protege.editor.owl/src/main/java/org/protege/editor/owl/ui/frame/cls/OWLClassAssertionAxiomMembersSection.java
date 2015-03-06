@@ -37,7 +37,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
  */
 public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomFrameSection<OWLClassAssertionAxiom, OWLNamedIndividual> {
 
-    public static final String LABEL = "Direct instances";
+    public static final String LABEL = "Instances";
 
     public static final boolean SHOW_DIRECT_INSTANCES = true;
 
