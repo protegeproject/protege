@@ -1075,7 +1075,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Loaded ontology sources..."/>
         <class value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
-        <toolTip value="Shows the physical URIs from where currently loaded ontologies were obtained from"/>
+        <toolTip value="Shows the physical URLs from where currently loaded ontologies were obtained from"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
