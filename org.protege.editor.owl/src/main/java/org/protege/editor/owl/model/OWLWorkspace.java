@@ -128,7 +128,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private JLabel reasonerStatus = new JLabel();
 
-    private JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
+    private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
 
 
     public static final String REASONER_INITIALIZE = "Start reasoner";
@@ -958,6 +958,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     public JComponent getStatusArea() {
         if (statusArea == null) {
             statusArea = new JPanel();
+            statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 2));
             statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(customizedProtege);
