@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.framelist;
 
+import org.protege.editor.core.ui.list.RendererWithInsets;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
@@ -24,7 +25,7 @@ import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br><br>
  */
-public class OWLFrameListRenderer implements ListCellRenderer {
+public class OWLFrameListRenderer implements ListCellRenderer, RendererWithInsets {
 
     private OWLEditorKit owlEditorKit;
 
