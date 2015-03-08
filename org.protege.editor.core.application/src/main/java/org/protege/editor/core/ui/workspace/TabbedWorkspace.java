@@ -1,18 +1,14 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
+import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
+import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ComponentFactory;
 
 /**
@@ -40,10 +36,11 @@ public abstract class TabbedWorkspace extends Workspace {
     public void initialise() {
         JPanel tabHolder = new JPanel(new BorderLayout());
 
-        workspaceTabs = new HashSet<WorkspaceTab>();
+        workspaceTabs = new HashSet<>();
 
         // Create the tabs.
         tabbedPane = new JTabbedPane();
+        tabbedPane.setUI(new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.CLOSABLE, new WorkspaceTabCloseHandler()));
 
         tabHolder.add(tabbedPane);
         setContent(tabbedPane);
@@ -121,7 +118,7 @@ public abstract class TabbedWorkspace extends Workspace {
     /**
      * Convenience method to add a workspace tab.  This method initialises the tab.
      */
-    public void addTab(WorkspaceTab workspaceTab) {
+    public void addTab(final WorkspaceTab workspaceTab) {
         tabbedPane.addTab(workspaceTab.getLabel(), workspaceTab.getIcon(), workspaceTab);
         workspaceTabs.add(workspaceTab);
         try {
@@ -132,7 +129,6 @@ public abstract class TabbedWorkspace extends Workspace {
             tabbedPane.addTab(workspaceTab.getLabel(), workspaceTab.getIcon(), createErrorPanel(e));
         }
     }
-
 
     public boolean containsTab(String tabId) {
         for (WorkspaceTab tab : getWorkspaceTabs()) {

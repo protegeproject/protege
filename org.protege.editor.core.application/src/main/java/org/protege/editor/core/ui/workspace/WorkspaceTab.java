@@ -2,10 +2,14 @@ package org.protege.editor.core.ui.workspace;
 
 import java.net.URL;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.TabbedPaneUI;
 
+import org.coode.mdock.UIComponentFactory;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.core.ui.tabbedpane.NullTabCloseHandler;
+import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 
 
 /**
@@ -21,6 +25,18 @@ import org.protege.editor.core.plugin.ProtegePluginInstance;
  * This is a core plugin type.
  */
 public abstract class WorkspaceTab extends JComponent implements ProtegePluginInstance {
+
+    static  {
+        UIComponentFactory.setInstance(new UIComponentFactory() {
+            public TabbedPaneUI createComponentNodeTabbedPaneUI() {
+                return new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.NOT_CLOSEABLE, new NullTabCloseHandler());
+            }
+            @Override
+            public Border createComponentNodeBorder() {
+                return BorderFactory.createEmptyBorder();
+            }
+        });
+    }
 
     /**
      * 

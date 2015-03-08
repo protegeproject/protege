@@ -1,9 +1,5 @@
 package org.protege.editor.core.ui.workspace;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
@@ -252,10 +248,6 @@ public abstract class Workspace extends JComponent implements Disposable {
             PopupFactory.setSharedInstance(new PopupFactory());
             PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
             PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
-
-            FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
-            FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
-            PlasticLookAndFeel.setFontPolicy(fixedPolicy);
 
             UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
             UIManager.setLookAndFeel(lookAndFeel);

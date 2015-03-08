@@ -15,21 +15,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
-import org.coode.mdock.ComponentNode;
-import org.coode.mdock.NodeComponent;
-import org.coode.mdock.NodePanel;
-import org.coode.mdock.SplitterNode;
+import org.coode.mdock.*;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
@@ -211,7 +200,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
     public void createUI() {
         initialisedContent = true;
         logger.debug("Creating UI for " + this.getViewName());
-        setLayout(new BorderLayout(3, 3));
+        setLayout(new BorderLayout(0, 0));
         viewComponentHolder = new JPanel(new BorderLayout());
         viewBarComponent = new ViewBarComponent(getViewName(), plugin.getBackgroundColor(), viewComponentHolder);
         add(viewBarComponent);

@@ -1,7 +1,5 @@
 package org.protege.editor.core.ui.util;
 
-import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -15,37 +13,46 @@ import com.jgoodies.looks.plastic.theme.*;
  */
 public class ProtegePlasticTheme extends ExperienceBlue {
 	
-	public final static int DEFAULT_FONT_SIZE = 11;
-	public final static Font DEFAULT_FONT = new Font("Dialog", Font.PLAIN, DEFAULT_FONT_SIZE);
-
     public void addCustomEntriesToTable(UIDefaults table) {
         super.addCustomEntriesToTable(table);
         Object[] uiDefaults = { 
         		"Tree.expandedIcon", Icons.getIcon("hierarchy.expanded.gif"), 
         		"Tree.collapsedIcon", Icons.getIcon("hierarchy.collapsed.gif"), 
-        		"Table.selectionForeground", getMenuItemSelectedForeground(),
-                "Table.selectionBackground", getMenuItemSelectedBackground(), 
-                "List.selectionForeground", getMenuItemSelectedForeground(), 
-                "List.selectionBackground", getMenuItemSelectedBackground(),
-                "Tree.selectionForeground", getMenuItemSelectedForeground(), 
-                "Tree.selectionBackground", getMenuItemSelectedBackground(), 
+//        		"Table.selectionForeground", getMenuItemSelectedForeground(),
+//                "Table.selectionBackground", getMenuItemSelectedBackground(),
+//                "List.selectionForeground", getMenuItemSelectedForeground(),
+//                "List.selectionBackground", getMenuItemSelectedBackground(),
+//                "Tree.selectionForeground", getMenuItemSelectedForeground(),
+//                "Tree.selectionBackground", getMenuItemSelectedBackground(),
         };
         table.putDefaults(uiDefaults);
     }
-    
-    public ColorUIResource getMenuItemSelectedBackground() {
-        return getPrimary3();
+
+    protected ColorUIResource getSecondary1() {
+        return new ColorUIResource(168, 168, 168);
     }
 
-    public ColorUIResource getMenuItemSelectedForeground() {
-        return new ColorUIResource(Color.BLACK);
+    protected ColorUIResource getSecondary2() {
+        return new ColorUIResource(220, 220, 220);
     }
 
-    public ColorUIResource getMenuSelectedBackground() {
-        return getMenuItemSelectedBackground();
+    protected ColorUIResource getSecondary3() {
+        return new ColorUIResource(236, 236, 236);
     }
 
-    public ColorUIResource getMenuSelectedForeground() {
-        return getMenuItemSelectedForeground();
+    /**
+     * Returns the menu background color. This
+     * returns the value of {@code getSecondary3()}.
+     *
+     * @return the menu background color
+     */
+    @Override
+    public ColorUIResource getMenuBackground() {
+        return new ColorUIResource(246, 246, 246);
+    }
+
+    @Override
+    public ColorUIResource getMenuItemBackground() {
+        return getMenuBackground();
     }
 }
