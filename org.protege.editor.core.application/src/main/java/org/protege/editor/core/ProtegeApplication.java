@@ -5,11 +5,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
-import javax.swing.UIManager;
+import javax.swing.*;
 
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -36,10 +35,6 @@ import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
 
-import com.jgoodies.looks.FontPolicies;
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
-import com.jgoodies.looks.FontSets;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
@@ -284,14 +279,9 @@ public class ProtegeApplication implements BundleActivator {
         try {
             LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
 
-            PopupFactory.setSharedInstance(new PopupFactory());
+//            PopupFactory.setSharedInstance(new PopupFactory());
             PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
-
-            FontSet fontSet = FontSets.createDefaultFontSet(ProtegePlasticTheme.DEFAULT_FONT);
-            FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
-            PlasticLookAndFeel.setFontPolicy(fixedPolicy);
-
+//            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
             UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
             UIManager.setLookAndFeel(lookAndFeel);
         }
