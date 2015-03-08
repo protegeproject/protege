@@ -28,10 +28,16 @@
 			<artifactId>org.apache.felix.main</artifactId>
 		</dependency>
 
+		<!--<dependency>-->
+			<!--<groupId>com.jgoodies</groupId>-->
+			<!--<artifactId>looks</artifactId>-->
+			<!--<version>2.2.2</version>-->
+		<!--</dependency>-->
+
 		<dependency>
 			<groupId>com.jgoodies</groupId>
-			<artifactId>looks</artifactId>
-			<version>2.2.2</version>
+			<artifactId>jgoodies-looks</artifactId>
+			<version>2.5.3</version>
 		</dependency>
 
         <dependency>
