@@ -21,11 +21,11 @@ public class ViewTabbedPane extends JTabbedPane {
 
 
     public ViewTabbedPane() {
-        setUI(new ViewTabbedPaneUI());
+        setUI(new CloseableTabbedPaneUI(
+                CloseableTabbedPaneUI.TabClosability.NOT_CLOSEABLE,
+                new NullTabCloseHandler()));
         setBorder(null);
-        //    setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
-
 
     public void updateUI() {
 //        super.updateUI();
