@@ -4,6 +4,7 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
@@ -143,12 +144,7 @@ public class OWLObjectHierarchyDeleter<E extends OWLEntity> {
     }
 
     private void delete(Set<E> ents) {
-        OWLEntityRemover remover = new OWLEntityRemover(owlEditorKit.getModelManager().getOWLOntologyManager(),
-                                                        owlEditorKit.getModelManager().getOntologies());
-        for (E ent : ents) {
-            ent.accept(remover);
-        }
-        owlEditorKit.getModelManager().applyChanges(remover.getChanges());
+        OWLEntityDeleter.deleteEntities(ents, getOWLEditorKit().getOWLModelManager());
     }
 
 

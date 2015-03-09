@@ -7,13 +7,13 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Findable;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -141,12 +141,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     private void deleteDatatype() {
-        OWLEntityRemover remover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                                        getOWLModelManager().getOntologies());
-        for (OWLDatatype datatype : list.getSelectedOWLObjects()) {
-            datatype.accept(remover);
-        }
-        getOWLModelManager().applyChanges(remover.getChanges());
+        OWLEntityDeleter.deleteEntities(list.getSelectedOWLObjects(), getOWLModelManager());
     }
 
 

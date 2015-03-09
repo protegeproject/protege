@@ -3,11 +3,11 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -15,10 +15,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -42,8 +40,6 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
     private MList list;
 
-    private OWLEntityRemover remover;
-
     private java.util.List<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
 
@@ -51,11 +47,11 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
         setLayout(new BorderLayout());
 
         list = new MList();
-        final MList.MListCellRenderer ren = (MList.MListCellRenderer)list.getCellRenderer();
-        ren.setContentRenderer(new OWLCellRenderer(getOWLEditorKit(), true, true){
+        final MList.MListCellRenderer ren = (MList.MListCellRenderer) list.getCellRenderer();
+        ren.setContentRenderer(new OWLCellRenderer(getOWLEditorKit(), true, true) {
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if (value instanceof AnonymousClassItem){
-                    value = ((AnonymousClassItem)value).getOWLClass();
+                if (value instanceof AnonymousClassItem) {
+                    value = ((AnonymousClassItem) value).getOWLClass();
                 }
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
@@ -63,23 +59,18 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
         add(list, BorderLayout.CENTER);
 
-        list.addListSelectionListener(new ListSelectionListener(){
+        list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                for (ChangeListener l : new ArrayList<ChangeListener>(listeners)){
+                for (ChangeListener l : new ArrayList<ChangeListener>(listeners)) {
                     l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
                 }
                 Object item = list.getSelectedValue();
-                if (item != null){
-                    getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem)item).getOWLClass());
+                if (item != null) {
+                    getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem) item).getOWLClass());
                 }
             }
         });
-
-
-        remover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                       getOWLModelManager().getOntologies());
     }
-
 
     protected void disposeOntologyView() {
         // do nothing
@@ -106,11 +97,11 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
 
     public void handleDelete() {
-        remover.reset();
-        for (Object clsItem : list.getSelectedValues()){
-            ((AnonymousClassItem)clsItem).getOWLClass().accept(remover);
+        Set<OWLClass> classes = new HashSet<>();
+        for (Object clsItem : list.getSelectedValuesList()){
+            classes.add(((AnonymousClassItem)clsItem).getOWLClass());
         }
-        getOWLModelManager().applyChanges(remover.getChanges());
+        OWLEntityDeleter.deleteEntities(classes, getOWLModelManager());
     }
 
 
@@ -164,9 +155,7 @@ for (Object clsItem : list.getSelectedValues()){
 
 
         public boolean handleDelete() {
-            remover.reset();
-            cls.accept(remover);
-            getOWLModelManager().applyChanges(remover.getChanges());
+            OWLEntityDeleter.deleteEntities(Collections.singleton(cls), getOWLModelManager());
             return true;
         }
 

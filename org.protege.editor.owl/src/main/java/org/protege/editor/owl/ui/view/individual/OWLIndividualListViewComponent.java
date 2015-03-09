@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
 import org.protege.editor.owl.ui.list.OWLObjectList;
@@ -275,12 +276,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     }
 
     public void handleDelete() {
-        OWLEntityRemover entityRemover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                                              getOWLModelManager().getOntologies());
-        for (OWLNamedIndividual ind : getSelectedIndividuals()) {
-            ind.accept(entityRemover);
-        }
-        getOWLModelManager().applyChanges(entityRemover.getChanges());
+        OWLEntityDeleter.deleteEntities(getSelectedIndividuals(), getOWLModelManager());
     }
 
     public boolean canDelete() {
