@@ -98,6 +98,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public Set<OWLClass> getChildren(OWLClass object) {
     	getReadLock().lock();
     	try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
     		Set<OWLClass> subs = getReasoner().getSubClasses(object, true).getFlattened();
     		// Add in owl:Nothing if there are inconsistent classes
     		if (object.isOWLThing() && !owlModelManager.getReasoner().getUnsatisfiableClasses().isSingleton()) {
@@ -126,8 +129,11 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
     public Set<OWLClass> getDescendants(OWLClass object) {
     	getReadLock().lock();
-    	try {  	
-    		return getReasoner().getSubClasses(object, false).getFlattened();
+        try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
+    			return getReasoner().getSubClasses(object, false).getFlattened();
     	}
     	finally {
     		getReadLock().unlock();
@@ -138,6 +144,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     	public Set<OWLClass> getParents(OWLClass object) {
     		getReadLock().lock();
     		try {
+                if(!getReasoner().isConsistent()) {
+                    return Collections.emptySet();
+                }
     			if (object.isOWLNothing()) {
 
     				return Collections.singleton(owlThing);
@@ -150,7 +159,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     			return parents;
     		}
     		finally {
-    			getReadLock().unlock();
+                getReadLock().unlock();
     		}
     	}
 
@@ -158,6 +167,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public Set<OWLClass> getAncestors(OWLClass object) {
     	getReadLock().lock();
     	try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
     		return getReasoner().getSuperClasses(object, false).getFlattened();
     	}
     	finally {
@@ -169,6 +181,9 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     public Set<OWLClass> getEquivalents(OWLClass object) {
         getReadLock().lock();
         try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
             if (!getReasoner().isSatisfiable(object)) {
                 return Collections.emptySet();
             }
