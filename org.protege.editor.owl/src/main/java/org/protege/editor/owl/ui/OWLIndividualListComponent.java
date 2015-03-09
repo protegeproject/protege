@@ -7,18 +7,21 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
+import org.protege.editor.owl.model.util.OWLObjectRemover;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 
+
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -241,12 +244,7 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     public void handleDelete() {
-        OWLEntityRemover entityRemover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                                              getOWLModelManager().getOntologies());
-        for (OWLNamedIndividual ind : getSelectedIndividuals()) {
-            ind.accept(entityRemover);
-        }
-        getOWLModelManager().applyChanges(entityRemover.getChanges());
+        OWLEntityDeleter.deleteEntities(getSelectedIndividuals(), getOWLModelManager());
     }
 
 

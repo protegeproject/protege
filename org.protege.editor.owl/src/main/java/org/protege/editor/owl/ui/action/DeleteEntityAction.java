@@ -2,10 +2,12 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.Set;
 
 
@@ -72,10 +74,7 @@ public class DeleteEntityAction extends SelectedOWLEntityAction {
 
 
     private void deleteEntity() {
-        OWLEntityRemover remover = new OWLEntityRemover(getOWLModelManager().getOWLOntologyManager(),
-                                                        getOWLModelManager().getOntologies());
-        getOWLWorkspace().getOWLSelectionModel().getSelectedEntity().accept(remover);
-        getOWLModelManager().applyChanges(remover.getChanges());
+        OWLEntityDeleter.deleteEntities(Collections.singleton(getSelectedEntity()), getOWLModelManager());
     }
 
 
