@@ -7,8 +7,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import com.jgoodies.looks.FontPolicy;
-import com.jgoodies.looks.FontSet;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -237,7 +235,7 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    private static void initializeLookAndFeel() {
+    private void initializeLookAndFeel() {
         // Just the look and feel
 
         // command line look and feel overrides the protege-specific one
@@ -266,6 +264,11 @@ public class ProtegeApplication implements BundleActivator {
                     setupProtegeDefaultLookAndFeel(lafClsName);
                 }
                 UIManager.setLookAndFeel(lafClsName);
+                // This is a workaround for some OSGi "feature".  From here http://adamish.com/blog/archives/156.
+                // Force the Look & Feel to be instantiated.
+                UIManager.getDefaults();
+                // Now set the class loader for Component UI loading to this one
+                UIManager.put("ClassLoader", this.getClass().getClassLoader());
                 UIManager.getDefaults().put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
             }
             catch (Exception e) {
@@ -276,17 +279,7 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private static void setupProtegeDefaultLookAndFeel(String lafName) {
-        try {
-            LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
-            PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-            UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
-        }
-        catch (ClassNotFoundException e) {
-            logger.warn("Look and feel not found: " + lafName);
-        }
-        catch (Exception e) {
-            logger.warn(e.toString());
-        }
+        PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
     }
 
     /*
