@@ -6,7 +6,7 @@
     <formats>
         <format>dir</format>
     </formats>
-    <baseDirectory>Protege 5.0 Beta</baseDirectory>
+    <baseDirectory>Protégé-${project.version}</baseDirectory>
 
     <fileSets>
         <fileSet>
