@@ -31,6 +31,7 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
+import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
@@ -262,11 +263,10 @@ public class ProtegeApplication implements BundleActivator {
 
             try {
                 if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
-                    setProtegeDefaultLookAndFeel(lafClsName);
+                    setupProtegeDefaultLookAndFeel(lafClsName);
                 }
-                else {
-                    UIManager.setLookAndFeel(lafClsName);
-                }
+                UIManager.setLookAndFeel(lafClsName);
+                UIManager.getDefaults().put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
             }
             catch (Exception e) {
                 logger.error(e);
@@ -275,15 +275,11 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    private static void setProtegeDefaultLookAndFeel(String lafName) {
+    private static void setupProtegeDefaultLookAndFeel(String lafName) {
         try {
             LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
-
-//            PopupFactory.setSharedInstance(new PopupFactory());
             PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-//            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
             UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
-            UIManager.setLookAndFeel(lookAndFeel);
         }
         catch (ClassNotFoundException e) {
             logger.warn("Look and feel not found: " + lafName);
