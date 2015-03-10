@@ -14,10 +14,7 @@ import java.util.Properties;
  */
 public class ProtegeProperties extends Properties {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -225880915589492822L;
+    public static final String PROTEGE = "Prot\u00E9g\u00E9";
 
     public static final String PROTEGE_PREFIX = "org.protege.";
 
@@ -57,8 +54,6 @@ public class ProtegeProperties extends Properties {
 
 
     private static ProtegeProperties instance;
-
-	public static final String PLASTIC_3D_LAF = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
 
 	//Default Protege L&F
 	public static final String PLASTIC_LAF_NAME = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
