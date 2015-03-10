@@ -49,8 +49,9 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     public static final Color SEL_TAB_TOP_COLOR = new Color(220, 220, 220);
 
     public static final Color SEL_TAB_BOTTOM_COLOR = new Color(213, 213, 213);
-    public static final Color[] topBorderColorGradient = new Color[]{SEL_TAB_BOTTOM_COLOR,
-            new Color(SEL_TAB_BOTTOM_COLOR.getRed(), SEL_TAB_BOTTOM_COLOR.getGreen(), SEL_TAB_BOTTOM_COLOR.getBlue(), 0)};
+
+//    public static final Color[] topBorderColorGradient = new Color[]{SEL_TAB_BOTTOM_COLOR,
+//            new Color(SEL_TAB_BOTTOM_COLOR.getRed(), SEL_TAB_BOTTOM_COLOR.getGreen(), SEL_TAB_BOTTOM_COLOR.getBlue(), 0)};
 
     public static final Color[] selTabColorGradient = new Color[]{
             SEL_TAB_TOP_COLOR,
@@ -316,11 +317,11 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         // RIGHT
         g.drawLine(x + w - 1, y, x + w - 1, y + h);
 
-        if(isSelected && isBottomRun(tabIndex)) {
-            g.setColor(SEL_TAB_BOTTOM_COLOR);
-        }
+//        if(isSelected && isBottomRun(tabIndex)) {
+//            g.setColor(SEL_TAB_BOTTOM_COLOR);
+//        }
         // Bottom
-        g.drawLine(x, y + h, x + w - 2, y + h);
+//        g.drawLine(x, y + h, x + w - 2, y + h);
     }
 
     private boolean isFirstTabInRun(int tabIndex) {
@@ -343,19 +344,25 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
         g.drawLine(x, y + 1, x + w, y + 1);
         Graphics2D g2 = (Graphics2D) g;
-        Paint paint = g2.getPaint();
-        g2.setPaint(new LinearGradientPaint(
-                x, y, x, y + TOP_CONTENT_BORDER_HEIGHT + 1,
-                topBorderGradient,
-                topBorderColorGradient));
+//        Paint paint = g2.getPaint();
+//        g2.setPaint(new LinearGradientPaint(
+//                x, y, x, y + TOP_CONTENT_BORDER_HEIGHT + 1,
+//                topBorderGradient,
+//                topBorderColorGradient));
         g.fillRect(x, y + 1, w, TOP_CONTENT_BORDER_HEIGHT);
 
-        g2.setPaint(paint);
+//        g2.setPaint(paint);
 
         g.setColor(TAB_BORDER_COLOR);
         // Top
         g.drawLine(x, y, x + w, y);
+        g.drawLine(x, y + TOP_CONTENT_BORDER_HEIGHT, x + w, y + TOP_CONTENT_BORDER_HEIGHT);
 
+        if (isBottomRun(selectedIndex)) {
+            g.setColor(SEL_TAB_BOTTOM_COLOR);
+            Rectangle r = getTabBounds(tabPane, selectedIndex);
+            g.drawLine(r.x, y, r.x + r.width - 1, y);
+        }
     }
 
 
