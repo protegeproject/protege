@@ -239,6 +239,7 @@
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="A"/>
+        <protegeDefaultTab value="true"/>
         <defaultViewConfigFileName value="viewconfig-ontologytab.xml"/>
     </extension>
 
@@ -250,6 +251,7 @@
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="B"/>
+        <protegeDefaultTab value="true"/>
         <defaultViewConfigFileName value="viewconfig-entitiestab.xml"/>
     </extension>
 
@@ -301,10 +303,11 @@
 
     <extension id="OWLIndividualsTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Individuals"/>
+        <label value="Individuals by class"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="G"/>
+        <protegeDefaultTab value="true"/>
         <defaultViewConfigFileName value="viewconfig-individualstab.xml"/>
     </extension>
 

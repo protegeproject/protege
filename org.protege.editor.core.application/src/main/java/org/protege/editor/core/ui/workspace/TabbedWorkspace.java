@@ -1,6 +1,8 @@
 package org.protege.editor.core.ui.workspace;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 
@@ -51,9 +53,31 @@ public abstract class TabbedWorkspace extends Workspace {
 
         // If no tabs are set as visible (ie we have yet to customise, show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
-            if (visibleTabs.isEmpty() || visibleTabs.contains(plugin.getId())) {
+            if(visibleTabs.isEmpty()) {
+                if(isShownByDefault(plugin)) {
+                    addTabForPlugin(plugin);
+                }
+            }
+            else if (visibleTabs.contains(plugin.getId())) {
                 addTabForPlugin(plugin);
             }
+        }
+    }
+
+    private boolean isShownByDefault(WorkspaceTabPlugin plugin) {
+        // Can be replaced if we move to Java 8 (which has default methods).
+        try {
+            for(Method method : plugin.getClass().getMethods()) {
+                if(method.getName().equals("isProtegeDefaultTab")) {
+                    if(Boolean.TRUE.equals(method.invoke(plugin))) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            LOGGER.error(e, e);
+            return false;
         }
     }
 
