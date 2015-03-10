@@ -44,7 +44,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -77,12 +76,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private static final String WINDOW_MODIFIED = "Window.documentModified";
 
-    private static final int FINDER_BORDER = 1;
-
-    private static final int FINDER_MIN_WIDTH = 250;
-
-
-    private JComboBox ontologiesList;
+    private JComboBox<OWLOntology> ontologiesList;
 
     private ArrayList<OWLEntityDisplayProvider> entityDisplayProviders;
 
@@ -94,11 +88,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private OWLSelectionHistoryManager owlSelectionHistoryManager;
 
-    private List<URI> defaultAnnotationProperties;
-
     private OWLModelManagerListener owlModelManagerListener;
 
-    private Set<EventType> reselectionEventTypes = new HashSet<EventType>();
+    private Set<EventType> reselectionEventTypes = new HashSet<>();
 
     private ErrorNotificationLabel errorNotificationLabel;
 
@@ -150,14 +142,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public void initialise() {
-        entityDisplayProviders = new ArrayList<OWLEntityDisplayProvider>();
+        entityDisplayProviders = new ArrayList<>();
         iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getModelManager());
         owlSelectionModel = new OWLSelectionModelImpl();
 
         keyWordColorMap = new KeywordColourMap();
-
-        defaultAnnotationProperties = new ArrayList<URI>();
-        defaultAnnotationProperties.add(OWLRDFVocabulary.RDFS_COMMENT.getURI());
 
         super.initialise();
 
@@ -172,7 +161,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
 
-        hiddenAnnotationURIs = new HashSet<URI>();
+        hiddenAnnotationURIs = new HashSet<>();
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
         owlComponentFactory = new OWLComponentFactoryImpl(getOWLEditorKit());
@@ -331,7 +320,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
     protected void verifySelection(Set<? extends OWLEntity> entities) {
-        Set<OWLEntity> unreferencedEntities = new HashSet<OWLEntity>(entities);
+        Set<OWLEntity> unreferencedEntities = new HashSet<>(entities);
         for (OWLEntity entity : entities) {
             if (entity != null) {
                 for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
@@ -543,7 +532,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         ButtonGroup bg = new ButtonGroup();
         Set<ProtegeOWLReasonerInfo> factories = mngr.getOWLReasonerManager().getInstalledReasonerFactories();
-        List<ProtegeOWLReasonerInfo> factoriesList = new ArrayList<ProtegeOWLReasonerInfo>(factories);
+        List<ProtegeOWLReasonerInfo> factoriesList = new ArrayList<>(factories);
         Collections.sort(factoriesList, new ReasonerInfoComparator());
         for (final ProtegeOWLReasonerInfo plugin : factoriesList) {
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(plugin.getReasonerName());
@@ -566,7 +555,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
             public void added(IExtension[] extensions) {
                 OWLReasonerManagerImpl reasonerManager = (OWLReasonerManagerImpl) getOWLModelManager().getOWLReasonerManager();
-                Set<ProtegeOWLReasonerPlugin> plugins = new HashSet<ProtegeOWLReasonerPlugin>();
+                Set<ProtegeOWLReasonerPlugin> plugins = new HashSet<>();
                 for (IExtension extension : extensions) {
                     plugins.add(new ProtegeOWLReasonerPluginJPFImpl(getOWLModelManager(), extension));
                 }
@@ -633,8 +622,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         final OWLModelManager mngr = getOWLModelManager();
 
-// Install the active ontology combo box
-        ontologiesList = new JComboBox();
+        // Install the active ontology combo box
+        ontologiesList = new JComboBox<>();
         ontologiesList.setToolTipText("Active ontology");
         ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
         rebuildOntologyDropDown();
@@ -857,9 +846,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void rebuildOntologyDropDown() {
         try {
-            TreeSet<OWLOntology> ts = new TreeSet<OWLOntology>(getOWLModelManager().getOWLObjectComparator());
+            TreeSet<OWLOntology> ts = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
             ts.addAll(getOWLModelManager().getOntologies());
-            ontologiesList.setModel(new DefaultComboBoxModel(ts.toArray()));
+            ontologiesList.setModel(new DefaultComboBoxModel<>(ts.toArray(new OWLOntology[ts.size()])));
             ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());
         }
         catch (Exception e) {
