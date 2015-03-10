@@ -1,11 +1,14 @@
 package org.protege.editor.core;
 
+import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -239,6 +242,7 @@ public class ProtegeApplication implements BundleActivator {
         // Just the look and feel
 
         // command line look and feel overrides the protege-specific one
+
         if (System.getProperty("swing.defaultlaf") == null) {
             // If the OS is a Mac then the Mac L&F is set by default.  I've had too many complaints
             // from Mac users that the first thing they do is switch the L&F over to OS X - the Protege
@@ -262,7 +266,7 @@ public class ProtegeApplication implements BundleActivator {
             try {
                 // This is a workaround for some OSGi "feature".  From here http://adamish.com/blog/archives/156.
                 // Force the Look & Feel to be instantiated.
-                UIManager.getDefaults();
+                UIDefaults defaults = UIManager.getDefaults();
                 if (lafClsName.equals(PlasticLookAndFeel.class.getName())) {
                     // Truly strange.  If we don't do this then the LAF cannot be found.
                     PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
@@ -277,13 +281,33 @@ public class ProtegeApplication implements BundleActivator {
                     UIManager.put("ClassLoader", this.getClass().getClassLoader());
                     UIManager.setLookAndFeel(lafClsName);
                 }
-                UIManager.getDefaults().put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
+                setupDefaults(defaults);
 
             }
             catch (Exception e) {
                 logger.error(e, e);
             }
         }
+    }
+
+    private void setupDefaults(UIDefaults defaults) {
+        // TODO: Move this to somewhere more sensible
+
+        defaults.put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
+
+        Color borderColor = new Color(220, 220, 220);
+
+        MatteBorder commonBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, borderColor);
+
+        defaults.put("ScrollPane.border", BorderFactory.createCompoundBorder(commonBorder,
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        defaults.put("TextArea.border", commonBorder);
+        defaults.put("Spinner.border", commonBorder);
+        defaults.put("ComboBox.border", commonBorder);
+
+        defaults.put("TextField.border", BorderFactory.createCompoundBorder(commonBorder,
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+
     }
 
     /*
