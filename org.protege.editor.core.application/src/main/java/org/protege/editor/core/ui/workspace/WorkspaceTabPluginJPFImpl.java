@@ -47,6 +47,11 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
     private static final String DEFAULT_VIEW_CONFIG_FILE_NAME_PARAM = "defaultViewConfigFileName";
 
+    /**
+     * A flag that indicates whether the tab is displayed by default
+     */
+    private static final String PROTEGE_DEFAULT_TAB = "protegeDefaultTab";
+
     private TabbedWorkspace workspace;
 
     private IExtension extension;
@@ -91,6 +96,13 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
     public String getDocumentation() {
         return JPFUtil.getDocumentation(extension);
+    }
+
+    /**
+     * Invoked by reflection.  Do not remove.
+     */
+    public boolean isProtegeDefaultTab() {
+        return PluginProperties.getBooleanParameterValue(extension, PROTEGE_DEFAULT_TAB, false);
     }
 
 
