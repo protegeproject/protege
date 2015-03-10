@@ -52,7 +52,7 @@ public class ResetPreferencesAction extends AltStartupAction {
 				p.sync();
 				p.flush();
 				q.flush();
-				JOptionPane.showMessageDialog(getParent(), "Protege Preferences Reset");
+				JOptionPane.showMessageDialog(getParent(), "Preferences Reset");
 				ProtegeApplication.handleQuit();
 			}
 		}
