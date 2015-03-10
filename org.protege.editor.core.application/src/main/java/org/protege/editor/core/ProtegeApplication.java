@@ -260,26 +260,30 @@ public class ProtegeApplication implements BundleActivator {
             String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, defaultLAFClassName);
 
             try {
-                if (lafClsName.equals(ProtegeProperties.PLASTIC_LAF_NAME)) {
-                    setupProtegeDefaultLookAndFeel(lafClsName);
-                }
-                UIManager.setLookAndFeel(lafClsName);
                 // This is a workaround for some OSGi "feature".  From here http://adamish.com/blog/archives/156.
                 // Force the Look & Feel to be instantiated.
                 UIManager.getDefaults();
-                // Now set the class loader for Component UI loading to this one
-                UIManager.put("ClassLoader", this.getClass().getClassLoader());
+                if (lafClsName.equals(PlasticLookAndFeel.class.getName())) {
+                    // Truly strange.  If we don't do this then the LAF cannot be found.
+                    PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
+                    UIManager.put("ClassLoader", PlasticLookAndFeel.class.getClassLoader());
+                    // For plastic this needs to be instantiated here - otherwise SwingUtilities uses the wrong class
+                    // loaded.
+                    LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafClsName).newInstance();
+                    UIManager.setLookAndFeel(lookAndFeel);
+                }
+                else {
+                    // Now set the class loader for Component UI loading to this one.  Works for non Plastic LAFs.
+                    UIManager.put("ClassLoader", this.getClass().getClassLoader());
+                    UIManager.setLookAndFeel(lafClsName);
+                }
                 UIManager.getDefaults().put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
+
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error(e, e);
             }
         }
-    }
-
-
-    private static void setupProtegeDefaultLookAndFeel(String lafName) {
-        PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
     }
 
     /*

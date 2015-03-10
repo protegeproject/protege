@@ -33,7 +33,15 @@
 			<groupId>com.googlecode.mdock</groupId>
 			<artifactId>mdock</artifactId>
 			<version>2.0.1</version>
-		</dependency>        
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.jgoodies</groupId>
+			<artifactId>jgoodies-looks</artifactId>
+			<version>2.5.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -49,11 +57,12 @@
 						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
 						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-						<Embed-Dependency>mdock</Embed-Dependency>
+						<Embed-Dependency>mdock,jgoodies-looks</Embed-Dependency>
 						<Export-Package>
 							org.coode.mdock.*,
 							org.protege.editor.core, 
-							org.protege.editor.core.*
+							org.protege.editor.core.*,
+							com.jgoodies.*,
 						</Export-Package>
 						<Import-Package>
 							!com.sun.*,
@@ -61,7 +70,7 @@
 							org.apache.log4j*;version="[1.2,2)",
 							*
 						</Import-Package>
-						<Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
+						<Include-Resource>plugin.xml,{maven-resources},{maven-dependencies}</Include-Resource>
 					</instructions>
 					<executions>
 						<execution>

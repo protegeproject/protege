@@ -28,18 +28,6 @@
 			<artifactId>org.apache.felix.main</artifactId>
 		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>com.jgoodies</groupId>-->
-			<!--<artifactId>looks</artifactId>-->
-			<!--<version>2.2.2</version>-->
-		<!--</dependency>-->
-
-		<dependency>
-			<groupId>com.jgoodies</groupId>
-			<artifactId>jgoodies-looks</artifactId>
-			<version>2.5.3</version>
-		</dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -70,8 +58,7 @@
 						<Embed-Dependency>log4j, looks</Embed-Dependency>
 						<Export-Package>
 							${project.artifactId}*;version=${project.version}, 
-							org.apache.log4j.*;version="1.2.17", 
-							com.jgoodies.*;version="2.2.2"
+							org.apache.log4j.*;version="1.2.17"
 						</Export-Package>
 						<Import-Package>
 							!com.ibm.*, 
