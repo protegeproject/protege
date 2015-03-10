@@ -1,5 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
+import com.google.common.base.Optional;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
@@ -192,90 +193,70 @@ public abstract class Workspace extends JComponent implements Disposable {
         windowMenu.add(menu);
 
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
-        String lafName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
+        String selectedLookAndFeelClassName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
 
-        JRadioButtonMenuItem protegeDefaultMenuItem = new JRadioButtonMenuItem(new AbstractAction("Protege Default") {
-            /**
-             *
-             */
-            private static final long serialVersionUID = -1460075802676626382L;
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                ProtegeProperties.PLASTIC_LAF_NAME,
+                Optional.of(ProtegeProperties.PROTEGE));
 
-            public void actionPerformed(ActionEvent arg0) {
-                setProtegeDefaultLookAndFeel(ProtegeProperties.PLASTIC_LAF_NAME);
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                UIManager.getSystemLookAndFeelClassName(),
+                Optional.<String>absent());
+
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                UIManager.getCrossPlatformLookAndFeelClassName(),
+                Optional.of("Cross-platform")
+        );
+    }
+
+    private void addLookAndFeelMenuItem(JMenu menu, ButtonGroup lafMenuItemGroup, String selectedLookAndFeelName, final String lookAndFeelClassName, Optional<String> shortName) {
+        try {
+            final String lafShortName;
+            if(shortName.isPresent()) {
+                lafShortName = shortName.get();
             }
-        });
-        lafMenuItemGroup.add(protegeDefaultMenuItem);
-        protegeDefaultMenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_LAF_NAME));
-        menu.add(protegeDefaultMenuItem);
+            else {
+                Class cls = Class.forName(lookAndFeelClassName);
+                LookAndFeel laf = (LookAndFeel) cls.newInstance();
+                lafShortName = laf.getName();
+            }
 
-        for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            final String className = info.getClassName();
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(new AbstractAction(info.getName()) {
-                /**
-                 *
-                 */
-                private static final long serialVersionUID = 2912631603213508312L;
-
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(new AbstractAction(lafShortName) {
                 public void actionPerformed(ActionEvent e) {
-                    setLookAndFeel(className);
+                    setLookAndFeel(lookAndFeelClassName, lafShortName);
                 }
             });
             lafMenuItemGroup.add(menuItem);
-            menuItem.setSelected(lafName.equals(className));
+            menuItem.setSelected(selectedLookAndFeelName.equals(lookAndFeelClassName));
             menu.add(menuItem);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            LOGGER.error(e, e);
         }
-
-        JRadioButtonMenuItem plastic3DmenuItem = new JRadioButtonMenuItem(new AbstractAction("Plastic 3D") {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 6933202663872017353L;
-
-            public void actionPerformed(ActionEvent e) {
-                setLookAndFeel(ProtegeProperties.PLASTIC_3D_LAF);
-            }
-        });
-        lafMenuItemGroup.add(plastic3DmenuItem);
-        plastic3DmenuItem.setSelected(lafName.equals(ProtegeProperties.PLASTIC_3D_LAF));
-        menu.add(plastic3DmenuItem);
     }
 
-
-    private void setProtegeDefaultLookAndFeel(String lafName) {
+    private void setLookAndFeel(String clsName, String shortName) {
         try {
-            LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafName).newInstance();
-
-            PopupFactory.setSharedInstance(new PopupFactory());
-            PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-            PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_METAL_VALUE);
-
-            UIManager.put("ClassLoader", lookAndFeel.getClass().getClassLoader());
+            Class lookAndFeelClass = Class.forName(clsName);
+            LookAndFeel lookAndFeel = (LookAndFeel) lookAndFeelClass.newInstance();
             UIManager.setLookAndFeel(lookAndFeel);
-
-//copied from below
-            SwingUtilities.updateComponentTreeUI(Workspace.this);
-
-            Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
-            p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, lafName);
-
-        }
-        catch (ClassNotFoundException e) {
-            LOGGER.warn("Look and feel not found: " + lafName);
-        }
-        catch (Exception e) {
-            LOGGER.warn(e.toString());
-        }
-    }
-
-
-    private void setLookAndFeel(String clsName) {
-        try {
-            UIManager.setLookAndFeel(clsName);
             SwingUtilities.updateComponentTreeUI(Workspace.this);
             Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, clsName);
+            JOptionPane.showMessageDialog(this,
+                    "<html><body><div style=\"font-weight: bold;\">The Look & Feel has been set to " + shortName + ".</div>" +
+                            "<div>Please restart " + ProtegeProperties.PROTEGE + " for the changes to take effect.<div></body></html>");
         }
         catch (Exception e1) {
+            JOptionPane.showMessageDialog(this, "There was a problem setting the look and feel.", "Error", JOptionPane.ERROR_MESSAGE);
             LOGGER.error("Exception caught setting look and feel ", e1);
         }
     }
@@ -341,13 +322,7 @@ public abstract class Workspace extends JComponent implements Disposable {
             viewHolder.addView(view);
             return view;
         }
-        catch (ClassNotFoundException e) {
-            ProtegeApplication.getErrorLog().logError(e);
-        }
-        catch (IllegalAccessException e) {
-            ProtegeApplication.getErrorLog().logError(e);
-        }
-        catch (InstantiationException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             ProtegeApplication.getErrorLog().logError(e);
         }
         return null;
