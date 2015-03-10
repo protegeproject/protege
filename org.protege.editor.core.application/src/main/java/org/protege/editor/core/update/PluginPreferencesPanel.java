@@ -1,5 +1,6 @@
 package org.protege.editor.core.update;
 
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.preferences.PreferencesPanel;
 import org.protege.editor.core.ui.util.ComponentFactory;
 
@@ -123,7 +124,9 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         registryLocHolder.add(resetToDefaultRegistry);
 
         registryHolder.add(Box.createVerticalStrut(12));
-        registryHolder.add(new JLabel("This is the location Protege will check to see which plugins are available."));
+        registryHolder.add(new JLabel("This is the location that "
+                + ProtegeProperties.PROTEGE
+                + " will check to see which plugins are available."));
         registryHolder.add(Box.createVerticalStrut(12));
         registryHolder.add(registryLocHolder);
         registryHolder.add(Box.createVerticalStrut(12));

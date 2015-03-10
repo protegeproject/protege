@@ -21,6 +21,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.progress.BackgroundTask;
 import org.protege.common.CommonProtegeProperties;
 
@@ -261,7 +262,7 @@ public class PluginInstaller {
             return true;
         }
         else {
-            logger.info("Plugin " + info.getLabel() + " will be loaded when Protege is restarted");
+            logger.info("Plugin " + info.getLabel() + " will be loaded when " + ProtegeProperties.PROTEGE + " is restarted");
             return false;
         }
     }
