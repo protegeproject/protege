@@ -116,6 +116,7 @@
 	
 	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 	</properties>
 	
 	<dependencyManagement>
@@ -205,6 +206,7 @@
 								</goals>
 								<configuration>
 									<failOnError>false</failOnError>
+									<quiet>true</quiet>
 								</configuration>
 							</execution>
 						</executions>
