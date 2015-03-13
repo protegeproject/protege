@@ -897,6 +897,15 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="reloadontology"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Reload"/>
+        <toolTip value="Reload the active ontology"/>
+        <class value="org.protege.editor.owl.ui.action.ReloadActiveOntologyAction"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-E"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="R"/>
+    </extension>
 
     <extension id="find"
                point="org.protege.editor.core.application.EditorKitMenuAction">
