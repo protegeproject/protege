@@ -166,39 +166,8 @@
 							</descriptors>
 						</configuration>
 					</execution>
-					<!-- <execution>
-						<id>protege-desktop-osx-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/protege-as-app.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution> -->
 				</executions>
 			</plugin>
-			
-			<!-- <plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<replace file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/Info.plist" token="@shortVersion@" value="${project.parent.version}" />
-								<chmod file="${project.build.directory}/protege-distribution-${project.parent.version}-app/Protege.app/Contents/MacOS/JavaApplicationStub" perm="u+x" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
 		</plugins>
 	</build>
 </project>
