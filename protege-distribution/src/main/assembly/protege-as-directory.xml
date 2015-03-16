@@ -51,6 +51,8 @@
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>edu.stanford.protege:ProtegeLauncher:jar</include>
+                <!--<include>org.apache.felix:org.apache.felix.framework:jar</include>-->
+                <include>org.apache.felix:org.apache.felix.main:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
