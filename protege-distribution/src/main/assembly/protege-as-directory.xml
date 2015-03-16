@@ -9,57 +9,40 @@
     <baseDirectory>Protege-${project.version}</baseDirectory>
 
     <fileSets>
+
         <fileSet>
+            <directory>src/main/felix</directory>
             <outputDirectory>.</outputDirectory>
             <includes>
-                <include>*</include>
+                <include>**/*</include>
             </includes>
-            <excludes>
-                <exclude>run.command</exclude>
-                <exclude>run.sh</exclude>
-            </excludes>
-            <directory>src/main/config/distributions/felix</directory>
         </fileSet>
 
         <fileSet>
-            <outputDirectory>bin</outputDirectory>
+            <directory>src/main/logging</directory>
+            <outputDirectory>.</outputDirectory>
             <includes>
-                <include>*</include>
+                <include>**/*</include>
             </includes>
-            <directory>src/main/config/distributions/felix/bin</directory>
         </fileSet>
 
-        <fileSet>
-            <outputDirectory>bundles</outputDirectory>
-            <includes>
-                <include>org.apache.felix.bundlerepository-1.4.2.jar</include>
-            </includes>
-            <directory>src/main/config/distributions/felix/bundles</directory>
-        </fileSet>
-
-        <fileSet>
-            <outputDirectory>bundles</outputDirectory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <directory>src/main/config/distributions/common</directory>
-        </fileSet>
     </fileSets>
 
     <files>
         <file>
-            <source>src/main/config/distributions/felix/run.sh</source>
+            <source>src/main/scripts/nix/run.sh</source>
             <outputDirectory>.</outputDirectory>
             <fileMode>744</fileMode>
         </file>
         <file>
-            <source>src/main/config/distributions/felix/run.command</source>
+            <source>src/main/scripts/osx/run.command</source>
             <outputDirectory>.</outputDirectory>
             <fileMode>744</fileMode>
         </file>
         <file>
-            <source>src/main/config/distributions/Protege.app/Contents/Resources/Protege.icns</source>
+            <source>src/main/scripts/win/run.bat</source>
             <outputDirectory>.</outputDirectory>
+            <fileMode>744</fileMode>
         </file>
     </files>
 
