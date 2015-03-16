@@ -904,7 +904,7 @@
         <class value="org.protege.editor.owl.ui.action.ReloadActiveOntologyAction"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotAB-E"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="R"/>
+        <accelerator value="shift R"/>
     </extension>
 
     <extension id="find"
