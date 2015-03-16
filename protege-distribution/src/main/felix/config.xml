@@ -2,7 +2,10 @@
 
 <launch>
   <systemProperties>
-      <property name="org.protege.plugin.dir" value="Contents/Resources/Java/plugins"/>
+    <property name="file.encoding" value="utf-8"/>
+    <property name="apple.laf.useScreenMenuBar" value="true"/>
+    <property name="com.apple.mrj.application.growbox.intrudes" value="true"/>
+    <property name="org.protege.plugin.dir" value="plugins"/>
   </systemProperties>
   <frameworkProperties>
     <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*"/>
@@ -10,30 +13,28 @@
               value="javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers"/>
     <property name="org.osgi.framework.storage.clean" 
               value="onFirstInit"/>
+    <property name="org.osgi.service.http.port" value="8081"/>
   </frameworkProperties>
   <bundles>
-    <search path="Contents/Resources/Java/bundle"/>
+    <search path="bundles"/>
     <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.protege.common.jar"/>
   </bundles>
-  <bundles verbose = "true">
-    <search path="Contents/Resources/Java/bundle"/>
+  <bundles>
+    <search path="bundles"/>
     <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.eclipse.equinox.common.jar"/>
     <bundle name="org.eclipse.equinox.supplement.jar"/>
   </bundles>
-  <bundles verbose = "true">
-    <search path="Contents/Resources/Java/bundle"/>
+  <bundles>
+    <search path="bundles"/>
     <search path="${user.home}/.Protege/bundles"/>
     <bundle name="org.eclipse.equinox.registry.jar"/>
     <bundle name="org.protege.jaxb.jar"/>
     <bundle name="org.protege.editor.core.application.jar"/>
-    <bundle name="org.apache.felix.configadmin.jar"/>
-    <bundle name="org.apache.felix.scr.jar"/>
   </bundles>
-  
   <bundles>
-  	<search path="Contents/Resources/Java/plugins"/>
+  	<search path="plugins"/>
   	<search path="${user.home}/.Protege/plugins"/>
   </bundles>
 
