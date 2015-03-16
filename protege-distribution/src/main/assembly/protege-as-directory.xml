@@ -62,6 +62,7 @@
                 <include>edu.stanford.protege:org.protege.common:jar</include>
                 <include>edu.stanford.protege:org.protege.editor.core.application:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
