@@ -14,7 +14,7 @@
 	
 	<name>Protege Desktop Distribution</name>
 	<description>Standard distribution of the Protege Desktop ontology editor.</description>
-	
+
 	<repositories>
 		<repository>
 			<releases>
@@ -185,6 +185,10 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<archiverConfig>
+								<defaultDirectoryMode>0755</defaultDirectoryMode>
+								<defaultFileMode>0755</defaultFileMode>
+							</archiverConfig>
 							<descriptors>
 								<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
 								<descriptor>src/main/assembly/protege-os-x.xml</descriptor>

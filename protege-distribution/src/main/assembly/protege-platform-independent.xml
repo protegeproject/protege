@@ -5,6 +5,7 @@
     <id>platform-independent</id>
     <formats>
         <format>dir</format>
+        <format>zip</format>
     </formats>
     <baseDirectory>Protege-${project.version}</baseDirectory>
 
@@ -29,7 +30,8 @@
         <fileSet>
             <directory>src/main/env/platform-independent</directory>
             <outputDirectory>.</outputDirectory>
-            <fileMode>744</fileMode>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
         </fileSet>
 
     </fileSets>
