@@ -51,7 +51,6 @@
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>edu.stanford.protege:ProtegeLauncher:jar</include>
-                <!--<include>org.apache.felix:org.apache.felix.framework:jar</include>-->
                 <include>org.apache.felix:org.apache.felix.main:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
@@ -65,6 +64,7 @@
                 <include>edu.stanford.protege:org.protege.editor.core.application:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
