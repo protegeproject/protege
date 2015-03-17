@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>edu.stanford.protege</groupId>
+        <artifactId>protege-parent</artifactId>
+        <version>5.0.0-beta-17-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>protege-os-x-distribution</artifactId>
+    <version>${project.version}</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>os.x.jvm</artifactId>
+            <version>1.8.0_40</version>
+        </dependency>
+    </dependencies>
+    
+</project>
