@@ -11,7 +11,7 @@
 	<!-- groupId and version are inherited from the parent -->	
 	<artifactId>protege-distribution</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<name>Protege Desktop Distribution</name>
 	<description>Standard distribution of the Protege Desktop ontology editor.</description>
 
@@ -185,7 +185,8 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<archiverConfig>
+							<finalName>protege-${project.version}</finalName>
+								<archiverConfig>
 								<defaultDirectoryMode>0755</defaultDirectoryMode>
 								<defaultFileMode>0755</defaultFileMode>
 							</archiverConfig>
