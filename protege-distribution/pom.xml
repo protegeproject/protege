@@ -154,7 +154,19 @@
 
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
-			<artifactId>os.x.jre</artifactId>
+			<artifactId>jre.os-x</artifactId>
+			<version>1.8.0_40</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>jre.win</artifactId>
+			<version>1.8.0_40</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>jre.linux</artifactId>
 			<version>1.8.0_40</version>
 		</dependency>
 
@@ -176,6 +188,8 @@
 							<descriptors>
 								<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
 								<descriptor>src/main/assembly/protege-os-x.xml</descriptor>
+								<descriptor>src/main/assembly/protege-win.xml</descriptor>
+								<descriptor>src/main/assembly/protege-linux.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
