@@ -152,6 +152,12 @@
 			<version>1.3.0.20100503</version>
 		</dependency>
 
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>os.x.jre</artifactId>
+			<version>1.8.0_40</version>
+		</dependency>
+
 	</dependencies>
 	
 	<build>
@@ -168,7 +174,8 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>src/main/assembly/protege-as-directory.xml</descriptor>
+								<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
+								<descriptor>src/main/assembly/protege-os-x.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
