@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 
-    <id>OS-X</id>
+    <id>os-x</id>
     <formats>
         <format>dir</format>
     </formats>
@@ -27,29 +27,19 @@
         </fileSet>
 
         <fileSet>
-            <directory>src/main/jre/osx</directory>
+            <directory>src/main/env/os-x</directory>
             <outputDirectory>.</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
+            <fileMode>744</fileMode>
         </fileSet>
 
     </fileSets>
-
-    <files>
-        <file>
-            <source>src/main/jre/osx/run.command</source>
-            <outputDirectory>.</outputDirectory>
-            <fileMode>744</fileMode>
-        </file>
-    </files>
 
     <dependencySets>
 
         <dependencySet>
             <outputDirectory>.</outputDirectory>
             <includes>
-                <include>edu.stanford.protege:os.x.jre:jar</include>
+                <include>edu.stanford.protege:jre.os-x:jar</include>
             </includes>
             <unpack>true</unpack>
             <unpackOptions>
@@ -64,8 +54,8 @@
                 includes and excludes doesn't help as it gets skipped the second time.
             -->
             <fileMode>744</fileMode>
+            <useStrictFiltering>true</useStrictFiltering>
         </dependencySet>
-
 
         <dependencySet>
             <outputDirectory>bin</outputDirectory>

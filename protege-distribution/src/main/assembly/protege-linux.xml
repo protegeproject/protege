@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 
-    <id>platform-independent</id>
+    <id>linux</id>
     <formats>
         <format>dir</format>
     </formats>
@@ -27,7 +27,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>src/main/env/platform-independent</directory>
+            <directory>src/main/env/linux</directory>
             <outputDirectory>.</outputDirectory>
             <fileMode>744</fileMode>
         </fileSet>
@@ -35,6 +35,27 @@
     </fileSets>
 
     <dependencySets>
+
+        <dependencySet>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>edu.stanford.protege:jre.linux:jar</include>
+            </includes>
+            <unpack>true</unpack>
+            <unpackOptions>
+                <excludes>
+                    <exclude>META-INF</exclude>
+                    <exclude>META-INF/**/*</exclude>
+                </excludes>
+            </unpackOptions>
+            <!--
+                This is unsatisfactory as it applies to everything.  However, I'm not sure
+                how to do this otherwise. (Note, listing the artifact twice with different
+                includes and excludes doesn't help as it gets skipped the second time.
+            -->
+            <fileMode>744</fileMode>
+            <useStrictFiltering>true</useStrictFiltering>
+        </dependencySet>
 
         <dependencySet>
             <outputDirectory>bin</outputDirectory>
