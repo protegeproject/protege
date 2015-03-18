@@ -34,7 +34,10 @@
 			<artifactId>mdock</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
@@ -54,10 +57,10 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
-						<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
+						<!--<Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>   -->
 						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-						<Embed-Dependency>mdock,jgoodies-looks</Embed-Dependency>
+						<Embed-Dependency>mdock;inline=true,jgoodies-looks;inline=true</Embed-Dependency>
 						<Export-Package>
 							org.coode.mdock.*,
 							org.protege.editor.core, 
@@ -68,19 +71,12 @@
 							!com.sun.*,
 							org.eclipse.core.runtime;registry="split",
 							org.apache.log4j*;version="[1.2,2)",
+							com.google.common.*;version="[17,19)",
 							*
 						</Import-Package>
 						<Include-Resource>plugin.xml,{maven-resources},{maven-dependencies}</Include-Resource>
 					</instructions>
-					<executions>
-						<execution>
-							<id>bundle-manifest</id>
-							<phase>install</phase>
-							<goals>    
-								<goal>manifest</goal>
-							</goals>   
-						</execution>
-					</executions>
+
 				</configuration>
 			</plugin>
 				
