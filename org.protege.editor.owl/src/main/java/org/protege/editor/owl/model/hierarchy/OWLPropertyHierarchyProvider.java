@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
