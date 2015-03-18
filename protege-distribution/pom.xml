@@ -35,7 +35,6 @@
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-osgidistribution</artifactId>
-            <version>3.5.1</version>
         </dependency>
 
         <dependency>
@@ -77,49 +76,49 @@
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.codegeneration</artifactId>
-			<version>1.0.2</version>
+			<version>[1.0.2,2)</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.diff</artifactId>
-			<version>5.0.0</version>
+			<version>[5.0.0,6)</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl.rdf</artifactId>
-			<version>1.0.0</version>
+			<version>[1.0.0,2)</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.explanation</artifactId>
-			<version>2.0.0</version>
+			<version>[2.0.0,3)</version>
         </dependency>
         
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.integration.hermit</artifactId>
-			<version>1.0.0</version>
+			<version>[1.0.0,2]</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.ontograf</artifactId>
-			<version>1.0.3</version>
+			<version>[1.0.3,2]</version>
         </dependency>
 
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.diff</artifactId>
-			<version>2.0.0</version>
+			<version>[2.0.0,3)</version>
         </dependency>
         
         <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.owl.rdf</artifactId>
-			<version>1.0.2</version>
+			<version>[1.0.2,2)</version>
         </dependency>
         
         <dependency>
@@ -131,7 +130,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>18.0</version>
         </dependency>
 
 		<dependency>
