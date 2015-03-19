@@ -23,7 +23,8 @@ public class OSUtils {
         if(property == null) {
             return false;
         }
-        return property.toLowerCase().contains("os x");
+        String osName = property.toLowerCase();
+        return osName.contains("os x") || osName.contains("macos");
     }
 
 
