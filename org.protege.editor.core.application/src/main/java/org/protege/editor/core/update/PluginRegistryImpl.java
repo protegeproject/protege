@@ -171,6 +171,9 @@ public class PluginRegistryImpl implements PluginRegistry {
                     readRegistry(node);
                 }
                 catch (UpdateException e){
+                    if (e.getPluginId().isPresent()) {
+                        logger.info(String.format("Couldn't read plugin updated file [%s].", e.getMessage()));
+                    }
                     readRegistry(node);
                 }
                 catch(IOException e){
