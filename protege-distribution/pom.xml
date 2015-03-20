@@ -192,9 +192,6 @@
 							</archiverConfig>
 							<descriptors>
 								<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
-								<descriptor>src/main/assembly/protege-os-x.xml</descriptor>
-								<descriptor>src/main/assembly/protege-win.xml</descriptor>
-								<descriptor>src/main/assembly/protege-linux.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
@@ -202,4 +199,41 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>prepare-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.4</version>
+						<executions>
+							<execution>
+								<id>protege-desktop-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<configuration>
+									<finalName>protege-${project.version}</finalName>
+									<archiverConfig>
+										<defaultDirectoryMode>0755</defaultDirectoryMode>
+										<defaultFileMode>0755</defaultFileMode>
+									</archiverConfig>
+									<descriptors>
+										<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
+										<descriptor>src/main/assembly/protege-os-x.xml</descriptor>
+										<descriptor>src/main/assembly/protege-win.xml</descriptor>
+										<descriptor>src/main/assembly/protege-linux.xml</descriptor>
+									</descriptors>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
