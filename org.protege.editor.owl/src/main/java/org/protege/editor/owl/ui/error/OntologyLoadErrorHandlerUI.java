@@ -2,10 +2,7 @@ package org.protege.editor.owl.ui.error;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,36 +11,21 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Logger;
-import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyParser;
-import org.coode.owlapi.obo.parser.OBOOntologyFormat;
-import org.coode.owlapi.obo.parser.OBOParser;
 import org.coode.owlapi.obo.parser.OBOParserException;
-import org.coode.owlapi.owlxmlparser.OWLXMLParser;
-import org.coode.owlapi.rdfxml.parser.RDFXMLParser;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.expression.ParserException;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.OWLParser;
 import org.semanticweb.owlapi.io.OWLParserException;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.io.OWLParserFactory;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.rdf.syntax.RDFParserException;
-
-import uk.ac.manchester.cs.owl.owlapi.turtle.parser.TurtleParser;
-import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OWLParser;
-import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParserException;
+import org.semanticweb.owlapi.util.PriorityCollection;
 
 /**
  * Author: drummond<br>
@@ -54,7 +36,7 @@ import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
  * Date: Aug 28, 2008<br><br>
  */
 public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
-	public static final Logger LOGGER = Logger.getLogger(OntologyLoadErrorHandlerUI.class);
+	protected static final Logger LOGGER = Logger.getLogger(OntologyLoadErrorHandlerUI.class);
     private enum OPTIONS {
         OK("OK"), RELOAD("Reload");
 
@@ -160,21 +142,19 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
         private JTabbedPane tabs;
 
-        private Map<Class<? extends OWLOntologyFormat>, String> format2ParserMap = new HashMap<Class<? extends OWLOntologyFormat>, String>();
+        private Map<Class<? extends OWLDocumentFormat>, String> format2ParserMap = new HashMap<Class<? extends OWLDocumentFormat>, String>();
 
         public ParseErrorsPanel(UnparsableOntologyException e, final URI loc) {
             setLayout(new BorderLayout(12, 12));
 
-            // hack as there is no way to get from an ontology format to a parser
-            // this must be updated if the supported parsers are changed
-            format2ParserMap.put(RDFXMLOntologyFormat.class, RDFXMLParser.class.getSimpleName());
-            format2ParserMap.put(OWLXMLOntologyFormat.class, OWLXMLParser.class.getSimpleName());
-            format2ParserMap.put(ManchesterOWLSyntaxOntologyFormat.class, ManchesterOWLSyntaxOntologyParser.class.getSimpleName());
-            format2ParserMap.put(TurtleOntologyFormat.class, TurtleParser.class.getSimpleName());
-            format2ParserMap.put(OWLFunctionalSyntaxOntologyFormat.class, OWLFunctionalSyntaxParser.class.getSimpleName());
-            format2ParserMap.put(KRSS2OntologyFormat.class, KRSS2OWLParser.class.getSimpleName());
-            format2ParserMap.put(OBOOntologyFormat.class, OBOParser.class.getSimpleName());
-
+            PriorityCollection<OWLParserFactory> ontologyParsers = eKit
+                    .getOWLModelManager().getOWLOntologyManager()
+                    .getOntologyParsers();
+            for (OWLParserFactory p : ontologyParsers) {
+                format2ParserMap.put(
+                        p.getSupportedFormat().get().getClass(), 
+                        p.get().getClass().getSimpleName());
+            }
 
             tabs = new JTabbedPane();
             tabs.setPreferredSize(new Dimension(700, 500));
