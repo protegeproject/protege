@@ -112,7 +112,6 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 			editedObject = IRI.create(iriTextField.getText());
 		}
 		catch (RuntimeException e) {
-			;
 		}
 		return editedObject;
 	}

@@ -337,7 +337,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             }
         }
         catch (OWLOntologyCreationException ooce) {
-            ;             // will be handled by the loadErrorHandler, so ignore
+             // will be handled by the loadErrorHandler, so ignore
         }
         return ontology != null;
     }

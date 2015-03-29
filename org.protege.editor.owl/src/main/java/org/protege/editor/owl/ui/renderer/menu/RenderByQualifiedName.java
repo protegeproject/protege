@@ -17,6 +17,5 @@ public class RenderByQualifiedName extends AbstractByRendererMenu {
 	
 	@Override
 	protected void configure(RendererPlugin plugin) {
-		;
 	}
 }

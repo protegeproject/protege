@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class OWLUtilities {
 
 	private OWLUtilities() {
-		;
 	}
 	
     public static boolean isDeprecated(OWLModelManager p4Manager, OWLObject o) {

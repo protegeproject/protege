@@ -23,7 +23,7 @@ public class HistoryManagerImpl implements HistoryManager {
     
     private enum ChangeType {
         UNDOING, REDOING, NORMAL;
-    };
+    }
     
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
