@@ -218,7 +218,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
             write("\"");
             write(node.getLiteral());
             write("\"");
-            if (node.getLang() != null) {
+            if (!node.getLang().isEmpty()) {
                 write("@");
                 write(node.getLang());
             }

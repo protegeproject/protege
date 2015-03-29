@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 /*
@@ -62,15 +61,7 @@ public class OWLEntityIRIRegenerator implements Disposable {
 
 
     private IRI getBaseIRI(OWLEntity entity) {
-        String fragment = entity.getIRI().getFragment();
-        IRI iri = entity.getIRI();
-        if (fragment != null){
-            int fragmentIndex = iri.toString().lastIndexOf(fragment);
-            if (fragmentIndex != -1) {
-                return IRI.create(iri.toString().substring(0, fragmentIndex));
-            }
-        }
-        return iri;
+       return IRI.create(entity.getIRI().getNamespace());
     }
 
 

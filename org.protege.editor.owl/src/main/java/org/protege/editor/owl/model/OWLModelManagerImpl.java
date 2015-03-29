@@ -402,17 +402,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
         IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontology);
-        if (ontologyDocumentIRI != null) {
-            if (isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
-                return URI.create("");
-            }
-            else {
-                return ontologyDocumentIRI.toURI();
-            }
-        }
-        else {
+        if (isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
             return URI.create("");
         }
+        return ontologyDocumentIRI.toURI();
     }
 
     private boolean isDefaultOWLAPIDocumentIRI(IRI iri) {

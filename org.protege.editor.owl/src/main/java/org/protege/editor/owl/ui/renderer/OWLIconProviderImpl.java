@@ -432,7 +432,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     		return true;
     	}
     	Set<OWLDisjointUnionAxiom> axioms = ontology.getDisjointUnionAxioms(owlClass);
-    	return axioms != null && !axioms.isEmpty();
+    	return !axioms.isEmpty();
     }
 
 

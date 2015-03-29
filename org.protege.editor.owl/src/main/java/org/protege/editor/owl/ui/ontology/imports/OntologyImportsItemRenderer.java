@@ -69,7 +69,7 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
                 if (!ontologyID.isAnonymous()) {
                     Paragraph ontologyIriPara = page.addParagraph("Ontology IRI: ", Color.GRAY);
                     ontologyIriPara.setMarginLeft(40);
-                    IRI ontologyIRI = ontologyID.getOntologyIRI().orNull();
+                    IRI ontologyIRI = ontologyID.getOntologyIRI().get();
                     ontologyIriPara.append(ontologyIRI.toQuotedString(), foreground);
                     ontologyIriPara.setMarginTop(2);
                     IRI versionIRI = ontologyID.getVersionIRI().orNull();

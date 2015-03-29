@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
@@ -116,8 +115,8 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
             	ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
             	center.add(ontologyNameLabel);
 
-            	if (parameter.getOntologyID().getVersionIRI() != null) {
-            		JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI());
+            	if (parameter.getOntologyID().getVersionIRI().isPresent()) {
+            		JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI().get());
             		ontologyVersionLabel.setAlignmentX(LEFT_ALIGNMENT);
             		center.add(ontologyVersionLabel);
             	}
