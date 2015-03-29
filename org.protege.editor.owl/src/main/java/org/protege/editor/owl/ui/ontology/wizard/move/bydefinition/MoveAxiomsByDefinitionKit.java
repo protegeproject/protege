@@ -1,16 +1,26 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.bydefinition;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.byreference.SelectSignaturePanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureDependentSelectionPreviewPanel;
 import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureSelection;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 /**
  * Author: Matthew Horridge<br>
@@ -46,27 +56,27 @@ public class MoveAxiomsByDefinitionKit extends MoveAxiomsKit implements Signatur
             for(final OWLOntology ont : ontologies) {
                 Set<? extends OWLAxiom> axioms = e.accept(new OWLEntityVisitorEx<Set<? extends OWLAxiom>>() {
                     public Set<? extends OWLAxiom> visit(OWLClass owlClass) {
-                        return ont.getAxioms(owlClass);
+                        return ont.getAxioms(owlClass,Imports.EXCLUDED);
                     }
 
                     public Set<? extends OWLAxiom> visit(OWLObjectProperty property) {
-                        return ont.getAxioms(property);
+                        return ont.getAxioms(property,Imports.EXCLUDED);
                     }
 
                     public Set<? extends OWLAxiom> visit(OWLDataProperty dataProperty) {
-                        return ont.getAxioms(dataProperty);
+                        return ont.getAxioms(dataProperty,Imports.EXCLUDED);
                     }
 
                     public Set<? extends OWLAxiom> visit(OWLNamedIndividual individual) {
-                        return ont.getAxioms(individual);
+                        return ont.getAxioms(individual,Imports.EXCLUDED);
                     }
 
                     public Set<? extends OWLAxiom> visit(OWLDatatype owlDatatype) {
-                        return ont.getAxioms(owlDatatype);
+                        return ont.getAxioms(owlDatatype,Imports.EXCLUDED);
                     }
 
                     public Set<? extends OWLAxiom> visit(OWLAnnotationProperty property) {
-                        return ont.getAxioms(property);
+                        return ont.getAxioms(property,Imports.EXCLUDED);
                     }
                 });
                 result.addAll(ont.getDeclarationAxioms(e));

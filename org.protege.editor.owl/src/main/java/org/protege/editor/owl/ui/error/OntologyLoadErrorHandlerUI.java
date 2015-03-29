@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Logger;
-import org.coode.owlapi.obo.parser.OBOParserException;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -125,7 +124,6 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             }
         };
         errorFilter.addExplanationFactory(OWLParserException.class, owlParserExceptionExplanationFac);
-        errorFilter.addExplanationFactory(OBOParserException.class, owlParserExceptionExplanationFac);
 
         // Manchester Syntax
         errorFilter.addExplanationFactory(ParserException.class, new ErrorExplainer.ErrorExplanationFactory<ParserException>(){

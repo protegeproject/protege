@@ -21,7 +21,6 @@ import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
 
 /**
@@ -89,8 +88,8 @@ public class OntologyFormatPanel extends JPanel {
     }
 
 
-    public OWLOntologyFormat getSelectedFormat(){
-        return (OWLOntologyFormat)formatComboBox.getSelectedItem();
+    public OWLDocumentFormat getSelectedFormat(){
+        return (OWLDocumentFormat)formatComboBox.getSelectedItem();
     }
 
 

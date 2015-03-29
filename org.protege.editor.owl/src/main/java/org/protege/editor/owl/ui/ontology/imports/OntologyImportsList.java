@@ -163,7 +163,7 @@ public class OntologyImportsList extends MList {
     private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
         OWLOntologyManager manager = ontology.getOWLOntologyManager();
         
-        manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
+        manager.getIRIMappers().add(new SimpleIRIMapper(importLocation, physicalLocation));
         try {
             IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
             if (UIUtil.isLocalFile(importersDocumentLocation.toURI())) {

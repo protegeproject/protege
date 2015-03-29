@@ -22,7 +22,7 @@ public class OntologyNameAlgorithm implements Algorithm {
 		try {
 			final IRI iri = IRI.create(f);
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-			manager.addIRIMapper(new OWLOntologyIRIMapper() {
+			manager.getIRIMappers().add(new OWLOntologyIRIMapper() {
 				
 				@Override
 				public IRI getDocumentIRI(IRI ontologyIRI) {

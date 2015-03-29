@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
 /**
@@ -41,27 +42,27 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
         }
         String fromBase = fromId.getOntologyIRI().toString();
         String toBase = toId.getOntologyIRI().toString();
-        getEntitiesRenamings(ontology.getObjectPropertiesInSignature(false), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getObjectPropertiesInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;
         }
-        getEntitiesRenamings(ontology.getDataPropertiesInSignature(false), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getDataPropertiesInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;
         }
-        getEntitiesRenamings(ontology.getAnnotationPropertiesInSignature(), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getAnnotationPropertiesInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;
         }
-        getEntitiesRenamings(ontology.getClassesInSignature(false), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getClassesInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;
         }
-        getEntitiesRenamings(ontology.getIndividualsInSignature(false), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getIndividualsInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;
         }
-        getEntitiesRenamings(ontology.getDatatypesInSignature(false), fromBase, toBase, renameMap, limit);
+        getEntitiesRenamings(ontology.getDatatypesInSignature(Imports.EXCLUDED), fromBase, toBase, renameMap, limit);
     }
     
     public boolean hasEntitiesToRename(OWLOntology ontology, OWLOntologyID from, OWLOntologyID to) {

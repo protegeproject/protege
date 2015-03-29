@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -73,7 +74,7 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
                         for (OWLAxiom ax : ont.getDeclarationAxioms(prop)) {
                             changes.add(new RemoveAxiom(ont, ax));
                         }
-                        for (OWLAxiom ax : ont.getAxioms(prop)) {
+                        for (OWLAxiom ax : ont.getAxioms(prop,Imports.EXCLUDED)) {
                             changes.add(new RemoveAxiom(ont, ax));
                         }
                     }

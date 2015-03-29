@@ -1,22 +1,37 @@
 package org.protege.editor.owl.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
+import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.*;
-import java.util.List;
 
 
 /**
@@ -57,9 +72,9 @@ public class GatherOntologiesPanel extends JPanel {
         JPanel comboBoxLabelPanel = new JPanel(new BorderLayout(7, 7));
         List<Object> formats = new ArrayList<Object>();
         formats.add("Original");
-        formats.add(new RDFXMLOntologyFormat());
-        formats.add(new OWLXMLOntologyFormat());
-        formats.add(new OWLFunctionalSyntaxOntologyFormat());
+        formats.add(new RDFXMLDocumentFormat());
+        formats.add(new OWLXMLDocumentFormat());
+        formats.add(new FunctionalSyntaxDocumentFormat());
         formatComboBox = new JComboBox(formats.toArray());
         comboBoxLabelPanel.add(new JLabel("Format"), BorderLayout.WEST);
         comboBoxLabelPanel.add(formatComboBox, BorderLayout.EAST);
@@ -115,10 +130,10 @@ public class GatherOntologiesPanel extends JPanel {
     }
 
 
-    public OWLOntologyFormat getOntologyFormat() {
+    public OWLDocumentFormat getOntologyFormat() {
         Object selFormat = formatComboBox.getSelectedItem();
-        if (selFormat instanceof OWLOntologyFormat) {
-            return (OWLOntologyFormat) selFormat;
+        if (selFormat instanceof OWLDocumentFormat) {
+            return (OWLDocumentFormat) selFormat;
         }
         else {
             return null;

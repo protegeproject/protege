@@ -43,6 +43,7 @@ import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 
@@ -114,7 +115,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         boolean useActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAxiom ax : ont.getAxioms(selectedClass)) {
+            for (OWLAxiom ax : ont.getAxioms(selectedClass,Imports.EXCLUDED)) {
                 if (ax.isLogicalAxiom() && !(ax instanceof OWLDisjointClassesAxiom)) {
                     OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
                     changes.add(new AddAxiom(useActiveOnt ? getOWLModelManager().getActiveOntology() : ont, duplicatedAxiom));

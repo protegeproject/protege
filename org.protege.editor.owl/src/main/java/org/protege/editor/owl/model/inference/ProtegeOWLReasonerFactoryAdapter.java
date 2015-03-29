@@ -14,6 +14,7 @@ package org.protege.editor.owl.model.inference;
  * 
  * @deprecated  Use AbstractProtegeOWLReasonerInfo instead.
  */
+@Deprecated
 public abstract class ProtegeOWLReasonerFactoryAdapter extends AbstractProtegeOWLReasonerInfo {
 
 }

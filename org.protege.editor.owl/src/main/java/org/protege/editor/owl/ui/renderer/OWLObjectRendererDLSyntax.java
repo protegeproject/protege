@@ -276,7 +276,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(" ");
         node.getProperty().accept(this);
         write(" {");
-        node.getValue().accept(this);
+        node.getFiller().accept(this);
         write("}");
     }
 

@@ -1,6 +1,17 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -48,6 +59,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 
@@ -447,42 +459,42 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private class ActiveEntityVisitor implements OWLEntityVisitor {
 
         public void visit(OWLClass cls) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(cls).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(cls,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }
 
 
         public void visit(OWLDatatype dataType) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(dataType).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(dataType,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }
 
 
         public void visit(OWLNamedIndividual individual) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(individual).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(individual,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }
 
 
         public void visit(OWLDataProperty property) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(property,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }
 
 
         public void visit(OWLObjectProperty property) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(property,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }
 
 
         public void visit(OWLAnnotationProperty property) {
-            if (!getOWLModelManager().getActiveOntology().getAxioms(property).isEmpty()) {
+            if (!getOWLModelManager().getActiveOntology().getAxioms(property,Imports.EXCLUDED).isEmpty()) {
                 ontology = getOWLModelManager().getActiveOntology();
             }
         }

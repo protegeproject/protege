@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
 
@@ -327,7 +328,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     		parentClassExtractor.reset();
     		parentClassExtractor.setCurrentClass(object);
     		for (OWLOntology ont : ontologies) {
-    			for (OWLAxiom ax : ont.getAxioms(object)) {
+    			for (OWLAxiom ax : ont.getAxioms(object,Imports.EXCLUDED)) {
     				ax.accept(parentClassExtractor);
     			}
     		}

@@ -7,7 +7,7 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -47,7 +47,7 @@ public class OntologyFormatPage extends AbstractWizardPanel {
     }
 
 
-    public OWLOntologyFormat getFormat() {
+    public OWLDocumentFormat getFormat() {
         return panel.getSelectedFormat();
     }
 

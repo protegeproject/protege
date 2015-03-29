@@ -1,15 +1,5 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.action.OntologyFormatPage;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
-import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-
 import java.net.URI;
 import java.util.List;
 /*
@@ -17,6 +7,16 @@ import java.util.List;
  *
  *
  */
+
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.action.OntologyFormatPage;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
+import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 
 
 /**
@@ -76,7 +76,7 @@ public class ExportInferredOntologyWizard extends Wizard {
     }
 
 
-    public OWLOntologyFormat getFormat() {
+    public OWLDocumentFormat getFormat() {
         return ontologyFormatPanel.getFormat();
     }
 }
