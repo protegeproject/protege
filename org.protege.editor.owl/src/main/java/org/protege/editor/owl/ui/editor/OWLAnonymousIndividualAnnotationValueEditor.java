@@ -94,7 +94,7 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
             String id = "genid" + System.nanoTime();
             final OWLOntologyID ontologyID = editorKit.getModelManager().getActiveOntology().getOntologyID();
             if (!ontologyID.isAnonymous()){
-                id = ontologyID.getOntologyIRI() + "#" + id;
+                id = ontologyID.getOntologyIRI().get() + "#" + id;
             }
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }

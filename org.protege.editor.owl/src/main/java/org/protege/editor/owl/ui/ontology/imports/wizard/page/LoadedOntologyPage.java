@@ -67,7 +67,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
         if (!ontology.getOntologyID().isAnonymous()){
             for (OWLOntology ont : ontologies){
                 if (!ont.getOntologyID().isAnonymous() &&
-                    ont.getOntologyID().getOntologyIRI().equals(ontology.getOntologyID().getOntologyIRI())){
+                    ont.getOntologyID().getOntologyIRI().get().equals(ontology.getOntologyID().getOntologyIRI().get())){
                     ontologiesInSeries.add(ont);
                 }
             }

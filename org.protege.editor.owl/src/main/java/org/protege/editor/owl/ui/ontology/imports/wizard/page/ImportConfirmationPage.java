@@ -111,7 +111,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
             center.add(physicalLocationLabel);
             
             if (!parameter.getOntologyID().isAnonymous()) {
-            	JLabel ontologyNameLabel = new JLabel("Imported Ontology Name " + parameter.getOntologyID().getOntologyIRI().toString());
+            	JLabel ontologyNameLabel = new JLabel("Imported Ontology Name " + parameter.getOntologyID().getOntologyIRI().get().toString());
             	ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
             	center.add(ontologyNameLabel);
 

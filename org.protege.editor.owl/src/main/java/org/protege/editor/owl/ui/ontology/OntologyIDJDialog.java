@@ -56,7 +56,7 @@ public class OntologyIDJDialog extends JPanel {
     public void createUI(OWLOntologyID id) {
         ontologyIRIField = new JTextField(OntologyPreferences.getInstance().generateURI().toString());
         if (!id.isAnonymous()) {
-        	ontologyIRIField.setText(id.getOntologyIRI().toString());
+        	ontologyIRIField.setText(id.getOntologyIRI().get().toString());
         }
 
         enableVersionCheckBox = new JCheckBox("Enable Version Iri");

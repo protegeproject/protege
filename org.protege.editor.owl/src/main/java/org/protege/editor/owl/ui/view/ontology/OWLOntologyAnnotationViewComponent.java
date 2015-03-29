@@ -235,9 +235,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
     private String getChangeEntityIRIsConfirmationMessage(OWLOntologyID id, Set<OWLEntity> entities) {
         return "<html><body>You have renamed the ontology from<br>" +
-                "" + initialOntologyID.getOntologyIRI().toString() + "<br>" +
+                "" + initialOntologyID.getOntologyIRI().get().toString() + "<br>" +
                 "to<br>" +
-                "" + id.getOntologyIRI().toString() + ".<br>" +
+                "" + id.getOntologyIRI().get().toString() + ".<br>" +
                 "<br>" +
                 "<b>There are " + NumberFormat.getIntegerInstance().format(entities.size()) + " entities whose IRIs start with the original ontology IRI. Would you also like to rename these entities<br>" +
                 "so that their IRIs start with the new ontology IRI?</b></body></html>";

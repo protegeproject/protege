@@ -42,9 +42,9 @@ public class ImportLocationOptionsPanel extends JPanel {
 		    optionsCount++;
 		}
 
-    	boolean useVersionButton = (id.getVersionIRI() .isPresent() && !id.getVersionIRI().get().equals(id.getOntologyIRI().orNull()));
+    	boolean useVersionButton = (id.getVersionIRI().isPresent() && !id.getVersionIRI().get().equals(id.getOntologyIRI().orNull()));
     	if (useVersionButton) {
-    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI());
+    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI().get());
     		versionIDButton.setAlignmentX(LEFT_ALIGNMENT);
     		add(versionIDButton);
     		bg.add(versionIDButton);

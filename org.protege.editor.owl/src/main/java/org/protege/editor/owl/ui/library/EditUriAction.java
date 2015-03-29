@@ -210,7 +210,7 @@ public class EditUriAction extends AbstractAction {
                 MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
                 extractor.setPhysicalAddress(physicalLocation);
                 OWLOntologyID id = extractor.getOntologyId();
-                ontologyNameField.setText(id.getOntologyIRI().toString());
+                ontologyNameField.setText(id.getOntologyIRI().get().toString());
                 if (id.getVersionIRI().isPresent()) {
                     ontologyVersionField.setText(id.getVersionIRI().get().toString());
                 }
