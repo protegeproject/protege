@@ -1,13 +1,27 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLAxiomVisitor;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
 
 /**

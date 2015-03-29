@@ -1,13 +1,11 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -21,7 +19,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
-import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;

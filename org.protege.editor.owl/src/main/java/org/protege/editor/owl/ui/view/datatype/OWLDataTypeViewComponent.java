@@ -1,5 +1,19 @@
 package org.protege.editor.owl.ui.view.datatype;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -13,20 +27,12 @@ import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Findable;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * Author: drummond<br>

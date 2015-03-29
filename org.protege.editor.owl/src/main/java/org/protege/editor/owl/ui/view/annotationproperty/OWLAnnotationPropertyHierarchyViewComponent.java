@@ -1,17 +1,5 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.CreateNewChildTarget;
-import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +10,23 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.CreateNewChildTarget;
+import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 /**
  * Author: drummond<br>
@@ -93,7 +98,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }
         OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
         if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(set.getOntologyChanges());
             OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
             OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);

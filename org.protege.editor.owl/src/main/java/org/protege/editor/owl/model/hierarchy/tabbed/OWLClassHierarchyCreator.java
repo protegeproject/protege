@@ -1,12 +1,21 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /*
 * Copyright (C) 2007, University of Manchester

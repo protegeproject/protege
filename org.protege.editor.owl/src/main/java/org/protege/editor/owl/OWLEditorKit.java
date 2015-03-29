@@ -1,5 +1,13 @@
 package org.protege.editor.owl;
 
+import java.io.File;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -30,17 +38,17 @@ import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
-
-import java.io.File;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
 
 
 /**

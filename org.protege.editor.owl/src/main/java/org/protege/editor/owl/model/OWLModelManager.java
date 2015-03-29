@@ -1,5 +1,11 @@
 package org.protege.editor.owl.model;
 
+import java.io.File;
+import java.net.URI;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.core.ModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
@@ -18,14 +24,17 @@ import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
-import java.io.File;
-import java.net.URI;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 
 /**

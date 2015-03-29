@@ -1,15 +1,24 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
 /**

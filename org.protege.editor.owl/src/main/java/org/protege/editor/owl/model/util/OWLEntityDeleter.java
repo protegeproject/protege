@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Matthew Horridge

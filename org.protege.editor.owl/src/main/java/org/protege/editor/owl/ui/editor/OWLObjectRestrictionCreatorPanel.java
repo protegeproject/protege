@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
-import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +8,21 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
+import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 /**
  * Author: drummond<br>
@@ -122,7 +130,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         private RestrictionCreator<OWLObjectProperty, OWLClass> t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression, OWLObjectPropertyExpression, OWLClassExpression> r) {
+        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression> r) {
             if (!r.getProperty().isAnonymous() && !r.getFiller().isAnonymous()){
                 p = r.getProperty().asOWLObjectProperty();
                 f = r.getFiller().asOWLClass();

@@ -192,7 +192,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             if (!entities.isEmpty()) {
                 boolean rename = showConfirmRenameDialog(id, entities);
                 if (rename) {
-                    List<OWLOntologyChange> changes = changeStrategy.getChangesForRename(activeOntology(), initialOntologyID, id);
+                    List<OWLOntologyChange changes = changeStrategy.getChangesForRename(activeOntology(), initialOntologyID, id);
                     System.out.println("Generated " + changes.size() + " changes");
                     System.out.println("Applying changes...");
                     getOWLModelManager().applyChanges(changes);

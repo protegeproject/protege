@@ -1,13 +1,8 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,6 +13,18 @@ import java.util.List;
 *
 *
 */
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveImport;
 
 /**
  * Author: drummond<br>

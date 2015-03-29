@@ -1,5 +1,24 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -14,21 +33,16 @@ import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Deleteable;
 import org.protege.editor.owl.ui.view.Findable;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>

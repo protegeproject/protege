@@ -1,5 +1,23 @@
 package org.protege.editor.owl.ui;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ *
+ */
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
@@ -8,28 +26,17 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
-import org.protege.editor.owl.model.util.OWLObjectRemover;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
-
-
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- *
- */
 
 
 /**
@@ -98,7 +105,7 @@ public class OWLIndividualListComponent extends JPanel {
         });
 
         listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(java.util.List<? extends OWLOntologyChange> changes) {
+            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
                 processChanges(changes);
             }
         };
@@ -171,7 +178,7 @@ public class OWLIndividualListComponent extends JPanel {
     }
 
 
-    private void processChanges(java.util.List<? extends OWLOntologyChange> changes) {
+    private void processChanges(List<? extends OWLOntologyChange> changes) {
     	Set<OWLEntity> possiblyAddedEntities = new HashSet<OWLEntity>();
     	Set<OWLEntity> possiblyRemovedEntities = new HashSet<OWLEntity>();
         OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedEntities);

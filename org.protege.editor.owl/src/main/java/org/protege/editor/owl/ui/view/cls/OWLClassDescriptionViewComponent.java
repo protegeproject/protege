@@ -1,21 +1,26 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSectionRow;
 import org.protege.editor.owl.ui.framelist.CreateClosureAxiomAction;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameListPopupMenuAction;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.CollectionFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**

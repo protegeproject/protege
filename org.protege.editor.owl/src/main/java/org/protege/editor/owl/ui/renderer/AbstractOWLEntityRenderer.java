@@ -1,14 +1,13 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

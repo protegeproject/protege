@@ -1,17 +1,25 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 /**
  * User: nickdrummond
@@ -162,7 +170,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         }
         OWLEntityCreationSet<O> set = createProperty();
         if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
             changes.addAll(set.getOntologyChanges());
             if (shouldAddAsParentOfNewlyCreatedProperty(selectedProperty)) {
             	OWLAxiom ax = getSubPropertyAxiom(set.getOWLEntity(), selectedProperty);
