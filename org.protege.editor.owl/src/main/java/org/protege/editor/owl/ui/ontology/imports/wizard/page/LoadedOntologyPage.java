@@ -87,7 +87,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
         	ImportInfo parameter = new ImportInfo();
         	parameter.setOntologyID(ontology.getOntologyID());
         	parameter.setPhysicalLocation(physicalLocation.toURI());
-        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI() : physicalLocation);
+        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI().get() : physicalLocation);
         	wizard.addImport(parameter);
         }
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);

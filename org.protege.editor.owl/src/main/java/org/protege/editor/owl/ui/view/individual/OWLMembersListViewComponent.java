@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * Author: drummond<br>
@@ -57,7 +59,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
 		individualsInList.clear();
 		OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
 		if (cls != null){        
-			Set<OWLIndividual> individuals = cls.getIndividuals(getOntologies());
+			Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies());
 			for (OWLIndividual ind : individuals){
 				if (!ind.isAnonymous()){ //TODO: why are anonymous individuals filtered out?
 						individualsInList.add(ind.asOWLNamedIndividual());
@@ -77,8 +79,8 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent{
 		Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
 		for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(true)) {
-			Set<OWLClassExpression> types = individual.getTypes(importsClosure);
-			if (types == null || types.size() == 0) {
+			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure);
+			if (types.isEmpty()) {
 				untypedIndividuals.add(individual);
 			}
 		}

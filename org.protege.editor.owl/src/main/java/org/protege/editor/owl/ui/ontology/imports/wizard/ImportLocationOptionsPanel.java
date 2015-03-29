@@ -51,8 +51,8 @@ public class ImportLocationOptionsPanel extends JPanel {
     		optionsCount++;
     	}
     	if (id.isAnonymous() || (
-    			!physicalLocation.equals(id.getOntologyIRI().toURI()) &&
-    			(id.getVersionIRI() == null || !physicalLocation.equals(id.getVersionIRI().toURI())) &&
+    			!physicalLocation.equals(id.getOntologyIRI().get().toURI()) &&
+    			(!id.getVersionIRI().isPresent() || !physicalLocation.equals(id.getVersionIRI().get().toURI())) &&
     			!physicalLocation.getScheme().equals("file"))) {
     		physicalIDButton = new JRadioButton("Import using the supplied physical URI (Not Recommended): " + physicalLocation);
     		physicalIDButton.setAlignmentX(LEFT_ALIGNMENT);
@@ -100,10 +100,10 @@ public class ImportLocationOptionsPanel extends JPanel {
 		OWLOntologyID id = info.getOntologyID();
 		URI physicalLocation = info.getPhysicalLocation();
     	if (ontologyIDButton != null && ontologyIDButton.isSelected()) {
-    		info.setImportLocation(id.getOntologyIRI());
+    		info.setImportLocation(id.getOntologyIRI().orNull());
     	}
     	else if (versionIDButton != null && versionIDButton.isSelected()) {
-    		info.setImportLocation(id.getVersionIRI());
+    		info.setImportLocation(id.getVersionIRI().orNull());
     	}
     	else {
     		info.setImportLocation(IRI.create(physicalLocation));

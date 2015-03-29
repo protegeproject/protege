@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.selection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.Disposable;
@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 public class OWLClassAssertionSelectionModel implements Disposable {
 	public static Logger LOGGER = Logger.getLogger(OWLClassAssertionSelectionModel.class);
@@ -63,8 +64,8 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			individual = (OWLIndividual) individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
-			Set<OWLClassExpression> types = individual.getTypes(modelManager.getActiveOntologies());
-			if (types != null && !types.contains(owlClass)) {
+			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies());
+			if ( !types.contains(owlClass)) {
 				owlClass = null;
 				for (OWLClassExpression type : types) {
 					if (!type.isAnonymous()) {

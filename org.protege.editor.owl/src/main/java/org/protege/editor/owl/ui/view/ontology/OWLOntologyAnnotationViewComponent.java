@@ -1,5 +1,30 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -8,24 +33,17 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
-import org.protege.editor.owl.model.refactor.ontology.OntologyIDChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.NumberFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -192,7 +210,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             if (!entities.isEmpty()) {
                 boolean rename = showConfirmRenameDialog(id, entities);
                 if (rename) {
-                    List<OWLOntologyChange changes = changeStrategy.getChangesForRename(activeOntology(), initialOntologyID, id);
+                    List<OWLOntologyChange> changes = changeStrategy.getChangesForRename(activeOntology(), initialOntologyID, id);
                     System.out.println("Generated " + changes.size() + " changes");
                     System.out.println("Applying changes...");
                     getOWLModelManager().applyChanges(changes);
@@ -272,7 +290,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             else {
                 OWLOntologyID id = activeOntology.getOntologyID();
 
-                IRI ontologyIRI = id.getOntologyIRI();
+                IRI ontologyIRI = id.getOntologyIRI().get();
                 String ontologyIRIString = ontologyIRI.toString();
                 if (ontologyIRI != null) {
                     if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
@@ -280,7 +298,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
                     }
                 }
 
-                IRI versionIRI = id.getVersionIRI();
+                IRI versionIRI = id.getVersionIRI().orNull();
                 if (versionIRI != null) {
                     String versionIRIString = versionIRI.toString();
                     if (!ontologyVersionIRIField.getText().equals(versionIRIString)) {

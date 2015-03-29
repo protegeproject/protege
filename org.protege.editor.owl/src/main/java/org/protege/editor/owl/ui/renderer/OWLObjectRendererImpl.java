@@ -73,7 +73,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         }
 
         // shows the version uri or the ont uri if there is no version
-        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI();
+        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI().orNull();
         return ontURISFP.getShortForm(iri);
     }
     

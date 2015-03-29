@@ -62,8 +62,10 @@ import org.protege.owlapi.apibinding.ProtegeOWLManager;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -71,8 +73,8 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
@@ -185,7 +187,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager = ProtegeOWLManager.createOWLOntologyManager();
         manager.setUseWriteSafety(true);
         manager.setUseSwingThread(true);
-        manager.setSilentMissingImportsHandling(true);
+        manager.setOntologyLoaderConfiguration(new OWLOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
         manager.addOntologyChangeListener(this);
         manager.addOntologyLoaderListener(this);
 
@@ -331,7 +333,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             fireEvent(EventType.ONTOLOGY_LOADED);
             OWLOntologyID id = ontology.getOntologyID();
             if (!id.isAnonymous()) {
-                manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+                manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI().orNull(), IRI.create(uri)));
             }
         }
         catch (OWLOntologyCreationException ooce) {
@@ -426,7 +428,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
         if (physicalURI != null) {
-            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
+            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().orNull(), IRI.create(physicalURI)));
         }
         OWLOntology ont = manager.createOntology(ontologyID);
         setActiveOntology(ont);
@@ -533,7 +535,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                     throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
                 }
 
-                OWLOntologyFormat format = manager.getOntologyFormat(ont);
+                OWLDocumentFormat format = manager.getOntologyFormat(ont);
                 /*
                  * Using the addMissingTypes call here for RDF/XML files can result in OWL Full output
                  * and can also result in data corruption.

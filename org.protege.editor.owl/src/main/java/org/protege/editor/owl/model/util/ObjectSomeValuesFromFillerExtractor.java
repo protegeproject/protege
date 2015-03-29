@@ -1,11 +1,15 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectHasValue;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 
 /**
@@ -96,7 +100,7 @@ public class ObjectSomeValuesFromFillerExtractor extends OWLClassExpressionVisit
 
     public void visit(OWLObjectHasValue node) {
         if (node.getProperty().equals(objectProperty)) {
-            fillers.add(dataFactory.getOWLObjectOneOf(Collections.singleton(node.getValue())));
+            fillers.add(dataFactory.getOWLObjectOneOf(Collections.singleton(node.getFiller())));
         }
     }
 }

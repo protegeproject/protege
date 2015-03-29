@@ -582,7 +582,7 @@ public class OWLObjectStyledStringRenderer {
         private void renderHasValueRestriction(OWLHasValueRestriction<?> restriction) {
             restriction.getProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.VALUE);
-            restriction.getValue().accept(this);
+            restriction.getFiller().accept(this);
         }
 
         public void visit(OWLObjectHasValue owlObjectHasValue) {
@@ -699,7 +699,7 @@ public class OWLObjectStyledStringRenderer {
         }
 
         public void visit(OWLFacetRestriction owlFacetRestriction) {
-            builder.append(owlFacetRestriction.getFacet().getShortName());
+            builder.append(owlFacetRestriction.getFacet().getShortForm());
             renderSpace();
             owlFacetRestriction.getFacetValue().accept(this);
         }
@@ -721,10 +721,10 @@ public class OWLObjectStyledStringRenderer {
 
             OWLOntologyID id = owlOntology.getOntologyID();
             if (!id.isAnonymous()) {
-                builder.appendWithStyle(id.getOntologyIRI().toQuotedString(), Style.getForeground(Color.DARK_GRAY));
-                if (id.getVersionIRI() != null) {
+                builder.appendWithStyle(id.getOntologyIRI().get().toQuotedString(), Style.getForeground(Color.DARK_GRAY));
+                if (id.getVersionIRI().isPresent()) {
                     builder.appendSpace();
-                    builder.appendWithStyle(id.getVersionIRI().toQuotedString(), Style.getForeground(Color.GRAY));
+                    builder.appendWithStyle(id.getVersionIRI().get().toQuotedString(), Style.getForeground(Color.GRAY));
                 }
             }
         }

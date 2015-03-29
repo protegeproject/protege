@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.SplitSubClassAxioms;
 
 import java.awt.event.ActionEvent;
 /*
@@ -8,6 +7,8 @@ import java.awt.event.ActionEvent;
  *
  *
  */
+
+import org.semanticweb.owlapi.change.SplitSubClassAxioms;
 
 
 /**

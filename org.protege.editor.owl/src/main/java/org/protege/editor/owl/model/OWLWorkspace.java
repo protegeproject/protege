@@ -798,7 +798,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
 
         String ontShortName = mngr.getRendering(activeOntology);
-        IRI defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
+        IRI defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI().orNull();
         String documentIRIPart = "";
         if (defaultDocumentIRI != null) {
             documentIRIPart = " (" + defaultDocumentIRI + ") ";

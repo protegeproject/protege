@@ -78,7 +78,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         for (OWLOntologyChange change : changes) {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
-                changedEntities.addAll(chg.getEntities());
+                changedEntities.addAll(chg.getSignature());
             }
         }
         for (OWLEntity ent : changedEntities) {

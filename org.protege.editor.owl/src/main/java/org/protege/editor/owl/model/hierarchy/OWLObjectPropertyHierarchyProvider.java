@@ -33,7 +33,7 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 OWLAxiomChange axiomChange = (OWLAxiomChange) change;
-                for (OWLEntity entity : axiomChange.getEntities()) {
+                for (OWLEntity entity : axiomChange.getSignature()) {
                     if (entity.isOWLObjectProperty()) {
                         properties.add(entity.asOWLObjectProperty());
                     }

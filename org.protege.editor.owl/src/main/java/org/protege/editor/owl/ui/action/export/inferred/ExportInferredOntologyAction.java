@@ -110,7 +110,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 				adjustProgress("Initializing Reasoner", 0);
 				precompute();
 				
-				inferredOntologyGenerator.fillOntology(outputManager, exportedOntology);
+				inferredOntologyGenerator.fillOntology(outputManager.getOWLDataFactory(), exportedOntology);
 
 				int currentTask = inferredAxiomGenerators.size();
 				List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();

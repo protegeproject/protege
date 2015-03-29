@@ -1,17 +1,18 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.ui.GatherOntologiesPanel;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.owl.ui.GatherOntologiesPanel;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 
 /**
@@ -29,10 +30,10 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
             return;
         }
         boolean errors = false;
-        OWLOntologyFormat saveAsFormat = panel.getOntologyFormat();
+        OWLDocumentFormat saveAsFormat = panel.getOntologyFormat();
         File saveAsLocation = panel.getSaveLocation();
         for (OWLOntology ont : panel.getOntologiesToSave()) {
-            OWLOntologyFormat format = saveAsFormat;
+            OWLDocumentFormat format = saveAsFormat;
             OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
             if (format == null) {
                 format = man.getOntologyFormat(ont);

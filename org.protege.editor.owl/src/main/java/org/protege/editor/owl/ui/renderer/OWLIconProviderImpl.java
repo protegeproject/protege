@@ -71,6 +71,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 
@@ -427,7 +428,7 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     }
     
     private boolean isDefined(OWLClass owlClass, OWLOntology ontology) {
-    	if (owlClass.isDefined(ontology)) {
+    	if (EntitySearcher.isDefined(owlClass, ontology)) {
     		return true;
     	}
     	Set<OWLDisjointUnionAxiom> axioms = ontology.getDisjointUnionAxioms(owlClass);

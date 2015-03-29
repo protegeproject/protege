@@ -29,7 +29,6 @@ import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.RemoveImport;
@@ -140,7 +139,7 @@ public class OntologyImportsList extends MList {
                             eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                         }
                     }
-                    catch (OWLOntologyCreationException ooce) {
+                    catch (OWLRuntimeException ooce) {
                         if (logger.isDebugEnabled()) { // should be handled by the loadErrorHander?
                             logger.debug("Exception caught importing ontologies", ooce);
                         }

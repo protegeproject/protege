@@ -39,14 +39,15 @@ import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLStorerNotFoundException;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
@@ -244,7 +245,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
-        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().toURI());
+        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().get().toURI());
         OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
         owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
         return true;
@@ -264,9 +265,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
             newPhysicalURIs.clear();
         }
-        catch (OWLOntologyStorerNotFoundException e) {
+        catch (OWLStorerNotFoundException e) {
             OWLOntology ont = getModelManager().getActiveOntology();
-            OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+            OWLDocumentFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
             String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
             logger.warn(message);
             ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
@@ -288,8 +289,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
-        OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+        OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
+        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
         if (format == null) {
             logger.warn("Please select a valid format");
             return false;

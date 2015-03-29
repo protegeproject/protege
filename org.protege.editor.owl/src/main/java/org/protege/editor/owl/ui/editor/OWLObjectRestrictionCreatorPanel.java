@@ -21,7 +21,7 @@ import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
-import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
+import org.semanticweb.owlapi.model.OWLQuantifiedObjectRestriction;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 /**
@@ -130,7 +130,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         private RestrictionCreator<OWLObjectProperty, OWLClass> t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression> r) {
+        private void handleRestriction(OWLQuantifiedObjectRestriction r) {
             if (!r.getProperty().isAnonymous() && !r.getFiller().isAnonymous()){
                 p = r.getProperty().asOWLObjectProperty();
                 f = r.getFiller().asOWLClass();

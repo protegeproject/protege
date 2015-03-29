@@ -13,7 +13,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
@@ -75,7 +74,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
             ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
             ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
-            ontGen.fillOntology(man, inferredOnt);
+            ontGen.fillOntology(man.getOWLDataFactory(), inferredOnt);
 
 
             for (OWLAxiom ax : new TreeSet<OWLAxiom>(inferredOnt.getAxioms())) {

@@ -25,7 +25,7 @@ public class RDFExtractorTest extends TestCase {
         extractor.setPhysicalAddress(new File(PIZZA_LOCATION).toURI());
         OWLOntologyID id = extractor.getOntologyId();
         assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        assertTrue(!id.getVersionIRI().isPresent());
     }
     
     public void testPizza02() {
@@ -33,7 +33,7 @@ public class RDFExtractorTest extends TestCase {
         extractor.setPhysicalAddress(new File(PIZZA_LOCATION).toURI());
         OWLOntologyID id = extractor.getOntologyId();
         assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        assertTrue(!id.getVersionIRI().isPresent());
     }
     
     public void testPizza03() {
@@ -47,7 +47,7 @@ public class RDFExtractorTest extends TestCase {
         extractor.setPhysicalAddress(new File(PIZZA_LOCATION2).toURI());
         OWLOntologyID id = extractor.getOntologyId();
         assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        assertTrue(!id.getVersionIRI().isPresent());
     }
     
     public void testAmbiguous01() {
@@ -55,7 +55,7 @@ public class RDFExtractorTest extends TestCase {
         extractor.setPhysicalAddress(new File(AMBIGUOUS_LOCATION).toURI());
         OWLOntologyID id = extractor.getOntologyId();
         assertTrue(id.getOntologyIRI().toString().equals(AMBIGUOUS_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        assertTrue(!id.getVersionIRI().isPresent());
     }
     
     public void testAmbiguous02() {
@@ -63,7 +63,7 @@ public class RDFExtractorTest extends TestCase {
         extractor.setPhysicalAddress(new File(AMBIGUOUS_LOCATION).toURI());
         OWLOntologyID id = extractor.getOntologyId();
         assertTrue(id.getOntologyIRI().toString().equals(AMBIGUOUS_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        assertTrue(!id.getVersionIRI().isPresent());
     }
     
     public void testVersioned01() {

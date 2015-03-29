@@ -152,7 +152,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 baseURI = getDefaultBaseIRI();
             }
             else{
-                baseURI = mngr.getActiveOntology().getOntologyID().getOntologyIRI();
+                baseURI = mngr.getActiveOntology().getOntologyID().getOntologyIRI().get();
             }
         }
 
@@ -211,7 +211,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
                 baseIRI = EntityCreationPreferences.getDefaultBaseIRI();
             }
             else{
-                baseIRI = mngr.getActiveOntology().getOntologyID().getOntologyIRI();
+                baseIRI = mngr.getActiveOntology().getOntologyID().getOntologyIRI().get();
             }
         }
         String base = baseIRI.toString().replace(" ", "_");

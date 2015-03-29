@@ -263,7 +263,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         synchronized (reasonerMap) {
             OWLReasoner reasoner = getCurrentReasoner();
             return !(reasoner instanceof NoOpReasoner) && 
-            			(reasoner.getPendingChanges() == null || reasoner.getPendingChanges().isEmpty());
+            			(reasoner.getPendingChanges().isEmpty());
         }
     }
     
@@ -433,8 +433,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 runningReasoner = null;
             }
             if (runningReasoner != null && !runningReasoner.getPendingChanges().isEmpty()) {
-                if (runningReasoner.getBufferingMode() == null 
-                        || runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
+                if ( runningReasoner.getBufferingMode() == BufferingMode.NON_BUFFERING) {
                     runningReasoner.dispose();
                     runningReasoner = null;
                 }

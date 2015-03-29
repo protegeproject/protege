@@ -7,7 +7,8 @@ import java.net.URI;
 import org.apache.log4j.Logger;
 import org.protege.owlapi.util.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.rdf.syntax.RDFParser;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParser;
 import org.xml.sax.InputSource;
 
 public class RdfXmlExtractor implements OntologyIdExtractor {
@@ -19,7 +20,10 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
         RDFParser parser = new RDFParser();
         InputStream iStream = null;
         try {
-        	iStream = IOUtils.getInputStream(location);
+            OWLOntologyLoaderConfiguration config = new OWLOntologyLoaderConfiguration();
+            iStream = IOUtils.getInputStream(location,
+                    config.isAcceptingHTTPCompression(),
+                    config.getConnectionTimeout());
             InputSource is = new InputSource(iStream);
             is.setSystemId(location.toURL().toString());
             parser.parse(is, consumer);

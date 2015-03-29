@@ -79,7 +79,7 @@ class OntologyImportItem implements MListItem {
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
             // @@TODO what about anonymous ontologies?
-            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI())));
+            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI().get())));
             mngr.applyChanges(changes);
         }
     }
@@ -90,7 +90,7 @@ class OntologyImportItem implements MListItem {
         sb.append("<html><body>");
         sb.append("The imports URI:<br>");
         sb.append("<font color=\"blue\">");
-        sb.append(decl.getURI());
+        sb.append(decl.getIRI());
         sb.append("</font>");
         sb.append("<br>");
         sb.append("does not match the URI of the ontology that has been imported:<br>");

@@ -43,13 +43,13 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
         if (!id.isAnonymous() && !id.equals(oldId)) {
         	for (OWLOntology ont : owlOntologyManager.getOntologies()) {
         		for (OWLImportsDeclaration decl : ont.getImportsDeclarations()) {
-        			if (decl.getIRI().equals(oldId.getVersionIRI())) {
+        			if (decl.getIRI().equals(oldId.getVersionIRI().orNull())) {
         				changes.add(new RemoveImport(ont, decl));
-        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getDefaultDocumentIRI())));
+        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getDefaultDocumentIRI().get())));
         			}
-        			else if (decl.getIRI().equals(oldId.getOntologyIRI())) {
+        			else if (decl.getIRI().equals(oldId.getOntologyIRI().orNull())) {
         				changes.add(new RemoveImport(ont, decl));
-        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getOntologyIRI())));
+        				changes.add(new AddImport(ont, factory.getOWLImportsDeclaration(id.getOntologyIRI().get())));
         			}
         		}
         	}

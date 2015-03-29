@@ -24,11 +24,9 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
@@ -213,8 +211,8 @@ public class EditUriAction extends AbstractAction {
                 extractor.setPhysicalAddress(physicalLocation);
                 OWLOntologyID id = extractor.getOntologyId();
                 ontologyNameField.setText(id.getOntologyIRI().toString());
-                if (id.getVersionIRI() != null) {
-                    ontologyVersionField.setText(id.getVersionIRI().toString());
+                if (id.getVersionIRI().isPresent()) {
+                    ontologyVersionField.setText(id.getVersionIRI().get().toString());
                 }
                 else {
                     ontologyVersionField.setText(NO_VERSION);
