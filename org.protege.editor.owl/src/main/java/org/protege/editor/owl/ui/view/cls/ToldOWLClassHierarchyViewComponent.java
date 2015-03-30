@@ -1,5 +1,11 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -11,14 +17,13 @@ import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**

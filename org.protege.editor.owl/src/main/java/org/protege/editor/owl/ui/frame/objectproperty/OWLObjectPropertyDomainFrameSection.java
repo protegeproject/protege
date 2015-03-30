@@ -58,7 +58,7 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractPropertyDomainF
         }
         OWLClassExpression domain = factory.getOWLObjectSomeValuesFrom(p, factory.getOWLThing());
         Node<OWLClass> domainNode = reasoner.getEquivalentClasses(domain);
-        if (domainNode != null && !domainNode.getEntities().isEmpty()) {
+        if (!domainNode.getEntities().isEmpty()) {
             return new OWLClassNodeSet(domainNode);
         }
         else {

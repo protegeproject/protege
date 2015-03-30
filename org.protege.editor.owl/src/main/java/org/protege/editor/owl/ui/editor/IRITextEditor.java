@@ -75,7 +75,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 		OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
 		OWLOntologyID ontologyId = ontology.getOntologyID();
 		if (!ontologyId.isAnonymous()) {
-			iriTextField.setText(ontologyId.getOntologyIRI().toString());
+			iriTextField.setText(ontologyId.getOntologyIRI().get().toString());
 		}
 	}
 
@@ -112,7 +112,6 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 			editedObject = IRI.create(iriTextField.getText());
 		}
 		catch (RuntimeException e) {
-			;
 		}
 		return editedObject;
 	}

@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
@@ -71,7 +72,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
                 	}
                     OWLDataFactory factory = getOWLDataFactory();
                     if (!getRootObject().isAnonymous()){
-                        for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
+                        for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(Imports.INCLUDED)) {
                             if (prop.equals(factory.getOWLTopObjectProperty())) {
                                 continue;
                             }

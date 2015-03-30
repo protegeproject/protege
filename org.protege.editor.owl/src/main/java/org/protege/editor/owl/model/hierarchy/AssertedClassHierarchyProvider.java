@@ -25,6 +25,8 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 
 /**
@@ -159,7 +161,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         List<OWLAxiomChange> filteredChanges = filterIrrelevantChanges(changes);
         updateImplicitRoots(filteredChanges);
         for (OWLOntologyChange change : filteredChanges) {
-        	for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
+        	for (OWLEntity entity : ((OWLAxiomChange) change).getSignature()) {
         		if (entity instanceof OWLClass && !entity.equals(root)) {
         			changedClasses.add((OWLClass) entity);
         		}
@@ -326,7 +328,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     		parentClassExtractor.reset();
     		parentClassExtractor.setCurrentClass(object);
     		for (OWLOntology ont : ontologies) {
-    			for (OWLAxiom ax : ont.getAxioms(object)) {
+    			for (OWLAxiom ax : ont.getAxioms(object,Imports.EXCLUDED)) {
     				ax.accept(parentClassExtractor);
     			}
     		}
@@ -346,7 +348,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	try {
     		Set<OWLClass> result = new HashSet<OWLClass>();
     		for (OWLOntology ont : ontologies) {
-    			for (OWLClassExpression equiv : object.getEquivalentClasses(ont)) {
+    			for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(object,ont)) {
     				if (!equiv.isAnonymous()) {
     					result.add((OWLClass) equiv);
     				}

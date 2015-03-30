@@ -1,7 +1,10 @@
 package org.protege.editor.owl.model.parser;
 
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
-import org.semanticweb.owlapi.expression.ParserException;
+import org.protege.owlapi.apibinding.ProtegeOWLManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
+import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -19,6 +22,12 @@ import org.semanticweb.owlapi.expression.ParserException;
  */
 public class ParserUtil {
 
+    public static ManchesterOWLSyntaxParser manchesterParserFor(String text, OWLModelManager manager) {
+        ManchesterOWLSyntaxParser parser=ProtegeOWLManager.createManchesterParser();
+        parser.setStringToParse(text);
+        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(manager.getOWLEntityFinder()));
+        return parser;
+    }
     public static OWLExpressionParserException convertException(ParserException ex) {
         int endPos = ex.getStartPos() + ex.getCurrentToken().length();
         if (ex.getCurrentToken().equals("<EOF>")){

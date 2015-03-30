@@ -1,5 +1,17 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -14,19 +26,16 @@ import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Findable;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -257,7 +266,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         if (set == null) {
             return;
         }
-        java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
         changes.addAll(set.getOntologyChanges());
         getOWLModelManager().applyChanges(changes);
         OWLNamedIndividual ind = set.getOWLEntity();

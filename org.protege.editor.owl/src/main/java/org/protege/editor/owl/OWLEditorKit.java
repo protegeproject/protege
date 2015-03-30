@@ -1,5 +1,13 @@
 package org.protege.editor.owl;
 
+import java.io.File;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -29,18 +37,18 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLStorerNotFoundException;
 import org.semanticweb.owlapi.util.VersionInfo;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
-
-import java.io.File;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -236,9 +244,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
-        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().toURI());
+        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().get().toURI());
         OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
-        owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
+        owlOntologyManager.setOntologyFormat(ont, new RDFXMLDocumentFormat());
         return true;
     }
 
@@ -256,9 +264,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
             newPhysicalURIs.clear();
         }
-        catch (OWLOntologyStorerNotFoundException e) {
+        catch (OWLStorerNotFoundException e) {
             OWLOntology ont = getModelManager().getActiveOntology();
-            OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+            OWLDocumentFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
             String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
             logger.warn(message);
             ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
@@ -280,17 +288,14 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
-        OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+        OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
+        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
         if (format == null) {
             logger.warn("Please select a valid format");
             return false;
         }
-        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
-            PrefixOWLOntologyFormat oldPrefixes = (PrefixOWLOntologyFormat) oldFormat;
-            for (String name : oldPrefixes.getPrefixNames()) {
-                ((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
-            }
+        if (oldFormat.isPrefixOWLOntologyFormat() && format.isPrefixOWLOntologyFormat()) {
+            format.asPrefixOWLOntologyFormat().copyPrefixesFrom(oldFormat.asPrefixOWLOntologyFormat().getPrefixName2PrefixMap());
         }
         File file = getSaveAsOWLFile(ont);
         if (file != null) {

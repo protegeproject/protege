@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
@@ -23,6 +24,7 @@ import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 
 /**
@@ -31,7 +33,7 @@ import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression<R, E>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
+public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
 
 //    private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
 	
@@ -224,7 +226,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     		}
 
     		final Set<P> result = new HashSet<P>();
-    		for (E subProp : object.getSubProperties(ontologies)){
+    		for (E subProp : EntitySearcher.getSubProperties(object, ontologies)){
     			// Don't add the sub property if it is a parent of
     			// itself - i.e. prevent cycles
     			if (!subProp.isAnonymous() &&
@@ -255,7 +257,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     			}
     		}
 
-    		for (E prop : object.getEquivalentProperties(ontologies)) {
+    		for (E prop : EntitySearcher.getEquivalentProperties(object,ontologies)) {
     			if (!prop.isAnonymous()) {
     				result.add((P)prop);
     			}
@@ -280,7 +282,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     		}
 
     		Set<P> result = new HashSet<P>();
-    		for (E prop : object.getSuperProperties(ontologies)) {
+    		for (E prop : EntitySearcher.getSuperProperties(object, ontologies)) {
     			if (!prop.isAnonymous()) {
     				result.add((P) prop);
     			}
@@ -315,7 +317,10 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
 		public Boolean visit(OWLDataProperty property) {
 			return isReferenced(property);
 		}
-    	
+    	@Override
+    	public Boolean visit(OWLAnnotationProperty property) {
+    	    return isReferenced(property);
+    	}
     	
     	private boolean isReferenced(OWLEntity e) {
         	for (OWLOntology ontology : ontologies) {

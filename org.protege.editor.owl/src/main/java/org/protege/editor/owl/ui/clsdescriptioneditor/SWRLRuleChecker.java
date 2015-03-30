@@ -1,15 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.apache.log4j.Logger;
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
-import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owlapi.expression.ParserException;
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.SWRLRule;
- import static org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax.*;
+import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 /**
  * Author: drummond<br>
@@ -42,9 +39,7 @@ class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
    * commit is approximately 16831
    */
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), 
-                                                                                     text);
-        parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
+        ManchesterOWLSyntaxParser parser = ParserUtil.manchesterParserFor(text, mngr);
         try {
             return (SWRLRule) parser.parseRuleFrame().iterator().next().getAxiom();
         }

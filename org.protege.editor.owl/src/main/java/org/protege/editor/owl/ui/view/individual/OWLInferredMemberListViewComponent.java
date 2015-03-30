@@ -34,7 +34,7 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
     
     @Override
     protected void setupActions() {
-    	; // no actions
+     // no actions
     }
     
     @Override
@@ -44,13 +44,11 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
         if (cls != null) {
         	OWLReasoner reasoner = getOWLModelManager().getReasoner();
         	NodeSet<OWLNamedIndividual> individuals = reasoner.getInstances(cls, true);
-        	if (individuals != null) {
         		for (OWLIndividual ind : individuals.getFlattened()){
         			if (!ind.isAnonymous()){
         				individualsInList.add(ind.asOWLNamedIndividual());
         			}
         		}
-        	}
         }
         reset();
     }

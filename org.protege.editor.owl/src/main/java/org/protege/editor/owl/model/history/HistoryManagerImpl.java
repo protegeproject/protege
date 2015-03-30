@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import javax.swing.JList;
-
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
@@ -25,7 +23,7 @@ public class HistoryManagerImpl implements HistoryManager {
     
     private enum ChangeType {
         UNDOING, REDOING, NORMAL;
-    };
+    }
     
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 

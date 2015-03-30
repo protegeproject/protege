@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * Author: drummond<br>
@@ -135,7 +136,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
     public OWLClassExpression getExpression(OWLClass cls) {
-        for (OWLClassExpression descr : cls.getEquivalentClasses(mngr.getActiveOntologies())){
+        for (OWLClassExpression descr : EntitySearcher.getEquivalentClasses(cls,mngr.getActiveOntologies())){
             if (!descr.equals(cls)){
                 return descr;
             }

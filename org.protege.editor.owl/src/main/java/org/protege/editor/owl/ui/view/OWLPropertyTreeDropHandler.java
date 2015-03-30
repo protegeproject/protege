@@ -1,12 +1,17 @@
 package org.protege.editor.owl.ui.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
 /**

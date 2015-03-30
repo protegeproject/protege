@@ -1,20 +1,25 @@
 package org.protege.editor.owl.ui.rename;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+
+import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 
 /**
@@ -91,13 +96,7 @@ public class RenameEntityPanel extends JPanel {
      *         is no fragment.
      */
     private String getFragment() {
-        String fragment = owlEntity.getIRI().getFragment();
-        if (fragment != null) {
-            return fragment;
-        }
-        else {
-            return "";
-        }
+        return owlEntity.getIRI().getFragment();
     }
 
 

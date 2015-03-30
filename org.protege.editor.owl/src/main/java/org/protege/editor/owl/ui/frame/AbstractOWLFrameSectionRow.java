@@ -110,7 +110,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         if (newAxiom != null){ // the editor should protect from this, but just in case
         	A oldAxiom = getAxiom();
         	Set<OWLAnnotation> axiomAnnotations = oldAxiom.getAnnotations();
-        	if (axiomAnnotations != null && !axiomAnnotations.isEmpty()) {
+        	if (!axiomAnnotations.isEmpty()) {
         		newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
         	}
             List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
@@ -185,7 +185,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
             StringBuffer buffer = new StringBuffer("<html>\n\t<body>\n\t\tAsserted in: ");
             buffer.append(helper.getHTMLOntologyList(Collections.singleton(ontology)));
             Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
-            if (annotations != null && !annotations.isEmpty()) {
+            if (!annotations.isEmpty()) {
             	OWLModelManager protegeManager = getOWLModelManager();
             	buffer.append("\n\t\t<p>Annotations:");
             	buffer.append("\n\t\t<dl>");

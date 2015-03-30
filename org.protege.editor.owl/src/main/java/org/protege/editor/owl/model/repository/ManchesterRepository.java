@@ -143,12 +143,12 @@ public class ManchesterRepository implements OntologyRepository {
 
 
         public void configureEditorKit(EditorKit editorKit) {
-            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().addIRIMapper(iriMapper);
+            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().getIRIMappers().add(iriMapper);
         }
 
 
         public void restoreEditorKit(EditorKit editorKit) {
-            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().removeIRIMapper(iriMapper);
+            ((OWLEditorKit) editorKit).getOWLModelManager().getOWLOntologyManager().getIRIMappers().remove(iriMapper);
 
         }
     }

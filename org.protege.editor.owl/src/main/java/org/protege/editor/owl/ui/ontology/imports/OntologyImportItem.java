@@ -1,13 +1,8 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,6 +13,18 @@ import java.util.List;
 *
 *
 */
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveImport;
 
 /**
  * Author: drummond<br>
@@ -72,7 +79,7 @@ class OntologyImportItem implements MListItem {
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
             // @@TODO what about anonymous ontologies?
-            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI())));
+            changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(impOnt.getOntologyID().getDefaultDocumentIRI().get())));
             mngr.applyChanges(changes);
         }
     }
@@ -83,7 +90,7 @@ class OntologyImportItem implements MListItem {
         sb.append("<html><body>");
         sb.append("The imports URI:<br>");
         sb.append("<font color=\"blue\">");
-        sb.append(decl.getURI());
+        sb.append(decl.getIRI());
         sb.append("</font>");
         sb.append("<br>");
         sb.append("does not match the URI of the ontology that has been imported:<br>");

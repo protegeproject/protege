@@ -41,14 +41,12 @@ public class XmlBaseAlgorithm implements Algorithm {
             parser.parse(is, new MyHandler());
         }
         catch (Throwable t) {
-            ;
         }
         finally {
         	try {
         		is.close();
         	}
         	catch (Throwable t) {
-        		;
         	}
         }
         if (xmlBase == null) {

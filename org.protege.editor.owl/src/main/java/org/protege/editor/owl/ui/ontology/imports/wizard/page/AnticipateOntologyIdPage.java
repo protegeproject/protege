@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -69,9 +68,9 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
             
     	OWLOntologyID id = parameters.getOntologyID();
     	if (id != null && !id.isAnonymous()) {
-    	    importOptions.add(id.getOntologyIRI());
-    	    if (id.getVersionIRI() != null && !importOptions.contains(id.getVersionIRI())) {
-    	        importOptions.add(id.getVersionIRI());
+    	    importOptions.add(id.getOntologyIRI().get());
+    	    if (id.getVersionIRI().isPresent() && !importOptions.contains(id.getVersionIRI().get())) {
+    	        importOptions.add(id.getVersionIRI().get());
     	    }
     	}
         URI physicalLocation = parameters.getPhysicalLocation();

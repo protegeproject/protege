@@ -11,7 +11,6 @@ import javax.swing.ProgressMonitor;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.owl.model.inference.NoOpReasoner;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.ReasonerStatus;
 import org.protege.editor.owl.model.inference.ReasonerUtilities;
@@ -28,10 +27,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLLogicalAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -113,7 +110,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 				adjustProgress("Initializing Reasoner", 0);
 				precompute();
 				
-				inferredOntologyGenerator.fillOntology(outputManager, exportedOntology);
+				inferredOntologyGenerator.fillOntology(outputManager.getOWLDataFactory(), exportedOntology);
 
 				int currentTask = inferredAxiomGenerators.size();
 				List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();

@@ -1,11 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -14,6 +11,22 @@ import java.io.Writer;
 *
 *
 */
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxFrameRenderer;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  * Author: drummond<br>
@@ -89,8 +102,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
         private ManchesterOWLSyntaxFrameRenderer ren;
 
         OWLEntityFrameRendererAdapter(OWLModelManager mngr, Writer writer) {
-            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getOWLOntologyManager(),
-                                                       mngr.getActiveOntology(),
+            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getActiveOntology(),
                                                        writer,
                                                        mngr.getOWLEntityRenderer());
         }

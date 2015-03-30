@@ -1,10 +1,18 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 
 /**
@@ -25,7 +33,7 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 OWLAxiomChange axiomChange = (OWLAxiomChange) change;
-                for (OWLEntity entity : axiomChange.getEntities()) {
+                for (OWLEntity entity : axiomChange.getSignature()) {
                     if (entity.isOWLObjectProperty()) {
                         properties.add(entity.asOWLObjectProperty());
                     }

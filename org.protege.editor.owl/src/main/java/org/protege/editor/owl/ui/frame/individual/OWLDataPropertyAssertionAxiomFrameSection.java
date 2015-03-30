@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**
@@ -70,7 +71,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
             		return;
             	}
     			if (!getRootObject().isAnonymous()){
-    				for (OWLDataProperty dp : getReasoner().getRootOntology().getDataPropertiesInSignature(true)) {
+    				for (OWLDataProperty dp : getReasoner().getRootOntology().getDataPropertiesInSignature(Imports.INCLUDED)) {
     					Set<OWLLiteral> values = getReasoner().getDataPropertyValues(getRootObject().asOWLNamedIndividual(), dp);
     					for (OWLLiteral constant : values) {
     						OWLDataPropertyAssertionAxiom ax = getOWLDataFactory().getOWLDataPropertyAssertionAxiom(dp,

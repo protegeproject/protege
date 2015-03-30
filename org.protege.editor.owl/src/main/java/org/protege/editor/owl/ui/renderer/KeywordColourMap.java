@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 
 /**
  * Author: drummond<br>

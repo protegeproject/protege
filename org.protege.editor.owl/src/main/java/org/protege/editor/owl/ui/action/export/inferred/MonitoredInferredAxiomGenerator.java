@@ -1,12 +1,11 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.ProgressMonitor;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 
@@ -24,13 +23,13 @@ public class MonitoredInferredAxiomGenerator<A extends OWLAxiom> implements Infe
 		this.task = task;
 	}
 
-	public Set<A> createAxioms(OWLOntologyManager manager, OWLReasoner reasoner) {
+	public Set<A> createAxioms(OWLDataFactory df, OWLReasoner reasoner) {
 		if (progressMonitor.isCanceled()) {
 			throw new ExportCancelledException();
 		}
 		progressMonitor.setNote(delegate.getLabel());
 		progressMonitor.setProgress(task);
-		return delegate.createAxioms(manager, reasoner);
+		return delegate.createAxioms(df, reasoner);
 	}
 
 	public String getLabel() {

@@ -218,7 +218,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
             write("\"");
             write(node.getLiteral());
             write("\"");
-            if (node.getLang() != null) {
+            if (!node.getLang().isEmpty()) {
                 write("@");
                 write(node.getLang());
             }
@@ -276,7 +276,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(" ");
         node.getProperty().accept(this);
         write(" {");
-        node.getValue().accept(this);
+        node.getFiller().accept(this);
         write("}");
     }
 
@@ -374,7 +374,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(" ");
         node.getProperty().accept(this);
         write(" {");
-        node.getValue().accept(this);
+        node.getFiller().accept(this);
         write("}");
     }
 

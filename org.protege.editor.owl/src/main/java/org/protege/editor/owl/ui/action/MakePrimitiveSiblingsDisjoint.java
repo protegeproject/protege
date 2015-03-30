@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 
 /**
@@ -43,16 +43,14 @@ public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
         for (OWLClass par : provider.getParents(selCls)) {
             clses.addAll(provider.getChildren(par));
         }
-        for(Iterator<OWLClass> it = clses.iterator(); it.hasNext(); ) {
+        for (Iterator<OWLClass> it = clses.iterator(); it.hasNext();) {
             OWLClass cls = it.next();
-            for(OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-                if(cls.isDefined(ont)) {
-                    it.remove();
-                    break;
-                }
+            if (EntitySearcher.isDefined(cls, getOWLModelManager()
+                    .getActiveOntologies())) {
+                it.remove();
+                break;
             }
         }
-
         if (clses.size() > 1){
             OWLAxiom ax = getOWLDataFactory().getOWLDisjointClassesAxiom(clses);
             getOWLModelManager().applyChange(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));

@@ -1,18 +1,21 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
 
 /**
@@ -51,7 +54,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
             return ont.getOntologyID().toString();
         }
 
-        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
+        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI().orNull();
 
         return getOntologyLabelText(iri, mngr);
     }

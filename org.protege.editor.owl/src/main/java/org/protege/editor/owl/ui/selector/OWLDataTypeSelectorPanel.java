@@ -74,7 +74,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
             return false;
         }
         
-    };
+    }
     
     
     private class ActiveOntologyChangedListener implements OWLModelManagerListener {
@@ -85,7 +85,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
                 break;
             }
         }
-    };
+    }
     
     private class OWLDatatypeListView extends AbstractOWLViewComponent {
         private static final long serialVersionUID = -2407766608313199261L;

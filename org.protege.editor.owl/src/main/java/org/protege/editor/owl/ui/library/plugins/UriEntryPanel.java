@@ -105,10 +105,10 @@ public class UriEntryPanel extends NewEntryPanel {
             extractor.setPhysicalAddress(u);
             OWLOntologyID id = extractor.getOntologyId();
             if (!id.isAnonymous()) {
-                preferred  = id.getOntologyIRI();
+                preferred  = id.getOntologyIRI().orNull();
                 locations.add(preferred);
-                if (id.getVersionIRI() != null) {
-                    preferred  = id.getVersionIRI();
+                if (id.getVersionIRI().isPresent()) {
+                    preferred  = id.getVersionIRI().get();
                     locations.add(preferred);
                 }
             }

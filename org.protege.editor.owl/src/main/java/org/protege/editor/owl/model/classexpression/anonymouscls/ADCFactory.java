@@ -1,11 +1,5 @@
 package org.protege.editor.owl.model.classexpression.anonymouscls;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.parser.OWLParseException;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +9,20 @@ import java.util.Set;
 *
 *
 */
+
+import org.apache.log4j.Logger;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.parser.OWLParseException;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 /**
  * Author: drummond<br>

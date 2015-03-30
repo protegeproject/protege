@@ -1,5 +1,30 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -8,24 +33,17 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
-import org.protege.editor.owl.model.refactor.ontology.OntologyIDChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.NumberFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -217,9 +235,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
     private String getChangeEntityIRIsConfirmationMessage(OWLOntologyID id, Set<OWLEntity> entities) {
         return "<html><body>You have renamed the ontology from<br>" +
-                "" + initialOntologyID.getOntologyIRI().toString() + "<br>" +
+                "" + initialOntologyID.getOntologyIRI().get().toString() + "<br>" +
                 "to<br>" +
-                "" + id.getOntologyIRI().toString() + ".<br>" +
+                "" + id.getOntologyIRI().get().toString() + ".<br>" +
                 "<br>" +
                 "<b>There are " + NumberFormat.getIntegerInstance().format(entities.size()) + " entities whose IRIs start with the original ontology IRI. Would you also like to rename these entities<br>" +
                 "so that their IRIs start with the new ontology IRI?</b></body></html>";
@@ -272,25 +290,25 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             else {
                 OWLOntologyID id = activeOntology.getOntologyID();
 
-                IRI ontologyIRI = id.getOntologyIRI();
-                String ontologyIRIString = ontologyIRI.toString();
-                if (ontologyIRI != null) {
-                    if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
-                        ontologyIRIField.setText(ontologyIRIString);
+                if (id.getOntologyIRI().isPresent()) {
+                    String string = id.getOntologyIRI().get().toString();
+                    if (!ontologyIRIField.getText().equals(string)) {
+                        ontologyIRIField.setText(string);
                     }
                 }
 
-                IRI versionIRI = id.getVersionIRI();
-                if (versionIRI != null) {
-                    String versionIRIString = versionIRI.toString();
+
+                if (id.getVersionIRI().isPresent()) {
+                    String versionIRIString = id.getVersionIRI().get().toString();
                     if (!ontologyVersionIRIField.getText().equals(versionIRIString)) {
                         ontologyVersionIRIField.setText(versionIRIString);
                     }
                 }
                 else {
                     ontologyVersionIRIField.setText("");
-                    if (ontologyIRI != null) {
-                        ontologyVersionIRIField.setGhostText("e.g. " + ontologyIRIString + (ontologyIRIString.endsWith("/") ? "1.0.0" : "/1.0.0"));
+                    if (id.getOntologyIRI().isPresent()) {
+                        String iri=id.getOntologyIRI().get().toString();
+                        ontologyVersionIRIField.setGhostText("e.g. " + iri + (iri.endsWith("/") ? "1.0.0" : "/1.0.0"));
                     }
                 }
             }

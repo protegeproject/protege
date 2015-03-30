@@ -55,7 +55,7 @@ public class LibraryPage extends OntologyImportPage {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("The list below shows ontologies that are contained in the available ontology libaries.  Select the ones you want to import.");;
+        setInstructions("The list below shows ontologies that are contained in the available ontology libaries.  Select the ones you want to import.");
         parent.setLayout(new BorderLayout());
         importListModel = new DefaultListModel();
         importList = new JList(importListModel);

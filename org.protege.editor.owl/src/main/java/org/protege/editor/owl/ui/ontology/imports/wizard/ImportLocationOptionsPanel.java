@@ -35,24 +35,24 @@ public class ImportLocationOptionsPanel extends JPanel {
 		optionsCount = 0;
 		
 		if (id != null && !id.isAnonymous()) {
-		    ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI());
+		    ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI().get());
 		    ontologyIDButton.setAlignmentX(LEFT_ALIGNMENT);
 		    add(ontologyIDButton);
 		    bg.add(ontologyIDButton);
 		    optionsCount++;
 		}
 
-    	boolean useVersionButton = (id.getVersionIRI() != null && !id.getVersionIRI().equals(id.getOntologyIRI()));
+    	boolean useVersionButton = (id.getVersionIRI().isPresent() && !id.getVersionIRI().get().equals(id.getOntologyIRI().orNull()));
     	if (useVersionButton) {
-    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI());
+    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI().get());
     		versionIDButton.setAlignmentX(LEFT_ALIGNMENT);
     		add(versionIDButton);
     		bg.add(versionIDButton);
     		optionsCount++;
     	}
     	if (id.isAnonymous() || (
-    			!physicalLocation.equals(id.getOntologyIRI().toURI()) &&
-    			(id.getVersionIRI() == null || !physicalLocation.equals(id.getVersionIRI().toURI())) &&
+    			!physicalLocation.equals(id.getOntologyIRI().get().toURI()) &&
+    			(!id.getVersionIRI().isPresent() || !physicalLocation.equals(id.getVersionIRI().get().toURI())) &&
     			!physicalLocation.getScheme().equals("file"))) {
     		physicalIDButton = new JRadioButton("Import using the supplied physical URI (Not Recommended): " + physicalLocation);
     		physicalIDButton.setAlignmentX(LEFT_ALIGNMENT);
@@ -100,10 +100,10 @@ public class ImportLocationOptionsPanel extends JPanel {
 		OWLOntologyID id = info.getOntologyID();
 		URI physicalLocation = info.getPhysicalLocation();
     	if (ontologyIDButton != null && ontologyIDButton.isSelected()) {
-    		info.setImportLocation(id.getOntologyIRI());
+    		info.setImportLocation(id.getOntologyIRI().orNull());
     	}
     	else if (versionIDButton != null && versionIDButton.isSelected()) {
-    		info.setImportLocation(id.getVersionIRI());
+    		info.setImportLocation(id.getVersionIRI().orNull());
     	}
     	else {
     		info.setImportLocation(IRI.create(physicalLocation));

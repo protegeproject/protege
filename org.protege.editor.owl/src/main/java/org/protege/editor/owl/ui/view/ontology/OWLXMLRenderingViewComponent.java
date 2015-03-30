@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.coode.owlapi.owlxml.renderer.OWLXMLRenderer;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.io.Writer;
+
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.owlxml.renderer.OWLXMLRenderer;
 
 
 /**
@@ -20,7 +20,7 @@ public class OWLXMLRenderingViewComponent extends AbstractOntologyRenderingViewC
     private static final long serialVersionUID = 4981062527906093700L;
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
-        OWLXMLRenderer renderer = new OWLXMLRenderer(getOWLModelManager().getOWLOntologyManager());
+        OWLXMLRenderer renderer = new OWLXMLRenderer();
         renderer.render(ontology, writer);
     }
 }

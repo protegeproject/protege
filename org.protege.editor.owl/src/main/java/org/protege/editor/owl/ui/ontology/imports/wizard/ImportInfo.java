@@ -61,7 +61,7 @@ public class ImportInfo {
             throw new IllegalStateException("ImportInfo is not ready.");
         }
         if(ontologyID != null) {
-            IRI defaultDocumentIRI = ontologyID.getDefaultDocumentIRI();
+            IRI defaultDocumentIRI = ontologyID.getDefaultDocumentIRI().orNull();
             if(defaultDocumentIRI != null) {
                 return defaultDocumentIRI;
             }

@@ -1,7 +1,31 @@
 package org.protege.editor.owl.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -11,20 +35,17 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 
 
 /**
@@ -187,9 +208,9 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         OWLModelManager owlModelManager = owlEditorKit.getOWLModelManager();
         OWLOntologyManager owlOntologyManager = owlModelManager.getOWLOntologyManager();
         for(OWLOntology ont : owlModelManager.getActiveOntologies()) {
-            OWLOntologyFormat format = owlOntologyManager.getOntologyFormat(ont);
+            OWLDocumentFormat format = owlOntologyManager.getOntologyFormat(ont);
             if(format.isPrefixOWLOntologyFormat()) {
-                PrefixOWLOntologyFormat prefixFormat = format.asPrefixOWLOntologyFormat();
+                PrefixDocumentFormat prefixFormat = format.asPrefixOWLOntologyFormat();
                 for(String prefix : prefixFormat.getPrefixNames()) {
                     if(entityName.startsWith(prefix)) {
                         return true;
@@ -330,7 +351,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         String text = getEntityName();
         OWLOntology activeOntology = owlEditorKit.getModelManager().getActiveOntology();
         OWLOntologyManager manager = owlEditorKit.getModelManager().getOWLOntologyManager();
-        OWLOntologyFormat format = manager.getOntologyFormat(activeOntology);
+        OWLDocumentFormat format = manager.getOntologyFormat(activeOntology);
         for (Namespaces ns : Namespaces.values()) {
             if (text.startsWith(ns.name().toLowerCase() + ":")) {
                 return IRI.create(ns.toString() + text.substring(ns.name().length() + 1));
@@ -338,7 +359,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         }
         int colonIndex = text.indexOf(':');
         if (colonIndex >= 0 && format.isPrefixOWLOntologyFormat()) {
-            PrefixOWLOntologyFormat prefixes = format.asPrefixOWLOntologyFormat();
+            PrefixDocumentFormat prefixes = format.asPrefixOWLOntologyFormat();
             String prefixName = text.substring(0, colonIndex + 1);
             String prefix = prefixes.getPrefix(prefixName);
             if (prefix != null) {

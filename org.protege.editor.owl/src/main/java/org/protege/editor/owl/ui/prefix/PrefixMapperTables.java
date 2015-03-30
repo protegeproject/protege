@@ -12,8 +12,8 @@ import javax.swing.event.TableModelListener;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 public class PrefixMapperTables extends JPanel {
 	private static final long serialVersionUID = -7430862544150495635L;
@@ -53,7 +53,7 @@ public class PrefixMapperTables extends JPanel {
 			table.getModel().removeTableModelListener(editListener);
 		}
 		this.ontology = ontology;
-		PrefixOWLOntologyFormat prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(ontology);
+		PrefixDocumentFormat prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(ontology);
 		table = new PrefixMapperTable(prefixManager);
 		table.getModel().addTableModelListener(editListener);
 		removeAll();
