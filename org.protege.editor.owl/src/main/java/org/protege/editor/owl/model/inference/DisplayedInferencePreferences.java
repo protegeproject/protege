@@ -116,9 +116,10 @@ public class DisplayedInferencePreferences {
         if (isShowInferences() && isEnabled(task)) {
             startClock(task);
             try {
-                implementation.run();
-            }
-            finally {
+                implementation.run();                
+            } catch (UnsupportedOperationException ignore) {
+            	
+            } finally {
             	stopClock(task);
             }
         }
