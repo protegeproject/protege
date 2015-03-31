@@ -1,10 +1,12 @@
 package org.protege.editor.owl.ui.find;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.ui.search.SearchPanel;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -38,9 +40,11 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private SearchPanel searchPanel;
 
+    private OWLEditorKit editorKit;
 
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
         super(20, "Search for entity");
+        this.editorKit = editorKit;
         putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         searchPanel = new SearchPanel(editorKit);
@@ -85,6 +89,12 @@ public class EntityFinderField extends AugmentedJTextField {
 
 
     private void selectEntity() {
+        Optional<OWLEntity> selectedEntity = searchPanel.getSelectedEntity();
+        if (selectedEntity.isPresent()) {
+            editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selectedEntity.get());
+            editorKit.getWorkspace().displayOWLEntity(selectedEntity.get());
+        }
+        closeResults();
     }
 
     private void handleBackSpaceDown() {

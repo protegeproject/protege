@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.search;
 
+import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
@@ -112,12 +113,11 @@ public class SearchResultsPanel extends JPanel {
 
 
     private void handleDoubleClickRelease(MouseEvent e) {
-        OWLEntity entity = getSelectedEntity();
-        if (entity == null) {
-            return;
+        Optional<OWLEntity> entity = getSelectedEntity();
+        if (entity.isPresent()) {
+            editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(entity.get());
+            editorKit.getWorkspace().displayOWLEntity(entity.get());
         }
-        editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(entity);
-        editorKit.getWorkspace().displayOWLEntity(entity);
     }
 
 
@@ -160,26 +160,26 @@ public class SearchResultsPanel extends JPanel {
     /**
      * Gets the OWLEntity at the specified row
      * @param selRow the row
-     * @return The entity at the specified row, or <code>null</code> if there is no entity at the specified row.
+     * @return The entity at the specified row.
      */
-    public OWLEntity getEntityAtRow(int selRow) {
+    public Optional<OWLEntity> getEntityAtRow(int selRow) {
         Object object = model.getValueAt(selRow, 1);
         if (object instanceof OWLEntity) {
-            return (OWLEntity) object;
+            return Optional.of((OWLEntity) object);
         }
         else {
-            return null;
+            return Optional.absent();
         }
     }
 
     /**
      * Gets the first selected entity.
-     * @return The first selected entity, or <code>null</code> if no entity is selected.
+     * @return The first selected entity.
      */
-    public OWLEntity getSelectedEntity() {
+    public Optional<OWLEntity> getSelectedEntity() {
         int selRow = resultsTable.getSelectedRow();
         if (selRow == -1) {
-            return null;
+            return Optional.absent();
         }
         return getEntityAtRow(selRow);
     }
@@ -187,9 +187,9 @@ public class SearchResultsPanel extends JPanel {
     public java.util.List<OWLEntity> getSelectedEntities() {
         java.util.List<OWLEntity> results = new ArrayList<OWLEntity>();
         for (int selIndex : resultsTable.getSelectedRows()) {
-            OWLEntity entity = getEntityAtRow(selIndex);
-            if (entity != null) {
-                results.add(entity);
+            Optional<OWLEntity> entity = getEntityAtRow(selIndex);
+            if (entity.isPresent()) {
+                results.add(entity.get());
             }
         }
         return results;
