@@ -32,12 +32,6 @@ public class EntityFinderField extends AugmentedJTextField {
 
     public static final int WINDOW_WIDTH = 800;
 
-    private OWLEditorKit editorKit;
-
-//    private JList resultsList;
-
-//    EntityFinderResultsList resultsList;
-
     private JWindow window;
 
     private JComponent parent;
@@ -49,7 +43,6 @@ public class EntityFinderField extends AugmentedJTextField {
         super(20, "Search for entity");
         putClientProperty("JTextField.variant", "search");
         this.parent = parent;
-        this.editorKit = editorKit;
         searchPanel = new SearchPanel(editorKit);
         addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -88,27 +81,10 @@ public class EntityFinderField extends AugmentedJTextField {
                 performFind();
             }
         });
-        // tooltip and fixed cell size code at svn revision 23344
-//        resultsList = new EntityFinderResultsList(editorKit);
-//        resultsList.setCellRenderer(editorKit.getWorkspace().createOWLCellRenderer());
-//        resultsList.getMainComponent().addMouseListener(new MouseAdapter() {
-//            public void mouseReleased(MouseEvent e) {
-//                if (e.getClickCount() == 2) {
-//                    selectEntity();
-//                }
-//            }
-//        });
-
     }
 
 
     private void selectEntity() {
-//        OWLEntity selEntity = resultsList.getSelectedEntity();
-//        if (selEntity != null) {
-//            closeResults();
-//            EntityFinderField.this.editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
-//            editorKit.getWorkspace().displayOWLEntity(selEntity);
-//        }
     }
 
     private void handleBackSpaceDown() {
@@ -130,7 +106,6 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private void closeResults() {
         getWindow().setVisible(false);
-//        searchPanel.clearData();
     }
 
 
@@ -144,31 +119,6 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private void executeFind() {
         showResults();
-//        String trimmedText = getText().trim();
-//        if(trimmedText.isEmpty()) {
-//            closeResults();
-//            return;
-//        }
-//
-//        boolean useRegularExpressions = OWLEntityFinderPreferences.getInstance().isUseRegularExpressions();
-//        String searchString;
-//        if(useRegularExpressions) {
-//            searchString = trimmedText;
-//        }
-//        else {
-//            searchString = Pattern.quote(trimmedText);
-//        }
-//
-//        Pattern pattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-//
-//
-//        SearchRequest searchRequest = new SearchRequest(pattern);
-//        SearchManager searchManager = editorKit.getSearchManager();
-//        searchManager.performSearch(searchRequest, new SearchResultHandler() {
-//            public void searchFinished(List<SearchResult> searchResults) {
-//                showResults(searchResults);
-//            }
-//        });
     }
 
 
@@ -203,7 +153,6 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private void showResults() {
         JWindow window = getWindow();
-//        if (results.size() > 0) {
         Point pt = new Point(0, 0);
         SwingUtilities.convertPointToScreen(pt, this);
         window.setLocation(pt.x + (getWidth() - WINDOW_WIDTH), pt.y + getHeight() + 2);
@@ -214,43 +163,9 @@ public class EntityFinderField extends AugmentedJTextField {
             height = (parent.getHeight() * 3) / 4;
         }
         window.setSize(WINDOW_WIDTH, height);
-
-//            searchOptionsPanel.refresh();
-
         searchPanel.setSearchString(getText().trim());
 
         window.setVisible(true);
         window.validate();
-//        }
-//        else {
-//            closeResults();
-//        }
-    }
-
-    /*
-    * This is an opportunity to add some code to deal with large result sets.  The problem
-    * is that if you give a big set of results to a JList then it will will take a very long time
-    * (35 seconds on my work desktop to display 29000 entities beginning with an 'a').  A sort already
-    * involves calculating the browser text for each item (and this is not the bottleneck).  So a potential
-    * solution is to use the setProtypicalItem method of the jlist to set the width and height to the max.
-    * But for some reason this only worked the first time when I tried it and the results would probably not be
-    * optimal.
-    *
-    * The More... could perhaps be instrumented to completely fill the list when clicked.
-    */
-    private List<SearchResult> getSortedResults(List<SearchResult> results) {
-        TreeSet<SearchResult> ts = new TreeSet<SearchResult>();
-        ts.addAll(results);
-
-
-        List<SearchResult> resultsList = new ArrayList<SearchResult>();
-        int i = 0;
-        for (SearchResult e : ts) {
-            resultsList.add(e);
-        }
-//        if (tooMany) {
-//        	arrayResults[maxSize - 1] = "More...";
-//        }
-        return resultsList;
     }
 }
