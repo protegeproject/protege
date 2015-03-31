@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.search;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
@@ -163,5 +164,9 @@ public class SearchPanel extends JPanel {
         }
         StringSelection stringSelection = new StringSelection(buffer.toString().trim());
         systemClipboard.setContents(stringSelection, null);
+    }
+
+    public Optional<OWLEntity> getSelectedEntity() {
+        return searchResultsPanel.getSelectedEntity();
     }
 }
