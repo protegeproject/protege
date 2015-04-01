@@ -29,6 +29,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -54,6 +56,12 @@ public class SearchResultsPanel extends JPanel {
 
 
     private SearchResultsTableModel model;
+
+    private SearchResultClickedListener searchResultClickedListener = new SearchResultClickedListener() {
+        @Override
+        public void handleSearchResultClicked(SearchResult searchResult, MouseEvent e) {
+        }
+    };
 
 
     public SearchResultsPanel(OWLEditorKit editorKit) {
@@ -82,7 +90,10 @@ public class SearchResultsPanel extends JPanel {
                 handleScrollpaneViewportChanged();
             }
         });
+    }
 
+    public void setSearchResultClickedListener(SearchResultClickedListener l) {
+        this.searchResultClickedListener = checkNotNull(l);
     }
 
     private void setupColumnRenderers() {
@@ -107,19 +118,12 @@ public class SearchResultsPanel extends JPanel {
 
     private void handleMouseReleased(MouseEvent e) {
         if (e.getClickCount() == 2) {
-            handleDoubleClickRelease(e);
+            Optional<SearchResult> selectedSearchResult = getSelectedSearchResult();
+            if (selectedSearchResult.isPresent()) {
+                searchResultClickedListener.handleSearchResultClicked(selectedSearchResult.get(), e);
+            }
         }
     }
-
-
-    private void handleDoubleClickRelease(MouseEvent e) {
-        Optional<OWLEntity> entity = getSelectedEntity();
-        if (entity.isPresent()) {
-            editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(entity.get());
-            editorKit.getWorkspace().displayOWLEntity(entity.get());
-        }
-    }
-
 
     public void setSearchResults(SearchResultSet searchResultSet, int categorySizeLimit) {
         this.searchResultSet = searchResultSet;
@@ -142,12 +146,12 @@ public class SearchResultsPanel extends JPanel {
     }
 
 
-    public SearchResult getSelectedSearchResult() {
+    public Optional<SearchResult> getSelectedSearchResult() {
         int selRow = resultsTable.getSelectedRow();
         if (selRow == -1) {
-            return null;
+            return Optional.absent();
         }
-        return model.getSearchResult(selRow);
+        return Optional.of(model.getSearchResult(selRow));
     }
 
 

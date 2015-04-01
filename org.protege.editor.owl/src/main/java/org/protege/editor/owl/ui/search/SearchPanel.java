@@ -62,6 +62,10 @@ public class SearchPanel extends JPanel {
         add(searchActionsPanel, BorderLayout.SOUTH);
     }
 
+    public void setSearchResultClickedListener(SearchResultClickedListener searchResultClickedListener) {
+        searchResultsPanel.setSearchResultClickedListener(searchResultClickedListener);
+    }
+
     public void setSearchString(String searchString) {
         this.searchString = searchString;
         searchOptionsPanel.refresh();
