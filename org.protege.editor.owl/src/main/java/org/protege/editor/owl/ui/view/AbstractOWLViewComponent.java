@@ -57,17 +57,11 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
 
 
     final public void initialise() throws Exception {
-        setupFinder();
         initialiseOWLView();
 
-//        if(this instanceof Copyable) {
         prepareCopyable();
-//        }
-//        if(this instanceof Pasteable) {
         preparePasteable();
-//        }
         prepareCuttable();
-
         // add refresh components here (perhaps) when the class trees don't do their crazy stuff
     }
 
@@ -120,45 +114,6 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
             im.getParent().remove(ks);
         }
     }
-
-
-    private void setupFinder() {
-        if (this instanceof Findable) {
-            getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_F,
-                                                                                                  Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-                                                                           INPUT_MAP_KEY);
-            getActionMap().put(INPUT_MAP_KEY, new AbstractAction() {
-                /**
-                 * 
-                 */
-                private static final long serialVersionUID = 8090385169368686926L;
-
-                public void actionPerformed(ActionEvent e) {
-                    handleFind();
-                }
-            });
-        }
-    }
-
-
-    private void handleFind() {
-        logger.debug("Handling find in " + toString());
-        Component parent = getDialogParent();
-        OWLEntity foundEntity = OWLEntityFindPanel.showDialog(parent, getOWLEditorKit(), (Findable) this);
-        if (foundEntity == null) {
-            return;
-        }
-        ((Findable) this).show(foundEntity);
-    }
-
-
-    private Component getDialogParent() {
-        // @@TODO move prefs somewhere more central
-        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
-        return prefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false) ? SwingUtilities.getAncestorOfClass(Frame.class, getParent()) : getParent();
-    }
-
-
 
     protected OWLDataFactory getOWLDataFactory() {
         return getOWLModelManager().getOWLDataFactory();

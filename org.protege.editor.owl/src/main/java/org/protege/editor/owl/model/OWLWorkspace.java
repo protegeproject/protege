@@ -687,20 +687,20 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         add(topBarPanel, BorderLayout.NORTH);
 
-        KeyStroke findKeyStroke = KeyStroke.getKeyStroke(
-                KeyEvent.VK_F,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "SHOW_SEARCH_DIALOG");
-        getActionMap().put("SHOW_SEARCH_DIALOG", new AbstractAction() {
-            /**
-             *
-             */
-            private static final long serialVersionUID = -2205711779338124168L;
-
-            public void actionPerformed(ActionEvent e) {
-                showSearchDialog();
-            }
-        });
+//        KeyStroke findKeyStroke = KeyStroke.getKeyStroke(
+//                KeyEvent.VK_F,
+//                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+//        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "SHOW_SEARCH_DIALOG");
+//        getActionMap().put("SHOW_SEARCH_DIALOG", new AbstractAction() {
+//            /**
+//             *
+//             */
+//            private static final long serialVersionUID = -2205711779338124168L;
+//
+//            public void actionPerformed(ActionEvent e) {
+//                showSearchDialog();
+//            }
+//        });
         updateTitleBar();
     }
 

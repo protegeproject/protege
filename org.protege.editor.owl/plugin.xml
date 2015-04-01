@@ -909,13 +909,25 @@
 
     <extension id="find"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Find in view..."/>
+        <name value="Find..."/>
         <class value="org.protege.editor.owl.ui.action.FindAction"/>
-        <toolTip value="Find an entity in the focused view"/>
+        <toolTip value="Search open ontologies"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="F"/>
     </extension>
+
+
+    <extension id="findInView"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Find in view..."/>
+        <class value="org.protege.editor.owl.ui.action.FindInViewAction"/>
+        <toolTip value="Find an entity in the focused view"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotD-B"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="shift F"/>
+    </extension>
+
 
 
     <extension id="cut"
