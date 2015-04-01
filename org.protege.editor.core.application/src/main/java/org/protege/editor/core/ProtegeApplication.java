@@ -303,7 +303,6 @@ public class ProtegeApplication implements BundleActivator {
                 BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         defaults.put("TextArea.border", commonBorder);
         defaults.put("Spinner.border", commonBorder);
-        defaults.put("ComboBox.border", commonBorder);
 
         defaults.put("TextField.border", BorderFactory.createCompoundBorder(commonBorder,
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
