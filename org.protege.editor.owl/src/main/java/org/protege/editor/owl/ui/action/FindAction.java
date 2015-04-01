@@ -8,6 +8,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.FocusManager;
 import javax.swing.SwingUtilities;
 
+import org.protege.editor.owl.ui.search.SearchDialogPanel;
 import org.protege.editor.owl.ui.view.Findable;
 
 
