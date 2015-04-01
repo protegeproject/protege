@@ -6,6 +6,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.ui.search.SearchPanel;
+import org.protege.editor.owl.ui.search.SearchResultClickedListener;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
@@ -85,8 +86,15 @@ public class EntityFinderField extends AugmentedJTextField {
                 performFind();
             }
         });
+        searchPanel.setSearchResultClickedListener(new SearchResultClickedListener() {
+            @Override
+            public void handleSearchResultClicked(SearchResult searchResult, MouseEvent e) {
+                if(e.getClickCount() == 2) {
+                    selectEntity();
+                }
+            }
+        });
     }
-
 
     private void selectEntity() {
         Optional<OWLEntity> selectedEntity = searchPanel.getSelectedEntity();
