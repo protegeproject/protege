@@ -33,14 +33,9 @@ public class OWLEntityNavPanel extends JPanel {
     public OWLEntityNavPanel(OWLEditorKit owlEditorKit) {
         this.editorKit = owlEditorKit;
         createActions();
-        setLayout(new BorderLayout());
-        JToolBar toolBar = new JToolBar();
-        toolBar.add(backAction);
-        toolBar.add(forwardAction);
-        toolBar.setBorder(null);
-        toolBar.setFloatable(false);
-        toolBar.setBorderPainted(false);
-        add(toolBar);
+        setLayout(new GridLayout(1, 2, 0, 0));
+        add(new JButton(backAction));
+        add(new JButton(forwardAction));
         mediator = new OWLEntityNavigationMediator(editorKit, backAction, forwardAction);
     }
 
@@ -52,12 +47,13 @@ public class OWLEntityNavPanel extends JPanel {
 
     private void createActions() {
 
-        backAction = new AbstractAction("Navigate back", OWLIcons.getIcon("nav.back.png")) {
+        backAction = new AbstractAction("<") {
             public void actionPerformed(ActionEvent e) {
                 editorKit.getWorkspace().getOWLSelectionHistoryManager().goBack();
                 editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
             }
         };
+        backAction.putValue(Action.SHORT_DESCRIPTION, "Back");
         KeyStroke backKS = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
                                                   Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
@@ -67,12 +63,13 @@ public class OWLEntityNavPanel extends JPanel {
         actionMap.put("nav-back", backAction);
 
 
-        forwardAction = new AbstractAction("Navigate forward", OWLIcons.getIcon("nav.fwd.png")) {
+        forwardAction = new AbstractAction(">") {
             public void actionPerformed(ActionEvent e) {
                 editorKit.getWorkspace().getOWLSelectionHistoryManager().goForward();
                 editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
             }
         };
+        forwardAction.putValue(Action.SHORT_DESCRIPTION, "Forward");
         KeyStroke forwardKS = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
                                                      Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
