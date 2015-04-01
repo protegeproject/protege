@@ -32,12 +32,12 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
-import org.protege.editor.owl.ui.find.EntityFinderField;
 import org.protege.editor.owl.ui.inference.*;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.search.SearchDialogPanel;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.semanticweb.owlapi.model.*;
@@ -135,11 +135,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return (OWLEditorKit) getEditorKit();
     }
 
-
     public OWLModelManager getOWLModelManager() {
         return getOWLEditorKit().getModelManager();
     }
 
+    private JDialog searchDialog;
 
     public void initialise() {
         entityDisplayProviders = new ArrayList<>();
@@ -634,7 +634,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 100, 0,
                 GridBagConstraints.BASELINE,
                 GridBagConstraints.HORIZONTAL,
-                new Insets(0, 2, 0, 2),
+                new Insets(0, 0, 0, 0),
                 0, 0
         ));
 
@@ -647,10 +647,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-        final EntityFinderField entityFinderField = new EntityFinderField(this, getOWLEditorKit());
-        entityFinderField.setPreferredSize(new Dimension(250, 30));
-        entityFinderField.setMinimumSize(new Dimension(250, 30));
-        topBarPanel.add(entityFinderField, new GridBagConstraints(
+        JButton searchButton = new JButton(new AbstractAction("Search...") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showSearchDialog();
+            }
+        });
+        topBarPanel.add(searchButton, new GridBagConstraints(
                 2, 0,
                 1, 1,
                 0, 0,
@@ -684,20 +687,33 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         add(topBarPanel, BorderLayout.NORTH);
 
-// Find focus accelerator
-        KeyStroke findKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "FOCUS_FIND");
-        getActionMap().put("FOCUS_FIND", new AbstractAction() {
+        KeyStroke findKeyStroke = KeyStroke.getKeyStroke(
+                KeyEvent.VK_F,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "SHOW_SEARCH_DIALOG");
+        getActionMap().put("SHOW_SEARCH_DIALOG", new AbstractAction() {
             /**
              *
              */
             private static final long serialVersionUID = -2205711779338124168L;
 
             public void actionPerformed(ActionEvent e) {
-                entityFinderField.requestFocus();
+                showSearchDialog();
             }
         });
         updateTitleBar();
+    }
+
+    public void showSearchDialog() {
+        if(searchDialog == null) {
+            searchDialog = SearchDialogPanel.createDialog(this, getOWLEditorKit());
+            Point workspaceLocation = getLocation();
+            Dimension workspaceSize = getSize();
+            SwingUtilities.convertPointToScreen(workspaceLocation, this);
+            workspaceLocation.translate(workspaceSize.width - searchDialog.getWidth() - 10, 0);
+            searchDialog.setLocation(workspaceLocation);
+        }
+        searchDialog.setVisible(true);
     }
 
     public void setTitle(String title) {
