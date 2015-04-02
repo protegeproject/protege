@@ -1,15 +1,15 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFConsumer;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.xml.sax.SAXException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class RdfExtractorConsumer implements RDFConsumer {
     private Set<String> ontologyProperties        = new HashSet<String>();
@@ -70,6 +70,21 @@ public class RdfExtractorConsumer implements RDFConsumer {
     }
     
     public void addModelAttribte(String key, String value) throws SAXException {
+
+    }
+
+    // @Override (Needed implementation of abstract method    for 3.5.2+ )
+    public IRI remapIRI(IRI iri) {
+        return iri;
+    }
+
+    // @Override (Needed implementation of abstract method    for 3.5.2+ )
+    public String remapOnlyIfRemapped(String s) {
+        return s;
+    }
+
+    // @Override (Needed implementation of abstract method    for 3.5.2+ )
+    public void addPrefix(String s, String s1) {
 
     }
 
