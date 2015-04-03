@@ -100,7 +100,7 @@
                             org.eclipse.core.runtime;registry=split,
                             *
                         </Import-Package>
-                        <Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+                        <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
                 </configuration>
                 <executions>

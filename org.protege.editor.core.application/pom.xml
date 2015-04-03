@@ -70,7 +70,7 @@
 							org.apache.log4j*;version="[1.2,2)",
 							*
 						</Import-Package>
-						<Include-Resource>plugin.xml,{maven-resources},{maven-dependencies}</Include-Resource>
+						<Include-Resource>{maven-resources},{maven-dependencies}</Include-Resource>
 					</instructions>
 					<executions>
 						<execution>
