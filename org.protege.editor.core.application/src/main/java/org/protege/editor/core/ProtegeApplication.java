@@ -366,13 +366,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private void startApplication() throws Exception {
-        createAndSetupDefaultEditorKit();
         if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
             // Open any command line URIs
-            for (URI uri : commandLineURIs) {
-                editURI(uri);
+            for (URI uri : commandLineURIs) { // only 1 is expected
+                createAndSetupDefaultEditorKit(uri);
+//                editURI(uri);
             }
         }
+        else createAndSetupDefaultEditorKit();
         checkForUpdates();
     }
 
@@ -421,6 +422,24 @@ public class ProtegeApplication implements BundleActivator {
             if (!editorKitFactoryPlugins.isEmpty()) {
                 EditorKitFactoryPlugin defaultPlugin = editorKitFactoryPlugins.get(0);
                 pm.createAndSetupNewEditorKit(defaultPlugin);
+            }
+            else {
+                throw new RuntimeException("No editor kit factory plugins available");
+            }
+        }
+        catch (Exception e) {
+            ErrorLogPanel.showErrorDialog(e);
+        }
+    }
+
+
+    private void createAndSetupDefaultEditorKit(URI uri) {
+        try {
+            ProtegeManager pm = ProtegeManager.getInstance();
+            List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
+            if (!editorKitFactoryPlugins.isEmpty()) {
+                EditorKitFactoryPlugin defaultPlugin = editorKitFactoryPlugins.get(0);
+                pm.createAndSetupNewEditorKit(defaultPlugin, uri);
             }
             else {
                 throw new RuntimeException("No editor kit factory plugins available");
