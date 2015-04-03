@@ -72,15 +72,6 @@
 						</Import-Package>
 						<Include-Resource>{maven-resources},{maven-dependencies}</Include-Resource>
 					</instructions>
-					<executions>
-						<execution>
-							<id>bundle-manifest</id>
-							<phase>install</phase>
-							<goals>    
-								<goal>manifest</goal>
-							</goals>   
-						</execution>
-					</executions>
 				</configuration>
 			</plugin>
 				
