@@ -159,6 +159,44 @@ public class ProtegeManager {
 
 
     /**
+     * Creates and sets up a new <code>EditorKit</code> with an ontology specified by a given <code>URI</code>.
+     *
+     * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
+     *               be used to create the <code>EditorKit</code>.
+     * @param uri The ontology <code>URI</code> with which the new <code>EditorKit</code> will be instantiated
+     */
+    public EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory, URI uri) throws Exception {
+        if (editorKitFactory != null) {
+            boolean success = false;
+            EditorKit editorKit = editorKitFactory.createEditorKit();
+
+            try {
+                if (editorKit.handleLoadFrom(uri)) {
+                    getEditorKitManager().addEditorKit(editorKit);
+                    success = true;
+                    if(getEditorKitManager().getEditorKitCount() == 1) {
+                        firstEditorKit = new WeakReference<EditorKit>(editorKit);
+                    }
+                    return editorKit;
+                }
+            }
+            finally {
+                if (!success) {
+                    editorKit.dispose();
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
+        EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
+        return createAndSetupNewEditorKit(editorKitFactory, uri) != null;
+    }
+
+
+    /**
      * Opens an <code>EditorKit</code> using the <code>EditorKitFactory</code> specified by the given Id.
      *
      * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
