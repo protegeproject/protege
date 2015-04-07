@@ -6,6 +6,8 @@ target/
 .project
 .settings/
 META-INF/
+build.properties
+plugin.xml
 
 #intelliJ
 *.iws
