@@ -3,7 +3,7 @@ package org.protege.editor.owl.ui.renderer.menu;
 import org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 
-public class RenderByQualifiedName extends AbstractByRendererMenu {
+public class RenderByPrefixedName extends AbstractByRendererMenu {
 	private static final long serialVersionUID = 7364664042805363135L;
 
 	protected boolean isMyRendererPlugin(RendererPlugin plugin) {
