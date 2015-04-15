@@ -5,6 +5,8 @@ import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.vocab.Namespaces;
 
 
 /**
@@ -17,10 +19,20 @@ import org.semanticweb.owlapi.model.PrefixManager;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements PrefixBasedRenderer {
-	private PrefixManager prefixManager;
+
+    private final DefaultPrefixManager prefixManager = new DefaultPrefixManager();
 
 	public void initialise() {
-    	prefixManager = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
+    	for(Namespaces ns : Namespaces.values()) {
+            String prefixName = ns.getPrefixName();
+            String prefixIRI = ns.getPrefixIRI();
+            prefixManager.setPrefix(prefixName + ":", prefixIRI);
+        }
+        PrefixManager localPrefixes = PrefixUtilities.getPrefixOWLOntologyFormat(getOWLModelManager());
+        for(String prefixName : localPrefixes.getPrefixNames()) {
+            String prefixIRI = localPrefixes.getPrefix(prefixName);
+            prefixManager.setPrefix(prefixName, prefixIRI);
+        }
     }
     
     @Override
@@ -33,10 +45,7 @@ public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements
         try {
         	String s = prefixManager.getPrefixIRI(iri);
             if (s != null) {
-            	if (s.startsWith(":")) {
-            		s = s.substring(1);
-            	}
-                return s;
+            	return s;
             }
             else {
                 // No mapping

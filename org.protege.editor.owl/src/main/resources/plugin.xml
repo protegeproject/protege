@@ -113,11 +113,21 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="ui.view.menu.byprefixedname"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Render by prefixed name"/>
+        <toolTip value="Render entity by prefixed name e.g. owl:Thing"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-B"/>
+        <class value="org.protege.editor.owl.ui.renderer.menu.RenderByPrefixedName"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
     <extension id="ui.view.menu.bylabel"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by label (rdfs:label)"/>
         <toolTip value="Render entity by the values of rdfs:label"/>
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-B"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-C"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderByLabel"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
@@ -127,7 +137,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Render by annotation property"/>
         <toolTip value="Render entity by the values of an annotation property"/>
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-C"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-D"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.RenderByProperty"/>
         <editorKitId value="OWLEditorKit"/>
         <dynamic value="true"/>
@@ -138,7 +148,7 @@
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Custom rendering..."/>
         <toolTip value="Open the rendering configuration panel" />
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-D"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAA-E"/>
         <class value="org.protege.editor.owl.ui.renderer.menu.ConfigureRenderer"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
