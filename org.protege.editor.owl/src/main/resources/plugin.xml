@@ -982,6 +982,17 @@
     </extension>
 
 
+    <extension id="edit.duplicate"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Duplicate selected class..."/>
+        <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
+        <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-F"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="shift C"/>
+    </extension>
+
+
     <!-- Create actions -->
 
     <extension id="createnew"
@@ -991,9 +1002,8 @@
         <toolTip value="Create a new object in the selected view"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-A"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="N"/>
+        <accelerator value="shift alt E"/>
     </extension>
-
 
     <extension id="createnewchild"
                point="org.protege.editor.core.application.EditorKitMenuAction">
@@ -1002,7 +1012,7 @@
         <toolTip value="Create a child of the selected object in the selected view"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-B"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="BACK_SLASH"/>
+        <accelerator value="E"/>
     </extension>
 
     <extension id="createnewsibling"
@@ -1012,18 +1022,7 @@
         <toolTip value="Create a sibling of the selected object in the selected view"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotE-C"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="SLASH"/>
-    </extension>
-
-
-    <extension id="edit.duplicate"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Duplicate selected class..."/>
-        <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
-        <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-A"/>
-        <editorKitId value="OWLEditorKit"/>
-        <accelerator value="shift C"/>
+        <accelerator value="shift E"/>
     </extension>
 
     <extension id="menu.ConvertToPrimitveClass"
@@ -1061,7 +1060,7 @@
         <name value="Make all individuals distinct..."/>
         <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
         <toolTip value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-E"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
@@ -1089,7 +1088,7 @@
         <name value="Remove all disjoint axioms..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint axioms."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-H"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
@@ -1165,7 +1164,7 @@
 
     <extension id="deleteentity"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Delete ..."/>
+        <name value="Delete..."/>
         <class value="org.protege.editor.owl.ui.action.DeleteAction"/>
         <toolTip value="Deletes the selection in the focused view"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-E"/>
