@@ -1076,7 +1076,7 @@
 
     <extension id="menu.RemoveLocalDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Remove disjoints for subclasses..."/>
+        <name value="Remove disjoint classes axioms for subclasses..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveLocalDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint axioms that reference subclasses of the selected class."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-G"/>
@@ -1085,9 +1085,9 @@
 
     <extension id="menu.RemoveAllDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Remove all disjoint axioms..."/>
+        <name value="Remove all disjoint classes axioms..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
-        <toolTip value="Removes all of the disjoint axioms."/>
+        <toolTip value="Removes all of the disjoint classes axioms in the active ontologies"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
