@@ -8,15 +8,13 @@ import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
+import org.protege.editor.owl.ui.view.HasExpandAll;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -28,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
@@ -40,7 +40,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource {
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll {
 
 //    private static final Logger logger = Logger.getLogger(OWLObjectTree.class);
 
@@ -58,7 +58,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private boolean dragOriginator;
 
-    private boolean menuShortCutKeyDown;
+    private boolean altDown;
 
     private Point mouseDownPos;
 
@@ -122,7 +122,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 // Check to see if the recursively expand key is held down.  This is
                 // the key that corresponds to the menu accelerator key (CTRL on Windows, and
                 // CMD on the Mac).
-                menuShortCutKeyDown = (e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0;
+                altDown = e.isAltDown();
             }
         });
 
@@ -273,7 +273,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     private void handleExpansionEvent(TreeExpansionEvent event) {
-        if (menuShortCutKeyDown) {
+        if (altDown) {
             // Recursively expand
             for (int i = 0; i < getModel().getChildCount(event.getPath().getLastPathComponent()); i++) {
                 Object curChild = getModel().getChild(event.getPath().getLastPathComponent(), i);
@@ -687,6 +687,15 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         for (int i = 0; i < getRowCount(); i++) {
             expandPath(getPathForRow(i));
         }
+    }
+
+    @Override
+    public void addChangeListener(ChangeListener listener) {
+    }
+
+    @Override
+    public void removeChangeListener(ChangeListener listener) {
+
     }
 
     protected N getOWLObjectAtMousePosition(MouseEvent event){
