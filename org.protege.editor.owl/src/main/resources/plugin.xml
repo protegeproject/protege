@@ -209,6 +209,15 @@
     </extension>
 
 
+    <extension id="tree.expandall"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Expand all"/>
+        <class value="org.protege.editor.owl.ui.action.ExpandAllAction"/>
+        <toolTip value="Expand all nodes in the focused tree"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotB-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <!-- Entity Renderers -->
     
     <extension id="OWLEntityRenderer"
