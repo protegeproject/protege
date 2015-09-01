@@ -4,10 +4,13 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
+import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.action.CopySubHierarchyToClipboardAction;
 import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
+import org.protege.editor.owl.ui.view.HasCopySubHierarchyToClipboard;
 import org.protege.editor.owl.ui.view.HasExpandAll;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -19,6 +22,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
@@ -28,6 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.List;
 
@@ -40,7 +47,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll {
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard {
 
 //    private static final Logger logger = Logger.getLogger(OWLObjectTree.class);
 
@@ -706,5 +713,34 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
         return node.getOWLObject();
+    }
+
+    @Override
+    public void copySubHierarchyToClipboard() {
+        N selObject = getSelectedOWLObject();
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        copySubHierarchyToClipboard(selObject, pw, 0);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(sw.toString()), null);
+    }
+
+    private void copySubHierarchyToClipboard(N object, PrintWriter printWriter, int depth) {
+        for(int i = 0; i < depth; i++) {
+            printWriter.print("\t");
+        }
+        String rendering = getOWLModelManager().getRendering(object);
+        printWriter.println(rendering);
+        Set<N> children = provider.getChildren(object);
+        List<N> sortedChildren = new ArrayList<>(children);
+        sortedChildren.sort(new OWLObjectComparator<N>(getOWLModelManager()));
+        for(N child : sortedChildren) {
+            copySubHierarchyToClipboard(child, printWriter, depth + 1);
+        }
+    }
+
+    @Override
+    public boolean canPerformCopySubHierarchyToClipboard() {
+        return getSelectedOWLObject() != null;
     }
 }
