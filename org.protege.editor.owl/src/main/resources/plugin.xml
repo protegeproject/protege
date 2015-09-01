@@ -971,6 +971,16 @@
     </extension>
 
 
+    <extension id="copySubHierarchy"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy sub-hierarchy as tab indented text"/>
+        <class value="org.protege.editor.owl.ui.action.CopySubHierarchyToClipboardAction"/>
+        <toolTip value="Copy the sub-hierarchy of the selection to the clipboard as tab indented text"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-CA"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="C"/>
+    </extension>
+
     <extension id="paste"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Paste"/>
