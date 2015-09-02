@@ -100,7 +100,23 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     @Override
     protected Object getValueKey(Object value) {
-        return extractOWLAnnotationFromCellValue(value);
+        OWLAnnotation annotation = null;
+        if(value instanceof OWLAnnotationAssertionAxiom) {
+            OWLAnnotationAssertionAxiom axiom = (OWLAnnotationAssertionAxiom) value;
+            if(axiom.getAnnotations().isEmpty()) {
+                return axiom.getAnnotations();
+            }
+            else {
+                return axiom;
+            }
+        }
+        else if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
+            annotation = ((AbstractAnnotationsList.AnnotationsListItem) value).getAnnotation();
+        }
+        else if (value instanceof OWLAnnotation) {
+            annotation = (OWLAnnotation) value;
+        }
+        return annotation;
     }
 
 
