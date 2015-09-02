@@ -28,6 +28,14 @@
         </fileSet>
 
         <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
             <directory>src/main/env/linux</directory>
             <outputDirectory>.</outputDirectory>
             <fileMode>0755</fileMode>
