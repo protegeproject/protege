@@ -25,7 +25,17 @@ public class JOptionPaneEx {
 
     public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent) {
 
-        JOptionPane optionPane = new JOptionPane(content, messageType, optionType);
+        JOptionPane optionPane = new JOptionPane(content, messageType, optionType) {
+            @Override
+            public void selectInitialValue() {
+                // This makes focusing more consistent between
+                // various operating systems / window managers
+                if(defaultFocusedComponent != null) {
+                    defaultFocusedComponent.requestFocusInWindow();
+                }
+            }
+        };
+
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
         dlg.setVisible(true);
         return getReturnValue(optionPane);
@@ -33,7 +43,17 @@ public class JOptionPaneEx {
 
     public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent, Object[] options, Object defaultOption) {
 
-        JOptionPane optionPane = new JOptionPane(content, messageType, optionType, null, options, defaultOption);
+        JOptionPane optionPane = new JOptionPane(content, messageType, optionType, null, options, defaultOption) {
+            @Override
+            public void selectInitialValue() {
+                // This makes focusing more consistent between
+                // various operating systems / window managers
+                if(defaultFocusedComponent != null) {
+                    defaultFocusedComponent.requestFocusInWindow();
+                }
+            }
+        };
+
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
         dlg.setVisible(true);
         return getReturnValue(optionPane);
@@ -77,13 +97,6 @@ public class JOptionPaneEx {
 
     private static JDialog createDialog(Component parent, String title, JOptionPane optionPane, final JComponent defaultFocusedComponent) {
         JDialog dlg = optionPane.createDialog(parent, title);
-        dlg.addWindowListener(new WindowAdapter() {
-            public void windowOpened(WindowEvent e) {
-                if (defaultFocusedComponent != null) {
-                    defaultFocusedComponent.requestFocusInWindow();
-                }
-            }
-        });
         dlg.setLocationRelativeTo(parent);
         dlg.setResizable(true);
         dlg.pack();
