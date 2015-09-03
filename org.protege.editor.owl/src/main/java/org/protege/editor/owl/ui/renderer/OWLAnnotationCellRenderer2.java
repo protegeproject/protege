@@ -104,7 +104,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         if(value instanceof OWLAnnotationAssertionAxiom) {
             OWLAnnotationAssertionAxiom axiom = (OWLAnnotationAssertionAxiom) value;
             if(axiom.getAnnotations().isEmpty()) {
-                return axiom.getAnnotations();
+                return axiom.getAnnotation();
             }
             else {
                 return axiom;
