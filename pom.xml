@@ -6,7 +6,7 @@
     <version>5.0.0-beta-18-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Protege Desktop</name>
+    <name>protege-parent</name>
 	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
 	<url>http://protege.stanford.edu</url>
 	<inceptionYear>1987</inceptionYear>
@@ -84,11 +84,11 @@
 	</mailingLists>
 		
 	<modules>
-		<module>org.protege.common</module>
-		<module>org.protege.editor.core.application</module>
-		<module>org.protege.editor.owl</module>
-		<module>protege-base</module>
-		<module>protege-distribution</module>
+		<module>protege-launcher</module>
+		<module>protege-common</module>
+		<module>protege-editor-core</module>
+		<module>protege-editor-owl</module>
+		<module>protege-desktop</module>
 	</modules>
 	
 	<scm>
@@ -117,6 +117,7 @@
 	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+		<owlapi.version>3.5.3</owlapi.version>
 	</properties>
 	
 	<dependencyManagement>

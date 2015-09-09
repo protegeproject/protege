@@ -1,0 +1,83 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+    <id>platform-independent</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    <baseDirectory>Protege-${project.version}</baseDirectory>
+
+    <fileSets>
+
+        <fileSet>
+            <directory>src/main/felix</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/logging</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/env/platform-independent</directory>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+    </fileSets>
+
+    <dependencySets>
+
+        <dependencySet>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>edu.stanford.protege:protege-launcher:jar</include>
+                <include>org.apache.felix:org.apache.felix.main:jar</include>
+            </includes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+
+        <dependencySet>
+            <outputDirectory>bundles</outputDirectory>
+            <includes>
+                <include>edu.stanford.protege:protege-common:jar</include>
+                <include>edu.stanford.protege:protege-editor-core:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
+            </includes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+
+        <dependencySet>
+            <outputDirectory>plugins</outputDirectory>
+            <includes>
+                <include>com.google.guava:guava:jar</include>
+                <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
+                <include>edu.stanford.protege:protege-editor-owl:jar</include>
+            </includes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+</assembly>
