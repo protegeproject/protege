@@ -175,7 +175,7 @@
 	<!-- Generate source and Javadoc JAR files, and sign artifacts.  Required by Sonatype OSSRH for deployment. -->
     <profiles>
 		<profile>
-			<id>prepare-release</id>
+			<id>release</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
