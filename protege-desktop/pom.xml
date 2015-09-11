@@ -136,7 +136,7 @@
 
 	<profiles>
 		<profile>
-			<id>prepare-release</id>
+			<id>release</id>
 			<build>
 				<plugins>
 					<plugin>
