@@ -162,7 +162,7 @@ public class SearchManager implements Disposable {
                     patternString.append("  AND  ");
                 }
             }
-            logger.info("Starting search " + searchId + " (pattern: " + patternString.toString() + ")");
+            logger.debug("Starting search " + searchId + " (pattern: " + patternString.toString() + ")");
             List<SearchResult> results = new ArrayList<SearchResult>();
 
 
@@ -174,7 +174,7 @@ public class SearchManager implements Disposable {
             for (SearchMetadata searchMetadata : searchMetadataCache) {
                 if (!isLatestSearch()) {
                     // New search started
-                    logger.info("    terminating search " + searchId + " prematurely");
+                    logger.debug("    terminating search " + searchId + " prematurely");
                     return;
                 }
                 String text = searchMetadata.getSearchString();
@@ -211,7 +211,7 @@ public class SearchManager implements Disposable {
             SearchManager.this.fireSearchFinished();
             long searchEndTime = System.currentTimeMillis();
             long searchTime = searchEndTime - searchStartTime;
-            logger.info("    finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
+            logger.debug("    finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
             fireSearchFinished(results, searchResultHandler);
         }
 
