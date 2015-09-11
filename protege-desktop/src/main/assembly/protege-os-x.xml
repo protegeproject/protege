@@ -40,6 +40,7 @@
             <outputDirectory>.</outputDirectory>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
+            <filtered>true</filtered>
         </fileSet>
 
     </fileSets>
@@ -73,6 +74,7 @@
             <includes>
                 <include>edu.stanford.protege:protege-launcher:jar</include>
                 <include>org.apache.felix:org.apache.felix.main:jar</include>
+                <include>com.google.guava:guava:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>

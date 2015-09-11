@@ -2,8 +2,8 @@
 
 cd `dirname $0`
 
-jre/bin/java -Xmx500M -Xms250M \
-     -Dlog4j.configuration=file:log4j.xml \
+jre/bin/java -Xmx${conf.mem.xmx} -Xms${conf.mem.xms} \
+     -Dlog4j.configuration=${conf.log4j.location} \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
      -classpath bin/org.apache.felix.main.jar:bin/protege-launcher.jar \
