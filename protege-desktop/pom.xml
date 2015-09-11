@@ -15,6 +15,12 @@
 	<name>protege-desktop</name>
 	<description>Standard build of the Protege Desktop ontology editor.</description>
 
+	<properties>
+		<conf.log4j.location>file:conf/log4j.xml</conf.log4j.location>
+		<conf.mem.xmx>500M</conf.mem.xmx>
+		<conf.mem.xms>200M</conf.mem.xms>
+	</properties>
+
 	<repositories>
 		<repository>
 			<releases>

@@ -19,24 +19,24 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class Parser {
-	public static final String PROPERTY = "property";
-	public static final String NAME = "name";
-	public static final String VALUE = "value";
-	public static final String DIRECTORY="dir";
-	
-	public static final String DEFAULT_PLUGIN_DIRECTORY = "plugins";
-	
-	private DocumentBuilderFactory factory;
+    public static final String PROPERTY = "property";
+    public static final String NAME = "name";
+    public static final String VALUE = "value";
+    public static final String DIRECTORY = "dir";
+
+    public static final String DEFAULT_PLUGIN_DIRECTORY = "plugins";
+
+    private DocumentBuilderFactory factory;
 
     private Map<String, String> frameworkProperties;
     private Map<String, String> systemProperties;
     private List<BundleSearchPath> searchPaths = new ArrayList<BundleSearchPath>();
-    
+
     public Parser() {
         factory = DocumentBuilderFactory.newInstance();
     }
-    
-    public Map<String,String> getFrameworkProperties() {
+
+    public Map<String, String> getFrameworkProperties() {
         return frameworkProperties;
     }
 
@@ -53,7 +53,7 @@ public class Parser {
         systemProperties = new TreeMap<String, String>();
         searchPaths.clear();
     }
-    
+
     public void parse(File f) throws ParserConfigurationException, SAXException, IOException {
         reset();
 
@@ -61,11 +61,11 @@ public class Parser {
         Document doc = builder.parse(f);
         Node topNode = null;
         for (int j = 0; j < doc.getChildNodes().getLength(); j++) {
-        	Node node = doc.getChildNodes().item(j);
-        	if (node.getNodeName().equals("launch")) {
-        		topNode = node;
-        		break;
-        	}
+            Node node = doc.getChildNodes().item(j);
+            if (node.getNodeName().equals("launch")) {
+                topNode = node;
+                break;
+            }
         }
         NodeList nodes = topNode.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -85,7 +85,7 @@ public class Parser {
 
         }
     }
-    
+
     private Map<String, String> readProperties(NodeList nodes) {
         Map<String, String> properties = new TreeMap<String, String>();
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -101,7 +101,7 @@ public class Parser {
         }
         return properties;
     }
-    
+
     private BundleSearchPath readDirectories(Node node) {
         BundleSearchPath directories = new BundleSearchPath();
         NodeList children = node.getChildNodes();
@@ -114,20 +114,12 @@ public class Parser {
                 }
             }
             else if (child instanceof Element && child.getNodeName().equals("search")) {
-            	Node searchPathNode = child.getAttributes().getNamedItem("path");
-            	if (searchPathNode != null) {
-            		directories.addSearchPath(searchPathNode.getNodeValue());
-            	}
+                Node searchPathNode = child.getAttributes().getNamedItem("path");
+                if (searchPathNode != null) {
+                    directories.addSearchPath(searchPathNode.getNodeValue());
+                }
             }
         }
         return directories;
     }
-
-
-	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
-	    File example = new File("osgi/felix/launch.xml");
-	    Parser parser = new Parser();
-	    parser.parse(example);
-	}
-
 }

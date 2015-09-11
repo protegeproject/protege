@@ -189,7 +189,7 @@ public class Launcher {
      */
     public static void main(String[] args) throws Exception {
         setArguments(args);
-        String config = System.getProperty(LAUNCH_LOCATION_PROPERTY, "config.xml");
+        String config = System.getProperty(LAUNCH_LOCATION_PROPERTY, "conf/config.xml");
         File configFile;
         if (PROTEGE_DIR != null) {
             configFile = new File(PROTEGE_DIR, config);
