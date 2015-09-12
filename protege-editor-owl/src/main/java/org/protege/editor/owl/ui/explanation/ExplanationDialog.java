@@ -28,7 +28,7 @@ public class ExplanationDialog extends JPanel {
 	private ExplanationResult explanation;
 	private OWLAxiom axiom;
 	
-	public ExplanationDialog(Frame owner, ExplanationManager explanationManager, OWLAxiom axiom) {
+	public ExplanationDialog(ExplanationManager explanationManager, OWLAxiom axiom) {
 		this.axiom = axiom;
 		
 		setLayout(new BorderLayout());

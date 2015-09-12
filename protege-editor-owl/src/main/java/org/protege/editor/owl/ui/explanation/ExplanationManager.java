@@ -74,8 +74,7 @@ public class ExplanationManager {
 	}
 	
 	public void handleExplain(Frame owner, OWLAxiom axiom) {
-		Collection<ExplanationService> teachers = getTeachers(axiom);
-		final ExplanationDialog explanation = new ExplanationDialog(owner, this, axiom);
+		final ExplanationDialog explanation = new ExplanationDialog(this, axiom);
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = op.createDialog(owner, getExplanationDialogTitle(axiom));
         dlg.addComponentListener(new ComponentAdapter() {
