@@ -34,6 +34,7 @@ import javax.swing.plaf.basic.BasicListUI;
 
 import org.apache.log4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.RefreshableComponent;
@@ -538,7 +539,8 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
         OWLAxiom ax = row.getAxiom();
         if (getExplanationManager().hasExplanation(ax)) {
-            getExplanationManager().handleExplain((Frame) SwingUtilities.getAncestorOfClass(Frame.class, this), ax);
+            JFrame frame = ProtegeManager.getInstance().getFrame(editorKit.getWorkspace());
+            getExplanationManager().handleExplain(frame, ax);
         }
 
     }
