@@ -2,6 +2,8 @@ package org.protege.editor.core.ui.error;
 
 import org.apache.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,9 +56,10 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
 
 
     public void logError(Throwable throwable) {
-    	logger.warn("Error logged", throwable);
         errorCount++;
-        errors.add(new ErrorLogEntry(throwable));
+        ErrorLogEntry logEntry = new ErrorLogEntry(throwable);
+        logger.error(logEntry.toString());
+        errors.add(logEntry);
         if (errors.size() > MAX_NUMBER_OF_ERRORS) {
             errors.remove(0);
         }
