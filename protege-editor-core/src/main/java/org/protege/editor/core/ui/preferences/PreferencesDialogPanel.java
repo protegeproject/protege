@@ -37,6 +37,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE = "Reset preferences?";
 
     public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE = "Are you sure you want to reset all preferences to their default settings";
+    public static final int DIALOG_DEFAULT_WIDTH = 850;
+    public static final int DIALOG_DEFAULT_HEIGHT = 725;
 
     private Map<String, PreferencesPanel> map;
 
@@ -118,7 +120,10 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(850, 725);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(screenSize.width - 100, DIALOG_DEFAULT_WIDTH);
+        int height = Math.min(screenSize.height - 100, DIALOG_DEFAULT_HEIGHT);
+        return new Dimension(width, height);
     }
 
     
