@@ -33,12 +33,14 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
     public static final String LABEL = "Object property assertions";
 
-    private Set<OWLObjectPropertyAssertionAxiom> added;
+    private final Set<OWLObjectPropertyAssertionAxiom> added = new HashSet<>();
+
+    private final OWLObjectPropertyIndividualPairEditor2 editor;
 
 
     public OWLObjectPropertyAssertionAxiomFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLIndividual> frame) {
         super(owlEditorKit, LABEL, "Object property assertion", frame);
-        added = new HashSet<OWLObjectPropertyAssertionAxiom>();
+        editor = new OWLObjectPropertyIndividualPairEditor2(getOWLEditorKit());
     }
 
 
@@ -104,7 +106,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     public OWLObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
-        return new OWLObjectPropertyIndividualPairEditor2(getOWLEditorKit());
+        return editor;
     }
 
 

@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLFrameSection<OWLIndividual, OWLNegativeObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair> {
 
     public static final String LABEL = "Negative object property assertions";
+    private OWLObjectPropertyIndividualPairEditor2 editor;
 
 
     protected void clear() {
@@ -36,6 +37,7 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
     public OWLNegativeObjectPropertyAssertionFrameSection(OWLEditorKit editorKit,
                                                           OWLFrame<? extends OWLIndividual> frame) {
         super(editorKit, LABEL, "Negative object property assertion", frame);
+        editor = new OWLObjectPropertyIndividualPairEditor2(getOWLEditorKit());
     }
 
 
@@ -63,7 +65,7 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
 
 
     public OWLObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
-        return new OWLObjectPropertyIndividualPairEditor2(getOWLEditorKit());
+        return editor;
     }
 
 
