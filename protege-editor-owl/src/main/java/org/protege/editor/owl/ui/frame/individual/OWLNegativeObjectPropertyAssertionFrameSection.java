@@ -5,6 +5,7 @@ import java.util.Comparator;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor2;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
@@ -62,7 +63,7 @@ public class OWLNegativeObjectPropertyAssertionFrameSection extends AbstractOWLF
 
 
     public OWLObjectEditor<OWLObjectPropertyIndividualPair> getObjectEditor() {
-        return new OWLObjectPropertyIndividualPairEditor(getOWLEditorKit());
+        return new OWLObjectPropertyIndividualPairEditor2(getOWLEditorKit());
     }
 
 
