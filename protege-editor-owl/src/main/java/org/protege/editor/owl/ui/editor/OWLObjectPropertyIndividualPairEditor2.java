@@ -53,6 +53,19 @@ public class OWLObjectPropertyIndividualPairEditor2 extends AbstractOWLObjectEdi
                         GridBagConstraints.HORIZONTAL,
                         insets,
                         0, 0));
+        JLabel tipLabel = new JLabel("(Tip: Use CTRL+Space to auto-complete names)");
+        tipLabel.setForeground(Color.GRAY);
+        tipLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(tipLabel,
+                new GridBagConstraints(
+                        0, 1,
+                        2, 1,
+                        100, 0,
+                        GridBagConstraints.BASELINE_TRAILING,
+                        GridBagConstraints.HORIZONTAL,
+                        insets,
+                        0, 0
+                ));
         new OWLAutoCompleter(editorKit, objectPropertyField, new OWLExpressionChecker() {
             @Override
             public void check(String text) throws OWLExpressionParserException {
