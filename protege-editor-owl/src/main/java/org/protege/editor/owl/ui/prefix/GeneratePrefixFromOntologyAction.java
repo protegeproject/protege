@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.prefix;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
@@ -21,9 +21,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class GeneratePrefixFromOntologyAction extends AbstractAction {
-
-    private static final Logger logger = Logger.getLogger(GeneratePrefixFromOntologyAction.class);
-
 
     private OWLEditorKit owlEditorKit;
 

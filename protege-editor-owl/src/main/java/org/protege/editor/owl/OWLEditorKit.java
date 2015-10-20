@@ -1,6 +1,6 @@
 package org.protege.editor.owl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
@@ -33,6 +33,7 @@ import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.ProtocolException;
@@ -54,7 +55,7 @@ import java.util.Set;
  */
 public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
-    private static final Logger logger = Logger.getLogger(OWLEditorKit.class);
+    private static final Logger logger = LoggerFactory.getLogger(OWLEditorKit.class);
 
     public static final String ID = "OWLEditorKit";
 

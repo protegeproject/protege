@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.util.OWLEntityURIConverter;
 import org.semanticweb.owlapi.util.OWLEntityURIConverterStrategy;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ import java.util.*;
  */
 public class ConvertEntityURIsToIdentifierPattern {
 
-    private Logger logger = Logger.getLogger(ConvertEntityURIsToIdentifierPattern.class);
+    private final Logger logger = LoggerFactory.getLogger(ConvertEntityURIsToIdentifierPattern.class);
 
 
     public Set<OWLOntology> ontologies;

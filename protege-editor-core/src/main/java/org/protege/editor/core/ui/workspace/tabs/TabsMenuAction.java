@@ -6,15 +6,18 @@ import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
+import org.slf4j.LoggerFactory;
 
 public class TabsMenuAction extends ProtegeDynamicAction {
-	private static final long serialVersionUID = -3107456825784658749L;
-	private static final Logger LOGGER = Logger.getLogger(TabsMenuAction.class);
+
+    private static final long serialVersionUID = -3107456825784658749L;
+
+	private final Logger logger = LoggerFactory.getLogger(TabsMenuAction.class);
 
 	public void initialise() throws Exception {		
 	}
@@ -57,7 +60,7 @@ public class TabsMenuAction extends ProtegeDynamicAction {
                     }
                 }
                 catch (Exception ex) {
-                    LOGGER.error("Exception caught (re)building tab menu", ex);
+                    logger.error("An error occurred whilst adding a menu item.  Details: {}", ex);
                 }
             }
         });

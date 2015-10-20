@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -8,6 +8,7 @@ import org.protege.editor.owl.model.classexpression.OWLExpressionParserException
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -30,7 +31,7 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class OWLAutoCompleter {
 
-    private static Logger logger = Logger.getLogger(OWLAutoCompleter.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLAutoCompleter.class);
 
     public static final int DEFAULT_MAX_ENTRIES = 100;
 
@@ -225,9 +226,8 @@ public class OWLAutoCompleter {
 
     private List getMatches() {
         // We need to determine if the matches should be classes, individuals etc.
-
+        int wordIndex = getWordIndex();
         try {
-            int wordIndex = getWordIndex();
             String expression = textComponent.getDocument().getText(0, wordIndex);
             // Add a bit to the end to force a parse error
             // note that the + was added to the string below because "p min 2 **" parses.
@@ -250,15 +250,16 @@ public class OWLAutoCompleter {
                     }
                 }
                 kwMatches.addAll(matches);
-
                 return kwMatches;
-            }
-            catch (OWLException owlEx) {
-                owlEx.printStackTrace();
             }
         }
         catch (BadLocationException e) {
-            Logger.getLogger(getClass()).warn(e);
+            logger.error("A BadLocationException was thrown whilst retrieving matches for the auto-completer.\n" +
+                    "Word index: {}\n" +
+                    "Current text: {}\n",
+                    wordIndex,
+                    textComponent.getText(),
+                    e);
         }
         return Collections.EMPTY_LIST;
     }
@@ -308,7 +309,8 @@ public class OWLAutoCompleter {
             textComponent.getDocument().insertString(index, word, null);
         }
         catch (BadLocationException e) {
-            logger.error(e);
+            logger.error("A BadLocationException was thrown when the auto-completer was attempting to insert a word.\n"
+                    ,e);
         }
     }
 
@@ -417,7 +419,8 @@ public class OWLAutoCompleter {
             }while(true);
         }
         catch (BadLocationException e) {
-            logger.error(e);
+            logger.error("A BadLocationException was thrown when the auto-completer was determining whether or not" +
+                    " the caret is in an escaped name", e);
         }
         return -1;
     }
@@ -438,7 +441,8 @@ public class OWLAutoCompleter {
             }
         }
         catch (BadLocationException e) {
-            logger.error(e);
+            logger.error("A BadLocationException exception was thrown when the auto-complete was retrieving " +
+                    "an unbroken word index.", e);
         }
         return -1;
     }
@@ -462,6 +466,8 @@ public class OWLAutoCompleter {
             return textComponent.getDocument().getText(index, caretIndex - index);
         }
         catch (BadLocationException e) {
+            logger.error("A BadLocationException was thrown when the auto-completer was " +
+                    "retrieving the word to complete.", e);
             return "";
         }
     }

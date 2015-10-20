@@ -10,10 +10,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -30,21 +31,13 @@ import org.protege.editor.core.ui.util.UIUtil;
  * which contains two <code>View</code>s.
  */
 public class ViewContainer extends JComponent implements Disposable {
-	public static Logger LOGGER = Logger.getLogger(ViewContainer.class);
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -1833840751733500882L;
 
 
     public ViewContainer(View view) {
         setLayout(new BorderLayout());
         add(view);
-        if (LOGGER.isDebugEnabled()) {
-            setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3),
-                                                         BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED)));
-        }
     }
 
 

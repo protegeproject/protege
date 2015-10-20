@@ -7,9 +7,10 @@ import java.net.URI;
 
 import javax.swing.AbstractAction;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -23,7 +24,7 @@ import org.protege.editor.core.ui.util.UIUtil;
  */
 public class ShowFileAction extends AbstractAction {
 
-    private static final Logger logger = Logger.getLogger(ShowFileAction.class);
+    private final Logger logger = LoggerFactory.getLogger(ShowFileAction.class);
 
     private URI physicalURI;
 
@@ -42,7 +43,7 @@ public class ShowFileAction extends AbstractAction {
             FileUtils.showFile(new File(physicalURI));
         }
         catch (IOException ex) {
-            logger.error(ex);
+            logger.error("An error occurred when attempting to show a file in the operating system.", ex);
         }
     }
 }

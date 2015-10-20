@@ -3,8 +3,6 @@ package org.protege.osgi.framework;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -14,6 +12,8 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 
@@ -29,7 +29,7 @@ public class Launcher {
 
     public static String PROTEGE_DIR = System.getProperty(PROTEGE_DIR_PROPERTY);
 
-    private final Logger logger = Logger.getLogger(Launcher.class.getCanonicalName());
+    private final Logger logger = LoggerFactory.getLogger(Launcher.class.getCanonicalName());
 
     private final Map<String, String> frameworkProperties = new HashMap<>();
 
@@ -103,7 +103,7 @@ public class Launcher {
                     framework.waitForStop(0);
                 }
             } catch (Throwable t) {
-                logger.log(Level.WARNING, "Error shuting down OSGi session", t);
+                logger.error("Error shuting down OSGi session: {}", t);
             }
         }, "Close OSGi Session");
         Runtime.getRuntime().addShutdownHook(hook);
@@ -134,7 +134,7 @@ public class Launcher {
                 ((BundleStartLevel) newBundle.adapt(BundleStartLevel.class)).setStartLevel(startLevel);
                 core.add(newBundle);
             } catch (Throwable t) {
-                logger.log(Level.WARNING, "Bundle " + bundleFile + " failed to install.", t);
+                logger.warn("Bundle {} failed to install: {}", bundleFile, t);
             }
         }
         return core;
@@ -145,7 +145,7 @@ public class Launcher {
             try {
                 b.start();
             } catch (Throwable t) {
-                logger.log(Level.WARNING, "Core Bundle " + b.getBundleId() + " failed to start.", t);
+                logger.warn("Core Bundle {} failed to start: {}", b.getBundleId(), t);
             }
         }
     }

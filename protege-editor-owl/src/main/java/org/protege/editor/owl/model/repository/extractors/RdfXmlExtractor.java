@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.owlapi.util.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFParser;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 public class RdfXmlExtractor implements OntologyIdExtractor {
-    private Logger log = Logger.getLogger(RdfXmlExtractor.class);
+
+    private final Logger logger = LoggerFactory.getLogger(RdfXmlExtractor.class);
+
     private URI location;
 
     public OWLOntologyID getOntologyId() {
@@ -25,9 +28,7 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
             parser.parse(is, consumer);
         }
         catch (Throwable t) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception caught trying to extract ontology from rdf file at  " + location, t);
-            }
+            logger.debug("Exception caught trying to extract ontology from rdf file at  " + location, t);
             return null;
         }
         finally {
@@ -36,7 +37,7 @@ public class RdfXmlExtractor implements OntologyIdExtractor {
         			iStream.close();
         		}
         		catch (IOException ioe) {
-        			log.warn("Could not close open stream", ioe);
+        			logger.warn("Could not close open stream", ioe);
         		}
         	}
         }

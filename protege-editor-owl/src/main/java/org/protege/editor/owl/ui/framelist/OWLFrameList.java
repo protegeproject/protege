@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.basic.BasicListUI;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.prefs.Preferences;
@@ -74,6 +74,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.slf4j.LoggerFactory;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -92,7 +93,7 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  */
 public class OWLFrameList<R> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
 
-    private static final Logger logger = Logger.getLogger(OWLFrameList.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
 
@@ -317,9 +318,8 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
             actions.add(action);
         }
         catch (Exception e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Exception thrown", e);
-            }
+            logger.debug("An error occurred whilst setting up a menu item in the popup menu in a Frame List.  " +
+                    "The menu item will not be displayed in the popup menu.", e);
         }
     }
 
@@ -343,9 +343,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                 action.dispose();
             }
             catch (Exception e) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Exception thrown", e);
-                }
+                logger.debug("An error occurred whilst disposing of a menu item in the popup menu in a Frame List", e);
             }
         }
         frame.dispose();

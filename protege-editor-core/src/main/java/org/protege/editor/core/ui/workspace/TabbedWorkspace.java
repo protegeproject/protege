@@ -8,10 +8,11 @@ import java.util.List;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,
@@ -30,7 +31,7 @@ public abstract class TabbedWorkspace extends Workspace {
 
     private Set<WorkspaceTab> workspaceTabs;
 
-    private static final Logger LOGGER = Logger.getLogger(TabbedWorkspace.class);
+    private final Logger logger = LoggerFactory.getLogger(TabbedWorkspace.class);
 
     /**
      * Override of the <code>Workspace</code> initialise method.
@@ -76,7 +77,8 @@ public abstract class TabbedWorkspace extends Workspace {
             }
             return false;
         } catch (IllegalAccessException | InvocationTargetException e) {
-            LOGGER.error(e, e);
+            logger.warn("An error occurred when attempting to detect whether a tab plugin should be shown by " +
+                    "default.  Details: {}", e);
             return false;
         }
     }
@@ -94,7 +96,10 @@ public abstract class TabbedWorkspace extends Workspace {
                 tab.setLayout(new BorderLayout());
                 tab.add(ComponentFactory.createExceptionComponent(msg, e, null));
             }
-            LOGGER.warn(e);
+            logger.error("An error occurred when attempting to instantiate a tab plugin.  " +
+                    "Tab plugin Id: {}.  Error details: {}",
+                    plugin.getId(),
+                    e);
         }
         return tab;
     }
@@ -111,7 +116,7 @@ public abstract class TabbedWorkspace extends Workspace {
             }
         }
         catch (Exception e) {
-            LOGGER.error("Exception caught doing save", e);
+            logger.error("Exception caught doing save", e);
         }
     }
 
@@ -231,7 +236,7 @@ public abstract class TabbedWorkspace extends Workspace {
                 tab.dispose();
             }
             catch (Exception e) {
-                LOGGER.warn("BAD TAB: " + tab.getClass().getSimpleName() + " - Exception during dispose: " + e.getMessage());
+                logger.warn("BAD TAB: " + tab.getClass().getSimpleName() + " - Exception during dispose: " + e.getMessage());
             }
         }
         workspaceTabs.clear();

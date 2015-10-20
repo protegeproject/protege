@@ -1,7 +1,8 @@
 package org.protege.editor.core.platform;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.osgi.framework.BundleContext;
+import org.slf4j.LoggerFactory;
 
 /*
  * There currently does not seem to be any generic method for obtaining the command
@@ -11,7 +12,7 @@ import org.osgi.framework.BundleContext;
  * Felix needed to have its main routine wrapped.  Perhaps this is what we will do for all OSGi implementations.
  */
 public class PlatformArguments {
-    private static Logger log = Logger.getLogger(PlatformArguments.class);
+
     public static final String ARG_PROPERTY = "command.line.arg.";
     
     public static String[] getArguments(BundleContext context) {
@@ -27,8 +28,8 @@ public class PlatformArguments {
         boolean argFound = false;
         do {
             argFound = false;
-            Object arg = System.getProperty(ARG_PROPERTY + count);
-            if (arg != null && arg instanceof String) {
+            String arg = System.getProperty(ARG_PROPERTY + count);
+            if (arg != null) {
                 argFound = true;
                 count++;
             }

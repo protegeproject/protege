@@ -1,7 +1,8 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,8 +25,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class AbstractOWLOntologyObjectHierarchyProvider<N extends OWLObject> extends AbstractOWLObjectHierarchyProvider<N> implements OWLOntologyObjectHierarchyProvider<N> {
-
-    public static final Logger logger = Logger.getLogger(AbstractOWLOntologyObjectHierarchyProvider.class);
 
     private Set<OWLOntology> ontologies;
 

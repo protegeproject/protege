@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public class SplitDisjointClassesAction extends ProtegeOWLAction {
 
-    Logger logger = Logger.getLogger(SplitDisjointClassesAction.class);
+    private final Logger logger = LoggerFactory.getLogger(SplitDisjointClassesAction.class);
 
     @SuppressWarnings("unchecked")
     public void actionPerformed(ActionEvent actionEvent) {

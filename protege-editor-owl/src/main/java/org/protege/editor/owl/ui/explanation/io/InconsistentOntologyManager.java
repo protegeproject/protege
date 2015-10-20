@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
@@ -14,7 +14,7 @@ import org.protege.editor.owl.model.OWLEditorKitHook;
 import org.protege.editor.owl.model.OWLModelManager;
 
 public class InconsistentOntologyManager extends OWLEditorKitHook  {
-	public static final Logger LOGGER = Logger.getLogger(InconsistentOntologyManager.class);
+
 	public static final String EXPLAIN = "Explain";
 	
 	private OWLEditorKit owlEditorKit;

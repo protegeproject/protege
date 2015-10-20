@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -27,9 +27,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class DLMetricsViewComponent extends AbstractOWLViewComponent {
-
-    private static final Logger logger = Logger.getLogger(DLMetricsViewComponent.class);
-
 
     private boolean changed;
 

@@ -2,8 +2,9 @@ package org.protege.editor.owl.ui.inference;
 
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,8 +17,6 @@ import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class DIGReasonerPreferencesPanel extends OWLPreferencesPanel {
-
-    private static final Logger logger = Logger.getLogger(DIGReasonerPreferencesPanel.class);
 
 
     private JTextField reasonerURLField;

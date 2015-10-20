@@ -6,10 +6,11 @@ import java.util.Stack;
 
 import javax.swing.JList;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,7 +30,7 @@ public class HistoryManagerImpl implements HistoryManager {
     
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
-    private static Logger logger = Logger.getLogger(HistoryManager.class);
+    private Logger logger = LoggerFactory.getLogger(HistoryManager.class);
 
     private OWLOntologyManager manager;
 
@@ -110,7 +111,7 @@ public class HistoryManagerImpl implements HistoryManager {
                 manager.applyChanges(redoChanges);
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("An error occurred whilst redoing the last set of undone changes.", e);
             }
             finally {
                 typeOfChangeInProgress = ChangeType.NORMAL;
@@ -132,7 +133,7 @@ public class HistoryManagerImpl implements HistoryManager {
 //                removeChanges(changes);
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("An error occurred whilst attempting to undo the last set of changes.", e);
             }
             finally {
                 // No longer in undo mode

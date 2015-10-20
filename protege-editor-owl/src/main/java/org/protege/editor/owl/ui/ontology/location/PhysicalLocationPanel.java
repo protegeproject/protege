@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -46,6 +46,7 @@ import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -59,7 +60,7 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
  */
 public class PhysicalLocationPanel extends JPanel {
 
-    private static final Logger logger = Logger.getLogger(PhysicalLocationPanel.class);
+    private final Logger logger = LoggerFactory.getLogger(PhysicalLocationPanel.class);
 
     private static final Color ROLL_OVER_COLOR = new Color(50, 50, 255);
 
@@ -205,7 +206,7 @@ public class PhysicalLocationPanel extends JPanel {
             FileUtils.showFile(new File(physicalURI));
         }
         catch (IOException ex) {
-            logger.error(ex);
+            logger.error("An error occurred whilst attempting to show a file in the Operating System.", ex);
         }
     }
 

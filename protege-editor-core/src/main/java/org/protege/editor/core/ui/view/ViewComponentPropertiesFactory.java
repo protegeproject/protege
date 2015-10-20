@@ -6,8 +6,9 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.mdock.ComponentPropertiesFactory;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -21,13 +22,13 @@ import org.coode.mdock.ComponentPropertiesFactory;
  */
 public class ViewComponentPropertiesFactory implements ComponentPropertiesFactory {
 
-    private static final Logger logger = Logger.getLogger(ViewComponentPropertiesFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(ViewComponentPropertiesFactory.class);
 
 
     public Map<String, String> getProperties(JComponent component) {
-        if (component instanceof View == false) {
+        if (!(component instanceof View)) {
             logger.debug("Component is not a View - ignoring");
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         View view = (View) component;
         Map<String, String> map = new HashMap<String, String>();

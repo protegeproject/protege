@@ -61,7 +61,7 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
  */
 public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implements OWLObjectRenderer {
 
-//    private static final Logger logger = Logger.getLogger(OWLObjectRendererImpl.class);
+//    private static final Logger logger = LoggerFactory.getLogger(OWLObjectRendererImpl.class);
 
     private StringBuffer buffer;
 

@@ -5,8 +5,9 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.ui.UIHelper;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -19,6 +20,8 @@ import org.protege.editor.owl.ui.UIHelper;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class LoadIntoCurrentModelAction extends ProtegeOWLAction {
+
+    private Logger logger = LoggerFactory.getLogger(LoadIntoCurrentModelAction.class);;
 
     public void actionPerformed(ActionEvent e) {
         UIHelper helper = new UIHelper(getOWLEditorKit());
@@ -41,7 +44,7 @@ public class LoadIntoCurrentModelAction extends ProtegeOWLAction {
             getOWLEditorKit().handleLoadFrom(file.toURI());
         }
         catch (Exception e) {
-            Logger.getLogger(LoadIntoCurrentModelAction.class).error(e);
+            logger.error("An error occurred when loading an ontology from {}", file.getAbsolutePath(), e);
         }
     }
 

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.CollectionFactory;
 
@@ -18,9 +18,6 @@ import java.util.Set;
  * Date: 15-Feb-2007<br><br>
  */
 public class ConvertToDefinedClassAction extends SelectedOWLClassAction {
-
-    private static final Logger logger = Logger.getLogger(ConvertToDefinedClassAction.class);
-
 
     protected void initialiseAction() throws Exception {
     }

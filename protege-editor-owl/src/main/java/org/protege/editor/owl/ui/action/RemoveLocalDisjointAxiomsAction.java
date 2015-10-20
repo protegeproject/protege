@@ -1,8 +1,9 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.ui.UIHelper;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,7 @@ import java.util.*;
  */
 public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
 
-    private static final Logger logger = Logger.getLogger(RemoveAllDisjointAxiomsAction.class);
+    private final Logger logger = LoggerFactory.getLogger(RemoveAllDisjointAxiomsAction.class);
 
 
     public void actionPerformed(ActionEvent e) {
@@ -46,8 +47,8 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
 
             getOWLModelManager().applyChanges(changes);
         }
-        catch (Exception e1) {
-            logger.error(e1);
+        catch (Exception ex) {
+            logger.error("An error occurred whilst removing the disjoint axioms from the specified ontologies.", ex);
         }
     }
 

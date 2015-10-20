@@ -6,7 +6,7 @@ import java.net.URI;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
@@ -15,6 +15,7 @@ import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -28,7 +29,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class MissingImportHandlerUI implements MissingImportHandler {
 
-    private static final Logger logger = Logger.getLogger(MissingImportHandlerUI.class);
+    private final Logger logger = LoggerFactory.getLogger(MissingImportHandlerUI.class);
 
     private OWLEditorKit owlEditorKit;
 
@@ -74,7 +75,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
             CatalogUtilities.save(activeCatalog, catalogLocation);
         }
         catch (IOException e) {
-            logger.warn("Could not save user supplied import redirection to catalog");
+            logger.error("Could not save user supplied import redirection to catalog.", e);
         }
     }
 }

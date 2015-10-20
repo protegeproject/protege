@@ -22,7 +22,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
@@ -35,8 +35,7 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 public class EditUriAction extends AbstractAction {
-    private static final Logger logger = Logger.getLogger(EditUriAction.class);
-    
+
     public static String UNKNOWN     = "Unknown";
     public static String CALCULATING = "Calculating...";
     public static String NO_PARSE    = "File didn't parse.";

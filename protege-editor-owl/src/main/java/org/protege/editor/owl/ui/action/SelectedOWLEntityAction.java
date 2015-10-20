@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -17,10 +17,7 @@ import java.awt.event.ActionEvent;
  */
 public abstract class SelectedOWLEntityAction extends ProtegeOWLAction {
 
-    private static final Logger logger = Logger.getLogger(SelectedOWLEntityAction.class);
-
     private OWLSelectionModelListener listener;
-
 
     final public void actionPerformed(ActionEvent e) {
         actionPerformed(getSelectedEntity());

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -19,6 +19,7 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,7 +33,7 @@ import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<OWLObjectPropertyExpression>>
         implements VerifiedInputEditor {
 
-    private static final Logger logger = Logger.getLogger(OWLObjectPropertyChainEditor.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLObjectPropertyChainEditor.class);
 
     private JLabel impliesLabel;
 
@@ -60,7 +61,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<O
             return editor.createObject();
         }
         catch (OWLException e) {
-            logger.error(e);
+            logger.error("An error occurred whilst creating the entered property chain.", e);
         }
         return null;
     }

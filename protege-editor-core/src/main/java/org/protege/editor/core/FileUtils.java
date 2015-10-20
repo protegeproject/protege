@@ -1,6 +1,7 @@
 package org.protege.editor.core;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +21,7 @@ import java.nio.channels.FileChannel;
  */
 public class FileUtils {
 
-    private static final Logger logger = Logger.getLogger(FileUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 
     /**

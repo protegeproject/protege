@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLObjectPropertyViewComponent {
 
-//    private static final Logger logger = Logger.getLogger(OWLObjectPropertyCharacteristicsViewComponent.class);
+//    private static final Logger logger = LoggerFactory.getLogger(OWLObjectPropertyCharacteristicsViewComponent.class);
 
 
     /**

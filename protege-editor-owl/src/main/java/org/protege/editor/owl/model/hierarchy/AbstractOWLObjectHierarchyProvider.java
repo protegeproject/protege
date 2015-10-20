@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.owlapi.model.WriteSafeOWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
  */
 public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> implements OWLObjectHierarchyProvider<N> {
 
-    private static final Logger logger = Logger.getLogger(AbstractOWLObjectHierarchyProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractOWLObjectHierarchyProvider.class);
     
     private volatile boolean fireEvents;
 
@@ -216,7 +217,9 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
             }
             catch (Throwable e) {
                 e.printStackTrace();
-                logger.warn(getClass().getName() + ": Listener" + listener + " has thrown an exception.  Removing bad listener!");
+                logger.error("{}: Listener {} has thrown an exception.  Removing bad listener.",
+                        getClass().getName(),
+                        listener);
                 removeListener(listener);
                 throw new RuntimeException(e);
             }

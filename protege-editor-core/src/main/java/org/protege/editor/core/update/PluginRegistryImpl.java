@@ -8,10 +8,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.protege.editor.core.plugin.PluginUtilities;
+import org.slf4j.LoggerFactory;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -27,7 +28,8 @@ import org.protege.editor.core.plugin.PluginUtilities;
  * Date: Nov 5, 2008<br><br>
  */
 public class PluginRegistryImpl implements PluginRegistry {
-    private static final Logger logger = Logger.getLogger(PluginRegistryImpl.class);
+
+    private final Logger logger = LoggerFactory.getLogger(PluginRegistryImpl.class);
 
     public static final String UPDATE_URL = "Update-Url";
     

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.IRI;
@@ -37,8 +37,6 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
-
-    private static final Logger logger = Logger.getLogger(OWLEntityRenderingCacheImpl.class);
 
     private Map<String, OWLClass> owlClassMap = new HashMap<String, OWLClass>();
 

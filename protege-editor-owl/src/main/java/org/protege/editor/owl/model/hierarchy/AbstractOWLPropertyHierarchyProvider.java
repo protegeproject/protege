@@ -33,7 +33,7 @@ import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
  */
 public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLPropertyRange, E extends OWLPropertyExpression<R, E>, P extends E> extends AbstractOWLObjectHierarchyProvider<P> {
 
-//    private static final Logger logger = Logger.getLogger(AbstractOWLPropertyHierarchyProvider.class);
+//    private static final Logger logger = LoggerFactory.getLogger(AbstractOWLPropertyHierarchyProvider.class);
 	
 	private ReadLock ontologySetReadLock;
 	private WriteLock ontologySetWriteLock;

@@ -6,15 +6,16 @@ import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BundleSearchPath {
 
-    private Logger logger = Logger.getLogger(BundleSearchPath.class.getCanonicalName());
+    private Logger logger = LoggerFactory.getLogger(BundleSearchPath.class.getCanonicalName());
 
     public static final String USER_HOME = "user.home";
 
@@ -88,32 +89,28 @@ public class BundleSearchPath {
 
         if (bundleInfo.isNewerVersionThan(existingBundleInfo)) {
             nameToFileMap.put(symbolicName, bundleInfo);
-            logger.warning(
-                    String.format("Found duplicate plugin/bundle.  " +
-                                    "Using the latest version, %s and ignoring the previous version, %s.",
-                            bundleInfo.getBundleFile().getName(),
-                            existingBundleInfo.getBundleFile().getName())
-            );
+            logger.warn("Found duplicate plugin/bundle.  " +
+                            "Using the latest version, {} and ignoring the previous version, {}.",
+                    bundleInfo.getBundleFile().getName(),
+                    existingBundleInfo.getBundleFile().getName());
         }
-        else if(bundleInfo.isNewerTimestampThan(existingBundleInfo)) {
+        else if (bundleInfo.isNewerTimestampThan(existingBundleInfo)) {
             nameToFileMap.put(symbolicName, bundleInfo);
-            logger.warning(
-                    String.format("Found duplicate plugin/bundle. " +
-                                    "Using the most recent, %s (modified %tc) " +
-                                    "and ignoring the older copy, %s (modified %tc).",
-                            bundleInfo.getBundleFile().getName(),
-                            bundleInfo.getBundleFile().lastModified(),
-                            existingBundleInfo.getBundleFile().getName(),
-                            existingBundleInfo.getBundleFile().lastModified()
-                    )
+            logger.warn("Found duplicate plugin/bundle. " +
+                            "Using the most recent, {} (modified {}) " +
+                            "and ignoring the older copy, {} (modified {}).",
+                    bundleInfo.getBundleFile().getName(),
+                    String.format("%tc", bundleInfo.getBundleFile().lastModified()),
+                    existingBundleInfo.getBundleFile().getName(),
+                    String.format("%tc", existingBundleInfo.getBundleFile().lastModified())
+
             );
         }
         else {
-            logger.warning(
-                    String.format("Ignoring plugin/bundle (%s) because it is a duplicate of %s.",
-                            existingBundleInfo.getBundleFile().getName(),
-                            bundleInfo.getBundleFile().getName()
-                    )
+            logger.warn(
+                    "Ignoring plugin/bundle ({}) because it is a duplicate of {}.",
+                    existingBundleInfo.getBundleFile().getName(),
+                    bundleInfo.getBundleFile().getName()
             );
         }
 
@@ -132,7 +129,7 @@ public class BundleSearchPath {
                     versionString == null ? Optional.<Version>empty() : Optional.of(new Version(versionString));
             return Optional.of(new BundleInfo(file, new SymbolicName(symbolicName), version));
         } catch (Exception e) {
-            logger.warning("Could not parse " + file + " as plugin/bundle. Error: " + e.getMessage());
+            logger.warn("Could not parse {} as plugin/bundle. Error: ", file, e);
             return Optional.empty();
         }
     }

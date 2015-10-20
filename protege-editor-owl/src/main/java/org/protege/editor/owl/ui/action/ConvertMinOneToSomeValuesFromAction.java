@@ -1,8 +1,9 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
 
-    Logger logger = Logger.getLogger(ConvertMinOneToSomeValuesFromAction.class);
+    Logger logger = LoggerFactory.getLogger(ConvertMinOneToSomeValuesFromAction.class);
 
 
     public void actionPerformed(ActionEvent actionEvent) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
@@ -15,9 +15,10 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.slf4j.LoggerFactory;
 
 public class OWLClassAssertionSelectionModel implements Disposable {
-	public static Logger LOGGER = Logger.getLogger(OWLClassAssertionSelectionModel.class);
+	public static Logger logger = LoggerFactory.getLogger(OWLClassAssertionSelectionModel.class);
 	
 	private OWLEditorKit editorKit;
 	private OWLSelectionModel mainSelectionModel;
@@ -122,8 +123,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 				listener.selectionChanged();
 			}
 			catch (Exception e) {
-                LOGGER.warn("BAD LISTENER: (" + listener.getClass().getSimpleName() + ") ");
-                ProtegeApplication.getErrorLog().handleError(Thread.currentThread(), e);
+                logger.warn("BAD LISTENER: (" + listener.getClass().getSimpleName() + ") ");
 			}
 		}
 	}

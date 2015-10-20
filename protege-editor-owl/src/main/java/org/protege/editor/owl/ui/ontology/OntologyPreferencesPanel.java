@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,7 +30,7 @@ import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
  */
 public class OntologyPreferencesPanel extends OWLPreferencesPanel {
 
-    private static final Logger logger = Logger.getLogger(OntologyPreferencesPanel.class);
+    private static final Logger logger = LoggerFactory.getLogger(OntologyPreferencesPanel.class);
 
 
     private JTextField textField;
@@ -125,7 +126,7 @@ public class OntologyPreferencesPanel extends OWLPreferencesPanel {
             }
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("An error occurred whilst trying to display the Ontology Preferences Panel", e);
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.tree;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,8 +18,6 @@ import java.util.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNode {
-
-    private static final Logger logger = Logger.getLogger(OWLObjectTreeNode.class);
 
     private OWLObjectTree tree;
 

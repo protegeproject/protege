@@ -9,7 +9,8 @@ import java.lang.reflect.Proxy;
 *
 */
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -24,7 +25,8 @@ import org.apache.log4j.Logger;
  *
  */
 public abstract class AbstractAppleApplicationWrapper {
-    private static Logger log = Logger.getLogger(AbstractAppleApplicationWrapper.class);
+
+    private Logger logger = LoggerFactory.getLogger(AbstractAppleApplicationWrapper.class);
 
     private Object application;
     private Object listener;
@@ -68,7 +70,7 @@ public abstract class AbstractAppleApplicationWrapper {
             addApplicationListenerMethod.invoke(application, getListener());
         }
         catch (Exception e) {
-            log.error("Could not initialize OS X specific settings");
+            logger.error("An error occurred during OS X settings initialization.", e);
         }
     }
     

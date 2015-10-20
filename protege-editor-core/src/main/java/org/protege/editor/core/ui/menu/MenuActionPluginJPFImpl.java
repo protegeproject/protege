@@ -7,13 +7,14 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -30,7 +31,7 @@ import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
  */
 public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implements MenuActionPlugin {
     
-    private static Logger logger = Logger.getLogger(MenuActionPluginJPFImpl.class);
+    private Logger logger = LoggerFactory.getLogger(MenuActionPluginJPFImpl.class);
 
     public static final String EXTENSION_POINT_ID = "EditorKitMenuAction";
 
@@ -102,7 +103,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
                 return new URL(urlStr);
             }
             catch (MalformedURLException e) {
-                Logger.getLogger(MenuActionPluginJPFImpl.class).warn("Invalid URL for action " + getId(), e);
+                LoggerFactory.getLogger(MenuActionPluginJPFImpl.class).warn("Invalid URL for action " + getId(), e);
             }
         }
         return null;
@@ -169,7 +170,7 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
             menuAction.initialise();
         }
         catch (Exception e) {
-            Logger.getLogger(MenuActionPluginJPFImpl.class).error(e);
+            logger.error("An error occurred whilst instantiating a menu action.", e);
         }
         return menuAction;
     }

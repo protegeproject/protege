@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -29,7 +30,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public abstract class AbstractOntologyRenderingViewComponent extends AbstractActiveOntologyViewComponent {
     private static final long serialVersionUID = 496671619048384054L;
-    private static final Logger logger = Logger.getLogger(AbstractOWLViewComponent.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractOWLViewComponent.class);
     private JTextArea textArea;
     private Thread renderThread;
 

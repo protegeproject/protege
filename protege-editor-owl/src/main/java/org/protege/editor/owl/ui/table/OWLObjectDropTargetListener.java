@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.table;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,7 +30,7 @@ import java.util.List;
  */
 public class OWLObjectDropTargetListener implements DropTargetListener {
 
-    private static final Logger logger = Logger.getLogger(OWLObjectDropTargetListener.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLObjectDropTargetListener.class);
 
     private Cursor orginalCursor;
 
@@ -109,12 +111,12 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
             return objs;
         }
         catch (UnsupportedFlavorException e) {
-            logger.error(e);
+            logger.error("The type of object being dropped is not supported at the drop location.", e);
         }
         catch (IOException e) {
-            logger.error(e);
+            logger.error("An error occurred whilst deserializing a dropped object.", e);
         }
-        return null;
+        return Collections.emptyList();
     }
 
 

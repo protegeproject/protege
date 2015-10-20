@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.entity;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.LoggerFactory;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -22,7 +23,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class EntityCreationPreferences {
 
-    private static Logger logger = Logger.getLogger(EntityCreationPreferences.class);
+    private static Logger logger = LoggerFactory.getLogger(EntityCreationPreferences.class);
 
     private static final String PREFERENCES_SET_KEY = "org.protege.editor.owl.entity.creation";
 

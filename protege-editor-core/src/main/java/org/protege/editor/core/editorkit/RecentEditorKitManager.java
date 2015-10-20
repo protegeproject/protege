@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,7 +27,7 @@ import org.protege.editor.core.ProtegeManager;
  */
 public class RecentEditorKitManager {
 
-    private static final Logger logger = Logger.getLogger(RecentEditorKitManager.class);
+    private final Logger logger = LoggerFactory.getLogger(RecentEditorKitManager.class);
 
     private static RecentEditorKitManager instance;
 
@@ -109,7 +110,7 @@ public class RecentEditorKitManager {
             pruneInvalidDescriptors();
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("An error occurred whilst loading the list of recent items", e);
         }
     }
 
@@ -125,11 +126,8 @@ public class RecentEditorKitManager {
             userRoot.putByteArray(PREFERENCES_KEY, bos.toByteArray());
             userRoot.flush();
         }
-        catch (IOException e) {
-            logger.error(e);
-        }
-        catch (BackingStoreException e) {
-            logger.error(e);
+        catch (IOException | BackingStoreException e) {
+            logger.error("An error occurred whilst saving the list of recent items", e);
         }
     }
 }

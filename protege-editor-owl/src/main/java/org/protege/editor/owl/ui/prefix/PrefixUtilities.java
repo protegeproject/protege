@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.prefix.ActiveOntologyComparator;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -16,9 +16,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.slf4j.LoggerFactory;
 
 public class PrefixUtilities {
-	public static final Logger LOGGER = Logger.getLogger(PrefixUtilities.class);
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PrefixUtilities.class);
 
 	public static final Set<String> STANDARD_PREFIXES = Collections.unmodifiableSet(new DefaultPrefixManager().getPrefixNames());
 

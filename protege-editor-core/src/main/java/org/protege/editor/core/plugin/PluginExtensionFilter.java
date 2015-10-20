@@ -3,11 +3,12 @@ package org.protege.editor.core.plugin;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 
 /**
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class PluginExtensionFilter {
 
-    private static Logger logger = Logger.getLogger(PluginExtensionFilter.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(PluginExtensionFilter.class.getName());
 
     private String pluginId;
 
@@ -60,7 +61,7 @@ public class PluginExtensionFilter {
         IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
         IExtensionPoint extpt = registry.getExtensionPoint(pluginId, extensionPointId);
         if(extpt == null) {
-            logger.warning("Extension point not defined: " + extensionPointId + "@" + pluginId);
+            logger.warn("Extension point not defined: {}@{}", extensionPointId, pluginId);
             return Collections.emptySet();
         }
         IExtension [] extensions = extpt.getExtensions();
@@ -74,7 +75,7 @@ public class PluginExtensionFilter {
                     result.add(ext);
                 }
                 else{
-                    logger.warning("No ID found for " + extensionPointId  + " in bundle: " + ext.getContributor().getName());
+                    logger.warn("No ID found for {} in bundle: {}", extensionPointId, ext.getContributor().getName());
                 }
             }
         }

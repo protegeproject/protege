@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
@@ -21,10 +21,12 @@ import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
+import org.slf4j.LoggerFactory;
 
 
 public class FolderGroupManager extends CatalogEntryManager {
-    private static final Logger logger = Logger.getLogger(FolderGroupManager.class);
+
+    private final Logger logger = LoggerFactory.getLogger(FolderGroupManager.class);
 
     public static final int FOLDER_BY_URI_VERSION = 1;
     public static final int CURRENT_VERSION = 2;
@@ -97,7 +99,7 @@ public class FolderGroupManager extends CatalogEntryManager {
             logger.warn("Folder repository probably came from another system");
             logger.warn("Could not be updated because directory " + dir + " does not exist");
             if (!warnedUserOfBadRepositoryDeclaration) {
-                errorLog.logError(new IOException("Bad ontology library declaration - check logs. Warnings now disabled for this session."));
+                logger.error("Bad ontology library declaration - check logs. Warnings now disabled for this session.", new IOException());
                 warnedUserOfBadRepositoryDeclaration = true;
             }
             return false;
@@ -114,10 +116,8 @@ public class FolderGroupManager extends CatalogEntryManager {
         reset();
         ensureLatestVersion();
         try {
-            if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Starting Catalog Update ************************************************");
-                logger.debug("Update of group entry " + ge.getId() + " started at " + new Date(timeOfCurrentUpdate));
-            }
+                logger.debug("Update of group entry {} started at {}.", ge.getId(), new Date(timeOfCurrentUpdate));
 
             retainEntries();
             examineDirectoryContents(folder, new HashSet<URI>());
@@ -125,9 +125,7 @@ public class FolderGroupManager extends CatalogEntryManager {
                 clearEntries();
                 writeEntries();
             }
-            if (logger.isDebugEnabled()) {
                 logger.debug("********************************* Catalog Update Complete ************************************************");
-            }
             return modified;
         } finally {
             this.ge = null;
@@ -213,7 +211,7 @@ public class FolderGroupManager extends CatalogEntryManager {
                         recordRetainedEntry(URI.create(ue.getName()), f.getCanonicalFile());
                     }
                 } catch (Throwable t) {
-                    logger.info("Exception caught updating catalog entry " + t);
+                    logger.error("Exception caught updating catalog entry.", t);
                 }
             }
         }

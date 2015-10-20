@@ -8,8 +8,9 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,7 +25,7 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 public class PrefixMapperTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -5098097390890500539L;
 	
-	private static final Logger LOGGER = Logger.getLogger(PrefixMapperTableModel.class);
+	private final Logger logger = LoggerFactory.getLogger(PrefixMapperTableModel.class);
 	
 	public enum Column {
 		PREFIX_NAME, PREFIX;
@@ -48,9 +49,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
     public void refill() {
-    	if (LOGGER.isDebugEnabled()) {
-    		LOGGER.debug("Clearing changed flag because of a refill operation");
-    	}
+    	logger.debug("Clearing changed flag because of a refill operation");
     	changed = false;
     	// arguably here we should only delete the prefixes that don't have an empty value
     	// it is a little weird when they disappear because they were not committed to the PrefixOWLOntologyFormat
@@ -75,8 +74,8 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     public int addMapping(String prefix, String value) {
     	changed = changed || (value != null && value.length() != 0);
-    	if (LOGGER.isDebugEnabled()) {
-    		LOGGER.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
     	}
     	prefixes.add(prefix);
     	Collections.sort(prefixes);
@@ -90,16 +89,16 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     	prefixes.remove(prefix);
 	    String prefixValue = prefixValueMap.remove(prefix);
 	    changed = changed || (prefixValue != null & prefixValue.length() != 0);
-    	if (LOGGER.isDebugEnabled()) {
-    		LOGGER.debug("removing mapping " + prefix + " -> " + prefixValue + " changed = " + changed);
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("removing mapping " + prefix + " -> " + prefixValue + " changed = " + changed);
     	}
 	    fireTableDataChanged();
 	}
 
 	public boolean commitPrefixes() {
     	if (changed) {
-    		if (LOGGER.isDebugEnabled()) {
-    			LOGGER.debug("committing prefix changes and clearing changed flag");
+    		if (logger.isDebugEnabled()) {
+    			logger.debug("committing prefix changes and clearing changed flag");
     		}
     		prefixManager.clearPrefixes();
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixValueMap.entrySet()) {
@@ -181,16 +180,16 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	        	String prefixValue = prefixValueMap.remove(currentPrefixName);
 	        	prefixValueMap.put(newPrefix, prefixValue);
 	        	changed = changed || (prefixValue != null && prefixValue.length() != 0);
-	        	if (LOGGER.isDebugEnabled()) {
-	        		LOGGER.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
+	        	if (logger.isDebugEnabled()) {
+	        		logger.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
 	        	}
 	        	fireTableDataChanged();
 	        }
 	        break;
 		case PREFIX:
 	        // Replacing value
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Changing the value associated with the prefix " + currentPrefixName + " with a delete and an add.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("Changing the value associated with the prefix " + currentPrefixName + " with a delete and an add.");
 			}
 			removeMapping(currentPrefixName);
 	        addMapping(currentPrefixName, aValue.toString());

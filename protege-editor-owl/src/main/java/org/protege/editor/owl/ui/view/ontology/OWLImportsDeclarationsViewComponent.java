@@ -18,7 +18,7 @@ import java.awt.*;
  */
 public class OWLImportsDeclarationsViewComponent extends AbstractOWLViewComponent {
 
-//    private static final Logger logger = Logger.getLogger(OWLImportsDeclarationsViewComponent.class);
+//    private static final Logger logger = LoggerFactory.getLogger(OWLImportsDeclarationsViewComponent.class);
 
     /**
      * 

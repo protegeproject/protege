@@ -49,7 +49,7 @@ import java.util.List;
  */
 public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard {
 
-//    private static final Logger logger = Logger.getLogger(OWLObjectTree.class);
+//    private static final Logger logger = LoggerFactory.getLogger(OWLObjectTree.class);
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 

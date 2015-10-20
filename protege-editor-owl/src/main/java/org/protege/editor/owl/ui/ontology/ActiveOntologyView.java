@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.ontology;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 public class ActiveOntologyView extends AbstractOWLViewComponent {
 
-    private static final Logger logger = Logger.getLogger(ActiveOntologyView.class);
+    private final Logger logger = LoggerFactory.getLogger(ActiveOntologyView.class);
 
 
     private JComboBox ontologiesList;
@@ -93,7 +94,7 @@ public class ActiveOntologyView extends AbstractOWLViewComponent {
             updateList();
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("An error occurred when rebuilding the list of active ontologies.", e);
         }
     }
 }

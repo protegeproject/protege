@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -32,8 +32,6 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
  * Date: 29-Jan-2007<br><br>
  */
 public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSection<OWLIndividual, OWLClassAssertionAxiom, OWLClassExpression> {
-
-    private static final Logger logger = Logger.getLogger(OWLClassAssertionAxiomTypeFrameSection.class);
 
     public static final String LABEL = "Types";
 

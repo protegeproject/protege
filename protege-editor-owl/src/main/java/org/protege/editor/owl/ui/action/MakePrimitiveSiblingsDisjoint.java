@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -23,9 +23,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
-
-    private static final Logger logger = Logger.getLogger(MakePrimitiveSiblingsDisjoint.class);
-
 
     protected void initialiseAction() throws Exception {
 

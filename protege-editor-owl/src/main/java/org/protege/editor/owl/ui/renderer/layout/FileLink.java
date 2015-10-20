@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class FileLink extends Link {
 
-    private static Logger logger = Logger.getLogger(FileLink.class);
+    private Logger logger = LoggerFactory.getLogger(FileLink.class);
 
     private File file;
 
@@ -37,7 +38,7 @@ public class FileLink extends Link {
             FileUtils.showFile(file);
         }
         catch (IOException e) {
-            logger.debug(e.getMessage(), e);
+            logger.error("Could not activate file link.", e.getMessage(), e);
         }
     }
 

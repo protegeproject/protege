@@ -3,12 +3,12 @@ package org.protege.editor.core.editorkit;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.editorkit.plugin.EditorKitHook;
 import org.protege.editor.core.editorkit.plugin.EditorKitHookPlugin;
 import org.protege.editor.core.editorkit.plugin.EditorKitHookPluginLoader;
-
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -21,7 +21,7 @@ import org.protege.editor.core.editorkit.plugin.EditorKitHookPluginLoader;
  */
 public abstract class AbstractEditorKit<T extends EditorKitFactory> implements EditorKit {
 
-    private static final Logger logger = Logger.getLogger(AbstractEditorKit.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractEditorKit.class);
 
     private Map<Object, Disposable> objects = new HashMap<Object, Disposable>();
 
@@ -71,7 +71,7 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
                 object.dispose();
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("An error occurred whilst disposing of an Editor Kit object.  Object: ", object, e);
             }
         }
         objects.clear();

@@ -1,16 +1,18 @@
 package org.protege.editor.owl.model.find;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 
 /**
@@ -24,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class OWLEntityFinderImpl implements OWLEntityFinder {
 
-    private static final Logger logger = Logger.getLogger(OWLEntityFinderImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLEntityFinderImpl.class);
 
     private OWLEntityRenderingCache renderingCache;
 
@@ -267,7 +269,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                 }
             }
         }
-        catch (Exception e) {
+        catch (PatternSyntaxException e) {
             logger.warn("Invalid regular expression: " + e.getMessage());
         }
         return results;
@@ -319,15 +321,11 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             }
 
             if (match.trim().length() == 0) {
-                if (logger.isDebugEnabled()) {
                     logger.debug("Attempt to match the empty string (no results)");
-                }
             }
             else{
                 match = match.toLowerCase();
-                if (logger.isDebugEnabled()) {
                     logger.debug("Match: " + match);
-                }
                 for (String rendering : getRenderings(type)) {
                     if (rendering.length() > 0){
                         if (matcher.matches(rendering.toLowerCase(), match)) {

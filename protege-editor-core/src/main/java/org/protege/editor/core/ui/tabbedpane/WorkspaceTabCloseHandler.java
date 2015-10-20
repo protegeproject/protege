@@ -1,9 +1,10 @@
 package org.protege.editor.core.ui.tabbedpane;
 
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.util.logging.Logger;
 
 /**
  * Matthew Horridge
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class WorkspaceTabCloseHandler implements TabCloseHandler {
 
-    private Logger logger = Logger.getLogger(TabCloseHandler.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(TabCloseHandler.class.getName());
 
     @Override
     public boolean shouldCloseTab(int tabIndex, JTabbedPane tabbedPane) {
@@ -30,7 +31,7 @@ public class WorkspaceTabCloseHandler implements TabCloseHandler {
         try {
             workspaceTab.dispose();
         } catch (Exception e) {
-            logger.severe("Problem disposing of tab: " + e.getMessage());
+            logger.error("An error occurred whilst disposing of a tab.", e);
         }
     }
 }
