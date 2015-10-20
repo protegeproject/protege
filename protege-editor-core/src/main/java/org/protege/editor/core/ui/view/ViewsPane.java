@@ -1,10 +1,11 @@
 package org.protege.editor.core.ui.view;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.mdock.*;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +31,7 @@ public class ViewsPane extends JPanel {
      */
     private static final long serialVersionUID = 8919347949244067211L;
 
-    public static final Logger logger = Logger.getLogger(ViewsPane.class);
+    private final Logger logger = LoggerFactory.getLogger(ViewsPane.class);
 
     private ViewsPaneMemento memento;
 
@@ -62,7 +63,7 @@ public class ViewsPane extends JPanel {
                     reader = new InputStreamReader(new BufferedInputStream(memento.getInitialCongigFileURL().openStream()));
                 }
                 catch (IOException e) {
-                    logger.error(e);
+                    logger.error("An error occurred whilst loading a views configuration file: {}", e);
                 }
             }
         }
@@ -124,11 +125,8 @@ public class ViewsPane extends JPanel {
             nodeSerialiser.serialise();
             writer.flush();
         }
-        catch (ParserConfigurationException e) {
-            logger.error(e);
-        }
-        catch (IOException e) {
-            logger.error(e);
+        catch (ParserConfigurationException | IOException e) {
+            logger.error("An error occurred whilst saving a views configuration file: {}", e);
         }
     }
 

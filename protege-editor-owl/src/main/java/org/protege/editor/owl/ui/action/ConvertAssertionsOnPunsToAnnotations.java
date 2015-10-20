@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ import java.util.Set;
  * Date: 23-Jul-2007<br><br>
  */
 public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
-    private static Logger log = Logger.getLogger(ConvertAssertionsOnPunsToAnnotations.class);
+
+    private static Logger logger = LoggerFactory.getLogger(ConvertAssertionsOnPunsToAnnotations.class);
 
     public void actionPerformed(ActionEvent e) {
 
@@ -73,7 +75,7 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
             for (OWLDataProperty prop : ont.getDataPropertiesInSignature()) {
                 for (OWLOntology o : onts) {
                     for (OWLAxiom ax : o.getReferencingAxioms(prop)) {
-                        log.info(ax);
+                        logger.trace("Axiom: {}", ax);
                     }
                 }
             }

@@ -1,10 +1,11 @@
 package org.protege.editor.core.editorkit;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginUtilities;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -22,7 +23,7 @@ import org.protege.editor.core.plugin.PluginUtilities;
  */
 public class EditorKitFactoryPlugin {
 
-    private static final Logger logger = Logger.getLogger(EditorKitFactoryPlugin.class);
+    private final Logger logger = LoggerFactory.getLogger(EditorKitFactoryPlugin.class);
 
 
     private IExtension extension;
@@ -61,7 +62,7 @@ public class EditorKitFactoryPlugin {
             return instantiator.instantiate();
         }
         catch (Exception e) {
-            logger.error("Exception caught", e);
+            logger.error("An error occurred during editor kit instantiation.", e);
         } 
         return null;
     }

@@ -6,11 +6,12 @@ import java.util.List;
 
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.action.ToolBarActionPluginJPFImpl;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -57,7 +58,7 @@ public class MainToolBarBuilder {
                 action.initialise();
             }
             catch (Exception e) {
-                Logger.getLogger(getClass()).warn("Couldn't load main toolbar item", e);
+                LoggerFactory.getLogger(getClass()).warn("Couldn't load main toolbar item", e);
             }
         }
         return toolBar;

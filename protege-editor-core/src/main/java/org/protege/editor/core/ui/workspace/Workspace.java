@@ -1,8 +1,7 @@
 package org.protege.editor.core.ui.workspace;
 
 import com.google.common.base.Optional;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
@@ -13,8 +12,8 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.split.ViewSplitPane;
-import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.view.*;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -53,7 +52,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     public static final int LEFT_RESULTS_VIEW = 1;
 
-    public static final Logger LOGGER = Logger.getLogger(Workspace.class);
+    private final Logger logger = LoggerFactory.getLogger(Workspace.class);
 
     public static final String FILE_MENU_NAME = "File";
 
@@ -239,7 +238,7 @@ public abstract class Workspace extends JComponent implements Disposable {
             menuItem.setSelected(selectedLookAndFeelName.equals(lookAndFeelClassName));
             menu.add(menuItem);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            LOGGER.error(e, e);
+            logger.error("Error whilst adding menu item: {}", e);
         }
     }
 
@@ -257,7 +256,7 @@ public abstract class Workspace extends JComponent implements Disposable {
         }
         catch (Exception e1) {
             JOptionPane.showMessageDialog(this, "There was a problem setting the look and feel.", "Error", JOptionPane.ERROR_MESSAGE);
-            LOGGER.error("Exception caught setting look and feel ", e1);
+            logger.error("Error whilst setting look and feel: {}", e1);
         }
     }
 

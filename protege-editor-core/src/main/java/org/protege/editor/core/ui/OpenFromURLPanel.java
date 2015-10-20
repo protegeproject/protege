@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
@@ -9,6 +9,7 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -35,8 +36,6 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
      * 
      */
     private static final long serialVersionUID = -8869065983080068694L;
-
-    private static Logger log = Logger.getLogger(OpenFromURLPanel.class);
 
     private JTextField uriField;
 
@@ -260,7 +259,6 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
 
 
         public boolean handleDelete() {
-            log.info("DEL!");
             return true;
         }
 

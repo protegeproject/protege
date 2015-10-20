@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.UIHelper;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,7 @@ import java.util.*;
  */
 public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
 
-    private static final Logger logger = Logger.getLogger(RemoveAllDisjointAxiomsAction.class);
+    private final Logger logger = LoggerFactory.getLogger(RemoveAllDisjointAxiomsAction.class);
 
     private OWLModelManagerListener listener = new OWLModelManagerListener() {
         public void handleChange(OWLModelManagerChangeEvent event) {
@@ -57,8 +58,8 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
             }
             getOWLModelManager().applyChanges(changes);
         }
-        catch (Exception e1) {
-            logger.error(e1);
+        catch (Exception ex) {
+            logger.error("An error occurred whilst attempting to remove all disjoint classes axioms.", ex);
         }
     }
 

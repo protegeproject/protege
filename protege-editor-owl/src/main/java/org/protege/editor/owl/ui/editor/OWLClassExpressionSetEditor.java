@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -10,6 +10,7 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLException;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -29,7 +30,7 @@ import java.util.Set;
  */
 public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWLClassExpression>> implements VerifiedInputEditor {
 
-    private static final Logger logger = Logger.getLogger(OWLClassExpressionSetEditor.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLClassExpressionSetEditor.class);
 
 
     private OWLEditorKit owlEditorKit;
@@ -161,7 +162,8 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
                 return expressionEditor.createObject();
             }
             catch (OWLException e) {
-                logger.error(e);
+                logger.error("An error occurred when trying to create the OWL object corresponding to the " +
+                        "entered expression.", e);
             }
         }
         return null;

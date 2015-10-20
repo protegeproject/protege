@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.util;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,30 +38,30 @@ public class ListenerManager<L extends Object> {
     }
 
 
-    public void dumpWarningForListener(L listener, Logger log, Level level, String cleanupMessage) {
+    public void dumpWarningForListener(L listener, Logger log, String cleanupMessage) {
         if (listenerMap.containsKey(listener)) {
-            log.log(level, "*** WARNING BADLY BEHAVING LISTENER: " + listener.getClass().getName() + " ***");
+            log.error("*** WARNING BADLY BEHAVING LISTENER: " + listener.getClass().getName() + " ***");
             StackTraceElement [] trace = listenerMap.get(listener);
             if (trace != null) {
-                log.log(level, "    Possible culprit (trace from when listener was added): ");
+                log.error("    Possible culprit (trace from when listener was added): ");
                 for (int i = TRACE_START; i < trace.length; i++) {
                     String s = trace[i].toString();
                     if (i == 0) {
-                        log.log(level, "        ->" + s);
+                        log.error("        ->" + s);
                     }
                     else {
-                        log.log(level, "          " + s);
+                        log.error("          " + s);
                     }
                 }
             }
-            log.log(level, "    " + cleanupMessage);
+            log.error("    " + cleanupMessage);
         }
     }
 
 
-    public void dumpWarningForAllListeners(Logger log, Level level, String cleanupMessage) {
+    public void dumpWarningForAllListeners(Logger log, String cleanupMessage) {
         for (L listener : listenerMap.keySet()) {
-            dumpWarningForListener(listener, log, level, cleanupMessage);
+            dumpWarningForListener(listener, log, cleanupMessage);
         }
     }
 }

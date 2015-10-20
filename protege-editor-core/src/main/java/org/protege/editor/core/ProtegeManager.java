@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactory;
@@ -16,6 +16,7 @@ import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -30,7 +31,7 @@ import org.protege.editor.core.ui.workspace.WorkspaceFrame;
  */
 public class ProtegeManager {
 
-    public static final Logger logger = Logger.getLogger(ProtegeManager.class);
+    public static final Logger logger = LoggerFactory.getLogger(ProtegeManager.class);
 
     private static ProtegeManager instance;
 
@@ -369,7 +370,8 @@ public class ProtegeManager {
                 }
                 // CATCH EVERYTHING!  We don't want to bring down P4 even before it has appeared to start!
                 catch (Throwable e) {
-                    ProtegeApplication.getErrorLog().logError(e);
+                    logger.warn("An error occurred whilst attempting to load an ontology repository.  " +
+                            "Ontology Repository Plugin: ", plugin.getId(), e);
                 }
             }
     }

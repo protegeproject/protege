@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.find;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -28,9 +28,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEntityFindPanel extends JPanel {
-
-    private static final Logger logger = Logger.getLogger(OWLEntityFindPanel.class);
-
 
     private OWLEditorKit owlEditorKit;
 

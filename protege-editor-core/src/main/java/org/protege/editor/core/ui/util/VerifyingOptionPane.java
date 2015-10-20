@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +29,7 @@ public class VerifyingOptionPane extends JOptionPane {
      */
     private static final long serialVersionUID = -6308201481924625979L;
 
-    private static final Logger logger = Logger.getLogger(VerifyingOptionPane.class);
+    private final Logger logger = LoggerFactory.getLogger(VerifyingOptionPane.class);
 
     private JButton okButton;
 
@@ -49,7 +50,8 @@ public class VerifyingOptionPane extends JOptionPane {
             okButton.setEnabled(enabled);
         }
         else{
-            logger.warn("Cannot find OK button for this system. Please report this with details of your OS and language.");
+            logger.error("Cannot find OK button for this system. " +
+                    "Please report this with details of your Operating System and language.");
         }
     }
 

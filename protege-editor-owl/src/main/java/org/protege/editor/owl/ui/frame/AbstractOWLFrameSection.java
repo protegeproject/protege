@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.wizard.Wizard;
@@ -65,6 +65,7 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -77,8 +78,10 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
  */
 public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
         implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
-	public static final Logger LOGGER = Logger.getLogger(AbstractOWLFrameSection.class);
-	private static int inconsistentOntologyWarnings = 0;
+
+	private final Logger logger = LoggerFactory.getLogger(AbstractOWLFrameSection.class);
+
+    private static int inconsistentOntologyWarnings = 0;
 
     private OWLEditorKit owlEditorKit;
 
@@ -242,7 +245,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         getOWLModelManager().applyChanges(changes);
         for (A axiom : axioms){
             if (!getOWLModelManager().getActiveOntology().containsAxiom(axiom)){
-                LOGGER.warn("axiom not added = " + axiom);
+                logger.warn("Editing of an axiom finished, but the axiom was not added to the active ontology. Axiom: {}.", axiom);
             }
         }
     }
@@ -313,12 +316,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
             	refillInferred();
             }
             catch (InconsistentOntologyException ioe) {
-            	if (++inconsistentOntologyWarnings % 5 == 0) {
-            		ProtegeApplication.getErrorLog().logError(ioe);
-            	}
-            	else {
-            		LOGGER.warn("Ontology is inconsistent: " + ioe);
-            	}
+                logger.error("An InconsistentOntologyException was thrown when refilling the inferred information" +
+                        " in a frame section.  The frame section implementation should take care of this.", ioe);
             }
             catch (Exception e) {
             	ProtegeApplication.getErrorLog().logError(e);

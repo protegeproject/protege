@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -22,8 +22,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
  * Date: 24-May-2007<br><br>
  */
 public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLObject> {
-
-    private static final Logger logger = Logger.getLogger(IndividualsByInferredTypeHierarchyProvider.class);
 
     private Map<OWLObject, Set<OWLObject>> typeNodes = new HashMap<OWLObject, Set<OWLObject>>();
 

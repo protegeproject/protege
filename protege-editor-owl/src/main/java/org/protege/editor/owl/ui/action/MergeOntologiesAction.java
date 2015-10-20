@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.refactor.ontology.OntologyMerger;
 import org.protege.editor.owl.ui.ontology.wizard.merge.MergeOntologiesWizard;
@@ -20,9 +20,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class MergeOntologiesAction extends ProtegeOWLAction {
-
-    private static final Logger logger = Logger.getLogger(MergeOntologiesAction.class);
-
 
     public void actionPerformed(ActionEvent e) {
         MergeOntologiesWizard wizard = new MergeOntologiesWizard(getOWLEditorKit());

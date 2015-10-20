@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListSectionHeader;
@@ -38,6 +38,7 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.RemoveImport;
 import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -50,7 +51,7 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
 public class OntologyImportsList extends MList {
     private static final long serialVersionUID = -1532513638674168922L;
 
-    private static final Logger logger = Logger.getLogger(OntologyImportsList.class);
+    private final Logger logger = LoggerFactory.getLogger(OntologyImportsList.class);
 	
     private OWLEditorKit eKit;
 

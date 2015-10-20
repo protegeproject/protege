@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
@@ -34,8 +34,6 @@ import java.util.Map;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
-
-    private static final Logger logger = Logger.getLogger(DuplicateSelectedClassAction.class);
 
     private Preferences prefs;
 

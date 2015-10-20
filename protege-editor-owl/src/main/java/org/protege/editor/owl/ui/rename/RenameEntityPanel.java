@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.rename;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -27,8 +27,6 @@ import java.net.URLDecoder;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class RenameEntityPanel extends JPanel {
-
-    private static final Logger logger = Logger.getLogger(RenameEntityPanel.class);
 
     private static final String AUTO_RENAME_PUNS = "AUTO_RENAME_PUNS";
 

@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -38,6 +38,7 @@ import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
 
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.slf4j.LoggerFactory;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -60,7 +61,7 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
  */
 public class ProtegeApplication implements BundleActivator {
 
-    private static final Logger logger = Logger.getLogger(ProtegeApplication.class);
+    private final static Logger logger = LoggerFactory.getLogger(ProtegeApplication.class);
     
     public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
     
@@ -204,7 +205,7 @@ public class ProtegeApplication implements BundleActivator {
         PluginUtilities.getInstance().initialise(context);
         loadDefaults();
         initializeLookAndFeel();
-        checkConfiguration();
+//        checkConfiguration();
         setupExceptionHandler();
         processCommandLineURIs();  // plugins may set arguments
         loadRecentEditorKits();
@@ -285,7 +286,7 @@ public class ProtegeApplication implements BundleActivator {
 
             }
             catch (Exception e) {
-                logger.error(e, e);
+                logger.error("An error occurred during Look&Feel initialization", e);
             }
         }
     }
@@ -309,21 +310,21 @@ public class ProtegeApplication implements BundleActivator {
 
     }
 
-    /*
-     * At the moment we are only checking the Logger state but in theory this method could
-     * test other things also.  Regular users should never see this message.  The performance
-     * impact of not configuring the Logger correctly is enormous.
-     */
-    private static void checkConfiguration() {
-        Logger rootLogger = Logger.getRootLogger();
-        if (rootLogger.isDebugEnabled()) {
-            JOptionPane.showMessageDialog(null, "Logger not initialized.\n" +
-                    "This could have a major impact on performance.\n" +
-                    "Use the -Dlog4j.configuration=\"file:/...\" jvm option.", "Performance Issue Detected", JOptionPane.WARNING_MESSAGE);
-        }
-    }
+//    /*
+//     * At the moment we are only checking the Logger state but in theory this method could
+//     * test other things also.  Regular users should never see this message.  The performance
+//     * impact of not configuring the Logger correctly is enormous.
+//     */
+//    private void checkConfiguration() {
+//        Logger rootLogger = Logger.getRootLogger();
+//        if (rootLogger.isDebugEnabled()) {
+//            JOptionPane.showMessageDialog(null, "Logger not initialized.\n" +
+//                    "This could have a major impact on performance.\n" +
+//                    "Use the -Dlog4j.configuration=\"file:/...\" jvm option.", "Performance Issue Detected", JOptionPane.WARNING_MESSAGE);
+//        }
+//    }
 
-    private static void setupExceptionHandler() {
+    private void setupExceptionHandler() {
         errorLog = new ErrorLog();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
@@ -348,7 +349,7 @@ public class ProtegeApplication implements BundleActivator {
                         commandLineURIs.add(uri);
                     }
                     catch (URISyntaxException e) {
-                        logger.error(e);
+                        logger.error("An error occurred when processing the command line argument: {}", arg, e);
                     }
                 }
             }
@@ -398,9 +399,9 @@ public class ProtegeApplication implements BundleActivator {
 
     }
 
-    private static boolean hasAutoUpdateBeenRunToday() {
+    private boolean hasAutoUpdateBeenRunToday() {
         Date lastRun = PluginManager.getInstance().getLastAutoUpdateDate();
-        logger.info("Auto-update last performed: " + lastRun);
+        logger.info("Auto-update last performed: {}", lastRun);
         Date startOfToday = getStartOfToday();
         return lastRun.after(startOfToday);
     }
@@ -505,7 +506,7 @@ public class ProtegeApplication implements BundleActivator {
             }
         }
         catch (Throwable t) {
-            logger.fatal("Exception caught trying to shut down Protege.", t);
+            logger.error("An error occurred when shutting down Protégé.", t);
         }
         return true;
     }

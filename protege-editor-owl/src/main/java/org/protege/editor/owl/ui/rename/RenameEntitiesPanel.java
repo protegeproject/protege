@@ -36,7 +36,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
@@ -48,6 +48,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.OWLEntityRenamer;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -60,7 +61,7 @@ import org.semanticweb.owlapi.util.OWLEntityRenamer;
 public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 	private static final long serialVersionUID = 259808389697631045L;
 
-	private Logger logger = Logger.getLogger(RenameEntitiesPanel.class);
+	private final Logger logger = LoggerFactory.getLogger(RenameEntitiesPanel.class);
 
     // editor pause
     private static final int SEARCH_PAUSE_MILLIS = 1000;
@@ -428,9 +429,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         protected void renderToken(String curToken, int tokenStartIndex, StyledDocument doc) {
             super.renderToken(curToken, tokenStartIndex, doc);
-            if (logger.isDebugEnabled()) {
-                logger.debug("curToken = " + curToken);
-            }
+            logger.debug("CurrentToken: {}", curToken);
             if (curToken.startsWith("(")){
                 inURI = true;
             }

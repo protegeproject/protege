@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.view;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class OWLPropertyTreeDropHandler<N extends OWLPropertyExpression> implements OWLTreeDragAndDropHandler<N> {
-
-    private static final Logger logger = Logger.getLogger(OWLPropertyTreeDropHandler.class);
 
     private OWLModelManager owlModelManager;
 

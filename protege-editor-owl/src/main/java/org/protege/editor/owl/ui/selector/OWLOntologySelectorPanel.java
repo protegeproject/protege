@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.selector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.list.OWLObjectList;
@@ -22,8 +22,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLOntologySelectorPanel extends JPanel {
-
-    private static final Logger logger = Logger.getLogger(OWLOntologySelectorPanel.class);
 
     private OWLEditorKit owlEditorKit;
 

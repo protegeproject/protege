@@ -11,7 +11,8 @@ import java.util.Set;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -26,7 +27,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class XmlBaseAlgorithm implements Algorithm {
-    private static Logger log = Logger.getLogger(XmlBaseAlgorithm.class);
+
+    private final Logger logger = LoggerFactory.getLogger(XmlBaseAlgorithm.class);
     
     private InputStream is;
 
@@ -76,7 +78,7 @@ public class XmlBaseAlgorithm implements Algorithm {
                         throw new SAXParseCompletedException();
                     }
                     catch (URISyntaxException e) {
-                        log.error("Exception caught", e);
+                        logger.error("URI syntax error", e);
                     }
                 }
             }

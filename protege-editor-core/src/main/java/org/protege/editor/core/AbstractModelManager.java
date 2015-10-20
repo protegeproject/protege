@@ -1,9 +1,11 @@
 package org.protege.editor.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 
 /**
  * Author: Matthew Horridge<br>
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractModelManager implements ModelManager {
 
-    private static final Logger logger = Logger.getLogger(AbstractModelManager.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractModelManager.class);
 
     private Map<Object, Disposable> objects = new HashMap<Object, Disposable>();
 
@@ -47,7 +49,7 @@ public abstract class AbstractModelManager implements ModelManager {
                 object.dispose();
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("An error occurred whilst disposing of a model manager object.  Object: {}", object, e);
             }
         }
         objects.clear();

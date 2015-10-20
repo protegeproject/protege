@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.error;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 
 import javax.swing.*;

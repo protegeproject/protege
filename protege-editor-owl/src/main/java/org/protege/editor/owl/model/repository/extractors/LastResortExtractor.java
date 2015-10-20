@@ -2,15 +2,16 @@ package org.protege.editor.owl.model.repository.extractors;
 
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.LoggerFactory;
 
 public class LastResortExtractor implements OntologyIdExtractor {
-    private Logger log = Logger.getLogger(LastResortExtractor.class);
+    private Logger log = LoggerFactory.getLogger(LastResortExtractor.class);
     private URI location;
 
     public OWLOntologyID getOntologyId() {

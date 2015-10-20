@@ -10,7 +10,7 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.Resettable;
@@ -31,6 +31,7 @@ import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -43,7 +44,8 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLReasonerManagerImpl implements OWLReasonerManager {
-    private static Logger logger = Logger.getLogger(OWLReasonerManager.class);
+
+    private Logger logger = LoggerFactory.getLogger(OWLReasonerManager.class);
     
     private OWLModelManager owlModelManager;
     

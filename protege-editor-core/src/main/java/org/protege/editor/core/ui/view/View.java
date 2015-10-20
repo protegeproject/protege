@@ -17,7 +17,7 @@ import java.util.Set;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.mdock.*;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
@@ -30,6 +30,7 @@ import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -57,7 +58,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
     private static final long serialVersionUID = 2974633149164991481L;
 
 
-    private Logger logger = Logger.getLogger(View.class);
+    private final Logger logger = LoggerFactory.getLogger(View.class);
 
 
     public static final String DETACHED_WINDOWS_FLOAT = "DETACHED_WINDOWS_FLOAT";

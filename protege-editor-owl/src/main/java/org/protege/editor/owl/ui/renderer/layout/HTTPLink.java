@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,7 @@ import java.net.URI;
  */
 public class HTTPLink extends Link {
 
-    private static Logger logger = Logger.getLogger(HTTPLink.class);
+    private final Logger logger = LoggerFactory.getLogger(HTTPLink.class);
 
     private URI linkURI;
 
@@ -47,7 +48,7 @@ public class HTTPLink extends Link {
                 Desktop.getDesktop().browse(linkURI);
             }
             catch (IOException e) {
-                logger.debug(e.getMessage(), e);
+                logger.error("An error occurred whilst trying to activate an http link.  Link: {}", linkURI, e.getMessage(), e);
             }
         }
     }

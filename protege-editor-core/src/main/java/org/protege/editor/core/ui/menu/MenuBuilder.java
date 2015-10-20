@@ -17,12 +17,13 @@ import javax.swing.event.MenuListener;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -39,7 +40,7 @@ import org.protege.editor.core.ui.action.ProtegeDynamicAction;
  */
 public class MenuBuilder {
 
-	private static final Logger logger = Logger.getLogger(MenuBuilder.class);
+	private final Logger logger = LoggerFactory.getLogger(MenuBuilder.class);
 
 	private EditorKit editorKit;
 	private Set<ProtegeAction> actions;
@@ -125,8 +126,8 @@ public class MenuBuilder {
 			menu.addMenuListener(getDynamicMenuListener(menu, action));
 			actions.add(action);
 		}
-		catch (Exception e) {
-			logger.error(e);
+		catch (Throwable e) {
+			logger.error("An error occurred whilst building a dynamic menu.  Plugin name: {}", plugin.getName(), e);
 		}
 	}
 	

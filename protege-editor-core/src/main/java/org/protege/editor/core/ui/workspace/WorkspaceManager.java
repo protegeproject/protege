@@ -1,7 +1,8 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class WorkspaceManager {
 
-    private static final Logger logger = Logger.getLogger(WorkspaceManager.class);
+    private final Logger logger = LoggerFactory.getLogger(WorkspaceManager.class);
 
     public static final String SAVE_CONFIRMATION_MESSAGE = "<html><body><b>Do you want to save changes that " +
             "you made to the ontologies in this workspace?</b><br>" +
@@ -94,7 +95,7 @@ public class WorkspaceManager {
             return true;
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("An error occurred whilst closing the workspace.", e);
             return false;
         }
     }

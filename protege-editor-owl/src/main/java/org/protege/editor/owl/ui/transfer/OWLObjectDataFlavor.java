@@ -2,7 +2,7 @@ package org.protege.editor.owl.ui.transfer;
 
 import java.awt.datatransfer.DataFlavor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 
 /**
@@ -29,7 +29,6 @@ public class OWLObjectDataFlavor extends DataFlavor {
             return new OWLObjectDataFlavor();
         }
         catch (ClassNotFoundException e) {
-            Logger.getLogger(OWLObjectDataFlavor.class);
             return null;
         }
     }

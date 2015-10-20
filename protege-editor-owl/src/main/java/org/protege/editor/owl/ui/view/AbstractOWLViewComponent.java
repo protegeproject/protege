@@ -1,21 +1,14 @@
 package org.protege.editor.owl.ui.view;
 
-import org.apache.log4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -35,13 +28,6 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
      * 
      */
     private static final long serialVersionUID = -3089829405015180530L;
-
-    private static final String DIALOGS_ALWAYS_CENTRED = "DIALOGS_ALWAYS_CENTRED";
-
-    private static final Logger logger = Logger.getLogger(AbstractOWLViewComponent.class);
-
-    private static final String INPUT_MAP_KEY = "FIND";
-
 
     public OWLModelManager getOWLModelManager() {
         return getOWLWorkspace().getOWLEditorKit().getModelManager();

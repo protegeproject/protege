@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ import java.util.Arrays;
  */
 public class JOptionPaneEx {
 
-    private static Logger logger = Logger.getLogger(JOptionPaneEx.class);
+    private static final Logger logger = LoggerFactory.getLogger(JOptionPaneEx.class);
 
 
     public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent) {

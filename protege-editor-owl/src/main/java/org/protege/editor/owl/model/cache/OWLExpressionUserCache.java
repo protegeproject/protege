@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
@@ -40,9 +40,6 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
  * Date: Sep 10, 2008<br><br>
  */
 public class OWLExpressionUserCache implements Disposable {
-
-    private Logger logger = Logger.getLogger(OWLExpressionUserCache.class);
-
 
     private static final String ID = OWLExpressionUserCache.class.getName();
 

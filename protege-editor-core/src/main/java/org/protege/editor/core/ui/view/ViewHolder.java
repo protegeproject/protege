@@ -12,10 +12,11 @@ import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.tabbedpane.ViewTabbedPane;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -28,11 +29,7 @@ import org.protege.editor.core.ui.util.UIUtil;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ViewHolder extends JComponent implements Disposable {
-	public static final Logger LOGGER = Logger.getLogger(ViewHolder.class);
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 5192903791732587041L;
 
     private JSplitPane splitPane;

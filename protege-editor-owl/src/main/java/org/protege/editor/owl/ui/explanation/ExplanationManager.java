@@ -11,13 +11,16 @@ import java.util.Set;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.slf4j.LoggerFactory;
 
 public class ExplanationManager {
-	private static Logger logger = Logger.getLogger(ExplanationManager.class);
+
+	private final Logger logger = LoggerFactory.getLogger(ExplanationManager.class);
+
 	private OWLEditorKit editorKit;
 	private Collection<ExplanationService> explainers = new HashSet<ExplanationService>();
 	
@@ -37,7 +40,7 @@ public class ExplanationManager {
 				explainers.add(teacher);
 			}
 			catch (Exception e) {
-				logger.warn("Exception caught initialising explanation service " + plugin.getName() + " - skipping...", e);
+				logger.error("An error occurred whilst initialising an explanation service {}.", plugin.getName(), e);
 			}
 		}
 	}

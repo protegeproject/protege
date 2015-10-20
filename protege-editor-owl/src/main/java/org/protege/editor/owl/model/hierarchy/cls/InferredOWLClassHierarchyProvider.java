@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
@@ -48,8 +48,6 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 	 * at any time.  But I can hope that the new reasoner will run the same way the old one did. 
 	 */
 	
-    private static final Logger logger = Logger.getLogger(InferredOWLClassHierarchyProvider.class);
-
     private final OWLModelManager owlModelManager;
 
     private final OWLClass owlThing;

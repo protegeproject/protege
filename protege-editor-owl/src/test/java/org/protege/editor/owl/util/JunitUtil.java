@@ -1,21 +1,19 @@
 package org.protege.editor.owl.util;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.owlapi.functionalrenderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 
 public class JunitUtil {
-    private static Logger log = Logger.getLogger(JunitUtil.class);
-    
-    public static void enableDebug() {
-        log.setLevel(Level.DEBUG);
-    }
 
+    private static Logger log = LoggerFactory.getLogger(JunitUtil.class);
+    
     public static void printOntology(OWLOntologyManager manager, OWLOntology ontology) {
         if (!log.isDebugEnabled()) {
             return;

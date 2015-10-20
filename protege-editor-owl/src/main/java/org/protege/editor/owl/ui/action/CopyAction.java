@@ -56,7 +56,7 @@ public class CopyAction extends FocusedComponentAction<Copyable> {
     }
 
 //
-//    private static final Logger logger = Logger.getLogger(CopyAction.class);
+//    private static final Logger logger = LoggerFactory.getLogger(CopyAction.class);
 //
 //    private Copyable currentCopyable;
 //

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -72,7 +73,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private static final long serialVersionUID = 2340234247624617932L;
 
-    private Logger logger = Logger.getLogger(OWLWorkspace.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLWorkspace.class);
 
     private static final String WINDOW_MODIFIED = "Window.documentModified";
 
@@ -470,7 +471,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 action.setEditorKit(getOWLEditorKit());
                 String name = extraReasonerMenuActionPlugin.getName();
                 if (name == null) {
-                    logger.warn("extra reasoner menu action plugin has no name: " + extraReasonerMenuActionPlugin);
+                    logger.warn("Extra reasoner menu action plugin has no name: " + extraReasonerMenuActionPlugin);
                 }
                 action.putValue(Action.NAME, name);
                 String toolTipText = extraReasonerMenuActionPlugin.getToolTipText();
@@ -484,7 +485,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 result.add(action);
                 logger.debug("action = " + action);
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                logger.error("Caught Exception", e); //To change body of catch statement use File | Settings | File Templates.
+                logger.error("Error whilst loading menu plugin", e); //To change body of catch statement use File | Settings | File Templates.
             }
 
         }

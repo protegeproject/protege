@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.classexpression.anonymouscls;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.parser.OWLParseException;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +27,7 @@ import java.util.Set;
  */
 public class ADCFactory extends OWLObjectVisitorAdapter {
 
-    private static final Logger logger = Logger.getLogger(ADCFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(ADCFactory.class);
 
     private AnonymousDefinedClassManager adcManager;
 
@@ -86,7 +87,7 @@ public class ADCFactory extends OWLObjectVisitorAdapter {
             descrs.add(descr);
         }
         catch(OWLParseException e){
-            logger.error(e);
+            logger.error("An error occurred whilst parsing a literal in the ADCFactory", e);
         }     
     }
 

@@ -30,7 +30,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.entity.AutoIDGenerator;
 import org.protege.editor.owl.model.entity.CustomLabelDescriptor;
 import org.protege.editor.owl.model.entity.EntityCreationPreferences;
@@ -43,6 +43,7 @@ import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -61,7 +62,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
     private static final String SEP_HASH = "#";
     private static final String SEP_SLASH = "/";
 
-	private Logger logger = Logger.getLogger(NewEntitiesPreferencesPanel.class);
+	private final Logger logger = LoggerFactory.getLogger(NewEntitiesPreferencesPanel.class);
     
     // Entity IRI panel
     private JRadioButton autoIDIriFragment;
@@ -512,7 +513,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
             EntityCreationPreferences.setDefaultBaseIRI(defaultBase);
         }
         catch (URISyntaxException e) {
-            logger.error("Ignoring invalid base IRI (" + iriDefaultBaseField.getText() + ")");
+            logger.error("Ignoring invalid base IRI ({})", iriDefaultBaseField.getText(), e);
         }
 
         if (hashButton.isSelected()){

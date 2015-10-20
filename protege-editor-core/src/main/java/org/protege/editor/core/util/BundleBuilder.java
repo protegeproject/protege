@@ -8,12 +8,13 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BundleBuilder {
     private static final int BUFFER_SIZE = 10240;
     
-    private static final transient Logger log = Logger.getLogger(BundleBuilder.class);
+    private final transient Logger logger = LoggerFactory.getLogger(BundleBuilder.class);
     public static final char JAR_SEPARATOR = '/';
     
     
@@ -28,8 +29,8 @@ public class BundleBuilder {
     }
     
     public void createJarFile(File jar) throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating jar file " + jar + " from directory " + topLevelDirectory);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Creating jar file " + jar + " from directory " + topLevelDirectory);
         }
         File manifest = getManifest();
         if (manifest == null) {
@@ -61,13 +62,13 @@ public class BundleBuilder {
             String path = calculatePath(f);
             if (f.isFile()) {
                 if (f.equals(getManifest())) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Skipping manifest entry " + f);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Skipping manifest entry " + f);
                     }
                     continue;
                 }
-                if (log.isDebugEnabled()) {
-                    log.debug("Adding entry for file " + f + " with path " + path);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Adding entry for file " + f + " with path " + path);
                 }
                 JarEntry entry = new JarEntry(path);
                 jar.putNextEntry(entry);

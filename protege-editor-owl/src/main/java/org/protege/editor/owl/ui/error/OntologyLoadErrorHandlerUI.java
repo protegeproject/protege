@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.owlapi.functionalparser.OWLFunctionalSyntaxParser;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyParser;
@@ -39,6 +39,7 @@ import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFParserException;
 
+import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.turtle.parser.TurtleParser;
 import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OWLParser;
 import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
@@ -52,7 +53,9 @@ import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
  * Date: Aug 28, 2008<br><br>
  */
 public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
-	public static final Logger LOGGER = Logger.getLogger(OntologyLoadErrorHandlerUI.class);
+
+	public final Logger logger = LoggerFactory.getLogger(OntologyLoadErrorHandlerUI.class);
+
     private enum OPTIONS {
         OK("OK"), RELOAD("Reload");
 
@@ -107,7 +110,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
             ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
-            LOGGER.warn(explanation.getMessage(), explanation.getCause());
+            logger.warn(explanation.getMessage(), explanation.getCause());
             retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
                                                      "Load Error: " + ontologyID,
                                                      errorPanel,

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.ProtegeApplication;
@@ -45,6 +45,7 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
 
 import java.io.File;
@@ -70,7 +71,7 @@ import java.util.*;
  */
 public class OWLModelManagerImpl extends AbstractModelManager implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener, OWLOntologyLoaderListener {
 
-    private static final Logger logger = Logger.getLogger(OWLModelManagerImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLModelManagerImpl.class);
 
     private HistoryManager historyManager;
 
@@ -226,9 +227,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         // Name and shame plugins that do not (or can't be bothered to) clean up
         // their listeners!
-        modelManagerListenerManager.dumpWarningForAllListeners(logger, Level.ERROR, "(Listeners should be removed in the plugin dispose method!)");
+        modelManagerListenerManager.dumpWarningForAllListeners(logger, "(Listeners should be removed in the plugin dispose method!)");
 
-        changeListenerManager.dumpWarningForAllListeners(logger, Level.ERROR, "(Listeners should be removed in the plugin dispose method!)");
+        changeListenerManager.dumpWarningForAllListeners(logger, "(Listeners should be removed in the plugin dispose method!)");
     }
 
 

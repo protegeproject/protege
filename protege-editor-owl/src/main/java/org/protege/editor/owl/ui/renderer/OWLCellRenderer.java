@@ -30,7 +30,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.View;
 import javax.swing.tree.TreeCellRenderer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -49,6 +49,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -62,7 +63,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
  */
 public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, ListCellRenderer {
 
-    private static final Logger logger = Logger.getLogger(OWLCellRenderer.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLCellRenderer.class);
     
     private boolean forceReadOnlyRendering;
 
@@ -173,7 +174,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 entityColorProviders.add(prov);
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("An error occurred whilst trying to load an OWLEntityColorProviderPlugin", e);
             }
         }
         crossedOutEntities = new HashSet<OWLEntity>();
@@ -827,7 +828,12 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 		});
                 	}
                 	catch (Exception e) {
-                		ProtegeApplication.getErrorLog().logError(e);
+                		logger.error("An error occurred whilst rendering a token. " +
+                                "Token: {}; " +
+                                "Token start index: {}",
+                                curToken,
+                                tokenStartIndex,
+                                e);
                 	}
 
                 }

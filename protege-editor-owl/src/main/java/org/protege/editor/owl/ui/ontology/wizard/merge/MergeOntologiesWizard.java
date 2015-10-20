@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -25,8 +25,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class MergeOntologiesWizard extends Wizard {
-
-    private static final Logger logger = Logger.getLogger(MergeOntologiesWizard.class);
 
     private SelectOntologiesPage selectOntologiesPage;
 

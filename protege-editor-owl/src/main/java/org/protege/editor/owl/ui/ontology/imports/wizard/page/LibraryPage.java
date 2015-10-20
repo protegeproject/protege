@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
@@ -40,8 +40,6 @@ import org.protege.xmlcatalog.entry.Entry;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class LibraryPage extends OntologyImportPage {
-
-    private static final Logger logger = Logger.getLogger(LibraryPage.class);
 
     public static final String ID = "LibraryPage";
 

@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.UIHelper;
@@ -27,11 +27,13 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.slf4j.LoggerFactory;
 
 public class UriEntryPanel extends NewEntryPanel {
 	private static final long serialVersionUID = -6222499916124012217L;
 	
-	public static Logger LOGGER = Logger.getLogger(UriEntryPanel.class);
+	private final Logger logger = LoggerFactory.getLogger(UriEntryPanel.class);
+
     private XMLCatalog catalog;
 
 	private JTextField physicalLocationField;
@@ -136,8 +138,8 @@ public class UriEntryPanel extends NewEntryPanel {
 				return new URI(text);
 			}
 		}
-		catch (URISyntaxException murle) {
-			LOGGER.warn("Could not parse url " + text);
+		catch (URISyntaxException ex) {
+			logger.error("Could not parse URL: {}.", text, ex);
 		}
 		return null;
 	}

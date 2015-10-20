@@ -3,7 +3,7 @@ package org.protege.editor.owl.model.inference;
 
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
@@ -27,8 +27,7 @@ import org.protege.editor.owl.model.OWLModelManager;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ProtegeOWLReasonerPluginJPFImpl extends AbstractProtegePlugin<ProtegeOWLReasonerInfo> implements ProtegeOWLReasonerPlugin {
-    private Logger logger = Logger.getLogger(ProtegeOWLReasonerPluginJPFImpl.class);
-    
+
     public static final String NAME_PARAM = "name";
 
 

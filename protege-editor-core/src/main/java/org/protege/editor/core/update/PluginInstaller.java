@@ -16,7 +16,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.protege.editor.core.FileUtils;
@@ -24,6 +24,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.progress.BackgroundTask;
 import org.protege.common.CommonProtegeProperties;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,7 +35,7 @@ import org.protege.common.CommonProtegeProperties;
  */
 public class PluginInstaller {
 
-    private static final Logger logger = Logger.getLogger(PluginInstaller.class);
+    private static final Logger logger = LoggerFactory.getLogger(PluginInstaller.class);
 
     private List<PluginInfo> updates;
     

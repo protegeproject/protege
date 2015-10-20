@@ -34,7 +34,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
  */
 public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLAnnotationProperty> {
 
-//    private static final Logger logger = Logger.getLogger(OWLAnnotationPropertyHierarchyProvider.class);
+//    private static final Logger logger = LoggerFactory.getLogger(OWLAnnotationPropertyHierarchyProvider.class);
 	
 	private ReadLock ontologySetReadLock;
 	private WriteLock ontologySetWriteLock;

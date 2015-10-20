@@ -25,7 +25,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
@@ -45,8 +45,6 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class RendererPreferencesPanel extends OWLPreferencesPanel {
-
-    private static final Logger logger = Logger.getLogger(RendererPreferencesPanel.class);
 
     private Map<JRadioButton, RendererPlugin> buttonToRendererMap = new LinkedHashMap<JRadioButton, RendererPlugin>();
 

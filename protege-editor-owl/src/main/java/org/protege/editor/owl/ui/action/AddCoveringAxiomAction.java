@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -21,8 +21,6 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class AddCoveringAxiomAction extends SelectedOWLClassAction {
-
-    private static final Logger logger = Logger.getLogger(AddCoveringAxiomAction.class);
 
     private OWLSelectionModelListener listener;
 

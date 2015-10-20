@@ -19,13 +19,12 @@ import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 
 public class IntroductoryPanel extends JPanel {
 	private static final long serialVersionUID = 2168617534333064174L;
-	public static final Logger LOGGER = Logger.getLogger(IntroductoryPanel.class);
 	private InconsistentOntologyPlugin selectedPlugin;
 
 	public IntroductoryPanel(OWLEditorKit owlEditorKit, InconsistentOntologyPlugin lastSelectedPlugin) throws IOException {

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;

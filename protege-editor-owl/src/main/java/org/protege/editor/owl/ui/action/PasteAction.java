@@ -42,7 +42,7 @@ public class PasteAction extends FocusedComponentAction<Pasteable> {
         }
     }
 
-//    private static final Logger logger = Logger.getLogger(PasteAction.class);
+//    private static final Logger logger = LoggerFactory.getLogger(PasteAction.class);
 //
 //
 //    private Pasteable currentPasteable;

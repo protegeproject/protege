@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsWizard;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 
@@ -13,7 +14,7 @@ import java.awt.event.ActionEvent;
  */
 public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
 
-    private Logger logger = Logger.getLogger(MoveAxiomsToOntologyAction.class);
+    private Logger logger = LoggerFactory.getLogger(MoveAxiomsToOntologyAction.class);
 
     public void actionPerformed(ActionEvent actionEvent) {
         MoveAxiomsWizard wiz = new MoveAxiomsWizard(getOWLEditorKit());
@@ -23,7 +24,7 @@ public class MoveAxiomsToOntologyAction extends ProtegeOWLAction {
                 wiz.applyChanges();
             }
             catch (OWLOntologyCreationException e) {
-                logger.error(e);
+                logger.error("An error occurred whilst applying the changes to move axiom to ontology.", e);
             }
         }
 

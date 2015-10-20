@@ -1,14 +1,17 @@
 package org.protege.editor.core.ui.error;
 
-import org.apache.log4j.Logger;
+import com.google.common.collect.EvictingQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 /**
@@ -18,30 +21,39 @@ import java.util.List;
  * Date: 28-Feb-2007<br><br>
  */
 public class ErrorLog implements Thread.UncaughtExceptionHandler {
-	private static final Logger logger = Logger.getLogger(ErrorLog.class);
-
-    private static int errorCount;
 
     public static final int MAX_NUMBER_OF_ERRORS = 100;
 
-    private List<ErrorLogEntry> errors;
 
-    private List<WeakReference<ErrorLogListener>> listeners;
+    private final Logger logger = LoggerFactory.getLogger(ErrorLog.class);
 
+    private final AtomicInteger errorCount = new AtomicInteger();
+
+
+
+    private final Queue<ErrorLogEntry> errors;
+
+    private final List<WeakReference<ErrorLogListener>> listeners;
+
+    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+    private final Lock readLock = readWriteLock.readLock();
+
+    private final Lock writeLock = readWriteLock.writeLock();
 
     public ErrorLog() {
-        errors = new ArrayList<ErrorLogEntry>();
-        listeners = new ArrayList<WeakReference<ErrorLogListener>>();
+        errors = EvictingQueue.create(MAX_NUMBER_OF_ERRORS);
+        listeners = new ArrayList<>();
     }
 
 
     public void addListener(ErrorLogListener listener) {
-        listeners.add(new WeakReference<ErrorLogListener>(listener));
+        listeners.add(new WeakReference<>(listener));
     }
 
 
     public void removeListener(ErrorLogListener listener) {
-        listeners.remove(new WeakReference<ErrorLogListener>(listener));
+        listeners.remove(new WeakReference<>(listener));
     }
 
 
@@ -56,30 +68,46 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
 
 
     public void logError(Throwable throwable) {
-        errorCount++;
-        ErrorLogEntry logEntry = new ErrorLogEntry(throwable);
-        logger.error(logEntry.toString());
-        errors.add(logEntry);
-        if (errors.size() > MAX_NUMBER_OF_ERRORS) {
-            errors.remove(0);
+        writeLock.lock();
+        try {
+            int id = errorCount.incrementAndGet();
+            long timestamp = System.currentTimeMillis();
+            ErrorLogEntry logEntry = new ErrorLogEntry(id, timestamp, throwable);
+            logger.error("An error occurred: {}.  Details: {}", logEntry.toString(), throwable);
+            errors.add(logEntry);
+            fireErrorLoggedEvent();
+        } finally {
+            writeLock.unlock();
         }
-        fireErrorLoggedEvent();
+
     }
 
 
     public List<ErrorLogEntry> getEntries() {
-        return Collections.unmodifiableList(errors);
+        readLock.lock();
+        try {
+            return new ArrayList<>(errors);
+        } finally {
+            readLock.unlock();
+        }
+
     }
 
 
     public void clear() {
-        errors.clear();
-        fireErrorLogClearedEvent();
+        writeLock.lock();
+        try {
+            errors.clear();
+            fireErrorLogClearedEvent();
+        } finally {
+            writeLock.unlock();
+        }
+
     }
 
 
     private void fireErrorLoggedEvent() {
-        for (WeakReference<ErrorLogListener> ref : new ArrayList<WeakReference<ErrorLogListener>>(listeners)) {
+        for (WeakReference<ErrorLogListener> ref : new ArrayList<>(listeners)) {
             ErrorLogListener listener = ref.get();
             if (listener != null) {
                 listener.errorLogged(this);
@@ -92,7 +120,7 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
 
 
     private void fireErrorLogClearedEvent() {
-        for (WeakReference<ErrorLogListener> ref : new ArrayList<WeakReference<ErrorLogListener>>(listeners)) {
+        for (WeakReference<ErrorLogListener> ref : new ArrayList<>(listeners)) {
             ErrorLogListener listener = ref.get();
             if (listener != null) {
                 listener.errorLogCleared(this);
@@ -104,19 +132,19 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
     }
 
 
-    public class ErrorLogEntry {
+    public static class ErrorLogEntry {
 
-        private int id;
+        private final int id;
 
-        private long timeStamp;
+        private final long timeStamp;
 
-        private Throwable throwable;
+        private final Throwable throwable;
 
 
-        public ErrorLogEntry(Throwable throwable) {
-            this.timeStamp = System.currentTimeMillis();
+        public ErrorLogEntry(int id, long timeStamp, Throwable throwable) {
+            this.id = id;
+            this.timeStamp = timeStamp;
             this.throwable = throwable;
-            id = errorCount;
         }
 
 

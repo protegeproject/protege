@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.AbstractIDGenerator;
@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -140,7 +141,7 @@ public class AnonymousDefinedClassManager implements Disposable {
                 return descr;
             }
         }
-        Logger.getLogger(this.getClass()).error("Malformed Anonymous Defined Class: " + cls);
+        LoggerFactory.getLogger(this.getClass()).error("Malformed Anonymous Defined Class: " + cls);
         return null;
     }
 

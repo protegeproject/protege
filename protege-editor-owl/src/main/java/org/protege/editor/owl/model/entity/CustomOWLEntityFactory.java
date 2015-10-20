@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.slf4j.LoggerFactory;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -41,7 +42,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
  */
 public class CustomOWLEntityFactory implements OWLEntityFactory {
 
-    private Logger logger = Logger.getLogger(CustomOWLEntityFactory.class);
+    private Logger logger = LoggerFactory.getLogger(CustomOWLEntityFactory.class);
 
     private OWLModelManager mngr;
 
@@ -241,10 +242,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
             try {
                 labelDescriptor = cls.newInstance();
             }
-            catch (InstantiationException e) {
-                logger.error("Cannot create label descriptor", e);
-            }
-            catch (IllegalAccessException e) {
+            catch (InstantiationException | IllegalAccessException e) {
                 logger.error("Cannot create label descriptor", e);
             }
         }
@@ -258,10 +256,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
             try {
                 autoIDGenerator = prefAutoIDClass.newInstance();
             }
-            catch (InstantiationException e) {
-                logger.error("Cannot create auto ID generator", e);
-            }
-            catch (IllegalAccessException e) {
+            catch (InstantiationException | IllegalAccessException e) {
                 logger.error("Cannot create auto ID generator", e);
             }
         }

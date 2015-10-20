@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -15,8 +15,6 @@ import java.util.List;
  * Date: 19-Jan-2007<br><br>
  */
 public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> {
-
-    private static final Logger logger = Logger.getLogger(AbstractOWLFrame.class);
 
     private R rootObject;
 

@@ -4,9 +4,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -42,6 +43,8 @@ public class OntologyPreferences {
     public static final String SYSTEM_USER_NAME_PROPERTY = "user.name";
 
     public static final int DOCUMENT_COUNTER_START = 1;
+
+    private final Logger logger = LoggerFactory.getLogger(OntologyPreferences.class);
 
 
     private URI baseURI;
@@ -85,7 +88,7 @@ public class OntologyPreferences {
             return uri.toString();
         }
         catch (URISyntaxException e) {
-            Logger.getLogger(OntologyPreferences.class).warn("Could not encode user name for ontology IRI: " + e.getMessage());
+            logger.warn("Could not encode user name for ontology IRI: " + e.getMessage());
             return "";
         }
     }

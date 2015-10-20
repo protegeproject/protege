@@ -4,11 +4,12 @@ import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,7 +30,7 @@ public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
      */
     private static final long serialVersionUID = 6574948332071917250L;
 
-    public static final Logger logger = Logger.getLogger(WorkspaceViewsTab.class);
+    private final Logger logger = LoggerFactory.getLogger(WorkspaceViewsTab.class);
 
     private ViewsPane viewsPane;
 

@@ -5,10 +5,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URLConnection;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -30,7 +31,7 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
  */
 public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
 
-    private Logger logger = Logger.getLogger(WebConnectionIRIMapper.class);
+    private final Logger logger = LoggerFactory.getLogger(WebConnectionIRIMapper.class);
 
 
     public IRI getDocumentIRI(IRI ontologyIRI) {
@@ -45,7 +46,7 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
         }
         catch (IOException e) {
             // Can't open the stream - problem resolving the URI
-            logger.info(e.getClass().getName() + ": " + e.getMessage());
+            logger.error("Cannot open a stream to {}.", ontologyIRI, e);
             // Delegate to the missing imports handler
         }
         return null;

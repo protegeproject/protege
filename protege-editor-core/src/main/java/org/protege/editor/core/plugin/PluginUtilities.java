@@ -4,7 +4,7 @@ package org.protege.editor.core.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
@@ -15,6 +15,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.util.tracker.ServiceTracker;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -27,7 +28,8 @@ import org.osgi.util.tracker.ServiceTracker;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginUtilities {
-    private static final Logger log = Logger.getLogger(PluginUtilities.class.getName());
+
+    private final Logger logger = LoggerFactory.getLogger(PluginUtilities.class.getName());
 
     private static PluginUtilities instance;
     
@@ -150,7 +152,7 @@ public class PluginUtilities {
     }
     
     public String getDocumentation(IExtension extension) {
-        log.error("Don't know how to get documentation yet");
+        logger.error("Don't know how to get documentation yet");
         return "";
     }
     

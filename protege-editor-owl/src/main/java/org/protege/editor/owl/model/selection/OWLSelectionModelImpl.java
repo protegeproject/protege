@@ -2,10 +2,11 @@ package org.protege.editor.owl.model.selection;
 
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class OWLSelectionModelImpl implements OWLSelectionModel {
 
-    private static final Logger logger = Logger.getLogger(OWLSelectionModelImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(OWLSelectionModelImpl.class);
 
 
     private List<OWLSelectionModelListener> listeners;
@@ -135,7 +136,6 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
     public OWLSelectionModelImpl() {
         listeners = new ArrayList<OWLSelectionModelListener>();
-        logger.setLevel(Level.WARN);
     }
 
 

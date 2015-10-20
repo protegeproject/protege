@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.action;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,8 @@ public class TimestampOutputAction extends ProtegeAction {
      * 
      */
     private static final long serialVersionUID = -6250513189027502206L;
-    private Logger logger = Logger.getLogger(TimestampOutputAction.class);
+
+    private final Logger logger = LoggerFactory.getLogger(TimestampOutputAction.class);
 
     public void actionPerformed(ActionEvent event) {
         String message = JOptionPane.showInputDialog(getWorkspace(),
