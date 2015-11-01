@@ -3,7 +3,6 @@
 cd `dirname $0`
 
 java -Xmx${conf.mem.xmx} -Xms${conf.mem.xms} \
-     -Dlog4j.configuration=${conf.log4j.location} \
      -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \

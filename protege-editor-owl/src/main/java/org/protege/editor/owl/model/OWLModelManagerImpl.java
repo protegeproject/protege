@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model;
 
-import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
@@ -409,7 +408,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 }
             }
             catch (IllegalArgumentException iae) {
-                logger.info("Cannot generate ontology catalog for ontology at " + physicalURI);
+                logger.warn("Cannot generate ontology catalog for ontology at " + physicalURI);
             }
         }
         fireEvent(EventType.ONTOLOGY_CREATED);

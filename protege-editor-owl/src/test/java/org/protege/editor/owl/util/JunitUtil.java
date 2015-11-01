@@ -1,6 +1,5 @@
 package org.protege.editor.owl.util;
 
-import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.coode.owlapi.functionalrenderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owlapi.io.OWLRendererException;

@@ -143,18 +143,21 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
-        logger.info("Starting Protege Desktop (Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() + ", Build = " + v.getQualifier() + ")");
+        logger.info("----------------------------------------");
+        logger.info("PROTÉGÉ DESKTOP");
+        logger.info("VERSION {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
+        logger.info("----------------------------------------");
         logger.info("Platform:");
-        logger.info("    Java: JVM " + System.getProperty("java.runtime.version") +
-                " Memory: " + (Runtime.getRuntime().maxMemory() / 1000000) + "M");
-        logger.info("    Language: " + Locale.getDefault().getLanguage() +
-                ", Country: " + Locale.getDefault().getCountry());
-        logger.info("    Framework: " + context.getProperty(Constants.FRAMEWORK_VENDOR) + " (" + context.getProperty(Constants.FRAMEWORK_VERSION) + ")");
-        logger.info("    OS: " + context.getProperty(Constants.FRAMEWORK_OS_NAME) + " (" + context.getProperty(Constants.FRAMEWORK_OS_VERSION) + ")");
-        logger.info("    Processor: " + context.getProperty(Constants.FRAMEWORK_PROCESSOR));
+        logger.info("    Java: JVM {}  Memory: {}M", System.getProperty("java.runtime.version"), getMaxMemoryInMegaBytes());
+        logger.info("    Language: {}, Country: {}", getLang(), getCountry());
+        logger.info("    Framework: {} ({}) ", getFramework(), getFrameworkVersion());
+        logger.info("    OS: {} ({})", getOsName(), getOsVersion());
+        logger.info("    Processor: {}\n", getProcessor());
+
+        logger.info("--- Plugins ---");
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
-        		logger.info("Plugin: " + getNiceBundleName(plugin) + " (" + plugin.getVersion() + ")");
+        		logger.info("    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
         	}
         }
         for (Bundle plugin : context.getBundles()) {
@@ -163,8 +166,40 @@ public class ProtegeApplication implements BundleActivator {
         	}
         }
     }
-    
-    
+
+    private static String getProcessor() {
+        return context.getProperty(Constants.FRAMEWORK_PROCESSOR);
+    }
+
+    private static String getOsVersion() {
+        return context.getProperty(Constants.FRAMEWORK_OS_VERSION);
+    }
+
+    private static String getOsName() {
+        return context.getProperty(Constants.FRAMEWORK_OS_NAME);
+    }
+
+    private static String getFrameworkVersion() {
+        return context.getProperty(Constants.FRAMEWORK_VERSION);
+    }
+
+    private static String getFramework() {
+        return context.getProperty(Constants.FRAMEWORK_VENDOR);
+    }
+
+    private static String getCountry() {
+        return Locale.getDefault().getCountry();
+    }
+
+    private static String getLang() {
+        return Locale.getDefault().getLanguage();
+    }
+
+    private static long getMaxMemoryInMegaBytes() {
+        return (Runtime.getRuntime().maxMemory() / 1000000);
+    }
+
+
     private boolean pluginSanityCheck(Bundle b) {
     	boolean passed = true;
         boolean hasPluginXml = (b.getResource("/plugin.xml") != null);

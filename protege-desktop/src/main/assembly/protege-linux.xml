@@ -1,6 +1,6 @@
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
 
     <id>linux</id>
     <formats>
@@ -9,31 +9,13 @@
     </formats>
     <baseDirectory>Protege-${project.version}</baseDirectory>
 
+
+    <componentDescriptors>
+        <componentDescriptor>src/main/assembly/file-sets.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/dependency-sets.xml</componentDescriptor>
+    </componentDescriptors>
+
     <fileSets>
-
-        <fileSet>
-            <directory>src/main/felix</directory>
-            <outputDirectory>.</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
-
-        <fileSet>
-            <directory>src/main/logging</directory>
-            <outputDirectory>.</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
-
-        <fileSet>
-            <directory>src/main/resources</directory>
-            <outputDirectory>.</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
 
         <fileSet>
             <directory>src/main/env/linux</directory>
@@ -69,42 +51,7 @@
             <useStrictFiltering>true</useStrictFiltering>
         </dependencySet>
 
-        <dependencySet>
-            <outputDirectory>bin</outputDirectory>
-            <includes>
-                <include>edu.stanford.protege:protege-launcher:jar</include>
-                <include>org.apache.felix:org.apache.felix.main:jar</include>
-                <include>com.google.guava:guava:jar</include>
-                <include>ch.qos.logback:logback-core:jar</include>
-                <include>ch.qos.logback:logback-classic:jar</include>
-                <include>org.slf4j:slf4j-api:jar</include>
-            </includes>
-            <useStrictFiltering>true</useStrictFiltering>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-        </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>bundles</outputDirectory>
-            <includes>
-                <include>edu.stanford.protege:protege-common:jar</include>
-                <include>edu.stanford.protege:protege-editor-core:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
-            </includes>
-            <useStrictFiltering>true</useStrictFiltering>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-        </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>plugins</outputDirectory>
-            <includes>
-                <include>com.google.guava:guava:jar</include>
-                <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
-                <include>edu.stanford.protege:protege-editor-owl:jar</include>
-            </includes>
-            <useStrictFiltering>true</useStrictFiltering>
-            <outputFileNameMapping>${artifact.groupId}-${artifact.artifactId}-${artifact.version}.${artifact.extension}</outputFileNameMapping>
-        </dependencySet>
     </dependencySets>
+
+
 </assembly>

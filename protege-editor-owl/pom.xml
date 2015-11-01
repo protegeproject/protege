@@ -42,6 +42,21 @@
         </dependency>
 
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
@@ -98,6 +113,7 @@
                         </Export-Package>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
+                            org.apache.log4j.*,
                             *
                         </Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>
@@ -121,9 +137,6 @@
                 <version>2.14</version>
                 <configuration>
                     <skip>true</skip>
-                    <systemPropertyVariables>
-                        <log4j.configuration>file:log4j.xml</log4j.configuration>
-                    </systemPropertyVariables>
                 </configuration>
                 <executions>
                     <execution>
@@ -137,12 +150,6 @@
                             <suiteXmlFiles>
                                 <suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
                             </suiteXmlFiles>
-                            <systemProperties>
-                                <property>
-                                    <name>log4j.configuration</name>
-                                    <value>file:log4j.xml</value>
-                                </property>
-                            </systemProperties>
                         </configuration>
                     </execution>
                 </executions>
