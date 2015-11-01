@@ -1,0 +1,34 @@
+<component>
+    <dependencySets>
+
+        <dependencySet>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>edu.stanford.protege:protege-launcher:jar</include>
+                <include>org.apache.felix:org.apache.felix.main:jar</include>
+            </includes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+
+        <dependencySet>
+            <outputDirectory>bundles</outputDirectory>
+            <includes>
+                <include>edu.stanford.protege:protege-common:jar</include>
+                <include>edu.stanford.protege:protege-editor-core:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
+                <include>com.google.guava:guava:jar</include>
+                <include>ch.qos.logback:logback-core:jar</include>
+                <include>ch.qos.logback:logback-classic:jar</include>
+                <include>org.slf4j:slf4j-api:jar</include>
+                <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
+                <include>edu.stanford.protege:protege-editor-owl:jar</include>
+            </includes>
+            <useStrictFiltering>true</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+
+    </dependencySets>
+</component>

@@ -3,15 +3,19 @@ package org.protege.osgi.framework;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
+import com.google.common.base.*;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 public class BundleSearchPath {
 
@@ -132,5 +136,18 @@ public class BundleSearchPath {
             logger.warn("Could not parse {} as plugin/bundle. Error: ", file, e);
             return Optional.empty();
         }
+    }
+
+
+    @Override
+    public String toString() {
+        MoreObjects.ToStringHelper ts = toStringHelper("BundleSearchPath");
+        for(File path : getPath()) {
+            ts.add("path", path.getAbsolutePath());
+        }
+        for(String allowedBundle : allowedBundles) {
+            ts.add("allowedBundle", allowedBundle);
+        }
+        return ts.toString();
     }
 }

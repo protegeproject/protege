@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.util;
 
-import org.apache.log4j.Level;
 import org.slf4j.Logger;
 
 import java.util.HashMap;

@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -80,6 +81,7 @@ public class Parser {
                 BundleSearchPath directory = readDirectories(job);
                 if (directory != null) {
                     searchPaths.add(directory);
+                    LoggerFactory.getLogger(Parser.class).debug("Added bundle search path: {}", directory);
                 }
             }
 

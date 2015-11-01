@@ -16,7 +16,6 @@
 	<description>Standard build of the Protege Desktop ontology editor.</description>
 
 	<properties>
-		<conf.log4j.location>file:conf/log4j.xml</conf.log4j.location>
 		<conf.mem.xmx>500M</conf.mem.xmx>
 		<conf.mem.xms>200M</conf.mem.xms>
 	</properties>
@@ -42,12 +41,6 @@
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-osgidistribution</artifactId>
             <version>${owlapi.version}</version>
-        </dependency>
-
-        <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>protege-common</artifactId>
-			<version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

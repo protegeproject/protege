@@ -86,7 +86,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     protected void initialise() {
-        logger.info("Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
+        logger.info("OWLEditorKit: Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
 

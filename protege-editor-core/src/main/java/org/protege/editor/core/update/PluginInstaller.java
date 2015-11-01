@@ -16,6 +16,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.swing.JOptionPane;
 
+import org.protege.editor.core.util.ProtegeDirectories;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -23,7 +24,6 @@ import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.progress.BackgroundTask;
-import org.protege.common.CommonProtegeProperties;
 import org.slf4j.LoggerFactory;
 
 
@@ -178,7 +178,7 @@ public class PluginInstaller {
     	}
     	catch(IOException e){
     		logger.error("Could not save plugin to system directory, trying user plugin directory. (" + e.getMessage() + ")");
-    		newPluginFile = new File(CommonProtegeProperties.getUserPluginDirectory(), info.getId() + ".jar");
+    		newPluginFile = new File(ProtegeDirectories.getUserPluginDirectory(), info.getId() + ".jar");
     		try {
     			FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
     			logger.info("Save of plugin to user plugin directory succeeded");

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.util.ProtegeDirectories;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
@@ -69,7 +69,7 @@ public class OntologyCatalogManager {
 	}
 
 	public static File getGlobalCatalogFile() {
-		return getCatalogFile(CommonProtegeProperties.getDataDirectory());
+		return getCatalogFile(ProtegeDirectories.getDataDirectory());
 	}
 		
 	public OntologyCatalogManager() {

@@ -1,16 +1,9 @@
 package org.protege.editor.owl.model.io;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 
-import org.slf4j.Logger;
-import org.protege.common.CommonProtegeProperties;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.xmlcatalog.CatalogUtilities;
-import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 

@@ -17,16 +17,17 @@
     <description>Core ontology editing infrastructure used by the Protege desktop application.</description>
     
 	<dependencies>
-		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>protege-common</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 			<version>3.5.0.v20100503</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.6.0.v20100503</version>
 		</dependency>
 			
 		<dependency>
@@ -35,6 +36,25 @@
 			<version>2.0.1</version>
 		</dependency>
 
+		<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
@@ -67,7 +87,6 @@
 						<Import-Package>
 							!com.sun.*,
 							org.eclipse.core.runtime;registry="split",
-							org.apache.log4j*;version="[1.2,2)",
 							*
 						</Import-Package>
 						<Include-Resource>{maven-resources},{maven-dependencies}</Include-Resource>
