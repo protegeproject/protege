@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model;
 
+import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
@@ -52,6 +53,7 @@ import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -957,11 +959,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void rebuildEntityIndices() {
-        logger.info("Rebuilding entity indices...");
-        long t0 = System.currentTimeMillis();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         owlEntityRenderingCache.rebuild();
         owlObjectRenderingCache.clear();
-        logger.info("... rebuilt in " + (System.currentTimeMillis() - t0) + " ms");
+        stopwatch.stop();
+        logger.debug("Rebuilt entity indices in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
