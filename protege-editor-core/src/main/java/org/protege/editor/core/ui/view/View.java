@@ -200,7 +200,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
 
     public void createUI() {
         initialisedContent = true;
-        logger.debug("Creating UI for " + this.getViewName());
+        logger.debug("Creating the UI for the '{}' view", this.getViewName());
         setLayout(new BorderLayout(0, 0));
         viewComponentHolder = new JPanel(new BorderLayout());
         viewBarComponent = new ViewBarComponent(getViewName(), plugin.getBackgroundColor(), viewComponentHolder);

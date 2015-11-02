@@ -225,7 +225,6 @@ public class MenuBuilder {
         try {
             Method m = action.getClass().getMethod("setMenu", JMenu.class);
             m.invoke(action, menu);
-            logger.debug("setMenu method found on action {}", action);
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             // This is o.k.
         }
@@ -236,14 +235,12 @@ public class MenuBuilder {
         try {
             Method m = action.getClass().getMethod("setMenuItem", JMenuItem.class);
             m.invoke(action, menuItem);
-            logger.debug("setMenuItem method found on action {}", action);
         } catch (Throwable t) {
             // This is o.k.
         }
         try {
             Method m = action.getClass().getMethod("setMenuParent", JComponent.class);
             m.invoke(action, menuContainer);
-            logger.debug("setMenuParent method found on action {}", action);
         } catch (Throwable t) {
             // This is o.k.
         }
