@@ -416,14 +416,17 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     private void checkForUpdates() {
-        if(!PluginManager.getInstance().isAutoUpdateEnabled()) {
-            return;
-        }
-        if (hasAutoUpdateBeenRunToday()) {
-            logger.info("Auto-update has been run today.  Not running it again.");
-            return;
-        }
-        logger.info("Auto-update has not been performed today.  Running it.");
+        try {
+            logger.info("--- Auto-update Check ---");
+            if(!PluginManager.getInstance().isAutoUpdateEnabled()) {
+                logger.info("Auto-update is disabled");
+                return;
+            }
+            if (hasAutoUpdateBeenRunToday()) {
+                logger.info("Auto-update has been performed today.  Not performing it again.");
+                return;
+            }
+            logger.info("Auto-update has not been performed today.  Running it.");
             PluginManager.getInstance().performAutoUpdate();
             context.addFrameworkListener(new FrameworkListener() {
                 public void frameworkEvent(FrameworkEvent event) {
@@ -432,6 +435,9 @@ public class ProtegeApplication implements BundleActivator {
                     }
                 }
             });
+        } finally {
+            logger.info("-------------------------");
+        }
 
     }
 

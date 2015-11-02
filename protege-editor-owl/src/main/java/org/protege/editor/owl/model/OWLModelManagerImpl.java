@@ -289,32 +289,38 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * The location of the file is specified by the URI argument.
      */
     public boolean loadOntologyFromPhysicalURI(URI uri) {
-        if (UIUtil.isLocalFile(uri)) {
-            // Load the URIs of other ontologies that are contained in the same folder.
-            File parentFile = new File(uri).getParentFile();
-            logger.info("Adding root folder: " + parentFile + " ...");
-            addRootFolder(parentFile);
-            logger.info("\t...done");
-        }
-        OWLOntology ontology = null;
         try {
-            ontology = manager.loadOntologyFromOntologyDocument(IRI.create(uri));
-            setActiveOntology(ontology);
-            fireEvent(EventType.ONTOLOGY_LOADED);
-            OWLOntologyID id = ontology.getOntologyID();
-            if (!id.isAnonymous()) {
-                manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+            logger.info("--- Loading Ontology ---");
+            logger.info("Loading ontology from {}", uri);
+            if (UIUtil.isLocalFile(uri)) {
+                // Load the URIs of other ontologies that are contained in the same folder.
+                File parentFile = new File(uri).getParentFile();
+                addRootFolder(parentFile);
             }
+            OWLOntology ontology = null;
+            try {
+                ontology = manager.loadOntologyFromOntologyDocument(IRI.create(uri));
+                setActiveOntology(ontology);
+                fireEvent(EventType.ONTOLOGY_LOADED);
+                OWLOntologyID id = ontology.getOntologyID();
+                if (!id.isAnonymous()) {
+                    manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+                }
+            }
+            catch (OWLOntologyCreationException ooce) {
+                logger.info("Failed to load ontology: {}", ooce);
+                ;             // will be handled by the loadErrorHandler, so ignore
+            }
+            return ontology != null;
+        } finally {
+            logger.info("Loading for ontology and imports closure successfully completed");
+            logger.info("------------------------");
         }
-        catch (OWLOntologyCreationException ooce) {
-            ;             // will be handled by the loadErrorHandler, so ignore
-        }
-        return ontology != null;
     }
 
 
     public void startedLoadingOntology(LoadingStartedEvent event) {
-        logger.info("loading " + event.getOntologyID() + " from " + event.getDocumentIRI());
+        logger.info("Loading {} from {}", event.getOntologyID(), event.getDocumentIRI());
         fireBeforeLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
