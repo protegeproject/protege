@@ -145,7 +145,7 @@ public class Launcher {
     }
 
     private void startBundles(List<Bundle> bundles) throws BundleException {
-        logger.debug("Starting {} bundles.", bundles.size());
+        logger.debug("--- Starting {} bundles ---", bundles.size());
         for (Bundle b : bundles) {
             try {
                 b.start();
@@ -154,6 +154,7 @@ public class Launcher {
                 logger.warn("Core Bundle {} failed to start: {}", b.getBundleId(), t);
             }
         }
+        logger.debug("---------------------------");
     }
 
     protected void cleanup() {
