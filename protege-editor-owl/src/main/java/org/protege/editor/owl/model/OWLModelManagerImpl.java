@@ -682,14 +682,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             }
         }
         this.activeOntology = activeOntology;
-        logger.info("Setting active ontology to " + activeOntology.getOntologyID());
+        logger.debug("Setting active ontology to " + activeOntology.getOntologyID());
         rebuildActiveOntologiesCache();
         // Rebuild entity indices
         entityRenderer.ontologiesChanged();
         rebuildEntityIndices();
         // Inform our listeners
         fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
-        logger.info("... active ontology changed");
     }
 
 
@@ -798,14 +797,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void fireEvent(EventType type) {
+        logger.debug("Firing event {}", type);
         OWLModelManagerChangeEvent event = new OWLModelManagerChangeEvent(this, type);
-        for (OWLModelManagerListener listener : new ArrayList<OWLModelManagerListener>(modelManagerChangeListeners)) {
+        for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
             try {
                 listener.handleChange(event);
             }
             catch (Throwable e) {
-                logger.warn("Exception thrown by listener: " + listener.getClass().getName() + ".  Detatching bad listener!");
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("Exception thrown by listener: {}.  Detatching bad listener.", listener.getClass().getName());
                 modelManagerChangeListeners.remove(listener);
             }
         }
