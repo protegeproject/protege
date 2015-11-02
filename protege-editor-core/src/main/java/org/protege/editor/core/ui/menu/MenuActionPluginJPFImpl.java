@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
+import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.PropertyUtil;
@@ -201,13 +202,17 @@ public class MenuActionPluginJPFImpl extends ProtegeActionPluginJPFImpl implemen
                 group = groupPart;
             }
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Parsed: " + this + " parentId = " + parentId);
-        }
     }
     
     @Override
     public String toString() {
-        return "[Menu: " + getName() + " -- <" + getGroup() + ", " + getGroupIndex() + ">]";
+        return MoreObjects.toStringHelper("MenuActionPlugin")
+                .add("name", getName())
+                .add("group", getGroup())
+                .add("groupIndex", getGroupIndex())
+                .add("accelerator", getAccelerator())
+                .add("parentId", getParentId())
+                .add("path", getPath())
+                .toString();
     }
 }

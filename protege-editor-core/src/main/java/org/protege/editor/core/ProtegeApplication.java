@@ -160,6 +160,7 @@ public class ProtegeApplication implements BundleActivator {
         		logger.info("    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
         	}
         }
+        logger.info("---------------");
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
         		pluginSanityCheck(plugin);
