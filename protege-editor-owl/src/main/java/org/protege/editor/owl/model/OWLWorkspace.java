@@ -252,7 +252,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void handleModelManagerEvent(EventType type) {
         if (reselectionEventTypes.contains(type)) {
-            logger.debug("Reselection event..... verifying selections.");
             verifySelection();
         }
 
@@ -339,24 +338,39 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     protected void verifySelection() {
+        logger.debug("--- Verifying selection ---");
         OWLSelectionModel selectionModel = getOWLSelectionModel();
-        OWLClass lastSelectedClass = selectionModel.getLastSelectedClass();
-        OWLObjectProperty lastSelectedObjectProperty = selectionModel.getLastSelectedObjectProperty();
-        OWLDataProperty lastSelectedDataProperty = selectionModel.getLastSelectedDataProperty();
-        OWLAnnotationProperty lastSelectedAnnotationProperty = selectionModel.getLastSelectedAnnotationProperty();
-        OWLNamedIndividual lastSelectedIndividual = selectionModel.getLastSelectedIndividual();
-        OWLDatatype lastSelectedDatatype = selectionModel.getLastSelectedDatatype();
-        OWLEntity selectedEntity = selectionModel.getSelectedEntity();
 
+        OWLClass lastSelectedClass = selectionModel.getLastSelectedClass();
         selectionModel.setSelectedEntity(lastSelectedClass);
+        logger.debug("Last selected class: {}", lastSelectedClass);
+
+        OWLObjectProperty lastSelectedObjectProperty = selectionModel.getLastSelectedObjectProperty();
         selectionModel.setSelectedEntity(lastSelectedObjectProperty);
+        logger.debug("Last selected object property: {}", lastSelectedObjectProperty);
+
+        OWLDataProperty lastSelectedDataProperty = selectionModel.getLastSelectedDataProperty();
         selectionModel.setSelectedEntity(lastSelectedDataProperty);
+        logger.debug("Last selected data property: {}", lastSelectedDataProperty);
+
+        OWLAnnotationProperty lastSelectedAnnotationProperty = selectionModel.getLastSelectedAnnotationProperty();
         selectionModel.setSelectedEntity(lastSelectedAnnotationProperty);
+        logger.debug("Last selected annotation property: " + lastSelectedAnnotationProperty);
+
+        OWLNamedIndividual lastSelectedIndividual = selectionModel.getLastSelectedIndividual();
         selectionModel.setSelectedEntity(lastSelectedIndividual);
+        logger.debug("Last selected individual: {}", lastSelectedIndividual);
+
+        OWLDatatype lastSelectedDatatype = selectionModel.getLastSelectedDatatype();
         selectionModel.setSelectedEntity(lastSelectedDatatype);
+        logger.debug("Last selected datatype: {}", lastSelectedDatatype);
+
+        OWLEntity selectedEntity = selectionModel.getSelectedEntity();
         selectionModel.setSelectedEntity(selectedEntity);
+        logger.debug("Last selected entity: {}", selectedEntity);
 
         verifySelection(CollectionFactory.createSet(lastSelectedClass, lastSelectedDataProperty, lastSelectedObjectProperty, lastSelectedAnnotationProperty, lastSelectedIndividual, lastSelectedDatatype, selectedEntity));
+        logger.debug("---------------------------");
     }
 
 
