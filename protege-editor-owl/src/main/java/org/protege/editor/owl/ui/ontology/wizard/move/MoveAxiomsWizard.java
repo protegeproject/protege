@@ -13,6 +13,8 @@ import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.net.URI;
@@ -47,6 +49,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
     private PhysicalLocationPanel ontologyPhysicalLocationPage;
 
+    private final Logger logger = LoggerFactory.getLogger(MoveAxiomsWizard.class);
 
     public MoveAxiomsWizard(OWLEditorKit eKit) {
         setTitle("Copy/move/delete axioms");
@@ -158,7 +161,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 moveAxiomsKits.add(moveAxiomsKit);
             }
             catch (Exception e) {
-                ProtegeApplication.getErrorLog().logError(e);
+
             }
         }
 
@@ -167,7 +170,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
                 kit.initialise();
             }
             catch (Exception e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst initialising a move axioms kit: ", e);
             }
         }
         if (!moveAxiomsKits.isEmpty()) {
@@ -220,7 +223,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
                 }
                 catch (Exception e) {
-                    ProtegeApplication.getErrorLog().logError(e);
+                    logger.error("An error occurred whilst creating and setting up the target editor kit when moving axioms: {}", e);
                 }
 
             }

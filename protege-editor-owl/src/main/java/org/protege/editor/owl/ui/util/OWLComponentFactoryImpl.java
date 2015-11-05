@@ -14,6 +14,7 @@ import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.slf4j.LoggerFactory;
 
 
 /*
@@ -67,8 +68,9 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
                     editorMap.put(plugin.getIndex(), editorPanel);
                 }
             }
-            catch (Throwable e) { // be harsh if any problems with a plugin
-                ProtegeApplication.getErrorLog().logError(e);
+            catch (Throwable e) {
+                LoggerFactory.getLogger(OWLComponentFactoryImpl.class)
+                .error("An error occurred whilst initializing a class description editor: {}", e);
             }
         }
         for(String key : editorMap.keySet()) {

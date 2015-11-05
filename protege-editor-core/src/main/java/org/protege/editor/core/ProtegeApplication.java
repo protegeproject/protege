@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.core.log.LogManager;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -29,7 +31,6 @@ import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
@@ -79,14 +80,16 @@ public class ProtegeApplication implements BundleActivator {
 
     private List<URI> commandLineURIs;
 
-    private static ErrorLog errorLog = new ErrorLog();
+//    private static ErrorLog errorLog = new ErrorLog();
 
     private static BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
 
     private static boolean quitting = false;
 
+    private static LogManager logManager = new LogManager();
+
     public void start(final BundleContext context) {
-    	
+        logManager.bind();
     	context.addFrameworkListener(new FrameworkListener() {
     		@Override
     		public void frameworkEvent(FrameworkEvent event) {
@@ -128,6 +131,7 @@ public class ProtegeApplication implements BundleActivator {
         RecentEditorKitManager.getInstance().dispose();
         PluginUtilities.getInstance().dispose();
         ProtegeManager.getInstance().dispose();
+        logManager.unbind();
     }
 
 
@@ -143,24 +147,31 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
-        logger.info("----------------------------------------");
+        logger.info("--------------------------------------------------------------------------------");
         logger.info("PROTÉGÉ DESKTOP");
         logger.info("VERSION {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
-        logger.info("----------------------------------------");
-        logger.info("Platform:");
-        logger.info("    Java: JVM {}  Memory: {}M", System.getProperty("java.runtime.version"), getMaxMemoryInMegaBytes());
-        logger.info("    Language: {}, Country: {}", getLang(), getCountry());
-        logger.info("    Framework: {} ({}) ", getFramework(), getFrameworkVersion());
-        logger.info("    OS: {} ({})", getOsName(), getOsVersion());
-        logger.info("    Processor: {}\n", getProcessor());
-
-        logger.info("--- Plugins ---");
+        logger.info("--------------------------------------------------------------------------------");
+        logger.info("");
+        logger.info("");
+        logger.info(LogBanner.start("Platform"));
+        logger.info("Java: JVM {}  Memory: {}M", System.getProperty("java.runtime.version"), getMaxMemoryInMegaBytes());
+        logger.info("Language: {}, Country: {}", getLang(), getCountry());
+        logger.info("Framework: {} ({}) ", getFramework(), getFrameworkVersion());
+        logger.info("OS: {} ({})", getOsName(), getOsVersion());
+        logger.info("Processor: {}\n", getProcessor());
+        logger.info(LogBanner.end());
+        logger.info(LogBanner.start("Plugins"));
+        int pluginCount = 0;
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
         		logger.info("    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
-        	}
+        	    pluginCount++;
+            }
         }
-        logger.info("---------------");
+        if(pluginCount == 0) {
+            logger.info("No plugins installed");
+        }
+        logger.info(LogBanner.end());
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
         		pluginSanityCheck(plugin);
@@ -361,11 +372,9 @@ public class ProtegeApplication implements BundleActivator {
 //    }
 
     private void setupExceptionHandler() {
-        errorLog = new ErrorLog();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
-                errorLog.uncaughtException(t, e);
-                logger.warn("Uncaught Exception in thread " + t.getName(), e);
+                logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
             }
         });
     }
@@ -417,7 +426,7 @@ public class ProtegeApplication implements BundleActivator {
 
     private void checkForUpdates() {
         try {
-            logger.info("--- Auto-update Check ---");
+            logger.info(LogBanner.start("Auto-update Check"));
             if(!PluginManager.getInstance().isAutoUpdateEnabled()) {
                 logger.info("Auto-update is disabled");
                 return;
@@ -436,7 +445,7 @@ public class ProtegeApplication implements BundleActivator {
                 }
             });
         } finally {
-            logger.info("-------------------------");
+            logger.info(LogBanner.end());
         }
 
     }
@@ -506,9 +515,9 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    public static ErrorLog getErrorLog() {
-        return errorLog;
-    }
+//    public static ErrorLog getErrorLog() {
+//        return errorLog;
+//    }
 
 
 
@@ -578,5 +587,13 @@ public class ProtegeApplication implements BundleActivator {
 
     public static void handleRestart() {
 
+    }
+
+    public static void showLogView() {
+        logManager.showLogView();
+    }
+
+    public static LogManager getLogManager() {
+        return logManager;
     }
 }

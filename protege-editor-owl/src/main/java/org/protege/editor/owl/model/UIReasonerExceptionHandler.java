@@ -2,6 +2,7 @@ package org.protege.editor.owl.model;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 /*
@@ -29,7 +30,8 @@ public class UIReasonerExceptionHandler implements OWLReasonerExceptionHandler {
 
 
     public void handle(Throwable e) {
-        ProtegeApplication.getErrorLog().logError(e);
+        LoggerFactory.getLogger(UIReasonerExceptionHandler.class)
+                .error("A reasoner error occurred: {}", e);
         Throwable cause = e;
         while(cause.getCause() != null) {
             cause = cause.getCause();

@@ -1,17 +1,9 @@
 package org.protege.editor.core.ui.error;
 
-import com.google.common.collect.EvictingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 /**
@@ -20,116 +12,53 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Bio-Health Informatics Group<br>
  * Date: 28-Feb-2007<br><br>
  */
-public class ErrorLog implements Thread.UncaughtExceptionHandler {
-
-    public static final int MAX_NUMBER_OF_ERRORS = 100;
-
+public class ErrorLog {
 
     private final Logger logger = LoggerFactory.getLogger(ErrorLog.class);
 
-    private final AtomicInteger errorCount = new AtomicInteger();
-
-
-
-    private final Queue<ErrorLogEntry> errors;
-
-    private final List<WeakReference<ErrorLogListener>> listeners;
-
-    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-
-    private final Lock readLock = readWriteLock.readLock();
-
-    private final Lock writeLock = readWriteLock.writeLock();
-
     public ErrorLog() {
-        errors = EvictingQueue.create(MAX_NUMBER_OF_ERRORS);
-        listeners = new ArrayList<>();
+
     }
 
-
+    @Deprecated
     public void addListener(ErrorLogListener listener) {
-        listeners.add(new WeakReference<>(listener));
+        logger.error("The listener {} has not been added.  The addListener method is deprecated.",
+                listener.getClass().getName());
     }
 
-
+    @Deprecated
     public void removeListener(ErrorLogListener listener) {
-        listeners.remove(new WeakReference<>(listener));
+        logger.error("The listener {} has not been removed.  The removeListener method is deprecated.",
+                listener.getClass().getName());
     }
 
-
+    @Deprecated
     public void clearListeners(){
-        listeners.clear();
+        logger.warn("Clear listeners");
     }
 
-
+    @Deprecated
     public void uncaughtException(Thread t, Throwable e) {
         logError(e);
     }
 
 
+    @Deprecated
     public void logError(Throwable throwable) {
-        writeLock.lock();
-        try {
-            int id = errorCount.incrementAndGet();
-            long timestamp = System.currentTimeMillis();
-            ErrorLogEntry logEntry = new ErrorLogEntry(id, timestamp, throwable);
-            logger.error("An error occurred: {}.  Details: {}", logEntry.toString(), throwable);
-            errors.add(logEntry);
-            fireErrorLoggedEvent();
-        } finally {
-            writeLock.unlock();
-        }
-
+        logger.error("An error was thrown: {}", throwable.getMessage(), throwable);
     }
 
 
+    @Deprecated
     public List<ErrorLogEntry> getEntries() {
-        readLock.lock();
-        try {
-            return new ArrayList<>(errors);
-        } finally {
-            readLock.unlock();
-        }
-
+        return Collections.emptyList();
     }
 
-
+    @Deprecated
     public void clear() {
-        writeLock.lock();
-        try {
-            errors.clear();
-            fireErrorLogClearedEvent();
-        } finally {
-            writeLock.unlock();
-        }
 
     }
 
-
-    private void fireErrorLoggedEvent() {
-        for (WeakReference<ErrorLogListener> ref : new ArrayList<>(listeners)) {
-            ErrorLogListener listener = ref.get();
-            if (listener != null) {
-                listener.errorLogged(this);
-            }
-            else {
-                listeners.remove(ref);
-            }
-        }
-    }
-
-
-    private void fireErrorLogClearedEvent() {
-        for (WeakReference<ErrorLogListener> ref : new ArrayList<>(listeners)) {
-            ErrorLogListener listener = ref.get();
-            if (listener != null) {
-                listener.errorLogCleared(this);
-            }
-            else {
-                listeners.remove(ref);
-            }
-        }
-    }
 
 
     public static class ErrorLogEntry {
@@ -183,7 +112,7 @@ public class ErrorLog implements Thread.UncaughtExceptionHandler {
         }
     }
 
-
+    @Deprecated
     public void handleError(Thread t, Throwable e) {
         logError(e);
     }

@@ -5,6 +5,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -83,7 +85,8 @@ public abstract class AbstractOWLObjectHierarchyCreator {
             return IRI.create(new URI(defaultDocURI.getScheme(), defaultDocURI.getSchemeSpecificPart(), s));
         }
         catch (Exception e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            LoggerFactory.getLogger(AbstractOWLObjectHierarchyCreator.class)
+                    .error("An error occurred whilst creating an IRI: {}", e);
         }
         return null;
     }

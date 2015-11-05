@@ -31,7 +31,7 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-
+import org.slf4j.LoggerFactory;
 
 
 public class EditUriAction extends AbstractAction {
@@ -72,8 +72,9 @@ public class EditUriAction extends AbstractAction {
                 try {
                     CatalogUtilities.save(lib, catalogFile);
                 }
-                catch (IOException ioe) {
-                    ProtegeApplication.getErrorLog().logError(ioe);
+                catch (IOException ex) {
+                    LoggerFactory.getLogger(EditUriAction.class)
+                            .error("An error occurred whilst saving the XML Catalog file: {}", ex);
                 }
             }
         }

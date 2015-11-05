@@ -952,7 +952,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     		});
     	}
     	catch (Exception e) {
-    		ProtegeApplication.getErrorLog().logError(e);
+    		logger.warn("An error occurred whilst highlighting an unsatisfiable property: {}", e);
     	}
     }
 

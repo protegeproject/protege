@@ -20,6 +20,8 @@ import org.protege.editor.core.prefs.JavaBackedPreferencesImpl;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -51,6 +53,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     // A bit messy
     private boolean wasReset = false;
 
+    private final Logger logger = LoggerFactory.getLogger(PreferencesDialogPanel.class);
+
     public PreferencesDialogPanel(EditorKit editorKit) {
         map = new HashMap<String, PreferencesPanel>();
         scrollerMap = new HashMap<String, JComponent>();
@@ -77,7 +81,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 tabbedPane.addTab(label, scroller);
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst trying to instantiate the preferences panel plugin '{}': {}", plugin.getLabel(), e);
             }
         }
         add(tabbedPane);
@@ -89,7 +93,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 panel.dispose();
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst disposing of the preferences panel plugin '{}': {}", panel.getLabel(), e);
             }
         }
         map.clear();
@@ -101,7 +105,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 panel.applyChanges();
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst trying to save the preferences for the preferences panel '{}': {}", panel.getLabel(), e);
             }
         }
     }

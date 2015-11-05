@@ -24,6 +24,7 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -123,7 +124,8 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     			}
     		}
     		catch (Throwable t) {
-    			ProtegeApplication.getErrorLog().logError(t);
+                LoggerFactory.getLogger(AnticipateOntologyIdPage.class)
+                        .error("An error occurred whilst extracting the Ontology Id from the imported ontology: {}", t);
     		}
     	}
         SwingUtilities.invokeLater(new Runnable() {

@@ -322,7 +322,7 @@ public abstract class Workspace extends JComponent implements Disposable {
             return view;
         }
         catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            logger.error("An error occurred whilst instantiating the results view: {}", e);
         }
         return null;
     }

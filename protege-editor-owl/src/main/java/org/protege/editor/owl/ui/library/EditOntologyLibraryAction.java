@@ -2,11 +2,13 @@ package org.protege.editor.owl.ui.library;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,8 +31,9 @@ public class EditOntologyLibraryAction extends ProtegeOWLAction {
     			OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
     		}
     	}
-    	catch (Exception ex) {
-    		ProtegeApplication.getErrorLog().logError(ex);
+    	catch (IOException ex) {
+			LoggerFactory.getLogger(EditActiveOntologyLibraryAction.class)
+					.error("An error occurred whilst attempting to edit the active ontology library: {}", e);
     	}
     }
 

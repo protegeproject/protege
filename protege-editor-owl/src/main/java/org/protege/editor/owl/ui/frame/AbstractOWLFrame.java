@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.frame;
 import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> {
 
+    private final Logger logger = LoggerFactory.getLogger(AbstractOWLFrame.class);
     private R rootObject;
 
     private OWLOntologyManager owlOntologyManager;
@@ -92,7 +94,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
                 section.setRootObject(rootObject);
             }
             catch (Exception ex) {
-            	ProtegeApplication.getErrorLog().logError(ex);
+                logger.warn("An error occurred whilst refilling the {} frame.  Error: ", getClass().getName(), ex);
             }
         }
     }
@@ -114,7 +116,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
                 listener.frameContentChanged();
             }
             catch (Exception e) {
-            	ProtegeApplication.getErrorLog().logError(e);
+            	logger.warn("An error was thrown whilst dispatching a fireContentChanged event to a registered frame listener: {}", e);
             }
         }
     }

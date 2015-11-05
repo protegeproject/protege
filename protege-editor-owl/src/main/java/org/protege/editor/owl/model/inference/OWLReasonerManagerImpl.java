@@ -146,7 +146,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                     reasoner.dispose();
                 }
                 catch (Throwable t) {
-                    ProtegeApplication.getErrorLog().logError(t);
+                    logger.warn("An error occurred whilst disposing of the '{}' reasoner.  Error: {}", reasoner.getReasonerName(), t);
                 }
             }
         }
@@ -195,7 +195,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 reasonerFactories.add(factory);
             }
             catch (Throwable t) {
-                ProtegeApplication.getErrorLog().logError(t);
+                logger.warn("An error occurred whilst instantiating the '{}' reasoner.  Error: {}", plugin.getName(), t);
             }
         }
     }
@@ -247,7 +247,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         		reasoner.dispose();
         	}
         	catch (Exception ex) {
-        		ProtegeApplication.getErrorLog().logError(ex);
+        		logger.warn("An error occurred whilst disposing of the current reasoner ({}).  Error: {}", reasoner.getReasonerName(), ex);
         	}
             synchronized (reasonerMap)  {
             	reasonerMap.put(owlModelManager.getActiveOntology(), null);
@@ -322,7 +322,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
         currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             public void uncaughtException(Thread thread, Throwable throwable) {
-                ProtegeApplication.getErrorLog().logError(throwable);
+                logger.warn("An error occurred during reasoning: {}", throwable);
             	try {
             		if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
             			exceptionHandler.handle(throwable);
@@ -450,7 +450,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             }
             if (runningReasoner == null) {
             	classificationInProgress = false;
-            	ProtegeApplication.getErrorLog().logError(new Exception("Reasoner Initialization failed (ontology is probably inconsistent)"));
+            	logger.warn("An error occurred during reasoner initialisation");
             }
             return reasonerChanged;
         }

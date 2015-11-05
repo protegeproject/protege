@@ -16,6 +16,8 @@ import org.protege.editor.core.util.ProtegeDirectories;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -39,6 +41,8 @@ public class OntologyCatalogManager {
     private File activeCatalogFolder;
 
     private List<CatalogEntryManager> entryManagers;
+
+	private Logger logger = LoggerFactory.getLogger(OntologyCatalogManager.class);
     
     private static void backup(File folder, File catalogFile) {
 	    File backup;
@@ -80,7 +84,7 @@ public class OntologyCatalogManager {
     			entryManagers.add(plugin.newInstance());
     		}
     		catch (Throwable t) {
-    			ProtegeApplication.getErrorLog().logError(t);
+    			logger.warn("An error occurred whilst instantiating a CatalogEntryManager plugin: {}", t);
     		}
     	}
     }
@@ -103,7 +107,7 @@ public class OntologyCatalogManager {
 				catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
 			}
 			catch (Throwable e) {
-				ProtegeApplication.getErrorLog().logError(e);
+				logger.warn("An error occurred whilst parsing the catalog document at {}.  Error: {}", catalogFile.getAbsolutePath(), e);
 				backup(folder, catalogFile);
 			}
 		}
@@ -116,7 +120,7 @@ public class OntologyCatalogManager {
 				modified = modified | update(catalog);
 			}
 			catch (Throwable t) {
-				ProtegeApplication.getErrorLog().logError(t);
+				logger.warn("An error occurred whilst updating the catalog document at {}.  Error: {}", catalogFile.getAbsolutePath(), t);
 			}
 		}
 		else {
@@ -125,7 +129,7 @@ public class OntologyCatalogManager {
 					modified = modified | entryManager.initializeCatalog(folder, catalog);
 				}
 				catch (Throwable t) {
-					ProtegeApplication.getErrorLog().logError(t);
+					logger.warn("An error occurred whilst initializing the catalog at {}.  Error: {}", catalogFile.getAbsolutePath(), t);
 				}
 			}
 		}
@@ -134,7 +138,7 @@ public class OntologyCatalogManager {
 				CatalogUtilities.save(catalog, catalogFile);
 			}
 			catch (IOException e) {
-				ProtegeApplication.getErrorLog().logError(e);
+				logger.warn("An error occurred whilst saving the catalog at {}.  Error: {}", catalogFile.getAbsolutePath(), e);
 			}
 		}
 		return catalog;

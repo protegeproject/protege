@@ -25,6 +25,7 @@ import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.GroupEntry;
+import org.slf4j.LoggerFactory;
 
 public class FolderGroupPanel extends NewEntryPanel {
     private static final long serialVersionUID = 3602861945631171635L;
@@ -98,7 +99,8 @@ public class FolderGroupPanel extends NewEntryPanel {
         	}
         }
         catch (IOException ioe) {
-            ProtegeApplication.getErrorLog().logError(ioe);
+            LoggerFactory.getLogger(FolderGroupPanel.class)
+                    .error("An error occurred whilst creating a group entry: {}", ioe);
             return null;
         }
     }

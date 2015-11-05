@@ -7,6 +7,8 @@ package org.protege.editor.core.prefs;
 
 
 import org.protege.editor.core.ProtegeApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.prefs.BackingStoreException;
 
@@ -17,6 +19,8 @@ import java.util.prefs.BackingStoreException;
 public class JavaBackedPreferencesManagerImpl extends PreferencesManager {
 
     private static final String APPLICATION_PREFERENCES = "application_preferences";
+
+    private Logger logger = LoggerFactory.getLogger(JavaBackedPreferencesManagerImpl.class);
 
     @SuppressWarnings("rawtypes")
     public Preferences getApplicationPreferences(Class c) {
@@ -52,7 +56,7 @@ public class JavaBackedPreferencesManagerImpl extends PreferencesManager {
 
         }
         catch (BackingStoreException e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            logger.error("An error occurred whilst clearing the preferences: {}", e);
         }
     }
 

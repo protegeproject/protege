@@ -19,6 +19,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
+import org.slf4j.LoggerFactory;
 
 public class AddEntryDialog extends JDialog {
     private static final long serialVersionUID = 8162358678767968590L;
@@ -42,8 +43,9 @@ public class AddEntryDialog extends JDialog {
                     try {
                         entryManager.update(e);
                     }
-                    catch (IOException ioe) {
-                        ProtegeApplication.getErrorLog().logError(ioe);
+                    catch (IOException ex) {
+                        LoggerFactory.getLogger(AddEntryDialog.class)
+                                .error("An error occurred whilst adding a catalog entry: ", ex);
                     }
                 }
             }

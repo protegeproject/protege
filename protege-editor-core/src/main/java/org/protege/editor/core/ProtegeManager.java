@@ -70,7 +70,7 @@ public class ProtegeManager {
                 repository.dispose();
             }
             catch (Exception e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst trying dispose of the repository '{}': {}", repository.getName(), e);
             }
         }
         instance = null;
@@ -335,7 +335,7 @@ public class ProtegeManager {
             editorKit.dispose();
         }
         catch (Exception e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            logger.warn("An error occurred whilst trying to dispose of the editor kit '{}': {}", editorKit.getId(), e);
         }
         System.gc();
         application.handleClose();
