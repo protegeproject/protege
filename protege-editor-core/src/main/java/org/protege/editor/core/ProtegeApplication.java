@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.text.MaskFormatter;
 
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.log.LogManager;
@@ -40,6 +41,8 @@ import org.protege.editor.core.update.PluginManager;
 
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -147,10 +150,9 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
-        logger.info("--------------------------------------------------------------------------------");
-        logger.info("PROTÉGÉ DESKTOP");
-        logger.info("VERSION {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
-        logger.info("--------------------------------------------------------------------------------");
+        logger.info(LogBanner.start("Protégé"));
+        logger.info("Protégé Desktop");
+        logger.info("Version {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
         logger.info("");
         logger.info("");
         logger.info(LogBanner.start("Platform"));
@@ -164,7 +166,7 @@ public class ProtegeApplication implements BundleActivator {
         int pluginCount = 0;
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
-        		logger.info("    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
+        		logger.info(MarkerFactory.getMarker("Plugin"), "    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
         	    pluginCount++;
             }
         }
