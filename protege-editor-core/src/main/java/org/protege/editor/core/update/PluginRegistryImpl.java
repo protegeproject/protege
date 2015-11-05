@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
+import org.protege.editor.core.log.LogBanner;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -85,10 +86,11 @@ public class PluginRegistryImpl implements PluginRegistry {
         private Set<URL> visitedURLs = new HashSet<URL>();
 
         public void run() {
-            logger.info(AUTO_UPDATE, "Running Auto-Update to check for {}", pluginType);
+            logger.info(LogBanner.start("Running Auto-update"));
             checkBundles();
             visit(root);
             sortPlugins();
+            logger.info(LogBanner.end());
         }
 
         private void sortPlugins() {
