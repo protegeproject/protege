@@ -13,6 +13,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PluginRegistryImpl implements PluginRegistry {
 
+    public static final Marker AUTO_UPDATE = MarkerFactory.getMarker("Auto-Update");
     private final Logger logger = LoggerFactory.getLogger(PluginRegistryImpl.class);
 
     public static final String UPDATE_URL = "Update-Url";
@@ -59,7 +62,7 @@ public class PluginRegistryImpl implements PluginRegistry {
     }
     
     public void reload() {
-        plugins = new ArrayList<PluginInfo>();
+        plugins = new ArrayList<>();
         new Calculator().run();
     }
 
@@ -82,9 +85,7 @@ public class PluginRegistryImpl implements PluginRegistry {
         private Set<URL> visitedURLs = new HashSet<URL>();
 
         public void run() {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Starting calculation of " + pluginType);
-            }
+            logger.info(AUTO_UPDATE, "Running Auto-Update to check for {}", pluginType);
             checkBundles();
             visit(root);
             sortPlugins();
@@ -118,16 +119,12 @@ public class PluginRegistryImpl implements PluginRegistry {
                                 info.setPluginDescriptor(bundle);
                                 plugins.add(info);
                                 selfUpdatingBundleIds.add(info.getId());
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("Found self updating bundle " + info.getId());
-                                }
+                                logger.debug(AUTO_UPDATE, "Found self updating bundle {}", info.getId());
                             }
                         }
                     }
                     catch (Throwable e) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(bundle.getHeaders().get("Bundle-Name") + " self update failed: " + e.getMessage());
-                        }
+                        logger.warn(AUTO_UPDATE, "Self update of bundle {} failed.  Reason: {}", bundle.getHeaders().get("Bundle-Name"), e.getMessage(), e);
                     }
                 }
             }
@@ -137,23 +134,19 @@ public class PluginRegistryImpl implements PluginRegistry {
             if (!visitedURLs.contains(node)){
                 visitedURLs.add(node);
                 
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Examining node " + node);
-                }
+                logger.info(AUTO_UPDATE, "Checking {}", node);
 
                 // see if this is a plugin file
                 try{
                     UpdateChecker checker = new UpdateChecker(node, null);
                     PluginInfo info = checker.run();
                     if (info != null) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Node " + node + "has valid Plugin Info: " + info.getId());
-                        }
+                        logger.debug(AUTO_UPDATE, "URL {} has valid plugin info: {}", node, info.getId());
+
                         if (pluginType == PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY && !bundleByIds.containsKey(info.getId())) {
                             plugins.add(info);
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Node " + node + " is a download");
-                            }
+                            logger.debug(AUTO_UPDATE, "URL {} is a download", node);
+
                         }
                         Bundle bundle = bundleByIds.get(info.getId());
                         if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY
@@ -162,9 +155,7 @@ public class PluginRegistryImpl implements PluginRegistry {
                                       && !selfUpdatingBundleIds.contains(info.getId())) {
                             info.setPluginDescriptor(bundle);
                             plugins.add(info);
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Node " + node + " is a update");
-                            }
+                            logger.debug(AUTO_UPDATE, "URL {} is an update", node);
                         }
                     }
 
@@ -174,27 +165,25 @@ public class PluginRegistryImpl implements PluginRegistry {
                 }
                 catch (UpdateException e){
                     if (e.getPluginId().isPresent()) {
-                        logger.info(String.format("Couldn't read plugin updated file [%s].", e.getMessage()));
+                        logger.warn(AUTO_UPDATE, "Couldn't read plugin updated file at {}.  Reason: {}", node, e.getMessage(), e);
                     }
                     readRegistry(node);
                 }
                 catch(IOException e){
-                    logger.debug("Cannot open remote plugin file/registry", e);
+                    logger.warn(AUTO_UPDATE, "Cannot open remote plugin file/registry at {}.  Reason: {}", node, e.getCause(), e);
                 }
             }
         }
 
         private void readRegistry(URL node) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Trying node " + node + " as a registry");
-            }
+            logger.debug(AUTO_UPDATE, "Attempting to process info at {} as a plugin registry", node);
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(node.openStream())));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
                     if (logger.isDebugEnabled()) {
-                        logger.debug("\treading line from node " + node + ":" + line);
+                        logger.debug(AUTO_UPDATE, "\treading line from node " + node + ":" + line);
                     }
                     if (line.length() > 0 && !line.startsWith("//")){
                         try{
@@ -202,14 +191,14 @@ public class PluginRegistryImpl implements PluginRegistry {
                             visit(url);
                         }
                         catch(MalformedURLException urlException){
-                            logger.debug("Invalid URL in plugin registry: " + line);
+                            logger.debug(AUTO_UPDATE, "Invalid URL in plugin registry: " + line);
                         }
                     }
                 }
                 reader.close();
             }
             catch (IOException ex) {
-                logger.debug("Cannot open remote plugin registry", ex);
+                logger.warn(AUTO_UPDATE, "Cannot open remote plugin registry at {}.  Reason: {}", ex.getMessage(), ex);
             }
         }
 
