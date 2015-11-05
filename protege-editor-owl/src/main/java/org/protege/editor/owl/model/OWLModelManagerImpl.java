@@ -211,20 +211,17 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         OntologySourcesManager sourcesMngr = get(OntologySourcesManager.ID);
         removeIOListener(sourcesMngr);
-
         try {
             // Empty caches
             owlEntityRenderingCache.dispose();
             owlObjectRenderingCache.dispose();
-
             if (entityRenderer != null) {
                 entityRenderer.dispose();
             }
-
             owlReasonerManager.dispose();
         }
         catch (Exception e) {
-            logger.error(e.getMessage() + "\n", e);
+            logger.error("An error occurred whilst disposing of the model manager: {}", e.getMessage(), e);
         }
 
         // Name and shame plugins that do not (or can't be bothered to) clean up
@@ -505,7 +502,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void save(OWLOntology ont) throws OWLOntologyStorageException {
         final URI physicalURI = manager.getOntologyDocumentIRI(ont).toURI();
-
         try {
             fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
 
@@ -524,12 +520,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 manager.saveOntology(ont, format, IRI.create(physicalURI));
 
                 manager.setOntologyDocumentIRI(ont, IRI.create(physicalURI));
+                logger.info("Saved ontology {} to {}", ont.getOntologyID(), physicalURI);
             }
             catch (IOException e) {
+                logger.error("Error saving ontology {} to {}", ont.getOntologyID(), physicalURI, e);
                 throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);
             }
-
-            logger.info("Saved " + getRendering(ont) + " to " + physicalURI);
 
             dirtyOntologies.remove(ont.getOntologyID());
 

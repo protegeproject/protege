@@ -1,5 +1,6 @@
 package org.protege.editor.owl;
 
+import org.protege.editor.core.log.LogBanner;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -34,6 +35,8 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.io.File;
 import java.net.ProtocolException;
@@ -79,14 +82,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private SearchManager searchManager;
 
-
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
         super(editorKitFactory);
     }
 
 
     protected void initialise() {
-        logger.info("OWLEditorKit: Using OWL API version " + VersionInfo.getVersionInfo().getVersion());
+        logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
         this.newPhysicalURIs = new HashSet<URI>();
         modelManager = new OWLModelManagerImpl();
 
@@ -245,25 +247,33 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     public void handleSave() throws Exception {
-        Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
-        getWorkspace().save();
-        if (dirtyOntologies.isEmpty()) {
-            return;
-        }
         try {
-            getModelManager().save();
-            for (URI uri : newPhysicalURIs) {
-                addRecent(uri);
+            logger.info(LogBanner.start("Saving Workspace and Ontologies"));
+            Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
+            getWorkspace().save();
+            if (dirtyOntologies.isEmpty()) {
+                logger.info("No ontology changes detected.  Not writing any ontology documents.");
+                return;
             }
-            newPhysicalURIs.clear();
+            try {
+                getModelManager().save();
+                for (URI uri : newPhysicalURIs) {
+                    addRecent(uri);
+                }
+                newPhysicalURIs.clear();
+                logger.info("Saved ontologies");
+            }
+            catch (OWLOntologyStorerNotFoundException e) {
+                OWLOntology ont = getModelManager().getActiveOntology();
+                OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+                String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
+                logger.warn(message);
+                ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
+            }
+        } finally {
+            logger.info(LogBanner.end());
         }
-        catch (OWLOntologyStorerNotFoundException e) {
-            OWLOntology ont = getModelManager().getActiveOntology();
-            OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
-            String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
-            logger.warn(message);
-            ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
-        }
+
     }
 
 
@@ -381,6 +391,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     @Override
     public void dispose() {
+        logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
         searchManager.dispose();
@@ -396,5 +407,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             registration.unregister();
             registration = null;
         }
+        logger.info(LogBanner.end());
     }
 }

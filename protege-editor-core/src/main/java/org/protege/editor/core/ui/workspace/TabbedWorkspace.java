@@ -13,6 +13,8 @@ import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,
@@ -113,10 +115,12 @@ public abstract class TabbedWorkspace extends Workspace {
             man.save();
             for (WorkspaceTab tab : getWorkspaceTabs()){
                 tab.save();
+                logger.info("Saved tab state for '{}' tab", tab.getLabel());
             }
+            logger.info("Saved workspace");
         }
         catch (Exception e) {
-            logger.error("Exception caught doing save", e);
+            logger.error("An error occurred whilst saving the workspace", e);
         }
     }
 
@@ -234,13 +238,15 @@ public abstract class TabbedWorkspace extends Workspace {
         for (WorkspaceTab tab : workspaceTabs) {
             try {
                 tab.dispose();
+                logger.info("Disposed of '{}' tab", tab.getLabel());
             }
             catch (Exception e) {
-                logger.warn("BAD TAB: " + tab.getClass().getSimpleName() + " - Exception during dispose: " + e.getMessage());
+                logger.warn("The {} tab threw an exception whilst being disposed.", tab.getLabel(), e);
             }
         }
         workspaceTabs.clear();
         tabbedPane.removeAll();
         super.dispose();
+        logger.info("Disposed of workspace");
     }
 }
