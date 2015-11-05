@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import com.google.common.base.Optional;
 import org.protege.editor.core.ProtegeApplication;
@@ -97,28 +97,31 @@ public class PluginManager {
 
     public void checkForUpdates(){
         final BackgroundTask task = ProtegeApplication.getBackgroundTaskManager().startTask("searching for updates");
-        Runnable runnable = new Runnable() {
-            public void run() {
-            	PluginRegistry updatesProvider;
-            	java.util.List<PluginInfo> updates;
-            	try {
-            		updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-            		updates = updatesProvider.getAvailableDownloads();
-            	}
-            	finally {
-            		ProtegeApplication.getBackgroundTaskManager().endTask(task);
-            	}
+        Runnable runnable = () -> {
+            try {
+                PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
+                List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
                 if (!updates.isEmpty()) {
-                    Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
+                    Map<String, PluginRegistry> map = new LinkedHashMap<>();
                     map.put("Updates", updatesProvider);
-                    showUpdatesDialog(map);
+                    SwingUtilities.invokeLater(
+                            () -> showUpdatesDialog(map)
+                    );
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "No updates available at this time.");
+                    SwingUtilities.invokeLater(
+                            () -> JOptionPane.showMessageDialog(null, "No updates available at this time.")
+                    );
                 }
             }
+            finally {
+                SwingUtilities.invokeLater(
+                        () -> ProtegeApplication.getBackgroundTaskManager().endTask(task)
+                );
+            }
+
         };
-        Thread t = new Thread(runnable, "Check for updates");
+        Thread t = new Thread(runnable, "Auto-update Runner");
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
 
@@ -128,24 +131,22 @@ public class PluginManager {
     public void checkForDownloads() {
         final BackgroundTask task = ProtegeApplication.getBackgroundTaskManager().startTask("searching for downloads");
 
-        Runnable runnable = new Runnable() {
-            public void run() {
-            	List<PluginInfo> downloads;
-            	try {
-            		PluginRegistry registry = getPluginRegistry();
-            		downloads = registry.getAvailableDownloads();
-            	}
-            	finally {
-            		ProtegeApplication.getBackgroundTaskManager().endTask(task);
-            	}
-                if (!downloads.isEmpty()){
-                    Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-                    map.put("Downloads", getPluginRegistry());
-                    showUpdatesDialog(map);
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "No downloads available at this time.");
-                }
+        Runnable runnable = () -> {
+            List<PluginInfo> downloads;
+            try {
+                PluginRegistry registry = getPluginRegistry();
+                downloads = registry.getAvailableDownloads();
+            }
+            finally {
+                ProtegeApplication.getBackgroundTaskManager().endTask(task);
+            }
+            if (!downloads.isEmpty()){
+                Map<String, PluginRegistry> map = new LinkedHashMap<>();
+                map.put("Downloads", getPluginRegistry());
+                showUpdatesDialog(map);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No downloads available at this time.");
             }
         };
         Thread t = new Thread(runnable, "Check for downloads");
@@ -167,6 +168,7 @@ public class PluginManager {
     }
 
     public void performAutoUpdate() {
+
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
         Runnable runnable = new Runnable() {
         	PluginRegistry updatesProvider;
@@ -196,34 +198,32 @@ public class PluginManager {
 
     public void performCheckPlugins() {
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("searching for plugins");
-        Runnable runnable = new Runnable() {
-            public void run() {
-            	try {
-            		PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-            		List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
-            		if (!updates.isEmpty()) {
-            			Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-            			map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
-            			map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
-            			showUpdatesDialog(map);
-            		}
-            		else{
-            			PluginRegistry registry = getPluginRegistry();
-            			final List<PluginInfo> downloads = registry.getAvailableDownloads();
-            			if (!downloads.isEmpty()){
-            				Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-            				map.put("Downloads", registry);
-            				map.put("Updates", updatesProvider);
-            				showUpdatesDialog(map);
-            			}
-            			else {
-            				JOptionPane.showMessageDialog(null, "No additional plugins / updates available at this time.");                        
-            			}
-            		}
-            	}
-            	finally {
-            		ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
-            	}
+        Runnable runnable = () -> {
+            try {
+                PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
+                List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
+                if (!updates.isEmpty()) {
+                    Map<String, PluginRegistry> map = new LinkedHashMap<>();
+                    map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
+                    map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
+                    showUpdatesDialog(map);
+                }
+                else{
+                    PluginRegistry registry = getPluginRegistry();
+                    final List<PluginInfo> downloads = registry.getAvailableDownloads();
+                    if (!downloads.isEmpty()){
+                        Map<String, PluginRegistry> map = new LinkedHashMap<>();
+                        map.put("Downloads", registry);
+                        map.put("Updates", updatesProvider);
+                        showUpdatesDialog(map);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "No additional plugins / updates available at this time.");
+                    }
+                }
+            }
+            finally {
+                ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
             }
         };
         Thread t = new Thread(runnable, "Check plugins");

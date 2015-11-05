@@ -5,6 +5,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.StackTraceElementProxy;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Marker;
 
 import java.util.Optional;
 
@@ -19,10 +20,22 @@ public class LoggingEventTranslator {
         return new LogRecord(
                 toLogLevel(event.getLevel()),
                 event.getTimeStamp(),
-                event.getFormattedMessage(),
+                getMessage(event),
                 toThrowableInfo(event),
                 event.getThreadName()
         );
+    }
+
+    private String getMessage(ILoggingEvent event) {
+        Marker marker = event.getMarker();
+        StringBuilder sb = new StringBuilder();
+        if(marker != null) {
+            sb.append("[");
+            sb.append(marker.getName());
+            sb.append("]  ");
+        }
+        sb.append(event.getFormattedMessage());
+        return sb.toString();
     }
 
 
