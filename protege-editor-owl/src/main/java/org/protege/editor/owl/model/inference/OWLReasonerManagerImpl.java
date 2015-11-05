@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
+import com.google.common.base.Stopwatch;
+import org.protege.editor.core.log.LogBanner;
 import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
@@ -397,14 +400,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         
         public void run() {
-        	boolean inconsistencyFound = false;
+        	logger.info(LogBanner.start("Running Reasoner"));
+            boolean inconsistencyFound = false;
         	boolean reasonerChanged = false;
             try {
-            	long start = System.currentTimeMillis();
+            	Stopwatch stopwatch = Stopwatch.createStarted();
                 reasonerChanged = ensureRunningReasonerInitialized();
                 if (runningReasoner != null) {
                 	precompute();
-                	logger.info(currentReasonerFactory.getReasonerName() + " classified in " + (System.currentTimeMillis()-start) + "ms");
+                	logger.info("Ontologies processed in {} ms by {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), runningReasoner.getReasonerName());
                 }
             }
             catch (ReasonerInterruptedException rie) {
@@ -426,6 +430,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             	if (reasonerProgressMonitor instanceof Resettable) {
             		((Resettable) reasonerProgressMonitor).reset();
             	}
+                logger.info(LogBanner.end());
             }
         }
         
@@ -460,9 +465,9 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
             precomputeThisRun.addAll(precompute);
             precomputeThisRun.retainAll(runningReasoner.getPrecomputableInferenceTypes());
             if (!precomputeThisRun.isEmpty()) {
-            	logger.info("Initializing the reasoner by performing the following steps:");
+            	logger.info("Pre-computing inferences:");
             	for (InferenceType type : precompute) {
-            		logger.info("\t" + type);
+            		logger.info("    - {}", type);
             	}
                 runningReasoner.precomputeInferences(precomputeThisRun.toArray(new InferenceType[precomputeThisRun.size()]));
             }
