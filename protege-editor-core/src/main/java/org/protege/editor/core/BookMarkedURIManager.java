@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -22,6 +24,8 @@ public class BookMarkedURIManager {
     public static final String PREFERENCES_KEY = "BookMarkedURIs";
 
     private static BookMarkedURIManager instance;
+
+    private final Logger logger = LoggerFactory.getLogger(BookMarkedURIManager.class);
 
 
     private BookMarkedURIManager() {
@@ -50,7 +54,7 @@ public class BookMarkedURIManager {
                 uris.add(new URI(s));
             }
             catch (URISyntaxException e) {
-                ProtegeApplication.getErrorLog().handleError(Thread.currentThread(), e);
+                logger.warn("Bookmarked URI syntax error: {}", e.getMessage());
             }
         }
         return uris;

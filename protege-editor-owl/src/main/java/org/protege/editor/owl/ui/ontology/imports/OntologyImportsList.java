@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.ontology.imports;
 import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,19 +170,18 @@ public class OntologyImportsList extends MList {
         OWLOntologyManager manager = ontology.getOWLOntologyManager();
         
         manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
-        try {
             IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
             if (UIUtil.isLocalFile(importersDocumentLocation.toURI())) {
                 File f = new File(importersDocumentLocation.toURI());
                 XMLCatalog catalog = eKit.getModelManager().addRootFolder(f.getParentFile());
                 URI physicalUri = CatalogUtilities.relativize(physicalLocation.toURI(), catalog);
                 catalog.addEntry(0, new UriEntry("Imports Wizard Entry", catalog, importLocation.toURI().toString(), physicalUri, null));
-                CatalogUtilities.save(catalog, OntologyCatalogManager.getCatalogFile(f.getParentFile()));
+                try {
+                    CatalogUtilities.save(catalog, OntologyCatalogManager.getCatalogFile(f.getParentFile()));
+                } catch (IOException e) {
+                    logger.warn("An error occurred whilst saving the catalog file: {}", e);
+                }
             }
-        }
-        catch (Throwable t) {
-            ProtegeApplication.getErrorLog().logError(t);
-        }
     }
 
 

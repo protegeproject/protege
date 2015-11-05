@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model;
 
+import org.protege.editor.core.ui.error.ErrorLogListener;
 import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -131,6 +132,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     public static final String REASONER_STOP   = "Stop reasoner";
 
     public static final String REASONER_EXPLAIN = "Explain inconsistent ontology";
+    private ErrorLogListener errorLogListener;
 
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -151,9 +153,26 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         super.initialise();
 
-        errorNotificationLabel = new ErrorNotificationLabel(ProtegeApplication.getErrorLog(), this);
+        errorNotificationLabel = new ErrorNotificationLabel(this);
+
+        errorLogListener = new ErrorLogListener() {
+            @Override
+            public void errorLogged() {
+                errorNotificationLabel.setVisible(true);
+            }
+
+            @Override
+            public void errorLogCleared() {
+                errorNotificationLabel.setVisible(false);
+            }
+        };
+        ProtegeApplication.getLogManager().addErrorLogListener(errorLogListener);
+
+
 
         backgroundTaskLabel = new BackgroundTaskLabel(ProtegeApplication.getBackgroundTaskManager());
+
+
 
         createActiveOntologyPanel();
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
@@ -175,7 +194,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                     handleModelManagerEvent(event.getType());
                 }
                 catch (Exception t) {
-                    ProtegeApplication.getErrorLog().logError(t);
+                    logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
                 }
             }
         };
@@ -870,6 +889,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         owlComponentFactory.dispose();
 
+        ProtegeApplication.getLogManager().removeErrorLogListener(errorLogListener);
+
         getOWLModelManager().removeListener(owlModelManagerListener);
         getOWLModelManager().removeOntologyChangeListener(listener);
     }
@@ -883,7 +904,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());
         }
         catch (Exception e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            logger.error("An error occurred whilst building the ontology list: {}", e);
         }
     }
 
@@ -1019,7 +1040,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                     return new File(getId() + "-config.xml").toURI().toURL();
                 }
                 catch (MalformedURLException uriex) {
-                    ProtegeApplication.getErrorLog().logError(uriex);
+                    logger.warn("The default view configuration file is malformed: " + uriex.getMessage());
                 }
                 return null;
             }

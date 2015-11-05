@@ -47,6 +47,7 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -78,7 +79,7 @@ public class OntologyLibraryPanel extends JPanel {
     
     private List<CatalogEntryManager> entryManagers;
     
-    public OntologyLibraryPanel(List<CatalogEntryManager> entryManagers, File catalogFile) throws MalformedURLException, IOException {
+    public OntologyLibraryPanel(List<CatalogEntryManager> entryManagers, File catalogFile) throws IOException {
     	this.entryManagers = entryManagers;
         this.catalogFile = catalogFile;
         catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
@@ -383,7 +384,7 @@ public class OntologyLibraryPanel extends JPanel {
         }
     }
     
-    public static void showDialog(OWLEditorKit owlEditorKit, File catalogFile) throws MalformedURLException, IOException {
+    public static void showDialog(OWLEditorKit owlEditorKit, File catalogFile) throws IOException {
     	OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
         UIHelper helper = new UIHelper(owlEditorKit);
         OntologyLibraryPanel panel = new OntologyLibraryPanel(catalogManager.getCatalogEntryManagers(), catalogFile);
@@ -393,7 +394,8 @@ public class OntologyLibraryPanel extends JPanel {
         		owlEditorKit.getModelManager().getOntologyCatalogManager().reloadFolder(catalogFile.getParentFile());
         	}
         	catch (IOException e) {
-        		ProtegeApplication.getErrorLog().logError(e);
+                LoggerFactory.getLogger(OntologyLibraryPanel.class)
+                        .error("An error occurred whilst saving the catalog file: {}", e);
         	}
         }
         panel.dispose();

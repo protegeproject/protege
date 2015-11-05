@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.slf4j.LoggerFactory;
 
 public class ReasonerUtilities {
 	
@@ -59,8 +60,8 @@ public class ReasonerUtilities {
 	
 	public static void warnThatReasonerDied(Component owner, ReasonerDiedException died) {
 		Throwable t = died.getCause();
-		ProtegeApplication.getErrorLog().logError(t);
-		JOptionPane.showMessageDialog(owner, 
+		LoggerFactory.getLogger(ReasonerUtilities.class).error("Internal reasoner error: {}", t);
+		JOptionPane.showMessageDialog(owner,
 				                      "Internal reasoner error (see the logs for more info).",
 				                      "Reasoner error",
 				                      JOptionPane.WARNING_MESSAGE);

@@ -18,7 +18,7 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 public class SaveAsAction extends ProtegeAction {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 8969543617298643589L;
 
@@ -27,9 +27,8 @@ public class SaveAsAction extends ProtegeAction {
         try {
             ProtegeManager.getInstance().saveEditorKitAs(getEditorKit());
         }
-        catch (Exception e1) {
-
-            ErrorLogPanel.showErrorDialog(e1);
+        catch (Exception ex) {
+            ErrorLogPanel.showErrorDialog(ex);
         }
     }
 

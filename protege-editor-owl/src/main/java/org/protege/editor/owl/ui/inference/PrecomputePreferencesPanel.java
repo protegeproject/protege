@@ -26,6 +26,7 @@ import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.slf4j.LoggerFactory;
 
 public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = -8812068573828834020L;
@@ -124,7 +125,7 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         	return help;
         }
         catch (Throwable t) {
-        	ProtegeApplication.getErrorLog().logError(t);
+            LoggerFactory.getLogger(PrecomputePreferencesPanel.class).error("Error building PrecomputePreferencesPanel help for resource: {}", resource);
         	return null;
         }
     }

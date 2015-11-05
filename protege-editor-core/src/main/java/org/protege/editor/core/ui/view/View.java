@@ -429,7 +429,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
             viewComponent.initialise();
         }
         catch (Exception e) {
-            ProtegeApplication.getErrorLog().logError(e);
+            logger.error("An error occurred whilst creating the view content for the '{}' view: {}", plugin.getLabel(), e);
             viewComponentHolder.add(ComponentFactory.createExceptionComponent(
                     "An error occurred whilst creating the view",
                     e,

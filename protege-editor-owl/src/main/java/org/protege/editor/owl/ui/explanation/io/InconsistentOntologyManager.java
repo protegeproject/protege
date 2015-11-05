@@ -12,6 +12,7 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitHook;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.slf4j.LoggerFactory;
 
 public class InconsistentOntologyManager extends OWLEditorKitHook  {
 
@@ -50,7 +51,8 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 			}
 		}
 		catch (Exception ioe) {
-			ProtegeApplication.getErrorLog().logError(ioe);
+			LoggerFactory.getLogger(InconsistentOntologyManager.class)
+					.warn("An error occurred whilst generating an explanation for the inconsistent ontology: {}", ioe);
 		}
 	}
 	

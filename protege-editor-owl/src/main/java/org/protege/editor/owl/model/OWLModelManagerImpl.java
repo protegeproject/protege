@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model;
 
 import com.google.common.base.Stopwatch;
+import org.protege.editor.core.log.LogBanner;
 import org.slf4j.Logger;
 import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
@@ -289,9 +290,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * The location of the file is specified by the URI argument.
      */
     public boolean loadOntologyFromPhysicalURI(URI uri) {
+        Stopwatch stopwatch = Stopwatch.createUnstarted();
         try {
-            logger.info("--- Loading Ontology ---");
+            logger.info(LogBanner.start("Loading Ontology"));
             logger.info("Loading ontology from {}", uri);
+            stopwatch.start();
             if (UIUtil.isLocalFile(uri)) {
                 // Load the URIs of other ontologies that are contained in the same folder.
                 File parentFile = new File(uri).getParentFile();
@@ -313,8 +316,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             }
             return ontology != null;
         } finally {
-            logger.info("Loading for ontology and imports closure successfully completed");
-            logger.info("------------------------");
+            logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+            logger.info(LogBanner.end());
         }
     }
 
@@ -351,7 +354,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An IOListener threw an exception during event dispatch: {}", e);
             }
         }
     }
@@ -363,7 +366,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An IOListener threw an exception during event dispatch: {}", e);
             }
         }
     }
@@ -564,7 +567,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An IOListener threw an error during event dispatch: {}", e);
             }
         }
     }
@@ -576,7 +579,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An IOListener threw an error during event dispatch: {}", e);
             }
         }
     }
@@ -900,7 +903,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 entityRenderer.dispose();
             }
             catch (Exception e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst disposing of the entity renderer: {}", e);
             }
         }
         entityRenderer = null;

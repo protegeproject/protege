@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.action.ProtegeAction;
+import org.slf4j.LoggerFactory;
 
 public class SaveAllTabsAction extends ProtegeAction {
 	private static final long serialVersionUID = 5435208919435226000L;
@@ -24,7 +25,8 @@ public class SaveAllTabsAction extends ProtegeAction {
 			getWorkspace().save();
 		}
 		catch (Exception e) {
-			ProtegeApplication.getErrorLog().logError(e);
+			LoggerFactory.getLogger(SaveAllTabsAction.class)
+					.error("An error occurred when saving the state of the workspace: {}", e);
 		}
 	}
 

@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -49,7 +50,8 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
                 man.saveOntology(ont, format, IRI.create(saveAsFile));
             }
             catch (OWLOntologyStorageException e1) {
-                ProtegeApplication.getErrorLog().handleError(Thread.currentThread(), e1);
+                LoggerFactory.getLogger(GatherOntologiesAction.class)
+                        .error("An error occurred whilst saving a gathered ontology: {}", e1);
                 errors = true;
             }
         }

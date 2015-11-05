@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ import org.protege.xmlcatalog.entry.RewriteUriEntry;
 import org.protege.xmlcatalog.entry.SystemEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.LoggerFactory;
 
 public class GetImportsVisitor implements EntryVisitor {
    
@@ -28,15 +30,10 @@ public class GetImportsVisitor implements EntryVisitor {
     }
 
     public void visit(UriEntry entry) {
-        try {
-            ImportInfo myImport = new ImportInfo();
-            myImport.setImportLocation(IRI.create(entry.getName()));
-            myImport.setPhysicalLocation(entry.getAbsoluteURI());
-            imports.add(myImport);
-        }
-        catch (Throwable t) {
-            ProtegeApplication.getErrorLog().logError(t);
-        }
+        ImportInfo myImport = new ImportInfo();
+        myImport.setImportLocation(IRI.create(entry.getName()));
+        myImport.setPhysicalLocation(entry.getAbsoluteURI());
+        imports.add(myImport);
     }
 
     public void visit(NextCatalogEntry entry) {
@@ -45,10 +42,11 @@ public class GetImportsVisitor implements EntryVisitor {
             for (Entry subEntry : catalog.getEntries()) {
                 subEntry.accept(this);
             }
+        } catch (IOException e) {
+            LoggerFactory.getLogger(GetImportsVisitor.class)
+                    .error("Ad error occurred whilst attempting to process the XMLCatalog file: {}", e);
         }
-        catch (Throwable t) {
-            ProtegeApplication.getErrorLog().logError(t);
-        }
+
     }
 
     public void visit(GroupEntry entry) {

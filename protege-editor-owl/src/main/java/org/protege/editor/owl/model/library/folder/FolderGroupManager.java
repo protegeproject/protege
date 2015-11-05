@@ -37,8 +37,6 @@ public class FolderGroupManager extends CatalogEntryManager {
 
     public static final String FILE_KEY = "FILE";
 
-    private final ErrorLog errorLog;
-
     private Set<Algorithm> algorithms;
     private boolean autoUpdate = true;
     private boolean warnedUserOfBadRepositoryDeclaration = false;
@@ -62,8 +60,6 @@ public class FolderGroupManager extends CatalogEntryManager {
     public FolderGroupManager() {
         algorithms = new HashSet<Algorithm>();
         algorithms.add(new XmlBaseAlgorithm());
-        // Can't inject here because this thing is a plugin instance and it needs a zero arg constructor.
-        this.errorLog = ProtegeApplication.getErrorLog();
     }
 
     public void setAlgorithms(Algorithm... algorithms) {

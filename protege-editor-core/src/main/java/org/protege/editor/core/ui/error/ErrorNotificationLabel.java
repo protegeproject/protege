@@ -1,9 +1,12 @@
 package org.protege.editor.core.ui.error;
 
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.log.LogView;
+import org.protege.editor.core.log.LogViewImpl;
 import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.workspace.Workspace;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -21,29 +24,19 @@ public class ErrorNotificationLabel extends JLabel {
      */
     private static final long serialVersionUID = -1816375999125772505L;
 
-    private ErrorLogPanel panel;
+    private final Workspace workspace;
 
-    private ErrorLogListener listener;
+    private final LogView logView;
 
 
-    public ErrorNotificationLabel(ErrorLog errorLog, SendErrorReportHandler handler) {
+    public ErrorNotificationLabel(Workspace workspace) {
         super(Icons.getIcon("error.png"));
-        setToolTipText("Protege-Guard: Click to view errors");
+        this.workspace = workspace;
+        logView = new LogViewImpl();
+        setToolTipText("Error Log: Click to view errors");
         setupMouseHandler();
-        listener = new ErrorLogListener() {
-
-            public void errorLogged(ErrorLog errorLog) {
-                setVisible(true);
-            }
-
-
-            public void errorLogCleared(ErrorLog errorLog) {
-                setVisible(false);
-            }
-        };
-        errorLog.addListener(listener);
         setVisible(false);
-        panel = new ErrorLogPanel(errorLog, handler);
+
     }
 
 
@@ -57,10 +50,6 @@ public class ErrorNotificationLabel extends JLabel {
 
 
     private void showErrors() {
-        panel.fillLog();
-        JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
-        JDialog dlg = optionPane.createDialog(SwingUtilities.getAncestorOfClass(Frame.class, this), "Errors");
-        dlg.setResizable(true);
-        dlg.setVisible(true);
+        ProtegeApplication.showLogView();
     }
 }

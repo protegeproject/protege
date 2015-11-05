@@ -14,8 +14,8 @@ package org.protege.editor.core.ui.error;
  */
 public interface ErrorLogListener {
 
-    void errorLogged(ErrorLog errorLog);
+    void errorLogged();
 
 
-    void errorLogCleared(ErrorLog errorLog);
+    void errorLogCleared();
 }

@@ -45,7 +45,6 @@ public class PluginInfoDocument {
             try {
 				version = new Version(versionString);
 			} catch (java.lang.IllegalArgumentException e) {
-				ProtegeApplication.getErrorLog().logError(e);
 				System.out.println("Check for updates found invalid version number for "
 								+ properties.getProperty(LABEL_PROPERTY_NAME)
 								+ ": " + e.getMessage());

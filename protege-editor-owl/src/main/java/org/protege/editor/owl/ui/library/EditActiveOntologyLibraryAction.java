@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.library;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 
 import org.protege.editor.core.ProtegeApplication;
@@ -9,6 +10,7 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -25,22 +27,23 @@ public class EditActiveOntologyLibraryAction extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent e) {
-    	try {
-    	    OntologyCatalogManager catalogManager = getOWLModelManager().getOntologyCatalogManager();
-    	    XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
-    	    if (activeCatalog == null) {
-    	        return;
-    	    }
-    	    File catalogFile = OntologyCatalogManager.getCatalogFile(activeCatalog);
-    	    if (!catalogFile.exists()) {
-    	        return;
-    	    }
-    		OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
-    	}
-    	catch (Exception ex) {
-    		ProtegeApplication.getErrorLog().logError(ex);
-    	}
-    }
+		try {
+			OntologyCatalogManager catalogManager = getOWLModelManager().getOntologyCatalogManager();
+			XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
+			if (activeCatalog == null) {
+                return;
+            }
+			File catalogFile = OntologyCatalogManager.getCatalogFile(activeCatalog);
+			if (!catalogFile.exists()) {
+                return;
+            }
+			OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
+		} catch (IOException ex) {
+			LoggerFactory.getLogger(EditActiveOntologyLibraryAction.class)
+					.error("An error occurred whilst attempting to edit the active ontology library: {}", ex);
+		}
+
+	}
 
 
     public void initialise() throws Exception {

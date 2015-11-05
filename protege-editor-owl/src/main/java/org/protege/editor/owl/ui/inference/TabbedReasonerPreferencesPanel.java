@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * WARNING - This code was liberally stolen from PreferencesDialogPanel
@@ -22,7 +24,9 @@ import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = 5167874018417496809L;
     public static final String LABEL = "Reasoner";
-    
+
+    private final Logger logger = LoggerFactory.getLogger(TabbedReasonerPreferencesPanel.class);
+
     private List<OWLPreferencesPanel> panels = new ArrayList<OWLPreferencesPanel>();
 
     public void initialise() throws Exception {
@@ -53,7 +57,7 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
                 }
             }
             catch (Throwable e) {
-                ProtegeApplication.getErrorLog().logError(e);
+                logger.warn("An error occurred whilst instantiating the preferences panel: {}", e);
             }
         }
         if (defaultComponent != null) { // avoid having the precompute preferences as the default.
@@ -68,7 +72,7 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
                 panel.dispose();
             }
             catch (Throwable t) {
-                ProtegeApplication.getErrorLog().logError(t);
+                logger.warn("An error occurred during disposal of the preferences panel: {}", t);
             }
         }
     }
@@ -80,7 +84,7 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
                 panel.applyChanges();
             }
             catch (Throwable t) {
-                ProtegeApplication.getErrorLog().logError(t);
+                logger.warn("An error occurred whilst applying changes in the preferences panel {}: {}", panel.getLabel(), t);
             }
         }
     }

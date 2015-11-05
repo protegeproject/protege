@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction;
 import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
@@ -28,6 +29,7 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -90,7 +92,8 @@ public class LibraryPage extends OntologyImportPage {
 			OntologyLibraryPanel.showDialog(getOWLEditorKit(), activeCatalogFile);
 			calculatePossibleImports();
 		} catch (Exception e) {
-			ProtegeApplication.getErrorLog().logError(e);
+            LoggerFactory.getLogger(EditActiveOntologyLibraryAction.class)
+                    .error("An error occurred whilst editing the active ontology library: {}", e);
 		}
     }
     

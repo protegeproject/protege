@@ -14,6 +14,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.JavaBackedPreferencesImpl;
+import org.slf4j.LoggerFactory;
 
 public class ResetPreferencesAction extends AltStartupAction {
 	private static final long serialVersionUID = 697953371040653824L;
@@ -57,7 +58,8 @@ public class ResetPreferencesAction extends AltStartupAction {
 			}
 		}
 		catch (Exception ex) {
-			ProtegeApplication.getErrorLog().logError(ex);
+			LoggerFactory.getLogger(ResetPreferencesAction.class)
+					.error("An error occurred whilst resetting the preferences: {}", ex);
 		}
 	}
 

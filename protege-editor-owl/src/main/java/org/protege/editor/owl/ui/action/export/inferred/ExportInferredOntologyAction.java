@@ -37,6 +37,7 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -151,7 +152,8 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 			catch (Throwable t) {
-				ProtegeApplication.getErrorLog().logError(t);
+				LoggerFactory.getLogger(ExportInferredOntologyAction.class)
+						.warn("An error occurred whilst exporting the inferred ontology: {}", t);
 			}
 		}
 		

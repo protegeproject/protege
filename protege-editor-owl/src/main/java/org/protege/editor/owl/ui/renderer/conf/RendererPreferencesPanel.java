@@ -34,6 +34,7 @@ import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -46,6 +47,7 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
  */
 public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
+    private final Logger logger = LoggerFactory.getLogger(RendererPreferencesPanel.class);
     private Map<JRadioButton, RendererPlugin> buttonToRendererMap = new LinkedHashMap<JRadioButton, RendererPlugin>();
 
     private JList annotationPropertiesList;
@@ -179,7 +181,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
             		}
             	}
             	catch (Exception cnfe) {
-            		ProtegeApplication.getErrorLog().logError(cnfe);
+                    logger.error("An error occurred whilst instantiating a renderer preferences panel plugin: {}", cnfe);
             	}
             }
         });
@@ -214,8 +216,8 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         		configureButton.setEnabled(plugin.newInstance().isConfigurable());
     		}
     		catch (Exception e) {
-    			ProtegeApplication.getErrorLog().logError(e);
-    			configureButton.setEnabled(false);
+    			logger.error("An error occurred whilst updating the state of a renderer plugin: {}", e);
+                configureButton.setEnabled(false);
     		}
     	}
     }

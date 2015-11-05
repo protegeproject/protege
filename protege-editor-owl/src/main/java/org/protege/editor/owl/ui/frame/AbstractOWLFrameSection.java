@@ -320,7 +320,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
                         " in a frame section.  The frame section implementation should take care of this.", ioe);
             }
             catch (Exception e) {
-            	ProtegeApplication.getErrorLog().logError(e);
+            	logger.warn("An error occurred whilst filling the {} frame with inferred information: {}", getClass().getName(), e);
             }
         }
 
