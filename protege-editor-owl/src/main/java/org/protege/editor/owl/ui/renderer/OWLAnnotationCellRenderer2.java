@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.coode.string.EscapeUtils;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
 import org.protege.editor.owl.ui.renderer.layout.*;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.EscapeUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +18,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
-import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.*;
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
+import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_DATATYPE_INLINE;
 
 /**
  * Author: Matthew Horridge<br>

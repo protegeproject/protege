@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.osgi.framework.Bundle;
@@ -80,11 +81,11 @@ public class Launcher {
     }
 
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
-        logger.debug("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
+        logger.info("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
         framework = factory.newFramework(frameworkProperties);
         framework.init();
-        logger.debug("The OSGi framework has been initialised");
+        logger.info("The OSGi framework has been initialised");
         BundleContext context = framework.getBundleContext();
         List<Bundle> bundles = new ArrayList<>();
         int startLevel = 1;
@@ -92,7 +93,11 @@ public class Launcher {
             bundles.addAll(installBundles(context, searchPath, startLevel++));
         }
         startBundles(bundles);
-        framework.start();
+        try {
+            framework.start();
+        } catch (BundleException e) {
+            logger.error("An error occurred when starting the OSGi framework: {}", e.getMessage(), e);
+        }
         addShutdownHook();
         addCleanupOnExit(exitOnOSGiShutDown);
     }
@@ -145,16 +150,16 @@ public class Launcher {
     }
 
     private void startBundles(List<Bundle> bundles) throws BundleException {
-        logger.debug("--- Starting {} bundles ---", bundles.size());
+        logger.info("------------------------------- Starting Bundles -------------------------------");
         for (Bundle b : bundles) {
             try {
                 b.start();
-                logger.debug("Started bundle {}", b.getSymbolicName());
+                logger.info("Started bundle {}", b.getSymbolicName());
             } catch (Throwable t) {
-                logger.warn("Core Bundle {} failed to start: {}", b.getBundleId(), t);
+                logger.error("Core Bundle {} failed to start: {}", b.getBundleId(), t);
             }
         }
-        logger.debug("---------------------------");
+        logger.debug("-------------------------------------------------------------------------------");
     }
 
     protected void cleanup() {

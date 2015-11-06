@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;

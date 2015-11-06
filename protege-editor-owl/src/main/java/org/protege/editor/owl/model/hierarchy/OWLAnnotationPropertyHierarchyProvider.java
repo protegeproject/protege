@@ -1,5 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -7,22 +11,6 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
-
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 
 /**
  * Author: drummond<br>
@@ -79,7 +67,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
 
 
     final public void setOntologies(Set<OWLOntology> ontologies) {
-        getReadLock().lock();
+//        getReadLock().lock();
         ontologySetWriteLock.lock();
         try {
             this.ontologies.clear();
@@ -89,13 +77,13 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
         finally {
             ontologySetWriteLock.unlock();
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
     }
 
 
     public boolean containsReference(OWLAnnotationProperty object) {
-        getReadLock().lock();
+//        getReadLock().lock();
         ontologySetReadLock.lock();
         try {
             for (OWLOntology ont : ontologies) {
@@ -107,14 +95,14 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
         finally {
             ontologySetReadLock.unlock();
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
 
     }
 
 
     public Set<OWLAnnotationProperty> getChildren(OWLAnnotationProperty object) {
-        getReadLock().lock();
+//        getReadLock().lock();
         ontologySetReadLock.lock();
         try {
             Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
@@ -133,12 +121,12 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
         finally {
             ontologySetReadLock.unlock();
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
     }
 
     public Set<OWLAnnotationProperty> getEquivalents(OWLAnnotationProperty object) {
-        getReadLock().lock();
+//        getReadLock().lock();
         ontologySetReadLock.lock();
         try {
             Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
@@ -155,14 +143,14 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
         finally {
             ontologySetReadLock.unlock();
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
 
     }
 
 
     public Set<OWLAnnotationProperty> getParents(OWLAnnotationProperty object) {
-        getReadLock().lock();
+//        getReadLock().lock();
         ontologySetReadLock.lock();
         try {
             Set<OWLAnnotationProperty> result = new HashSet<OWLAnnotationProperty>();
@@ -179,7 +167,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         }
         finally {
             ontologySetReadLock.unlock();
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
     }
 

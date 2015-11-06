@@ -1,14 +1,14 @@
 package org.protege.editor.owl;
 
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.EditorKitFactory;
+import org.protege.editor.core.ui.util.UIUtil;
+
+import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import java.io.File;
-
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.editorkit.EditorKitFactory;
-import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.ui.util.UIUtil;
 
 
 /**

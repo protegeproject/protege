@@ -1,30 +1,16 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
-
 import org.protege.owlapi.inference.cls.ChildClassExtractor;
 import org.protege.owlapi.inference.cls.ParentClassExtractor;
 import org.protege.owlapi.inference.orphan.Relation;
 import org.protege.owlapi.inference.orphan.TerminalElementFinder;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
+
+import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 
 /**
@@ -103,7 +89,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
      * in order to determine the hierarchy.
      */
     public void setOntologies(Set<OWLOntology> ontologies) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetWriteLock.lock();
     	try {
     		/*
@@ -121,13 +107,13 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetWriteLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     private void rebuildImplicitRoots() {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
         rootFinder.clear();
@@ -139,7 +125,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetReadLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -159,7 +145,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         List<OWLAxiomChange> filteredChanges = filterIrrelevantChanges(changes);
         updateImplicitRoots(filteredChanges);
         for (OWLOntologyChange change : filteredChanges) {
-        	for (OWLEntity entity : ((OWLAxiomChange) change).getEntities()) {
+        	for (OWLEntity entity : change.getSignature()) {
         		if (entity instanceof OWLClass && !entity.equals(root)) {
         			changedClasses.add((OWLClass) entity);
         		}
@@ -248,7 +234,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
     		Set<OWLClass> result;
@@ -272,7 +258,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetReadLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -291,7 +277,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 
 
     public boolean containsReference(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
     		for (OWLOntology ont : ontologies) {
@@ -303,13 +289,13 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetReadLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     public Set<OWLClass> getParents(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
     		// If the object is thing then there are no
@@ -335,18 +321,18 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetReadLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     public Set<OWLClass> getEquivalents(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
     		Set<OWLClass> result = new HashSet<OWLClass>();
     		for (OWLOntology ont : ontologies) {
-    			for (OWLClassExpression equiv : object.getEquivalentClasses(ont)) {
+    			for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(object, ont)) {
     				if (!equiv.isAnonymous()) {
     					result.add((OWLClass) equiv);
     				}
@@ -366,7 +352,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     	}
     	finally {
     		ontologySetReadLock.unlock();
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 

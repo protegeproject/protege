@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -10,6 +9,7 @@ import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLException;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

@@ -8,11 +8,7 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.awt.event.ActionEvent;
 
 /**
  * Author: drummond<br>

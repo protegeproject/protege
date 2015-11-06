@@ -5,10 +5,9 @@ import org.protege.editor.owl.ui.editor.OWLGeneralAxiomEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.model.*;
 
+import javax.swing.*;
 import java.util.Comparator;
 import java.util.Set;
-
-import javax.swing.JOptionPane;
 
 
 /**

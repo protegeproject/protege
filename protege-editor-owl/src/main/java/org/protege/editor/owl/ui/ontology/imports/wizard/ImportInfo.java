@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import java.net.URI;
-
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import java.net.URI;
 
 
 /**
@@ -61,9 +62,9 @@ public class ImportInfo {
             throw new IllegalStateException("ImportInfo is not ready.");
         }
         if(ontologyID != null) {
-            IRI defaultDocumentIRI = ontologyID.getDefaultDocumentIRI();
-            if(defaultDocumentIRI != null) {
-                return defaultDocumentIRI;
+            Optional<IRI> defaultDocumentIRI = ontologyID.getDefaultDocumentIRI();
+            if(defaultDocumentIRI.isPresent()) {
+                return defaultDocumentIRI.get();
             }
         }
         return importLocation;

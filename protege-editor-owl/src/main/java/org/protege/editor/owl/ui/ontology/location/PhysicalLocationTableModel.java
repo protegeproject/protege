@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.ontology.location;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;

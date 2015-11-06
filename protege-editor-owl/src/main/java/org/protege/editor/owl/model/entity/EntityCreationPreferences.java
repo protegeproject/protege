@@ -1,10 +1,9 @@
 package org.protege.editor.owl.model.entity;
 
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /*

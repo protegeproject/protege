@@ -1,11 +1,8 @@
 package org.protege.editor.owl.model;
 
 import com.google.common.base.Stopwatch;
-import org.protege.editor.core.log.LogBanner;
-import org.slf4j.Logger;
-import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
-import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
@@ -40,12 +37,12 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
-import org.protege.owlapi.apibinding.ProtegeOWLManager;
-import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
 
@@ -106,7 +103,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * The <code>OWLConnection</code> that we use to manage
      * ontologies.
      */
-    private ProtegeOWLOntologyManager manager;
+    private OWLOntologyManager manager;
 
     private OntologyCatalogManager ontologyLibraryManager;
 
@@ -155,12 +152,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         modelManagerListenerManager = new ListenerManager<OWLModelManagerListener>();
         changeListenerManager = new ListenerManager<OWLOntologyChangeListener>();
-        manager = ProtegeOWLManager.createOWLOntologyManager();
-        manager.setUseWriteSafety(true);
-        manager.setUseSwingThread(true);
-        manager.setSilentMissingImportsHandling(true);
+        manager = OWLManager.createConcurrentOWLOntologyManager();
+//        manager.setUseWriteSafety(true);
+//        manager.setUseSwingThread(true);
+//        manager.setSilentMissingImportsHandling(true);
         manager.addOntologyChangeListener(this);
-        manager.addOntologyLoaderListener(this);
+//        manager.addOntologyLoaderListener(this);
 
 
         // URI mappers for loading - added in reverse order
@@ -195,10 +192,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
         getOWLEntityRenderer();
-
-        XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
-
-//        put(AnonymousDefinedClassManager.ID, new AnonymousDefinedClassManager(this));
 
         put(OntologySourcesManager.ID, new OntologySourcesManager(this));
 
@@ -245,7 +238,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    public ProtegeOWLOntologyManager getOWLOntologyManager() {
+    public OWLOntologyManager getOWLOntologyManager() {
         return manager;
     }
 
@@ -304,7 +297,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 fireEvent(EventType.ONTOLOGY_LOADED);
                 OWLOntologyID id = ontology.getOntologyID();
                 if (!id.isAnonymous()) {
-                    manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+                    manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
                 }
             }
             catch (OWLOntologyCreationException ooce) {
@@ -378,17 +371,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
         IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontology);
-        if (ontologyDocumentIRI != null) {
             if (isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
                 return URI.create("");
             }
             else {
                 return ontologyDocumentIRI.toURI();
             }
-        }
-        else {
-            return URI.create("");
-        }
     }
 
     private boolean isDefaultOWLAPIDocumentIRI(IRI iri) {
@@ -403,8 +391,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
-        if (physicalURI != null) {
-            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
+        if (physicalURI != null && ontologyID.getDefaultDocumentIRI().isPresent()) {
+            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().get(), IRI.create(physicalURI)));
         }
         OWLOntology ont = manager.createOntology(ontologyID);
         setActiveOntology(ont);
@@ -510,7 +498,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                     throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
                 }
 
-                OWLOntologyFormat format = manager.getOntologyFormat(ont);
+                OWLDocumentFormat format = manager.getOntologyFormat(ont);
                 /*
                  * Using the addMissingTypes call here for RDF/XML files can result in OWL Full output
                  * and can also result in data corruption.

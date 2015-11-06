@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxFrameRenderer;
 import org.semanticweb.owlapi.model.*;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxFrameRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,8 +89,7 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
         private ManchesterOWLSyntaxFrameRenderer ren;
 
         OWLEntityFrameRendererAdapter(OWLModelManager mngr, Writer writer) {
-            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getOWLOntologyManager(),
-                                                       mngr.getActiveOntology(),
+            ren = new ManchesterOWLSyntaxFrameRenderer(mngr.getActiveOntology(),
                                                        writer,
                                                        mngr.getOWLEntityRenderer());
         }

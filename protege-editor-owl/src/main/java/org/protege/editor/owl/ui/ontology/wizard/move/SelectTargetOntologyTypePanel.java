@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.wizard.WizardModel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 import javax.swing.*;
 import java.awt.*;

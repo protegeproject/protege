@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.inference;
 
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
-import org.protege.editor.core.plugin.PluginExtensionMatcher;
 import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.OWLModelManager;
 /*

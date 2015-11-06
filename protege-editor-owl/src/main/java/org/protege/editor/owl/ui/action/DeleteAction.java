@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.owl.ui.view.Deleteable;
+
+import java.awt.event.ActionEvent;
 
 
 /**

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.prefix;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;

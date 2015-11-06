@@ -1,13 +1,11 @@
 package org.protege.editor.owl.ui.hierarchy.creation;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

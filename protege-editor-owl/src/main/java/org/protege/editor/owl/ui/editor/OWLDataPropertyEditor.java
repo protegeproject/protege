@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -10,6 +7,8 @@ import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 
 import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**

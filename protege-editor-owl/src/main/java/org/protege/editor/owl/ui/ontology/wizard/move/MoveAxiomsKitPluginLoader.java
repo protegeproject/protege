@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.plugin.AbstractPluginLoader;
-import org.protege.editor.core.plugin.PluginExtensionMatcher;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.owl.ProtegeOWL;
-import org.protege.editor.owl.OWLEditorKit;
 import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.AbstractPluginLoader;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ProtegeOWL;
 /*
  * Copyright (C) 2008, University of Manchester
  *

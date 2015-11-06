@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.framelist;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 
 
 /**

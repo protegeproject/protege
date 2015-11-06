@@ -1,12 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.ui.GatherOntologiesPanel;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.*;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -30,10 +25,10 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
             return;
         }
         boolean errors = false;
-        OWLOntologyFormat saveAsFormat = panel.getOntologyFormat();
+        OWLDocumentFormat saveAsFormat = panel.getOntologyFormat();
         File saveAsLocation = panel.getSaveLocation();
         for (OWLOntology ont : panel.getOntologiesToSave()) {
-            OWLOntologyFormat format = saveAsFormat;
+            OWLDocumentFormat format = saveAsFormat;
             OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
             if (format == null) {
                 format = man.getOntologyFormat(ont);

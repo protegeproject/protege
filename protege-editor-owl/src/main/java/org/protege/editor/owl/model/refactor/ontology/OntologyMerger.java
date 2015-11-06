@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;

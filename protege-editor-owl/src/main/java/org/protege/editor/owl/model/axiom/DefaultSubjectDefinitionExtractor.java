@@ -15,11 +15,7 @@ public class DefaultSubjectDefinitionExtractor implements SubjectDefinitionExtra
 
     @Override
     public Set<OWLAxiom> getDefiningAxioms(final OWLObject subject, final OWLOntology ontology) {
-            return new HashSet<>(subject.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLAxiom>>() {
-                @Override
-                protected Set<? extends OWLAxiom> getDefaultReturnValue(OWLObject object) {
-                    return Collections.emptySet();
-                }
+            return new HashSet<>(subject.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLAxiom>>(Collections.emptySet()) {
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLClass cls) {

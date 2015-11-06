@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -8,7 +9,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
-import org.protege.editor.owl.model.refactor.ontology.OntologyIDChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -272,16 +271,16 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             else {
                 OWLOntologyID id = activeOntology.getOntologyID();
 
-                IRI ontologyIRI = id.getOntologyIRI();
+                Optional<IRI> ontologyIRI = id.getOntologyIRI();
                 String ontologyIRIString = ontologyIRI.toString();
-                if (ontologyIRI != null) {
+                if (ontologyIRI.isPresent()) {
                     if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
                         ontologyIRIField.setText(ontologyIRIString);
                     }
                 }
 
-                IRI versionIRI = id.getVersionIRI();
-                if (versionIRI != null) {
+                Optional<IRI> versionIRI = id.getVersionIRI();
+                if (versionIRI.isPresent()) {
                     String versionIRIString = versionIRI.toString();
                     if (!ontologyVersionIRIField.getText().equals(versionIRIString)) {
                         ontologyVersionIRIField.setText(versionIRIString);

@@ -1,10 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.semanticweb.owlapi.model.*;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,18 +1,14 @@
 package org.protege.editor.owl.ui.explanation.io;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitHook;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InconsistentOntologyManager extends OWLEditorKitHook  {
 

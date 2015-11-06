@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
 import org.protege.editor.core.plugin.ProtegePlugin;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 /*
  * Copyright (C) 2008, University of Manchester
  *

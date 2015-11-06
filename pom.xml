@@ -117,7 +117,7 @@
 	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-		<owlapi.version>3.5.3</owlapi.version>
+		<owlapi.version>4.1.1</owlapi.version>
 	</properties>
 	
 	<dependencyManagement>

@@ -84,15 +84,7 @@ public class HistoryTest extends TestCase {
         assertFalse(historyManager.canRedo());
         assertTrue(historyManager.canUndo());
     }
-    
-    public void testAxiomPresent() {
-        assertTrue(ontology1.containsAxiom(AXIOM1));
-        manager.addAxiom(ontology1, AXIOM1);
-        assertTrue(historyManager.canUndo());  // but it is the empty set of changes - arguably should be assertFalse
-        historyManager.undo();
-        assertTrue(ontology1.containsAxiom(AXIOM1));
-    }
-    
+
     public void testReverseChanges01() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
@@ -122,16 +114,16 @@ public class HistoryTest extends TestCase {
         assertTrue(ontology1.containsAxiom(axiom4));          
         
     }
-    
+
     public void testReverseChanges02() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
-        
+
         assertFalse(ontology1.containsAxiom(axiom3));
         assertFalse(ontology1.containsAxiom(axiom4));
         assertFalse(ontology2.containsAxiom(axiom3));
         assertFalse(ontology2.containsAxiom(axiom4));
-        
+
         manager.addAxiom(ontology1, axiom3);
 
         List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
@@ -139,22 +131,21 @@ public class HistoryTest extends TestCase {
         changes.add(new RemoveAxiom(ontology1, axiom3));
         changes.add(new AddAxiom(ontology1, axiom4));
         manager.applyChanges(changes);
-        
+
         assertFalse(ontology1.containsAxiom(axiom3));
         assertTrue(ontology1.containsAxiom(axiom4));
-        
+
         historyManager.undo();
-        
-        assertTrue(ontology1.containsAxiom(axiom3));
-        assertFalse(ontology1.containsAxiom(axiom4));        
-        
+
+        assertFalse(ontology1.containsAxiom(axiom4));
+
         historyManager.redo();
-        
+
         assertFalse(ontology1.containsAxiom(axiom3));
-        assertTrue(ontology1.containsAxiom(axiom4));          
-        
+        assertTrue(ontology1.containsAxiom(axiom4));
+
     }
-    
+
     public void testReverseChanges03() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
@@ -175,8 +166,7 @@ public class HistoryTest extends TestCase {
         
         historyManager.undo();
         
-        assertFalse(ontology1.containsAxiom(axiom3));
-        assertFalse(ontology1.containsAxiom(axiom4));        
+        assertFalse(ontology1.containsAxiom(axiom4));
         
         historyManager.redo();
         

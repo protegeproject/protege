@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
+import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.layout.*;
 import org.semanticweb.owlapi.model.IRI;
@@ -11,7 +12,6 @@ import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.net.URI;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 12/06/2014
@@ -58,15 +58,15 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
                 if (!ontologyID.isAnonymous()) {
                     Paragraph ontologyIriPara = page.addParagraph("Ontology IRI: ", Color.GRAY);
                     ontologyIriPara.setMarginLeft(40);
-                    IRI ontologyIRI = ontologyID.getOntologyIRI();
+                    IRI ontologyIRI = ontologyID.getOntologyIRI().get();
                     ontologyIriPara.append(ontologyIRI.toQuotedString(), foreground);
                     ontologyIriPara.setMarginTop(2);
-                    IRI versionIRI = ontologyID.getVersionIRI();
-                    if (versionIRI != null) {
+                    Optional<IRI> versionIRI = ontologyID.getVersionIRI();
+                    if (versionIRI.isPresent()) {
                         Paragraph versionIriPara = page.addParagraph("Version IRI: ", Color.GRAY);
                         versionIriPara.setMarginLeft(40);
                         versionIriPara.setMarginTop(2);
-                        versionIriPara.append(versionIRI.toQuotedString(), foreground);
+                        versionIriPara.append(versionIRI.get().toQuotedString(), foreground);
                     }
                 }
                 Paragraph locPara = page.addParagraph("Location: ", Color.GRAY);
@@ -74,7 +74,7 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
                 locPara.setMarginTop(2);
                 IRI documentIRI = man.getOntologyDocumentIRI(ont);
                 final int pos = locPara.getLength();
-                if (documentIRI.getScheme().equalsIgnoreCase("file")) {
+                if ("file".equalsIgnoreCase(documentIRI.getScheme())) {
                     File file = new File(documentIRI.toURI());
                     locPara.append(file.getAbsolutePath(), foreground);
                     locPara.addLink(new LinkSpan(new FileLink(file), new Span(pos, locPara.getLength())));

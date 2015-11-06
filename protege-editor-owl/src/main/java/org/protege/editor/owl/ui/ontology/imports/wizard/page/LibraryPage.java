@@ -1,28 +1,9 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction;
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction;
 import org.protege.editor.owl.ui.library.OntologyLibraryPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.GetImportsVisitor;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
@@ -30,6 +11,14 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 
 /**

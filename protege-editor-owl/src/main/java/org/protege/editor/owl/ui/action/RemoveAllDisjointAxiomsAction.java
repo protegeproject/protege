@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.UIHelper;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

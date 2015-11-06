@@ -1,9 +1,8 @@
 package org.protege.editor.owl.ui.table;
 
-import java.awt.Color;
-
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.TableModel;
+import java.awt.*;
 
 
 /**

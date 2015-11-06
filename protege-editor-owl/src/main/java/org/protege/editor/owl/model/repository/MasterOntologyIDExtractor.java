@@ -1,13 +1,14 @@
 package org.protege.editor.owl.model.repository;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.base.Optional;
 import org.protege.editor.owl.model.repository.extractors.LastResortExtractor;
 import org.protege.editor.owl.model.repository.extractors.OntologyIdExtractor;
 import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     
@@ -18,26 +19,17 @@ public class MasterOntologyIDExtractor implements OntologyIdExtractor {
         extractors.add(new RdfXmlExtractor());
         extractors.add(new LastResortExtractor());
     }
-    
-    public MasterOntologyIDExtractor(URI location) {
-        this();
-        setPhysicalAddress(location);
-    }
 
-    public OWLOntologyID getOntologyId() {
-        OWLOntologyID id = null;
+    public Optional<OWLOntologyID> getOntologyId(URI location) {
+        Optional<OWLOntologyID> id = Optional.absent();
         for (OntologyIdExtractor extractor : extractors) {
-            if ((id = extractor.getOntologyId()) != null) {
+            id = extractor.getOntologyId(location);
+            if (id.isPresent()) {
                 break;
             }
         }
         return id;
     }
 
-    public void setPhysicalAddress(URI location) {
-        for (OntologyIdExtractor extractor : extractors) {
-            extractor.setPhysicalAddress(location);
-        }
-    }
 
 }

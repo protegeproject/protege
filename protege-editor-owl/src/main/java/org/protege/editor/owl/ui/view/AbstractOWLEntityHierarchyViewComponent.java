@@ -1,20 +1,5 @@
 package org.protege.editor.owl.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeCellRenderer;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -27,6 +12,16 @@ import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
+
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author: drummond<br>

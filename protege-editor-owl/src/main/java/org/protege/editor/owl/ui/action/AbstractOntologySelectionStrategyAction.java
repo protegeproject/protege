@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JMenuItem;
-
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 /**
  * Author: drummond<br>

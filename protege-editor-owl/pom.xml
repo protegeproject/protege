@@ -31,15 +31,22 @@
 
         <dependency>
             <groupId>edu.stanford.protege</groupId>
-            <artifactId>protege-owlapi-extensions</artifactId>
-            <version>3.2.7</version>
+            <artifactId>org.protege.xmlcatalog</artifactId>
+            <version>1.0.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sourceforge.owlapi</groupId>
+                    <artifactId>owlapi-osgidistribution</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>edu.stanford.protege</groupId>
-            <artifactId>org.protege.xmlcatalog</artifactId>
-            <version>1.0.5</version>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-osgidistribution</artifactId>
+            <version>4.1.1</version>
         </dependency>
+
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -106,7 +113,7 @@
                         <Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
                         <Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
                         <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                        <Embed-Dependency>protege-owlapi-extensions, org.protege.xmlcatalog</Embed-Dependency>
+                        <Embed-Dependency>org.protege.xmlcatalog</Embed-Dependency>
                         <Export-Package>
                             org.protege.editor.owl.*;version=${project.version},
                             org.protege.xmlcatalog.*

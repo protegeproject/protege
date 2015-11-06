@@ -9,11 +9,7 @@ import org.semanticweb.owlapi.model.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.util.Map;
 
 /**
  * Author: drummond<br>

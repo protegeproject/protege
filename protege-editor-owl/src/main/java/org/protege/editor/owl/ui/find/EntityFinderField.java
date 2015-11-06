@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.find;
 
 import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchResult;
@@ -15,9 +14,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
 
 /**

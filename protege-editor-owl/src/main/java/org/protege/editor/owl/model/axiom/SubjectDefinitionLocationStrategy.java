@@ -2,7 +2,9 @@ package org.protege.editor.owl.model.axiom;
 
 import com.google.common.base.Optional;
 import org.protege.editor.owl.model.HasActiveOntology;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.List;
 import java.util.Set;

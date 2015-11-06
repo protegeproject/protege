@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model;
 
-import org.protege.editor.core.ui.error.ErrorLogListener;
-import org.slf4j.Logger;
+import com.google.common.base.Optional;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -15,6 +14,7 @@ import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.protege.editor.core.ui.error.ErrorLog;
+import org.protege.editor.core.ui.error.ErrorLogListener;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
@@ -45,6 +45,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -776,10 +777,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
 
         String ontShortName = mngr.getRendering(activeOntology);
-        IRI defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
+        Optional<IRI> defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
         String documentIRIPart = "";
-        if (defaultDocumentIRI != null) {
-            documentIRIPart = " (" + defaultDocumentIRI + ") ";
+        if (defaultDocumentIRI.isPresent()) {
+            documentIRIPart = " (" + defaultDocumentIRI.get() + ") ";
         }
         return ontShortName + documentIRIPart + " : [" + location + "]";
     }

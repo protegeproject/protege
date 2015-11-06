@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;

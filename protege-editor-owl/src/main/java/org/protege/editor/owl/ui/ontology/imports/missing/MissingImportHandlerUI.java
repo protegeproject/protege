@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-
-import javax.swing.JOptionPane;
-
-import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
@@ -15,7 +8,13 @@ import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxRenderer;
 
 import java.io.Writer;
 /*
@@ -21,7 +21,7 @@ public class ManchesterSyntaxRenderingViewComponent extends AbstractOntologyRend
     private static final long serialVersionUID = 5547044902285761296L;
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
-        ManchesterOWLSyntaxRenderer ren = new ManchesterOWLSyntaxRenderer(getOWLModelManager().getOWLOntologyManager());
+        ManchesterOWLSyntaxRenderer ren = new ManchesterOWLSyntaxRenderer();
         ren.render(ontology, writer);
         writer.flush();
     }

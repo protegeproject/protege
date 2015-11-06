@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
+import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -40,7 +41,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
             label.setIcon(editorKit.getWorkspace().getOWLIconProvider().getIcon((OWLOntology) value));
         }
         else if (value instanceof IRI) {
-            label.setText(getOntologyLabelText((IRI) value, editorKit.getModelManager()));
+            label.setText(getOntologyLabelText(Optional.of((IRI)value), editorKit.getModelManager()));
         }
         return label;
     }
@@ -51,25 +52,27 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
             return ont.getOntologyID().toString();
         }
 
-        final IRI iri = ont.getOntologyID().getDefaultDocumentIRI();
+        final Optional<IRI> iri = ont.getOntologyID().getDefaultDocumentIRI();
 
         return getOntologyLabelText(iri, mngr);
     }
 
-    public static String getOntologyLabelText(IRI iri, OWLModelManager mngr) {
+    public static String getOntologyLabelText(Optional<IRI> iri, OWLModelManager mngr) {
 
-        String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri);
-
-        if (shortForm != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<html><body>");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><body>");
+        if (iri.isPresent()) {
+            String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri.get());
             sb.append(shortForm);
-            sb.append(" <font color=\"gray\">(");
-            sb.append(iri.toString());
-            sb.append(")</font></body></html>");
-            return sb.toString();
         }
-
-        return iri.toString();
+        else {
+            sb.append("Anonymous ontology");
+        }
+        sb.append(" <font color=\"gray\">(");
+        if (iri.isPresent()) {
+            sb.append(iri.toString());
+        }
+        sb.append(")</font></body></html>");
+        return sb.toString();
     }
 }

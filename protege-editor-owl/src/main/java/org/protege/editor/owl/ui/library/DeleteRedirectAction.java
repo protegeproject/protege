@@ -1,17 +1,14 @@
 package org.protege.editor.owl.ui.library;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
-import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.NextCatalogEntry;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.event.ActionEvent;
 
 public class DeleteRedirectAction extends AbstractAction {
     private JTree tree;

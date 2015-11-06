@@ -1,16 +1,14 @@
 package org.protege.editor.owl.model.history;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import javax.swing.JList;
-
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 
 /**

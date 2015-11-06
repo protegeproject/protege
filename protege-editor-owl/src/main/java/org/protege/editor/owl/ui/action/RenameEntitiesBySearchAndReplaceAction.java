@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.rename.RenameEntitiesPanel;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 /*
 * Copyright (C) 2007, University of Manchester

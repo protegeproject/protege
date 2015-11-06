@@ -8,11 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.util.Set;
 
 /**
  * Author: drummond<br>

@@ -1,33 +1,18 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.inference.NoOpReasoner;
-import org.protege.editor.owl.model.inference.ReasonerDiedException;
-import org.protege.editor.owl.model.inference.ReasonerStatus;
-import org.protege.editor.owl.model.inference.ReasonerUtilities;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -94,7 +79,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
 
 
     public Set<OWLClass> getChildren(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
             if(!getReasoner().isConsistent()) {
                 return Collections.emptySet();
@@ -120,13 +105,13 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     		return subs;
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     public Set<OWLClass> getDescendants(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
         try {
             if(!getReasoner().isConsistent()) {
                 return Collections.emptySet();
@@ -134,13 +119,13 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     			return getReasoner().getSubClasses(object, false).getFlattened();
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     	public Set<OWLClass> getParents(OWLClass object) {
-    		getReadLock().lock();
+//    		getReadLock().lock();
     		try {
                 if(!getReasoner().isConsistent()) {
                     return Collections.emptySet();
@@ -157,13 +142,13 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     			return parents;
     		}
     		finally {
-                getReadLock().unlock();
+//                getReadLock().unlock();
     		}
     	}
 
 
     public Set<OWLClass> getAncestors(OWLClass object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
             if(!getReasoner().isConsistent()) {
                 return Collections.emptySet();
@@ -171,13 +156,13 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     		return getReasoner().getSuperClasses(object, false).getFlattened();
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
 
     public Set<OWLClass> getEquivalents(OWLClass object) {
-        getReadLock().lock();
+//        getReadLock().lock();
         try {
             if(!getReasoner().isConsistent()) {
                 return Collections.emptySet();
@@ -190,7 +175,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
             return equivalents;
         }
         finally {
-            getReadLock().unlock();
+//            getReadLock().unlock();
         }
     }
 
