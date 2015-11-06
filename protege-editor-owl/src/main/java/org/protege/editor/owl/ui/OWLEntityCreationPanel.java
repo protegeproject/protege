@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui;
 
 import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -11,9 +10,9 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.Namespaces;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -187,9 +186,9 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         OWLModelManager owlModelManager = owlEditorKit.getOWLModelManager();
         OWLOntologyManager owlOntologyManager = owlModelManager.getOWLOntologyManager();
         for(OWLOntology ont : owlModelManager.getActiveOntologies()) {
-            OWLOntologyFormat format = owlOntologyManager.getOntologyFormat(ont);
-            if(format.isPrefixOWLOntologyFormat()) {
-                PrefixOWLOntologyFormat prefixFormat = format.asPrefixOWLOntologyFormat();
+            OWLDocumentFormat format = owlOntologyManager.getOntologyFormat(ont);
+            if(format != null && format.isPrefixOWLOntologyFormat()) {
+                PrefixDocumentFormat prefixFormat = format.asPrefixOWLOntologyFormat();
                 for(String prefix : prefixFormat.getPrefixNames()) {
                     if(entityName.startsWith(prefix)) {
                         return true;
@@ -330,15 +329,15 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         String text = getEntityName();
         OWLOntology activeOntology = owlEditorKit.getModelManager().getActiveOntology();
         OWLOntologyManager manager = owlEditorKit.getModelManager().getOWLOntologyManager();
-        OWLOntologyFormat format = manager.getOntologyFormat(activeOntology);
+        OWLDocumentFormat format = manager.getOntologyFormat(activeOntology);
         for (Namespaces ns : Namespaces.values()) {
             if (text.startsWith(ns.name().toLowerCase() + ":")) {
                 return IRI.create(ns.toString() + text.substring(ns.name().length() + 1));
             }
         }
         int colonIndex = text.indexOf(':');
-        if (colonIndex >= 0 && format.isPrefixOWLOntologyFormat()) {
-            PrefixOWLOntologyFormat prefixes = format.asPrefixOWLOntologyFormat();
+        if (colonIndex >= 0 && format != null && format.isPrefixOWLOntologyFormat()) {
+            PrefixDocumentFormat prefixes = format.asPrefixOWLOntologyFormat();
             String prefixName = text.substring(0, colonIndex + 1);
             String prefix = prefixes.getPrefix(prefixName);
             if (prefix != null) {

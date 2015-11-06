@@ -1,13 +1,5 @@
 package org.protege.editor.owl.model.library.folder;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.*;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
@@ -21,7 +13,13 @@ import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.*;
 
 
 public class FolderGroupManager extends CatalogEntryManager {

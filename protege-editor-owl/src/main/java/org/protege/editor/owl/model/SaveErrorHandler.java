@@ -3,11 +3,7 @@ package org.protege.editor.owl.model;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
-import java.net.URI;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.net.URI;
 
 /**
  * Author: drummond<br>

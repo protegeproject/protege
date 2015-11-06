@@ -16,7 +16,8 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.*;
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.DO_NOT_RENDER_COMPOUND_ANNOTATIONS_INLINE;
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
 
 
 /**

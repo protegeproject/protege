@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 /*

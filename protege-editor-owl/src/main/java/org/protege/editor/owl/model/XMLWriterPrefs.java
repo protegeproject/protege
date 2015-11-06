@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model;
 
 import org.protege.editor.core.prefs.PreferencesManager;
-import org.coode.xml.XMLWriterPreferences;
+import org.semanticweb.owlapi.rdf.rdfxml.renderer.XMLWriterPreferences;
 /*
  * Copyright (C) 2007, University of Manchester
  *

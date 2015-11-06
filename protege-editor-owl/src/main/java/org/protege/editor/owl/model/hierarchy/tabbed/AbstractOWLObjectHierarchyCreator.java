@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import org.protege.editor.core.ProtegeApplication;
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
@@ -81,8 +80,8 @@ public abstract class AbstractOWLObjectHierarchyCreator {
 
     protected IRI getIRI(String s) {
         try {
-            final URI defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI().toURI();
-            return IRI.create(new URI(defaultDocURI.getScheme(), defaultDocURI.getSchemeSpecificPart(), s));
+            final Optional<IRI> defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI();
+            return IRI.create(new URI(defaultDocURI.get().getScheme(), defaultDocURI.get().toURI().getSchemeSpecificPart(), s));
         }
         catch (Exception e) {
             LoggerFactory.getLogger(AbstractOWLObjectHierarchyCreator.class)

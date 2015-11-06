@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.CoerceConstantsIntoDataPropertyRange;
+import org.semanticweb.owlapi.change.CoerceConstantsIntoDataPropertyRange;
 
 import java.awt.event.ActionEvent;
 /*

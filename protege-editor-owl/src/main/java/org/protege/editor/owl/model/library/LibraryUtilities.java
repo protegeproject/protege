@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.library;
 
+import org.protege.xmlcatalog.entry.Entry;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.protege.xmlcatalog.entry.Entry;
 
 public class LibraryUtilities {
 	public static final String VERSION_PROPERTY = "version";

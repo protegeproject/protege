@@ -1,30 +1,11 @@
 package org.protege.editor.owl.model.cache;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLEntityVisitor;
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import java.util.*;
 
 
 /**
@@ -76,7 +57,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         for (OWLOntologyChange change : changes) {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
-                changedEntities.addAll(chg.getEntities());
+                changedEntities.addAll(chg.getSignature());
             }
         }
         for (OWLEntity ent : changedEntities) {

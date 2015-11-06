@@ -1,13 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
-import org.protege.editor.core.ui.util.OpenRequestHandler;
-import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.OWLEditorKitFactory;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;

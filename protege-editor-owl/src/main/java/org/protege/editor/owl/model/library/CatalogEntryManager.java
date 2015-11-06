@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.library;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**

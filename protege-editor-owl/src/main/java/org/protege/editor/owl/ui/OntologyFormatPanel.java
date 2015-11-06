@@ -1,27 +1,16 @@
 package org.protege.editor.owl.ui;
 
-import java.awt.BorderLayout;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.formats.*;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import org.coode.owlapi.latex.LatexOntologyFormat;
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.coode.owlapi.obo.parser.OBOOntologyFormat;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
-
-import de.uulm.ecs.ai.owlapi.krssparser.KRSS2OntologyFormat;
 
 
 /**
@@ -40,31 +29,33 @@ public class OntologyFormatPanel extends JPanel {
      */
     private static final long serialVersionUID = 1207904671457290130L;
 
-    private JComboBox formatComboBox;
+    private JComboBox<OWLDocumentFormat> formatComboBox;
 
     private JLabel messageLabel;
 
 
     public OntologyFormatPanel() {
-        List<Object> formats = new ArrayList<Object>();
-        formats.add(new RDFXMLOntologyFormat());
-        formats.add(new OWLXMLOntologyFormat());
-        formats.add(new OWLFunctionalSyntaxOntologyFormat());
-        formats.add(new ManchesterOWLSyntaxOntologyFormat());
+        List<OWLDocumentFormat> formats = new ArrayList<>();
+        formats.add(new RDFXMLDocumentFormat());
+        formats.add(new OWLXMLDocumentFormat());
+        formats.add(new FunctionalSyntaxDocumentFormat());
+        formats.add(new ManchesterSyntaxDocumentFormat());
         
-        formats.add(new OBOOntologyFormat());
-        formats.add(new KRSS2OntologyFormat());
-        formats.add(new LatexOntologyFormat());
-        formats.add(new TurtleOntologyFormat());
+        formats.add(new OBODocumentFormat());
+        formats.add(new LatexDocumentFormat());
+        formats.add(new TurtleDocumentFormat());
+        formats.add(new TrigDocumentFormat());
+        formats.add(new TrixDocumentFormat());
+        formats.add(new RDFJsonLDDocumentFormat());
 
-        formatComboBox = new JComboBox(formats.toArray());
+        formatComboBox = new JComboBox<>(formats.toArray(new OWLDocumentFormat [formats.size()]));
         setLayout(new BorderLayout(12, 12));
         add(formatComboBox, BorderLayout.SOUTH);
         formatComboBox.setSelectedItem(formats.get(0));
     }
 
 
-    public void setSelectedFormat(OWLOntologyFormat format) {
+    public void setSelectedFormat(OWLDocumentFormat format) {
         if (format == null) {
             formatComboBox.setSelectedIndex(0);
         }
@@ -89,8 +80,8 @@ public class OntologyFormatPanel extends JPanel {
     }
 
 
-    public OWLOntologyFormat getSelectedFormat(){
-        return (OWLOntologyFormat)formatComboBox.getSelectedItem();
+    public OWLDocumentFormat getSelectedFormat(){
+        return (OWLDocumentFormat) formatComboBox.getSelectedItem();
     }
 
 
@@ -108,18 +99,18 @@ public class OntologyFormatPanel extends JPanel {
      * @deprecated Use the other showDialog instead.  This one doesn't explain itself.
      */
     @Deprecated
-    public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat) {
+    public static OWLDocumentFormat showDialog(OWLEditorKit editorKit, OWLDocumentFormat defaultFormat) {
         return showDialog(editorKit, defaultFormat, null);
     }
 
     
-    public static OWLOntologyFormat showDialog(OWLEditorKit editorKit, OWLOntologyFormat defaultFormat, String message) {
+    public static OWLDocumentFormat showDialog(OWLEditorKit editorKit, OWLDocumentFormat defaultFormat, String message) {
     	OntologyFormatPanel panel = new OntologyFormatPanel();
     	if (message != null){
     		panel.setMessage(message);
     	}
     	panel.setSelectedFormat(defaultFormat);
-    	OWLOntologyFormat selectedFormat = null;
+        OWLDocumentFormat selectedFormat = null;
     	do {
     		int ret = JOptionPaneEx.showConfirmDialog(editorKit.getWorkspace(),
     				"Select an ontology format",
@@ -137,8 +128,8 @@ public class OntologyFormatPanel extends JPanel {
     	return selectedFormat;
     }
     
-    private static boolean isFormatOk(OWLEditorKit editorKit, OWLOntologyFormat format) {
-    	if (!(format instanceof ManchesterOWLSyntaxOntologyFormat)) {
+    private static boolean isFormatOk(OWLEditorKit editorKit, OWLDocumentFormat format) {
+    	if (!(format instanceof ManchesterSyntaxDocumentFormat)) {
     		return true;
     	}
     	int userSaysOk = JOptionPane.showConfirmDialog(editorKit.getOWLWorkspace(), 

@@ -1,18 +1,14 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.slf4j.Logger;
-import org.protege.owlapi.model.WriteSafeOWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 /**
  * Author: Matthew Horridge<br>
@@ -39,7 +35,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      */
     private List<OWLObjectHierarchyProviderListener<N>> listeners;
 
-    private WriteSafeOWLOntologyManager manager;
+    private OWLOntologyManager manager;
 
 
     /*
@@ -49,11 +45,11 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      * WriteSafeOWLOntologyManager.
      */
     protected AbstractOWLObjectHierarchyProvider(OWLOntologyManager owlOntologyManager) {
-        if (!(owlOntologyManager instanceof WriteSafeOWLOntologyManager)) { // I know this is ugly but it fixes problems elsewhere...
-        	throw new IllegalStateException("Hierarchy providers must have a thread safe ontology mananger.");
-        }
-        this.manager = (WriteSafeOWLOntologyManager) owlOntologyManager;
-        listeners = new ArrayList<OWLObjectHierarchyProviderListener<N>>();
+//        if (!(owlOntologyManager instanceof WriteSafeOWLOntologyManager)) { // I know this is ugly but it fixes problems elsewhere...
+//        	throw new IllegalStateException("Hierarchy providers must have a thread safe ontology mananger.");
+//        }
+        this.manager = owlOntologyManager;
+        listeners = new ArrayList<>();
         fireEvents = true;
     }
 
@@ -62,17 +58,17 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         return manager;
     }
     
-	protected ReentrantReadWriteLock getReadWriteLock() {
-		return manager.getReadWriteLock();
-	}
-	
-	protected ReadLock getReadLock() {
-		return manager.getReadLock();
-	}
-	
-	protected WriteLock getWriteLock() {
-		return manager.getWriteLock();		
-	}
+//	protected ReentrantReadWriteLock getReadWriteLock() {
+//		return manager.getReadWriteLock();
+//	}
+//
+//	protected ReadLock getReadLock() {
+//		return manager.getReadLock();
+//	}
+//
+//	protected WriteLock getWriteLock() {
+//		return manager.getWriteLock();
+//	}
 
 
     public void dispose() {
@@ -83,14 +79,14 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public Set<N> getAncestors(N object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		Set<N> results = new HashSet<N>();
     		getAncestors(results, object);
     		return results;
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -106,14 +102,14 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public Set<N> getDescendants(N object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		Set<N> results = new HashSet<N>();
     		getDescendants(results, object);
     		return results;
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -139,12 +135,12 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      * @return A <code>Set</code> of <code>List</code>s of <code>N</code>s
      */
     public Set<List<N>> getPathsToRoot(N obj) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try { 	
     		return setOfPaths(obj, new HashSet<N>());
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 

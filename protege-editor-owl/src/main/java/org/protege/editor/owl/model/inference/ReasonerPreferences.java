@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class ReasonerPreferences {
     public enum OptionalInferenceTask {

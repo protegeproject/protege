@@ -99,11 +99,7 @@ public class OWLClassGeneralClassAxiomFrameSection extends AbstractOWLFrameSecti
             return false;
         }
         OWLAxiom axiom = change.getAxiom();
-        return axiom.accept(new OWLAxiomVisitorExAdapter<Boolean>() {
-            @Override
-            protected Boolean handleDefault(OWLAxiom axiom) {
-                return false;
-            }
+        return axiom.accept(new OWLAxiomVisitorExAdapter<Boolean>(false) {
 
             @Override
             public Boolean visit(OWLSubClassOfAxiom axiom) {

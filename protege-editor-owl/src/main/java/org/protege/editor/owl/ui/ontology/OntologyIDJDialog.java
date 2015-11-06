@@ -1,26 +1,14 @@
 package org.protege.editor.owl.ui.ontology;
 
-import java.awt.BorderLayout;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 /**

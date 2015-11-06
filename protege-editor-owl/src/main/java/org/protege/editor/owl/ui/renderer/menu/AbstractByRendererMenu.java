@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui.renderer.menu;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenuItem;
-
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public abstract class AbstractByRendererMenu extends ProtegeOWLAction {
 	private static final long serialVersionUID = -143138190636320921L;

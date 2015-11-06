@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.refactor.ontology.OntologyMerger;
 import org.protege.editor.owl.ui.ontology.wizard.merge.MergeOntologiesWizard;

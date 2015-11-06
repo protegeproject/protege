@@ -1,11 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -13,6 +7,12 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>

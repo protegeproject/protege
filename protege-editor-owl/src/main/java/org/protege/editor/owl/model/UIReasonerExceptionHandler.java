@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
 import org.slf4j.LoggerFactory;
 

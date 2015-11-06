@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
@@ -10,6 +9,7 @@ import org.protege.editor.owl.model.classexpression.OWLExpressionParserException
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

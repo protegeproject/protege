@@ -1,15 +1,14 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
-import java.awt.BorderLayout;
-import java.util.HashSet;
-
-import javax.swing.JComponent;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.protege.editor.core.ui.util.FilePathPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.HashSet;
 
 
 /**

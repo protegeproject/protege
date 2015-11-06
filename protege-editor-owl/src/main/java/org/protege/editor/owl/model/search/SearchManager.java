@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.search;
 
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -12,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.ProgressMonitor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

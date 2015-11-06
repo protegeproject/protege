@@ -1,15 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import java.awt.Component;
-import java.awt.TextComponent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.FocusManager;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 /**

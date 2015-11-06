@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.selector;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.list.OWLObjectList;

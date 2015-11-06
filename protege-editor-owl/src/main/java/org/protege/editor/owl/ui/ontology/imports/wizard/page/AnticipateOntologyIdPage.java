@@ -1,20 +1,6 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import java.awt.BorderLayout;
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-
-import org.protege.editor.core.ProtegeApplication;
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
@@ -26,6 +12,14 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -36,9 +30,10 @@ import org.slf4j.LoggerFactory;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
-	private static final long serialVersionUID = -1944232166721256262L;
 
-	public static final String ID = "AnticipateOntologyIdPage";
+    private static final long serialVersionUID = -1944232166721256262L;
+
+    public static final String ID = "AnticipateOntologyIdPage";
 
     private JProgressBar progressBar;
 
@@ -57,7 +52,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     public Object getNextPanelDescriptor() {
         return needsImportPage() ? SelectImportLocationPage.ID : ImportConfirmationPage.ID;
     }
-    
+
     private boolean needsImportPage() {
         OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
         Set<ImportInfo> imports = wizard.getImports();
@@ -65,36 +60,36 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
             return false;
         }
         ImportInfo parameters = imports.iterator().next();
-        
+
         List<IRI> importOptions = new ArrayList<IRI>();
-            
-    	OWLOntologyID id = parameters.getOntologyID();
-    	if (id != null && !id.isAnonymous()) {
-    	    importOptions.add(id.getOntologyIRI());
-    	    if (id.getVersionIRI() != null && !importOptions.contains(id.getVersionIRI())) {
-    	        importOptions.add(id.getVersionIRI());
-    	    }
-    	}
-        URI physicalLocation = parameters.getPhysicalLocation();
-        if (!UIUtil.isLocalFile(physicalLocation) && !importOptions.contains(physicalLocation)) {
-    	    importOptions.add(IRI.create(physicalLocation));
-    	}
-    	if (UIUtil.isLocalFile(physicalLocation) && importOptions.isEmpty()) {
-    	    File f = new File(physicalLocation);
-    	    
-    	    Set<URI> bases = new XmlBaseAlgorithm().getSuggestions(f);
-    	    if (bases.size()  == 1) {
-    	        importOptions.add(IRI.create(bases.iterator().next()));
-    	    }
-    	}
-    	
-    	if (!wizard.isImportsAreFinal() && !wizard.isCustomizeImports() && importOptions.size() >  0) {
-    	    parameters.setImportLocation(importOptions.get(0));
-    	    return false;
-    	}
-    	else {
-    	    return !wizard.isImportsAreFinal();
-    	}
+
+        OWLOntologyID id = parameters.getOntologyID();
+        if (id != null && !id.isAnonymous()) {
+            importOptions.add(id.getOntologyIRI().get());
+            if (id.getVersionIRI().isPresent() && !importOptions.contains(id.getVersionIRI().get())) {
+                importOptions.add(id.getVersionIRI().get());
+            }
+        }
+        IRI physicalLocation = IRI.create(parameters.getPhysicalLocation());
+        if (!UIUtil.isLocalFile(physicalLocation.toURI()) && !importOptions.contains(physicalLocation)) {
+            importOptions.add(IRI.create(physicalLocation.toString()));
+        }
+        if (UIUtil.isLocalFile(physicalLocation.toURI()) && importOptions.isEmpty()) {
+            File f = new File(physicalLocation.toURI());
+
+            Set<URI> bases = new XmlBaseAlgorithm().getSuggestions(f);
+            if (bases.size() == 1) {
+                importOptions.add(IRI.create(bases.iterator().next()));
+            }
+        }
+
+        if (!wizard.isImportsAreFinal() && !wizard.isCustomizeImports() && importOptions.size() > 0) {
+            parameters.setImportLocation(importOptions.get(0));
+            return false;
+        }
+        else {
+            return !wizard.isImportsAreFinal();
+        }
     }
 
     protected void createUI(final JComponent parent) {
@@ -109,25 +104,24 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
 
 
     protected void checkImport() {
-    	for (ImportInfo parameters : ((OntologyImportWizard) getWizard()).getImports()) {
-    		if (parameters.getOntologyID() != null) {
-    			continue;
-    		}
-    		try {
-    			MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor(parameters.getPhysicalLocation());
-    			OWLOntologyID id = extractor.getOntologyId();
-    			if (id != null) {
-    				parameters.setOntologyID(id);
-    			}
-    			else {
-    				parameters.setOntologyID(null);
-    			}
-    		}
-    		catch (Throwable t) {
+        for (ImportInfo parameters : ((OntologyImportWizard) getWizard()).getImports()) {
+            if (parameters.getOntologyID() != null) {
+                continue;
+            }
+            try {
+                MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
+                Optional<OWLOntologyID> id = extractor.getOntologyId(parameters.getPhysicalLocation());
+                if (id.isPresent()) {
+                    parameters.setOntologyID(id.get());
+                }
+                else {
+                    parameters.setOntologyID(null);
+                }
+            } catch (Throwable t) {
                 LoggerFactory.getLogger(AnticipateOntologyIdPage.class)
                         .error("An error occurred whilst extracting the Ontology Id from the imported ontology: {}", t);
-    		}
-    	}
+            }
+        }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 getWizard().setCurrentPanel(getNextPanelDescriptor());

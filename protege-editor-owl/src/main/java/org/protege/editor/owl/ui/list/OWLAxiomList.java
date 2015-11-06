@@ -1,25 +1,17 @@
 package org.protege.editor.owl.ui.list;
 
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
-
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
-import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.*;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**

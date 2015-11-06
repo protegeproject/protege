@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.classexpression.OWLExpressionParserException
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
 import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserImpl;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 
 
@@ -35,7 +36,7 @@ class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
 
     public OWLClassAxiom createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        ManchesterOWLSyntaxParserImpl parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return parser.parseClassAxiom();

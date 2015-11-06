@@ -1,22 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import java.awt.BorderLayout;
-import java.io.File;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
@@ -26,6 +9,15 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
 
 
 /**

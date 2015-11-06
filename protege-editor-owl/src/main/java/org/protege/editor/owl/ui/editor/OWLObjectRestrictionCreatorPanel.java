@@ -122,9 +122,9 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         private RestrictionCreator<OWLObjectProperty, OWLClass> t;
         private int cardinality = -1;
 
-        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression, OWLObjectPropertyExpression, OWLClassExpression> r) {
+        private void handleRestriction(OWLQuantifiedRestriction<OWLClassExpression> r) {
             if (!r.getProperty().isAnonymous() && !r.getFiller().isAnonymous()){
-                p = r.getProperty().asOWLObjectProperty();
+                p = (OWLObjectProperty) r.getProperty();
                 f = r.getFiller().asOWLClass();
                 isAcceptable = true;
             }

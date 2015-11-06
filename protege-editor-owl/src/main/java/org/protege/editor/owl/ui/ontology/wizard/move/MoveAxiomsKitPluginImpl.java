@@ -5,7 +5,6 @@ import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
 /*
  * Copyright (C) 2008, University of Manchester
  *

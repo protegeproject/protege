@@ -6,11 +6,7 @@ import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
-import java.awt.*;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.awt.*;
 
 /**
  * Author: drummond<br>

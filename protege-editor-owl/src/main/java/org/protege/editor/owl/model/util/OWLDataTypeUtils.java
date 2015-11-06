@@ -1,15 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import org.semanticweb.owlapi.vocab.XSDVocabulary;
+
+import java.util.HashSet;
+import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *

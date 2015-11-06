@@ -1,21 +1,18 @@
 package org.protege.editor.owl.ui.explanation;
 
-import java.awt.Frame;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.*;
-
-import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ExplanationManager {
 

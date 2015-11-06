@@ -6,7 +6,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;

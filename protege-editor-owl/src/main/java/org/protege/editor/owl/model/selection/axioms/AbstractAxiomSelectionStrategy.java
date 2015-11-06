@@ -3,11 +3,7 @@ package org.protege.editor.owl.model.selection.axioms;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.List;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.util.List;
 
 /**
  * Author: drummond<br>

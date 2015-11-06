@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.util.Map;
-
 import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.PrefixManager;
+
+import java.util.Map;
 
 /**
  * Author: Matthew Horridge<br>

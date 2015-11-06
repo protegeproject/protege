@@ -1,14 +1,8 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.*;
-import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /*
  * This is abstract but has no subclasses.  Looks like dead code?  I am not modifying this for thread safety yet.

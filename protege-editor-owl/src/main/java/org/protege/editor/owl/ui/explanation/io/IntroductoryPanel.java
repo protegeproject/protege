@@ -1,27 +1,16 @@
 package org.protege.editor.owl.ui.explanation.io;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.owl.OWLEditorKit;
+
+import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import javax.swing.text.html.HTMLDocument;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.owl.OWLEditorKit;
 
 public class IntroductoryPanel extends JPanel {
 	private static final long serialVersionUID = 2168617534333064174L;

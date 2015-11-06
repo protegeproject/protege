@@ -1,7 +1,7 @@
 package org.protege.editor.owl.util;
 
+import org.semanticweb.owlapi.functional.renderer.OWLFunctionalSyntaxRenderer;
 import org.slf4j.Logger;
-import org.coode.owlapi.functionalrenderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;

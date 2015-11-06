@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLEntity;
 

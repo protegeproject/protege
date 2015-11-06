@@ -1,10 +1,8 @@
 package org.protege.editor.owl.ui.inference;
 
-import javax.swing.JTextField;
-
-import org.slf4j.Logger;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 
 
 /**

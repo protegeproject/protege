@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
@@ -10,6 +9,7 @@ import org.semanticweb.owlapi.util.OWLEntityURIConverter;
 import org.semanticweb.owlapi.util.OWLEntityURIConverterStrategy;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -209,7 +209,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     public OWLAnnotationProperty getPreferredLabel() {
         final List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
-        IRI iri = iris.isEmpty() ? IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI()) : iris.get(0);
+        IRI iri = iris.isEmpty() ? OWLRDFVocabulary.RDFS_LABEL.getIRI() : iris.get(0);
         return mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
     }
 

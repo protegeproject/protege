@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrame;
-import org.protege.editor.owl.ui.frame.OWLGeneralClassAxiomsFrameSection;
 import org.semanticweb.owlapi.model.OWLClass;
 
 

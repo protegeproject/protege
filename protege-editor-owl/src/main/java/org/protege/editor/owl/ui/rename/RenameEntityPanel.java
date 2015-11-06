@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.rename;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;

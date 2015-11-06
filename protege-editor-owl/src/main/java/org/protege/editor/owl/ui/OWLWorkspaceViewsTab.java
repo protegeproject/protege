@@ -12,8 +12,6 @@ import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**

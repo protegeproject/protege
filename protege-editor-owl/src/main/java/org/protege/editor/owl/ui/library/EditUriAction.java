@@ -1,37 +1,22 @@
 package org.protege.editor.owl.ui.library;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import com.google.common.base.Optional;
+import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.UriEntry;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.owl.model.library.CatalogEntryManager;
-import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
-import org.protege.xmlcatalog.CatalogUtilities;
-import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.XmlBaseContext;
-import org.protege.xmlcatalog.entry.UriEntry;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.slf4j.LoggerFactory;
 
 
 public class EditUriAction extends AbstractAction {
@@ -210,11 +195,10 @@ public class EditUriAction extends AbstractAction {
                 ontologyNameField.setText(CALCULATING); // if it becomes multi-threaded
                 ontologyVersionField.setText(CALCULATING);
                 MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-                extractor.setPhysicalAddress(physicalLocation);
-                OWLOntologyID id = extractor.getOntologyId();
-                ontologyNameField.setText(id.getOntologyIRI().toString());
-                if (id.getVersionIRI() != null) {
-                    ontologyVersionField.setText(id.getVersionIRI().toString());
+                Optional<OWLOntologyID> id = extractor.getOntologyId(physicalLocation);
+                ontologyNameField.setText(id.get().getOntologyIRI().toString());
+                if (id.get().getVersionIRI().isPresent()) {
+                    ontologyVersionField.setText(id.get().getVersionIRI().get().toQuotedString());
                 }
                 else {
                     ontologyVersionField.setText(NO_VERSION);

@@ -2,11 +2,7 @@ package org.protege.editor.owl.ui.selector;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.semanticweb.owlapi.model.OWLEntity;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: drummond<br>

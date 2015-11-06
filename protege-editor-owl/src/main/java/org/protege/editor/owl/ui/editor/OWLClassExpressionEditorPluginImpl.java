@@ -2,9 +2,6 @@ package org.protege.editor.owl.ui.editor;
 
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
-import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.AxiomType;
 /*

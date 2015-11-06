@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 
 import javax.swing.*;
 import java.util.Collections;

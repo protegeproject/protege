@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.owl.ui.UIHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-
-import javax.swing.JOptionPane;
-
-import org.slf4j.Logger;
-import org.protege.editor.owl.ui.UIHelper;
-import org.slf4j.LoggerFactory;
 
 
 /**

@@ -8,20 +8,17 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
-import org.protege.editor.owl.model.util.OWLObjectRemover;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
 
-
-import java.util.List;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;

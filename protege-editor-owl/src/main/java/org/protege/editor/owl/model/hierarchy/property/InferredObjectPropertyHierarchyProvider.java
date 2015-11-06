@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.hierarchy.property;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author: drummond<br>
