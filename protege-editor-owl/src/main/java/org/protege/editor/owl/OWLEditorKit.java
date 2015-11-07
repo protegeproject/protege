@@ -236,7 +236,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
-        OWLOntology ont = getModelManager().createNewOntology(id, URI.create(id.getDefaultDocumentIRI().toString()));
+        OWLOntology ont = getModelManager().createNewOntology(id, URI.create(id.getDefaultDocumentIRI().get().toString()));
         OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
         owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
         return true;

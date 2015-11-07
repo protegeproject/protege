@@ -31,8 +31,8 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
         if(!isEntityRenamingChange(fromId, toId)) {
             return;
         }
-        String fromBase = fromId.getOntologyIRI().toString();
-        String toBase = toId.getOntologyIRI().toString();
+        String fromBase = fromId.getOntologyIRI().get().toString();
+        String toBase = toId.getOntologyIRI().get().toString();
         getEntitiesRenamings(ontology.getObjectPropertiesInSignature(false), fromBase, toBase, renameMap, limit);
         if(renameMap.size() >= limit) {
             return;

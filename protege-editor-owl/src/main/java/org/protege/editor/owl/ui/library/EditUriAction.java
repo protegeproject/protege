@@ -196,7 +196,7 @@ public class EditUriAction extends AbstractAction {
                 ontologyVersionField.setText(CALCULATING);
                 MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
                 Optional<OWLOntologyID> id = extractor.getOntologyId(physicalLocation);
-                ontologyNameField.setText(id.get().getOntologyIRI().toString());
+                ontologyNameField.setText(id.get().getOntologyIRI().get().toString());
                 if (id.get().getVersionIRI().isPresent()) {
                     ontologyVersionField.setText(id.get().getVersionIRI().get().toQuotedString());
                 }
