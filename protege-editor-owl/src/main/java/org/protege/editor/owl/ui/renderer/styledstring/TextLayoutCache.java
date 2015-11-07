@@ -4,6 +4,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -15,14 +17,14 @@ import java.text.AttributedString;
  */
 public class TextLayoutCache {
 
-    private AttributedString attributedString;
+    private final AttributedString attributedString;
 
     private FontRenderContext cachedFontRenderContext;
 
     private TextLayout cachedLayout;
 
     public TextLayoutCache(AttributedString attributedString) {
-        this.attributedString = attributedString;
+        this.attributedString = checkNotNull(attributedString);
     }
 
     public AttributedString getAttributedString() {
