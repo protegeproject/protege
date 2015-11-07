@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +32,8 @@ public class PrefixUtilities {
 		Set<String> prefixValues = new HashSet<String>();
 		for (OWLOntology ontology : ontologies) {
 			OWLDocumentFormat format = owlManager.getOntologyFormat(ontology);
-			if (format instanceof PrefixOWLOntologyFormat) {
-				PrefixOWLOntologyFormat newPrefixes = (PrefixOWLOntologyFormat) format;
+			if (format instanceof PrefixDocumentFormat) {
+				PrefixDocumentFormat newPrefixes = (PrefixDocumentFormat) format;
 				for (Entry<String, String> entry : newPrefixes.getPrefixName2PrefixMap().entrySet()) {
 					String prefixName = entry.getKey();
 					String prefix     = entry.getValue();
