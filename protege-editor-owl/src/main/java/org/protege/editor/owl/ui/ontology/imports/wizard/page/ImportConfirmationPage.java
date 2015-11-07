@@ -108,7 +108,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
             	ontologyNameLabel.setAlignmentX(LEFT_ALIGNMENT);
             	center.add(ontologyNameLabel);
 
-            	if (parameter.getOntologyID().getVersionIRI() != null) {
+            	if (parameter.getOntologyID().getVersionIRI().isPresent()) {
             		JLabel ontologyVersionLabel = new JLabel("Imported Ontology Version " + parameter.getOntologyID().getVersionIRI());
             		ontologyVersionLabel.setAlignmentX(LEFT_ALIGNMENT);
             		center.add(ontologyVersionLabel);
