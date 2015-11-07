@@ -29,10 +29,10 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -239,7 +239,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         OWLOntologyID id = createDefaultOntologyId();
         OWLOntology ont = getModelManager().createNewOntology(id, URI.create(id.getDefaultDocumentIRI().get().toString()));
         OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
-        owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
+        owlOntologyManager.setOntologyFormat(ont, new RDFXMLDocumentFormat());
         return true;
     }
 
@@ -295,10 +295,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             logger.warn("Please select a valid format");
             return false;
         }
-        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
-            PrefixOWLOntologyFormat oldPrefixes = (PrefixOWLOntologyFormat) oldFormat;
+        if (oldFormat instanceof PrefixDocumentFormat && format instanceof PrefixDocumentFormat) {
+            PrefixDocumentFormat oldPrefixes = (PrefixDocumentFormat) oldFormat;
             for (String name : oldPrefixes.getPrefixNames()) {
-                ((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
+                String prefix = oldPrefixes.getPrefix(name);
+                if (prefix != null) {
+                    ((PrefixDocumentFormat) format).setPrefix(name, prefix);
+                }
             }
         }
         File file = getSaveAsOWLFile(ont);

@@ -41,7 +41,7 @@ public class RdfExtractorConsumer implements RDFConsumer {
             return Optional.of(new OWLOntologyID(Optional.of(IRI.create(name)), Optional.of(IRI.create(version))));
         }
     }
-    
+
     public void logicalURI(IRI logicalURI) {
     	xmlBase = logicalURI;
     }
@@ -54,7 +54,7 @@ public class RdfExtractorConsumer implements RDFConsumer {
         }
         else if (predicate.equals(OWLRDFVocabulary.RDF_TYPE.toString()) &&
                 object.equals("http://www.w3.org/2002/07/owl#OntologyProperty")) {
-            ontologyProperties.add(subject);
+            ontologyProperties.add(subject.toString());
         }
         else if (predicate.equals(OWLRDFVocabulary.RDF_TYPE.toString()) &&
                 object.equals(OWLRDFVocabulary.OWL_ONTOLOGY.toString()) &&
