@@ -272,7 +272,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
                 OWLOntologyID id = activeOntology.getOntologyID();
 
                 Optional<IRI> ontologyIRI = id.getOntologyIRI();
-                String ontologyIRIString = ontologyIRI.toString();
+                String ontologyIRIString = ontologyIRI.get().toString();
                 if (ontologyIRI.isPresent()) {
                     if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
                         ontologyIRIField.setText(ontologyIRIString);
@@ -281,14 +281,14 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
                 Optional<IRI> versionIRI = id.getVersionIRI();
                 if (versionIRI.isPresent()) {
-                    String versionIRIString = versionIRI.toString();
+                    String versionIRIString = versionIRI.get().toString();
                     if (!ontologyVersionIRIField.getText().equals(versionIRIString)) {
                         ontologyVersionIRIField.setText(versionIRIString);
                     }
                 }
                 else {
                     ontologyVersionIRIField.setText("");
-                    if (ontologyIRI != null) {
+                    if (ontologyIRI.isPresent()) {
                         ontologyVersionIRIField.setGhostText("e.g. " + ontologyIRIString + (ontologyIRIString.endsWith("/") ? "1.0.0" : "/1.0.0"));
                     }
                 }
