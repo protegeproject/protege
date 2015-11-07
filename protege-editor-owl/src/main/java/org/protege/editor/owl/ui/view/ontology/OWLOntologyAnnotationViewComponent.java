@@ -336,12 +336,12 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             IRI ontologyIRI = IRI.create(ontURI);
             String versionIRIString = ontologyVersionIRIField.getText().trim();
             if (versionIRIString.isEmpty()) {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
 
             URI verURI = new URI(versionIRIString);
             IRI versionIRI = IRI.create(verURI);
-            return new OWLOntologyID(ontologyIRI, versionIRI);
+            return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
         }
         catch (URISyntaxException e) {
             ontologyIRIField.setErrorMessage(e.getReason());

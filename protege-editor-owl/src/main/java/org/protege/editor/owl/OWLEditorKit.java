@@ -1,5 +1,6 @@
 package org.protege.editor.owl;
 
+import com.google.common.base.Optional;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
@@ -222,7 +223,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @return The id.
      */
     private OWLOntologyID createDefaultOntologyId() {
-        return new OWLOntologyID(createFreshOntologyIRI());
+        return new OWLOntologyID(Optional.of(createFreshOntologyIRI()), Optional.<IRI>absent());
     }
 
     /**

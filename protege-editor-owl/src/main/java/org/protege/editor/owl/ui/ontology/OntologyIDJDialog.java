@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.ontology;
 
+import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -90,10 +91,10 @@ public class OntologyIDJDialog extends JPanel {
                 URI versionURI = new URI(versionIRIField.getText());
                 IRI versionIRI = IRI.create(versionURI);
 
-                return new OWLOntologyID(ontologyIRI, versionIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
             }
             else {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
         }
         catch (URISyntaxException e) {
