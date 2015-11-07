@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
@@ -189,12 +190,12 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
             String ontologyVersionIRIString = getOntologyVersionIRIString();
             if(ontologyVersionIRIString.isEmpty()) {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
             else {
                 URI versionURI = new URI(ontologyVersionIRIString);
                 IRI versionIRI = IRI.create(versionURI);
-                return new OWLOntologyID(ontologyIRI, versionIRI);
+                return new OWLOntologyID(Optional.<IRI>of(ontologyIRI), Optional.of(versionIRI));
             }
         } catch (URISyntaxException e) {
             return null;
