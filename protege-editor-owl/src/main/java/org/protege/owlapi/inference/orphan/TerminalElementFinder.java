@@ -1,12 +1,12 @@
 package org.protege.owlapi.inference.orphan;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * This class encapsulates a relation, <i>r: X &rarr; X</i>.  Its purpose is to calculate the set of terminal 
@@ -72,7 +72,8 @@ import org.apache.log4j.Logger;
  *
  */
 public class TerminalElementFinder<X extends Comparable<? super X>> {
-    private static Logger log = Logger.getLogger(TerminalElementFinder.class);
+
+    private static Logger logger = LoggerFactory.getLogger(TerminalElementFinder.class);
 
     private Relation<X> r;
     private Set<X> terminalElements = new HashSet<X>();
@@ -102,13 +103,13 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
     public void appendTerminalElements(Set<X> candidates) {
         equivalenceAlreadyCalculated.clear();
         for (X candidate : candidates) {
-            if (log.isDebugEnabled()) {
-                log.debug("calling build equivs at " + candidate + " with null path");
+            if (logger.isDebugEnabled()) {
+                logger.debug("calling build equivs at {} with null path ", candidate);
             }
             buildEquivalenceMapping(candidate, null);
-            if (log.isDebugEnabled()) {
-                log.debug("Call to build equivs completed at " + candidate);
-                equivalence.logEquivalences(log, Level.DEBUG);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Call to build equivs completed at {}", candidate);
+                equivalence.logEquivalences(logger);
             }
         }
         equivalenceAlreadyCalculated.clear();
@@ -128,9 +129,9 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
         }
         if (p != null && p.contains(x)) {
             equivalence.merge(p.getLoop(x));
-            if (log.isDebugEnabled()) {
-                log.debug("Found loop");
-                logLoop(p, x, Level.DEBUG);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Found loop");
+                logLoop(p, x);
             }
             return;
         }
@@ -142,14 +143,14 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
         }
         Path<X> newPath  = new Path<X>(p, x);
         for  (X y : relatedToX) {
-            if (log.isDebugEnabled()) {
-                log.debug("calling build equivs at " + y + " with path ");
-                logPath(newPath, Level.DEBUG);
+            if (logger.isDebugEnabled()) {
+                logger.debug("calling build equivs at {} with path ", y );
+                logPath(newPath);
             }
-            buildEquivalenceMapping(y,  newPath);
-            if (log.isDebugEnabled()) {
-                log.debug("Call to build equivs completed at " + y);
-                equivalence.logEquivalences(log, Level.DEBUG);
+            buildEquivalenceMapping(y, newPath);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Call to build equivs completed at {}", y);
+                equivalence.logEquivalences(logger);
             }
         }
         boolean terminal = true;
@@ -184,23 +185,23 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
         findTerminalElements(candidates);
     }
     
-    private void logPath(Path<X> p, Level level) {
-        if (log.isEnabledFor(level)) {
-            log.log(level, "Path Trace");
+    private void logPath(Path<X> p) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Path Trace");
             for  (Path<X> point = p; point != null; point = point.getNext()) {
-                log.log(level, "Pathelement = " + point.getObject());
+                logger.debug("Pathelement = {}", point.getObject());
             }
         }
     }
     
-    private void logLoop(Path<X> p, X x, Level level) {
-        if (log.isEnabledFor(level)) {
-            log.log(level, "Loop:" );
-            log.log(level, "Pathelement = " + x);
+    private void logLoop(Path<X> p, X x) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loop:" );
+            logger.debug("Pathelement = {}", x);
             for  (Path<X> point = p; !point.getObject().equals(x); point = point.getNext()) {
-                log.log(level, "Pathelement = " + point.getObject());
+                logger.debug("Pathelement = {}", point.getObject());
             }
-            log.log(level, "Pathelement = " + x);
+            logger.debug("Pathelement = {}", x);
         }
     }
 }

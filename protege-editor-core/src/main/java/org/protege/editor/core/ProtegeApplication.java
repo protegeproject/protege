@@ -358,21 +358,7 @@ public class ProtegeApplication implements BundleActivator {
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
     }
-
-//    /*
-//     * At the moment we are only checking the Logger state but in theory this method could
-//     * test other things also.  Regular users should never see this message.  The performance
-//     * impact of not configuring the Logger correctly is enormous.
-//     */
-//    private void checkConfiguration() {
-//        Logger rootLogger = Logger.getRootLogger();
-//        if (rootLogger.isDebugEnabled()) {
-//            JOptionPane.showMessageDialog(null, "Logger not initialized.\n" +
-//                    "This could have a major impact on performance.\n" +
-//                    "Use the -Dlog4j.configuration=\"file:/...\" jvm option.", "Performance Issue Detected", JOptionPane.WARNING_MESSAGE);
-//        }
-//    }
-
+    
     private void setupExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
