@@ -120,7 +120,6 @@
                         </Export-Package>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
-                            org.apache.log4j.*,
                             *
                         </Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

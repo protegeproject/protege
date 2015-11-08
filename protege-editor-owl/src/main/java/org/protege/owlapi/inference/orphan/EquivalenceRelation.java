@@ -1,5 +1,8 @@
 package org.protege.owlapi.inference.orphan;
 
+import org.protege.editor.core.log.LogBanner;
+import org.slf4j.Logger;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,26 +12,23 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 /**
- * Lightweight implementation of an equivalence relation which is optimized for 
- * answering whether two elements are equivalent but not for traversal of an equivalence 
+ * Lightweight implementation of an equivalence relation which is optimized for
+ * answering whether two elements are equivalent but not for traversal of an equivalence
  * class.
- * 
- * @author tredmond
  *
+ * @author tredmond
  */
 public class EquivalenceRelation<X extends Comparable<? super X>> {
+
     private Map<X, Set<X>> equivalenceMap = new HashMap<X, Set<X>>();
-    
+
     public boolean equivalent(X x, X y) {
         Set<X> equivalentToX = equivalenceMap.get(x);
         return x.equals(y) || (equivalentToX != null && equivalentToX.contains(y));
     }
-    
-    
+
+
     public void merge(Collection<X> toBeMerged) {
         if (toBeMerged.size() <= 1) {
             return;
@@ -44,28 +44,29 @@ public class EquivalenceRelation<X extends Comparable<? super X>> {
             }
         }
     }
-    
+
     public Set<X> getEquivalenceClass(X x) {
         Set<X> equivalents = equivalenceMap.get(x);
         return equivalents != null ? new TreeSet<X>(equivalents) : Collections.singleton(x);
     }
-    
-    public void logEquivalences(Logger log, Level level) {
-        if (log.isEnabledFor(level)) {
-            log.log(level, "---------------Logging equivalences---------------");
+
+    public void logEquivalences(Logger log) {
+        if (log.isDebugEnabled()) {
+            log.debug(LogBanner.start("Logging equivalences"));
             Set<X> displayed = new HashSet<X>();
             for (Entry<X, Set<X>> entry : equivalenceMap.entrySet()) {
                 X x = entry.getKey();
                 Set<X> equivalences = entry.getValue();
                 if (!displayed.contains(x)) {
-                    log.log(level, "The following are equivalent: " + equivalences);
+                    log.debug("The following are equivalent: {}", equivalences);
                     displayed.addAll(equivalences);
                 }
+
             }
-            log.log(level, "---------------Equivalences Logged---------------");
+            log.debug(LogBanner.end());
         }
     }
-    
+
     public void clear() {
         equivalenceMap.clear();
     }

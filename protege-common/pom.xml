@@ -36,9 +36,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
 		</dependency>
 
 		<dependency>
@@ -72,10 +76,8 @@
 						<Bundle-ClassPath>.</Bundle-ClassPath>
 						<Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
 						<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-						<Embed-Dependency>log4j</Embed-Dependency>
 						<Export-Package>
 							org.protege.common.*;version=${project.version},
-							org.apache.log4j.*;version="1.2.17"
 						</Export-Package>
 						<Import-Package>
 							!com.ibm.*, 
