@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui;
 
+import com.google.common.base.*;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
@@ -228,15 +229,18 @@ public class UIHelper {
 
 
     public String getHTMLOntologyList(Collection<OWLOntology> ontologies) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (OWLOntology ont : ontologies) {
-            if (getOWLModelManager().getActiveOntology().equals(ont)) {
-                result.append("<font color=\"0000ff\"><b>");
-                result.append(ont.getOntologyID().getDefaultDocumentIRI());
-                result.append("</font></b>");
-            }
-            else {
-                result.append(ont.getOntologyID().getDefaultDocumentIRI());
+            com.google.common.base.Optional<IRI> defaultDocumentIRI = ont.getOntologyID().getDefaultDocumentIRI();
+            if (defaultDocumentIRI.isPresent()) {
+                if (getOWLModelManager().getActiveOntology().equals(ont)) {
+                    result.append("<font color=\"0000ff\"><b>");
+                    result.append(defaultDocumentIRI.get());
+                    result.append("</font></b>");
+                }
+                else {
+                    result.append(defaultDocumentIRI);
+                }
             }
             if (!getOWLModelManager().isMutable(ont)) {
                 result.append("&nbsp;");
