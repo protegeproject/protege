@@ -303,17 +303,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
-        currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
-            public void uncaughtException(Thread thread, Throwable throwable) {
-                logger.warn("An error occurred during reasoning: {}", throwable);
-            	try {
-            		if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
-            			exceptionHandler.handle(throwable);
-            		}
-            	}
-            	catch (ReasonerDiedException died) {
-            		ReasonerUtilities.warnThatReasonerDied(null, died);
-            	}
+        currentReasonerThread.setUncaughtExceptionHandler((thread, throwable) -> {
+            logger.error("An error occurred during reasoning: {}.", throwable.getMessage(), throwable);
+            try {
+                if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
+                    exceptionHandler.handle(throwable);
+                }
+            }
+            catch (ReasonerDiedException died) {
+                ReasonerUtilities.warnThatReasonerDied(null, died);
             }
         });
         currentReasonerThread.start();
