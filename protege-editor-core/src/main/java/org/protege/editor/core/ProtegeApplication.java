@@ -166,8 +166,14 @@ public class ProtegeApplication implements BundleActivator {
         int pluginCount = 0;
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
-        		logger.info(MarkerFactory.getMarker("Plugin"), "    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
-        	    pluginCount++;
+                if (isActive(plugin)) {
+                    logger.info("Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
+                    pluginCount++;
+                }
+                else {
+                    logger.warn("Plugin: {} ({}) was not successfully started.  " +
+                            "Please see the Protégé log for more details.", getNiceBundleName(plugin), plugin.getVersion());
+                }
             }
         }
         if(pluginCount == 0) {
@@ -227,9 +233,13 @@ public class ProtegeApplication implements BundleActivator {
         }
         return passed;
     }
+
+    public static boolean isActive(Bundle b) {
+        return b.getState() == Bundle.ACTIVE;
+    }
     
     public static boolean isPlugin(Bundle b) {
-    	String location = b.getLocation();
+        String location = b.getLocation();
     	return location != null && location.contains("plugin");
     }
     
