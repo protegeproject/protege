@@ -11,20 +11,23 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.swing.JOptionPane;
 
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.util.ProtegeDirectories;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.progress.BackgroundTask;
 import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -38,9 +41,9 @@ public class PluginInstaller {
     private static final Logger logger = LoggerFactory.getLogger(PluginInstaller.class);
 
     private List<PluginInfo> updates;
-    
+
     public enum InstallerResult {
-        DOWNLOADED, ERROR, INSTALLED; 
+        DOWNLOADED, ERROR, INSTALLED;
     }
 
 
@@ -52,26 +55,25 @@ public class PluginInstaller {
     public void run() {
         final BackgroundTask installAllTask = ProtegeApplication.getBackgroundTaskManager().startTask("installing plugins");
 
-        Runnable r = new Runnable(){
+        Runnable r = new Runnable() {
 
             public void run() {
                 boolean errorsFound = false;
                 boolean someInstalled = false;
                 try {
-                	for (PluginInfo info : updates) {
-                		InstallerResult result = install(info);
-                		switch (result) {
-                		case ERROR:
-                			errorsFound = true;
-                			break;
-                		case INSTALLED:
-                			someInstalled = true;
-                			break;
-                		}
-                	}
-                }
-                finally {
-                	ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
+                    for (PluginInfo info : updates) {
+                        InstallerResult result = install(info);
+                        switch (result) {
+                            case ERROR:
+                                errorsFound = true;
+                                break;
+                            case INSTALLED:
+                                someInstalled = true;
+                                break;
+                        }
+                    }
+                } finally {
+                    ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
                 }
                 if (errorsFound) {
                     JOptionPane.showMessageDialog(null, "Some errors found downloading plugins - look at the console log");
@@ -80,7 +82,7 @@ public class PluginInstaller {
                     JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege."); 
+                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
                 }
             }
         };
@@ -92,48 +94,57 @@ public class PluginInstaller {
 
 
     private InstallerResult install(PluginInfo info) {
+        logger.info(LogBanner.start("Downloading and Installing Plugin"));
         BackgroundTask downloading = ProtegeApplication.getBackgroundTaskManager().startTask("downloading " + info.getLabel());
-        logger.info("Downloading " + info.getLabel());
+        logger.info("Downloading the {} plugin (Version {})", info.getLabel(), info.getAvailableVersion());
         try {
-            File tempPluginFile = downloadPlugin(info);
-            if (tempPluginFile == null) {
-                logger.error("Could not download plugin");
+            Optional<File> downloadedPlugin = downloadPlugin(info);
+            if (!downloadedPlugin.isPresent()) {
+                logger.error("An error occurred whilst downloading the {} plugin.  The plugin has not been installed.", info.getLabel());
                 return InstallerResult.ERROR;
             }
-            File installedPluginFile = copyPluginToInstallLocation(tempPluginFile, info);
-            if (installedPluginFile == null) {
-                logger.error("Could not install plugin");
+            Optional<File> installedPluginFile = copyPluginToInstallLocation(downloadedPlugin.get(), info);
+            if (!installedPluginFile.isPresent()) {
+                logger.error("There was an error whilst trying to install the {} plugin. It has not been installed", info.getLabel());
                 return InstallerResult.ERROR;
             }
-            if (installPlugin(installedPluginFile, info)) {
+            if (installPlugin(installedPluginFile.get(), info)) {
                 return InstallerResult.INSTALLED;
             }
             else {
                 return InstallerResult.DOWNLOADED;
             }
-        }
-        catch (Throwable t) {
-            logger.error("Exception caught installing plugins",  t);
+        } catch (IOException | URISyntaxException  t) {
+            logger.error("An error occurred whilst downloading and installing the {} plugin: {}", info.getLabel(), t.getMessage(), t);
+            return InstallerResult.ERROR;
+        } catch (BundleException e) {
+            logger.error("An error occurred whilst installing the {} plugin.  " +
+                    "It is likely that this error occurred due to a version conflict. " +
+                    "Please check that the version of this plugin ({}) is compatible with " +
+                    "this version of Protégé.",
+                    info.getLabel(),
+                    info.getAvailableVersion());
             return InstallerResult.ERROR;
         }
-        finally{
+        finally {
+            logger.info(LogBanner.end());
             ProtegeApplication.getBackgroundTaskManager().endTask(downloading);
         }
     }
-    
-    private File downloadPlugin(PluginInfo info) throws IOException {
+
+    private Optional<File> downloadPlugin(PluginInfo info) throws IOException {
+
         URL downloadURL = info.getDownloadURL();
+        logger.info("Downloading the {} plugin from: {}", info.getLabel(), downloadURL);
+
         File tempPluginFile = File.createTempFile(info.getId(), ".jar");
         tempPluginFile.deleteOnExit();
-
-        logger.debug("Download URL: " + downloadURL.toString());
-        logger.debug("Temp file: " + tempPluginFile.getAbsolutePath());
 
         URLConnection conn = downloadURL.openConnection();
         BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempPluginFile));
         while (true) {
-            byte [] buffer = new byte [4068];
+            byte[] buffer = new byte[4068];
             int read = bis.read(buffer);
             if (read == -1) {
                 break;
@@ -144,76 +155,121 @@ public class PluginInstaller {
         bos.flush();
         bos.close();
 
+        logger.info("The {} plugin has been downloaded to {}", info.getLabel(), tempPluginFile.getAbsolutePath());
+
         // Extract if a zip file
-        if (downloadURL.getFile().endsWith(".zip")){
-            tempPluginFile = extractPlugin(tempPluginFile, info);
+        if (downloadURL.getFile().endsWith(".zip")) {
+            return extractPlugin(tempPluginFile, info);
         }
-        return tempPluginFile;
+        else {
+            return Optional.of(tempPluginFile);
+        }
     }
 
+    private static Optional<File> getPluginFileName(PluginInfo info) {
+        Bundle pluginDescriptor = info.getPluginDescriptor();
+        if (pluginDescriptor == null) {
+            return Optional.empty();
+        }
+        final String locationURL = pluginDescriptor.getLocation();
+        File existingPluginLocation = new File(locationURL.substring(locationURL.indexOf(":") + 1, locationURL.length()));
+        return Optional.of(existingPluginLocation);
+    }
+//
+//    private static void movePluginToOldPluginFileName(File pluginLocation) {
+//        checkNotNull(pluginLocation);
+//        File pluginLocationDestination = getPluginBackupFileName(pluginLocation);
+//        pluginLocation.renameTo(pluginLocationDestination);
+//
+//    }
 
-    private static File copyPluginToInstallLocation(File pluginFile, PluginInfo info) throws URISyntaxException {
-    	logger.info("Copying " + info.getLabel());
-    	File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
-    	File oldPluginFile = null;
-    	File newPluginFile = null;
+    private static File getPluginBackupFileName(File pluginFileName) {
+        return new File(pluginFileName.getAbsolutePath() + ".old");
+    }
 
-    	if (info.getPluginDescriptor() != null) {
-    		String location = info.getPluginDescriptor().getLocation();
-    		location = location.substring(location.indexOf(":")+1, location.length());
-    		File existingPlugin = new File(location);
-    		if (existingPlugin.exists()) {
-    			oldPluginFile = new File(existingPlugin.getAbsolutePath() + "-old");
-    			if (!existingPlugin.renameTo(oldPluginFile)) {
-    				oldPluginFile = null;
-    			}
-    			newPluginFile = existingPlugin;
-    		}
-    	}
-    	if (newPluginFile == null) {
-    		newPluginFile = new File(pluginsFolder, info.getId() + ".jar");
-    	}
-    	try{
-    		FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
-    	}
-    	catch(IOException e){
-    		logger.error("Could not save plugin to system directory, trying user plugin directory. (" + e.getMessage() + ")");
-    		newPluginFile = new File(ProtegeDirectories.getUserPluginDirectory(), info.getId() + ".jar");
-    		try {
-    			FileUtils.copyFileToDirectory(pluginFile, newPluginFile);
-    			logger.info("Save of plugin to user plugin directory succeeded");
-    			logger.info("Update only seen by invoking user");
-    		}
-    		catch (IOException ioe) {
-    			logger.error("Could not save plugin", ioe);
-    		}
-    	}
-    	if (oldPluginFile != null && oldPluginFile.exists()){
-    		FileUtils.deleteRecursively(oldPluginFile);
-    	}
-    	return newPluginFile;
+    private static Optional<File> moveExistingPluginToBackupLocation(PluginInfo pluginInfo) {
+        Optional<File> existingPluginFileName = getPluginFileName(pluginInfo);
+        if(!existingPluginFileName.isPresent()) {
+            return Optional.empty();
+        }
+        File backupFileName = getPluginBackupFileName(existingPluginFileName.get());
+        if(existingPluginFileName.get().renameTo(backupFileName)) {
+            return Optional.of(backupFileName);
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<File> copyPluginToInstallLocation(File downloadedPlugin, PluginInfo info) throws URISyntaxException {
+
+        final Optional<File> existingPluginLocation = getPluginFileName(info);
+
+
+        final Optional<File> backupFileName = moveExistingPluginToBackupLocation(info);
+
+        final File downloadedPluginDestination;
+
+        if(existingPluginLocation.isPresent()) {
+            downloadedPluginDestination = existingPluginLocation.get();
+        }
+        else {
+            final File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
+            downloadedPluginDestination = new File(pluginsFolder, info.getId() + ".jar");
+        }
+
+        try {
+            FileUtils.copyFile(downloadedPlugin, downloadedPluginDestination);
+            logger.info("Copied the {} plugin to {} in the plugins directory", info.getLabel(), downloadedPluginDestination.getName());
+            deletePluginBackup(backupFileName);
+            return Optional.of(downloadedPluginDestination);
+        }
+        catch (IOException e) {
+            try {
+                File userPluginDirectory = ProtegeDirectories.getUserPluginDirectory();
+                logger.warn("Could not copy plugin to plugins directory: {}", e.getMessage(), e);
+                File userDirectoryPluginFile = new File(userPluginDirectory, info.getId() + ".jar");
+                FileUtils.copyFileToDirectory(downloadedPlugin, userDirectoryPluginFile);
+                logger.info("Copied the {} plugin to the user plugin directory at {}.  " +
+                                "This plugin will only be use-able by the current user.",
+                        info.getLabel(),
+                        userPluginDirectory);
+                deletePluginBackup(backupFileName);
+                return Optional.of(userDirectoryPluginFile);
+            } catch (IOException ioe) {
+                logger.error("An error occurred whilst attempting to save the plugin: {}", ioe.getMessage(), ioe);
+                return Optional.empty();
+            }
+        }
+    }
+
+    private static void deletePluginBackup(Optional<File> existingPluginLocation) {
+        if (existingPluginLocation.isPresent() && existingPluginLocation.get().exists()) {
+            FileUtils.deleteRecursively(existingPluginLocation.get());
+        }
     }
 
     /**
      * Extracts the contents of a zip file, which is assumed to contain a plugin,
      * and finds the directory that contains the plugin.
+     *
      * @param pluginArchive The zip file that contains the plugin
      * @return The jar or directory that contains the plugin
      */
-    private static File extractPlugin(File pluginArchive, PluginInfo info) throws IOException {
-        logger.info("Extracting " + info.getLabel());
+    private static Optional<File> extractPlugin(File pluginArchive, PluginInfo info) throws IOException {
+        logger.info("Extracting {} plugin from zip file " + info.getLabel());
         File tempDir = new File(pluginArchive.getParentFile(), pluginArchive.getName() + "-extracted");
         tempDir.deleteOnExit();
         tempDir.mkdir();
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(pluginArchive)));
         ZipEntry entry;
-        byte [] buffer = new byte[4068];
+        byte[] buffer = new byte[4068];
         while ((entry = zis.getNextEntry()) != null) {
             // Skip Mac rubbish!
-            if (entry.getName().indexOf(".DS_Store") != -1) {
+            if (entry.getName().contains(".DS_Store")) {
                 continue;
             }
-            if (entry.getName().indexOf("__MACOSX") != -1) {
+            if (entry.getName().contains("__MACOSX")) {
                 continue;
             }
             File curFile = new File(tempDir, entry.getName());
@@ -236,34 +292,39 @@ public class PluginInstaller {
 
     /**
      * Find a jar or a folder containing a plugin.xml file
+     *
      * @param startDir the directory to search in
-     * @return the first jar or plugin folder found
+     * @return the first jar or plugin folder found.  Optional.empty() if nothing is found.
      */
-    private static File getPluginDir(File startDir) {
+    private static Optional<File> getPluginDir(File startDir) {
         if (!startDir.isDirectory()) {
-            if (startDir.getName().endsWith(".jar")){
-                return startDir;
+            if (startDir.getName().endsWith(".jar")) {
+                return Optional.of(startDir);
             }
-            return null;
+            return Optional.empty();
         }
-        for (File f : startDir.listFiles()) {
-            File pluginDir = getPluginDir(f);
-            if (pluginDir != null) {
+        File[] files = startDir.listFiles();
+        if (files == null) {
+            return Optional.empty();
+        }
+        for (File f : files) {
+            Optional<File> pluginDir = getPluginDir(f);
+            if (pluginDir.isPresent()) {
                 return pluginDir;
             }
         }
-        return null;
+        return Optional.empty();
     }
-    
+
     private boolean installPlugin(File pluginLocation, PluginInfo info) throws BundleException {
         if (info.getPluginDescriptor() == null) {  // download not an update...
-            logger.info("Loading " + info.getLabel());
+            logger.info("Installing the {} plugin", info.getLabel());
             Bundle b = ProtegeApplication.getContext().installBundle("file:" + pluginLocation.getPath());
             b.start();
             return true;
         }
         else {
-            logger.info("Plugin " + info.getLabel() + " will be loaded when " + ProtegeProperties.PROTEGE + " is restarted");
+            logger.info("The {} plugin requires a restart of Protégé", info.getLabel());
             return false;
         }
     }
