@@ -183,11 +183,16 @@ public class Launcher {
 
     private void delete(File f) {
         if (f.isDirectory()) {
-            for (File child : f.listFiles()) {
-                delete(child);
+            File[] files = f.listFiles();
+            if (files != null) {
+                for (File child : files) {
+                    delete(child);
+                }
             }
         }
-        f.delete();
+        if(!f.delete()) {
+            logger.warn("File could not be deleted ({})", f.getAbsolutePath());
+        }
     }
 
     public static void setArguments(String... args) {
