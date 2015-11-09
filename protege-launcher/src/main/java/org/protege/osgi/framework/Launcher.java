@@ -97,7 +97,10 @@ public class Launcher {
 
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
         printBanner();
-        logger.info("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
+        logger.info("----------------- Initialising and Starting the OSGi Framework -----------------");
+        logger.info("FrameworkFactory Class: {}", factoryClass);
+        logger.info("");
+        
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
 
         framework = factory.newFramework(frameworkProperties);
@@ -112,6 +115,8 @@ public class Launcher {
         startBundles(bundles);
         try {
             framework.start();
+            logger.info("The OSGi framework has been started");
+            logger.info("");
         } catch (BundleException e) {
             logger.error("An error occurred when starting the OSGi framework: {}", e.getMessage(), e);
         }
