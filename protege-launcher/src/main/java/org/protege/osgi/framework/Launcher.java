@@ -51,7 +51,7 @@ public class Launcher {
         factoryClass = locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
         frameworkProperties.put(Constants.FRAMEWORK_STORAGE, frameworkDir.getCanonicalPath());
-        frameworkProperties.put(Constants.FRAMEWORK_BEGINNING_STARTLEVEL, "" + searchPaths.size());
+        frameworkProperties.put(Constants.FRAMEWORK_BEGINNING_STARTLEVEL, Integer.toString(searchPaths.size()));
     }
 
     public Framework getFramework() {
