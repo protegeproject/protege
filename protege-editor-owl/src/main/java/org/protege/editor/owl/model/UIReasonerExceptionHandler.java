@@ -29,13 +29,11 @@ public class UIReasonerExceptionHandler implements OWLReasonerExceptionHandler {
 
 
     public void handle(Throwable e) {
-        LoggerFactory.getLogger(UIReasonerExceptionHandler.class)
-                .error("A reasoner error occurred: {}", e);
         Throwable cause = e;
         while(cause.getCause() != null) {
             cause = cause.getCause();
         }
         String msg = cause.getClass().getSimpleName() + ": " + cause.getMessage();
-        JOptionPane.showMessageDialog(workspace, msg, "Reasoner Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(workspace, msg, "An error occurred during reasoning", JOptionPane.ERROR_MESSAGE);
     }
 }
