@@ -13,6 +13,7 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.wiring.BundleRevision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -81,6 +82,10 @@ public class Launcher {
     }
 
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
+        logger.info("********************************************************************************");
+        logger.info("**                                  Protégé                                   **");
+        logger.info("********************************************************************************");
+        logger.info("");
         logger.info("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
         framework = factory.newFramework(frameworkProperties);
@@ -153,13 +158,22 @@ public class Launcher {
         logger.info("------------------------------- Starting Bundles -------------------------------");
         for (Bundle b : bundles) {
             try {
-                b.start();
-                logger.info("Started bundle {}", b.getSymbolicName());
+                if(!isFragmentBundle(b)) {
+                    b.start();
+                    logger.info("Started bundle {}", b.getSymbolicName());
+                }
+                else {
+                    logger.info("Not starting bundle {} explicitly because it is a fragment bundle.", b.getSymbolicName());
+                }
             } catch (Throwable t) {
                 logger.error("Core Bundle {} failed to start: {}", b.getBundleId(), t);
             }
         }
         logger.debug("-------------------------------------------------------------------------------");
+    }
+
+    private static boolean isFragmentBundle(Bundle b) {
+        return (b.adapt(BundleRevision.class).getTypes() & BundleRevision.TYPE_FRAGMENT) != 0;
     }
 
     protected void cleanup() {
