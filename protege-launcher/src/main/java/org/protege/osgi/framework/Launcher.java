@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
@@ -49,8 +50,8 @@ public class Launcher {
         parseConfig(config);
         factoryClass = locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
-        frameworkProperties.put("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
-        frameworkProperties.put("org.osgi.framework.startlevel.beginning", "" + searchPaths.size());
+        frameworkProperties.put(Constants.FRAMEWORK_STORAGE, frameworkDir.getCanonicalPath());
+        frameworkProperties.put(Constants.FRAMEWORK_BEGINNING_STARTLEVEL, "" + searchPaths.size());
     }
 
     public Framework getFramework() {
