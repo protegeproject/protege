@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.osgi.framework.Bundle;
@@ -45,7 +44,6 @@ public class Launcher {
     private Framework framework;
 
 
-
     public Launcher(File config) throws IOException, ParserConfigurationException, SAXException {
         parseConfig(config);
         factoryClass = locateOSGi();
@@ -62,6 +60,7 @@ public class Launcher {
         Parser p = new Parser();
         p.parse(config);
         setSystemProperties(p);
+        setLogger(frameworkProperties);
         searchPaths.addAll(p.getSearchPaths());
         frameworkProperties.putAll(p.getFrameworkProperties());
     }
@@ -82,13 +81,25 @@ public class Launcher {
         }
     }
 
+    /**
+     * Sets the default felix logger so that logging output is redirected to SLF4J instead of stderr and stdout
+     * @param configurationMap The configuration map.  Note that the framework factory newFramework method expects
+     *                         a map that maps Strings to Strings.  However, the documentation for the Felix
+     *                         configuration properties specifies that the config value of the felix.log.logger
+     *                         property must be an instance of Logger.  This method therefore makes an unchecked
+     *                         call to Map.put(), which works.
+     */
+    @SuppressWarnings("unchecked")
+    private static void setLogger(Map configurationMap) {
+        FrameworkSlf4jLogger logger = new FrameworkSlf4jLogger();
+        configurationMap.put("felix.log.logger", logger);
+    }
+
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
-        logger.info("********************************************************************************");
-        logger.info("**                                  Protégé                                   **");
-        logger.info("********************************************************************************");
-        logger.info("");
+        printBanner();
         logger.info("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
+
         framework = factory.newFramework(frameworkProperties);
         framework.init();
         logger.info("The OSGi framework has been initialised");
@@ -107,6 +118,8 @@ public class Launcher {
         addShutdownHook();
         addCleanupOnExit(exitOnOSGiShutDown);
     }
+
+
 
     private void addShutdownHook() {
         Thread hook = new Thread(() -> {
@@ -159,7 +172,7 @@ public class Launcher {
         logger.info("------------------------------- Starting Bundles -------------------------------");
         for (Bundle b : bundles) {
             try {
-                if(!isFragmentBundle(b)) {
+                if (!isFragmentBundle(b)) {
                     b.start();
                     logger.info("Started bundle {}", b.getSymbolicName());
                 }
@@ -190,7 +203,7 @@ public class Launcher {
                 }
             }
         }
-        if(!f.delete()) {
+        if (!f.delete()) {
             logger.warn("File could not be deleted ({})", f.getAbsolutePath());
         }
     }
@@ -204,6 +217,12 @@ public class Launcher {
         }
     }
 
+    private void printBanner() {
+        logger.info("********************************************************************************");
+        logger.info("**                                  Protégé                                   **");
+        logger.info("********************************************************************************");
+        logger.info("");
+    }
 
     public static void main(String[] args) throws Exception {
         setArguments(args);
@@ -218,5 +237,6 @@ public class Launcher {
         Launcher launcher = new Launcher(configFile);
         launcher.start(true);
     }
+
 
 }
