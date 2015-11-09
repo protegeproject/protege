@@ -52,11 +52,14 @@ class OntologyImportItem implements MListItem {
 
     public List<MListButton> getAdditionalButtons() {
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
-        // @@TODO what about anonymous ontologies?
-        if (ont != null && !decl.getIRI().equals(ont.getOntologyID().getDefaultDocumentIRI())) {
-            return Collections.singletonList(fixImportsButton);
+        if(ont == null) {
+            return Collections.emptyList();
         }
-        return Collections.EMPTY_LIST;
+        Optional<IRI> defaultDocumentIRI = ont.getOntologyID().getDefaultDocumentIRI();
+        if (Optional.of(decl.getIRI()).equals(defaultDocumentIRI)) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList(fixImportsButton);
     }
 
 
@@ -68,15 +71,16 @@ class OntologyImportItem implements MListItem {
                                                 JOptionPane.WARNING_MESSAGE);
 
         if(ret == JOptionPane.YES_OPTION) {
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.add(new RemoveImport(ont, decl));
             final OWLModelManager mngr = eKit.getOWLModelManager();
             OWLOntology impOnt = mngr.getOWLOntologyManager().getImportedOntology(decl);
-            // @@TODO what about anonymous ontologies?
-            Optional<IRI> defaultDocumentIRI = impOnt.getOntologyID().getDefaultDocumentIRI();
-            if (defaultDocumentIRI.isPresent()) {
-                changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(defaultDocumentIRI.get())));
-                mngr.applyChanges(changes);
+            if (impOnt != null) {
+                Optional<IRI> defaultDocumentIRI = impOnt.getOntologyID().getDefaultDocumentIRI();
+                if (defaultDocumentIRI.isPresent()) {
+                    changes.add(new AddImport(ont, mngr.getOWLDataFactory().getOWLImportsDeclaration(defaultDocumentIRI.get())));
+                    mngr.applyChanges(changes);
+                }
             }
         }
     }
@@ -94,7 +98,7 @@ class OntologyImportItem implements MListItem {
         sb.append("<font color=\"blue\">");
         OWLOntology ont = eKit.getOWLModelManager().getOWLOntologyManager().getImportedOntology(decl);
         // @@TODO what about anonymous ontologies?
-        sb.append(ont == null ? "(Not loaded)" : ont.getOntologyID().getDefaultDocumentIRI());
+        sb.append(ont == null ? "(Not loaded)" : ont.getOntologyID().getDefaultDocumentIRI().get());
         sb.append("</font><br><br>");
         sb.append("Do you want to fix the mismatch by modifying the imports statement?");
         sb.append("</body></html>");
