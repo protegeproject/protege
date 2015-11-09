@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
  * Stanford Center for Biomedical Informatics Research
  * 08/11/15
  */
-public class FrameworkLogger extends Logger {
+public class FrameworkSlf4jLogger extends Logger {
 
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(FrameworkLogger.class);
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(FrameworkSlf4jLogger.class);
 
     @Override
     protected void doLog(Bundle bundle, ServiceReference sr, int level, String msg, Throwable throwable) {
