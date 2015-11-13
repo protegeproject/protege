@@ -70,7 +70,7 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
         }
         sb.append(" <font color=\"gray\">(");
         if (iri.isPresent()) {
-            sb.append(iri.toString());
+            sb.append(iri.get().toString());
         }
         sb.append(")</font></body></html>");
         return sb.toString();
