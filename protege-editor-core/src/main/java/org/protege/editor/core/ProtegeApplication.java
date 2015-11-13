@@ -13,6 +13,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.log.LogManager;
+import org.protege.editor.core.ui.util.ErrorMessage;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -475,7 +476,7 @@ public class ProtegeApplication implements BundleActivator {
                 pm.createAndSetupNewEditorKit(defaultPlugin);
             }
             else {
-                throw new RuntimeException("No editor kit factory plugins available");
+                ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
         }
         catch (Exception e) {
@@ -493,7 +494,7 @@ public class ProtegeApplication implements BundleActivator {
                 pm.createAndSetupNewEditorKit(defaultPlugin, uri);
             }
             else {
-                throw new RuntimeException("No editor kit factory plugins available");
+                ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
         }
         catch (Exception e) {

@@ -64,6 +64,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
@@ -120,6 +125,7 @@
                         </Export-Package>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
+                            javax.inject.*;version=1.0,
                             *
                         </Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>
