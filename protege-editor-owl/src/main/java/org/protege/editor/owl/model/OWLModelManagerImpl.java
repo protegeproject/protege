@@ -290,7 +290,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 fireEvent(EventType.ONTOLOGY_LOADED);
                 OWLOntologyID id = ontology.getOntologyID();
                 if (!id.isAnonymous()) {
-                    manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
+                    manager.getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
                 }
             } catch (OWLOntologyCreationException ooce) {
                 logger.info("Failed to load ontology: {}", ooce);
@@ -381,7 +381,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
         if (physicalURI != null && ontologyID.getDefaultDocumentIRI().isPresent()) {
-            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().get(), IRI.create(physicalURI)));
+            manager.getIRIMappers().add(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().get(), IRI.create(physicalURI)));
         }
         OWLOntology ont = manager.createOntology(ontologyID);
         setActiveOntology(ont);
@@ -576,7 +576,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public Set<OWLOntology> getDirtyOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+        Set<OWLOntology> ontologies = new HashSet<>();
         for (OWLOntologyID ontId : new ArrayList<>(dirtyOntologies)) {
             if (manager.contains(ontId)) {
                 ontologies.add(manager.getOntology(ontId));
