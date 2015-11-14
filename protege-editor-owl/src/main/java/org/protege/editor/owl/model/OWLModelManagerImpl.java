@@ -166,12 +166,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         iriMappers.add(autoMappedRepositoryIRIMapper);
 
 
-        dirtyOntologies = new HashSet<OWLOntologyID>();
-        ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
+        dirtyOntologies = new HashSet<>();
+        ontSelectionStrategies = new HashSet<>();
 
 
-        modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
-        ioListeners = new ArrayList<IOListener>();
+        modelManagerChangeListeners = new ArrayList<>();
+        ioListeners = new ArrayList<>();
 
 
         objectRenderer = new OWLObjectRendererImpl(this);
@@ -181,7 +181,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
 
-        activeOntologies = new HashSet<OWLOntology>();
+        activeOntologies = new HashSet<>();
 
         //needs to be initialized
         activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
@@ -333,7 +333,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
     private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
             } catch (Throwable e) {
@@ -344,7 +344,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
             } catch (Throwable e) {
@@ -467,7 +467,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * Save all of the ontologies that are editable and that have been modified.
      */
     public void save() throws OWLOntologyStorageException {
-        for (OWLOntologyID ontId : new HashSet<OWLOntologyID>(dirtyOntologies)) {
+        for (OWLOntologyID ontId : new HashSet<>(dirtyOntologies)) {
             if (manager.contains(ontId)) {
                 save(manager.getOntology(ontId));
             }
@@ -545,7 +545,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
             } catch (Throwable e) {
@@ -556,7 +556,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
             } catch (Throwable e) {
@@ -580,7 +580,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public Set<OWLOntology> getDirtyOntologies() {
         Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-        for (OWLOntologyID ontId : new ArrayList<OWLOntologyID>(dirtyOntologies)) {
+        for (OWLOntologyID ontId : new ArrayList<>(dirtyOntologies)) {
             if (manager.contains(ontId)) {
                 ontologies.add(manager.getOntology(ontId));
             }
@@ -868,7 +868,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.updateRendering(entity);
         owlObjectRenderingCache.clear();
         // We should inform listeners
-        for (OWLModelManagerListener listener : new ArrayList<OWLModelManagerListener>(modelManagerChangeListeners)) {
+        for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
             listener.handleChange(new OWLModelManagerChangeEvent(this, EventType.ENTITY_RENDERING_CHANGED));
         }
     }
@@ -935,7 +935,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public Comparator<OWLObject> getOWLObjectComparator() {
         OWLObjectComparator<OWLObject> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
         if (comparator == null) {
-            comparator = new OWLObjectRenderingComparator<OWLObject>(this);
+            comparator = new OWLObjectRenderingComparator<>(this);
             put(OWL_OBJECT_COMPARATOR_KEY, comparator);
         }
         return comparator;
