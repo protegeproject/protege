@@ -131,8 +131,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
-    private AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper;
-
     private UserResolvedIRIMapper userResolvedIRIMapper;
 
 
@@ -156,7 +154,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager.addOntologyChangeListener(this);
 
         // URI mappers for loading - added in reverse order
-        autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
+        AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
         userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
         iriMappers.clear();
