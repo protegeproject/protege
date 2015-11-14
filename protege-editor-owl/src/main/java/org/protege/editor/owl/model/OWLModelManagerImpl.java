@@ -820,11 +820,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 RendererPlugin plugin = preferences.getRendererPlugin();
                 entityRenderer = plugin.newInstance();
                 loadRenderer();
-            } catch (ClassNotFoundException e) {
-                logger.error(e.getMessage());
-            } catch (InstantiationException e) {
-                logger.error(e.getMessage());
-            } catch (IllegalAccessException e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 logger.error(e.getMessage());
             }
             if (entityRenderer == null) {
