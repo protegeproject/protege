@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model;
 
 import com.google.common.base.Stopwatch;
-import org.openrdf.rio.RDFWriterRegistry;
-import org.openrdf.rio.rdfjson.RDFJSONWriterFactory;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -40,24 +38,17 @@ import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.semanticweb.owlapi.OWLAPIParsersModule;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.rio.RioBinaryRdfStorerFactory;
-import org.semanticweb.owlapi.rio.RioJsonLDStorerFactory;
-import org.semanticweb.owlapi.rio.RioStorer;
 import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.manchester.cs.owl.owlapi.OWLAPIImplModule;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
-import uk.ac.manchester.cs.owl.owlapi.concurrent.Concurrency;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
