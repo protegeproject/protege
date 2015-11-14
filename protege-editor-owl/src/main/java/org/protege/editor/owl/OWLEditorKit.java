@@ -92,10 +92,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-        modelManager.setSaveErrorHandler(new SaveErrorHandler() {
-            public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
-                handleSaveError(ont, physicalURIForOntology, e);
-            }
+        modelManager.setSaveErrorHandler((ont, physicalURIForOntology, e) -> {
+            handleSaveError(ont, physicalURIForOntology, e);
         });
 
         ontologyChangeListener = new OWLOntologyChangeListener() {
