@@ -953,9 +953,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public OWLReasonerManager getOWLReasonerManager() {
         if (owlReasonerManager == null) {
             owlReasonerManager = new OWLReasonerManagerImpl(this);
-            owlReasonerManager.getReasonerPreferences().addListener(() -> {
-                fireEvent(EventType.ONTOLOGY_CLASSIFIED);
-            });
+            owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
         }
         return owlReasonerManager;
     }
