@@ -72,7 +72,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private final Logger logger = LoggerFactory.getLogger(OWLModelManagerImpl.class);
 
-    private HistoryManager historyManager;
+    private final HistoryManager historyManager;
 
     private OWLModelManagerEntityRenderer entityRenderer;
 
@@ -91,21 +91,21 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityFinder entityFinder;
 
-    private OWLReasonerManager owlReasonerManager;
+    private final OWLReasonerManager owlReasonerManager;
 
     /**
      * Dirty ontologies are ontologies that have been edited
      * and not saved.
      */
-    private Set<OWLOntologyID> dirtyOntologies;
+    private final Set<OWLOntologyID> dirtyOntologies = new HashSet<>();
 
     /**
      * The <code>OWLConnection</code> that we use to manage
      * ontologies.
      */
-    private OWLOntologyManager manager;
+    private final OWLOntologyManager manager;
 
-    private OntologyCatalogManager ontologyLibraryManager;
+    private final OntologyCatalogManager ontologyLibraryManager;
 
     private ExplanationManager explanationManager;
 
@@ -116,9 +116,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * each time from the OWLOntologyManager, but this proved to be expensive
      * in terms of time.
      */
-    private Set<OWLOntology> activeOntologies;
+    private final Set<OWLOntology> activeOntologies = new HashSet<>();
 
-    private Set<OntologySelectionStrategy> ontSelectionStrategies;
+    private final Set<OntologySelectionStrategy> ontSelectionStrategies = new HashSet<>();
 
     private OntologySelectionStrategy activeOntologiesStrategy;
 
@@ -131,44 +131,33 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
-    private UserResolvedIRIMapper userResolvedIRIMapper;
+    private final UserResolvedIRIMapper userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
 
 
     // listeners
 
-    private List<OWLModelManagerListener> modelManagerChangeListeners;
+    private final List<OWLModelManagerListener> modelManagerChangeListeners = new ArrayList<>();
 
-    private ListenerManager<OWLModelManagerListener> modelManagerListenerManager;
+    private final ListenerManager<OWLModelManagerListener> modelManagerListenerManager = new ListenerManager<>();
 
-    private ListenerManager<OWLOntologyChangeListener> changeListenerManager;
+    private final ListenerManager<OWLOntologyChangeListener> changeListenerManager = new ListenerManager<>();
 
-    private List<IOListener> ioListeners;
+    private final List<IOListener> ioListeners = new ArrayList<>();
 
 
     public OWLModelManagerImpl() {
         super();
 
-        modelManagerListenerManager = new ListenerManager<>();
-        changeListenerManager = new ListenerManager<>();
         manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
 
         // URI mappers for loading - added in reverse order
         AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
-        userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
         iriMappers.clear();
         iriMappers.add(userResolvedIRIMapper);
         iriMappers.add(new WebConnectionIRIMapper());
         iriMappers.add(autoMappedRepositoryIRIMapper);
-
-
-        dirtyOntologies = new HashSet<>();
-        ontSelectionStrategies = new HashSet<>();
-
-
-        modelManagerChangeListeners = new ArrayList<>();
-        ioListeners = new ArrayList<>();
 
 
         objectRenderer = new OWLObjectRendererImpl(this);
@@ -178,10 +167,15 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
 
-        activeOntologies = new HashSet<>();
-
         //needs to be initialized
         activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
+
+        historyManager = new HistoryManagerImpl(this);
+
+        owlReasonerManager = new OWLReasonerManagerImpl(this);
+        owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
+
+        ontologyLibraryManager = new OntologyCatalogManager();
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
@@ -237,9 +231,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OntologyCatalogManager getOntologyCatalogManager() {
-        if (ontologyLibraryManager == null) {
-            ontologyLibraryManager = new OntologyCatalogManager();
-        }
         return ontologyLibraryManager;
     }
 
@@ -750,9 +741,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public HistoryManager getHistoryManager() {
-        if (historyManager == null) {
-            historyManager = new HistoryManagerImpl(this);
-        }
         return historyManager;
     }
 
@@ -951,10 +939,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OWLReasonerManager getOWLReasonerManager() {
-        if (owlReasonerManager == null) {
-            owlReasonerManager = new OWLReasonerManagerImpl(this);
-            owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
-        }
         return owlReasonerManager;
     }
 
