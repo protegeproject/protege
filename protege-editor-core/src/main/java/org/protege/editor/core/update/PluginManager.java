@@ -234,7 +234,7 @@ public class PluginManager {
 
     public void showUpdatesDialog(Map<String, PluginRegistry> downloadsProviders) {
         List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders, null);
-        if (selUpdates != null){
+        if (!selUpdates.isEmpty()){
             PluginInstaller installer = new PluginInstaller(selUpdates);
             installer.run();
             // @@TODO remove the installed plugins from the updatesProvider

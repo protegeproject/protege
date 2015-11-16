@@ -270,20 +270,26 @@ public class PluginPanel extends JPanel {
 
     public static List<PluginInfo> showDialog(Map<String, PluginRegistry> downloadsProviders, Component parent) {
         PluginPanel panel = new PluginPanel(downloadsProviders);
-        Object [] options = new String []{"Install", "Not now"};
-        int ret = JOptionPaneEx.showConfirmDialog(parent,
-                                                  "Automatic Update",
-                                                  panel,
-                                                  JOptionPane.PLAIN_MESSAGE,
-                                                  JOptionPane.OK_CANCEL_OPTION,
-                                                  null,
-                                                  options,
-                                                  options[0]);
-
-        if (ret == 0) {
+        final String installOption = "Install";
+        final String notNowOption = "Not now";
+        Object [] options = new String []{installOption, notNowOption};
+        JOptionPane optionPane = new JOptionPane(
+                panel,
+                JOptionPane.PLAIN_MESSAGE,
+                JOptionPane.OK_CANCEL_OPTION,
+                null,
+                options,
+                options[0]);
+        JDialog dlg = optionPane.createDialog(parent, "Automatic Update");
+        dlg.setModal(true);
+        dlg.setResizable(true);
+        dlg.setVisible(true);
+        if(installOption.equals(optionPane.getValue())) {
             return panel.getPluginsToInstall();
         }
-        return null;
+        else {
+            return Collections.emptyList();
+        }
     }
 
 
