@@ -37,16 +37,14 @@ public class OntologyFormatPanel extends JPanel {
     public OntologyFormatPanel() {
         List<OWLDocumentFormat> formats = new ArrayList<>();
         formats.add(new RDFXMLDocumentFormat());
+        formats.add(new TurtleDocumentFormat());
+
         formats.add(new OWLXMLDocumentFormat());
         formats.add(new FunctionalSyntaxDocumentFormat());
         formats.add(new ManchesterSyntaxDocumentFormat());
         
         formats.add(new OBODocumentFormat());
         formats.add(new LatexDocumentFormat());
-        formats.add(new TurtleDocumentFormat());
-        formats.add(new TrigDocumentFormat());
-        formats.add(new TrixDocumentFormat());
-        formats.add(new RDFJsonLDDocumentFormat());
 
         formatComboBox = new JComboBox<>(formats.toArray(new OWLDocumentFormat [formats.size()]));
         setLayout(new BorderLayout(12, 12));
