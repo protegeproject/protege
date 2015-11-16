@@ -287,9 +287,10 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
-        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat,
+                String.format("Choose a format to use when saving the %s ontology", getModelManager().getRendering(ont)));
         if (format == null) {
-            logger.warn("Please select a valid format");
+            logger.info("No ontology document format has been selected.  Aborting saveAs.");
             return false;
         }
         if (oldFormat instanceof PrefixDocumentFormat && format instanceof PrefixDocumentFormat) {
@@ -317,7 +318,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private File getSaveAsOWLFile(OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
-        File file = helper.saveOWLFile("Please select a location in which to save: " + getModelManager().getRendering(ont));
+        File file = helper.saveOWLFile(String.format("Please select a location in which to save: %s", getModelManager().getRendering(ont)));
         if (file != null) {
             int extensionIndex = file.toString().lastIndexOf('.');
             if (extensionIndex == -1) {
