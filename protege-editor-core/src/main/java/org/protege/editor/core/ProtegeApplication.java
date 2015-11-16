@@ -13,6 +13,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.log.LogManager;
+import org.protege.editor.core.log.LogViewImpl;
 import org.protege.editor.core.ui.util.ErrorMessage;
 import org.slf4j.Logger;
 import org.osgi.framework.Bundle;
@@ -84,13 +85,11 @@ public class ProtegeApplication implements BundleActivator {
 
     private List<URI> commandLineURIs;
 
-//    private static ErrorLog errorLog = new ErrorLog();
-
     private static BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
 
     private static boolean quitting = false;
 
-    private static LogManager logManager = new LogManager();
+    private static LogManager logManager = new LogManager(new LogViewImpl());
 
     public void start(final BundleContext context) {
         logManager.bind();
