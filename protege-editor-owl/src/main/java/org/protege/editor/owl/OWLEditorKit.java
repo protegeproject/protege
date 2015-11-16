@@ -86,27 +86,21 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     protected void initialise() {
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
-        this.newPhysicalURIs = new HashSet<URI>();
+        this.newPhysicalURIs = new HashSet<>();
         modelManager = new OWLModelManagerImpl();
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-        modelManager.setSaveErrorHandler((ont, physicalURIForOntology, e) -> {
-            handleSaveError(ont, physicalURIForOntology, e);
-        });
+        modelManager.setSaveErrorHandler(this::handleSaveError);
 
-        ontologyChangeListener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
-                modifiedDocument = true;
-            }
-        };
+        ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
         searchManager = new SearchManager(this, new SearchMetadataImportManager());
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
-        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<String, Object>());
+        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<>());
 
         getWorkspace().refreshComponents();
     }
@@ -252,16 +246,14 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
             try {
                 getModelManager().save();
-                for (URI uri : newPhysicalURIs) {
-                    addRecent(uri);
-                }
+                newPhysicalURIs.forEach(this::addRecent);
                 newPhysicalURIs.clear();
                 logger.info("Saved ontologies");
             }
             catch (OWLOntologyStorageException e) {
                 OWLOntology ont = getModelManager().getActiveOntology();
                 OWLDocumentFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
-                String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
+                String message = String.format("Could not save ontology in the specified format (%s).\nPlease select 'Save As' and choose another format.", format);
                 logger.warn(message);
                 ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
             }
@@ -274,8 +266,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public void handleSaveAs() throws Exception {
         final OWLOntology ont = getModelManager().getActiveOntology();
-        if (handleSaveAs(ont)) {
-        }
+        handleSaveAs(ont);
     }
 
 
