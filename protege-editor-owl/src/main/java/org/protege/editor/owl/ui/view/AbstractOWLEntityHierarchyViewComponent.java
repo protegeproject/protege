@@ -50,13 +50,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(7, 7));
 
-        tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.fillOval(10, 10, 20, 20);
-            }
-        };
+        tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider());
 
         // ordering based on default, but putting Nothing at the top
         final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
