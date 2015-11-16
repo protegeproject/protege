@@ -50,7 +50,7 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
     }
 
 
-    public Set<OWLClass> getChildren(OWLClass object) {
+    public Set<OWLClass> getUnfilteredChildren(OWLClass object) {
     	OWLReasoner myReasoner = reasoner;
 //    	getReadLock().lock();
     	try {

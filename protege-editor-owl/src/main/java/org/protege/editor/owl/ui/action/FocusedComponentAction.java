@@ -46,6 +46,9 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
 
     protected abstract Class<C> initialiseAction();
 
+    protected void targetChanged() {
+
+    }
 
     private void update() {
         Component c = FocusManager.getCurrentManager().getFocusOwner();
@@ -67,6 +70,7 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
             attatchListeners();
         }
         setEnabled(currentTarget != null && canPerform());
+        targetChanged();
     }
 
 

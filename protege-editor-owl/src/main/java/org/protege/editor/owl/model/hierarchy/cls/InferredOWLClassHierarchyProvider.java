@@ -78,7 +78,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     }
 
 
-    public Set<OWLClass> getChildren(OWLClass object) {
+    public Set<OWLClass> getUnfilteredChildren(OWLClass object) {
 //    	getReadLock().lock();
     	try {
             if(!getReasoner().isConsistent()) {

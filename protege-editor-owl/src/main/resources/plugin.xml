@@ -176,6 +176,17 @@
         <checkbox value="true"/>
     </extension>
 
+
+    <extension id="tree.showdeprecatedentities"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display deprecated (obsolete) entities"/>
+        <class value="org.protege.editor.owl.ui.action.DisplayDeprecatedEntitiesAction"/>
+        <toolTip value="Display deprecated entities in the currently focused view"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AC"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
     <!-- Active ontology strategies in View menu-->
 
     <extension id="ontologies.activeontology"
@@ -209,6 +220,7 @@
     </extension>
 
 
+
     <extension id="tree.expandall"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Expand all"/>
@@ -217,6 +229,7 @@
         <path value="org.protege.editor.owl.ui.view.menu/SlotB-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+
 
     <!-- Entity Renderers -->
     

@@ -32,7 +32,7 @@ import java.util.Set;
  * Date: Apr 23, 2009<br><br>
  */
 public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntity> extends AbstractOWLSelectionViewComponent
- implements Findable<E>, Deleteable {
+ implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities {
 
 
     /**
@@ -50,7 +50,13 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(7, 7));
 
-        tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider());
+        tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.fillOval(10, 10, 20, 20);
+            }
+        };
 
         // ordering based on default, but putting Nothing at the top
         final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
@@ -118,6 +124,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
                                                                        }
                                                                    },
                                                                    getCollectiveTypeName());
+        setShowDeprecatedEntities(true);
+
     }
 
 
@@ -286,5 +294,19 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     public void show(E owlEntity) {
         getTree().setSelectedOWLObject(owlEntity);
+    }
+
+    @Override
+    public void setShowDeprecatedEntities(boolean showDeprecatedEntities) {
+        if(showDeprecatedEntities) {
+            getHierarchyProvider().setFilter(e -> true);
+        }
+        else {
+            getHierarchyProvider().setFilter(this::isNotDeprecated);
+        }
+    }
+
+    private boolean isNotDeprecated(E e) {
+        return !OWLUtilities.isDeprecated(getOWLModelManager(), e);
     }
 }

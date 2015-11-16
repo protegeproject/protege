@@ -2,6 +2,10 @@ package org.protege.editor.owl.model.util;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class OWLUtilities {
 
@@ -13,9 +17,14 @@ public class OWLUtilities {
     	if (!(o instanceof OWLEntity)) {
     		return false;
     	}
-    	for (OWLOntology ontology : p4Manager.getActiveOntologies()) {
-    		for (OWLAnnotationAssertionAxiom assertion : ontology.getAnnotationAssertionAxioms(((OWLEntity) o).getIRI())) {
-    			
+		Set<OWLOntology> activeOntologies = p4Manager.getActiveOntologies();
+		return isDeprecated((OWLEntity) o, activeOntologies);
+    }
+
+	public static boolean isDeprecated(OWLEntity o, Collection<OWLOntology> ontologies) {
+		for (OWLOntology ontology : ontologies) {
+    		for (OWLAnnotationAssertionAxiom assertion : ontology.getAnnotationAssertionAxioms(o.getIRI())) {
+
     			if (!assertion.getProperty().isDeprecated()) {
     				continue;
     			}
@@ -31,6 +40,6 @@ public class OWLUtilities {
     			}
     		}
     	}
-    	return false;
-    }
+		return false;
+	}
 }

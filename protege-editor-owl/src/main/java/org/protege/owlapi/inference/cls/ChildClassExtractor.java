@@ -1,5 +1,6 @@
 package org.protege.owlapi.inference.cls;
 
+import org.protege.editor.owl.model.util.OWLUtilities;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;

@@ -59,7 +59,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
     }
 
 
-    public Set<OWLObject> getChildren(OWLObject object) {
+    public Set<OWLObject> getUnfilteredChildren(OWLObject object) {
         if (reasoner != null && typeNodes.containsKey(object)) {
             return typeNodes.get(object);
         }
