@@ -257,7 +257,7 @@ public class PluginInstaller {
      * @return The jar or directory that contains the plugin
      */
     private static Optional<File> extractPlugin(File pluginArchive, PluginInfo info) throws IOException {
-        logger.info("Extracting {} plugin from zip file " + info.getLabel());
+        logger.info("Extracting {} plugin from zip file ", info.getLabel());
         File tempDir = new File(pluginArchive.getParentFile(), pluginArchive.getName() + "-extracted");
         tempDir.deleteOnExit();
         tempDir.mkdir();
