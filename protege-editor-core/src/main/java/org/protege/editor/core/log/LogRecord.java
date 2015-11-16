@@ -1,7 +1,6 @@
 package org.protege.editor.core.log;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 

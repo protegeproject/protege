@@ -3,24 +3,22 @@ package org.protege.editor.core.ui.view;
 import org.coode.mdock.NodePanel;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
+import javax.swing.*;
+import javax.swing.FocusManager;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.util.Collections;
-import java.util.List;
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.awt.GridBagConstraints.*;
 

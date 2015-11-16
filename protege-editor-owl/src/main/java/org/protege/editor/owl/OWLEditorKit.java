@@ -17,7 +17,6 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;

@@ -1,8 +1,8 @@
 package org.protege.osgi.framework.service;
 
-import java.util.List;
-
 import org.protege.osgi.framework.BundleSearchPath;
+
+import java.util.List;
 
 public interface LaunchInfoService {
 

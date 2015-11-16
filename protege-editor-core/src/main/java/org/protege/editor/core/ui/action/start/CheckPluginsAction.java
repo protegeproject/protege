@@ -1,8 +1,8 @@
 package org.protege.editor.core.ui.action.start;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.core.update.PluginManager;
+
+import java.awt.event.ActionEvent;
 
 /**
  * Author: drummond<br>

@@ -1,15 +1,14 @@
 package org.protege.editor.core.ui.action.start;
 
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.JFrame;
-
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
 import org.protege.editor.core.plugin.PluginExtensionMatcher;
+
+import javax.swing.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AltStartupActionPluginLoader extends AbstractPluginLoader<AltStartupActionPlugin> {
 

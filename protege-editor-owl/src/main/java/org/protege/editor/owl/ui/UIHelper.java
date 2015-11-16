@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui;
 
-import com.google.common.base.*;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;

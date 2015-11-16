@@ -1,7 +1,6 @@
 package org.protege.editor.core.ui.view;
 
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
+import javax.swing.*;
 
 
 /**

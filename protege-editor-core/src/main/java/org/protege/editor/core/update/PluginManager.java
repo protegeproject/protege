@@ -1,19 +1,20 @@
 package org.protege.editor.core.update;
 
-import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY;
-import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
-
-import javax.swing.*;
-
-import com.google.common.base.Optional;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.progress.BackgroundTask;
+
+import javax.swing.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY;
+import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
 
 /**
  * Author: Matthew Horridge<br>

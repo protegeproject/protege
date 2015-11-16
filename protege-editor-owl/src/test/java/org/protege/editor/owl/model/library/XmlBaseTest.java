@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.library;
 
+import junit.framework.TestCase;
+import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
+
 import java.io.File;
 import java.net.URI;
-
-import junit.framework.TestCase;
-
-import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
 
 public class XmlBaseTest extends TestCase {
     public static final String PIZZA_NAME = "http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl";

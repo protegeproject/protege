@@ -2,7 +2,6 @@ package org.protege.editor.core.update;
 
 
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 

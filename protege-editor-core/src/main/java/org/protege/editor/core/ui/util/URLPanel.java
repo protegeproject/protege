@@ -1,16 +1,14 @@
 package org.protege.editor.core.ui.util;
 
-import java.awt.BorderLayout;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Author: Matthew Horridge<br>

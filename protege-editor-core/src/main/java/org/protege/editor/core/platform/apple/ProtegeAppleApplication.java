@@ -1,12 +1,12 @@
 package org.protege.editor.core.platform.apple;
 
-import java.io.File;
-
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
+
+import java.io.File;
 /*
 * Copyright (C) 2007, University of Manchester
 *

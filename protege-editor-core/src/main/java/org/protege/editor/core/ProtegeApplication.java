@@ -1,32 +1,14 @@
 package org.protege.editor.core;
 
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.text.MaskFormatter;
-
-import org.protege.editor.core.log.LogBanner;
-import org.protege.editor.core.log.LogManager;
-import org.protege.editor.core.log.LogViewImpl;
-import org.protege.editor.core.ui.util.ErrorMessage;
-import org.slf4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-import org.osgi.framework.Version;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.osgi.framework.*;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.core.log.LogManager;
+import org.protege.editor.core.log.LogViewImpl;
 import org.protege.editor.core.platform.OSGi;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
@@ -37,14 +19,21 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
+import org.protege.editor.core.ui.util.ErrorMessage;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
-
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.List;
 
 /*
  * Copyright (C) 2007, University of Manchester

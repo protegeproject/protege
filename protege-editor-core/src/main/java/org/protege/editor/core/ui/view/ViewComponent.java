@@ -1,11 +1,11 @@
 package org.protege.editor.core.ui.view;
 
-import javax.swing.JComponent;
-
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.util.SelectionProvider;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
 
 
 /**

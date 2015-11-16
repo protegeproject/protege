@@ -1,7 +1,6 @@
 package org.protege.editor.core.ui.workspace;
 
 import com.google.common.base.Optional;
-import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
@@ -13,6 +12,7 @@ import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.view.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

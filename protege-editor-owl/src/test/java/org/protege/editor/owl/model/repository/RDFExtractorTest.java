@@ -1,13 +1,12 @@
 package org.protege.editor.owl.model.repository;
 
-import java.io.File;
-
 import com.google.common.base.Optional;
 import junit.framework.TestCase;
-
 import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import java.io.File;
 
 public class RDFExtractorTest extends TestCase {
     public static final String PIZZA_LOCATION  = "src/test/resources/ontologies/pizza.owl";
