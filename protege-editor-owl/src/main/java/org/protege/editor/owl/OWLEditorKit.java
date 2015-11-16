@@ -279,7 +279,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
         OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat,
-                String.format("Choose a format to use when saving the %s ontology", getModelManager().getRendering(ont)));
+                String.format("<html><body>" +
+                        "<div>Choose a format to use when saving the <span style='font-weight: bold;'>'%s'</span> ontology.</div>" +
+                        "<div style='padding-top: 20px; color: gray'; width: 150px;>" +
+                        "(If you are unsure as to what format to choose, " +
+                        "we recommend that you use the standard RDF/XML format, " +
+                        "or a widely supported format such as Turtle)</div>" +
+                        "</body></html>", getModelManager().getRendering(ont)));
         if (format == null) {
             logger.info("No ontology document format has been selected.  Aborting saveAs.");
             return false;
