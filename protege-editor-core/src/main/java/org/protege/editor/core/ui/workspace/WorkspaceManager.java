@@ -1,7 +1,7 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ProtegeManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

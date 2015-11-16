@@ -3,7 +3,8 @@ package org.protege.osgi.framework;
 import com.google.common.collect.Ordering;
 import org.osgi.framework.Version;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

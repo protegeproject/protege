@@ -1,10 +1,9 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.net.URL;
-
-import javax.swing.Icon;
-
 import org.protege.editor.core.plugin.ProtegePlugin;
+
+import javax.swing.*;
+import java.net.URL;
 
 /**
  * Author: Matthew Horridge<br>

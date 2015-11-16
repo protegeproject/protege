@@ -1,13 +1,12 @@
 package org.protege.editor.core.update;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
-import org.protege.editor.core.ProtegeApplication;
 
 /**
  * Author: Matthew Horridge<br>

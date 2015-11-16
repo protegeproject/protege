@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.preferences.node;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 
 
 /**

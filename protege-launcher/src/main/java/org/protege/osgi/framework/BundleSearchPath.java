@@ -1,19 +1,18 @@
 package org.protege.osgi.framework;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.*;
-import java.util.Optional;
-import java.util.jar.Attributes;
-import java.util.jar.JarInputStream;
-import java.util.jar.Manifest;
-import java.util.stream.Collectors;
-
-import com.google.common.base.*;
+import com.google.common.base.MoreObjects;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
+import java.util.jar.Attributes;
+import java.util.jar.JarInputStream;
+import java.util.jar.Manifest;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 

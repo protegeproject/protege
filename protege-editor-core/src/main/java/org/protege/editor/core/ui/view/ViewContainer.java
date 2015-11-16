@@ -1,20 +1,11 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JSplitPane;
-
-import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.util.UIUtil;
-import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

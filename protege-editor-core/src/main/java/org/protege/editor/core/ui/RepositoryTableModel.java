@@ -4,10 +4,10 @@ import org.protege.editor.core.OntologyRepository;
 import org.protege.editor.core.OntologyRepositoryEntry;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *

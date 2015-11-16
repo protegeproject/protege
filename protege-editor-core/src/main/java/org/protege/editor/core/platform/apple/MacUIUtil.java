@@ -1,18 +1,13 @@
 package org.protege.editor.core.platform.apple;
 
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.FileDialog;
-import java.awt.Frame;
-import java.awt.Window;
+import org.protege.editor.core.ui.util.UIUtil;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collections;
 import java.util.Set;
-
-import javax.swing.SwingUtilities;
-
-import org.protege.editor.core.ui.util.UIUtil;
 
 public class MacUIUtil {
 

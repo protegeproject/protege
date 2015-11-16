@@ -1,12 +1,12 @@
 package org.protege.editor.core.ui.view;
 
 
-import javax.swing.AbstractAction;
-
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionPluginJPFImpl;
+
+import javax.swing.*;
 
 
 /**

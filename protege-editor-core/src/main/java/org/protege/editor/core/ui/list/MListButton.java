@@ -1,12 +1,8 @@
 package org.protege.editor.core.ui.list;
 
-import org.omg.CORBA.TypeCodePackage.Bounds;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**

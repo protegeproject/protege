@@ -1,11 +1,9 @@
 package org.protege.editor.core.ui.util;
 
 
-
-import javax.swing.*;
-
 import org.eclipse.core.runtime.IExtension;
 
+import javax.swing.*;
 import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester

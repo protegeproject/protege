@@ -1,24 +1,16 @@
 package org.protege.editor.core.ui.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import org.protege.editor.core.ModelManager;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.ui.util.Icons;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-
-import org.protege.editor.core.ModelManager;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.ui.util.Icons;
 
 
 /**

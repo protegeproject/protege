@@ -1,9 +1,8 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.*;
-
 import org.protege.editor.core.platform.OSUtils;
 
+import javax.swing.*;
 import java.lang.reflect.Method;
 /*
 * Copyright (C) 2007, University of Manchester

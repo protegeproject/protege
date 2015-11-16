@@ -1,10 +1,10 @@
 package org.protege.editor.core.editorkit;
 
-import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.PluginUtilities;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 

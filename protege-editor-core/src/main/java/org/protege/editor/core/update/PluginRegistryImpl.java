@@ -1,5 +1,14 @@
 package org.protege.editor.core.update;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.core.plugin.PluginUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,15 +16,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-
-import org.protege.editor.core.log.LogBanner;
-import org.slf4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.protege.editor.core.plugin.PluginUtilities;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 /*
 * Copyright (C) 2007, University of Manchester
 *

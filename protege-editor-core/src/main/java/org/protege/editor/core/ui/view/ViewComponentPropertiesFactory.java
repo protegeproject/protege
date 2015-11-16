@@ -1,14 +1,13 @@
 package org.protege.editor.core.ui.view;
 
+import org.coode.mdock.ComponentPropertiesFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.JComponent;
-
-import org.slf4j.Logger;
-import org.coode.mdock.ComponentPropertiesFactory;
-import org.slf4j.LoggerFactory;
 
 
 /**

@@ -1,27 +1,17 @@
 package org.protege.editor.core.ui.preferences;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.prefs.BackingStoreException;
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.prefs.JavaBackedPreferencesImpl;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>

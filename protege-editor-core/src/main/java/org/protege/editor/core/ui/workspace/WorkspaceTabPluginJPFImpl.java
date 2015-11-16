@@ -1,18 +1,15 @@
 package org.protege.editor.core.ui.workspace;
 
 
-
-
-import java.net.URL;
-
-import javax.swing.Icon;
-
 import org.eclipse.core.runtime.IExtension;
 import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.plugin.PluginUtilities;
+
+import javax.swing.*;
+import java.net.URL;
 
 
 /**

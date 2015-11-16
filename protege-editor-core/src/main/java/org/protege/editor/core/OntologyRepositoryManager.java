@@ -1,9 +1,9 @@
 package org.protege.editor.core;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *

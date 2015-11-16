@@ -1,12 +1,17 @@
 package org.protege.editor.core.update;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
+import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.protege.editor.core.util.ProtegeDirectories;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,20 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import javax.swing.JOptionPane;
-
-import org.protege.editor.core.log.LogBanner;
-import org.protege.editor.core.util.ProtegeDirectories;
-import org.slf4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
-import org.protege.editor.core.FileUtils;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.progress.BackgroundTask;
-import org.slf4j.LoggerFactory;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**

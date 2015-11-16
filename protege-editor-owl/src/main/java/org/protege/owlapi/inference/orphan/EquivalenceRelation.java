@@ -3,14 +3,8 @@ package org.protege.owlapi.inference.orphan;
 import org.protege.editor.core.log.LogBanner;
 import org.slf4j.Logger;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Lightweight implementation of an equivalence relation which is optimized for
