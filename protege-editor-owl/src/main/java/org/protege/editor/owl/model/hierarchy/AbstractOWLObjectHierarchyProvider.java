@@ -5,10 +5,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -37,6 +38,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
     private OWLOntologyManager manager;
 
+    private Predicate<N> filter = n -> true;
 
     /*
      * If you expect this or any of its subclasses to be thread safe it must be a WriteSafeOWLOntologyManager.
@@ -57,7 +59,23 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     public OWLOntologyManager getManager() {
         return manager;
     }
-    
+
+    @Override
+    public void setFilter(Predicate<N> filter) {
+        this.filter = checkNotNull(filter);
+        fireHierarchyChanged();
+    }
+
+    @Override
+    public void clearFilter() {
+        this.filter = n -> true;
+        fireHierarchyChanged();
+    }
+
+    @Override
+    public Predicate<N> getFilter() {
+        return filter;
+    }
 //	protected ReentrantReadWriteLock getReadWriteLock() {
 //		return manager.getReadWriteLock();
 //	}
@@ -100,6 +118,17 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         }
     }
 
+    @Override
+    public Set<N> getChildren(N object) {
+        return getUnfilteredChildren(object)
+                .stream()
+                .filter(filter)
+                .collect(toSet());
+    }
+
+    protected Set<N> getUnfilteredChildren(N object) {
+        return Collections.emptySet();
+    }
 
     public Set<N> getDescendants(N object) {
 //    	getReadLock().lock();

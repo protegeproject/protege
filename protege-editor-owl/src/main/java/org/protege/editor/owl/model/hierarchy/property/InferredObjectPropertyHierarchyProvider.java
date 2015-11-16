@@ -33,7 +33,7 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
         return mngr.getOWLReasonerManager().getCurrentReasoner();
     }
 
-    public Set<OWLObjectProperty> getChildren(OWLObjectProperty objectProperty) {
+    public Set<OWLObjectProperty> getUnfilteredChildren(OWLObjectProperty objectProperty) {
         Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
         subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());

@@ -112,7 +112,7 @@ public class OWLPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     }
 
     @Override
-    public Set<OWLEntity> getChildren(OWLEntity object) {
+    public Set<OWLEntity> getUnfilteredChildren(OWLEntity object) {
         Set<? extends OWLObject> result = object.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLEntity>>(Collections.emptySet()) {
             @Override
             public Set<? extends OWLEntity> visit(OWLAnnotationProperty property) {

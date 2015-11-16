@@ -101,7 +101,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     }
 
 
-    public Set<OWLAnnotationProperty> getChildren(OWLAnnotationProperty object) {
+    public Set<OWLAnnotationProperty> getUnfilteredChildren(OWLAnnotationProperty object) {
 //        getReadLock().lock();
         ontologySetReadLock.lock();
         try {

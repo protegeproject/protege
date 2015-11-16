@@ -133,7 +133,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     }
 
 
-    public Set<OWLOntology> getChildren(OWLOntology object) {
+    public Set<OWLOntology> getUnfilteredChildren(OWLOntology object) {
         return getChildren(object, true);
     }
 

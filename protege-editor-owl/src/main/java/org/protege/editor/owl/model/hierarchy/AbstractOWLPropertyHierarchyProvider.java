@@ -199,7 +199,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
-    public Set<P> getChildren(P object) {
+    public Set<P> getUnfilteredChildren(P object) {
 //    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
