@@ -39,7 +39,7 @@ public class JOptionPaneEx {
 
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
         dlg.setVisible(true);
-        return getReturnValue(optionPane);
+        return getReturnValueAsInteger(optionPane);
     }
 
     public static int showConfirmDialog(Component parent, String title, JComponent content, int messageType, int optionType, final JComponent defaultFocusedComponent, Object[] options, Object defaultOption) {
@@ -57,7 +57,7 @@ public class JOptionPaneEx {
 
         JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
         dlg.setVisible(true);
-        return getReturnValue(optionPane);
+        return getReturnValueAsInteger(optionPane);
     }
 
 
@@ -87,7 +87,7 @@ public class JOptionPaneEx {
             final JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);
             dlg.setModal(true);
             dlg.setVisible(true);
-            return getReturnValue(optionPane);
+            return getReturnValueAsInteger(optionPane);
         }
         else {
             logger.warn("Component should implement VerifiedInputEditor for validating dialog to work. " + "Using normal dialog with no validating");
@@ -105,12 +105,26 @@ public class JOptionPaneEx {
     }
 
 
-    private static int getReturnValue(JOptionPane optionPane) {
+    private static int getReturnValueAsInteger(JOptionPane optionPane) {
         Object value = optionPane.getValue();
-        if (value != null && optionPane.getOptions() != null){
-            value = Arrays.binarySearch(optionPane.getOptions(), value);
+        if(value == null) {
+            return JOptionPane.CLOSED_OPTION;
         }
-        return (value != null) ? (Integer) value : JOptionPane.CLOSED_OPTION;
+        Object[] options = optionPane.getOptions();
+        if(options == null) {
+            return JOptionPane.CLOSED_OPTION;
+        }
+        if(value.equals(JOptionPane.OK_OPTION)) {
+            // Same value as YES_OPTION
+            return JOptionPane.OK_OPTION;
+        }
+        if(value.equals(JOptionPane.NO_OPTION)) {
+            return JOptionPane.NO_OPTION;
+        }
+        if(value.equals(JOptionPane.CANCEL_OPTION)) {
+            return JOptionPane.CANCEL_OPTION;
+        }
+        return JOptionPane.CLOSED_OPTION;
     }
 
 }
