@@ -46,6 +46,8 @@ public class OntologyFormatPanel extends JPanel {
         formats.add(new OBODocumentFormat());
         formats.add(new LatexDocumentFormat());
 
+        formats.add(new RDFJsonLDDocumentFormat());
+
         formatComboBox = new JComboBox<>(formats.toArray(new OWLDocumentFormat [formats.size()]));
         setLayout(new BorderLayout(12, 12));
         add(formatComboBox, BorderLayout.SOUTH);
@@ -110,13 +112,13 @@ public class OntologyFormatPanel extends JPanel {
     	panel.setSelectedFormat(defaultFormat);
         OWLDocumentFormat selectedFormat = null;
     	do {
-    		int ret = JOptionPaneEx.showConfirmDialog(editorKit.getWorkspace(),
-    				"Select an ontology format",
+    		int ret = JOptionPane.showConfirmDialog(
+                    editorKit.getWorkspace(),
     				panel,
-    				JOptionPane.PLAIN_MESSAGE,
-    				JOptionPane.OK_CANCEL_OPTION,
-    				panel.formatComboBox);
-    		if (ret != JOptionPane.OK_OPTION) {
+                    "Select an ontology format",
+                    JOptionPane.OK_CANCEL_OPTION,
+    				JOptionPane.PLAIN_MESSAGE);
+    		if (ret == JOptionPane.CANCEL_OPTION) {
     			return null;
     		}
 
