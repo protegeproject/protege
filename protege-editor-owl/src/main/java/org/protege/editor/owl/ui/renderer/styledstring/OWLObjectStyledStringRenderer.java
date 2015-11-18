@@ -675,7 +675,7 @@ public class OWLObjectStyledStringRenderer {
 
         public void visit(SWRLVariable swrlVariable) {
             builder.append("?");
-            builder.append(swrlVariable.getIRI().getFragment());
+            builder.append(swrlVariable.getIRI().getRemainder().or(swrlVariable.getIRI().toString()));
         }
 
         public void visit(SWRLIndividualArgument swrlIndividualArgument) {

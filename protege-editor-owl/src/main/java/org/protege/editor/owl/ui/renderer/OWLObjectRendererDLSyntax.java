@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
@@ -187,9 +189,19 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
     public void visit(OWLDatatype node) {
-        write(node.getIRI().getFragment());
+        visit(node.getIRI());
     }
 
+    @Override
+    public void visit(IRI iri) {
+        Optional<String> remainder = iri.getRemainder();
+        if(remainder.isPresent()) {
+            write(remainder.get());
+        }
+        else {
+            write(iri.toString());
+        }
+    }
 
     public void visit(OWLDataOneOf node) {
         write("{");
@@ -591,5 +603,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         public void visit(OWLFacetRestriction node) {
             nested = false;
         }
+
+
     }
 }
