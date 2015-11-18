@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -30,7 +32,7 @@ public class SearchPanel extends JPanel {
 
     private SearchResultsPanel searchResultsPanel;
 
-    private String searchString;
+    private String searchString = "";
 
 
     private OWLEditorKit editorKit;
@@ -67,7 +69,7 @@ public class SearchPanel extends JPanel {
     }
 
     public void setSearchString(String searchString) {
-        this.searchString = searchString;
+        this.searchString = checkNotNull(searchString);
         searchOptionsPanel.refresh();
         doSearch();
     }
