@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
@@ -61,15 +62,15 @@ public class OWLEntityIRIRegenerator implements Disposable {
 
 
     private IRI getBaseIRI(OWLEntity entity) {
-        String fragment = entity.getIRI().getFragment();
-        IRI iri = entity.getIRI();
-        if (fragment != null){
-            int fragmentIndex = iri.toString().lastIndexOf(fragment);
-            if (fragmentIndex != -1) {
-                return IRI.create(iri.toString().substring(0, fragmentIndex));
+        Optional<String> remainder = entity.getIRI().getRemainder();
+        if (remainder.isPresent()){
+            IRI iri = entity.getIRI();
+            int remainderIndex = iri.toString().lastIndexOf(remainder.get());
+            if (remainderIndex != -1) {
+                return IRI.create(iri.toString().substring(0, remainderIndex));
             }
         }
-        return iri;
+        return entity.getIRI();
     }
 
 
