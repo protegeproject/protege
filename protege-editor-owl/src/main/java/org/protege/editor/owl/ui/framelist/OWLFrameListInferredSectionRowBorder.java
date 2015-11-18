@@ -17,14 +17,6 @@ import java.awt.*;
  */
 public class OWLFrameListInferredSectionRowBorder implements Border {
 
-    private Stroke stroke = new BasicStroke(1.0f,
-                                            BasicStroke.CAP_ROUND,
-                                            BasicStroke.JOIN_ROUND,
-                                            1.0f,
-                                            new float[]{3.0f, 3.0f},
-                                            1.0f);
-
-
     /**
      * Paints the border for the specified component with the specified
      * position and size.
@@ -36,14 +28,8 @@ public class OWLFrameListInferredSectionRowBorder implements Border {
      * @param height the height of the painted border
      */
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        Color oldColor = g.getColor();
-        Graphics2D g2 = (Graphics2D) g;
-        Stroke oldStroke = g2.getStroke();
-        g2.setColor(Color.LIGHT_GRAY);
-        g2.setStroke(stroke);
-        g2.drawRect(x, y, width, height);
-        g2.setColor(oldColor);
-        g2.setStroke(oldStroke);
+        // Nothing to paint anymore.  See #277 on github.  We keep the border incase third parties
+        // use it.  Also, insets are preserved.
     }
 
 
