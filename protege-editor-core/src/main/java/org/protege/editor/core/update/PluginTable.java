@@ -40,7 +40,7 @@ public class PluginTable extends JPanel {
 
     private PluginUpdateTableModel tableModel;
 
-    private PluginRegistry provider;
+    private List<PluginInfo> provider;
 
     private List<ListSelectionListener> pendingListeners = new ArrayList<ListSelectionListener>();
 
@@ -54,9 +54,9 @@ public class PluginTable extends JPanel {
     private JLabel waitLabel;
 
 
-    public PluginTable(PluginRegistry provider) {
+    public PluginTable(List<PluginInfo> plugins) {
         setOpaque(false);
-        this.provider = provider;
+        this.provider = new ArrayList<>(plugins);
         addComponentListener(componentAdapter);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 200));
@@ -144,32 +144,32 @@ public class PluginTable extends JPanel {
 
         private final String[] colNames = {"Install", "Name", "Current version", "Available version"};
 
-        private PluginRegistry provider;
+        private List<PluginInfo> plugins;
 
 
-        public PluginUpdateTableModel(PluginRegistry provider) {
-            this.provider = provider;
+        public PluginUpdateTableModel(List<PluginInfo> plugins) {
+            this.plugins = new ArrayList<>(plugins);
             getInstallList();
         }
 
 
         public List<Boolean> getInstallList(){
             if (install == null){
-                install = new ArrayList<Boolean>(getUpdateInfoList().size());
-                for (PluginInfo info : getUpdateInfoList()) {
-                    install.add(provider.isSelected(info));
+                install = new ArrayList<Boolean>(plugins.size());
+                for (PluginInfo info : plugins) {
+                    install.add(false);//provider.isSelected(info));
                 }
             }
             return install;
         }
 
-        public List<PluginInfo> getUpdateInfoList() {
-            return provider.getAvailableDownloads();
-        }
+//        public List<PluginInfo> getUpdateInfoList() {
+//            return new ArrayList<>(plugins);
+//        }
 
 
         public PluginInfo getUpdateInfoAt(int index) {
-            return getUpdateInfoList().get(index);
+            return plugins.get(index);
         }
 
 
@@ -186,7 +186,7 @@ public class PluginTable extends JPanel {
             int counter = 0;
             for (Boolean b : getInstallList()) {
                 if (b) {
-                    sel.add(getUpdateInfoList().get(counter));
+                    sel.add(plugins.get(counter));
                 }
                 counter++;
             }
@@ -200,7 +200,7 @@ public class PluginTable extends JPanel {
 
 
         public int getRowCount() {
-            return getUpdateInfoList().size();
+            return plugins.size();
         }
 
 
@@ -209,7 +209,7 @@ public class PluginTable extends JPanel {
                 return getInstallList().get(rowIndex);
             }
             else {
-                final PluginInfo info = getUpdateInfoList().get(rowIndex);
+                final PluginInfo info = plugins.get(rowIndex);
                 if (columnIndex == 1) {
                     if (info.getPluginDescriptor() != null){
                         return info.getPluginDescriptor().getHeaders().get("Bundle-Name");

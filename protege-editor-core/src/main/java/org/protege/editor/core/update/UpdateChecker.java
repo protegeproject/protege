@@ -5,6 +5,9 @@ import org.protege.editor.core.plugin.PluginUtilities;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -17,27 +20,29 @@ import java.net.URL;
  */
 public class UpdateChecker {
 
-    private URL url;
+    private final URL url;
 
-    private Bundle b;
+    private final Optional<Bundle> b;
 
 
-    public UpdateChecker(URL updateFileURL, Bundle pluginDescriptor) {
-        this.url = updateFileURL;
-        this.b = pluginDescriptor;
+    public UpdateChecker(URL updateFileURL, Optional<Bundle> pluginDescriptor) {
+        this.url = checkNotNull(updateFileURL);
+        this.b = checkNotNull(pluginDescriptor);
     }
 
 
-    public PluginInfo run() throws IOException, UpdateException {
-        final PluginInfoDocument pluginInfoDocument = new PluginInfoDocument(url);
-        if (pluginInfoDocument.isValid(b)) {
-            PluginInfo info = pluginInfoDocument.getPluginInfo();
-            if (b == null || info.getAvailableVersion().compareTo(PluginUtilities.getBundleVersion(b)) > 0) {
-                // New version available!
-                info.setPluginDescriptor(b);
-                return info;
-            }
+    public Optional<PluginInfo> run() throws PluginDocumentParseException {
+        final PluginInfoDocumentParser pluginInfoDocumentParser = new PluginInfoDocumentParser(url);
+        PluginInfo info = pluginInfoDocumentParser.parseDocument(b);
+        if(!b.isPresent()) {
+            info.setPluginDescriptor(null);
+            return Optional.of(info);
         }
-        return null;
+        if (info.getAvailableVersion().compareTo(PluginUtilities.getBundleVersion(b.get())) > 0) {
+            // New version available!
+            info.setPluginDescriptor(b.get());
+            return Optional.of(info);
+        }
+        return Optional.empty();
     }
 }

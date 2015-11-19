@@ -17,7 +17,11 @@ import java.util.List;
  */
 public interface PluginRegistry {
 
-    List<PluginInfo> getAvailableDownloads();
+    List<PluginInfo> getAvailableUpdates();
 
-    boolean isSelected(PluginInfo download);
+    List<PluginInfo> getAvailableInstalls();
+
+//    boolean isSelected(PluginInfo download);
+
+    void reload();
 }

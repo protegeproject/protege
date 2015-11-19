@@ -1,5 +1,7 @@
 package org.protege.editor.core.update;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -9,9 +11,7 @@ import javax.swing.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY;
 import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
@@ -29,14 +29,18 @@ public class PluginManager {
 
     private static final String LAST_RUN_PREFS_KEY = "last.run";
 
-    private static PluginManager instance;
+    private static final PluginManager instance = new PluginManager();
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
     public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-5.0.url";
+
     public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/plugins.repository";
 
-    private PluginRegistry pluginRegistry;
+    private static enum SearchType {
+        UPDATES_ONLY,
+        UPDATES_AND_INSTALLS
+    }
 
     private PluginManager() {
 
@@ -44,9 +48,6 @@ public class PluginManager {
 
 
     public static synchronized PluginManager getInstance() {
-        if (instance == null) {
-            instance = new PluginManager();
-        }
         return instance;
     }
 
@@ -83,77 +84,7 @@ public class PluginManager {
     	String newPluginRegistryLoc = url.toString();
     	if (!newPluginRegistryLoc.equals(oldPluginRegistryLoc)) {
     		getPrefs().putString(PLUGIN_REGISTRY_KEY, newPluginRegistryLoc);
-    		pluginRegistry = null;
     	}
-    }
-
-
-    public PluginRegistry getPluginRegistry(){
-        if (pluginRegistry == null){
-            pluginRegistry = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY);
-        }
-        return pluginRegistry;
-    }
-
-
-    public void checkForUpdates(){
-        final BackgroundTask task = ProtegeApplication.getBackgroundTaskManager().startTask("searching for updates");
-        Runnable runnable = () -> {
-            try {
-                PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-                List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
-                if (!updates.isEmpty()) {
-                    Map<String, PluginRegistry> map = new LinkedHashMap<>();
-                    map.put("Updates", updatesProvider);
-                    SwingUtilities.invokeLater(
-                            () -> showUpdatesDialog(map)
-                    );
-                }
-                else{
-                    SwingUtilities.invokeLater(
-                            () -> JOptionPane.showMessageDialog(null, "No updates available at this time.")
-                    );
-                }
-            }
-            finally {
-                SwingUtilities.invokeLater(
-                        () -> ProtegeApplication.getBackgroundTaskManager().endTask(task)
-                );
-            }
-
-        };
-        Thread t = new Thread(runnable, "Auto-update Runner");
-        t.setPriority(Thread.MIN_PRIORITY);
-        t.start();
-
-    }
-
-
-    public void checkForDownloads() {
-        final BackgroundTask task = ProtegeApplication.getBackgroundTaskManager().startTask("searching for downloads");
-
-        Runnable runnable = () -> {
-            List<PluginInfo> downloads;
-            try {
-                PluginRegistry registry = getPluginRegistry();
-                downloads = registry.getAvailableDownloads();
-            }
-            finally {
-                ProtegeApplication.getBackgroundTaskManager().endTask(task);
-            }
-            if (!downloads.isEmpty()){
-                Map<String, PluginRegistry> map = new LinkedHashMap<>();
-                map.put("Downloads", getPluginRegistry());
-                showUpdatesDialog(map);
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "No downloads available at this time.");
-            }
-        };
-        Thread t = new Thread(runnable, "Check for downloads");
-        t.setPriority(Thread.MIN_PRIORITY);
-        t.start();
-
     }
 
     /**
@@ -161,89 +92,55 @@ public class PluginManager {
      * @return The date which auto-update was last run.  Not {@code null}.
      */
     public Date getLastAutoUpdateDate() {
-//        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.DAY_OF_MONTH, 20);
-//        getPrefs().putLong(LAST_RUN_PREFS_KEY, c.getTimeInMillis());
         long lastRun = getPrefs().getLong(LAST_RUN_PREFS_KEY, 0);
         return new Date(lastRun);
     }
 
-    public void performAutoUpdate() {
-
-        final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
-        Runnable runnable = new Runnable() {
-        	PluginRegistry updatesProvider;
-        	List<PluginInfo> updates;
-            public void run() {
-            	try {
-            		updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-            		updates = updatesProvider.getAvailableDownloads();
-                    getPrefs().putLong(LAST_RUN_PREFS_KEY, System.currentTimeMillis());
-                }
-            	finally {
-            		ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
-            	}
-                if (!updates.isEmpty()) {
-                    Map<String, PluginRegistry> map = new LinkedHashMap<String, PluginRegistry>();
-                    map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
-                    map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
-                    showUpdatesDialog(map);
-                }
-            }
-        };
-        Thread t = new Thread(runnable, "Auto-update");
-        t.setPriority(Thread.MIN_PRIORITY);
-        t.start();
+    public void runAutoUpdate() {
+        runSearch(SearchType.UPDATES_ONLY);
     }
 
+    public void runCheckForPlugins() {
+        runSearch(SearchType.UPDATES_AND_INSTALLS);
+    }
 
-    public void performCheckPlugins() {
-        final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("searching for plugins");
+    private void runSearch(SearchType searchType) {
+        final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
         Runnable runnable = () -> {
+            PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation());
             try {
-                PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_UPDATE_REGISTRY);
-                List<PluginInfo> updates = updatesProvider.getAvailableDownloads();
-                if (!updates.isEmpty()) {
-                    Map<String, PluginRegistry> map = new LinkedHashMap<>();
-                    map.put(PLUGIN_UPDATE_REGISTRY.getLabel(), updatesProvider);
-                    map.put(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), new PluginRegistryImpl(getPluginRegistryLocation(), PLUGIN_DOWNLOAD_REGISTRY));
-                    showUpdatesDialog(map);
-                }
-                else{
-                    PluginRegistry registry = getPluginRegistry();
-                    final List<PluginInfo> downloads = registry.getAvailableDownloads();
-                    if (!downloads.isEmpty()){
-                        Map<String, PluginRegistry> map = new LinkedHashMap<>();
-                        map.put("Downloads", registry);
-                        map.put("Updates", updatesProvider);
-                        showUpdatesDialog(map);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "No additional plugins / updates available at this time.");
-                    }
-                }
+                updatesProvider.reload();
+                getPrefs().putLong(LAST_RUN_PREFS_KEY, System.currentTimeMillis());
             }
             finally {
                 ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
+                ListMultimap<String, PluginInfo> map = ArrayListMultimap.create();
+                List<PluginInfo> availableUpdates = updatesProvider.getAvailableUpdates();
+                map.putAll(PLUGIN_UPDATE_REGISTRY.getLabel(), availableUpdates);
+                map.putAll(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), updatesProvider.getAvailableInstalls());
+                if (searchType == SearchType.UPDATES_ONLY) {
+                    if (!availableUpdates.isEmpty()) {
+                        showUpdatesDialog(map);
+                    }
+                }
+                if(searchType == SearchType.UPDATES_AND_INSTALLS) {
+                    showUpdatesDialog(map);
+                }
             }
         };
-        Thread t = new Thread(runnable, "Check plugins");
+        Thread t = new Thread(runnable, "Auto-Update");
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }
 
-
-    public void showUpdatesDialog(Map<String, PluginRegistry> downloadsProviders) {
-        List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders, null);
-        if (!selUpdates.isEmpty()){
-            PluginInstaller installer = new PluginInstaller(selUpdates);
-            installer.run();
-            // @@TODO remove the installed plugins from the updatesProvider
-        }
+    private void showUpdatesDialog(ListMultimap<String, PluginInfo> downloadsProviders) {
+       SwingUtilities.invokeLater(() -> {
+           List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders, null);
+           if (!selUpdates.isEmpty()){
+               PluginInstaller installer = new PluginInstaller(selUpdates);
+               installer.run();
+           }
+       });
     }
 
-
-    public void checkForUpdatesUI() {
-
-    }
 }
