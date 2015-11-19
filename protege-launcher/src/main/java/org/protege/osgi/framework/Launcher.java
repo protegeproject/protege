@@ -1,13 +1,14 @@
 package org.protege.osgi.framework;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
+import org.apache.felix.framework.capabilityset.SimpleFilter;
+import org.osgi.framework.*;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.wiring.BundleCapability;
+import org.osgi.framework.wiring.BundleRequirement;
 import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.framework.wiring.BundleWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -121,6 +122,7 @@ public class Launcher {
         }
         addShutdownHook();
         addCleanupOnExit(exitOnOSGiShutDown);
+
     }
 
 
@@ -178,7 +180,7 @@ public class Launcher {
             try {
                 if (!isFragmentBundle(b)) {
                     b.start();
-                    logger.info("Started bundle {}", b.getSymbolicName());
+                    logger.info("Starting bundle {}", b.getSymbolicName());
                 }
                 else {
                     logger.info("Not starting bundle {} explicitly because it is a fragment bundle.", b.getSymbolicName());
