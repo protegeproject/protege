@@ -17,6 +17,9 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -25,16 +28,17 @@ import java.util.regex.Pattern;
  * Date: 20/09/2012
  */
 public class SearchPanel extends JPanel {
-
+    
     private SearchOptionsPanel searchOptionsPanel;
-
+    
     private SearchResultsPanel searchResultsPanel;
-
+    
     private String searchString;
-
-
+    
+    private Logger log = LoggerFactory.getLogger(SearchPanel.class);
+    
     private OWLEditorKit editorKit;
-
+    
     public SearchPanel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
         setLayout(new BorderLayout(4, 4));
@@ -42,17 +46,17 @@ public class SearchPanel extends JPanel {
         add(searchOptionsPanel, BorderLayout.NORTH);
         searchResultsPanel = new SearchResultsPanel(editorKit);
         add(searchResultsPanel);
-
+        
         searchOptionsPanel.addListener(new SearchOptionsChangedListener() {
             public void searchRequestOptionChanged() {
                 doSearch();
             }
-
+            
             public void searchResultsPresentationOptionChanged() {
                 updateSearchResultsPresentation();
             }
         });
-
+        
         JPanel searchActionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchActionsPanel.add(new JButton(new AbstractAction("Copy selected entities") {
             public void actionPerformed(ActionEvent e) {
@@ -61,23 +65,24 @@ public class SearchPanel extends JPanel {
         }));
         add(searchActionsPanel, BorderLayout.SOUTH);
     }
-
+    
     public void setSearchResultClickedListener(SearchResultClickedListener searchResultClickedListener) {
         searchResultsPanel.setSearchResultClickedListener(searchResultClickedListener);
     }
-
+    
     public void setSearchString(String searchString) {
+        log.debug("search String: {}", searchString);
         this.searchString = searchString;
         searchOptionsPanel.refresh();
         doSearch();
     }
-
-    private SearchRequest createSearchRequest() {
+    
+    private SearchRequest createSearchRequest() throws PatternSyntaxException {
         OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
-
+        
         ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
-
+        
         String preparedSearchString;
         for (String splitSearchString : searchString.split("\\s+")) {
             if (prefs.isUseRegularExpressions()) {
@@ -85,8 +90,7 @@ public class SearchPanel extends JPanel {
                 if (prefs.isIgnoreWhiteSpace()) {
                     preparedSearchString = preparedSearchString.replace(" ", "\\s+");
                 }
-            }
-            else {
+            } else {
                 if (prefs.isIgnoreWhiteSpace()) {
                     StringBuilder sb = new StringBuilder();
                     String[] split = splitSearchString.split("\\s+");
@@ -98,8 +102,7 @@ public class SearchPanel extends JPanel {
                         }
                     }
                     preparedSearchString = sb.toString();
-                }
-                else {
+                } else {
                     preparedSearchString = Pattern.quote(splitSearchString);
                 }
             }
@@ -111,23 +114,29 @@ public class SearchPanel extends JPanel {
 //        Pattern searchPattern = Pattern.compile(preparedSearchString, flags);
         return new SearchRequest(builder.build());
     }
-
+    
     private void doSearch() {
         if (searchString.trim().isEmpty()) {
             searchResultsPanel.clearSearchResults();
             return;
         }
         SearchManager searchManager = editorKit.getSearchManager();
-        SearchRequest searchRequest = createSearchRequest();
+        SearchRequest searchRequest;
+        try {
+            searchRequest = createSearchRequest();
+        } catch (PatternSyntaxException ex) {
+            log.debug("entered pattern: '{}'", ex.getPattern());
+            return;
+        }
         searchManager.performSearch(searchRequest, new SearchResultHandler() {
             public void searchFinished(List<SearchResult> searchResults) {
                 int categorySizeLimit = getCategoryLimit();
                 searchResultsPanel.setSearchResults(new SearchResultSet(searchResults), categorySizeLimit);
-
+                
             }
         });
     }
-
+    
     private int getCategoryLimit() {
         int categorySizeLimit = 10;
         if (searchOptionsPanel.isShowAllResults()) {
@@ -135,22 +144,20 @@ public class SearchPanel extends JPanel {
         }
         return categorySizeLimit;
     }
-
-
+    
     private void updateSearchResultsPresentation() {
         int categorySizeLimit = getCategoryLimit();
         searchResultsPanel.setCategorySizeLimit(categorySizeLimit);
     }
-
-
+    
     public void moveSelectionDown() {
         searchResultsPanel.moveSelectionDown();
     }
-
+    
     public void moveSelectionUp() {
         searchResultsPanel.moveSelectionUp();
     }
-
+    
     private void copySelectedEntities() {
         Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         List<OWLEntity> objects = new ArrayList<OWLEntity>();
@@ -158,7 +165,7 @@ public class SearchPanel extends JPanel {
         ViewClipboard clipboard = ViewClipboard.getInstance();
         TransferableOWLObject contents = new TransferableOWLObject(editorKit.getOWLModelManager(), objects);
         clipboard.getClipboard().setContents(contents, null);
-
+        
         StringBuilder buffer = new StringBuilder();
         for (OWLEntity owlObject : objects) {
             buffer.append(editorKit.getOWLModelManager().getRendering(owlObject));
@@ -169,7 +176,7 @@ public class SearchPanel extends JPanel {
         StringSelection stringSelection = new StringSelection(buffer.toString().trim());
         systemClipboard.setContents(stringSelection, null);
     }
-
+    
     public Optional<OWLEntity> getSelectedEntity() {
         return searchResultsPanel.getSelectedEntity();
     }
