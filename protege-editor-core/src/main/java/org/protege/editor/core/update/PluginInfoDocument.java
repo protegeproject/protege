@@ -69,7 +69,8 @@ public class PluginInfoDocument {
 
 
     public boolean isValid(Bundle bundle) throws UpdateException {
-
+        // MH:  This is a really, really odd method and implementation.  It only returns if valid, otherwise
+        // it throws and exception.
         if (info.getId() == null){
             throw new UpdateException(info.getId(), updateFileLocation, "No plugin ID given");
         }
@@ -93,3 +94,4 @@ public class PluginInfoDocument {
         return info;
     }
 }
+\
