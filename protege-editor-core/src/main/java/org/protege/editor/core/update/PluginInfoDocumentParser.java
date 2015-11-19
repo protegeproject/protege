@@ -113,7 +113,7 @@ public class PluginInfoDocumentParser {
 
             return info;
         } catch (IOException e) {
-            throw new PluginDocumentParseException("The plugin document could not be parsed", e);
+            throw new PluginDocumentParseException("The plugin document could not be loaded due to a network error: " + e.getClass().getSimpleName() + ", " + e.getMessage(), e);
         }
     }
 

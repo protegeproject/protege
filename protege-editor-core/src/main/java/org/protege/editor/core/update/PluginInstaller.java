@@ -108,12 +108,23 @@ public class PluginInstaller {
             logger.error("An error occurred whilst downloading and installing the {} plugin: {}", info.getLabel(), t.getMessage(), t);
             return InstallerResult.ERROR;
         } catch (BundleException e) {
-            logger.error("An error occurred whilst installing the {} plugin.  " +
-                    "It is likely that this error occurred due to a version conflict. " +
-                    "Please check that the version of this plugin ({}) is compatible with " +
-                    "this version of Protégé.",
-                    info.getLabel(),
-                    info.getAvailableVersion());
+            if(e.getType() == BundleException.RESOLVE_ERROR) {
+                logger.error("An error occurred whilst installing the {} plugin.  " +
+                                "This error was caused because the version of this plugin ({})" +
+                                "was either missing some other components that are not installed or, more likely," +
+                                "it is not compatible with this version of Protégé.",
+                        info.getLabel(),
+                        info.getAvailableVersion(),
+                        e);
+            }
+            else {
+                logger.error("An error occurred whilst installing the {} plugin.  " +
+                                "It is likely that this error occurred due to a version conflict. " +
+                                "Please check that the version of this plugin ({}) is compatible with " +
+                                "this version of Protégé.",
+                        info.getLabel(),
+                        info.getAvailableVersion());
+            }
             return InstallerResult.ERROR;
         }
         finally {
