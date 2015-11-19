@@ -292,7 +292,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "<html>Choose a format to use when saving the <i>" + getModelManager().getRendering(ont) + "</i> ontology</html>");
         if (format == null) {
             logger.warn("Please select a valid format");
             return false;
