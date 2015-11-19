@@ -105,7 +105,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private final OWLOntologyManager manager;
 
-    private final OntologyCatalogManager ontologyLibraryManager;
+    private final OntologyCatalogManager ontologyLibraryManager = new OntologyCatalogManager();
 
     private ExplanationManager explanationManager;
 
@@ -175,7 +175,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlReasonerManager = new OWLReasonerManagerImpl(this);
         owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
 
-        ontologyLibraryManager = new OntologyCatalogManager();
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
