@@ -117,6 +117,7 @@ public class PluginRegistryImpl implements PluginRegistry {
 
         public void run() {
             logger.info(LogBanner.start("Running Auto-update"));
+            logger.info("");
             mapIdsToBundles();
             checkBundles();
             checkForDownloads(root);
@@ -186,9 +187,15 @@ public class PluginRegistryImpl implements PluginRegistry {
                 }
             } catch (PluginDocumentParseException e) {
                 Object bundleName = bundle.getHeaders().get("Bundle-Name");
-                logger.warn(AUTO_UPDATE, "The plugin update document for {}, which is located at {} is malformed. Reason: {}", bundleName, updateLocation, e.getMessage());
+                logger.warn(AUTO_UPDATE, "The plugin update document for the {} plugin, " +
+                        "which is located at {} could not be loaded/processed. Reason: {}",
+                        bundleName,
+                        updateLocation,
+                        e.getMessage());
             } catch (MalformedURLException e) {
-                logger.warn(AUTO_UPDATE, "The URL of the plugin document {} is malformed: {}", updateLocation, e.getMessage());
+                logger.warn(AUTO_UPDATE, "The URL of the plugin document {} is malformed: {}",
+                        updateLocation,
+                        e.getMessage());
             }
         }
 
