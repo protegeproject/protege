@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.search;
 
+import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
 
 import java.util.Comparator;
@@ -63,7 +64,11 @@ public class SearchResultComparator implements Comparator<SearchResult> {
             return false;
         }
         String rendering = searchResult.getSearchString();
-        SearchResultMatch firstMatch = searchResult.getMatches().get(0);
+        ImmutableList<SearchResultMatch> matches = searchResult.getMatches();
+        if(matches.isEmpty()) {
+            return false;
+        }
+        SearchResultMatch firstMatch = matches.get(0);
         if (rendering.startsWith("'")) {
             return firstMatch.getStart() == 1;
         }
