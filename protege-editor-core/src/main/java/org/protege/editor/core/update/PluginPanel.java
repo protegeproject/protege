@@ -1,6 +1,7 @@
 package org.protege.editor.core.update;
 
 
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
@@ -55,7 +56,7 @@ public class PluginPanel extends JPanel {
     private JCheckBox alwaysShow;
 
 
-    public PluginPanel(Map<String, PluginRegistry> downloadsProviders) {
+    public PluginPanel(ListMultimap<String, PluginInfo> downloadsProviders) {
         setLayout(new BorderLayout(2, 2));
 
 
@@ -267,8 +268,8 @@ public class PluginPanel extends JPanel {
     }
 
 
-    public static List<PluginInfo> showDialog(Map<String, PluginRegistry> downloadsProviders, Component parent) {
-        PluginPanel panel = new PluginPanel(downloadsProviders);
+    public static List<PluginInfo> showDialog(ListMultimap<String, PluginInfo> plugins, Component parent) {
+        PluginPanel panel = new PluginPanel(plugins);
         final String installOption = "Install";
         final String notNowOption = "Not now";
         Object [] options = new String []{installOption, notNowOption};

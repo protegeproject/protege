@@ -17,7 +17,7 @@ public class CheckPluginsAction extends AltStartupAction {
 
 
     public void actionPerformed(ActionEvent event) {
-        PluginManager.getInstance().performCheckPlugins();
+        PluginManager.getInstance().runCheckForPlugins();
     }
 
 

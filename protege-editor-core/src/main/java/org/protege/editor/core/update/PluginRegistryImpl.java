@@ -2,6 +2,7 @@ package org.protege.editor.core.update;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.slf4j.Logger;
@@ -33,147 +34,192 @@ import java.util.*;
 public class PluginRegistryImpl implements PluginRegistry {
 
     public static final Marker AUTO_UPDATE = MarkerFactory.getMarker("Auto-Update");
-    private final Logger logger = LoggerFactory.getLogger(PluginRegistryImpl.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(PluginRegistryImpl.class);
 
     public static final String UPDATE_URL = "Update-Url";
-    
+
     public enum PluginRegistryType {
         PLUGIN_UPDATE_REGISTRY("Updates"), PLUGIN_DOWNLOAD_REGISTRY("Downloads");
-       
+
         private String label;
-        
-        private PluginRegistryType(String label) { 
+
+        private PluginRegistryType(String label) {
             this.label = label;
         }
-        
+
         public String getLabel() {
             return label;
         }
     }
 
-    private URL root;
-    private PluginRegistryType pluginType;
+    private final URL root;
 
-    private List<PluginInfo> plugins = null;
+    private final List<PluginInfo> updates = new ArrayList<>();
 
+    private final List<PluginInfo> installs = new ArrayList<>();
 
-    public PluginRegistryImpl(URL root, PluginRegistryType pluginType) {
+    public PluginRegistryImpl(URL root) {
         this.root = root;
-        this.pluginType = pluginType;
     }
-    
+
     public void reload() {
-        plugins = new ArrayList<>();
-        new Calculator().run();
+        updates.clear();
+        installs.clear();
+        Calculator calculator = new Calculator(root);
+        calculator.run();
+        updates.addAll(calculator.getUpdates());
+        installs.addAll(calculator.getInstalls());
     }
 
-    public List<PluginInfo> getAvailableDownloads() {
-        if (plugins == null){
-            reload();
-        }
-        return plugins;
+    public List<PluginInfo> getAvailableUpdates() {
+        return updates;
     }
 
-
-    public boolean isSelected(PluginInfo download) {
-        return pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
+    public List<PluginInfo> getAvailableInstalls() {
+        return installs;
     }
-    
-    private class Calculator implements Runnable {
+
+    private static void sortPlugins(List<PluginInfo> plugins) {
+        Collections.sort(plugins, new Comparator<PluginInfo>() {
+            public int compare(PluginInfo o1, PluginInfo o2) {
+                final String l1 = o1.getLabel();
+                final String l2 = o2.getLabel();
+                return l1.compareToIgnoreCase(l2);
+            }
+        });
+    }
+
+//    public boolean isSelected(PluginInfo download) {
+//        return pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
+//    }
+
+    private static class Calculator {
+
+        private URL root;
+
         private BundleContext context = PluginUtilities.getInstance().getApplicationContext();
-        private Map<String, Bundle> bundleByIds = new HashMap<String, Bundle>();
-        private Set<String> selfUpdatingBundleIds = new HashSet<String>();
-        private Set<URL> visitedURLs = new HashSet<URL>();
+
+        private Map<String, Bundle> bundleByIds = new HashMap<>();
+
+        private Set<String> selfUpdatingBundleIds = new HashSet<>();
+
+        private Set<URL> visitedURLs = new HashSet<>();
+
+        private final List<PluginInfo> updates = new ArrayList<>();
+
+        private final List<PluginInfo> installs = new ArrayList<>();
+
+        public Calculator(URL root) {
+            this.root = root;
+        }
+
 
         public void run() {
             logger.info(LogBanner.start("Running Auto-update"));
+            mapIdsToBundles();
             checkBundles();
-            visit(root, 0);
-            sortPlugins();
+            checkForDownloads(root);
+            sortPlugins(updates);
+            sortPlugins(installs);
             logger.info(LogBanner.end());
+
         }
 
-        private void sortPlugins() {
-            Collections.sort(plugins, new Comparator<PluginInfo>() {
-                public int compare(PluginInfo o1, PluginInfo o2) {
-                    final String l1 = o1.getLabel();
-                    final String l2 = o2.getLabel();
-                    return l1.compareToIgnoreCase(l2);
-                }
-            });
+        private void mapIdsToBundles() {
+            if (context == null) {
+                return;
+            }
+            for (Bundle bundle : context.getBundles()) {
+                bundleByIds.put(bundle.getSymbolicName(), bundle);
+            }
+        }
+
+        public List<PluginInfo> getUpdates() {
+            return new ArrayList<>(updates);
+        }
+
+        public List<PluginInfo> getInstalls() {
+            return new ArrayList<>(installs);
         }
 
         private void checkBundles() {
-            if (context != null) {
-                for (Bundle bundle : context.getBundles()) {
-                    bundleByIds.put(bundle.getSymbolicName(), bundle);
-                }
+            if (context == null) {
+                return;
             }
-            if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY) {
-                for (Bundle bundle : context.getBundles()) {
-                    try {
-                        String updateLocation = (String) bundle.getHeaders().get(UPDATE_URL);
-                        if (updateLocation != null) {
-                            URL url = new URL(updateLocation);
-                            UpdateChecker checker = new UpdateChecker(url, bundle);
-                            PluginInfo info = checker.run();
-                            if (info != null && info.getAvailableVersion().compareTo(bundle.getVersion()) > 0) {
-                                info.setPluginDescriptor(bundle);
-                                plugins.add(info);
-                                selfUpdatingBundleIds.add(info.getId());
-                                logger.debug(AUTO_UPDATE, "Found self updating bundle {}", info.getId());
-                            }
-                        }
-                    }
-                    catch (Throwable e) {
-                        logger.warn(AUTO_UPDATE, "Self update of bundle {} failed.  Reason: {}", bundle.getHeaders().get("Bundle-Name"), e.getMessage(), e);
+            logger.info("--- Checking for updates to installed plugins ---");
+            for (Bundle bundle : context.getBundles()) {
+                checkForUpdateToBundle(bundle, 0);
+            }
+            logger.info("");
+
+        }
+
+        private void checkForDownloads(URL root) {
+            logger.info("--- Searching plugins to install ---");
+            processUpdateOrRepositoryDocumentAt(root, 0);
+        }
+
+        private void checkForUpdateToBundle(Bundle bundle, int depth) {
+            String updateLocation = (String) bundle.getHeaders().get(UPDATE_URL);
+            if (updateLocation == null) {
+                return;
+            }
+            try {
+                URL url = new URL(updateLocation);
+                Optional<Bundle> optionalBundle = Optional.ofNullable(bundle);
+                UpdateChecker checker = new UpdateChecker(url, optionalBundle);
+                Optional<PluginInfo> pluginInfo = checker.run();
+                if (pluginInfo.isPresent()) {
+                    PluginInfo info = pluginInfo.get();
+                    Version installedVersion = bundle.getVersion();
+                    Version availableVersion = info.getAvailableVersion();
+                    if (availableVersion.compareTo(installedVersion) > 0) {
+                        updates.add(info);
+                        selfUpdatingBundleIds.add(info.getId());
+                        logger.info(AUTO_UPDATE, "{}Found update for {}.  Installed version: {}  Available version: {}",
+                                pad(depth + 1),
+                                info.getId(),
+                                installedVersion,
+                                availableVersion);
                     }
                 }
+            } catch (PluginDocumentParseException e) {
+                Object bundleName = bundle.getHeaders().get("Bundle-Name");
+                logger.warn(AUTO_UPDATE, "The plugin update document for {}, which is located at {} is malformed. Reason: {}", bundleName, updateLocation, e.getMessage());
+            } catch (MalformedURLException e) {
+                logger.warn(AUTO_UPDATE, "The URL of the plugin document {} is malformed: {}", updateLocation, e.getMessage());
             }
         }
-        
-        private void visit(URL node, int depth) {
-            if (!visitedURLs.contains(node)){
-                visitedURLs.add(node);
-                
-                logger.info(AUTO_UPDATE, "{}Checking {}", pad(depth), node);
 
-                // see if this is a plugin file
-                try{
-                    UpdateChecker checker = new UpdateChecker(node, null);
-                    PluginInfo info = checker.run();
-                    if (info != null) {
-                        logger.debug(AUTO_UPDATE, "{}URL {} has valid plugin info: {}", pad(depth), node, info.getId());
+        private void processUpdateOrRepositoryDocumentAt(URL node, int depth) {
+            if (visitedURLs.contains(node)) {
+                return;
+            }
+            visitedURLs.add(node);
+            logger.info(AUTO_UPDATE, "{}Checking {}", pad(depth), node);
 
-                        if (pluginType == PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY && !bundleByIds.containsKey(info.getId())) {
-                            plugins.add(info);
-                            logger.debug(AUTO_UPDATE, "{}URL {} is a download", pad(depth), node);
+            // see if this is a plugin file
+            UpdateChecker checker = new UpdateChecker(node, Optional.empty());
+            try {
+                Optional<PluginInfo> parsedInfo = checker.run();
+                if (parsedInfo.isPresent()) {
+                    PluginInfo info = parsedInfo.get();
+                    logger.debug(AUTO_UPDATE, "{}URL {} has valid plugin info: {}", pad(depth), node, info.getId());
+                    if (!bundleByIds.containsKey(info.getId())) {
+                        installs.add(info);
+                        logger.debug(AUTO_UPDATE, "{}URL {} is a download", pad(depth), node);
 
-                        }
-                        Bundle bundle = bundleByIds.get(info.getId());
-                        if (pluginType == PluginRegistryType.PLUGIN_UPDATE_REGISTRY
-                                      && bundle != null
-                                      && bundle.getVersion().compareTo(info.getAvailableVersion()) < 0
-                                      && !selfUpdatingBundleIds.contains(info.getId())) {
-                            info.setPluginDescriptor(bundle);
-                            plugins.add(info);
-                            logger.debug(AUTO_UPDATE, "{}URL {} is an update", pad(depth), node);
-                        }
                     }
-
-                }
-                catch(MalformedURLException e){
-                    readRegistry(node, depth + 1);
-                }
-                catch (UpdateException e){
-                    if (e.getPluginId().isPresent()) {
-                        logger.warn(AUTO_UPDATE, "{}Couldn't read plugin updated file at {}.  Reason: {}", pad(depth), node, e.getMessage(), e);
+                    Bundle bundle = bundleByIds.get(info.getId());
+                    if (bundle != null && bundle.getVersion().compareTo(info.getAvailableVersion()) < 0 && !selfUpdatingBundleIds.contains(info.getId())) {
+                        info.setPluginDescriptor(bundle);
+                        updates.add(info);
+                        logger.debug(AUTO_UPDATE, "{}URL {} is an update", pad(depth), node);
                     }
-                    readRegistry(node, depth + 1);
                 }
-                catch(IOException e){
-                    logger.warn(AUTO_UPDATE, "{}Cannot open remote plugin file/registry at {}.  Reason: {}", pad(depth), node, e.getCause(), e);
-                }
+            } catch (PluginDocumentParseException e) {
+                readRegistry(node, depth + 1);
             }
         }
 
@@ -187,20 +233,18 @@ public class PluginRegistryImpl implements PluginRegistry {
                     if (logger.isDebugEnabled()) {
                         logger.debug(AUTO_UPDATE, "{}   reading line from node " + node + ":" + line, pad(depth));
                     }
-                    if (line.length() > 0 && !line.startsWith("//")){
-                        try{
+                    if (line.length() > 0 && !line.startsWith("//")) {
+                        try {
                             URL url = new URL(line);
-                            visit(url, depth + 1);
-                        }
-                        catch(MalformedURLException urlException){
+                            processUpdateOrRepositoryDocumentAt(url, depth + 1);
+                        } catch (MalformedURLException urlException) {
                             logger.debug(AUTO_UPDATE, "{}    Invalid URL in plugin registry: " + line, pad(depth));
                         }
                     }
                 }
                 reader.close();
-            }
-            catch (IOException ex) {
-                logger.warn(AUTO_UPDATE, "{}    Cannot open remote plugin registry at {}.  Reason: {}",pad(depth), ex.getMessage(), ex);
+            } catch (IOException ex) {
+                logger.warn(AUTO_UPDATE, "{}    Cannot open remote plugin registry at {}.  Reason: {}", pad(depth), ex.getMessage(), ex);
             }
         }
     }
@@ -208,7 +252,7 @@ public class PluginRegistryImpl implements PluginRegistry {
 
     private static String pad(int depth) {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < depth; i++) {
+        for (int i = 0; i < depth; i++) {
             sb.append("    ");
         }
         return sb.toString();

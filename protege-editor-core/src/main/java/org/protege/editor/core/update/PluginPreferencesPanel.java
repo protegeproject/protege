@@ -73,7 +73,7 @@ public class PluginPreferencesPanel extends PreferencesPanel {
             private static final long serialVersionUID = -1489049180196552810L;
 
             public void actionPerformed(ActionEvent e) {
-                PluginManager.getInstance().checkForUpdates();
+                PluginManager.getInstance().runCheckForPlugins();
             }
         });
         checkForUpdatesNow.setAlignmentX(0.0f);
@@ -113,7 +113,7 @@ public class PluginPreferencesPanel extends PreferencesPanel {
             private static final long serialVersionUID = 6345676228776716764L;
 
             public void actionPerformed(ActionEvent event) {
-                PluginManager.getInstance().checkForDownloads();
+                PluginManager.getInstance().runCheckForPlugins();
             }
         });
         checkForDownloadsNow.setAlignmentX(0.0f);

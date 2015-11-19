@@ -6,6 +6,7 @@ import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.protege.editor.core.ui.util.ErrorMessage;
 import org.protege.editor.core.util.ProtegeDirectories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,35 +47,33 @@ public class PluginInstaller {
     public void run() {
         final BackgroundTask installAllTask = ProtegeApplication.getBackgroundTaskManager().startTask("installing plugins");
 
-        Runnable r = new Runnable() {
-
-            public void run() {
-                boolean errorsFound = false;
-                boolean someInstalled = false;
-                try {
-                    for (PluginInfo info : updates) {
-                        InstallerResult result = install(info);
-                        switch (result) {
-                            case ERROR:
-                                errorsFound = true;
-                                break;
-                            case INSTALLED:
-                                someInstalled = true;
-                                break;
-                        }
+        Runnable r = () -> {
+            boolean errorsFound = false;
+            boolean someInstalled = false;
+            try {
+                for (PluginInfo info : updates) {
+                    InstallerResult result = install(info);
+                    switch (result) {
+                        case ERROR:
+                            errorsFound = true;
+                            break;
+                        case INSTALLED:
+                            someInstalled = true;
+                            break;
                     }
-                } finally {
-                    ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
                 }
-                if (errorsFound) {
-                    JOptionPane.showMessageDialog(null, "Some errors found downloading plugins - look at the console log");
-                }
-                else if (someInstalled) {
-                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
-                }
+            } finally {
+                ProtegeApplication.getBackgroundTaskManager().endTask(installAllTask);
+            }
+            if (errorsFound) {
+                ErrorMessage.showErrorMessage("Plugin Installer",
+                        "Some errors occurred whilst installing the downloaded plugins.");
+            }
+            else if (someInstalled) {
+                JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Updates will take effect when you next start Protege.");
             }
         };
 

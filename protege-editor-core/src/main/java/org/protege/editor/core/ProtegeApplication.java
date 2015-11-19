@@ -423,7 +423,7 @@ public class ProtegeApplication implements BundleActivator {
                 return;
             }
             logger.info("Auto-update has not been performed today.  Running it.");
-            PluginManager.getInstance().performAutoUpdate();
+            PluginManager.getInstance().runAutoUpdate();
             context.addFrameworkListener(new FrameworkListener() {
                 public void frameworkEvent(FrameworkEvent event) {
                     if (event.getType() == FrameworkEvent.STARTED) {
