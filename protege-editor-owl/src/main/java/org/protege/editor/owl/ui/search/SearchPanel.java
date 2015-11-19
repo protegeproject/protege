@@ -8,6 +8,8 @@ import org.protege.editor.owl.model.search.*;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,6 +37,7 @@ public class SearchPanel extends JPanel {
 
     private String searchString = "";
 
+    private final Logger logger = LoggerFactory.getLogger(SearchPanel.class);
 
     private OWLEditorKit editorKit;
 
@@ -75,43 +79,46 @@ public class SearchPanel extends JPanel {
     }
 
     private SearchRequest createSearchRequest() {
-        OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
-        int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
+            OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
+            int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
 
-        ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
+            ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
 
-        String preparedSearchString;
-        for (String splitSearchString : searchString.split("\\s+")) {
-            if (prefs.isUseRegularExpressions()) {
-                preparedSearchString = splitSearchString;
-                if (prefs.isIgnoreWhiteSpace()) {
-                    preparedSearchString = preparedSearchString.replace(" ", "\\s+");
-                }
-            }
-            else {
-                if (prefs.isIgnoreWhiteSpace()) {
-                    StringBuilder sb = new StringBuilder();
-                    String[] split = splitSearchString.split("\\s+");
-                    for (int i = 0; i < split.length; i++) {
-                        String s = split[i];
-                        sb.append(Pattern.quote(s));
-                        if (i < split.length - 1) {
-                            sb.append("\\s+");
-                        }
+            String preparedSearchString;
+            for (String splitSearchString : searchString.split("\\s+")) {
+                if (prefs.isUseRegularExpressions()) {
+                    preparedSearchString = splitSearchString;
+                    if (prefs.isIgnoreWhiteSpace()) {
+                        preparedSearchString = preparedSearchString.replace(" ", "\\s+");
                     }
-                    preparedSearchString = sb.toString();
                 }
                 else {
-                    preparedSearchString = Pattern.quote(splitSearchString);
+                    if (prefs.isIgnoreWhiteSpace()) {
+                        StringBuilder sb = new StringBuilder();
+                        String[] split = splitSearchString.split("\\s+");
+                        for (int i = 0; i < split.length; i++) {
+                            String s = split[i];
+                            sb.append(Pattern.quote(s));
+                            if (i < split.length - 1) {
+                                sb.append("\\s+");
+                            }
+                        }
+                        preparedSearchString = sb.toString();
+                    }
+                    else {
+                        preparedSearchString = Pattern.quote(splitSearchString);
+                    }
+                }
+                if (prefs.isWholeWords()) {
+                    preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
+                }
+                try {
+                    builder.add(Pattern.compile(preparedSearchString, flags));
+                } catch (Exception e) {
+                    logger.info("Invalid regular expression in search pattern: {} (Prepared: {})", splitSearchString, preparedSearchString);
                 }
             }
-            if (prefs.isWholeWords()) {
-                preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
-            }
-            builder.add(Pattern.compile(preparedSearchString, flags));
-        }
-//        Pattern searchPattern = Pattern.compile(preparedSearchString, flags);
-        return new SearchRequest(builder.build());
+            return new SearchRequest(builder.build());
     }
 
     private void doSearch() {
