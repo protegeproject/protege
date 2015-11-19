@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.search;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.*;
@@ -31,15 +32,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SearchPanel extends JPanel {
 
-    private SearchOptionsPanel searchOptionsPanel;
+    private static final String WHITE_SPACE_PATTERN = "\\s+";
 
-    private SearchResultsPanel searchResultsPanel;
+    private final SearchOptionsPanel searchOptionsPanel;
 
-    private String searchString = "";
+    private final SearchResultsPanel searchResultsPanel;
 
     private final Logger logger = LoggerFactory.getLogger(SearchPanel.class);
 
-    private OWLEditorKit editorKit;
+    private final OWLEditorKit editorKit;
+
+    private String searchString = "";
 
     public SearchPanel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
@@ -68,6 +71,10 @@ public class SearchPanel extends JPanel {
         add(searchActionsPanel, BorderLayout.SOUTH);
     }
 
+    private String getSearchString() {
+        return searchString;
+    }
+
     public void setSearchResultClickedListener(SearchResultClickedListener searchResultClickedListener) {
         searchResultsPanel.setSearchResultClickedListener(searchResultClickedListener);
     }
@@ -78,29 +85,29 @@ public class SearchPanel extends JPanel {
         doSearch();
     }
 
-    private SearchRequest createSearchRequest() {
+    private SearchRequest createSearchRequest() throws PatternSyntaxException {
             OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
             int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
 
             ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
 
             String preparedSearchString;
-            for (String splitSearchString : searchString.split("\\s+")) {
+            for (String splitSearchString : getSearchString().split(WHITE_SPACE_PATTERN)) {
                 if (prefs.isUseRegularExpressions()) {
                     preparedSearchString = splitSearchString;
                     if (prefs.isIgnoreWhiteSpace()) {
-                        preparedSearchString = preparedSearchString.replace(" ", "\\s+");
+                        preparedSearchString = preparedSearchString.replace(" ", WHITE_SPACE_PATTERN);
                     }
                 }
                 else {
                     if (prefs.isIgnoreWhiteSpace()) {
                         StringBuilder sb = new StringBuilder();
-                        String[] split = splitSearchString.split("\\s+");
+                        String[] split = splitSearchString.split(WHITE_SPACE_PATTERN);
                         for (int i = 0; i < split.length; i++) {
                             String s = split[i];
                             sb.append(Pattern.quote(s));
                             if (i < split.length - 1) {
-                                sb.append("\\s+");
+                                sb.append(WHITE_SPACE_PATTERN);
                             }
                         }
                         preparedSearchString = sb.toString();
@@ -112,29 +119,29 @@ public class SearchPanel extends JPanel {
                 if (prefs.isWholeWords()) {
                     preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
                 }
-                try {
-                    builder.add(Pattern.compile(preparedSearchString, flags));
-                } catch (Exception e) {
-                    logger.info("Invalid regular expression in search pattern: {} (Prepared: {})", splitSearchString, preparedSearchString);
-                }
+                builder.add(Pattern.compile(preparedSearchString, flags));
             }
             return new SearchRequest(builder.build());
     }
 
     private void doSearch() {
-        if (searchString.trim().isEmpty()) {
+        String searchStr = getSearchString();
+        if (searchStr.trim().isEmpty()) {
             searchResultsPanel.clearSearchResults();
             return;
         }
-        SearchManager searchManager = editorKit.getSearchManager();
-        SearchRequest searchRequest = createSearchRequest();
-        searchManager.performSearch(searchRequest, new SearchResultHandler() {
-            public void searchFinished(List<SearchResult> searchResults) {
+        try {
+            SearchManager searchManager = editorKit.getSearchManager();
+            SearchRequest searchRequest = createSearchRequest();
+            searchManager.performSearch(searchRequest, searchResults -> {
                 int categorySizeLimit = getCategoryLimit();
-                searchResultsPanel.setSearchResults(new SearchResultSet(searchResults), categorySizeLimit);
+                SearchResultSet searchResultSet = new SearchResultSet(searchResults);
+                SwingUtilities.invokeLater(() -> searchResultsPanel.setSearchResults(searchResultSet, categorySizeLimit));
 
-            }
-        });
+            });
+        } catch (PatternSyntaxException e) {
+            logger.info("Invalid regular expression in search pattern: {}", e.getPattern());
+        }
     }
 
     private int getCategoryLimit() {

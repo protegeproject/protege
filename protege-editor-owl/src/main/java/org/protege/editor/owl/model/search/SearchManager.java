@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.search;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
@@ -18,6 +19,7 @@ import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,16 +59,8 @@ public class SearchManager implements Disposable {
         categories.add(SearchCategory.IRI);
         categories.add(SearchCategory.ANNOTATION_VALUE);
         categories.add(SearchCategory.LOGICAL_AXIOM);
-        ontologyChangeListener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-                markCacheAsStale();
-            }
-        };
-        modelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                handleModelManagerEvent(event);
-            }
-        };
+        ontologyChangeListener = changes -> markCacheAsStale();
+        modelManagerListener = this::handleModelManagerEvent;
         editorKit.getModelManager().addListener(modelManagerListener);
         editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
     }
@@ -108,7 +102,7 @@ public class SearchManager implements Disposable {
     }
 
     private void rebuildMetadataCache() {
-        long t0 = System.currentTimeMillis();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         logger.info("Rebuilding search metadata cache...");
         fireIndexingStarted();
         try {
@@ -118,8 +112,8 @@ public class SearchManager implements Disposable {
                 SearchMetadataDB db = importer.getSearchMetadata(editorKit, categories);
                 searchMetadataCache.addAll(db.getResults());
             }
-            long t1 = System.currentTimeMillis();
-            logger.info("    ...rebuilt search metadata cache in " + (t1 - t0) + " ms");
+            stopwatch.stop();
+            logger.info("    ...rebuilt search metadata cache in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
         finally {
             fireIndexingFinished();
@@ -130,11 +124,7 @@ public class SearchManager implements Disposable {
 
     public void performSearch(final SearchRequest searchRequest, final SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
-            service.submit(new Runnable() {
-                public void run() {
-                    rebuildMetadataCache();
-                }
-            });
+            service.submit(this::rebuildMetadataCache);
         }
         service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchRequest, searchResultHandler));
     }
@@ -163,7 +153,7 @@ public class SearchManager implements Disposable {
                     patternString.append("  AND  ");
                 }
             }
-            logger.debug("Starting search " + searchId + " (pattern: " + patternString.toString() + ")");
+            logger.info("Starting search {} (pattern: {})", searchId, patternString);
             List<SearchResult> results = new ArrayList<SearchResult>();
 
 
@@ -175,7 +165,7 @@ public class SearchManager implements Disposable {
             for (SearchMetadata searchMetadata : searchMetadataCache) {
                 if (!isLatestSearch()) {
                     // New search started
-                    logger.debug("    terminating search " + searchId + " prematurely");
+                    logger.info("    Terminating search {} prematurely", searchId);
                     return;
                 }
                 String text = searchMetadata.getSearchString();
@@ -212,7 +202,7 @@ public class SearchManager implements Disposable {
             SearchManager.this.fireSearchFinished();
             long searchEndTime = System.currentTimeMillis();
             long searchTime = searchEndTime - searchStartTime;
-            logger.debug("    finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
+            logger.info("    Finished search {} in {} ms ({} results)", searchId, searchTime, results.size());
             fireSearchFinished(results, searchResultHandler);
         }
 
@@ -225,10 +215,8 @@ public class SearchManager implements Disposable {
                 searchResultHandler.searchFinished(results);
             }
             else {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        searchResultHandler.searchFinished(results);
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    searchResultHandler.searchFinished(results);
                 });
             }
         }
@@ -238,62 +226,52 @@ public class SearchManager implements Disposable {
 
 
     private void fireIndexingFinished() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                for (ProgressMonitor pm : progressMonitors) {
-                    pm.setFinished();
-                    pm.setIndeterminate(false);
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setFinished();
+                pm.setIndeterminate(false);
 
-                }
             }
         });
     }
 
     private void fireIndexingStarted() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                for (ProgressMonitor pm : progressMonitors) {
-                    pm.setIndeterminate(true);
-                    pm.setMessage("Searching");
-                    pm.setStarted();
-                }
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setIndeterminate(true);
+                pm.setMessage("Searching");
+                pm.setStarted();
             }
         });
     }
 
     private void fireSearchStarted() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                for (ProgressMonitor pm : progressMonitors) {
-                    pm.setSize(100);
-                    pm.setStarted();
-                }
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setSize(100);
+                pm.setStarted();
             }
         });
     }
 
     private void fireSearchProgressed(final long progress, final int found) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                for (ProgressMonitor pm : progressMonitors) {
-                    pm.setProgress(progress);
-                    if (found > 1 || found == 0) {
-                        pm.setMessage(found + " results");
-                    }
-                    else {
-                        pm.setMessage(found + " result");
-                    }
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setProgress(progress);
+                if (found > 1 || found == 0) {
+                    pm.setMessage(found + " results");
+                }
+                else {
+                    pm.setMessage(found + " result");
                 }
             }
         });
     }
 
     private void fireSearchFinished() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                for (ProgressMonitor pm : progressMonitors) {
-                    pm.setFinished();
-                }
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setFinished();
             }
         });
     }
