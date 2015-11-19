@@ -109,17 +109,18 @@ public class JOptionPaneEx {
         }
         Object[] options = optionPane.getOptions();
         if(options == null) {
-            return JOptionPane.CLOSED_OPTION;
+            if(value instanceof Integer) {
+                return (Integer) value;
+            }
+            else {
+                return JOptionPane.CLOSED_OPTION;
+            }
         }
-        if(value.equals(JOptionPane.OK_OPTION)) {
-            // Same value as YES_OPTION
-            return JOptionPane.OK_OPTION;
-        }
-        if(value.equals(JOptionPane.NO_OPTION)) {
-            return JOptionPane.NO_OPTION;
-        }
-        if(value.equals(JOptionPane.CANCEL_OPTION)) {
-            return JOptionPane.CANCEL_OPTION;
+        for(int i = 0; i < options.length; i++) {
+            Object valueAtIndex = options[i];
+            if(value.equals(valueAtIndex)) {
+                return i;
+            }
         }
         return JOptionPane.CLOSED_OPTION;
     }
