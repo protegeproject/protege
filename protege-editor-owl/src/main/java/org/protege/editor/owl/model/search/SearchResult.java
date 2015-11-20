@@ -5,8 +5,6 @@ import com.google.common.collect.Ordering;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLObject;
 
-import java.util.regex.Pattern;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

@@ -1,18 +1,15 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.slf4j.Logger;
-import org.protege.owlapi.model.WriteSafeOWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.*;
+import java.util.function.Predicate;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -39,8 +36,9 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      */
     private List<OWLObjectHierarchyProviderListener<N>> listeners;
 
-    private WriteSafeOWLOntologyManager manager;
+    private OWLOntologyManager manager;
 
+    private Predicate<N> filter = n -> true;
 
     /*
      * If you expect this or any of its subclasses to be thread safe it must be a WriteSafeOWLOntologyManager.
@@ -49,11 +47,11 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      * WriteSafeOWLOntologyManager.
      */
     protected AbstractOWLObjectHierarchyProvider(OWLOntologyManager owlOntologyManager) {
-        if (!(owlOntologyManager instanceof WriteSafeOWLOntologyManager)) { // I know this is ugly but it fixes problems elsewhere...
-        	throw new IllegalStateException("Hierarchy providers must have a thread safe ontology mananger.");
-        }
-        this.manager = (WriteSafeOWLOntologyManager) owlOntologyManager;
-        listeners = new ArrayList<OWLObjectHierarchyProviderListener<N>>();
+//        if (!(owlOntologyManager instanceof WriteSafeOWLOntologyManager)) { // I know this is ugly but it fixes problems elsewhere...
+//        	throw new IllegalStateException("Hierarchy providers must have a thread safe ontology mananger.");
+//        }
+        this.manager = owlOntologyManager;
+        listeners = new ArrayList<>();
         fireEvents = true;
     }
 
@@ -61,18 +59,34 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     public OWLOntologyManager getManager() {
         return manager;
     }
-    
-	protected ReentrantReadWriteLock getReadWriteLock() {
-		return manager.getReadWriteLock();
-	}
-	
-	protected ReadLock getReadLock() {
-		return manager.getReadLock();
-	}
-	
-	protected WriteLock getWriteLock() {
-		return manager.getWriteLock();		
-	}
+
+    @Override
+    public void setFilter(Predicate<N> filter) {
+        this.filter = checkNotNull(filter);
+        fireHierarchyChanged();
+    }
+
+    @Override
+    public void clearFilter() {
+        this.filter = n -> true;
+        fireHierarchyChanged();
+    }
+
+    @Override
+    public Predicate<N> getFilter() {
+        return filter;
+    }
+//	protected ReentrantReadWriteLock getReadWriteLock() {
+//		return manager.getReadWriteLock();
+//	}
+//
+//	protected ReadLock getReadLock() {
+//		return manager.getReadLock();
+//	}
+//
+//	protected WriteLock getWriteLock() {
+//		return manager.getWriteLock();
+//	}
 
 
     public void dispose() {
@@ -83,14 +97,14 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public Set<N> getAncestors(N object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		Set<N> results = new HashSet<N>();
     		getAncestors(results, object);
     		return results;
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -104,16 +118,27 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         }
     }
 
+    @Override
+    public Set<N> getChildren(N object) {
+        return getUnfilteredChildren(object)
+                .stream()
+                .filter(filter)
+                .collect(toSet());
+    }
+
+    protected Set<N> getUnfilteredChildren(N object) {
+        return Collections.emptySet();
+    }
 
     public Set<N> getDescendants(N object) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		Set<N> results = new HashSet<N>();
     		getDescendants(results, object);
     		return results;
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -139,12 +164,12 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
      * @return A <code>Set</code> of <code>List</code>s of <code>N</code>s
      */
     public Set<List<N>> getPathsToRoot(N obj) {
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try { 	
     		return setOfPaths(obj, new HashSet<N>());
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 

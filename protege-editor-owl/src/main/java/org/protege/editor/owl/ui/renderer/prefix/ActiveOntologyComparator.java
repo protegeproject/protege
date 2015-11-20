@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer.prefix;
 
-import java.util.Comparator;
-
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import java.util.Comparator;
 
 public class ActiveOntologyComparator implements Comparator<OWLOntology> {
 

@@ -1,20 +1,15 @@
 package org.protege.editor.core.ui.action.start;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.net.URL;
-import java.util.prefs.Preferences;
-
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import javax.swing.text.html.HTMLDocument;
-
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.JavaBackedPreferencesImpl;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.prefs.Preferences;
 
 public class ResetPreferencesAction extends AltStartupAction {
 	private static final long serialVersionUID = 697953371040653824L;

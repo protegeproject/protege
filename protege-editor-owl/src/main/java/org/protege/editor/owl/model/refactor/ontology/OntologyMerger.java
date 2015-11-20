@@ -1,8 +1,9 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.slf4j.Logger;
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -59,7 +60,8 @@ public class OntologyMerger {
                     	if (ontologies.contains(ont.getOWLOntologyManager().getImportedOntology(decl))) {
                     		continue;
                     	}
-                        if (!decl.getIRI().equals(targetOntology.getOntologyID().getDefaultDocumentIRI())){
+                        Optional<IRI> defaultDocumentIRI = targetOntology.getOntologyID().getDefaultDocumentIRI();
+                        if (defaultDocumentIRI.isPresent() && !decl.getIRI().equals(defaultDocumentIRI.get())){
                             changes.add(new AddImport(targetOntology, decl));
                         }
                         else{

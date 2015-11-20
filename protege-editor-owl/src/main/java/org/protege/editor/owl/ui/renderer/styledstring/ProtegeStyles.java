@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 
 import java.awt.*;
 

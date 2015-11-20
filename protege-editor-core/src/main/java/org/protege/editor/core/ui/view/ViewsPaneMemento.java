@@ -1,8 +1,8 @@
 package org.protege.editor.core.ui.view;
 
-import java.net.URL;
-
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
+
+import java.net.URL;
 
 
 /**

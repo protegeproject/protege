@@ -1,10 +1,9 @@
 package org.protege.editor.owl.ui.framelist;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.event.ActionListener;
-
 import org.protege.editor.core.ui.list.MListButton;
+
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 
 /**

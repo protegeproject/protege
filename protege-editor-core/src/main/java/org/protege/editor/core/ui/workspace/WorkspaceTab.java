@@ -1,15 +1,14 @@
 package org.protege.editor.core.ui.workspace;
 
-import java.net.URL;
+import org.coode.mdock.UIComponentFactory;
+import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
+import org.protege.editor.core.ui.tabbedpane.NullTabCloseHandler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.TabbedPaneUI;
-
-import org.coode.mdock.UIComponentFactory;
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.core.ui.tabbedpane.NullTabCloseHandler;
-import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
+import java.net.URL;
 
 
 /**

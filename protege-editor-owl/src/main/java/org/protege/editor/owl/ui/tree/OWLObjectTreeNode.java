@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.tree;
 
-import org.slf4j.Logger;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.tree.DefaultMutableTreeNode;

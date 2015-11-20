@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: Matthew Horridge<br>

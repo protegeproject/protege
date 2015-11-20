@@ -37,6 +37,6 @@ public class LogViewImpl implements LogView {
 
     @Override
     public void append(LogRecord logRecord) {
-        logRecordModel.append(logRecord);
+        SwingUtilities.invokeLater(() -> logRecordModel.append(logRecord));
     }
 }

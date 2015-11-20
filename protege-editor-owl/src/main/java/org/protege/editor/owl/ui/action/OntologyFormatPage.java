@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
-import javax.swing.JComponent;
-
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.PhysicalLocationPanel;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+
+import javax.swing.*;
 
 /*
 * Copyright (C) 2007, University of Manchester
@@ -47,7 +47,7 @@ public class OntologyFormatPage extends AbstractWizardPanel {
     }
 
 
-    public OWLOntologyFormat getFormat() {
+    public OWLDocumentFormat getFormat() {
         return panel.getSelectedFormat();
     }
 

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

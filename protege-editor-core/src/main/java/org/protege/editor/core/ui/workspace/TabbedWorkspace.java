@@ -1,20 +1,17 @@
 package org.protege.editor.core.ui.workspace;
 
+import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
+import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
-
-import javax.swing.*;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
-import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,

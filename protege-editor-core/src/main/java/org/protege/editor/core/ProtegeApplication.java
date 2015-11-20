@@ -1,30 +1,14 @@
 package org.protege.editor.core;
 
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.text.MaskFormatter;
-
-import org.protege.editor.core.log.LogBanner;
-import org.protege.editor.core.log.LogManager;
-import org.slf4j.Logger;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-import org.osgi.framework.Version;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.osgi.framework.*;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.core.log.LogManager;
+import org.protege.editor.core.log.LogViewImpl;
 import org.protege.editor.core.platform.OSGi;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.PlatformArguments;
@@ -35,14 +19,21 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
+import org.protege.editor.core.ui.util.ErrorMessage;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
-
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.List;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -83,13 +74,11 @@ public class ProtegeApplication implements BundleActivator {
 
     private List<URI> commandLineURIs;
 
-//    private static ErrorLog errorLog = new ErrorLog();
-
     private static BackgroundTaskManager backgroundTaskManager = new BackgroundTaskManager();
 
     private static boolean quitting = false;
 
-    private static LogManager logManager = new LogManager();
+    private static LogManager logManager = new LogManager(new LogViewImpl());
 
     public void start(final BundleContext context) {
         logManager.bind();
@@ -166,8 +155,14 @@ public class ProtegeApplication implements BundleActivator {
         int pluginCount = 0;
         for (Bundle plugin : context.getBundles()) {
         	if (isPlugin(plugin)) {
-        		logger.info(MarkerFactory.getMarker("Plugin"), "    Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
-        	    pluginCount++;
+                if (isActive(plugin)) {
+                    logger.info("Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
+                    pluginCount++;
+                }
+                else {
+                    logger.warn("Plugin: {} ({}) was not successfully started.  " +
+                            "Please see the Protégé log for more details.", getNiceBundleName(plugin), plugin.getVersion());
+                }
             }
         }
         if(pluginCount == 0) {
@@ -227,9 +222,13 @@ public class ProtegeApplication implements BundleActivator {
         }
         return passed;
     }
+
+    public static boolean isActive(Bundle b) {
+        return b.getState() == Bundle.ACTIVE;
+    }
     
     public static boolean isPlugin(Bundle b) {
-    	String location = b.getLocation();
+        String location = b.getLocation();
     	return location != null && location.contains("plugin");
     }
     
@@ -358,21 +357,7 @@ public class ProtegeApplication implements BundleActivator {
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
     }
-
-//    /*
-//     * At the moment we are only checking the Logger state but in theory this method could
-//     * test other things also.  Regular users should never see this message.  The performance
-//     * impact of not configuring the Logger correctly is enormous.
-//     */
-//    private void checkConfiguration() {
-//        Logger rootLogger = Logger.getRootLogger();
-//        if (rootLogger.isDebugEnabled()) {
-//            JOptionPane.showMessageDialog(null, "Logger not initialized.\n" +
-//                    "This could have a major impact on performance.\n" +
-//                    "Use the -Dlog4j.configuration=\"file:/...\" jvm option.", "Performance Issue Detected", JOptionPane.WARNING_MESSAGE);
-//        }
-//    }
-
+    
     private void setupExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
@@ -438,7 +423,7 @@ public class ProtegeApplication implements BundleActivator {
                 return;
             }
             logger.info("Auto-update has not been performed today.  Running it.");
-            PluginManager.getInstance().performAutoUpdate();
+            PluginManager.getInstance().runAutoUpdate();
             context.addFrameworkListener(new FrameworkListener() {
                 public void frameworkEvent(FrameworkEvent event) {
                     if (event.getType() == FrameworkEvent.STARTED) {
@@ -479,7 +464,7 @@ public class ProtegeApplication implements BundleActivator {
                 pm.createAndSetupNewEditorKit(defaultPlugin);
             }
             else {
-                throw new RuntimeException("No editor kit factory plugins available");
+                ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
         }
         catch (Exception e) {
@@ -497,7 +482,7 @@ public class ProtegeApplication implements BundleActivator {
                 pm.createAndSetupNewEditorKit(defaultPlugin, uri);
             }
             else {
-                throw new RuntimeException("No editor kit factory plugins available");
+                ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
         }
         catch (Exception e) {

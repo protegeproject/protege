@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.hierarchy.property;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author: drummond<br>
@@ -33,7 +33,7 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
         return mngr.getOWLReasonerManager().getCurrentReasoner();
     }
 
-    public Set<OWLObjectProperty> getChildren(OWLObjectProperty objectProperty) {
+    public Set<OWLObjectProperty> getUnfilteredChildren(OWLObjectProperty objectProperty) {
         Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
         subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());

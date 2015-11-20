@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.awt.*;
-import java.util.ArrayList;
 
 
 /**

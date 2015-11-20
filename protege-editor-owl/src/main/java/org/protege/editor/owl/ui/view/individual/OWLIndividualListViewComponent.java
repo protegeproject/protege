@@ -16,7 +16,6 @@ import org.protege.editor.owl.ui.view.Deleteable;
 import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityCollector;
-import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;

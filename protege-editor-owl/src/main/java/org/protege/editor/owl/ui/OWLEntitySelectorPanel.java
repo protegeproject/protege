@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -296,6 +297,21 @@ public class OWLEntitySelectorPanel extends JPanel {
                 swapListeners(inferred, asserted);
                 fireChange();
             }
+        }
+
+        @Override
+        public void setFilter(Predicate<N> filter) {
+            current.setFilter(filter);
+        }
+
+        @Override
+        public void clearFilter() {
+            current.clearFilter();
+        }
+
+        @Override
+        public Predicate<N> getFilter() {
+            return current.getFilter();
         }
 
         private void swapListeners(OWLObjectHierarchyProvider<N> from, OWLObjectHierarchyProvider<N> to) {

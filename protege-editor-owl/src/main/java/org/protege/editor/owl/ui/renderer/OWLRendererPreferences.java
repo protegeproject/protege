@@ -1,11 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -13,6 +9,14 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Author: Matthew Horridge<br>
@@ -207,10 +211,10 @@ public class OWLRendererPreferences {
     	return Collections.unmodifiableList(annotationLanguages);
     }
 
-    public Map<IRI, List<String>> getAnnotationLangMap(){
-    	Map<IRI, List<String>> langMap = new HashMap<IRI, List<String>>();
+    public ListMultimap<IRI, String> getAnnotationLangMap(){
+    	ListMultimap<IRI, String> langMap = ArrayListMultimap.create();
     	for (IRI iri : annotationIRIS) {
-    		langMap.put(iri, Collections.unmodifiableList(annotationLanguages));
+    		langMap.putAll(iri, Collections.unmodifiableList(annotationLanguages));
     	}
     	return langMap;
     }

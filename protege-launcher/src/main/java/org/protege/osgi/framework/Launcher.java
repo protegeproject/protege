@@ -1,20 +1,21 @@
 package org.protege.osgi.framework;
 
-import java.io.*;
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.wiring.BundleRevision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class Launcher {
@@ -42,13 +43,12 @@ public class Launcher {
     private Framework framework;
 
 
-
     public Launcher(File config) throws IOException, ParserConfigurationException, SAXException {
         parseConfig(config);
         factoryClass = locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
-        frameworkProperties.put("org.osgi.framework.storage", frameworkDir.getCanonicalPath());
-        frameworkProperties.put("org.osgi.framework.startlevel.beginning", "" + searchPaths.size());
+        frameworkProperties.put(Constants.FRAMEWORK_STORAGE, frameworkDir.getCanonicalPath());
+        frameworkProperties.put(Constants.FRAMEWORK_BEGINNING_STARTLEVEL, Integer.toString(searchPaths.size()));
     }
 
     public Framework getFramework() {
@@ -59,6 +59,7 @@ public class Launcher {
         Parser p = new Parser();
         p.parse(config);
         setSystemProperties(p);
+        setLogger(frameworkProperties);
         searchPaths.addAll(p.getSearchPaths());
         frameworkProperties.putAll(p.getFrameworkProperties());
     }
@@ -79,12 +80,31 @@ public class Launcher {
         }
     }
 
+    /**
+     * Sets the default felix logger so that logging output is redirected to SLF4J instead of stderr and stdout
+     * @param configurationMap The configuration map.  Note that the framework factory newFramework method expects
+     *                         a map that maps Strings to Strings.  However, the documentation for the Felix
+     *                         configuration properties specifies that the config value of the felix.log.logger
+     *                         property must be an instance of Logger.  This method therefore makes an unchecked
+     *                         call to Map.put(), which works.
+     */
+    @SuppressWarnings("unchecked")
+    private static void setLogger(Map configurationMap) {
+        FrameworkSlf4jLogger logger = new FrameworkSlf4jLogger();
+        configurationMap.put("felix.log.logger", logger);
+    }
+
     public void start(final boolean exitOnOSGiShutDown) throws InstantiationException, IllegalAccessException, ClassNotFoundException, BundleException, IOException, InterruptedException {
-        logger.debug("Initialising and starting OSGi framework (FrameworkFactory Class: {})", factoryClass);
+        printBanner();
+        logger.info("----------------- Initialising and Starting the OSGi Framework -----------------");
+        logger.info("FrameworkFactory Class: {}", factoryClass);
+        logger.info("");
+        
         FrameworkFactory factory = (FrameworkFactory) Class.forName(factoryClass).newInstance();
+
         framework = factory.newFramework(frameworkProperties);
         framework.init();
-        logger.debug("The OSGi framework has been initialised");
+        logger.info("The OSGi framework has been initialised");
         BundleContext context = framework.getBundleContext();
         List<Bundle> bundles = new ArrayList<>();
         int startLevel = 1;
@@ -92,10 +112,19 @@ public class Launcher {
             bundles.addAll(installBundles(context, searchPath, startLevel++));
         }
         startBundles(bundles);
-        framework.start();
+        try {
+            framework.start();
+            logger.info("The OSGi framework has been started");
+            logger.info("");
+        } catch (BundleException e) {
+            logger.error("An error occurred when starting the OSGi framework: {}", e.getMessage(), e);
+        }
         addShutdownHook();
         addCleanupOnExit(exitOnOSGiShutDown);
+
     }
+
+
 
     private void addShutdownHook() {
         Thread hook = new Thread(() -> {
@@ -145,16 +174,25 @@ public class Launcher {
     }
 
     private void startBundles(List<Bundle> bundles) throws BundleException {
-        logger.debug("--- Starting {} bundles ---", bundles.size());
+        logger.info("------------------------------- Starting Bundles -------------------------------");
         for (Bundle b : bundles) {
             try {
-                b.start();
-                logger.debug("Started bundle {}", b.getSymbolicName());
+                if (!isFragmentBundle(b)) {
+                    b.start();
+                    logger.info("Starting bundle {}", b.getSymbolicName());
+                }
+                else {
+                    logger.info("Not starting bundle {} explicitly because it is a fragment bundle.", b.getSymbolicName());
+                }
             } catch (Throwable t) {
-                logger.warn("Core Bundle {} failed to start: {}", b.getBundleId(), t);
+                logger.error("Core Bundle {} failed to start: {}", b.getBundleId(), t);
             }
         }
-        logger.debug("---------------------------");
+        logger.debug("-------------------------------------------------------------------------------");
+    }
+
+    private static boolean isFragmentBundle(Bundle b) {
+        return (b.adapt(BundleRevision.class).getTypes() & BundleRevision.TYPE_FRAGMENT) != 0;
     }
 
     protected void cleanup() {
@@ -163,11 +201,16 @@ public class Launcher {
 
     private void delete(File f) {
         if (f.isDirectory()) {
-            for (File child : f.listFiles()) {
-                delete(child);
+            File[] files = f.listFiles();
+            if (files != null) {
+                for (File child : files) {
+                    delete(child);
+                }
             }
         }
-        f.delete();
+        if (!f.delete()) {
+            logger.warn("File could not be deleted ({})", f.getAbsolutePath());
+        }
     }
 
     public static void setArguments(String... args) {
@@ -179,6 +222,12 @@ public class Launcher {
         }
     }
 
+    private void printBanner() {
+        logger.info("********************************************************************************");
+        logger.info("**                                  Protégé                                   **");
+        logger.info("********************************************************************************");
+        logger.info("");
+    }
 
     public static void main(String[] args) throws Exception {
         setArguments(args);
@@ -193,5 +242,6 @@ public class Launcher {
         Launcher launcher = new Launcher(configFile);
         launcher.start(true);
     }
+
 
 }

@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.repository;
 
-import org.protege.editor.core.OntologyRepositoryFactory;
 import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryFactory;
 /*
  * Copyright (C) 2008, University of Manchester
  *

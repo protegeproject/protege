@@ -1,12 +1,9 @@
 package org.protege.editor.core.ui.split;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.*;
 
 
 /**

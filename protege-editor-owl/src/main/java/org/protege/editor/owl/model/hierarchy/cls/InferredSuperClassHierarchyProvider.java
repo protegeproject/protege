@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -50,9 +50,9 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
     }
 
 
-    public Set<OWLClass> getChildren(OWLClass object) {
+    public Set<OWLClass> getUnfilteredChildren(OWLClass object) {
     	OWLReasoner myReasoner = reasoner;
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		// Simply get the superclasses from the reasoner
     		if (myReasoner == null) {
@@ -65,7 +65,7 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
     		return myReasoner.getSuperClasses(object, true).getFlattened();
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 
@@ -77,7 +77,7 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
 
     public Set<OWLClass> getParents(OWLClass object) {
     	OWLReasoner myReasoner = reasoner;
-    	getReadLock().lock();
+//    	getReadLock().lock();
     	try {
     		// Simply get the superclasses from the reasoner
     		if (myReasoner == null) {
@@ -90,7 +90,7 @@ public class InferredSuperClassHierarchyProvider extends AbstractSuperClassHiera
     		return myReasoner.getSubClasses(object, true).getFlattened();
     	}
     	finally {
-    		getReadLock().unlock();
+//    		getReadLock().unlock();
     	}
     }
 

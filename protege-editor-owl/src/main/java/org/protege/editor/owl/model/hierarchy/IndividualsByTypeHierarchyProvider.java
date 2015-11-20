@@ -75,7 +75,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     }
 
 
-    public Set<OWLObject> getChildren(OWLObject object) {
+    public Set<OWLObject> getUnfilteredChildren(OWLObject object) {
         if (object instanceof OWLClass && classes.contains((OWLClass)object)) {
             OWLClass cls = (OWLClass) object;
             Set<OWLObject> individuals = new HashSet<OWLObject>();

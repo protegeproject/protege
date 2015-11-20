@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.util;
 
 import org.slf4j.Logger;
-import org.semanticweb.owlapi.io.IOProperties;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
@@ -26,10 +25,10 @@ public class URIUtilities {
         String requestType = getRequestTypes();
         URLConnection conn = uri.toURL().openConnection();
         conn.addRequestProperty("Accept", requestType);
-        if (IOProperties.getInstance().isConnectionAcceptHTTPCompression()) {
-            conn.setRequestProperty("Accept-Encoding","gzip, deflate");
-        }
-        conn.setConnectTimeout(IOProperties.getInstance().getConnectionTimeout());
+//        if (IOProperties.getInstance().isConnectionAcceptHTTPCompression()) {
+//            conn.setRequestProperty("Accept-Encoding","gzip, deflate");
+//        }
+//        conn.setConnectTimeout(IOProperties.getInstance().getConnectionTimeout());
         InputStream is;
         if ("gzip".equals(conn.getContentEncoding())) { // test works OK even if CE is null
             logger.debug("URL connection input stream is compressed using gzip");

@@ -1,10 +1,10 @@
 package org.protege.editor.core.ui.action;
 
-import javax.swing.AbstractAction;
-
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
 
 
 /**

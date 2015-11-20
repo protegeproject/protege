@@ -1,15 +1,14 @@
 package org.protege.editor.owl.model.io;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URLConnection;
-
-import org.slf4j.Logger;
-import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>

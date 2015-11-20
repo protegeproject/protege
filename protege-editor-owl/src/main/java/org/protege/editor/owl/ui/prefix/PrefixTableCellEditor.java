@@ -1,15 +1,10 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.awt.Component;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.table.TableCellEditor;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-
-import javax.swing.AbstractCellEditor;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.TableCellEditor;
 
 
 /**

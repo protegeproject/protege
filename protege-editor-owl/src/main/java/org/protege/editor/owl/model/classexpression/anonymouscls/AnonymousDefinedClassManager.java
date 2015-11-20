@@ -1,11 +1,5 @@
 package org.protege.editor.owl.model.classexpression.anonymouscls;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.AbstractIDGenerator;
@@ -14,15 +8,14 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.entity.Revertable;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.io.IOListenerEvent;
-import org.semanticweb.owlapi.model.AddAxiom;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * Author: drummond<br>
@@ -136,7 +129,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
     public OWLClassExpression getExpression(OWLClass cls) {
-        for (OWLClassExpression descr : cls.getEquivalentClasses(mngr.getActiveOntologies())){
+        for (OWLClassExpression descr : EntitySearcher.getEquivalentClasses(cls, mngr.getActiveOntologies())){
             if (!descr.equals(cls)){
                 return descr;
             }

@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.wizard;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 /**

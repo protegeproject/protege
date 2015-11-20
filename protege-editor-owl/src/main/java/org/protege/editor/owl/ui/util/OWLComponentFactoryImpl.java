@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.util;
 
-import java.util.*;
-
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionEditor;
@@ -15,6 +12,8 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 
 /*

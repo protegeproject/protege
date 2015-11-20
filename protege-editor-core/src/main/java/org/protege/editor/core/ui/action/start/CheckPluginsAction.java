@@ -1,8 +1,8 @@
 package org.protege.editor.core.ui.action.start;
 
-import java.awt.event.ActionEvent;
-
 import org.protege.editor.core.update.PluginManager;
+
+import java.awt.event.ActionEvent;
 
 /**
  * Author: drummond<br>
@@ -17,7 +17,7 @@ public class CheckPluginsAction extends AltStartupAction {
 
 
     public void actionPerformed(ActionEvent event) {
-        PluginManager.getInstance().performCheckPlugins();
+        PluginManager.getInstance().runCheckForPlugins();
     }
 
 

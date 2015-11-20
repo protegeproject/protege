@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import java.net.URI;
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import java.net.URI;
 
 public interface OntologyIdExtractor {
     
-    void setPhysicalAddress(URI location);
-    
-    OWLOntologyID getOntologyId();
+    Optional<OWLOntologyID> getOntologyId(URI location);
     
     
 }

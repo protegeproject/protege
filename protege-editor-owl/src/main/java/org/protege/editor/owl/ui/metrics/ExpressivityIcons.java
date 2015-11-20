@@ -2,11 +2,12 @@ package org.protege.editor.owl.ui.metrics;
 
 import org.protege.editor.owl.ui.OWLIcons;
 import org.semanticweb.owlapi.util.DLExpressivityChecker;
-import static org.semanticweb.owlapi.util.DLExpressivityChecker.Construct.*;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.semanticweb.owlapi.util.DLExpressivityChecker.Construct.*;
 
 
 /**

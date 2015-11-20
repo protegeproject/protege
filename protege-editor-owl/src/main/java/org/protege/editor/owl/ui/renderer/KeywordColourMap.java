@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 
 import java.awt.*;
 import java.util.HashMap;

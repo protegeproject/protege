@@ -3,11 +3,7 @@ package org.protege.editor.owl.model.selection.ontologies;
 import org.protege.editor.owl.model.OntologyVisibilityManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import java.util.Set;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import java.util.Set;
 
 /**
  * Author: drummond<br>

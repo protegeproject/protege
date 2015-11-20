@@ -1,8 +1,6 @@
 package org.protege.editor.core.platform;
 
-import org.slf4j.Logger;
 import org.osgi.framework.BundleContext;
-import org.slf4j.LoggerFactory;
 
 /*
  * There currently does not seem to be any generic method for obtaining the command

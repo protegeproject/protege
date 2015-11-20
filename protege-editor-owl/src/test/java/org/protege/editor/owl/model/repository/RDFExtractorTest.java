@@ -1,11 +1,12 @@
 package org.protege.editor.owl.model.repository;
 
-import java.io.File;
-
+import com.google.common.base.Optional;
 import junit.framework.TestCase;
-
 import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import java.io.File;
 
 public class RDFExtractorTest extends TestCase {
     public static final String PIZZA_LOCATION  = "src/test/resources/ontologies/pizza.owl";
@@ -22,77 +23,67 @@ public class RDFExtractorTest extends TestCase {
     
     public void testPizza01() {
         RdfXmlExtractor extractor = new RdfXmlExtractor();
-        extractor.setPhysicalAddress(new File(PIZZA_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(PIZZA_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(PIZZA_NAME)));
+        assertTrue(!id.get().getVersionIRI().isPresent());
     }
     
     public void testPizza02() {
         MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-        extractor.setPhysicalAddress(new File(PIZZA_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(PIZZA_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(PIZZA_NAME)));
+        assertTrue(!id.get().getVersionIRI().isPresent());
     }
     
     public void testPizza03() {
         RdfXmlExtractor extractor = new RdfXmlExtractor();
-        extractor.setPhysicalAddress(new File(PIZZA_LOCATION2).toURI());
-        assertTrue(extractor.getOntologyId() == null);
+        assertTrue(!extractor.getOntologyId(new File(PIZZA_LOCATION2).toURI()).isPresent());
     }
     
     public void testPizza04() {
         MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-        extractor.setPhysicalAddress(new File(PIZZA_LOCATION2).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(PIZZA_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(PIZZA_LOCATION2).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(PIZZA_NAME)));
+        assertTrue(!id.get().getVersionIRI().isPresent());
     }
     
     public void testAmbiguous01() {
         RdfXmlExtractor extractor = new RdfXmlExtractor();
-        extractor.setPhysicalAddress(new File(AMBIGUOUS_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(AMBIGUOUS_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(AMBIGUOUS_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(AMBIGUOUS_NAME)));
+        assertTrue(!id.get().getVersionIRI().isPresent());
     }
     
     public void testAmbiguous02() {
         MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-        extractor.setPhysicalAddress(new File(AMBIGUOUS_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(AMBIGUOUS_NAME));
-        assertTrue(id.getVersionIRI() == null);
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(AMBIGUOUS_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(AMBIGUOUS_NAME)));
+        assertTrue(!id.get().getVersionIRI().isPresent());
     }
     
     public void testVersioned01() {
         RdfXmlExtractor extractor = new RdfXmlExtractor();
-        extractor.setPhysicalAddress(new File(VERSIONED_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(VERSIONED_NAME));
-        assertTrue(id.getVersionIRI().toString().equals(VERSIONED_VERSION));
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(VERSIONED_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(VERSIONED_NAME)));
+        assertTrue(id.get().getVersionIRI().get().equals(IRI.create(VERSIONED_VERSION)));
     }
     
     public void testVersioned02() {
         MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-        extractor.setPhysicalAddress(new File(VERSIONED_LOCATION).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(VERSIONED_NAME));
-        assertTrue(id.getVersionIRI().toString().equals(VERSIONED_VERSION));
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(VERSIONED_LOCATION).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(VERSIONED_NAME)));
+        assertTrue(id.get().getVersionIRI().get().equals(IRI.create(VERSIONED_VERSION)));
     }
     
     public void testVersioned03() {
         RdfXmlExtractor extractor = new RdfXmlExtractor();
-        extractor.setPhysicalAddress(new File(VERSIONED_LOCATION2).toURI());
-        assertTrue(extractor.getOntologyId() == null);
+        assertTrue(!extractor.getOntologyId(new File(VERSIONED_LOCATION2).toURI()).isPresent());
     }
     
     public void testVersioned04() {
         MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
-        extractor.setPhysicalAddress(new File(VERSIONED_LOCATION2).toURI());
-        OWLOntologyID id = extractor.getOntologyId();
-        assertTrue(id.getOntologyIRI().toString().equals(VERSIONED_NAME));
-        assertTrue(id.getVersionIRI().toString().equals(VERSIONED_VERSION));
+        Optional<OWLOntologyID> id = extractor.getOntologyId(new File(VERSIONED_LOCATION2).toURI());
+        assertTrue(id.get().getOntologyIRI().get().equals(IRI.create(VERSIONED_NAME)));
+        assertTrue(id.get().getVersionIRI().get().equals(IRI.create(VERSIONED_VERSION)));
     }
 }

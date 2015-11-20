@@ -28,7 +28,7 @@ public class AssertedSuperClassHierarchyProvider extends AbstractSuperClassHiera
     }
 
 
-    public Set<OWLClass> getChildren(OWLClass object) {
+    public Set<OWLClass> getUnfilteredChildren(OWLClass object) {
         return owlModelManager.getOWLHierarchyManager().getOWLClassHierarchyProvider().getParents(object);
     }
 

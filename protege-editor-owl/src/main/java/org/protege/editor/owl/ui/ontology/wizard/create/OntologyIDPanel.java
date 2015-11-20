@@ -1,32 +1,22 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
+import com.google.common.base.Optional;
+import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.OntologyPreferences;
+import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import org.coode.mdock.UIComponentFactory;
-import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.error.ErrorPanel;
-import org.protege.editor.owl.ui.ontology.OntologyPreferences;
-import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 /**
@@ -200,12 +190,12 @@ public class OntologyIDPanel extends AbstractWizardPanel {
 
             String ontologyVersionIRIString = getOntologyVersionIRIString();
             if(ontologyVersionIRIString.isEmpty()) {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
             else {
                 URI versionURI = new URI(ontologyVersionIRIString);
                 IRI versionIRI = IRI.create(versionURI);
-                return new OWLOntologyID(ontologyIRI, versionIRI);
+                return new OWLOntologyID(Optional.<IRI>of(ontologyIRI), Optional.of(versionIRI));
             }
         } catch (URISyntaxException e) {
             return null;

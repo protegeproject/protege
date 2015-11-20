@@ -1,8 +1,8 @@
 package org.protege.editor.core.ui.menu;
 
-import javax.swing.KeyStroke;
-
 import org.protege.editor.core.ui.action.ProtegeActionPlugin;
+
+import javax.swing.*;
 
 
 /**

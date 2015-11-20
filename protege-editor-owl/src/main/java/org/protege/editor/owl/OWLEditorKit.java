@@ -1,7 +1,6 @@
 package org.protege.editor.owl;
 
-import org.protege.editor.core.log.LogBanner;
-import org.slf4j.Logger;
+import com.google.common.base.Optional;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
@@ -9,16 +8,15 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.editorkit.AbstractEditorKit;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.model.SaveErrorHandler;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
@@ -30,20 +28,18 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.VersionInfo;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 
 import java.io.File;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Set;
 
 
@@ -89,29 +85,21 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     protected void initialise() {
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
-        this.newPhysicalURIs = new HashSet<URI>();
+        this.newPhysicalURIs = new HashSet<>();
         modelManager = new OWLModelManagerImpl();
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-        modelManager.setSaveErrorHandler(new SaveErrorHandler() {
-            public void handleErrorSavingOntology(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
-                handleSaveError(ont, physicalURIForOntology, e);
-            }
-        });
+        modelManager.setSaveErrorHandler(this::handleSaveError);
 
-        ontologyChangeListener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
-                modifiedDocument = true;
-            }
-        };
+        ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
         searchManager = new SearchManager(this, new SearchMetadataImportManager());
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
-        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<String, Object>());
+        registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<>());
 
         getWorkspace().refreshComponents();
     }
@@ -225,7 +213,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @return The id.
      */
     private OWLOntologyID createDefaultOntologyId() {
-        return new OWLOntologyID(createFreshOntologyIRI());
+        return new OWLOntologyID(Optional.of(createFreshOntologyIRI()), Optional.<IRI>absent());
     }
 
     /**
@@ -239,9 +227,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
-        OWLOntology ont = getModelManager().createNewOntology(id, id.getDefaultDocumentIRI().toURI());
+        OWLOntology ont = getModelManager().createNewOntology(id, URI.create(id.getDefaultDocumentIRI().get().toString()));
         OWLOntologyManager owlOntologyManager = getModelManager().getOWLOntologyManager();
-        owlOntologyManager.setOntologyFormat(ont, new RDFXMLOntologyFormat());
+        owlOntologyManager.setOntologyFormat(ont, new RDFXMLDocumentFormat());
         return true;
     }
 
@@ -257,16 +245,14 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             }
             try {
                 getModelManager().save();
-                for (URI uri : newPhysicalURIs) {
-                    addRecent(uri);
-                }
+                newPhysicalURIs.forEach(this::addRecent);
                 newPhysicalURIs.clear();
                 logger.info("Saved ontologies");
             }
-            catch (OWLOntologyStorerNotFoundException e) {
+            catch (OWLOntologyStorageException e) {
                 OWLOntology ont = getModelManager().getActiveOntology();
-                OWLOntologyFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
-                String message = "Could not save ontology in the specified format (" + format + ").\n" + "Please select 'Save As' and choose another format.";
+                OWLDocumentFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
+                String message = String.format("Could not save ontology in the specified format (%s).\nPlease select 'Save As' and choose another format.", format);
                 logger.warn(message);
                 ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
             }
@@ -279,8 +265,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public void handleSaveAs() throws Exception {
         final OWLOntology ont = getModelManager().getActiveOntology();
-        if (handleSaveAs(ont)) {
-        }
+        handleSaveAs(ont);
     }
 
 
@@ -291,16 +276,26 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
-        OWLOntologyFormat oldFormat = man.getOntologyFormat(ont);
-        OWLOntologyFormat format = OntologyFormatPanel.showDialog(this, oldFormat, "Choose a format to use when saving the " + getModelManager().getRendering(ont) + " ontology");
+        OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
+        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat,
+                String.format("<html><body>" +
+                        "<div>Choose a format to use when saving the <span style='font-weight: bold;'>'%s'</span> ontology.</div>" +
+                        "<div style='padding-top: 20px; color: gray'; width: 150px;>" +
+                        "(If you are unsure as to what format to choose, " +
+                        "we recommend that you use the standard RDF/XML format, " +
+                        "or a widely supported format such as Turtle)</div>" +
+                        "</body></html>", getModelManager().getRendering(ont)));
         if (format == null) {
-            logger.warn("Please select a valid format");
+            logger.info("No ontology document format has been selected.  Aborting saveAs.");
             return false;
         }
-        if (oldFormat instanceof PrefixOWLOntologyFormat && format instanceof PrefixOWLOntologyFormat) {
-            PrefixOWLOntologyFormat oldPrefixes = (PrefixOWLOntologyFormat) oldFormat;
+        if (oldFormat instanceof PrefixDocumentFormat && format instanceof PrefixDocumentFormat) {
+            PrefixDocumentFormat oldPrefixes = (PrefixDocumentFormat) oldFormat;
             for (String name : oldPrefixes.getPrefixNames()) {
-                ((PrefixOWLOntologyFormat) format).setPrefix(name, oldPrefixes.getPrefix(name));
+                String prefix = oldPrefixes.getPrefix(name);
+                if (prefix != null) {
+                    ((PrefixDocumentFormat) format).setPrefix(name, prefix);
+                }
             }
         }
         File file = getSaveAsOWLFile(ont);
@@ -319,7 +314,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private File getSaveAsOWLFile(OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
-        File file = helper.saveOWLFile("Please select a location in which to save: " + getModelManager().getRendering(ont));
+        File file = helper.saveOWLFile(String.format("Please select a location in which to save: %s", getModelManager().getRendering(ont)));
         if (file != null) {
             int extensionIndex = file.toString().lastIndexOf('.');
             if (extensionIndex == -1) {

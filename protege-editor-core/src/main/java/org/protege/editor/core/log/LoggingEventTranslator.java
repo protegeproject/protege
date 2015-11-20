@@ -29,7 +29,7 @@ public class LoggingEventTranslator {
     private String getMessage(ILoggingEvent event) {
         Marker marker = event.getMarker();
         StringBuilder sb = new StringBuilder();
-        if(marker != null) {
+        if (marker != null) {
             sb.append("[");
             sb.append(marker.getName());
             sb.append("]  ");
@@ -40,16 +40,16 @@ public class LoggingEventTranslator {
 
 
     private static LogLevel toLogLevel(Level level) {
-        if(level.equals(Level.ERROR)) {
+        if (level.equals(Level.ERROR)) {
             return LogLevel.ERROR;
         }
-        else if(level.equals(Level.WARN)) {
+        else if (level.equals(Level.WARN)) {
             return LogLevel.WARN;
         }
-        else if(level.equals(Level.INFO)) {
+        else if (level.equals(Level.INFO)) {
             return LogLevel.INFO;
         }
-        else if(level.equals(Level.DEBUG)) {
+        else if (level.equals(Level.DEBUG)) {
             return LogLevel.DEBUG;
         }
         else {
@@ -62,15 +62,27 @@ public class LoggingEventTranslator {
         if(throwableProxy == null) {
             return Optional.empty();
         }
+        ThrowableInfo toThrowableInfo = toThrowableInfo(throwableProxy);
+        return Optional.of(toThrowableInfo);
+    }
+
+    private static ThrowableInfo toThrowableInfo(IThrowableProxy throwableProxy) {
         ImmutableList.Builder<StackTraceElement> result = ImmutableList.builder();
-        for(StackTraceElementProxy proxy : throwableProxy.getStackTraceElementProxyArray()) {
+        for (StackTraceElementProxy proxy : throwableProxy.getStackTraceElementProxyArray()) {
             result.add(proxy.getStackTraceElement());
         }
-        ThrowableInfo throwableInfo = new ThrowableInfo(
+        final Optional<ThrowableInfo> cause;
+        if (throwableProxy.getCause() != null) {
+            cause = Optional.of(toThrowableInfo(throwableProxy.getCause()));
+        }
+        else {
+            cause = Optional.empty();
+        }
+        return new ThrowableInfo(
                 throwableProxy.getClassName(),
                 throwableProxy.getMessage(),
-                result.build());
-
-        return Optional.of(throwableInfo);
+                result.build(),
+                cause
+        );
     }
 }

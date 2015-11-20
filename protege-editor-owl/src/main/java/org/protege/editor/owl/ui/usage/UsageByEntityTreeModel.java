@@ -225,17 +225,17 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-            axiom.getSubProperty().accept(this);
+            ((OWLEntity) axiom.getSubProperty()).accept(this);
         }
 
 
         public void visit(OWLAnnotationPropertyDomainAxiom axiom) {
-            axiom.getProperty().accept(this);
+            ((OWLEntity) axiom.getProperty()).accept(this);
         }
 
 
         public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
-            axiom.getProperty().accept(this);
+            ((OWLEntity) axiom.getProperty()).accept(this);
         }
 
 

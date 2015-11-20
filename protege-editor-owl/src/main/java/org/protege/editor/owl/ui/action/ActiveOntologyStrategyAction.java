@@ -1,11 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.selection.ontologies.ActiveOntologySelectionStrategy;
-import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 
 /**
  * Author: drummond<br>

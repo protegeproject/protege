@@ -1,14 +1,8 @@
 package org.protege.editor.owl.model.inference;
 
 
-import java.lang.reflect.Method;
-
-import org.slf4j.Logger;
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
-import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.owl.model.OWLModelManager;
 /*
  * Copyright (C) 2007, University of Manchester

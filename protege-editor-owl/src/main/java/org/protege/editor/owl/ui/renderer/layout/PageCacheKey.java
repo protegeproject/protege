@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import java.awt.print.Book;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

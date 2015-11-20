@@ -1,16 +1,12 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import java.util.*;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -137,7 +133,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     }
 
 
-    public Set<OWLOntology> getChildren(OWLOntology object) {
+    public Set<OWLOntology> getUnfilteredChildren(OWLOntology object) {
         return getChildren(object, true);
     }
 

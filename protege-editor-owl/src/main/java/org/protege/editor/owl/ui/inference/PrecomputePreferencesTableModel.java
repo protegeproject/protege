@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.inference;
 
-import java.util.Set;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 
 import javax.swing.table.AbstractTableModel;
-
-import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.semanticweb.owlapi.reasoner.InferenceType;
+import java.util.Set;
 
 public class PrecomputePreferencesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -3237338845911865353L;

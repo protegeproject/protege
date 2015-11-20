@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.AmalgamateSubClassAxioms;
+import org.semanticweb.owlapi.change.AmalgamateSubClassAxioms;
 
 import java.awt.event.ActionEvent;
 /*
@@ -28,8 +28,9 @@ public class AmalgamateSuperClassesAction extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent e) {
-        AmalgamateSubClassAxioms change = new AmalgamateSubClassAxioms(getOWLModelManager().getActiveOntologies(),
-                                                                       getOWLModelManager().getOWLDataFactory());
+        AmalgamateSubClassAxioms change = new AmalgamateSubClassAxioms(
+                getOWLModelManager().getOWLDataFactory(),
+                getOWLModelManager().getOntologies());
         getOWLModelManager().applyChanges(change.getChanges());
     }
 }

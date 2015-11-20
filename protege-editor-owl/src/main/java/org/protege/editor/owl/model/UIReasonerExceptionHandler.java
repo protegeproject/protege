@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model;
 
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 /*
@@ -30,13 +28,11 @@ public class UIReasonerExceptionHandler implements OWLReasonerExceptionHandler {
 
 
     public void handle(Throwable e) {
-        LoggerFactory.getLogger(UIReasonerExceptionHandler.class)
-                .error("A reasoner error occurred: {}", e);
         Throwable cause = e;
         while(cause.getCause() != null) {
             cause = cause.getCause();
         }
         String msg = cause.getClass().getSimpleName() + ": " + cause.getMessage();
-        JOptionPane.showMessageDialog(workspace, msg, "Reasoner Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(workspace, msg, "An error occurred during reasoning", JOptionPane.ERROR_MESSAGE);
     }
 }

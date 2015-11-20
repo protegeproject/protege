@@ -1,18 +1,14 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.util.List;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
+import java.util.List;
 
 public class LoadedTabsSelector extends JPanel {
     private static final long serialVersionUID = 4063978799949163657L;

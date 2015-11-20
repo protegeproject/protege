@@ -1,40 +1,20 @@
 package org.protege.editor.owl.model.inference;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.SwingUtilities;
-
 import com.google.common.base.Stopwatch;
-import org.protege.editor.core.log.LogBanner;
-import org.slf4j.Logger;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
-import org.semanticweb.owlapi.model.AnnotationChange;
-import org.semanticweb.owlapi.model.OWLAxiomChange;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.SetOntologyID;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
-import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
-import org.semanticweb.owlapi.reasoner.InferenceType;
-import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
-import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -323,17 +303,15 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         }
         owlModelManager.fireEvent(EventType.ABOUT_TO_CLASSIFY);
         Thread currentReasonerThread = new Thread(new ClassificationRunner(currentOntology, precompute), "Classification Thread");
-        currentReasonerThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
-            public void uncaughtException(Thread thread, Throwable throwable) {
-                logger.warn("An error occurred during reasoning: {}", throwable);
-            	try {
-            		if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
-            			exceptionHandler.handle(throwable);
-            		}
-            	}
-            	catch (ReasonerDiedException died) {
-            		ReasonerUtilities.warnThatReasonerDied(null, died);
-            	}
+        currentReasonerThread.setUncaughtExceptionHandler((thread, throwable) -> {
+            logger.error("An error occurred during reasoning: {}.", throwable.getMessage(), throwable);
+            try {
+                if (getReasonerStatus() != ReasonerStatus.REASONER_NOT_INITIALIZED) {
+                    exceptionHandler.handle(throwable);
+                }
+            }
+            catch (ReasonerDiedException died) {
+                ReasonerUtilities.warnThatReasonerDied(null, died);
             }
         });
         currentReasonerThread.start();

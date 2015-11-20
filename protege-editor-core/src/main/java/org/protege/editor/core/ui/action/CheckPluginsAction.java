@@ -26,7 +26,7 @@ public class CheckPluginsAction extends ProtegeAction {
 
 
     public void actionPerformed(ActionEvent event) {
-        PluginManager.getInstance().performCheckPlugins();
+        PluginManager.getInstance().runCheckForPlugins();
     }
 
 

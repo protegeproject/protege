@@ -5,11 +5,11 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
+import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,10 +57,10 @@ public class GatherOntologiesPanel extends JPanel {
         JPanel comboBoxLabelPanel = new JPanel(new BorderLayout(7, 7));
         List<Object> formats = new ArrayList<Object>();
         formats.add("Original");
-        formats.add(new RDFXMLOntologyFormat());
-        formats.add(new OWLXMLOntologyFormat());
-        formats.add(new OWLFunctionalSyntaxOntologyFormat());
-        formatComboBox = new JComboBox(formats.toArray());
+        formats.add(new RDFXMLDocumentFormat());
+        formats.add(new OWLXMLDocumentFormat());
+        formats.add(new FunctionalSyntaxDocumentFormat());
+        formatComboBox = new JComboBox<>(formats.toArray());
         comboBoxLabelPanel.add(new JLabel("Format"), BorderLayout.WEST);
         comboBoxLabelPanel.add(formatComboBox, BorderLayout.EAST);
         JPanel formatPanelHolder = new JPanel();
@@ -115,10 +115,10 @@ public class GatherOntologiesPanel extends JPanel {
     }
 
 
-    public OWLOntologyFormat getOntologyFormat() {
+    public OWLDocumentFormat getOntologyFormat() {
         Object selFormat = formatComboBox.getSelectedItem();
-        if (selFormat instanceof OWLOntologyFormat) {
-            return (OWLOntologyFormat) selFormat;
+        if (selFormat instanceof OWLDocumentFormat) {
+            return (OWLDocumentFormat) selFormat;
         }
         else {
             return null;

@@ -1,17 +1,16 @@
 package org.protege.editor.owl.ui.editor;
 
-import java.util.Collections;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.event.ChangeListener;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import java.util.Collections;
+import java.util.Set;
 
 
 /**

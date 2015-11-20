@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.tree;
 
-import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 /*
  * Copyright (C) 2007, University of Manchester
  *

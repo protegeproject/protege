@@ -1,8 +1,8 @@
 package org.protege.editor.core.update;
 
 
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 
@@ -56,7 +56,7 @@ public class PluginPanel extends JPanel {
     private JCheckBox alwaysShow;
 
 
-    public PluginPanel(Map<String, PluginRegistry> downloadsProviders) {
+    public PluginPanel(ListMultimap<String, PluginInfo> downloadsProviders) {
         setLayout(new BorderLayout(2, 2));
 
 
@@ -268,22 +268,28 @@ public class PluginPanel extends JPanel {
     }
 
 
-    public static List<PluginInfo> showDialog(Map<String, PluginRegistry> downloadsProviders, Component parent) {
-        PluginPanel panel = new PluginPanel(downloadsProviders);
-        Object [] options = new String []{"Install", "Not now"};
-        int ret = JOptionPaneEx.showConfirmDialog(parent,
-                                                  "Automatic Update",
-                                                  panel,
-                                                  JOptionPane.PLAIN_MESSAGE,
-                                                  JOptionPane.OK_CANCEL_OPTION,
-                                                  null,
-                                                  options,
-                                                  options[0]);
-
-        if (ret == 0) {
+    public static List<PluginInfo> showDialog(ListMultimap<String, PluginInfo> plugins, Component parent) {
+        PluginPanel panel = new PluginPanel(plugins);
+        final String installOption = "Install";
+        final String notNowOption = "Not now";
+        Object [] options = new String []{installOption, notNowOption};
+        JOptionPane optionPane = new JOptionPane(
+                panel,
+                JOptionPane.PLAIN_MESSAGE,
+                JOptionPane.OK_CANCEL_OPTION,
+                null,
+                options,
+                options[0]);
+        JDialog dlg = optionPane.createDialog(parent, "Automatic Update");
+        dlg.setModal(true);
+        dlg.setResizable(true);
+        dlg.setVisible(true);
+        if(installOption.equals(optionPane.getValue())) {
             return panel.getPluginsToInstall();
         }
-        return null;
+        else {
+            return Collections.emptyList();
+        }
     }
 
 
