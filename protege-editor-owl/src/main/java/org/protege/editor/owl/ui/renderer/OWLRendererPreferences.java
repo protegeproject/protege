@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -207,10 +209,10 @@ public class OWLRendererPreferences {
     	return Collections.unmodifiableList(annotationLanguages);
     }
 
-    public Map<IRI, List<String>> getAnnotationLangMap(){
-    	Map<IRI, List<String>> langMap = new HashMap<IRI, List<String>>();
+    public ListMultimap<IRI, String> getAnnotationLangMap(){
+    	ListMultimap<IRI, String> langMap = ArrayListMultimap.create();
     	for (IRI iri : annotationIRIS) {
-    		langMap.put(iri, Collections.unmodifiableList(annotationLanguages));
+    		langMap.putAll(iri, Collections.unmodifiableList(annotationLanguages));
     	}
     	return langMap;
     }
