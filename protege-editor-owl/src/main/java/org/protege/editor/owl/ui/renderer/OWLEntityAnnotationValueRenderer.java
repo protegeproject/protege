@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.renderer;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
+import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 
 /**
@@ -29,20 +30,31 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
         final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
 
         // convert IRI -> lang map into annotation property -> lang map
-        final List<OWLAnnotationProperty> properties = new ArrayList<OWLAnnotationProperty>();
-        Map<OWLAnnotationProperty, List<String>> propLangMap = new HashMap<OWLAnnotationProperty, List<String>>();
+        final List<OWLAnnotationProperty> properties = new ArrayList<>();
+        ListMultimap<OWLAnnotationProperty, String> propLangMap = ArrayListMultimap.create();
 
-        final Map<IRI, List<String>> iriLangMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
+        final ListMultimap<IRI, String> iriLangMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
         for (IRI iri : OWLRendererPreferences.getInstance().getAnnotationIRIs()){
             final OWLAnnotationProperty ap = df.getOWLAnnotationProperty(iri);
             properties.add(ap);
-            propLangMap.put(ap, iriLangMap.get(iri));
+            propLangMap.putAll(ap, iriLangMap.get(iri));
         }
-        provider = new AnnotationValueShortFormProvider(properties,
-                                                        propLangMap,
-                                                        getOWLModelManager().getOWLOntologyManager());
+        provider = new AnnotationValueShortFormProvider(
+                () -> getOWLModelManager().getActiveOntologies(),
+                new OWLEntityRendererImpl(),
+                new SimpleIRIShortFormProvider(),
+                properties,
+                toMap(propLangMap));
     }
 
+
+    private static Map<OWLAnnotationProperty, List<String>> toMap(ListMultimap<OWLAnnotationProperty, String> multimap) {
+        Map<OWLAnnotationProperty, List<String>> result = new HashMap<>();
+        for(OWLAnnotationProperty prop : multimap.keys()) {
+            result.put(prop, multimap.get(prop));
+        }
+        return result;
+    }
 
     public String render(IRI iri) {
         // doesn't matter what type of entity we choose - the same value is returned.
