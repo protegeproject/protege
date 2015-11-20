@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.rename;
 
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
@@ -294,8 +296,8 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     
     private String getShortForm(IRI uri){
         try {
-            String rendering = uri.getFragment();
-            if (rendering == null) {
+            Optional<String> rendering = uri.getRemainder();
+            if (!rendering.isPresent()) {
                 // Get last bit of path
                 String path = uri.toURI().getPath();
                 if (path == null) {
@@ -303,7 +305,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
                 }
                 return uri.toURI().getPath().substring(path.lastIndexOf("/") + 1);
             }
-            return rendering;
+            return rendering.get();
         }
         catch (Exception e) {
             return "<Error! " + e.getMessage() + ">";
