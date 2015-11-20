@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.rename;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -88,13 +89,8 @@ public class RenameEntityPanel extends JPanel {
      *         is no fragment.
      */
     private String getFragment() {
-        String fragment = owlEntity.getIRI().getFragment();
-        if (fragment != null) {
-            return fragment;
-        }
-        else {
-            return "";
-        }
+        Optional<String> fragment = owlEntity.getIRI().getRemainder();
+        return fragment.or("");
     }
 
 
