@@ -1,10 +1,10 @@
 package org.protege.editor.core.ui.action;
 
 
-import javax.swing.AbstractAction;
-
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
+
+import javax.swing.*;
 
 
 /**

@@ -1,20 +1,12 @@
 package org.protege.editor.core.ui.view;
 
+import org.protege.editor.core.ui.view.button.ViewButtonUI;
+
+import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-
-import org.protege.editor.core.ui.view.button.ViewButtonUI;
 
 
 /**

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.io;
 
-import java.net.URI;
-
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+
+import java.net.URI;
 
 /**
  * Author: drummond<br>

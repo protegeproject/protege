@@ -1,10 +1,9 @@
 package org.protege.editor.owl.ui.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.protege.editor.core;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 /*
  * Copyright (C) 2008, University of Manchester
  *

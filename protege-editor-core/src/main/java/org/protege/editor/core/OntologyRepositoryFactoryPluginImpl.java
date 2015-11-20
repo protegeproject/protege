@@ -1,8 +1,8 @@
 package org.protege.editor.core;
 
-import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.plugin.ExtensionInstantiator;
+import org.protege.editor.core.plugin.JPFUtil;
 /*
  * Copyright (C) 2008, University of Manchester
  *

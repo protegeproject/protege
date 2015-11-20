@@ -1,14 +1,11 @@
 package org.protege.editor.core.ui.util;
 
 
-
-import java.net.URL;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.osgi.framework.Bundle;
 import org.protege.editor.core.plugin.PluginUtilities;
+
+import javax.swing.*;
+import java.net.URL;
 
 
 /**

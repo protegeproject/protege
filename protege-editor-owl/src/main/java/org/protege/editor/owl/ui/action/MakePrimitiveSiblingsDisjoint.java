@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
@@ -43,7 +43,7 @@ public class MakePrimitiveSiblingsDisjoint extends SelectedOWLClassAction {
         for(Iterator<OWLClass> it = clses.iterator(); it.hasNext(); ) {
             OWLClass cls = it.next();
             for(OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-                if(cls.isDefined(ont)) {
+                if(EntitySearcher.isDefined(cls, ont)) {
                     it.remove();
                     break;
                 }

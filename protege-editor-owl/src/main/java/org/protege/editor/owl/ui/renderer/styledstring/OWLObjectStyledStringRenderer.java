@@ -1,7 +1,7 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax;
 import org.protege.editor.owl.ui.renderer.context.*;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
@@ -479,7 +479,7 @@ public class OWLObjectStyledStringRenderer {
         }
 
 
-        private void renderHasValueRestriction(OWLHasValueRestriction<?, ?, ?> restriction) {
+        private void renderHasValueRestriction(OWLHasValueRestriction<?> restriction) {
             restriction.getProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.VALUE);
             restriction.getValue().accept(this);
@@ -489,7 +489,7 @@ public class OWLObjectStyledStringRenderer {
             renderHasValueRestriction(owlObjectHasValue);
         }
 
-        private void renderCardinalityRestriction(OWLCardinalityRestriction<?, ?, ?> restriction, ManchesterOWLSyntax keyword) {
+        private void renderCardinalityRestriction(OWLCardinalityRestriction<?> restriction, ManchesterOWLSyntax keyword) {
             restriction.getProperty().accept(this);
             renderKeywordWithSpaces(keyword);
             builder.append(restriction.getCardinality());
@@ -599,7 +599,7 @@ public class OWLObjectStyledStringRenderer {
         }
 
         public void visit(OWLFacetRestriction owlFacetRestriction) {
-            builder.append(owlFacetRestriction.getFacet().getShortName());
+            builder.append(owlFacetRestriction.getFacet().getPrefixedName());
             renderSpace();
             owlFacetRestriction.getFacetValue().accept(this);
         }
@@ -621,10 +621,10 @@ public class OWLObjectStyledStringRenderer {
 
             OWLOntologyID id = owlOntology.getOntologyID();
             if (!id.isAnonymous()) {
-                builder.appendWithStyle(id.getOntologyIRI().toQuotedString(), Style.getForeground(Color.DARK_GRAY));
-                if (id.getVersionIRI() != null) {
+                builder.appendWithStyle(id.getOntologyIRI().get().toQuotedString(), Style.getForeground(Color.DARK_GRAY));
+                if (id.getVersionIRI().isPresent()) {
                     builder.appendSpace();
-                    builder.appendWithStyle(id.getVersionIRI().toQuotedString(), Style.getForeground(Color.GRAY));
+                    builder.appendWithStyle(id.getVersionIRI().get().toQuotedString(), Style.getForeground(Color.GRAY));
                 }
             }
         }
@@ -675,7 +675,7 @@ public class OWLObjectStyledStringRenderer {
 
         public void visit(SWRLVariable swrlVariable) {
             builder.append("?");
-            builder.append(swrlVariable.getIRI().getFragment());
+            builder.append(swrlVariable.getIRI().getRemainder().or(swrlVariable.getIRI().toString()));
         }
 
         public void visit(SWRLIndividualArgument swrlIndividualArgument) {

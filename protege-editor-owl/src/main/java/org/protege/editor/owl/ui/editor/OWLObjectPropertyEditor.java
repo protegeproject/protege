@@ -1,15 +1,14 @@
 package org.protege.editor.owl.ui.editor;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JComponent;
-
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+
+import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**

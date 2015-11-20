@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.*;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

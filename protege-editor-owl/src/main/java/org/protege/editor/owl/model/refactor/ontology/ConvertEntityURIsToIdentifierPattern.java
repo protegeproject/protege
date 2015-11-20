@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.slf4j.Logger;
+import com.google.common.collect.ListMultimap;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.util.OWLEntityURIConverter;
 import org.semanticweb.owlapi.util.OWLEntityURIConverterStrategy;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -93,7 +94,7 @@ public class ConvertEntityURIsToIdentifierPattern {
         // So, hook it up with one that returns null so we can check if the label rendering failed.
         ShortFormProvider nullSFP =  new ShortFormProvider(){
             public String getShortForm(OWLEntity owlEntity) {
-                return null;
+                return "";
             }
 
             public void dispose() {
@@ -105,7 +106,7 @@ public class ConvertEntityURIsToIdentifierPattern {
         List<OWLAnnotationProperty> annotationProperties = new ArrayList<OWLAnnotationProperty>();
         Map<OWLAnnotationProperty, List<String>> langMap = new HashMap<OWLAnnotationProperty, List<String>>();
 
-        Map<IRI, List<String>> annotMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
+        ListMultimap<IRI, String> annotMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
         for (IRI iri : annotMap.keySet()){
             OWLAnnotationProperty p  = mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
             annotationProperties.add(p);
@@ -121,7 +122,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
         for(OWLEntity entity : getAllReferencedEntities()) {
             String labelRendering = sfp.getShortForm(entity);
-            if (labelRendering == null || refactorWhenLabelPresent(entity, labelRendering)){
+            if (refactorWhenLabelPresent(entity, labelRendering)){
                 iriMap.put(entity, IRIGen.generateNewIRI(entity));
             }
         }
@@ -209,7 +210,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     public OWLAnnotationProperty getPreferredLabel() {
         final List<IRI> iris = OWLRendererPreferences.getInstance().getAnnotationIRIs();
-        IRI iri = iris.isEmpty() ? IRI.create(OWLRDFVocabulary.RDFS_LABEL.getURI()) : iris.get(0);
+        IRI iri = iris.isEmpty() ? OWLRDFVocabulary.RDFS_LABEL.getIRI() : iris.get(0);
         return mngr.getOWLDataFactory().getOWLAnnotationProperty(iri);
     }
 

@@ -1,17 +1,12 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.slf4j.Logger;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
 import org.semanticweb.owlapi.expression.ParserException;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.SWRLRule;
-import org.slf4j.LoggerFactory;
-
-import static org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntax.*;
 
 /**
  * Author: drummond<br>

@@ -6,7 +6,6 @@ package org.protege.editor.core.prefs;
  */
 
 
-import org.protege.editor.core.ProtegeApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

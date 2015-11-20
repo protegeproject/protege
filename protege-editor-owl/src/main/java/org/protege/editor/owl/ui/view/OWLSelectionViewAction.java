@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
-import javax.swing.Icon;
-
 import org.protege.editor.core.ui.view.DisposableAction;
+
+import javax.swing.*;
 
 
 /**

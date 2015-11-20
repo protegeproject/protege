@@ -1,10 +1,10 @@
 package org.protege.editor.core.ui.view;
 
-import org.slf4j.Logger;
 import org.coode.mdock.*;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

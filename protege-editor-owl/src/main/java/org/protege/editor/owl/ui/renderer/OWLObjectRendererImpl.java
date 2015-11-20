@@ -1,22 +1,16 @@
 package org.protege.editor.owl.ui.renderer;
 
+import com.google.common.base.Optional;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
-
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
-import org.semanticweb.owlapi.model.SWRLDArgument;
-import org.semanticweb.owlapi.model.SWRLVariable;
-import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
-import org.semanticweb.owlapi.util.ShortFormProvider;
-
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 
 
 /**
@@ -73,8 +67,13 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         }
 
         // shows the version uri or the ont uri if there is no version
-        IRI iri = ontology.getOntologyID().getDefaultDocumentIRI();
-        return ontURISFP.getShortForm(iri);
+        Optional<IRI> iri = ontology.getOntologyID().getDefaultDocumentIRI();
+        if (iri.isPresent()) {
+            return ontURISFP.getShortForm(iri.get());
+        }
+        else {
+            return "Anonymous Ontology";
+        }
     }
     
     private class PatchedManchesterOWLSyntaxObjectRenderer extends ManchesterOWLSyntaxObjectRenderer {

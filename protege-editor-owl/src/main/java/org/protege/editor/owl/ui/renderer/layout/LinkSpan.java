@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

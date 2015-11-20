@@ -1,7 +1,5 @@
 package org.protege.editor.core.log;
 
-import com.google.common.collect.ImmutableList;
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;

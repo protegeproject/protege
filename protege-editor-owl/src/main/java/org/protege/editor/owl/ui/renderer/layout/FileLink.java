@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import org.protege.editor.core.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Author: Matthew Horridge<br>

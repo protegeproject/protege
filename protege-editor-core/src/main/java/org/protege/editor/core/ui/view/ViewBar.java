@@ -1,13 +1,7 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

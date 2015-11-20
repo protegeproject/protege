@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.navigation;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.ui.OWLIcons;
 
 import javax.swing.*;
 import java.awt.*;

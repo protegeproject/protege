@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import java.awt.Dimension;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -14,6 +9,9 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactor
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.SWRLRule;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /*

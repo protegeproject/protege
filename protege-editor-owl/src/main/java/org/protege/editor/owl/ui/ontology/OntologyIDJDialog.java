@@ -1,26 +1,15 @@
 package org.protege.editor.owl.ui.ontology;
 
-import java.awt.BorderLayout;
+import com.google.common.base.Optional;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 /**
@@ -59,12 +48,12 @@ public class OntologyIDJDialog extends JPanel {
     public void createUI(OWLOntologyID id) {
         ontologyIRIField = new JTextField(OntologyPreferences.getInstance().generateURI().toString());
         if (!id.isAnonymous()) {
-        	ontologyIRIField.setText(id.getOntologyIRI().toString());
+        	ontologyIRIField.setText(id.getOntologyIRI().get().toString());
         }
 
         enableVersionCheckBox = new JCheckBox("Enable Version Iri");
         enableVersionCheckBox.setEnabled(true);
-        enableVersionCheckBox.setSelected(!id.isAnonymous() && id.getVersionIRI() != null);
+        enableVersionCheckBox.setSelected(!id.isAnonymous() && id.getVersionIRI().isPresent());
         enableVersionCheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 versionIRIField.setEnabled(enableVersionCheckBox.isSelected());
@@ -74,13 +63,13 @@ public class OntologyIDJDialog extends JPanel {
             }
         });
         versionIRIField = new JTextField();
-        if (!id.isAnonymous() && id.getVersionIRI() != null) {
-        	versionIRIField.setText(id.getVersionIRI().toString());
+        if (!id.isAnonymous() && id.getVersionIRI().isPresent()) {
+        	versionIRIField.setText(id.getVersionIRI().get().toString());
         }
-        else if (id.getOntologyIRI() != null){
-        	versionIRIField.setText(id.getOntologyIRI().toString());
+        else if (id.getOntologyIRI().isPresent()){
+        	versionIRIField.setText(id.getOntologyIRI().get().toString());
         }
-        versionIRIField.setEnabled(!id.isAnonymous() && id.getVersionIRI() != null);
+        versionIRIField.setEnabled(!id.isAnonymous() && id.getVersionIRI().isPresent());
 
 
         Box holderPanel = new Box(BoxLayout.PAGE_AXIS);
@@ -102,10 +91,10 @@ public class OntologyIDJDialog extends JPanel {
                 URI versionURI = new URI(versionIRIField.getText());
                 IRI versionIRI = IRI.create(versionURI);
 
-                return new OWLOntologyID(ontologyIRI, versionIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
             }
             else {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
         }
         catch (URISyntaxException e) {

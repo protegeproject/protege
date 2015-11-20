@@ -2,11 +2,7 @@ package org.protege.editor.owl.model.parser;
 
 import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.semanticweb.owlapi.expression.OWLEntityChecker;
-import org.semanticweb.owlapi.model.*;/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import org.semanticweb.owlapi.model.*;
 
 /**
  * Author: drummond<br>

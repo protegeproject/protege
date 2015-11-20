@@ -7,6 +7,8 @@ import org.protege.editor.core.plugin.PluginUtilities;
 
 import java.net.URL;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -36,9 +38,9 @@ public class PluginInfo {
 
 
     public PluginInfo(String id, Version availableVersion, URL downloadURL) {
-        this.id = id;
-        this.availableVersion = availableVersion;
-        this.downloadURL = downloadURL;
+        this.id = checkNotNull(id);
+        this.availableVersion = checkNotNull(availableVersion);
+        this.downloadURL = checkNotNull(downloadURL);
     }
 
 

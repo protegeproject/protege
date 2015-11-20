@@ -2,8 +2,6 @@ package org.protege.editor.owl.ui.transfer;
 
 import java.awt.datatransfer.DataFlavor;
 
-import org.slf4j.Logger;
-
 
 /**
  * Author: Matthew Horridge<br>

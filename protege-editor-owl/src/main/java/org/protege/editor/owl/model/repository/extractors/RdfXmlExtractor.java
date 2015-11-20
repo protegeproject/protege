@@ -1,51 +1,31 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-
-import org.slf4j.Logger;
-import org.protege.owlapi.util.IOUtils;
+import com.google.common.base.Optional;
+import org.protege.editor.owl.model.io.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.rdf.syntax.RDFParser;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParser;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
+
+import java.io.InputStream;
+import java.net.URI;
 
 public class RdfXmlExtractor implements OntologyIdExtractor {
 
     private final Logger logger = LoggerFactory.getLogger(RdfXmlExtractor.class);
 
-    private URI location;
-
-    public OWLOntologyID getOntologyId() {
+    public Optional<OWLOntologyID> getOntologyId(URI location) {
         RdfExtractorConsumer consumer = new RdfExtractorConsumer();
         RDFParser parser = new RDFParser();
-        InputStream iStream = null;
-        try {
-        	iStream = IOUtils.getInputStream(location);
+        try (InputStream iStream = IOUtils.getInputStream(location, true, 30000)) {
             InputSource is = new InputSource(iStream);
             is.setSystemId(location.toURL().toString());
             parser.parse(is, consumer);
-        }
-        catch (Throwable t) {
+            return consumer.getOntologyID();
+        } catch (Throwable t) {
             logger.debug("Exception caught trying to extract ontology from rdf file at  " + location, t);
-            return null;
+            return Optional.absent();
         }
-        finally {
-        	if (iStream != null) {
-        		try {
-        			iStream.close();
-        		}
-        		catch (IOException ioe) {
-        			logger.warn("Could not close open stream", ioe);
-        		}
-        	}
-        }
-        return consumer.getOntologyID();
     }
-
-    public void setPhysicalAddress(URI location) {
-        this.location = location;
-    }
-
 }

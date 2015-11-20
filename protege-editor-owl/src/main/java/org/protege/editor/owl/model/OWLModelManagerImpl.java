@@ -1,11 +1,8 @@
 package org.protege.editor.owl.model;
 
 import com.google.common.base.Stopwatch;
-import org.protege.editor.core.log.LogBanner;
-import org.slf4j.Logger;
-import org.coode.xml.XMLWriterPreferences;
 import org.protege.editor.core.AbstractModelManager;
-import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
@@ -26,7 +23,6 @@ import org.protege.editor.owl.model.history.HistoryManagerImpl;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.protege.editor.owl.model.inference.ReasonerPreferencesListener;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
@@ -40,17 +36,18 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
-import org.protege.owlapi.apibinding.ProtegeOWLManager;
-import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
@@ -75,7 +72,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private final Logger logger = LoggerFactory.getLogger(OWLModelManagerImpl.class);
 
-    private HistoryManager historyManager;
+    private final HistoryManager historyManager;
 
     private OWLModelManagerEntityRenderer entityRenderer;
 
@@ -94,21 +91,21 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLEntityFinder entityFinder;
 
-    private OWLReasonerManager owlReasonerManager;
+    private final OWLReasonerManager owlReasonerManager;
 
     /**
      * Dirty ontologies are ontologies that have been edited
      * and not saved.
      */
-    private Set<OWLOntologyID> dirtyOntologies;
+    private final Set<OWLOntologyID> dirtyOntologies = new HashSet<>();
 
     /**
      * The <code>OWLConnection</code> that we use to manage
      * ontologies.
      */
-    private ProtegeOWLOntologyManager manager;
+    private final OWLOntologyManager manager;
 
-    private OntologyCatalogManager ontologyLibraryManager;
+    private final OntologyCatalogManager ontologyLibraryManager = new OntologyCatalogManager();
 
     private ExplanationManager explanationManager;
 
@@ -119,9 +116,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * each time from the OWLOntologyManager, but this proved to be expensive
      * in terms of time.
      */
-    private Set<OWLOntology> activeOntologies;
+    private final Set<OWLOntology> activeOntologies = new HashSet<>();
 
-    private Set<OntologySelectionStrategy> ontSelectionStrategies;
+    private final Set<OntologySelectionStrategy> ontSelectionStrategies = new HashSet<>();
 
     private OntologySelectionStrategy activeOntologiesStrategy;
 
@@ -134,50 +131,33 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
-    private AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper;
-
-    private UserResolvedIRIMapper userResolvedIRIMapper;
+    private final UserResolvedIRIMapper userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
 
 
     // listeners
 
-    private List<OWLModelManagerListener> modelManagerChangeListeners;
+    private final List<OWLModelManagerListener> modelManagerChangeListeners = new ArrayList<>();
 
-    private ListenerManager<OWLModelManagerListener> modelManagerListenerManager;
+    private final ListenerManager<OWLModelManagerListener> modelManagerListenerManager = new ListenerManager<>();
 
-    private ListenerManager<OWLOntologyChangeListener> changeListenerManager;
+    private final ListenerManager<OWLOntologyChangeListener> changeListenerManager = new ListenerManager<>();
 
-    private List<IOListener> ioListeners;
+    private final List<IOListener> ioListeners = new ArrayList<>();
 
 
     public OWLModelManagerImpl() {
         super();
 
-        modelManagerListenerManager = new ListenerManager<OWLModelManagerListener>();
-        changeListenerManager = new ListenerManager<OWLOntologyChangeListener>();
-        manager = ProtegeOWLManager.createOWLOntologyManager();
-        manager.setUseWriteSafety(true);
-        manager.setUseSwingThread(true);
-        manager.setSilentMissingImportsHandling(true);
+        manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
-        manager.addOntologyLoaderListener(this);
-
 
         // URI mappers for loading - added in reverse order
-        autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
-        userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
-        manager.clearIRIMappers();
-        manager.addIRIMapper(userResolvedIRIMapper);
-        manager.addIRIMapper(new WebConnectionIRIMapper());
-        manager.addIRIMapper(autoMappedRepositoryIRIMapper);
-
-
-        dirtyOntologies = new HashSet<OWLOntologyID>();
-        ontSelectionStrategies = new HashSet<OntologySelectionStrategy>();
-
-
-        modelManagerChangeListeners = new ArrayList<OWLModelManagerListener>();
-        ioListeners = new ArrayList<IOListener>();
+        AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
+        PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
+        iriMappers.clear();
+        iriMappers.add(userResolvedIRIMapper);
+        iriMappers.add(new WebConnectionIRIMapper());
+        iriMappers.add(autoMappedRepositoryIRIMapper);
 
 
         objectRenderer = new OWLObjectRendererImpl(this);
@@ -187,18 +167,18 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         owlExpressionCheckerFactory = new ManchesterOWLExpressionCheckerFactory(this);
 
-        activeOntologies = new HashSet<OWLOntology>();
-
         //needs to be initialized
         activeOntologiesStrategy = new ImportsClosureOntologySelectionStrategy(this);
+
+        historyManager = new HistoryManagerImpl(this);
+
+        owlReasonerManager = new OWLReasonerManagerImpl(this);
+        owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
+
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
         getOWLEntityRenderer();
-
-        XMLWriterPreferences.getInstance().setUseNamespaceEntities(XMLWriterPrefs.getInstance().isUseEntities());
-
-//        put(AnonymousDefinedClassManager.ID, new AnonymousDefinedClassManager(this));
 
         put(OntologySourcesManager.ID, new OntologySourcesManager(this));
 
@@ -219,8 +199,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 entityRenderer.dispose();
             }
             owlReasonerManager.dispose();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("An error occurred whilst disposing of the model manager: {}", e.getMessage(), e);
         }
 
@@ -245,15 +224,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    public ProtegeOWLOntologyManager getOWLOntologyManager() {
+    public OWLOntologyManager getOWLOntologyManager() {
         return manager;
     }
 
 
     public OntologyCatalogManager getOntologyCatalogManager() {
-        if (ontologyLibraryManager == null) {
-            ontologyLibraryManager = new OntologyCatalogManager();
-        }
         return ontologyLibraryManager;
     }
 
@@ -304,10 +280,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 fireEvent(EventType.ONTOLOGY_LOADED);
                 OWLOntologyID id = ontology.getOntologyID();
                 if (!id.isAnonymous()) {
-                    manager.addIRIMapper(new SimpleIRIMapper(id.getDefaultDocumentIRI(), IRI.create(uri)));
+                    manager.getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
                 }
-            }
-            catch (OWLOntologyCreationException ooce) {
+            } catch (OWLOntologyCreationException ooce) {
                 logger.info("Failed to load ontology: {}", ooce);
                 ;             // will be handled by the loadErrorHandler, so ignore
             }
@@ -331,8 +306,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             if (loadErrorHandler != null) {
                 try {
                     loadErrorHandler.handleErrorLoadingOntology(event.getOntologyID(), event.getDocumentIRI().toURI(), e);
-                }
-                catch (Throwable e1) {
+                } catch (Throwable e1) {
                     // if, for any reason, the loadErrorHandler cannot report the error
                     ErrorLogPanel.showErrorDialog(e1);
                 }
@@ -346,11 +320,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
     private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("An IOListener threw an exception during event dispatch: {}", e);
             }
         }
@@ -358,11 +331,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("An IOListener threw an exception during event dispatch: {}", e);
             }
         }
@@ -378,16 +350,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public URI getOntologyPhysicalURI(OWLOntology ontology) {
         IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontology);
-        if (ontologyDocumentIRI != null) {
-            if (isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
-                return URI.create("");
-            }
-            else {
-                return ontologyDocumentIRI.toURI();
-            }
+        if (isDefaultOWLAPIDocumentIRI(ontologyDocumentIRI)) {
+            return URI.create("");
         }
         else {
-            return URI.create("");
+            return ontologyDocumentIRI.toURI();
         }
     }
 
@@ -403,8 +370,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
-        if (physicalURI != null) {
-            manager.addIRIMapper(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI(), IRI.create(physicalURI)));
+        if (physicalURI != null && ontologyID.getDefaultDocumentIRI().isPresent()) {
+            manager.getIRIMappers().add(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().get(), IRI.create(physicalURI)));
         }
         OWLOntology ont = manager.createOntology(ontologyID);
         setActiveOntology(ont);
@@ -414,8 +381,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 if (containingDirectory.exists()) {
                     getOntologyCatalogManager().addFolder(containingDirectory);
                 }
-            }
-            catch (IllegalArgumentException iae) {
+            } catch (IllegalArgumentException iae) {
                 logger.warn("Cannot generate ontology catalog for ontology at " + physicalURI);
             }
         }
@@ -435,8 +401,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         dirtyOntologies.remove(ont.getOntologyID());
         try {
             ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
             manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
             throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
@@ -489,7 +454,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * Save all of the ontologies that are editable and that have been modified.
      */
     public void save() throws OWLOntologyStorageException {
-        for (OWLOntologyID ontId : new HashSet<OWLOntologyID>(dirtyOntologies)) {
+        for (OWLOntologyID ontId : new HashSet<>(dirtyOntologies)) {
             if (manager.contains(ontId)) {
                 save(manager.getOntology(ontId));
             }
@@ -501,43 +466,52 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void save(OWLOntology ont) throws OWLOntologyStorageException {
-        final URI physicalURI = manager.getOntologyDocumentIRI(ont).toURI();
+        final URI documentURI = manager.getOntologyDocumentIRI(ont).toURI();
         try {
-            fireBeforeSaveEvent(ont.getOntologyID(), physicalURI);
+            fireBeforeSaveEvent(ont.getOntologyID(), documentURI);
 
-            try {
-                if (!UIUtil.isLocalFile(physicalURI)) {
-                    throw new ProtocolException("Cannot save file to remote location: " + physicalURI);
+
+            if (!UIUtil.isLocalFile(documentURI)) {
+                // I'm not sure why this changed, but this protocol exception is caught and then the
+                // saveAs dialog is shown
+                throw new OWLOntologyStorageException(
+                        new ProtocolException("Cannot save file to remote location: " + documentURI));
+            }
+            else {
+                final OWLDocumentFormat format;
+                final OWLDocumentFormat previousFormat = manager.getOntologyFormat(ont);
+                if(previousFormat == null) {
+                    format = new RDFXMLDocumentFormat();
+                    logger.info("No document format for {} has been found.  " +
+                            "Using the {} format.",
+                            ont.getOntologyID(), format);
                 }
-
-                OWLOntologyFormat format = manager.getOntologyFormat(ont);
+                else {
+                    format = previousFormat;
+                }
                 /*
                  * Using the addMissingTypes call here for RDF/XML files can result in OWL Full output
                  * and can also result in data corruption.
-                 * 
+                 *
                  * See http://protegewiki.stanford.edu/wiki/OWL2RDFParserDeclarationRequirement
                  */
-                manager.saveOntology(ont, format, IRI.create(physicalURI));
+                IRI documentIRI = IRI.create(documentURI);
+                manager.saveOntology(ont, format, documentIRI);
+                manager.setOntologyDocumentIRI(ont, documentIRI);
+                logger.info("Saved ontology {} to {} in {} format", ont.getOntologyID(), documentIRI, format);
 
-                manager.setOntologyDocumentIRI(ont, IRI.create(physicalURI));
-                logger.info("Saved ontology {} to {}", ont.getOntologyID(), physicalURI);
+                dirtyOntologies.remove(ont.getOntologyID());
+
+                fireEvent(EventType.ONTOLOGY_SAVED);
+                fireAfterSaveEvent(ont.getOntologyID(), documentURI);
             }
-            catch (IOException e) {
-                logger.error("Error saving ontology {} to {}", ont.getOntologyID(), physicalURI, e);
-                throw new OWLOntologyStorageException("Error while saving ontology " + ont.getOntologyID() + " to " + physicalURI, e);
-            }
 
-            dirtyOntologies.remove(ont.getOntologyID());
 
-            fireEvent(EventType.ONTOLOGY_SAVED);
-            fireAfterSaveEvent(ont.getOntologyID(), physicalURI);
-        }
-        catch (OWLOntologyStorageException e) {
+        } catch (OWLOntologyStorageException e) {
             if (saveErrorHandler != null) {
                 try {
-                    saveErrorHandler.handleErrorSavingOntology(ont, physicalURI, e);
-                }
-                catch (Exception e1) {
+                    saveErrorHandler.handleErrorSavingOntology(ont, documentURI, e);
+                } catch (Exception e1) {
                     throw new OWLOntologyStorageException(e1);
                 }
             }
@@ -558,11 +532,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("An IOListener threw an error during event dispatch: {}", e);
             }
         }
@@ -570,11 +543,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
-        for (IOListener listener : new ArrayList<IOListener>(ioListeners)) {
+        for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("An IOListener threw an error during event dispatch: {}", e);
             }
         }
@@ -594,8 +566,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public Set<OWLOntology> getDirtyOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-        for (OWLOntologyID ontId : new ArrayList<OWLOntologyID>(dirtyOntologies)) {
+        Set<OWLOntology> ontologies = new HashSet<>();
+        for (OWLOntologyID ontId : new ArrayList<>(dirtyOntologies)) {
             if (manager.contains(ontId)) {
                 ontologies.add(manager.getOntology(ontId));
             }
@@ -610,6 +582,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     /**
      * Forces the system to believe that an ontology
      * has been modified.
+     *
      * @param ontology The ontology to be made dirty.
      */
     public void setDirty(OWLOntology ontology) {
@@ -672,11 +645,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     /**
      * Sets the active ontology (and hence the set of active ontologies).
+     *
      * @param activeOntology The ontology to be set as the active ontology.
-     * @param force By default, if the specified ontology is already the
-     * active ontology then no changes will take place.  This flag can be
-     * used to force the active ontology to be reset and listeners notified
-     * of a change in the state of the active ontology.
+     * @param force          By default, if the specified ontology is already the
+     *                       active ontology then no changes will take place.  This flag can be
+     *                       used to force the active ontology to be reset and listeners notified
+     *                       of a change in the state of the active ontology.
      */
     private void setActiveOntology(OWLOntology activeOntology, boolean force) {
         if (!force) {
@@ -722,8 +696,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 change = adcManager.getChangeRewriter().rewriteChange(change);
             }
             manager.applyChange(change);
-        }
-        catch (OWLOntologyChangeException e) {
+        } catch (OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
         }
     }
@@ -736,8 +709,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 changes = adcManager.getChangeRewriter().rewriteChanges(changes);
             }
             manager.applyChanges(changes);
-        }
-        catch (OWLOntologyChangeException e) {
+        } catch (OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
         }
     }
@@ -768,9 +740,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public HistoryManager getHistoryManager() {
-        if (historyManager == null) {
-            historyManager = new HistoryManagerImpl(this);
-        }
         return historyManager;
     }
 
@@ -807,8 +776,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
             try {
                 listener.handleChange(event);
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("Exception thrown by listener: {}.  Detatching bad listener.", listener.getClass().getName());
                 modelManagerChangeListeners.remove(listener);
             }
@@ -839,14 +807,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 RendererPlugin plugin = preferences.getRendererPlugin();
                 entityRenderer = plugin.newInstance();
                 loadRenderer();
-            }
-            catch (ClassNotFoundException e) {
-                logger.error(e.getMessage());
-            }
-            catch (InstantiationException e) {
-                logger.error(e.getMessage());
-            }
-            catch (IllegalAccessException e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 logger.error(e.getMessage());
             }
             if (entityRenderer == null) {
@@ -887,7 +848,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlEntityRenderingCache.updateRendering(entity);
         owlObjectRenderingCache.clear();
         // We should inform listeners
-        for (OWLModelManagerListener listener : new ArrayList<OWLModelManagerListener>(modelManagerChangeListeners)) {
+        for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
             listener.handleChange(new OWLModelManagerChangeEvent(this, EventType.ENTITY_RENDERING_CHANGED));
         }
     }
@@ -897,8 +858,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             entityRenderer.removeListener(this);
             try {
                 entityRenderer.dispose();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 logger.warn("An error occurred whilst disposing of the entity renderer: {}", e);
             }
         }
@@ -955,7 +915,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public Comparator<OWLObject> getOWLObjectComparator() {
         OWLObjectComparator<OWLObject> comparator = get(OWL_OBJECT_COMPARATOR_KEY);
         if (comparator == null) {
-            comparator = new OWLObjectRenderingComparator<OWLObject>(this);
+            comparator = new OWLObjectRenderingComparator<>(this);
             put(OWL_OBJECT_COMPARATOR_KEY, comparator);
         }
         return comparator;
@@ -978,15 +938,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OWLReasonerManager getOWLReasonerManager() {
-        if (owlReasonerManager == null) {
-            owlReasonerManager = new OWLReasonerManagerImpl(this);
-            owlReasonerManager.getReasonerPreferences().addListener(new ReasonerPreferencesListener() {
-                @Override
-                public void preferencesChanged() {
-                    fireEvent(EventType.ONTOLOGY_CLASSIFIED);
-                }
-            });
-        }
         return owlReasonerManager;
     }
 

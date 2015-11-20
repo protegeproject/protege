@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
-import java.awt.Frame;
-
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+
+import java.awt.*;
 
 
 /**

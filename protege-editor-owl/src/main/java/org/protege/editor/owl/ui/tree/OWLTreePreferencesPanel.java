@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.tree;
 
-import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 
 import javax.swing.*;
 import java.awt.*;

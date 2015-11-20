@@ -1,20 +1,10 @@
 package org.protege.editor.owl.model.util;
 
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
+
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
-import org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction;
-import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
-import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
-import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**
@@ -84,10 +74,10 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
     	}
     	else if (onts != null){
     		visitedClasses.add(cls);
-            for (OWLClassExpression superCls : cls.getSuperClasses(onts)){
+            for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts)){
                 superCls.accept(this);
             }
-            for (OWLClassExpression equiv : cls.getEquivalentClasses(onts)){
+            for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts)){
                 equiv.accept(this);
             }
         }

@@ -1,10 +1,5 @@
 package org.protege.editor.core.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JMenu;
-
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
@@ -12,6 +7,9 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.OpenRequestHandler;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 
 /**

@@ -1,16 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
-import javax.swing.AbstractAction;
-
-import org.slf4j.Logger;
-import org.protege.editor.core.FileUtils;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.slf4j.LoggerFactory;
 
 
 /**

@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 
 /**
@@ -20,7 +21,7 @@ import java.util.Set;
  * An interface to an object that can provide a hierarchy of objects, for
  * example a class, property or individual hierarchy.
  */
-public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposable {
+public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposable, HasFilter<N> {
 
 
     /**
@@ -62,6 +63,22 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposa
 
     public void removeListener(OWLObjectHierarchyProviderListener<N> listener);
 
-
     void dispose(); // override as previous implementations did not implement Disposable and did not throw an exception
+
+    @Override
+    default void setFilter(Predicate<N> filter) {
+        // Do nothing
+    }
+
+    @Override
+    default void clearFilter() {
+        // Do nothing
+    }
+
+    @Override
+    default Predicate<N> getFilter() {
+        // No filtering - everything gets through.
+        return n -> true;
+    }
+
 }

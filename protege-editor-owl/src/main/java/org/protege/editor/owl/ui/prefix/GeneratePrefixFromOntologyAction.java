@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.prefix;
 
-import org.slf4j.Logger;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
@@ -40,7 +39,7 @@ public class GeneratePrefixFromOntologyAction extends AbstractAction {
         Set<OWLOntology> ontologies = uiHelper.pickOWLOntologies();
         for (OWLOntology ont : ontologies) {
             // @@TODO what about anonymous ontologies?
-            String uriString = ont.getOntologyID().getDefaultDocumentIRI().toString();
+            String uriString = ont.getOntologyID().getDefaultDocumentIRI().get().toString();
             String prefix;
             if (uriString.endsWith("/")) {
                 String sub = uriString.substring(0, uriString.length() - 1);

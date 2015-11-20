@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -8,7 +9,6 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
-import org.protege.editor.owl.model.refactor.ontology.OntologyIDChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -217,9 +216,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
     private String getChangeEntityIRIsConfirmationMessage(OWLOntologyID id, Set<OWLEntity> entities) {
         return "<html><body>You have renamed the ontology from<br>" +
-                "" + initialOntologyID.getOntologyIRI().toString() + "<br>" +
+                "" + initialOntologyID.getOntologyIRI().get().toString() + "<br>" +
                 "to<br>" +
-                "" + id.getOntologyIRI().toString() + ".<br>" +
+                "" + id.getOntologyIRI().get().toString() + ".<br>" +
                 "<br>" +
                 "<b>There are " + NumberFormat.getIntegerInstance().format(entities.size()) + " entities whose IRIs start with the original ontology IRI. Would you also like to rename these entities<br>" +
                 "so that their IRIs start with the new ontology IRI?</b></body></html>";
@@ -272,24 +271,24 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             else {
                 OWLOntologyID id = activeOntology.getOntologyID();
 
-                IRI ontologyIRI = id.getOntologyIRI();
-                String ontologyIRIString = ontologyIRI.toString();
-                if (ontologyIRI != null) {
+                Optional<IRI> ontologyIRI = id.getOntologyIRI();
+                String ontologyIRIString = ontologyIRI.get().toString();
+                if (ontologyIRI.isPresent()) {
                     if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
                         ontologyIRIField.setText(ontologyIRIString);
                     }
                 }
 
-                IRI versionIRI = id.getVersionIRI();
-                if (versionIRI != null) {
-                    String versionIRIString = versionIRI.toString();
+                Optional<IRI> versionIRI = id.getVersionIRI();
+                if (versionIRI.isPresent()) {
+                    String versionIRIString = versionIRI.get().toString();
                     if (!ontologyVersionIRIField.getText().equals(versionIRIString)) {
                         ontologyVersionIRIField.setText(versionIRIString);
                     }
                 }
                 else {
                     ontologyVersionIRIField.setText("");
-                    if (ontologyIRI != null) {
+                    if (ontologyIRI.isPresent()) {
                         ontologyVersionIRIField.setGhostText("e.g. " + ontologyIRIString + (ontologyIRIString.endsWith("/") ? "1.0.0" : "/1.0.0"));
                     }
                 }
@@ -337,12 +336,12 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             IRI ontologyIRI = IRI.create(ontURI);
             String versionIRIString = ontologyVersionIRIField.getText().trim();
             if (versionIRIString.isEmpty()) {
-                return new OWLOntologyID(ontologyIRI);
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
             }
 
             URI verURI = new URI(versionIRIString);
             IRI versionIRI = IRI.create(verURI);
-            return new OWLOntologyID(ontologyIRI, versionIRI);
+            return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
         }
         catch (URISyntaxException e) {
             ontologyIRIField.setErrorMessage(e.getReason());

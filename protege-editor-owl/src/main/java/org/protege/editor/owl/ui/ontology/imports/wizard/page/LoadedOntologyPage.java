@@ -1,18 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -23,6 +10,13 @@ import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -87,7 +81,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
         	ImportInfo parameter = new ImportInfo();
         	parameter.setOntologyID(ontology.getOntologyID());
         	parameter.setPhysicalLocation(physicalLocation.toURI());
-        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI() : physicalLocation);
+        	parameter.setImportLocation(!id.isAnonymous() ? id.getDefaultDocumentIRI().get() : physicalLocation);
         	wizard.addImport(parameter);
         }
     	((SelectImportLocationPage) getWizardModel().getPanel(SelectImportLocationPage.ID)).setBackPanelDescriptor(ID);

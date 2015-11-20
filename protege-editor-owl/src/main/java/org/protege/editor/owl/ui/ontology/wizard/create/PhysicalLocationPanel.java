@@ -165,7 +165,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
         String uriString = "";
         if (IDPanel != null) {
             // @@TODO handle anonymous ontologies
-            uriString = IDPanel.getOntologyID().getOntologyIRI().toString();
+            uriString = IDPanel.getOntologyID().getOntologyIRI().get().toString();
         }
         int lastSlashIndex = uriString.lastIndexOf("/");
         if (lastSlashIndex == -1) {

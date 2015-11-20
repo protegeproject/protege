@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.action;
 
-import javax.swing.JMenu;
+import javax.swing.*;
 
 
 /**

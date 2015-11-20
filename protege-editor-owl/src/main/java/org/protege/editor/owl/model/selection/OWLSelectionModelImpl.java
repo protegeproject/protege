@@ -1,10 +1,9 @@
 package org.protege.editor.owl.model.selection;
 
 
-import org.slf4j.Logger;
-import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;

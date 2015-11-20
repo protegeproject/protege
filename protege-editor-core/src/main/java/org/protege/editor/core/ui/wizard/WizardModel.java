@@ -1,10 +1,9 @@
 package org.protege.editor.core.ui.wizard;
 
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-
-import javax.swing.Icon;
 
 
 /**

@@ -1,25 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.TreeSet;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredOntologyGenerator;
-import org.semanticweb.owlapi.util.InferredSubClassAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredSubDataPropertyAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -75,7 +64,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
             ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
             ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
-            ontGen.fillOntology(man, inferredOnt);
+            ontGen.fillOntology(man.getOWLDataFactory(), inferredOnt);
 
 
             for (OWLAxiom ax : new TreeSet<OWLAxiom>(inferredOnt.getAxioms())) {

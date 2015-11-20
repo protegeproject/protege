@@ -1,13 +1,8 @@
 package org.protege.editor.owl.ui.error;
 
-import org.slf4j.Logger;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.net.URI;
 /*
 * Copyright (C) 2007, University of Manchester

@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.transfer;
 
-import java.awt.Rectangle;
+import org.protege.editor.owl.ui.table.OWLObjectDropTargetListener;
+import org.protege.editor.owl.ui.tree.OWLObjectTree;
+
+import java.awt.*;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
-
-import org.protege.editor.owl.ui.table.OWLObjectDropTargetListener;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
 
 
 /**

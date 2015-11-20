@@ -1,11 +1,10 @@
 package org.protege.editor.core.ui.view;
 
+import org.protege.editor.core.ui.split.ViewSplitPane;
+
+import javax.swing.*;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-
-import javax.swing.JSplitPane;
-
-import org.protege.editor.core.ui.split.ViewSplitPane;
 
 
 /**

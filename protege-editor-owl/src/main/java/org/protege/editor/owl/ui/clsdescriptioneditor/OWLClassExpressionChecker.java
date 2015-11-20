@@ -1,12 +1,16 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserImpl;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+
+import javax.inject.Provider;
 
 
 /**
@@ -35,10 +39,18 @@ class OWLClassExpressionChecker implements OWLExpressionChecker<OWLClassExpressi
 
 
     public OWLClassExpression createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), text);
+        if(text.isEmpty()) {
+            return null;
+        }
+        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(new Provider<OWLOntologyLoaderConfiguration>() {
+            @Override
+            public OWLOntologyLoaderConfiguration get() {
+                return new OWLOntologyLoaderConfiguration();
+            }
+        }, mngr.getOWLDataFactory());
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
-            return parser.parseClassExpression();
+            return parser.parseClassExpression(text);
         }
         catch (ParserException e) {
             throw ParserUtil.convertException(e);

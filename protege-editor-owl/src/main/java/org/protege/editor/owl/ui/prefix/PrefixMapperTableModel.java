@@ -1,16 +1,12 @@
 package org.protege.editor.owl.ui.prefix;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.table.AbstractTableModel;
-
-import org.slf4j.Logger;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 
 /**
@@ -36,12 +32,12 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     private Map<String, String> prefixValueMap;
     
-    private PrefixOWLOntologyFormat prefixManager;
+    private PrefixDocumentFormat prefixManager;
     
     private boolean changed = false;
 
 
-    public PrefixMapperTableModel(PrefixOWLOntologyFormat prefixManager) {
+    public PrefixMapperTableModel(PrefixDocumentFormat prefixManager) {
     	this.prefixManager = prefixManager;
         prefixValueMap = new HashMap<String, String>();
         prefixes = new ArrayList<String>();
@@ -100,7 +96,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     		if (logger.isDebugEnabled()) {
     			logger.debug("committing prefix changes and clearing changed flag");
     		}
-    		prefixManager.clearPrefixes();
+    		prefixManager.setPrefixManager(new DefaultPrefixManager());
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixValueMap.entrySet()) {
     			String prefixName = prefixName2PrefixEntry.getKey();
     			String prefix     = prefixName2PrefixEntry.getValue();

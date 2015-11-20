@@ -1,8 +1,7 @@
 package org.protege.editor.owl.ui.hierarchy.creation;
 
-import java.awt.Font;
-
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**

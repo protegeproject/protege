@@ -1,14 +1,13 @@
 package org.protege.editor.owl.ui.library;
 
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.owl.ui.action.ProtegeOWLAction;
+import org.slf4j.LoggerFactory;
+
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.ui.action.ProtegeOWLAction;
-import org.slf4j.LoggerFactory;
 
 
 /**

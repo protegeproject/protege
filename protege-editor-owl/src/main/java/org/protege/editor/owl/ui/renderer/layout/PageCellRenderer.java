@@ -1,12 +1,10 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.RendererWithInsets;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 /**
  * Author: Matthew Horridge<br>
