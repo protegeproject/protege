@@ -40,7 +40,6 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Set;
 
 

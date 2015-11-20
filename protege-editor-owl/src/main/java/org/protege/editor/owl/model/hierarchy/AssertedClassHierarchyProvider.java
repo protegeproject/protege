@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.owlapi.inference.cls.ChildClassExtractor;
 import org.protege.owlapi.inference.cls.ParentClassExtractor;
 import org.protege.owlapi.inference.orphan.TerminalElementFinder;
@@ -12,12 +11,6 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.Collectors.toSet;
 
 
 /**
