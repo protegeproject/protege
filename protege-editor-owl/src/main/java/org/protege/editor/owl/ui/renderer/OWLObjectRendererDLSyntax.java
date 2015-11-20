@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 /**

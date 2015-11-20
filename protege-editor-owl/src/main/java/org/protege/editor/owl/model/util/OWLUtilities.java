@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.util;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.util.Collection;
 import java.util.Set;

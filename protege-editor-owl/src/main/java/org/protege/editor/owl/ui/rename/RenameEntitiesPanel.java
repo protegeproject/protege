@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.rename;
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.CheckTable;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;

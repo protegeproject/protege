@@ -2,10 +2,11 @@ package org.protege.editor.owl.ui.search;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.SearchManager;
+import org.protege.editor.owl.model.search.SearchRequest;
+import org.protege.editor.owl.model.search.SearchResultSet;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLEntity;

@@ -13,8 +13,10 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Author: Matthew Horridge<br>
