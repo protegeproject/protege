@@ -1,7 +1,12 @@
 package org.protege.editor.owl.model.entity;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.annotation.EntityCreationMetadataProvider;
+import org.protege.editor.owl.model.annotation.SimpleEntityCreationMetadataProvider;
+import org.protege.editor.owl.model.user.DefaultUserNameProvider;
+import org.protege.editor.owl.model.util.ISO8601Formatter;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +37,15 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private LabelDescriptor labelDescriptor;
 
+    private final EntityCreationMetadataProvider metadataProvider;
+
 
     public CustomOWLEntityFactory(OWLModelManager mngr) {
         this.mngr = mngr;
+        metadataProvider = new SimpleEntityCreationMetadataProvider(
+                new DefaultUserNameProvider(),
+                new ISO8601Formatter()
+        );
     }
 
 
@@ -57,7 +68,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 	    else if (OWLDatatype.class.isAssignableFrom(type)){
 	        return type.cast(factory.getOWLDatatype(iri));
 	    }
-	    return null;
+	    throw new RuntimeException("Missing branch for entity type: " + type.getSimpleName());
 	}
 
 
@@ -95,17 +106,11 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         try {
 
         	EntityNameInfo name = generateName(type, shortName, baseURI);
-
             T entity = getOWLEntity(mngr.getOWLDataFactory(), type, name.getIri());
-
             List<OWLOntologyChange> changes = getChanges(entity, name);
-
-            return new OWLEntityCreationSet<T>(entity, changes);
+            return new OWLEntityCreationSet<>(entity, changes);
         }
-        catch (URISyntaxException e) {
-            throw new OWLEntityCreationException(e);
-        }
-        catch (AutoIDException e) {
+        catch (URISyntaxException | AutoIDException e) {
             throw new OWLEntityCreationException(e);
         }
     }
@@ -170,7 +175,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
 
     protected <T extends OWLEntity > List<OWLOntologyChange> getChanges(T entity, EntityNameInfo name) {
-    	List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+    	List<OWLOntologyChange> changes = new ArrayList<>();
 
         if (isGenerateIDLabel() && name.getId() != null) {
             changes.addAll(createLabel(entity, name.getId()));
@@ -183,6 +188,10 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
         changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
+
+        List<OWLOntologyChange> metadataChanges = metadataProvider.getEntityCreationMetadataChanges(entity, mngr.getActiveOntology(), df);
+        changes.addAll(metadataChanges);
+
         return changes;
     }
 
