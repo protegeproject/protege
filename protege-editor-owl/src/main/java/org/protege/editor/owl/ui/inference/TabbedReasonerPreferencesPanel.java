@@ -18,13 +18,13 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
 
     private final Logger logger = LoggerFactory.getLogger(TabbedReasonerPreferencesPanel.class);
 
-    private List<OWLPreferencesPanel> panels = new ArrayList<OWLPreferencesPanel>();
+    private final List<OWLPreferencesPanel> panels = new ArrayList<>();
 
     public void initialise() throws Exception {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JTabbedPane tabbedPane = new JTabbedPane();
         InferencePreferencePluginLoader loader = new InferencePreferencePluginLoader(getOWLEditorKit());
-        Set<InferencePreferencePlugin> plugins = new TreeSet<InferencePreferencePlugin>(new Comparator<InferencePreferencePlugin>() {
+        Set<InferencePreferencePlugin> plugins = new TreeSet<>(new Comparator<InferencePreferencePlugin>() {
             public int compare(InferencePreferencePlugin o1, InferencePreferencePlugin o2) {
                 String s1 = o1.getLabel();
                 String s2 = o2.getLabel();
