@@ -46,12 +46,12 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     private final Logger logger = LoggerFactory.getLogger(PreferencesDialogPanel.class);
 
     public PreferencesDialogPanel(EditorKit editorKit) {
-        map = new HashMap<String, PreferencesPanel>();
-        scrollerMap = new HashMap<String, JComponent>();
+        map = new HashMap<>();
+        scrollerMap = new HashMap<>();
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane();
         PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
-        Set<PreferencesPanelPlugin> plugins = new TreeSet<PreferencesPanelPlugin>(new Comparator<PreferencesPanelPlugin>() {
+        Set<PreferencesPanelPlugin> plugins = new TreeSet<>(new Comparator<PreferencesPanelPlugin>() {
             public int compare(PreferencesPanelPlugin o1, PreferencesPanelPlugin o2) {
                 String s1 = o1.getLabel();
                 String s2 = o2.getLabel();

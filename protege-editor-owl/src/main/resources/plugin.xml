@@ -1426,13 +1426,6 @@
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
-
-    <extension id="io.rdfxmlwriter.XMLWriterPreferences"
-               point="org.protege.editor.core.application.preferencespanel">
-        <label value="Save"/>
-        <class value="org.protege.editor.owl.ui.preferences.SavePreferencesPanel"/>
-    </extension>
-
     <!-- Finder prefs -->
 
     <extension id="ui.general.prefs"
