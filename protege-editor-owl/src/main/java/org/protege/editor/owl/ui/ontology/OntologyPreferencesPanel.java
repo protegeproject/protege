@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui.ontology;
 
-import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.protege.editor.owl.ui.preferences.PreferencesLayoutPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -27,6 +25,7 @@ import java.net.URISyntaxException;
 public class OntologyPreferencesPanel extends OWLPreferencesPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(OntologyPreferencesPanel.class);
+
 
 
     private JTextField textField;
@@ -59,27 +58,19 @@ public class OntologyPreferencesPanel extends OWLPreferencesPanel {
 
 
     public void initialise() throws Exception {
+        PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.NORTH);
+
         OntologyPreferences prefs = OntologyPreferences.getInstance();
 
-        setLayout(new PreferencesPanelLayoutManager(this));
-        add(textField = new JTextField(prefs.getBaseURI().toString(), 40), "Default base URI");
-        add(yearCheckBox = new JCheckBox("Include year", prefs.isIncludeYear()));
-        add(monthCheckBox = new JCheckBox("Include month", prefs.isIncludeMonth()));
-        add(dayCheckBox = new JCheckBox("Include day", prefs.isIncludeDay()));
-        yearCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateState();
-            }
-        });
-        monthCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateState();
-            }
-        });
-//        previewLabel = new JTextField(50);
-//        previewLabel.setBackground(Color.WHITE);
-//        previewLabel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-
+        panel.addGroup("Default ontology IRI");
+        panel.addGroupComponent(textField = new JTextField(prefs.getBaseURI().toString(), 40));
+        panel.addGroupComponent(yearCheckBox = new JCheckBox("Include year", prefs.isIncludeYear()));
+        panel.addGroupComponent(monthCheckBox = new JCheckBox("Include month", prefs.isIncludeMonth()));
+        panel.addGroupComponent(dayCheckBox = new JCheckBox("Include day", prefs.isIncludeDay()));
+        yearCheckBox.addActionListener(e -> updateState());
+        monthCheckBox.addActionListener(e -> updateState());
         updateState();
     }
 
