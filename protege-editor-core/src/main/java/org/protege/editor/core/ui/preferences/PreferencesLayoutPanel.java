@@ -93,7 +93,7 @@ public class PreferencesLayoutPanel extends JComponent {
         JLabel label = new JLabel(helpText);
         label.setFont(label.getFont().deriveFont(Font.PLAIN, 10f));
         label.setForeground(Color.GRAY);
-        label.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 0));
+        label.setBorder(BorderFactory.createEmptyBorder(3, 20, 7, 0));
         addGroupComponent(label);
 
     }
