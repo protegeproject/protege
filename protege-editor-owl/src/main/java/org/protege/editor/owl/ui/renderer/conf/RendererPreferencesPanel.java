@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer.conf;
 
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
@@ -41,8 +43,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox highlightKeyWordsCheckBox;
 
-    private JCheckBox useThatAsSynonymForAndCheckBox;
-
     private JSpinner fontSizeSpinner;
 
     private JButton configureButton;
@@ -57,7 +57,6 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
-        prefs.setUseThatKeyword(useThatAsSynonymForAndCheckBox.isSelected());
         prefs.setFontSize((Integer) fontSizeSpinner.getValue());
         if (isDirty()){
             RendererPlugin plugin = getSelectedRendererPlugin();
@@ -77,12 +76,17 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
 
+        PreferencesLayoutPanel layoutPanel = new PreferencesLayoutPanel();
+        add(layoutPanel, BorderLayout.NORTH);
+
+        createRendererSelectionPanel(layoutPanel);
+        layoutPanel.addSeparator();
+
+        layoutPanel.addGroup("Appearance");
+
+
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
 
-        Box holderBox = new Box(BoxLayout.Y_AXIS);
-        add(holderBox, BorderLayout.NORTH);
-
-        holderBox.add(createRendererSelectionPanel());
 
         highlightAOStatementsCheckBox = new JCheckBox("Highlight active ontology statements",
                                                       prefs.isHighlightActiveOntologyStatements());
@@ -90,40 +94,19 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
                                                prefs.isRenderHyperlinks());
         highlightKeyWordsCheckBox = new JCheckBox("Highlight keywords", prefs.isHighlightKeyWords());
 
-        useThatAsSynonymForAndCheckBox = new JCheckBox("Use the 'that' keyword as a synonym for the 'and' keyword",
-                                                       prefs.isUseThatKeyword());
+        layoutPanel.addGroupComponent(highlightAOStatementsCheckBox);
+        layoutPanel.addGroupComponent(showHyperlinksCheckBox);
+        layoutPanel.addGroupComponent(highlightKeyWordsCheckBox);
 
-        Box optBox = new Box(BoxLayout.Y_AXIS);
-        optBox.setAlignmentX(0.0f);
-        optBox.setBorder(ComponentFactory.createTitledBorder("Appearance"));
-        optBox.add(highlightAOStatementsCheckBox);
-        optBox.add(showHyperlinksCheckBox);
-        optBox.add(highlightKeyWordsCheckBox);
-        optBox.add(useThatAsSynonymForAndCheckBox);
-        optBox.add(Box.createVerticalStrut(4));
-        holderBox.add(optBox);
+        layoutPanel.addSeparator();
 
+        layoutPanel.addGroup("Font size");
 
-        JPanel fontSizePanel = new JPanel();
-        PreferencesPanelLayoutManager man = new PreferencesPanelLayoutManager(fontSizePanel);
-        fontSizePanel.setLayout(man);
-        fontSizePanel.setBorder(ComponentFactory.createTitledBorder("Font"));
         fontSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getFontSize(), 1, 120, 1));
-        fontSizePanel.add("Font size", fontSizeSpinner);
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Font [] fonts = ge.getAllFonts();
-        ArrayList<String> fontNames = new ArrayList<String>();
-        for(Font f : fonts) {
-            fontNames.add(f.getName());
-        }
-
-        fontSizePanel.add(new JButton(new AbstractAction("Reset font") {
-        	public void actionPerformed(ActionEvent arg0) {
-        		resetFont();
-        	}
-        }));
-
-        holderBox.add(fontSizePanel);
+        layoutPanel.addGroupComponent(fontSizeSpinner);
+        JButton resetFontSizeButton = new JButton("Reset font");
+        resetFontSizeButton.addActionListener(e -> resetFont());
+        layoutPanel.addIndentedGroupComponent(resetFontSizeButton);
     }
 
     protected void resetFont() {
@@ -133,56 +116,37 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 	}
 
 
-	private Component createRendererSelectionPanel() {
+	private void createRendererSelectionPanel(PreferencesLayoutPanel layoutPanel) {
         OWLRendererPreferences prefs = OWLRendererPreferences.getInstance();
 
         for (RendererPlugin plugin : prefs.getRendererPlugins()) {
         	addRenderer(plugin.getName(), plugin);
         }
-        Box box = new Box(BoxLayout.Y_AXIS);
-        box.setBorder(ComponentFactory.createTitledBorder("Entity rendering"));
+        layoutPanel.addGroup("Entity rendering");
 
         ButtonGroup bg = new ButtonGroup();
         for (JRadioButton button : buttonToRendererMap.keySet()){
             bg.add(button);
-            box.add(button);
+            layoutPanel.addGroupComponent(button);
+            button.addChangeListener(e -> updateRendererButtons());
         }
 
-        box.add(Box.createVerticalStrut(4));
 
-        JPanel optsPanel = new JPanel();
-        optsPanel.setLayout(new BoxLayout(optsPanel, BoxLayout.LINE_AXIS));
-        optsPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-        optsPanel.setAlignmentX(0.0f);
-
-        configureButton = new JButton(new AbstractAction("Configure...") {
-            public void actionPerformed(ActionEvent e) {
-            	RendererPlugin plugin = getSelectedRendererPlugin();
-            	try {
-            		if (plugin != null && plugin.newInstance().configure(getOWLEditorKit())) {
-            			dirty = true;            		
-            		}
-            	}
-            	catch (Exception cnfe) {
-                    logger.error("An error occurred whilst instantiating a renderer preferences panel plugin: {}", cnfe);
-            	}
+        configureButton = new JButton("Configure...");
+        configureButton.addActionListener(e -> {
+            RendererPlugin plugin = getSelectedRendererPlugin();
+            try {
+                if (plugin != null && plugin.newInstance().configure(getOWLEditorKit())) {
+                    dirty = true;
+                }
+            }
+            catch (Exception cnfe) {
+                logger.error("An error occurred whilst instantiating a renderer preferences panel plugin: {}", cnfe);
             }
         });
-        optsPanel.add(configureButton);
+        layoutPanel.addIndentedGroupComponent(configureButton);
 
-        box.add(optsPanel);
-        final ChangeListener l = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                updateRendererButtons();
-            }
-        };
-
-        for (JRadioButton button : buttonToRendererMap.keySet()){
-            button.addChangeListener(l);
-        }
-        
         updateRendererButtons();
-        return box;
     }
 
 
