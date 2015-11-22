@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.preferences;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocation;

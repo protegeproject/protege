@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.preferences;
+package org.protege.editor.core.ui.preferences;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
- * 21/11/15
+ * 22/11/15
  */
 public class PreferencesLayoutPanel extends JComponent {
 
@@ -105,4 +105,5 @@ public class PreferencesLayoutPanel extends JComponent {
 
         currentRow++;
     }
+
 }
