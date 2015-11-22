@@ -71,6 +71,24 @@ public class PreferencesLayoutPanel extends JComponent {
         currentRow++;
     }
 
+    public void addIndentedGroupComponent(JComponent component) {
+        backingPanel.add(component,
+                new GridBagConstraints(
+                        1, currentRow,
+                        2, 1,
+                        100, 0,
+                        GridBagConstraints.BASELINE_LEADING,
+                        GridBagConstraints.NONE,
+                        new Insets(0, 20, 0, 0),
+                        0, 0
+                ));
+        if(component instanceof JTextField) {
+            JTextField field = (JTextField) component;
+            field.setMinimumSize(field.getPreferredSize());
+        }
+        currentRow++;
+    }
+
     public void addHelpText(String helpText) {
         JLabel label = new JLabel(helpText);
         label.setFont(label.getFont().deriveFont(Font.PLAIN, 10f));
