@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.ontology;
 
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.protege.editor.owl.ui.preferences.PreferencesLayoutPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
