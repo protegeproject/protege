@@ -1,6 +1,7 @@
 package org.protege.editor.core.update;
 
 import org.protege.editor.core.ProtegeProperties;
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanel;
 import org.protege.editor.core.ui.util.ComponentFactory;
 
@@ -18,11 +19,6 @@ import java.net.URL;
  * Date: 18-Jun-2007<br><br>
  */
 public class PluginPreferencesPanel extends PreferencesPanel {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3990983369055447871L;
 
     private JCheckBox checkForUpdatesAtStartupCheckBox;
 
@@ -47,91 +43,23 @@ public class PluginPreferencesPanel extends PreferencesPanel {
 
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
+        PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
+        add(panel, BorderLayout.NORTH);
 
-        Box settingsHolder = new Box(BoxLayout.PAGE_AXIS);
-        settingsHolder.add(createAutoUpdatePanel());
-        settingsHolder.add(Box.createVerticalStrut(12));
-        settingsHolder.add(createRegistryPanel());
-
-        add(settingsHolder, BorderLayout.NORTH);
-    }
-
-
-    private Component createAutoUpdatePanel() {
-        Box box = new Box(BoxLayout.Y_AXIS);
-        box.setAlignmentX(0.0f);
-        box.setBorder(ComponentFactory.createTitledBorder("Auto update"));
-
+        panel.addGroup("Auto update");
         checkForUpdatesAtStartupCheckBox = new JCheckBox("Automatically check for plugin updates at start up",
-                                                         PluginManager.getInstance().isAutoUpdateEnabled());
-        checkForUpdatesAtStartupCheckBox.setAlignmentX(0.0f);
+                PluginManager.getInstance().isAutoUpdateEnabled());
+        panel.addGroupComponent(checkForUpdatesAtStartupCheckBox);
 
-        JButton checkForUpdatesNow = new JButton(new AbstractAction("Check for updates now") {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -1489049180196552810L;
+        panel.addSeparator();
 
-            public void actionPerformed(ActionEvent e) {
-                PluginManager.getInstance().runCheckForPlugins();
-            }
-        });
-        checkForUpdatesNow.setAlignmentX(0.0f);
+        panel.addGroup("Plugin registry");
 
-        box.add(checkForUpdatesAtStartupCheckBox);
-        box.add(Box.createVerticalStrut(12));
-        box.add(checkForUpdatesNow);
-
-        return box;
-    }
-
-
-    private Component createRegistryPanel() {
-        Box registryHolder = new Box(BoxLayout.PAGE_AXIS);
-        registryHolder.setAlignmentX(0.0f);
-        registryHolder.setBorder(ComponentFactory.createTitledBorder("Plugin registry"));
-
-        pluginRegistryEditor = new JTextField(PluginManager.getInstance().getPluginRegistryLocation().toString());
-        pluginRegistryEditor.setColumns(30);
-
-        JButton resetToDefaultRegistry = new JButton(new AbstractAction("Reset to default"){
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 2060172556249616568L;
-
-            public void actionPerformed(ActionEvent event) {
-                pluginRegistryEditor.setText(PluginManager.DEFAULT_REGISTRY);
-            }
-        });
-
-        JButton checkForDownloadsNow = new JButton(new AbstractAction("Check for downloads now"){
-
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 6345676228776716764L;
-
-            public void actionPerformed(ActionEvent event) {
-                PluginManager.getInstance().runCheckForPlugins();
-            }
-        });
-        checkForDownloadsNow.setAlignmentX(0.0f);
-
-        Box registryLocHolder = new Box(BoxLayout.LINE_AXIS);
-        registryLocHolder.setAlignmentX(0.0f);
-        registryLocHolder.add(pluginRegistryEditor);
-        registryLocHolder.add(resetToDefaultRegistry);
-
-        registryHolder.add(Box.createVerticalStrut(12));
-        registryHolder.add(new JLabel("This is the location that "
-                + ProtegeProperties.PROTEGE
-                + " will check to see which plugins are available."));
-        registryHolder.add(Box.createVerticalStrut(12));
-        registryHolder.add(registryLocHolder);
-        registryHolder.add(Box.createVerticalStrut(12));
-        registryHolder.add(checkForDownloadsNow);
-
-        return registryHolder;
+        pluginRegistryEditor = new JTextField(PluginManager.getInstance().getPluginRegistryLocation().toString(), 50);
+        panel.addGroupComponent(pluginRegistryEditor);
+        panel.addHelpText("This is the location that Protégé will use to check which plugins are available");
+        JButton resetToDefaultRegistry = new JButton("Reset to default registry location");
+        resetToDefaultRegistry.addActionListener(e -> pluginRegistryEditor.setText(PluginManager.DEFAULT_REGISTRY));
+        panel.addIndentedGroupComponent(resetToDefaultRegistry);
     }
 }
