@@ -64,7 +64,7 @@ public class OntologyPreferencesPanel extends OWLPreferencesPanel {
 
         OntologyPreferences prefs = OntologyPreferences.getInstance();
 
-        panel.addGroup("Default ontology IRI");
+        panel.addGroup("Default ontology IRI base");
         panel.addGroupComponent(textField = new JTextField(prefs.getBaseURI().toString(), 40));
         panel.addGroupComponent(yearCheckBox = new JCheckBox("Include year", prefs.isIncludeYear()));
         panel.addGroupComponent(monthCheckBox = new JCheckBox("Include month", prefs.isIncludeMonth()));
