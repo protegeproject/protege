@@ -115,7 +115,7 @@ public class SearchFieldUiManager {
 
             JPanel pnlButtonGroup = new JPanel();
             pnlButtonGroup.setLayout(new GridLayout(1, 3, 2, 0)); // row, col, hgap, vgap
-            cmdLink = new JButton(OWLIcons.getIcon("join.png"));
+            cmdLink = new JButton(OWLIcons.getIcon("link.png"));
             cmdLink.setFocusable(false);
             cmdRemove = new JButton("-");
             cmdRemove.setFocusable(false);
@@ -168,9 +168,9 @@ public class SearchFieldUiManager {
                     isLinked = !isLinked;
                     JButton linkButton = (JButton) e.getSource();
                     if (isLinked) {
-                        linkButton.setIcon(OWLIcons.getIcon("join.png"));
+                        linkButton.setIcon(OWLIcons.getIcon("link.png"));
                     } else {
-                        linkButton.setIcon(OWLIcons.getIcon("union.png"));
+                        linkButton.setIcon(OWLIcons.getIcon("unlink.gif"));
                     }
                     fireSearchFieldLinked();
                 }
