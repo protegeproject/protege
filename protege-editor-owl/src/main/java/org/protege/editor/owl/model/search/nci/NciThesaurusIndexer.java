@@ -13,6 +13,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -52,11 +53,19 @@ public class NciThesaurusIndexer extends AbstractLuceneIndexer {
     }
 
     @Override
-    protected Document createEntityDocument(OWLEntity entity, SearchContext context)
-    {
+    protected Document createEntityDocument(OWLEntity entity, SearchContext context) {
        Document doc = super.createEntityDocument(entity, context);
        doc.add(new TextField(IndexField.PHONETIC_NAME, getDisplayName(entity, context), Store.NO));
        return doc;
+    }
+
+    @Override
+    protected Document createAnnotationDocument(OWLEntity entity, OWLAnnotation annotation, SearchContext context) {
+        Document doc = super.createAnnotationDocument(entity, annotation, context);
+        if (annotation.getValue() instanceof IRI) {
+            doc.add(new TextField(IndexField.ANNOTATION_TEXT, getDisplayName(annotation.getValue(), context), Store.YES));
+        }
+        return doc;
     }
 
     @Override
