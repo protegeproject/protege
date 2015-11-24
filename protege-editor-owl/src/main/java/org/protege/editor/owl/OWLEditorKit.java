@@ -21,7 +21,7 @@ import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchMetadataImportManager;
+import org.protege.editor.owl.model.search.lucene.LuceneSearchManager;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -95,7 +95,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
-        searchManager = new SearchManager(this, new SearchMetadataImportManager());
+        searchManager = new LuceneSearchManager(this);
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
@@ -389,9 +389,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
-        searchManager.dispose();
         workspace.dispose();
         try {
+            searchManager.dispose();
             modelManager.dispose();
         }
         catch (Exception e) {

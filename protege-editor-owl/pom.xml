@@ -69,6 +69,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-phonetic</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
@@ -118,14 +142,24 @@
                         <Bundle-ClassPath>., {maven-dependencies}</Bundle-ClassPath>
                         <Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
                         <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                        <Embed-Dependency>org.protege.xmlcatalog</Embed-Dependency>
+                        <Embed-Dependency>
+                            org.protege.xmlcatalog,
+                            lucene-core,
+                            lucene-analyzers-common,
+                            lucene-queryparser,
+                            lucene-analyzers-phonetic
+                        </Embed-Dependency>
                         <Export-Package>
                             org.protege.editor.owl.*;version=${project.version},
-                            org.protege.xmlcatalog.*
+                            org.protege.xmlcatalog.*,
+                            org.apache.lucene.*,
+                            org.apache.commons.*
                         </Export-Package>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
+                            org.apache.*;resolution:=optional,
                             javax.inject.*;version=1.0,
+                            javax.*;resolution:=optional,
                             *
                         </Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

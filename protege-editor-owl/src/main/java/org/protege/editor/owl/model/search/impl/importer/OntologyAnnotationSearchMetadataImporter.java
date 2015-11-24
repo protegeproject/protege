@@ -1,6 +1,9 @@
-package org.protege.editor.owl.model.search.importer;
+package org.protege.editor.owl.model.search.impl.importer;
 
 import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.impl.OntologyBasedSearchMDImporter;
+import org.protege.editor.owl.model.search.impl.SearchMetadata;
+import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -21,13 +24,13 @@ public class OntologyAnnotationSearchMetadataImporter extends OntologyBasedSearc
     }
 
     @Override
-    public void generateSearchMetadata(OWLOntology ontology, SearchMetadataImportContext context, SearchMetadataDB db) {
+    public void generateSearchMetadata(OWLOntology ontology, SearchContext context, SearchMetadataDB db) {
         for (OWLAnnotation annotation : ontology.getAnnotations()) {
             generateSearchMetadataForAnnotation(annotation, ontology, context, db);
         }
     }
 
-    private void generateSearchMetadataForAnnotation(final OWLAnnotation annotation, OWLOntology ontology, final SearchMetadataImportContext context, SearchMetadataDB db) {
+    private void generateSearchMetadataForAnnotation(final OWLAnnotation annotation, OWLOntology ontology, final SearchContext context, SearchMetadataDB db) {
         String groupDescription = context.getRendering(annotation.getProperty());
         StyledString rendering = context.getStyledStringRendering(annotation);
         SearchMetadata md = new SearchMetadata(SearchCategory.ANNOTATION_VALUE, groupDescription, ontology, context.getRendering(ontology), rendering.getString()) {

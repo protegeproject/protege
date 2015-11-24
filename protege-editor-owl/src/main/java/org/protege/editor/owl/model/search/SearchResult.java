@@ -1,9 +1,11 @@
 package org.protege.editor.owl.model.search;
 
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+
+import org.semanticweb.owlapi.model.OWLObject;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
-import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>
@@ -16,37 +18,41 @@ import org.semanticweb.owlapi.model.OWLObject;
  */
 public class SearchResult implements Comparable<SearchResult> {
 
-    private SearchMetadata searchMetadata;
+    private ResultItem resultItem;
 
     private final ImmutableList<SearchResultMatch> matches;
 
-    public SearchResult(SearchMetadata searchMetadata, ImmutableList<SearchResultMatch> matches) {
-        this.searchMetadata = searchMetadata;
+    public SearchResult(ResultItem resultItem, ImmutableList<SearchResultMatch> matches) {
+        this.resultItem = resultItem;
         this.matches = matches;
     }
 
     public SearchCategory getCategory() {
-        return searchMetadata.getCategory();
+        return resultItem.getCategory();
     }
 
     public String getGroupDescription() {
-        return searchMetadata.getGroupDescription();
+        return resultItem.getGroupDescription();
     }
 
     public String getSearchString() {
-        return searchMetadata.getSearchString();
+        return resultItem.getSearchString();
     }
 
     public StyledString getStyledSearchSearchString() {
-        return searchMetadata.getStyledSearchSearchString();
+        return resultItem.getStyledSearchSearchString();
     }
 
     public OWLObject getSubject() {
-        return searchMetadata.getSubject();
+        return resultItem.getSubject();
     }
 
     public String getSubjectRendering() {
-        return searchMetadata.getSubjectRendering();
+        return resultItem.getSubjectRendering();
+    }
+
+    public ResultItem getResultItem() {
+        return resultItem;
     }
 
     public ImmutableList<SearchResultMatch> getMatches() {
@@ -58,12 +64,13 @@ public class SearchResult implements Comparable<SearchResult> {
         if(matchesDiff != 0) {
             return matchesDiff;
         }
-        return searchMetadata.compareTo(o.searchMetadata);
+        return resultItem.compareTo(o.resultItem);
     }
 
     @Override
     public int hashCode() {
-        return SearchResult.class.getSimpleName().hashCode() + searchMetadata.hashCode() + matches.hashCode();
+        return SearchResult.class.getSimpleName().hashCode() + getCategory().hashCode()
+                + getGroupDescription().hashCode() + getSubject().hashCode();
     }
 
     @Override
@@ -75,6 +82,13 @@ public class SearchResult implements Comparable<SearchResult> {
             return false;
         }
         SearchResult other = (SearchResult) obj;
-        return this.searchMetadata.equals(other.searchMetadata) && this.matches.equals(other.matches);
+        return this.getCategory().equals(other.getCategory())
+                && this.getGroupDescription().equals(other.getGroupDescription())
+                && this.getSubject().equals(other.getSubject());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%s,%s,%s)", getCategory().name(), getGroupDescription(), getSubjectRendering());
     }
 }

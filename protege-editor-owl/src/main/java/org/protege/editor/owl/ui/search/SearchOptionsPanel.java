@@ -3,14 +3,28 @@ package org.protege.editor.owl.ui.search;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchSettings;
 
-import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
 
 /**
  * Author: Matthew Horridge<br>
@@ -40,6 +54,8 @@ public class SearchOptionsPanel extends JPanel {
 
     private final OWLEditorKit editorKit;
 
+    private final SearchSettings searchSettings;
+
     private final JCheckBox searchInIRIs;
 
     private final JProgressBar searchProgressBar;
@@ -56,6 +72,8 @@ public class SearchOptionsPanel extends JPanel {
             }
         });
         this.editorKit = editorKit;
+        this.searchSettings = editorKit.getSearchManager().getSearchSettings();
+
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
@@ -117,32 +135,36 @@ public class SearchOptionsPanel extends JPanel {
                 handleSearchTypeChanged();
             }
         });
-        searchInIRIs.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.IRI));
+        
+        searchInIRIs.setSelected(searchSettings.isSearchType(SearchCategory.IRI));
         bottomPanel.add(searchInIRIs);
         searchInAnnotationValues = new JCheckBox(new AbstractAction("Search in annotation values") {
             public void actionPerformed(ActionEvent e) {
                 handleSearchTypeChanged();
             }
         });
-        searchInAnnotationValues.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.ANNOTATION_VALUE));
+        searchInAnnotationValues.setSelected(searchSettings.isSearchType(SearchCategory.ANNOTATION_VALUE));
         bottomPanel.add(searchInAnnotationValues);
         searchInLogicalAxioms = new JCheckBox(new AbstractAction("Search in logical axioms") {
             public void actionPerformed(ActionEvent e) {
                 handleSearchTypeChanged();
             }
         });
-        searchInLogicalAxioms.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.LOGICAL_AXIOM));
+        searchInLogicalAxioms.setSelected(searchSettings.isSearchType(SearchCategory.LOGICAL_AXIOM));
         bottomPanel.add(searchInLogicalAxioms);
 
         bottomPanel.add(Box.createHorizontalStrut(10));
         searchProgressBar = new JProgressBar();
         searchProgressBar.putClientProperty("JComponent.sizeVariant", "small");
-
+        searchProgressBar.setVisible(false);
+        
         searchProgressLabel.setFont(new Font("verdana", Font.PLAIN, 9));
         searchProgressLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        searchProgressLabel.setVisible(false);
+
         bottomPanel.add(searchProgressBar);
         bottomPanel.add(searchProgressLabel);
-        editorKit.getSearchManager().addProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
+        editorKit.getSearchManager().setProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
             public void setStarted() {
                 searchProgressBar.setValue(0);
                 visibilityTimer.restart();
@@ -182,7 +204,7 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     private void handleSearchTypeChanged() {
-        editorKit.getSearchManager().setCategories(getSearchTypes());
+        searchSettings.setCategories(getSearchTypes());
         fireSearchRequestOptionChanged();
     }
 

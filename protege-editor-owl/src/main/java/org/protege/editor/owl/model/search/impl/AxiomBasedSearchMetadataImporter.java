@@ -1,4 +1,7 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
+
+import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchContext;
 
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -16,6 +19,6 @@ public abstract class AxiomBasedSearchMetadataImporter {
 
     public abstract boolean isImporterFor(AxiomType<?> axiomType, Set<SearchCategory> categories);
 
-    public abstract void generateSearchMetadataFor(OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, SearchMetadataImportContext context, SearchMetadataDB db);
+    public abstract void generateSearchMetadataFor(OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, SearchContext context, SearchMetadataDB db);
 
 }

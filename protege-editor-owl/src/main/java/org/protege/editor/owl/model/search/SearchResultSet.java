@@ -1,6 +1,12 @@
 package org.protege.editor.owl.model.search;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -34,7 +40,7 @@ public class SearchResultSet {
     public List<String> getCategories() {
         List<String> result = new ArrayList<String>();
         for (SearchCategoryGroupKey searchCategoryGroupKey : new TreeSet<SearchCategoryGroupKey>(searchResultsByCategory.keySet())) {
-            result.add(searchCategoryGroupKey.groupDescription);
+            result.add(searchCategoryGroupKey.subcategory);
         }
         return result;
     }
@@ -71,7 +77,7 @@ public class SearchResultSet {
 
     private SearchCategoryGroupKey getKeyForCategory(String cat) {
         for (SearchCategoryGroupKey searchCategoryGroupKey : searchResultsByCategory.keySet()) {
-            if (searchCategoryGroupKey.groupDescription.equals(cat)) {
+            if (searchCategoryGroupKey.subcategory.equals(cat)) {
                 return searchCategoryGroupKey;
             }
         }
@@ -82,9 +88,9 @@ public class SearchResultSet {
     private void buildCatResults() {
         searchResultsByCategory = new HashMap<SearchCategoryGroupKey, List<SearchResult>>();
         for (SearchResult searchResult : searchResults) {
-            String cat = searchResult.getGroupDescription();
+            String subcategory = searchResult.getGroupDescription();
             SearchCategory category = searchResult.getCategory();
-            SearchCategoryGroupKey key = new SearchCategoryGroupKey(category, cat);
+            SearchCategoryGroupKey key = new SearchCategoryGroupKey(category, subcategory);
             List<SearchResult> catResults = searchResultsByCategory.get(key);
             if (catResults == null) {
                 catResults = new ArrayList<SearchResult>();
@@ -104,11 +110,11 @@ public class SearchResultSet {
 
         private SearchCategory category;
 
-        private String groupDescription;
+        private String subcategory;
 
-        private SearchCategoryGroupKey(SearchCategory searchType, String groupDescription) {
-            this.category = searchType;
-            this.groupDescription = groupDescription;
+        private SearchCategoryGroupKey(SearchCategory category, String subcategory) {
+            this.category = category;
+            this.subcategory = subcategory;
         }
 
         public int compareTo(SearchCategoryGroupKey o) {
@@ -116,12 +122,12 @@ public class SearchResultSet {
             if (typeDiff != 0) {
                 return typeDiff;
             }
-            return this.groupDescription.compareToIgnoreCase(o.groupDescription);
+            return this.subcategory.compareToIgnoreCase(o.subcategory);
         }
 
         @Override
         public int hashCode() {
-            return SearchCategoryGroupKey.class.getSimpleName().hashCode() + this.category.hashCode() + category.hashCode();
+            return SearchCategoryGroupKey.class.getSimpleName().hashCode() + category.hashCode() + subcategory.hashCode();
         }
 
         @Override
@@ -133,7 +139,7 @@ public class SearchResultSet {
                 return false;
             }
             SearchCategoryGroupKey other = (SearchCategoryGroupKey) obj;
-            return this.category == other.category && this.groupDescription.equals(other.groupDescription);
+            return this.category == other.category && this.subcategory.equals(other.subcategory);
         }
     }
 }

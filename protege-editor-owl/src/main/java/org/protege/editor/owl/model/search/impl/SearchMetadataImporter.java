@@ -1,8 +1,7 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.OWLEditorKit;
-
-import java.util.Set;
+import org.protege.editor.owl.model.search.SearchSettings;
 
 /**
  * Author: Matthew Horridge<br>
@@ -12,5 +11,5 @@ import java.util.Set;
  */
 public interface SearchMetadataImporter {
 
-    SearchMetadataDB getSearchMetadata(OWLEditorKit editorKit, Set<SearchCategory> categories);
+    SearchMetadataDB getSearchMetadata(OWLEditorKit editorKit, SearchSettings settings);
 }
