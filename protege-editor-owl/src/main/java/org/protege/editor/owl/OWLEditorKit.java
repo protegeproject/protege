@@ -22,6 +22,7 @@ import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.lucene.LuceneSearchManager;
+import org.protege.editor.owl.model.search.nci.NciSearchManager;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -95,7 +96,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
-        searchManager = new LuceneSearchManager(this);
+        searchManager = new NciSearchManager(this);
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();

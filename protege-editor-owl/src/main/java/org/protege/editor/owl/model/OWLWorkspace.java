@@ -38,7 +38,7 @@ import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
 import org.protege.editor.owl.ui.renderer.*;
-import org.protege.editor.owl.ui.search.SearchDialogPanel;
+import org.protege.editor.owl.ui.search.nci.SearchDialogPanel;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.semanticweb.owlapi.model.*;
