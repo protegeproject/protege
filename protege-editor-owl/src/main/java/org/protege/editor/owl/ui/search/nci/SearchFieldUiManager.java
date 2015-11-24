@@ -170,7 +170,7 @@ public class SearchFieldUiManager {
                     if (isLinked) {
                         linkButton.setIcon(OWLIcons.getIcon("link.png"));
                     } else {
-                        linkButton.setIcon(OWLIcons.getIcon("unlink.gif"));
+                        linkButton.setIcon(OWLIcons.getIcon("unlink.png"));
                     }
                     fireSearchFieldLinked();
                 }
