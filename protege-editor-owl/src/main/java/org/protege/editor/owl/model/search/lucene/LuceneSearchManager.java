@@ -5,14 +5,15 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.SearchInterruptionException;
 import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchSettingsListener;
+import org.protege.editor.owl.model.search.SearchStringParser;
 
-import org.apache.lucene.search.Query;
+import org.apache.lucene.search.IndexSearcher;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -21,12 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingUtilities;
@@ -37,7 +38,7 @@ import javax.swing.SwingUtilities;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public class LuceneSearchManager implements SearchManager, SearchSettingsListener {
+public class LuceneSearchManager extends LuceneSearcher implements SearchManager, SearchSettingsListener {
 
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearchManager.class);
 
@@ -46,12 +47,15 @@ public class LuceneSearchManager implements SearchManager, SearchSettingsListene
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
+    private AtomicBoolean indexReady = new AtomicBoolean(false);
 
     private SearchSettings settings = new SearchSettings();
 
+    private SearchStringParser searchStringParser = new KeywordStringParser();
+
     private ProgressMonitor progressMonitor;
 
-    private QueryRunner queryRunner;
+    private IndexSearcher indexSearcher;
 
     private Future<?> lastIndexingTask;
     private Future<?> lastSearchingTask;
@@ -105,13 +109,13 @@ public class LuceneSearchManager implements SearchManager, SearchSettingsListene
     }
 
     @Override
-    public SearchSettings getSearchSettings() {
-        return settings;
+    public IndexSearcher getIndexSearcher() {
+        return indexSearcher;
     }
 
     @Override
-    public QueryBasedInputHandler getSearchInputHandler() {
-        return new QueryBasedInputHandler();
+    public SearchSettings getSearchSettings() {
+        return settings;
     }
 
     private void buildingIndex() {
@@ -124,8 +128,7 @@ public class LuceneSearchManager implements SearchManager, SearchSettingsListene
             indexer.close();
             long t1 = System.currentTimeMillis();
             logger.info("... built search index in " + (t1 - t0) + " ms");
-            LuceneSearcher searcher = indexer.getSearcher();
-            queryRunner = new QueryRunner(searcher);
+            indexSearcher = new IndexSearcher(indexer.getIndexReader());
         }
         catch (IOException e) {
             logger.error("... build index failed");
@@ -155,47 +158,51 @@ public class LuceneSearchManager implements SearchManager, SearchSettingsListene
     }
 
     @Override
-    public void performSearch(SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
             lastIndexingTask = service.submit(new Runnable() {
                 public void run() {
                     buildingIndex();
+                    indexReady.set(true);
                 }
             });
         }
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchRequest, searchResultHandler));
+        if (indexReady.get() == true) {
+            BatchQuery batchQuery = prepareQuery(searchString);
+            lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), batchQuery, searchResultHandler));
+        }
+    }
+
+    public BatchQuery prepareQuery(String searchString) {
+        QueryBasedInputHandler handler = new QueryBasedInputHandler(this);
+        searchStringParser.parse(searchString, handler);
+        return handler.getSearchQuery();
     }
 
     private class SearchCallable implements Runnable {
 
         private long searchId;
-        private SearchRequest searchRequest;
+        private BatchQuery batchQuery;
         private SearchResultHandler searchResultHandler;
+        private QueryRunner queryRunner = new QueryRunner(lastSearchId);
 
-        private SearchCallable(long searchId, SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, BatchQuery batchQuery, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.searchRequest = searchRequest;
+            this.batchQuery = batchQuery;
             this.searchResultHandler = searchResultHandler;
         }
 
         @Override
         public void run() {
-            BatchQuery batchQuery = (BatchQuery) searchRequest.getSearchObject();
             logger.debug("Starting search " + searchId + " (pattern: " + batchQuery + ")");
-            
-            Set<SearchResult> results = new HashSet<>();
             long searchStartTime = System.currentTimeMillis();
             fireSearchStarted();
+            ResultDocumentHandler documentHandler = new ResultDocumentHandler(editorKit);
             try {
-                ResultDocumentHandler documentHandler = new ResultDocumentHandler(editorKit);
-                for (Query query : batchQuery) {
-                    if (!isLatestSearch()) return; // search got interrupted
-                    if (query instanceof SearchQuery) {
-                        SearchQuery searchQuery = (SearchQuery) query;
-                        queryRunner.execute(searchQuery, documentHandler, progress -> fireSearchProgressed(progress));
-                        results.addAll(documentHandler.getSearchResults());
-                    }
-                }
+                queryRunner.execute(searchId, batchQuery, documentHandler, progress -> fireSearchProgressed(progress));
+            }
+            catch (SearchInterruptionException e) {
+                return; // search terminated prematurely
             }
             catch (Throwable e) {
                 logger.error("... error while searching: " + e.getMessage());
@@ -203,14 +210,11 @@ public class LuceneSearchManager implements SearchManager, SearchSettingsListene
                 return;
             }
             fireSearchFinished();
+            Set<SearchResult> results = documentHandler.getSearchResults();
             long searchEndTime = System.currentTimeMillis();
             long searchTime = searchEndTime - searchStartTime;
             logger.debug("... finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
             showResults(results, searchResultHandler);
-        }
-
-        private boolean isLatestSearch() {
-            return searchId == lastSearchId.get();
         }
 
         private void showResults(final Set<SearchResult> results, final SearchResultHandler searchResultHandler) {

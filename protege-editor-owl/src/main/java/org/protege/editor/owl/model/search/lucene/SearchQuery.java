@@ -2,24 +2,24 @@ package org.protege.editor.owl.model.search.lucene;
 
 import org.protege.editor.owl.model.search.SearchCategory;
 
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Weight;
+import org.apache.lucene.search.TopDocs;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
-public class SearchQuery extends Query implements Iterable<BooleanClause> {
+public class SearchQuery {
 
     private BooleanQuery query;
     private SearchCategory category;
+    private LuceneSearcher searcher;
 
-    public SearchQuery(BooleanQuery query, SearchCategory category) {
+    public SearchQuery(BooleanQuery query, SearchCategory category, LuceneSearcher searcher) {
         this.query = query;
         this.category = category;
+        this.searcher = searcher;
     }
 
     public BooleanQuery getQuery() {
@@ -30,19 +30,20 @@ public class SearchQuery extends Query implements Iterable<BooleanClause> {
         return category;
     }
 
-    @Override
-    public Weight createWeight(IndexSearcher searcher, boolean needsScores) throws IOException {
-        return query.createWeight(searcher, needsScores);
+    public Set<Document> evaluate() throws IOException {
+        Set<Document> docs = new HashSet<>();
+        TopDocs hits = searcher.search(query);
+        int hitNumber = hits.scoreDocs.length;
+        for (int i = 1; i <= hitNumber; i++) {
+            Document doc = searcher.find(hits.scoreDocs[i-1].doc);
+            docs.add(doc);
+        }
+        return docs;
     }
 
-    @Override
-    public Query rewrite(IndexReader reader) throws IOException {
-        return query.rewrite(reader);
-    }
-
-    @Override
-    public Iterator<BooleanClause> iterator() {
-        return query.iterator();
+    public void evaluate(AbstractDocumentHandler handler) throws IOException {
+        Set<Document> docs = evaluate();
+        docs.stream().forEach((doc) -> handler.handle(category, doc));
     }
 
     @Override
@@ -63,9 +64,9 @@ public class SearchQuery extends Query implements Iterable<BooleanClause> {
     }
 
     @Override
-    public String toString(String field) {
+    public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(category.name()).append(": ").append(query.toString(field));
+        sb.append(category.name()).append(": ").append(query);
         return sb.toString();
     }
 }

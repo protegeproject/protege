@@ -15,6 +15,12 @@ public class QueryForAnnotationValueBuilder extends SearchQueryBuilder {
 
     private BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
+    private LuceneSearcher searcher;
+
+    public QueryForAnnotationValueBuilder(LuceneSearcher searcher) {
+        this.searcher = searcher;
+    }
+
     @Override
     public void add(SearchKeyword keyword) {
         if (keyword.isBlank()) return;
@@ -31,7 +37,7 @@ public class QueryForAnnotationValueBuilder extends SearchQueryBuilder {
 
     @Override
     public SearchQuery build() {
-        return new SearchQuery(builder.build(), SearchCategory.ANNOTATION_VALUE);
+        return new SearchQuery(builder.build(), SearchCategory.ANNOTATION_VALUE, searcher);
     }
 
     @Override

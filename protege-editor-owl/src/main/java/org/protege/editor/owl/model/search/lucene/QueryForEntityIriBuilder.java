@@ -15,6 +15,12 @@ public class QueryForEntityIriBuilder extends SearchQueryBuilder {
 
     private BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
+    private LuceneSearcher searcher;
+
+    public QueryForEntityIriBuilder(LuceneSearcher searcher) {
+        this.searcher = searcher;
+    }
+
     @Override
     public void add(SearchKeyword keyword) {
         if (keyword.isBlank()) return;
@@ -31,7 +37,7 @@ public class QueryForEntityIriBuilder extends SearchQueryBuilder {
 
     @Override
     public SearchQuery build() {
-        return new SearchQuery(builder.build(), SearchCategory.IRI);
+        return new SearchQuery(builder.build(), SearchCategory.IRI, searcher);
     }
 
     @Override

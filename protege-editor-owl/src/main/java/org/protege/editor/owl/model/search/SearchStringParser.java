@@ -8,7 +8,5 @@ package org.protege.editor.owl.model.search;
  */
 public interface SearchStringParser {
 
-    void setSearchInputHandler(SearchInputHandler handler);
-
-    void parse(String searchString);
+    void parse(String searchString, SearchInputHandler handler);
 }

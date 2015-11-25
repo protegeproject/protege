@@ -14,7 +14,5 @@ public interface SearchManager extends Monitorable, Disposable {
 
     SearchSettings getSearchSettings();
 
-    SearchInputHandler getSearchInputHandler();
-
-    void performSearch(SearchRequest searchRequest, SearchResultHandler searchResultHandler);
+    void performSearch(String searchString, SearchResultHandler searchResultHandler);
 }

@@ -7,12 +7,12 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.search.ResultItem;
 import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultMatch;
 import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchSettingsListener;
+import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
@@ -54,6 +54,8 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
     private SearchSettings settings = new SearchSettings();
 
     private List<SearchMetadata> searchMetadataCache = new ArrayList<SearchMetadata>();
+
+    private SearchStringParser searchStringParser = new SearchStringParserImpl();
 
     private ProgressMonitor progressMonitor;
 
@@ -106,7 +108,6 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
         modelMan.removeListener(modelManagerListener);
     }
 
-    @Override
     public PatternBasedInputHandler getSearchInputHandler() {
         return new PatternBasedInputHandler();
     }
@@ -148,7 +149,7 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
                 searchMetadataCache.addAll(db.getResults());
             }
             long t1 = System.currentTimeMillis();
-            logger.info("    ...rebuilt search metadata cache in " + (t1 - t0) + " ms");
+            logger.info("...rebuilt search metadata cache in " + (t1 - t0) + " ms");
         }
         finally {
             fireIndexingFinished();
@@ -156,37 +157,41 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
     }
 
     @Override
-    public void performSearch(final SearchRequest searchRequest, final SearchResultHandler searchResultHandler) {
+    public void performSearch(final String searchString, final SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
             lastIndexingTask = service.submit(new Runnable() {
                 public void run() {
                     rebuildMetadataCache();
                 }
             });
-         }
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchRequest, searchResultHandler));
+        }
+        List<Pattern> searchPattern = prepareSearchPattern(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchPattern, searchResultHandler));
     }
 
+    private List<Pattern> prepareSearchPattern(String searchString) {
+        PatternBasedInputHandler handler = new PatternBasedInputHandler();
+        searchStringParser.parse(searchString, handler);
+        return handler.getSearchPattern();
+    }
 
     private class SearchCallable implements Runnable {
 
         private long searchId;
 
-        private SearchRequest searchRequest;
+        private List<Pattern> searchPattern;
 
         private SearchResultHandler searchResultHandler;
 
-        private SearchCallable(long searchId, SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, List<Pattern> searchPattern, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.searchRequest = searchRequest;
+            this.searchPattern = searchPattern;
             this.searchResultHandler = searchResultHandler;
         }
 
         @Override
         public void run() {
             StringBuilder patternString = new StringBuilder();
-            @SuppressWarnings("unchecked")
-            List<Pattern> searchPattern = (List<Pattern>) searchRequest.getSearchObject();
             for(Iterator<Pattern> it = searchPattern.iterator(); it.hasNext(); ) {
                 Pattern pattern = it.next();
                 patternString.append(pattern.pattern());
@@ -205,7 +210,7 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
             for (SearchMetadata searchMetadata : searchMetadataCache) {
                 if (!isLatestSearch()) {
                     // New search started
-                    logger.debug("    terminating search " + searchId + " prematurely");
+                    logger.debug("... terminating search " + searchId + " prematurely");
                     return;
                 }
                 String text = searchMetadata.getSearchString();
@@ -242,7 +247,7 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
             DefaultSearchManager.this.fireSearchFinished();
             long searchEndTime = System.currentTimeMillis();
             long searchTime = searchEndTime - searchStartTime;
-            logger.debug("    finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
+            logger.debug("... finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
             fireSearchFinished(results, searchResultHandler);
         }
 
