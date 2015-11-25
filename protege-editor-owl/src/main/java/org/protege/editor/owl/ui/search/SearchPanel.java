@@ -1,14 +1,9 @@
 package org.protege.editor.owl.ui.search;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultSet;
-import org.protege.editor.owl.model.search.SearchStringParser;
-import org.protege.editor.owl.model.search.lucene.QueryBasedInputHandler;
-import org.protege.editor.owl.model.search.lucene.KeywordStringParser;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 
@@ -45,8 +40,6 @@ public class SearchPanel extends JPanel {
     private String searchString;
 
     private OWLEditorKit editorKit;
-
-    private SearchStringParser searchStringParser = new KeywordStringParser();
 
     public SearchPanel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
@@ -94,20 +87,12 @@ public class SearchPanel extends JPanel {
             searchResultsPanel.clearSearchResults();
             return;
         }
-        SearchManager searchManager = editorKit.getSearchManager();
-        SearchRequest searchRequest = createSearchRequest(searchString, (QueryBasedInputHandler) searchManager.getSearchInputHandler());
-        searchManager.performSearch(searchRequest, new SearchResultHandler() {
+        editorKit.getSearchManager().performSearch(searchString, new SearchResultHandler() {
             public void searchFinished(Collection<SearchResult> searchResults) {
                 int categorySizeLimit = getCategoryLimit();
                 searchResultsPanel.setSearchResults(new SearchResultSet(searchResults), categorySizeLimit);
             }
         });
-    }
-
-    private SearchRequest createSearchRequest(String searchString, QueryBasedInputHandler handler) {
-        searchStringParser.setSearchInputHandler(handler);
-        searchStringParser.parse(searchString);
-        return new SearchRequest(handler.getSearchQuery());
     }
 
     private int getCategoryLimit() {

@@ -1,7 +1,5 @@
 package org.protege.editor.owl.model.search.lucene;
 
-import org.apache.lucene.search.Query;
-
 import java.util.Iterator;
 
 import com.google.common.collect.ImmutableList;
@@ -12,20 +10,20 @@ import com.google.common.collect.ImmutableList;
  * Bio-Medical Informatics Research Group<br>
  * Date: 06/11/2015
  */
-public class BatchQuery implements Iterable<Query> {
+public class BatchQuery implements Iterable<SearchQuery> {
 
-    private ImmutableList.Builder<Query> builder = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<SearchQuery> builder = new ImmutableList.Builder<>();
 
-    public void add(Query query) {
+    public void add(SearchQuery query) {
         builder.add(query);
     }
 
-    public ImmutableList<Query> getQueries() {
+    public ImmutableList<SearchQuery> getQueries() {
         return builder.build();
     }
 
     @Override
-    public Iterator<Query> iterator() {
+    public Iterator<SearchQuery> iterator() {
         return getQueries().iterator();
     }
 
@@ -33,7 +31,7 @@ public class BatchQuery implements Iterable<Query> {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         boolean needNewline = false;
-        for (Query query : getQueries()) {
+        for (SearchQuery query : getQueries()) {
             if (needNewline) {
                 sb.append("\n");
             }

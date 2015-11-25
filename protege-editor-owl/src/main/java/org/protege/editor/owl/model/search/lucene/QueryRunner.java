@@ -1,11 +1,14 @@
 package org.protege.editor.owl.model.search.lucene;
 
+import org.protege.editor.owl.model.search.SearchInterruptionException;
+
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.TopDocs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Author: Josef Hardi <josef.hardi@stanford.edu><br>
@@ -17,21 +20,33 @@ public class QueryRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryRunner.class);
 
-    private LuceneSearcher searcher;
+    private AtomicLong currentSearchId;
 
-    public QueryRunner(LuceneSearcher searcher) {
-        this.searcher = searcher;
+    public QueryRunner(AtomicLong searchId) {
+        currentSearchId = searchId;
     }
 
-    public void execute(SearchQuery searchQuery, AbstractDocumentHandler handler, SearchProgressListener listener) throws IOException {
+    public void execute(Long searchId, Iterable<SearchQuery> searchQueries, AbstractDocumentHandler handler, SearchProgressListener listener)
+            throws IOException, SearchInterruptionException {
+        for (SearchQuery searchQuery : searchQueries) {
+            execute(searchId, searchQuery, handler, listener);
+        }
+    }
+
+    public void execute(Long searchId, SearchQuery searchQuery, AbstractDocumentHandler handler, SearchProgressListener listener)
+            throws IOException, SearchInterruptionException {
         logger.debug("... executing query " + searchQuery);
-        TopDocs hits = searcher.search(searchQuery);
-        int hitNumber = hits.scoreDocs.length;
-        for (int i = 1; i <= hitNumber; i++) {
-            listener.fireSearchingProgressed((i*100)/hitNumber);
-            Document doc = searcher.find(hits.scoreDocs[i-1].doc);
+        Set<Document> docs = searchQuery.evaluate();
+        int counter = 1;
+        for (Document doc : docs) {
+            if (!isLatestSearch(searchId)) { throw new SearchInterruptionException(); }
+            listener.fireSearchingProgressed((counter++*100)/docs.size());
             handler.handle(searchQuery.getCategory(), doc);
         }
+    }
+
+    private boolean isLatestSearch(long searchId) {
+        return searchId == currentSearchId.get();
     }
 
     public interface SearchProgressListener {

@@ -17,8 +17,6 @@ import java.util.regex.Pattern;
  */
 public class KeywordStringParser implements SearchStringParser {
 
-    private SearchInputHandler searchInputHandler;
-
     private static final Pattern filteredSearchStringPattern = Pattern.compile("([^:]*):(.*)");
     private static final Pattern searchKeywordStringsPattern = Pattern.compile("[^\\s\"']+|\"[^\"]*\"|'[^']*'");
 
@@ -27,15 +25,10 @@ public class KeywordStringParser implements SearchStringParser {
     private static final Pattern wholeWordKeywordPattern = Pattern.compile("\"(.*)\"");
 
     @Override
-    public void setSearchInputHandler(SearchInputHandler handler) {
-        searchInputHandler = handler;
-    }
-
-    @Override
-    public void parse(String searchString) {
+    public void parse(String searchString, SearchInputHandler handler) {
         CompoundKeyword compoundKeyword = new CompoundKeyword();
         parseSearchString(compoundKeyword, searchString.trim());
-        searchInputHandler.handle(compoundKeyword);
+        handler.handle(compoundKeyword);
     }
 
     public void parseSearchString(CompoundKeyword compoundKeyword, String searchString) {

@@ -17,11 +17,11 @@ public class QueryBasedInputHandler extends SearchInputHandlerBase {
 
     private List<SearchQueryBuilder> builders = new ArrayList<>();
 
-    public QueryBasedInputHandler() {
-        builders.add(new QueryForEntityIriBuilder());
-        builders.add(new QueryForDisplayNameBuilder());
-        builders.add(new QueryForAnnotationValueBuilder());
-        builders.add(new QueryForFilteredAnnotationBuilder());
+    public QueryBasedInputHandler(LuceneSearcher searcher) {
+        builders.add(new QueryForEntityIriBuilder(searcher));
+        builders.add(new QueryForDisplayNameBuilder(searcher));
+        builders.add(new QueryForAnnotationValueBuilder(searcher));
+        builders.add(new QueryForFilteredAnnotationBuilder(searcher));
     }
 
     public BatchQuery getSearchQuery() {

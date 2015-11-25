@@ -113,10 +113,6 @@ public abstract class AbstractLuceneIndexer {
         }
     }
 
-    public LuceneSearcher getSearcher() {
-        return new LuceneSearcher(this);
-    }
-
     protected String getEntityId(OWLEntity entity) {
         return entity.getIRI().toString();
     }

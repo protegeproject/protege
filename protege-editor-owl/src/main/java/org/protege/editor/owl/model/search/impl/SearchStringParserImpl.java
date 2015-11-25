@@ -15,17 +15,9 @@ import org.protege.editor.owl.model.search.SearchStringParser;
  */
 public class SearchStringParserImpl implements SearchStringParser {
 
-    private CompoundKeyword compoundKeyword = new CompoundKeyword();
-
-    private SearchInputHandler searchInputHandler;
-
     @Override
-    public void setSearchInputHandler(SearchInputHandler handler) {
-        searchInputHandler = handler;
-    }
-
-    @Override
-    public void parse(String searchString) {
+    public void parse(String searchString, SearchInputHandler handler) {
+        CompoundKeyword compoundKeyword = new CompoundKeyword();
         OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         for (String splitSearchString : searchString.split("\\s+")) {
             SearchKeyword keyword = new SearchKeyword("",
@@ -38,6 +30,6 @@ public class SearchStringParserImpl implements SearchStringParser {
                     false);
             compoundKeyword.add(keyword);
         }
-        searchInputHandler.handle(compoundKeyword);
+        handler.handle(compoundKeyword);
     }
 }
