@@ -22,7 +22,7 @@ public class NestedSearch extends CompoundKeyword {
         boolean needSeparator = false;
         for (SearchKeyword keyword : this) {
             if (needSeparator) {
-                sb.append(" NESTED ");
+                sb.append(" > ");
             }
             sb.append(keyword.toString());
             needSeparator = true;

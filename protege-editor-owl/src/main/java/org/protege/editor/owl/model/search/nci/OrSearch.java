@@ -46,7 +46,7 @@ public class OrSearch extends CompoundKeyword {
         boolean needSeparator = false;
         for (SearchInput searchGroup : getSearchGroup()) {
             if (needSeparator) {
-                sb.append(" OR ");
+                sb.append(", ");
             }
             sb.append(searchGroup.toString());
             needSeparator = true;

@@ -22,7 +22,7 @@ public class AndSearch extends CompoundKeyword {
         boolean needSeparator = false;
         for (SearchKeyword keyword : this) {
             if (needSeparator) {
-                sb.append(" AND ");
+                sb.append(" & ");
             }
             sb.append(keyword.toString());
             needSeparator = true;
