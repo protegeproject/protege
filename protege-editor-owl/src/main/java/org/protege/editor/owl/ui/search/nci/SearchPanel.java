@@ -1,14 +1,9 @@
 package org.protege.editor.owl.ui.search.nci;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultSet;
-import org.protege.editor.owl.model.search.SearchStringParser;
-import org.protege.editor.owl.model.search.nci.NciQueryBasedInputHandler;
-import org.protege.editor.owl.model.search.nci.NciSearchManager;
-import org.protege.editor.owl.model.search.nci.NciSearchStringParser;
 import org.protege.editor.owl.ui.search.SearchOptionsChangedListener;
 import org.protege.editor.owl.ui.search.SearchResultClickedListener;
 import org.protege.editor.owl.ui.search.SearchResultsPanel;
@@ -50,8 +45,6 @@ public class SearchPanel extends JPanel {
     private String searchString;
 
     private OWLEditorKit editorKit;
-
-    private SearchStringParser searchStringParser = new NciSearchStringParser();
 
     @SuppressWarnings("serial")
     public SearchPanel(OWLEditorKit editorKit) {
@@ -102,21 +95,13 @@ public class SearchPanel extends JPanel {
             searchResultsPanel.clearSearchResults();
             return;
         }
-        NciSearchManager searchManager = (NciSearchManager) editorKit.getSearchManager();
-        SearchRequest searchRequest = createSearchRequest(searchString, searchManager.getSearchInputHandler());
-        searchManager.performSearch(searchRequest, new SearchResultHandler() {
+        editorKit.getSearchManager().performSearch(searchString, new SearchResultHandler() {
             @Override
             public void searchFinished(Collection<SearchResult> searchResults) {
                 int categorySizeLimit = getCategoryLimit();
                 searchResultsPanel.setSearchResults(new SearchResultSet(searchResults), categorySizeLimit);
             }
         });
-    }
-
-    private SearchRequest createSearchRequest(String searchString, NciQueryBasedInputHandler handler) {
-        searchStringParser.setSearchInputHandler(handler);
-        searchStringParser.parse(searchString);
-        return new SearchRequest(handler.getSearchQuery());
     }
 
     private int getCategoryLimit() {

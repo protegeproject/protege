@@ -17,26 +17,19 @@ import java.util.regex.Pattern;
  */
 public class NciSearchStringParser implements SearchStringParser {
 
-    private SearchInputHandler searchInputHandler;
-
     private static final Pattern filteredSearchStringPattern = Pattern.compile("([^:,]*):(\"[^\"]*\"|[^,\"]*)");
     private static final Pattern nestedKeywordPattern = Pattern.compile("([^>]+)");
 
     private static final Pattern phoneticKeywordPattern = Pattern.compile("~(.*)");
 
     @Override
-    public void setSearchInputHandler(SearchInputHandler handler) {
-        searchInputHandler = handler;
-    }
-
-    @Override
-    public void parse(String searchString) {
+    public void parse(String searchString, SearchInputHandler handler) {
         OrSearch orSearch = new OrSearch();
         for (String searchGroupString : searchString.split("\\|")) { // divide per group
             SearchInput searchGroup = parseSearchGroup(searchGroupString.trim());
             orSearch.add(searchGroup);
         }
-        searchInputHandler.handle(orSearch);
+        handler.handle(orSearch);
     }
     
     public SearchInput parseSearchGroup(String searchGroupString) {

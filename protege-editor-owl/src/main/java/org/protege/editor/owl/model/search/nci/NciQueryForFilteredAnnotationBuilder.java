@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.search.nci;
 import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchKeyword;
 import org.protege.editor.owl.model.search.lucene.IndexField;
+import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.LuceneUtils;
 import org.protege.editor.owl.model.search.lucene.SearchQuery;
 import org.protege.editor.owl.model.search.lucene.SearchQueryBuilder;
@@ -19,7 +20,13 @@ public class NciQueryForFilteredAnnotationBuilder extends SearchQueryBuilder {
 
     protected static final Logger logger = LoggerFactory.getLogger(NciQueryForFilteredAnnotationBuilder.class);
 
+    private LuceneSearcher searcher;
+
     private BooleanQuery.Builder builder = new BooleanQuery.Builder();
+
+    public NciQueryForFilteredAnnotationBuilder(LuceneSearcher searcher) {
+        this.searcher = searcher;
+    }
 
     @Override
     public void add(SearchKeyword keyword) {
@@ -49,7 +56,7 @@ public class NciQueryForFilteredAnnotationBuilder extends SearchQueryBuilder {
 
     @Override
     public SearchQuery build() {
-        return new SearchQuery(builder.build(), SearchCategory.ANNOTATION_VALUE);
+        return new SearchQuery(builder.build(), SearchCategory.ANNOTATION_VALUE, searcher);
     }
 
     @Override

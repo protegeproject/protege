@@ -2,11 +2,21 @@ package org.protege.editor.owl.model.search.nci;
 
 import org.protege.editor.owl.model.search.lucene.SearchQuery;
 
+import java.util.Iterator;
+
 import com.google.common.collect.ImmutableSet;
 
-public class QuerySet extends AbstractQuerySet {
+public class QuerySet extends AbstractQuerySet implements Iterable<SearchQuery> {
 
     protected ImmutableSet.Builder<SearchQuery> builder = new ImmutableSet.Builder<>();
+
+    public QuerySet() {
+        // NO-OP
+    }
+
+    public QuerySet(SearchQuery query) {
+        add(query);
+    }
 
     public void add(SearchQuery query) {
         builder.add(query);
@@ -19,6 +29,11 @@ public class QuerySet extends AbstractQuerySet {
     @Override
     public boolean isLinked() {
         return false;
+    }
+
+    @Override
+    public Iterator<SearchQuery> iterator() {
+        return getQueries().iterator();
     }
 
     @Override

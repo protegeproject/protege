@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.search.CompoundKeyword;
 import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchInputHandlerBase;
 import org.protege.editor.owl.model.search.SearchKeyword;
+import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.SearchQueryBuilder;
 
 import java.util.ArrayList;
@@ -13,18 +14,20 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase {
 
     private UnionQuerySet unionQuery = new UnionQuerySet();
 
+    private LuceneSearcher searcher;
+
     private AbstractQuerySet placeholder;
 
-    public NciQueryBasedInputHandler() {
-        // NO-OP
+    public NciQueryBasedInputHandler(LuceneSearcher searcher) {
+        this.searcher = searcher;
     }
 
     private List<SearchQueryBuilder> getBuilders() {
         List<SearchQueryBuilder> builders = new ArrayList<>();
-        builders.add(new NciQueryForEntityIriBuilder());
-        builders.add(new NciQueryForDisplayNameBuilder());
-        builders.add(new NciQueryForAnnotationValueBuilder());
-        builders.add(new NciQueryForFilteredAnnotationBuilder());
+        builders.add(new NciQueryForEntityIriBuilder(searcher));
+        builders.add(new NciQueryForDisplayNameBuilder(searcher));
+        builders.add(new NciQueryForAnnotationValueBuilder(searcher));
+        builders.add(new NciQueryForFilteredAnnotationBuilder(searcher));
         return builders;
     }
 

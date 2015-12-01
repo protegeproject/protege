@@ -5,18 +5,19 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.SearchInterruptionException;
 import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchSettingsListener;
+import org.protege.editor.owl.model.search.SearchStringParser;
 import org.protege.editor.owl.model.search.lucene.AbstractLuceneIndexer;
 import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.QueryRunner;
 import org.protege.editor.owl.model.search.lucene.ResultDocumentHandler;
-import org.protege.editor.owl.model.search.lucene.SearchQuery;
 
+import org.apache.lucene.search.IndexSearcher;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -25,12 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingUtilities;
@@ -41,7 +42,7 @@ import javax.swing.SwingUtilities;
  * Bio-Medical Informatics Research Group<br>
  * Date: 13/11/2015
  */
-public class NciSearchManager implements SearchManager, SearchSettingsListener {
+public class NciSearchManager extends LuceneSearcher implements SearchManager, SearchSettingsListener {
 
     private static final Logger logger = LoggerFactory.getLogger(NciSearchManager.class);
 
@@ -50,12 +51,15 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
+    private AtomicBoolean indexReady = new AtomicBoolean(false);
 
     private SearchSettings settings = new SearchSettings();
 
+    private SearchStringParser searchStringParser = new NciSearchStringParser();
+
     private ProgressMonitor progressMonitor;
 
-    private QueryRunner queryRunner;
+    private IndexSearcher indexSearcher;
 
     private Future<?> lastIndexingTask;
     private Future<?> lastSearchingTask;
@@ -114,8 +118,8 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
     }
 
     @Override
-    public NciQueryBasedInputHandler getSearchInputHandler() {
-        return new NciQueryBasedInputHandler();
+    public IndexSearcher getIndexSearcher() {
+        return indexSearcher;
     }
 
     private void buildingIndex() {
@@ -128,8 +132,7 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
             indexer.close();
             long t1 = System.currentTimeMillis();
             logger.info("... built search index in " + (t1 - t0) + " ms");
-            LuceneSearcher searcher = indexer.getSearcher();
-            queryRunner = new QueryRunner(searcher);
+            indexSearcher = new IndexSearcher(indexer.getIndexReader());
         }
         catch (IOException e) {
             logger.error("... build index failed");
@@ -159,47 +162,51 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
     }
 
     @Override
-    public void performSearch(SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
             lastIndexingTask = service.submit(new Runnable() {
                 public void run() {
                     buildingIndex();
+                    indexReady.set(true);
                 }
             });
         }
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchRequest, searchResultHandler));
+        UnionQuerySet query = prepareQuery(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), query, searchResultHandler));
+    }
+
+    private UnionQuerySet prepareQuery(String searchString) {
+        NciQueryBasedInputHandler handler = new NciQueryBasedInputHandler(this);
+        searchStringParser.parse(searchString, handler);
+        return handler.getSearchQuery();
     }
 
     private class SearchCallable implements Runnable {
 
         private long searchId;
-        private SearchRequest searchRequest;
+        private UnionQuerySet searchQuery;
         private SearchResultHandler searchResultHandler;
+        private QueryRunner queryRunner = new QueryRunner(lastSearchId);
 
-        private SearchCallable(long searchId, SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, UnionQuerySet searchQuery, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.searchRequest = searchRequest;
+            this.searchQuery = searchQuery;
             this.searchResultHandler = searchResultHandler;
         }
 
         @Override
         public void run() {
-            UnionQuerySet unionQuery = (UnionQuerySet) searchRequest.getSearchObject();
-            logger.debug("Starting search " + searchId + "\n" + unionQuery);
-            
-            Set<SearchResult> results = new HashSet<>();
+            logger.info("Starting search " + searchId + "\n" + searchQuery);
+            SearchResultManager resultManager = new SearchResultManager();
             long searchStartTime = System.currentTimeMillis();
             fireSearchStarted();
             try {
-                SearchResultManager resultManager = new SearchResultManager();
-                for (AbstractQuerySet queryElement : unionQuery) {
-                    if (!isLatestSearch()) {
-                        logger.debug("... terminating search " + searchId + " prematurely");
-                        return;
-                    }
+                for (AbstractQuerySet queryElement : searchQuery) {
                     runQuery(queryElement, resultManager);
                 }
-                results = resultManager.getSearchResults();
+            }
+            catch (SearchInterruptionException e) {
+                return; // search terminated prematurely
             }
             catch (Throwable e) {
                 logger.error("... error while searching: " + e.getMessage());
@@ -207,13 +214,14 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
                 return;
             }
             fireSearchFinished();
+            Set<SearchResult> results = resultManager.getSearchResults();
             long searchEndTime = System.currentTimeMillis();
             long searchTime = searchEndTime - searchStartTime;
             logger.debug("... finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
             showResults(results, searchResultHandler);
         }
 
-        private void runQuery(AbstractQuerySet queryElement, final SearchResultManager resultManager) throws IOException {
+        private void runQuery(AbstractQuerySet queryElement, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
             if (queryElement instanceof QuerySet) {
                 runQuery((QuerySet) queryElement, resultManager);
             } else if (queryElement instanceof LinkedQuerySet) {
@@ -221,23 +229,17 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
             }
         }
 
-        private void runQuery(QuerySet querySet, final SearchResultManager resultManager) throws IOException {
+        private void runQuery(QuerySet querySet, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
             ResultDocumentHandler documentHandler = createDocumentHandler();
-            for (SearchQuery searchQuery : querySet.getQueries()) {
-                if (!isLatestSearch()) return; // search got interrupted
-                queryRunner.execute(searchQuery, documentHandler, progress -> fireSearchProgressed(progress));
-            }
+            queryRunner.execute(searchId, querySet, documentHandler, progress -> fireSearchProgressed(progress));
             Set<SearchResult> searchResults = documentHandler.getSearchResults();
             resultManager.addSearchResults(searchResults, false);
         }
 
-        private void runQuery(LinkedQuerySet linkedQuerySet, final SearchResultManager resultManager) throws IOException {
+        private void runQuery(LinkedQuerySet linkedQuerySet, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
             for (QuerySet querySet : linkedQuerySet) {
                 ResultDocumentHandler documentHandler = createDocumentHandler();
-                for (SearchQuery searchQuery : querySet.getQueries()) {
-                    if (!isLatestSearch()) return; // search got interrupted
-                    queryRunner.execute(searchQuery, documentHandler, progress -> fireSearchProgressed(progress));
-                }
+                queryRunner.execute(searchId, querySet, documentHandler, progress -> fireSearchProgressed(progress));
                 Set<SearchResult> searchResults = documentHandler.getSearchResults();
                 resultManager.addSearchResults(searchResults, true);
             }
@@ -245,10 +247,6 @@ public class NciSearchManager implements SearchManager, SearchSettingsListener {
 
         private ResultDocumentHandler createDocumentHandler() {
             return new ResultDocumentHandler(editorKit);
-        }
-
-        private boolean isLatestSearch() {
-            return searchId == lastSearchId.get();
         }
 
         private void showResults(final Set<SearchResult> results, final SearchResultHandler searchResultHandler) {
