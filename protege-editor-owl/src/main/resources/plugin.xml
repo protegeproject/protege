@@ -1434,17 +1434,6 @@
         <class value="org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel"/>
     </extension>
 
-    <!-- Reasoner prefs -->
-
-    <extension
-            id="TreePreferencesPanel"
-            point="org.protege.editor.core.application.preferencespanel">
-        <label value="Tree preferences"/>
-        <class value="org.protege.editor.owl.ui.tree.OWLTreePreferencesPanel"/>
-    </extension>
-
-
-
     <!-- Move axioms kits -->
 
     <extension id="MoveAxiomsByReference"

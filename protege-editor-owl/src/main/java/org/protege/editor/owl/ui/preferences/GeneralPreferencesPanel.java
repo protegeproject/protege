@@ -4,12 +4,15 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocation;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +44,13 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     private JRadioButton addFreshAxiomsToSubjectDefiningOntology;
 
 
+    private JCheckBox autoExpandEnabledCheckBox;
+
+    private JSpinner autoExpandMaxDepthSpinner;
+
+    private JSpinner autoExpandMaxChildSizeSpinner;
+
+
     public void applyChanges() {
         ExpressionEditorPreferences.getInstance().setCheckDelay((Integer) checkDelaySpinner.getModel().getValue());
 
@@ -55,6 +65,11 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         else if (addFreshAxiomsToSubjectDefiningOntology.isSelected()) {
             axiomPrefs.setFreshAxiomLocation(FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY);
         }
+
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
+        prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
+        prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
     }
 
     private void createUI() {
@@ -94,6 +109,20 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         panel.addGroupComponent(addFreshAxiomsToSubjectDefiningOntology);
 
 
+        // Tree preferences
+
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        autoExpandEnabledCheckBox = new JCheckBox("Expand trees by default", prefs.isAutoExpandEnabled());
+        autoExpandMaxDepthSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionDepthLimit(), 1, Integer.MAX_VALUE, 1));
+        autoExpandMaxChildSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionChildLimit(), 1, Integer.MAX_VALUE, 1));
+
+        panel.addSeparator();
+        panel.addGroup("");
+        panel.addGroupComponent(autoExpandEnabledCheckBox);
+        panel.addGroup("Number of levels shown");
+        panel.addGroupComponent(autoExpandMaxDepthSpinner);
+        panel.addGroup("Maximum child cut off");
+        panel.addGroupComponent(autoExpandMaxChildSizeSpinner);
 
     }
 
