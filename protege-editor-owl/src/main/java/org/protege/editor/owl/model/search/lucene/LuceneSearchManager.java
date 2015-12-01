@@ -14,7 +14,10 @@ import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.apache.lucene.search.IndexSearcher;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.ProgressMonitor;
@@ -22,12 +25,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingUtilities;
@@ -47,7 +50,6 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
-    private AtomicBoolean indexReady = new AtomicBoolean(false);
 
     private SearchSettings settings = new SearchSettings();
 
@@ -55,6 +57,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
 
     private ProgressMonitor progressMonitor;
 
+    private LuceneIndexer indexer = new LuceneIndexer();
+    
     private IndexSearcher indexSearcher;
 
     private Future<?> lastIndexingTask;
@@ -68,7 +72,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         this.editorKit = editorKit;
         ontologyChangeListener = new OWLOntologyChangeListener() {
             public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-                updateIndex();
+                updateIndex(changes);
             }
         };
         modelManagerListener = new OWLModelManagerListener() {
@@ -123,7 +127,6 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            AbstractLuceneIndexer indexer = new LuceneIndexer();
             indexer.doIndex(editorKit, progress -> fireIndexingProgressed(progress));
             indexer.close();
             long t1 = System.currentTimeMillis();
@@ -142,14 +145,47 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         }
     }
 
-    private void updateIndex() {
-        // TODO Auto-generated method stub
-        
+    private void updateIndex(List<? extends OWLOntologyChange> changes) {
+        lastIndexingTask = service.submit(new Runnable() {
+            public void run() {
+                updatingIndex(changes);
+            }
+        });
+    }
+
+    private void updatingIndex(List<? extends OWLOntologyChange> changes) {
+        long t0 = System.currentTimeMillis();
+        logger.info("Updating search index...");
+        try {
+            Set<OWLClass> affectedClasses = new HashSet<>();
+            for (OWLOntologyChange change : changes) {
+                OWLOntology sourceOntology = change.getOntology();
+                for (OWLEntity entity : change.getSignature()) {
+                    if (entity instanceof OWLClass) {
+                        affectedClasses.add((OWLClass) entity);
+                    }
+                }
+                for (OWLClass changedClass : affectedClasses) {
+                    indexer.doUpdate(editorKit, sourceOntology, changedClass);
+                }
+            }
+            indexer.close();
+            long t1 = System.currentTimeMillis();
+            logger.info("... updated search index in " + (t1 - t0) + " ms");
+            indexSearcher = new IndexSearcher(indexer.getIndexReader());
+        }
+        catch (IOException e) {
+            logger.error("... update index failed");
+            e.printStackTrace();
+        }
+        catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
         if (isCacheMutatingEvent(event)) {
-            updateIndex();
+            lastSearchId.set(0); // rebuild index
         }
     }
 
@@ -163,7 +199,6 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
             lastIndexingTask = service.submit(new Runnable() {
                 public void run() {
                     buildingIndex();
-                    indexReady.set(true);
                 }
             });
         }
