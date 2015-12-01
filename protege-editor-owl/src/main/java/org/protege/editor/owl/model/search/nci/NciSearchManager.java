@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingUtilities;
@@ -51,7 +50,6 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
-    private AtomicBoolean indexReady = new AtomicBoolean(false);
 
     private SearchSettings settings = new SearchSettings();
 
@@ -167,7 +165,6 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
             lastIndexingTask = service.submit(new Runnable() {
                 public void run() {
                     buildingIndex();
-                    indexReady.set(true);
                 }
             });
         }
