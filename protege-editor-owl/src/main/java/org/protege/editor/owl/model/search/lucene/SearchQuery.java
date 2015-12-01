@@ -14,7 +14,8 @@ public class SearchQuery {
 
     private BooleanQuery query;
     private SearchCategory category;
-    private LuceneSearcher searcher;
+
+    protected LuceneSearcher searcher;
 
     public SearchQuery(BooleanQuery query, SearchCategory category, LuceneSearcher searcher) {
         this.query = query;
