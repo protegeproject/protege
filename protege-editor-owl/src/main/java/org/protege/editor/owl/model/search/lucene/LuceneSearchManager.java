@@ -167,10 +167,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
                 }
             });
         }
-        if (indexReady.get() == true) {
-            BatchQuery batchQuery = prepareQuery(searchString);
-            lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), batchQuery, searchResultHandler));
-        }
+        BatchQuery batchQuery = prepareQuery(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), batchQuery, searchResultHandler));
     }
 
     public BatchQuery prepareQuery(String searchString) {
