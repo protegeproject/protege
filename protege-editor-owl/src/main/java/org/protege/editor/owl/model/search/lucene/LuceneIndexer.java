@@ -1,10 +1,5 @@
 package org.protege.editor.owl.model.search.lucene;
 
-import org.protege.editor.owl.model.search.lucene.analyzer.IriStringAnalyzer;
-import org.protege.editor.owl.model.search.lucene.analyzer.TermStringAnalyzer;
-
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -12,7 +7,6 @@ import org.apache.lucene.store.FSDirectory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 
 /**
  * Author: Josef Hardi <josef.hardi@stanford.edu><br>
@@ -22,12 +16,8 @@ import java.util.HashMap;
  */
 public class LuceneIndexer extends AbstractLuceneIndexer {
 
-    @SuppressWarnings("serial")
     public LuceneIndexer() throws IOException {
-        super(new PerFieldAnalyzerWrapper(new StandardAnalyzer(), new HashMap<String, Analyzer>() {{
-            put(IndexField.ENTITY_IRI, new IriStringAnalyzer());
-            put(IndexField.DISPLAY_NAME, new TermStringAnalyzer());
-        }}));
+        super(new StandardAnalyzer());
     }
 
     @Override
