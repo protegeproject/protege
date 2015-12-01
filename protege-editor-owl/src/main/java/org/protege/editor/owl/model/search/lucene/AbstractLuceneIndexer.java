@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchContext;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.StringField;
@@ -11,6 +12,8 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
@@ -36,13 +39,19 @@ public abstract class AbstractLuceneIndexer {
 
     private final Directory indexDirectory;
 
+    private IndexWriterConfig writerConfig;
     private Analyzer textAnalyzer;
+    private OpenMode openMode;
 
-    private final IndexWriter writer;
+    private IndexWriter writer;
 
-    public AbstractLuceneIndexer(Analyzer analyzer) throws IOException {
+    public AbstractLuceneIndexer() {
+        this(new StandardAnalyzer());
+    }
+
+    public AbstractLuceneIndexer(Analyzer analyzer) {
         indexDirectory = setupIndexDirectory();
-        writer = new IndexWriter(indexDirectory, new IndexWriterConfig(analyzer));
+        writerConfig = new IndexWriterConfig(analyzer);
     }
 
     public Analyzer getTextAnalyzer() {
@@ -53,9 +62,23 @@ public abstract class AbstractLuceneIndexer {
         textAnalyzer = analyzer;
     }
 
+    private void setupIndexWriter(OpenMode openMode) throws IOException {
+        if (this.openMode == openMode) {
+            if (!writer.isOpen()) {
+                writer = new IndexWriter(indexDirectory, writerConfig);
+            }
+        } else {
+            if (writer.isOpen()) {
+                writer.close();
+            }
+            writerConfig.setOpenMode(openMode);
+            writer = new IndexWriter(indexDirectory, writerConfig);
+        }
+    }
+
     public void doIndex(final OWLEditorKit editorKit, IndexProgressListener listener) throws IOException {
-        SearchContext context = new SearchContext(editorKit);
-        doIndexing(context, listener);
+        setupIndexWriter(OpenMode.CREATE);
+        doIndexing(new SearchContext(editorKit), listener);
     }
 
     private void doIndexing(SearchContext context, IndexProgressListener listener) throws IOException {
@@ -76,6 +99,19 @@ public abstract class AbstractLuceneIndexer {
                     listener.fireIndexingProgressed(percentage(progress++, totalAxiomCount));
                 }
             }
+        }
+    }
+
+    public void doUpdate(final OWLEditorKit editorKit, OWLOntology ontology, OWLEntity entity) throws IOException {
+        setupIndexWriter(OpenMode.APPEND);
+        doUpdating(new SearchContext(editorKit), ontology, entity);
+    }
+
+    private void doUpdating(SearchContext context, OWLOntology ontology, OWLEntity entity) throws IOException {
+        writer.deleteDocuments(new Term(IndexField.ENTITY_IRI, getEntityId(entity)));
+        writer.addDocument(createEntityDocument(entity, context));
+        for (OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology)) {
+            writer.addDocument(createAnnotationDocument(entity, annotation, context));
         }
     }
 

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.search.lucene;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -16,8 +15,8 @@ import java.nio.file.Path;
  */
 public class LuceneIndexer extends AbstractLuceneIndexer {
 
-    public LuceneIndexer() throws IOException {
-        super(new StandardAnalyzer());
+    public LuceneIndexer() {
+        super();
     }
 
     @Override
