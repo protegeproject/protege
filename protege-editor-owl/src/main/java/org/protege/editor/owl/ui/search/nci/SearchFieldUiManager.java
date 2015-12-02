@@ -117,6 +117,7 @@ public class SearchFieldUiManager {
             pnlButtonGroup.setLayout(new GridLayout(1, 3, 2, 0)); // row, col, hgap, vgap
             cmdLink = new JButton(OWLIcons.getIcon("link.png"));
             cmdLink.setFocusable(false);
+            cmdLink.setToolTipText("Toggle to unlink this search filter");
             cmdRemove = new JButton("-");
             cmdRemove.setFocusable(false);
             cmdAdd = new JButton("+");
@@ -169,8 +170,10 @@ public class SearchFieldUiManager {
                     JButton linkButton = (JButton) e.getSource();
                     if (isLinked) {
                         linkButton.setIcon(OWLIcons.getIcon("link.png"));
+                        linkButton.setToolTipText("Toggle to unlink this search filter");
                     } else {
                         linkButton.setIcon(OWLIcons.getIcon("unlink.png"));
+                        linkButton.setToolTipText("Toggle to link this search filter");
                     }
                     fireSearchFieldLinked();
                 }
