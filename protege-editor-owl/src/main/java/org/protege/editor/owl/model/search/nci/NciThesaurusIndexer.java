@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class NciThesaurusIndexer extends AbstractLuceneIndexer {
 
     @SuppressWarnings("serial")
-    public NciThesaurusIndexer() throws IOException {
+    public NciThesaurusIndexer() {
         super(new PerFieldAnalyzerWrapper(new StandardAnalyzer(), new HashMap<String, Analyzer>() {{
             put(IndexField.PHONETIC_NAME, new PhoneticAnalyzer());
         }}));
