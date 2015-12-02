@@ -123,8 +123,10 @@ public class SearchFieldUiManager {
             cmdLink.setToolTipText("Toggle to unlink this search filter");
             cmdRemove = new JButton("-");
             cmdRemove.setFocusable(false);
+            cmdRemove.setToolTipText("Remove search filter");
             cmdAdd = new JButton("+");
             cmdAdd.setFocusable(false);
+            cmdAdd.setToolTipText("Add search filter");
             pnlButtonGroup.add(cmdLink);
             pnlButtonGroup.add(cmdAdd);
             pnlButtonGroup.add(cmdRemove);
