@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,10 +15,12 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -128,14 +131,35 @@ public class SearchFieldUiManager {
             pnlButtonGroup.setPreferredSize(new Dimension(90, pnlButtonGroup.getHeight()));
             add(pnlButtonGroup, BorderLayout.EAST);
 
-            txtSearchField.addKeyListener(new KeyAdapter() {
+            txtSearchField.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+                    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ADD_SEARCH_DIALOG");
+            txtSearchField.getActionMap().put("ADD_SEARCH_DIALOG", new AbstractAction() {
+                private static final long serialVersionUID = 1L;
                 @Override
-                public void keyReleased(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        SearchField newSearchField = new SearchField();
-                        fireSearchFieldAdd(newSearchField);
-                    }
+                public void actionPerformed(ActionEvent e) {
+                    SearchField newSearchField = new SearchField();
+                    fireSearchFieldAdd(newSearchField);
                 }
+            });
+            txtSearchField.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+                    "REMOVE_SEARCH_DIALOG");
+            txtSearchField.getActionMap().put("REMOVE_SEARCH_DIALOG", new AbstractAction() {
+                private static final long serialVersionUID = 1L;
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SearchField searchField = getParentPanel((JComponent) e.getSource());
+                    fireSearchFieldRemove(searchField);
+                }
+                private SearchField getParentPanel(JComponent c) {
+                    Container container = c.getParent();
+                    while (!(container instanceof SearchField)) {
+                        container = container.getParent();
+                    }
+                    return (SearchField) container;
+                }
+            });
+            txtSearchField.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_UP) {
