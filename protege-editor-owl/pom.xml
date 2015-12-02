@@ -44,7 +44,6 @@
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-osgidistribution</artifactId>
-            <version>4.1.1</version>
         </dependency>
 
 
