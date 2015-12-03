@@ -1,23 +1,43 @@
 package org.protege.editor.owl.model.entity;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.annotation.EntityCreationMetadataProvider;
-import org.protege.editor.owl.model.annotation.SimpleEntityCreationMetadataProvider;
-import org.protege.editor.owl.model.user.DefaultUserNameProvider;
-import org.protege.editor.owl.model.util.ISO8601Formatter;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.annotation.EntityCreationMetadataProvider;
+import org.protege.editor.owl.model.annotation.SimpleEntityCreationMetadataProvider;
+import org.protege.editor.owl.model.user.DefaultUserNameProvider;
+import org.protege.editor.owl.model.user.UserNamePreferencesManager;
+import org.protege.editor.owl.model.util.ISO8601Formatter;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -42,8 +62,11 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     public CustomOWLEntityFactory(OWLModelManager mngr) {
         this.mngr = mngr;
-        metadataProvider = new SimpleEntityCreationMetadataProvider(
-                new DefaultUserNameProvider(),
+        Preferences preferences = PreferencesManager.getInstance().
+				getApplicationPreferences(UserNamePreferencesManager.PREFERENCES_KEY);
+		metadataProvider = new SimpleEntityCreationMetadataProvider(
+                new DefaultUserNameProvider(
+                		new UserNamePreferencesManager(preferences)),
                 new ISO8601Formatter()
         );
     }
