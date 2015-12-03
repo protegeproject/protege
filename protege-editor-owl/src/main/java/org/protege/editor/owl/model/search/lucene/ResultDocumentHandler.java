@@ -10,6 +10,7 @@ import org.apache.lucene.document.Document;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
@@ -36,10 +37,12 @@ public class ResultDocumentHandler extends AbstractDocumentHandler {
 
     @Override
     public void handle(SearchCategory category, Document doc) {
-        final OWLEntity subject = getOWLEntity(doc.get(IndexField.ENTITY_IRI));
-        ResultDocument resultDocument = createResultDocument(category, doc, subject);
-        SearchResult searchResult = new SearchResult(resultDocument, createEmptySearchResultMatch());
-        builder.add(searchResult);
+        Optional<OWLEntity> subject = getOWLEntity(doc.get(IndexField.ENTITY_IRI));
+        if (subject.isPresent()) {
+            ResultDocument resultDocument = createResultDocument(category, doc, subject.get());
+            SearchResult searchResult = new SearchResult(resultDocument, createEmptySearchResultMatch());
+            builder.add(searchResult);
+        }
     }
 
     private ResultDocument createResultDocument(SearchCategory category, Document doc, OWLEntity subject) {
@@ -57,9 +60,9 @@ public class ResultDocumentHandler extends AbstractDocumentHandler {
         return doc.get(fieldName);
     }
 
-    private OWLEntity getOWLEntity(String identifier) {
+    private Optional<OWLEntity> getOWLEntity(String identifier) {
         OWLEntityFinder finder = editorKit.getOWLModelManager().getOWLEntityFinder();
-        return finder.getEntities(IRI.create(identifier)).iterator().next(); // XXX Whatever...
+        return finder.getEntities(IRI.create(identifier)).stream().findFirst();
     }
 
     private ImmutableList<SearchResultMatch> createEmptySearchResultMatch() {
