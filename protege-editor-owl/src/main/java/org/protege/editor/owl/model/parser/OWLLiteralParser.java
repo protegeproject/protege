@@ -5,6 +5,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 
@@ -14,10 +16,10 @@ import java.util.regex.Pattern;
 public class OWLLiteralParser {
 
     private static final String FLOAT_PATTERN = "(\\+|-)?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)([Ee](\\+|-)?[0-9]+)?(f|F)?|(\\+|-)?INF|NaN";
-    public static final LiteralParser FLOAT_LITERAL_PARSER = new LiteralParser(Pattern.compile(FLOAT_PATTERN), OWL2Datatype.XSD_FLOAT);
+    public static final LiteralParser FLOAT_LITERAL_PARSER = new LiteralParser(Pattern.compile(FLOAT_PATTERN), OWL2Datatype.XSD_FLOAT, s -> s);
 
     private static final String BOOLEAN_PATTERN = "true|false";
-    private static final LiteralParser BOOLEAN_LITERAL_PARSER = new LiteralParser(Pattern.compile(BOOLEAN_PATTERN, Pattern.CASE_INSENSITIVE), OWL2Datatype.XSD_BOOLEAN);
+    private static final LiteralParser BOOLEAN_LITERAL_PARSER = new LiteralParser(Pattern.compile(BOOLEAN_PATTERN), OWL2Datatype.XSD_BOOLEAN, String::toLowerCase);
     private static final LiteralParser INTEGER_LITERAL_PARSER = new LiteralParser(OWL2Datatype.XSD_INTEGER);
     private static final LiteralParser DECIMAL_LITERAL_PARSER = new LiteralParser(OWL2Datatype.XSD_DECIMAL);
 
@@ -53,22 +55,26 @@ public class OWLLiteralParser {
 
     private static class LiteralParser {
 
-        private Pattern pattern;
+        private final Pattern pattern;
 
-        private OWL2Datatype datatype;
+        private final OWL2Datatype datatype;
+
+        private final Function<String, String> normalisation;
 
         private LiteralParser(OWL2Datatype datatype) {
-            this(datatype.getPattern(), datatype);
+            this(datatype.getPattern(), datatype, s -> s);
         }
 
-        protected LiteralParser(Pattern pattern, OWL2Datatype datatype) {
+        protected LiteralParser(Pattern pattern, OWL2Datatype datatype, Function<String, String> normalisation) {
             this.pattern = pattern;
             this.datatype = datatype;
+            this.normalisation = normalisation;
         }
 
         public Optional<OWLLiteral> parse(String value, OWLDataFactory dataFactory) {
-            if(pattern.matcher(value).matches()) {
-                return Optional.of(dataFactory.getOWLLiteral(value, datatype));
+            String normalisedValue = normalisation.apply(value);
+            if(pattern.matcher(normalisedValue).matches()) {
+                return Optional.of(dataFactory.getOWLLiteral(normalisedValue, datatype));
             }
             else {
                 return Optional.absent();

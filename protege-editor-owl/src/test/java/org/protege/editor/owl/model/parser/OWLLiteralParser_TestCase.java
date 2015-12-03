@@ -33,16 +33,37 @@ public class OWLLiteralParser_TestCase {
         assertThat(literal.getDatatype().getBuiltInDatatype(), is(equalTo(datatype)));
     }
 
+    private void assertThatLiteralValueIs(OWLLiteral literal, String value) {
+        assertThat(literal.getLiteral(), is(value));
+    }
+
+    @Test
+    public void shouldParseZeroAsInteger() {
+        OWLLiteral literal = parser.parseLiteral("0");
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralValueIs(literal, "0");
+    }
+
+    @Test
+    public void shouldParseOneAsInteger() {
+        OWLLiteral literal = parser.parseLiteral("1");
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralValueIs(literal, "1");
+    }
+
+
     @Test
     public void shouldParseAsInteger() {
         OWLLiteral literal = parser.parseLiteral("3");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralValueIs(literal, "3");
     }
 
     @Test
     public void shouldTrimAndParseAsInteger() {
         OWLLiteral literal = parser.parseLiteral(" 3 ");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralValueIs(literal, "3");
     }
 
     @Test
@@ -55,60 +76,70 @@ public class OWLLiteralParser_TestCase {
     public void shouldTrimAndParseAsDecimal() {
         OWLLiteral literal = parser.parseLiteral(" 33.3 ");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_DECIMAL);
+        assertThatLiteralValueIs(literal, "33.3");
     }
 
     @Test
     public void shouldParseAsFloat() {
         OWLLiteral literal = parser.parseLiteral("33.3f");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_FLOAT);
+        assertThatLiteralValueIs(literal, "33.3");
     }
 
     @Test
     public void shouldTrimParseAsFloat() {
         OWLLiteral literal = parser.parseLiteral(" 33.3f ");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_FLOAT);
+        assertThatLiteralValueIs(literal, "33.3");
     }
 
     @Test
     public void shouldParseAsFalse() {
         OWLLiteral literal = parser.parseLiteral("false");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "false");
     }
 
     @Test
     public void shouldParseCapitalisedAsFalse() {
         OWLLiteral literal = parser.parseLiteral("False");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "false");
     }
 
     @Test
     public void shouldTrimAndParseAsFalse() {
         OWLLiteral literal = parser.parseLiteral(" false ");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "false");
     }
 
     @Test
     public void shouldParseAsTrue() {
         OWLLiteral literal = parser.parseLiteral("true");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "true");
     }
 
     @Test
     public void shouldParseCapitalisedAsTrue() {
         OWLLiteral literal = parser.parseLiteral("True");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "true");
     }
 
     @Test
     public void shouldTrimAndParseAsTrue() {
         OWLLiteral literal = parser.parseLiteral(" true ");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_BOOLEAN);
+        assertThatLiteralValueIs(literal, "true");
     }
 
     @Test
     public void shouldParseAsRDFPlainLiteral() {
         OWLLiteral literal = parser.parseLiteral("Blah");
         assertThatLiteralHasDatatype(literal, OWL2Datatype.RDF_PLAIN_LITERAL);
+        assertThatLiteralValueIs(literal, "Blah");
     }
 
     @Test
