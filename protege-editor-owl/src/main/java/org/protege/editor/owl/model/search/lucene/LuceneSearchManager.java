@@ -14,19 +14,25 @@ import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.apache.lucene.search.IndexSearcher;
-import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -127,6 +133,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
+            indexer.start();
             indexer.doIndex(editorKit, progress -> fireIndexingProgressed(progress));
             indexer.close();
             long t1 = System.currentTimeMillis();
@@ -157,16 +164,36 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         long t0 = System.currentTimeMillis();
         logger.info("Updating search index...");
         try {
-            Set<OWLClass> affectedClasses = new HashSet<>();
+            indexer.restart();
             for (OWLOntologyChange change : changes) {
+                OWLAxiom changedAxiom = change.getAxiom();
                 OWLOntology sourceOntology = change.getOntology();
-                for (OWLEntity entity : change.getSignature()) {
-                    if (entity instanceof OWLClass) {
-                        affectedClasses.add((OWLClass) entity);
+                if (change instanceof RemoveAxiom) {
+                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                        if (subject instanceof IRI) {
+                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
+                            if (entity.isPresent()) {
+                                indexer.doDelete(entity.get());
+                            }
+                        }
+                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
+                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
+                        indexer.doDelete(entity);
                     }
-                }
-                for (OWLClass changedClass : affectedClasses) {
-                    indexer.doUpdate(editorKit, sourceOntology, changedClass);
+                } else if (change instanceof AddAxiom) {
+                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                        if (subject instanceof IRI) {
+                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
+                            if (entity.isPresent()) {
+                                indexer.doAdd(editorKit, sourceOntology, entity.get());
+                            }
+                        }
+                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
+                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
+                        indexer.doAdd(editorKit, sourceOntology, entity);
+                    }
                 }
             }
             indexer.close();
@@ -190,7 +217,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
-        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED) || event.isType(EventType.ENTITY_RENDERING_CHANGED);
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
     }
 
     @Override

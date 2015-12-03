@@ -12,7 +12,6 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -39,7 +38,7 @@ public abstract class AbstractLuceneIndexer {
 
     private final Directory indexDirectory;
 
-    private IndexWriterConfig writerConfig;
+    private final Analyzer textAnalyzer;
 
     private IndexWriter writer;
 
@@ -48,18 +47,22 @@ public abstract class AbstractLuceneIndexer {
     }
 
     public AbstractLuceneIndexer(Analyzer analyzer) {
+        textAnalyzer = analyzer;
         indexDirectory = setupIndexDirectory();
-        writerConfig = new IndexWriterConfig(analyzer);
-        writerConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
     }
 
     public void start() throws IOException {
         if (writer == null) {
+            IndexWriterConfig writerConfig = new IndexWriterConfig(textAnalyzer);
             writer = new IndexWriter(indexDirectory, writerConfig);
         }
     }
 
     public void restart() throws IOException {
+        if (writer != null && writer.isOpen()) {
+            writer.close();
+        }
+        IndexWriterConfig writerConfig = new IndexWriterConfig(textAnalyzer);
         writer = new IndexWriter(indexDirectory, writerConfig);
     }
 
@@ -88,16 +91,23 @@ public abstract class AbstractLuceneIndexer {
         }
     }
 
-    public void doUpdate(final OWLEditorKit editorKit, OWLOntology ontology, OWLEntity entity) throws IOException {
-        doUpdating(new SearchContext(editorKit), ontology, entity);
+    public void doAdd(final OWLEditorKit editorKit, OWLOntology ontology, OWLEntity entity) throws IOException {
+        doAdding(new SearchContext(editorKit), ontology, entity);
     }
 
-    private void doUpdating(SearchContext context, OWLOntology ontology, OWLEntity entity) throws IOException {
-        writer.deleteDocuments(new Term(IndexField.ENTITY_IRI, getEntityId(entity)));
+    private void doAdding(SearchContext context, OWLOntology ontology, OWLEntity entity) throws IOException {
         writer.addDocument(createEntityDocument(entity, context));
         for (OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology)) {
             writer.addDocument(createAnnotationDocument(entity, annotation, context));
         }
+    }
+
+    public void doDelete(OWLEntity entity) throws IOException {
+        doDeleting(entity);
+    }
+
+    private void doDeleting(OWLEntity entity) throws IOException {
+        writer.deleteDocuments(new Term(IndexField.ENTITY_IRI, getEntityId(entity)));
     }
 
     private int percentage(int progress, int total) {
