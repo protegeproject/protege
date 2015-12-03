@@ -1,26 +1,19 @@
 package org.protege.editor.owl.model.entity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.annotation.EntityCreationMetadataProvider;
-import org.protege.editor.owl.model.annotation.SimpleEntityCreationMetadataProvider;
-import org.protege.editor.owl.model.user.DefaultUserNameProvider;
-import org.protege.editor.owl.model.user.UserNamePreferencesManager;
-import org.protege.editor.owl.model.util.ISO8601Formatter;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -57,18 +50,9 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private LabelDescriptor labelDescriptor;
 
-    private final EntityCreationMetadataProvider metadataProvider;
-
 
     public CustomOWLEntityFactory(OWLModelManager mngr) {
         this.mngr = mngr;
-        Preferences preferences = PreferencesManager.getInstance().
-				getApplicationPreferences(UserNamePreferencesManager.PREFERENCES_KEY);
-		metadataProvider = new SimpleEntityCreationMetadataProvider(
-                new DefaultUserNameProvider(
-                		new UserNamePreferencesManager(preferences)),
-                new ISO8601Formatter()
-        );
     }
 
 
@@ -211,9 +195,6 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
         changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
-
-        List<OWLOntologyChange> metadataChanges = metadataProvider.getEntityCreationMetadataChanges(entity, mngr.getActiveOntology(), df);
-        changes.addAll(metadataChanges);
 
         return changes;
     }
