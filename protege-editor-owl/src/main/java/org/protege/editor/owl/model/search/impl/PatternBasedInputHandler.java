@@ -15,11 +15,11 @@ import com.google.common.collect.ImmutableList;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public class PatternBasedInputHandler extends SearchInputHandlerBase {
+public class PatternBasedInputHandler extends SearchInputHandlerBase<List<Pattern>> {
 
     private ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
 
-    public List<Pattern> getSearchPattern() {
+    public List<Pattern> getQueryObject() {
         return builder.build();
     }
 
