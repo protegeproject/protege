@@ -18,13 +18,13 @@ public class QueryRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryRunner.class);
 
-    private AtomicLong currentSearchId;
+    private AtomicLong mutexId;
 
-    public QueryRunner(AtomicLong searchId) {
-        currentSearchId = searchId;
+    public QueryRunner(AtomicLong mutexId) {
+        this.mutexId = mutexId;
     }
 
-    public void execute(Long searchId, IterableSearchQuery searchQueries, AbstractDocumentHandler handler, SearchProgressListener listener)
+    public void execute(Long searchId, SearchQueries searchQueries, AbstractDocumentHandler handler, SearchProgressListener listener)
             throws IOException, SearchInterruptionException {
         int counter = 1;
         for (SearchQuery searchQuery : searchQueries) {
@@ -43,7 +43,7 @@ public class QueryRunner {
     }
 
     private boolean isLatestSearch(long searchId) {
-        return searchId == currentSearchId.get();
+        return searchId == mutexId.get();
     }
 
     public interface SearchProgressListener {

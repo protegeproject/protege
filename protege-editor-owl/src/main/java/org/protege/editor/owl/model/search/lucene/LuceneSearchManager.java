@@ -229,11 +229,11 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
                 }
             });
         }
-        BatchQuery batchQuery = prepareQuery(searchString);
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), batchQuery, searchResultHandler));
+        SearchQueries searchQueries = prepareQuery(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchQueries, searchResultHandler));
     }
 
-    public BatchQuery prepareQuery(String searchString) {
+    public SearchQueries prepareQuery(String searchString) {
         QueryBasedInputHandler handler = new QueryBasedInputHandler(this);
         searchStringParser.parse(searchString, handler);
         return handler.getSearchQuery();
@@ -242,24 +242,24 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private class SearchCallable implements Runnable {
 
         private long searchId;
-        private BatchQuery batchQuery;
+        private SearchQueries searchQueries;
         private SearchResultHandler searchResultHandler;
         private QueryRunner queryRunner = new QueryRunner(lastSearchId);
 
-        private SearchCallable(long searchId, BatchQuery batchQuery, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, SearchQueries searchQueries, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.batchQuery = batchQuery;
+            this.searchQueries = searchQueries;
             this.searchResultHandler = searchResultHandler;
         }
 
         @Override
         public void run() {
-            logger.debug("Starting search " + searchId + " (pattern: " + batchQuery + ")");
+            logger.debug("Starting search " + searchId + " (pattern: " + searchQueries + ")");
             long searchStartTime = System.currentTimeMillis();
             fireSearchStarted();
             ResultDocumentHandler documentHandler = new ResultDocumentHandler(editorKit);
             try {
-                queryRunner.execute(searchId, batchQuery, documentHandler, progress -> fireSearchProgressed(progress));
+                queryRunner.execute(searchId, searchQueries, documentHandler, progress -> fireSearchProgressed(progress));
             }
             catch (SearchInterruptionException e) {
                 return; // search terminated prematurely

@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
  * Bio-Medical Informatics Research Group<br>
  * Date: 06/11/2015
  */
-public class BatchQuery implements IterableSearchQuery {
+public class SearchQueries implements Iterable<SearchQuery> {
 
     private ImmutableList.Builder<SearchQuery> builder = new ImmutableList.Builder<>();
 
@@ -22,7 +22,6 @@ public class BatchQuery implements IterableSearchQuery {
         return builder.build();
     }
 
-    @Override
     public int size() {
         return getQueries().size();
     }
