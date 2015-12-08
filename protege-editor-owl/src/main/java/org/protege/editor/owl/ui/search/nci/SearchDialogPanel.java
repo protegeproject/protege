@@ -12,17 +12,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import com.google.common.base.Optional;
 
@@ -74,8 +70,9 @@ public class SearchDialogPanel extends JPanel {
 
     @SuppressWarnings("serial")
     public static JDialog createDialog(JComponent parent, OWLEditorKit editorKit) {
-        JFrame parentFrame = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent);
-        final JDialog dialog = new JDialog(parentFrame, "Search", Dialog.ModalityType.MODELESS);
+//        JFrame parentFrame = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent);
+//        final JDialog dialog = new JDialog(parentFrame, "Search", Dialog.ModalityType.MODELESS);
+        final JDialog dialog = new JDialog(null, "Search", Dialog.ModalityType.MODELESS);
 
         final SearchDialogPanel searchDialogPanel = new SearchDialogPanel(editorKit);
         searchDialogPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -91,16 +88,6 @@ public class SearchDialogPanel extends JPanel {
         dialog.setContentPane(searchDialogPanel);
         dialog.setResizable(true);
         dialog.pack();
-        dialog.addWindowFocusListener(new WindowFocusListener() {
-            @Override
-            public void windowLostFocus(WindowEvent e) {
-                dialog.setVisible(false);
-            }
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                // NO-OP
-            }
-        });
         return dialog;
     }
 }
