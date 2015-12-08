@@ -16,6 +16,7 @@ import org.protege.editor.owl.model.search.lucene.AbstractLuceneIndexer;
 import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.QueryRunner;
 import org.protege.editor.owl.model.search.lucene.ResultDocumentHandler;
+import org.protege.editor.owl.model.search.lucene.SearchQueries;
 
 import org.apache.lucene.search.IndexSearcher;
 import org.semanticweb.owlapi.model.OWLException;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -168,38 +170,38 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
                 }
             });
         }
-        UnionQuerySet query = prepareQuery(searchString);
+        UserQueries query = prepareQuery(searchString);
         lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), query, searchResultHandler));
     }
 
-    private UnionQuerySet prepareQuery(String searchString) {
+    private UserQueries prepareQuery(String searchString) {
         NciQueryBasedInputHandler handler = new NciQueryBasedInputHandler(this);
         searchStringParser.parse(searchString, handler);
-        return handler.getSearchQuery();
+        return handler.getQueryObject();
     }
 
     private class SearchCallable implements Runnable {
 
         private long searchId;
-        private UnionQuerySet searchQuery;
+        private UserQueries userQueries;
         private SearchResultHandler searchResultHandler;
         private QueryRunner queryRunner = new QueryRunner(lastSearchId);
 
-        private SearchCallable(long searchId, UnionQuerySet searchQuery, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, UserQueries userQueries, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.searchQuery = searchQuery;
+            this.userQueries = userQueries;
             this.searchResultHandler = searchResultHandler;
         }
 
         @Override
         public void run() {
-            logger.info("Starting search " + searchId + "\n" + searchQuery);
+            logger.info("Starting search " + searchId + "\n" + userQueries);
             SearchResultManager resultManager = new SearchResultManager();
             long searchStartTime = System.currentTimeMillis();
             fireSearchStarted();
             try {
-                for (AbstractQuerySet queryElement : searchQuery) {
-                    runQuery(queryElement, resultManager);
+                for (Entry<SearchQueries, Boolean> queryEntry : userQueries) {
+                    runQuery(queryEntry.getKey(), queryEntry.getValue(), resultManager);
                 }
             }
             catch (SearchInterruptionException e) {
@@ -218,28 +220,11 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
             showResults(results, searchResultHandler);
         }
 
-        private void runQuery(AbstractQuerySet queryElement, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
-            if (queryElement instanceof QuerySet) {
-                runQuery((QuerySet) queryElement, resultManager);
-            } else if (queryElement instanceof LinkedQuerySet) {
-                runQuery((LinkedQuerySet) queryElement, resultManager);
-            }
-        }
-
-        private void runQuery(QuerySet querySet, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
+        private void runQuery(SearchQueries searchQueries, boolean isLinked, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
             ResultDocumentHandler documentHandler = createDocumentHandler();
-            queryRunner.execute(searchId, querySet, documentHandler, progress -> fireSearchProgressed(progress));
+            queryRunner.execute(searchId, searchQueries, documentHandler, progress -> fireSearchProgressed(progress));
             Set<SearchResult> searchResults = documentHandler.getSearchResults();
-            resultManager.addSearchResults(searchResults, false);
-        }
-
-        private void runQuery(LinkedQuerySet linkedQuerySet, final SearchResultManager resultManager) throws IOException, SearchInterruptionException {
-            for (QuerySet querySet : linkedQuerySet) {
-                ResultDocumentHandler documentHandler = createDocumentHandler();
-                queryRunner.execute(searchId, querySet, documentHandler, progress -> fireSearchProgressed(progress));
-                Set<SearchResult> searchResults = documentHandler.getSearchResults();
-                resultManager.addSearchResults(searchResults, true);
-            }
+            resultManager.addSearchResults(searchResults, isLinked);
         }
 
         private ResultDocumentHandler createDocumentHandler() {

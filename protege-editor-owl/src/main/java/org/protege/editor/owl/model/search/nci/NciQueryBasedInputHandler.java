@@ -5,18 +5,19 @@ import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchInputHandlerBase;
 import org.protege.editor.owl.model.search.SearchKeyword;
 import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
+import org.protege.editor.owl.model.search.lucene.SearchQueries;
 import org.protege.editor.owl.model.search.lucene.SearchQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NciQueryBasedInputHandler extends SearchInputHandlerBase {
+public class NciQueryBasedInputHandler extends SearchInputHandlerBase<UserQueries> {
 
-    private UnionQuerySet unionQuery = new UnionQuerySet();
+    private UserQueries userQueries = new UserQueries();
 
     private LuceneSearcher searcher;
 
-    private AbstractQuerySet placeholder;
+    private SearchQueries placeholder;
 
     public NciQueryBasedInputHandler(LuceneSearcher searcher) {
         this.searcher = searcher;
@@ -31,8 +32,9 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase {
         return builders;
     }
 
-    public UnionQuerySet getSearchQuery() {
-        return unionQuery;
+    @Override
+    public UserQueries getQueryObject() {
+        return userQueries;
     }
 
     private void handle(SearchInput searchInput) {
@@ -45,14 +47,14 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase {
 
     @Override
     public void handle(SearchKeyword searchKeyword) {
-        QuerySet querySet = new QuerySet();
+        SearchQueries searchQueries = new SearchQueries();
         for (SearchQueryBuilder builder : getBuilders()) {
             if (builder.isBuilderFor(searchKeyword)) {
                 builder.add(searchKeyword);
-                querySet.add(builder.build());
+                searchQueries.add(builder.build());
             }
         }
-        placeholder = querySet;
+        placeholder = searchQueries;
     }
 
     @Override
@@ -69,24 +71,24 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase {
     public void handle(OrSearch orSearch) {
         for (SearchInput searchGroup : orSearch.getSearchGroup()) {
             handle(searchGroup);
-            unionQuery.add(placeholder);
+            userQueries.add(placeholder, false);
         }
     }
 
     public void handle(AndSearch andSearch) {
-        LinkedQuerySet linkedQuerySet = new LinkedQuerySet();
         for (SearchKeyword keyword : andSearch) {
             handle(keyword);
-            linkedQuerySet.add((QuerySet) placeholder);
+            userQueries.add(placeholder, true);
         }
-        placeholder = linkedQuerySet;
     }
 
     public void handle(NestedSearch nestedSearch) {
+        SearchQueries searchQueries = new SearchQueries();
         SearchQueryBuilder builder = new NciQueryForNestedAnnotationBuilder(searcher);
         for (SearchKeyword keyword : nestedSearch) {
             builder.add(keyword);
+            searchQueries.add(builder.build());
         }
-        placeholder = new QuerySet(builder.build());
+        placeholder = searchQueries;
     }
 }
