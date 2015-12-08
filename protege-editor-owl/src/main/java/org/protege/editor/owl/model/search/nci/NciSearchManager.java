@@ -12,7 +12,6 @@ import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
-import org.protege.editor.owl.model.search.lucene.AbstractLuceneIndexer;
 import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.QueryRunner;
 import org.protege.editor.owl.model.search.lucene.ResultDocumentHandler;
@@ -58,6 +57,8 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     private SearchStringParser searchStringParser = new NciSearchStringParser();
 
     private ProgressMonitor progressMonitor;
+
+    private NciThesaurusIndexer indexer = new NciThesaurusIndexer();
 
     private IndexSearcher indexSearcher;
 
@@ -127,7 +128,7 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            AbstractLuceneIndexer indexer = new NciThesaurusIndexer();
+            indexer.start();
             indexer.doIndex(editorKit, progress -> fireIndexingProgressed(progress));
             indexer.close();
             long t1 = System.currentTimeMillis();
