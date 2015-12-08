@@ -35,7 +35,7 @@ public class PluginManager {
 
     public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-5.0.url";
 
-    public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/plugins.repository";
+    public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/update-info/5.0.0/plugins.repository";
 
     private static enum SearchType {
         UPDATES_ONLY,
