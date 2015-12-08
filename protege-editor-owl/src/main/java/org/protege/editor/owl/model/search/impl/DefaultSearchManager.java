@@ -172,7 +172,7 @@ public class DefaultSearchManager implements SearchManager, SearchSettingsListen
     private List<Pattern> prepareSearchPattern(String searchString) {
         PatternBasedInputHandler handler = new PatternBasedInputHandler();
         searchStringParser.parse(searchString, handler);
-        return handler.getSearchPattern();
+        return handler.getQueryObject();
     }
 
     private class SearchCallable implements Runnable {

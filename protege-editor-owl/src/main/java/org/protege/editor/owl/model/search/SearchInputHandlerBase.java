@@ -6,7 +6,7 @@ package org.protege.editor.owl.model.search;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public class SearchInputHandlerBase implements SearchInputHandler {
+public abstract class SearchInputHandlerBase<E> implements SearchInputHandler {
 
     @Override
     public void handle(SearchKeyword searchKeyword) {
@@ -17,4 +17,6 @@ public class SearchInputHandlerBase implements SearchInputHandler {
     public void handle(CompoundKeyword compoundKeyword) {
         // NO-OP
     }
+
+    public abstract E getQueryObject();
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public class QueryBasedInputHandler extends SearchInputHandlerBase {
+public class QueryBasedInputHandler extends SearchInputHandlerBase<SearchQueries> {
 
     private List<SearchQueryBuilder> builders = new ArrayList<>();
 
@@ -24,8 +24,9 @@ public class QueryBasedInputHandler extends SearchInputHandlerBase {
         builders.add(new QueryForFilteredAnnotationBuilder(searcher));
     }
 
-    public BatchQuery getSearchQuery() {
-        BatchQuery batchQuery = new BatchQuery();
+    @Override
+    public SearchQueries getQueryObject() {
+        SearchQueries batchQuery = new SearchQueries();
         for (SearchQueryBuilder builder : builders) {
             SearchQuery searchQuery = builder.build();
             batchQuery.add(searchQuery);

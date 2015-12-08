@@ -236,7 +236,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     public SearchQueries prepareQuery(String searchString) {
         QueryBasedInputHandler handler = new QueryBasedInputHandler(this);
         searchStringParser.parse(searchString, handler);
-        return handler.getSearchQuery();
+        return handler.getQueryObject();
     }
 
     private class SearchCallable implements Runnable {
