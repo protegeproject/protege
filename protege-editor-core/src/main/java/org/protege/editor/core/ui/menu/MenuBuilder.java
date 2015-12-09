@@ -134,7 +134,7 @@ public class MenuBuilder {
 
             actions.add(action);
         } catch (Exception e) {
-            logger.warn("Error building menu: {}", e);
+            logger.warn("Error building menu: {}", e.getMessage(), e);
         } catch (NoClassDefFoundError noClass) {
             logger.error("Error loading menu plugin {} ({})", plugin.getId(), plugin.getName());
         }
