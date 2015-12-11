@@ -17,7 +17,7 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase<UserQuerie
 
     private LuceneSearcher searcher;
 
-    private SearchQueries placeholder;
+    private boolean isLinked = false;
 
     public NciQueryBasedInputHandler(LuceneSearcher searcher) {
         this.searcher = searcher;
@@ -54,7 +54,7 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase<UserQuerie
                 searchQueries.add(builder.build());
             }
         }
-        placeholder = searchQueries;
+        userQueries.add(searchQueries, isLinked);
     }
 
     @Override
@@ -70,15 +70,15 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase<UserQuerie
 
     public void handle(OrSearch orSearch) {
         for (SearchInput searchGroup : orSearch.getSearchGroup()) {
+            isLinked = false;
             handle(searchGroup);
-            userQueries.add(placeholder, false);
         }
     }
 
     public void handle(AndSearch andSearch) {
         for (SearchKeyword keyword : andSearch) {
+            isLinked = true;
             handle(keyword);
-            userQueries.add(placeholder, true);
         }
     }
 
@@ -89,6 +89,6 @@ public class NciQueryBasedInputHandler extends SearchInputHandlerBase<UserQuerie
             builder.add(keyword);
             searchQueries.add(builder.build());
         }
-        placeholder = searchQueries;
+        userQueries.add(searchQueries, isLinked);
     }
 }
