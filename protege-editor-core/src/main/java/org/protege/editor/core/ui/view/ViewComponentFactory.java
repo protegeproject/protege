@@ -38,7 +38,20 @@ public class ViewComponentFactory implements ComponentFactory {
             }
         }
         // we need to return a fully functioning view so that the close button works
-        return new View(getEmptyPlugin(pluginId, "Couldn't load view plugin: " + pluginId), workspace);
+        String msg = String.format(
+                "<html><body>" +
+                        "<div style='font-weight: bold; padding-bottom: 20px;'>This view could not be loaded because its content is " +
+                        "provided by a view " +
+                        "plugin that could not be found.</div>" +
+                        "<div style='padding-bottom: 20px;'>" +
+                        "This problem may have been caused because the plugin is not installed or it may have been " +
+                        "caused by incompatible changes to the plugin in question.</div>" +
+                        "<div>Please check that the relevant plugin is installed.  You can also try resetting " +
+                        "the tab to its default state to see if " +
+                        "this solves the issue.</div>" +
+                "</body></html>"
+        );
+        return new View(getEmptyPlugin(pluginId, msg), workspace);
     }
 
     public ViewComponentPlugin getEmptyPlugin(final String pluginId, final String message) {
@@ -56,14 +69,11 @@ public class ViewComponentFactory implements ComponentFactory {
                 public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
                     return new ViewComponent(){
 
-                        /**
-                         * 
-                         */
-                        private static final long serialVersionUID = -4964511834485031332L;
-
                         public void initialise() throws Exception {
                             setLayout(new BorderLayout());
-                            add(new JLabel(message), BorderLayout.CENTER);
+                            JLabel msgLabel = new JLabel(message, SwingConstants.CENTER);
+                            msgLabel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+                            add(msgLabel, BorderLayout.CENTER);
                         }
 
                         public void dispose() throws Exception {
