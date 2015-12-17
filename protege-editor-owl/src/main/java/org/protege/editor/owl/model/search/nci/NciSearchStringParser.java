@@ -9,6 +9,8 @@ import org.protege.editor.owl.model.search.SearchStringParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jgoodies.common.base.Strings;
+
 /**
  * Author: Josef Hardi <josef.hardi@stanford.edu><br>
  * Stanford University<br>
@@ -26,8 +28,10 @@ public class NciSearchStringParser implements SearchStringParser {
     public void parse(String searchString, SearchInputHandler handler) {
         OrSearch orSearch = new OrSearch();
         for (String searchGroupString : searchString.split("\\|")) { // divide per group
-            SearchInput searchGroup = parseSearchGroup(searchGroupString.trim());
-            orSearch.add(searchGroup);
+            if (!Strings.isBlank(searchGroupString)) {
+                SearchInput searchGroup = parseSearchGroup(searchGroupString.trim());
+                orSearch.add(searchGroup);
+            }
         }
         handler.handle(orSearch);
     }
@@ -45,8 +49,10 @@ public class NciSearchStringParser implements SearchStringParser {
     private AndSearch parseAndSearchString(String andSearchString) {
         AndSearch andSearch = new AndSearch();
         for (String keywordString : andSearchString.split("&")) {
-            SearchKeyword keyword = parseSearchString(keywordString);
-            andSearch.add(keyword);
+            if (!Strings.isBlank(keywordString)) {
+                SearchKeyword keyword = parseSearchString(keywordString.trim());
+                andSearch.add(keyword);
+            }
         }
         return andSearch;
     }
