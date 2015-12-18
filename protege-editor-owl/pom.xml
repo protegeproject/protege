@@ -149,6 +149,9 @@
                         </Embed-Dependency>
                         <Export-Package>
                             org.protege.editor.owl.*;version=${project.version}
+                            org.protege.xmlcatalog.*,
+                            org.apache.lucene.*,
+                            org.apache.commons.*
                         </Export-Package>
                         <_exportcontents>
                             org.protege.xmlcatalog.*,
