@@ -4,12 +4,15 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
+import org.protege.editor.core.ui.preferences.PreferencesPanelLayoutManager;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocation;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +44,13 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     private JRadioButton addFreshAxiomsToSubjectDefiningOntology;
 
 
+    private JCheckBox autoExpandEnabledCheckBox;
+
+    private JSpinner autoExpandMaxDepthSpinner;
+
+    private JSpinner autoExpandMaxChildSizeSpinner;
+
+
     public void applyChanges() {
         ExpressionEditorPreferences.getInstance().setCheckDelay((Integer) checkDelaySpinner.getModel().getValue());
 
@@ -55,6 +65,11 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         else if (addFreshAxiomsToSubjectDefiningOntology.isSelected()) {
             axiomPrefs.setFreshAxiomLocation(FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY);
         }
+
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
+        prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
+        prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
     }
 
     private void createUI() {
@@ -94,88 +109,25 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         panel.addGroupComponent(addFreshAxiomsToSubjectDefiningOntology);
 
 
+        // Tree preferences
+
+        OWLTreePreferences prefs = OWLTreePreferences.getInstance();
+        autoExpandEnabledCheckBox = new JCheckBox("Expand trees by default", prefs.isAutoExpandEnabled());
+        autoExpandMaxDepthSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionDepthLimit(), 1, Integer.MAX_VALUE, 1));
+        autoExpandMaxChildSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionChildLimit(), 1, Integer.MAX_VALUE, 1));
+
+        panel.addSeparator();
+        panel.addGroup("");
+        panel.addGroupComponent(autoExpandEnabledCheckBox);
+        panel.addGroup("Number of levels shown");
+        panel.addGroupComponent(autoExpandMaxDepthSpinner);
+        panel.addGroup("Maximum child cut off");
+        panel.addGroupComponent(autoExpandMaxChildSizeSpinner);
 
     }
 
     public void initialise() throws Exception {
-
-
         createUI();
-//        // editor box
-//
-//        JPanel editorDelayPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-//        final int checkDelay = ExpressionEditorPreferences.getInstance().getCheckDelay();
-//        checkDelaySpinner = new JSpinner(new SpinnerNumberModel(checkDelay, 0, 10000, 50));
-//        checkDelaySpinner.setToolTipText(SECOND_TOOL_TIP);
-//        editorDelayPanel.add(new JLabel("Editor delay (ms)"));
-//        editorDelayPanel.add(checkDelaySpinner);
-//
-//
-////        Box editorPanel = new Box(BoxLayout.PAGE_AXIS);
-////        editorPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Editor"),
-////                                                                 BorderFactory.createEmptyBorder(7, 7, 7, 7)));
-////        editorPanel.add(editorDelayPanel);
-//
-//
-//        // search box
-//
-//        OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
-//        findDelaySpinner = new JSpinner(new SpinnerNumberModel(prefs.getSearchDelay(), 0, 10000, 50));
-//        findDelaySpinner.setToolTipText(SECOND_TOOL_TIP);
-//
-//        JPanel findDelayPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-//        findDelayPanel.add(new JLabel("Search delay (ms)"));
-//        findDelayPanel.add(findDelaySpinner);
-//
-//        Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
-//        alwaysCentreDialogsCheckbox = new JCheckBox("Centre dialogs on workspace");
-//        alwaysCentreDialogsCheckbox.setSelected(appPrefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false));
-//        detachedWindowsFloat = new JCheckBox("Detached windows float");
-//        detachedWindowsFloat.setSelected(appPrefs.getBoolean(View.DETACHED_WINDOWS_FLOAT, true));
-//
-////        editorPanel.setAlignmentX(LEFT_ALIGNMENT);
-////        searchPanel.setAlignmentX(LEFT_ALIGNMENT);
-//
-//
-//        // Dialogs
-//        Box dialogsPanel = new Box(BoxLayout.PAGE_AXIS);
-////        dialogsPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Dialogs"),
-////                BorderFactory.createEmptyBorder(7, 7, 7, 7)));
-//        alwaysCentreDialogsCheckbox.setAlignmentX(LEFT_ALIGNMENT);
-//        detachedWindowsFloat.setAlignmentX(LEFT_ALIGNMENT);
-//        dialogsPanel.add(alwaysCentreDialogsCheckbox);
-//        dialogsPanel.add(detachedWindowsFloat);
-//
-//
-//        // Axioms
-//        Box axiomsPanel = new Box(BoxLayout.PAGE_AXIS);
-////        axiomsPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Axioms"),
-////                BorderFactory.createEmptyBorder(7, 7, 7, 7)));
-//        ButtonGroup axiomButtonGroup = new ButtonGroup();
-//        addFreshAxiomsToActiveOntologyRadioButton = new JRadioButton("Add fresh axioms to active ontology",
-//                FreshAxiomLocationPreferences.getPreferences().getFreshAxiomLocation() == FreshAxiomLocation.ACTIVE_ONTOLOGY);
-//        addFreshAxiomsToSubjectDefiningOntology = new JRadioButton("Add fresh axioms to subject defining ontology",
-//                FreshAxiomLocationPreferences.getPreferences().getFreshAxiomLocation() == FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY);
-//        addFreshAxiomsToSubjectDefiningOntology.setToolTipText("Adds fresh axioms to the ontology where their subject is defined.  " +
-//                "If no such ontology exists then axioms are added to the active ontology.");
-//        axiomButtonGroup.add(addFreshAxiomsToActiveOntologyRadioButton);
-//        axiomButtonGroup.add(addFreshAxiomsToSubjectDefiningOntology);
-//        axiomsPanel.add(addFreshAxiomsToActiveOntologyRadioButton);
-//        axiomsPanel.add(addFreshAxiomsToSubjectDefiningOntology);
-//
-//
-//
-//        JComponent holder = new JPanel(new GridBagLayout());//new Box(BoxLayout.PAGE_AXIS);
-//        holder.add(new JLabel("Editor"),       getConstraints(0, 0, 1, 1));
-//        holder.add(editorDelayPanel,       getConstraints(1, 0, 1, 1));
-//        holder.add(new JSeparator(), getConstraints(0, 1, 2, 1));
-//        holder.add(new JLabel("Windows"), getConstraints(0, 2, 1, 1));
-//        holder.add(dialogsPanel,      getConstraints(1, 2, 1, 1));
-//        holder.add(new JSeparator(),  getConstraints(0, 3, 2, 1));
-//        holder.add(new JLabel("Axioms"), getConstraints(0, 4, 1, 1));
-//        holder.add(axiomsPanel,       getConstraints(1, 4, 1, 1));
-//        holder.setMinimumSize(new Dimension(800, 600));
-//        add(holder, BorderLayout.NORTH);
     }
 
     public void dispose() {

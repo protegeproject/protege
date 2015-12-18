@@ -1,18 +1,36 @@
 package org.protege.editor.owl.model.entity;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>
@@ -57,7 +75,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 	    else if (OWLDatatype.class.isAssignableFrom(type)){
 	        return type.cast(factory.getOWLDatatype(iri));
 	    }
-	    return null;
+	    throw new RuntimeException("Missing branch for entity type: " + type.getSimpleName());
 	}
 
 
@@ -95,17 +113,11 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         try {
 
         	EntityNameInfo name = generateName(type, shortName, baseURI);
-
             T entity = getOWLEntity(mngr.getOWLDataFactory(), type, name.getIri());
-
             List<OWLOntologyChange> changes = getChanges(entity, name);
-
-            return new OWLEntityCreationSet<T>(entity, changes);
+            return new OWLEntityCreationSet<>(entity, changes);
         }
-        catch (URISyntaxException e) {
-            throw new OWLEntityCreationException(e);
-        }
-        catch (AutoIDException e) {
+        catch (URISyntaxException | AutoIDException e) {
             throw new OWLEntityCreationException(e);
         }
     }
@@ -170,7 +182,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
 
     protected <T extends OWLEntity > List<OWLOntologyChange> getChanges(T entity, EntityNameInfo name) {
-    	List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+    	List<OWLOntologyChange> changes = new ArrayList<>();
 
         if (isGenerateIDLabel() && name.getId() != null) {
             changes.addAll(createLabel(entity, name.getId()));
@@ -183,6 +195,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLDataFactory df = mngr.getOWLDataFactory();
         OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
         changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
+
         return changes;
     }
 
