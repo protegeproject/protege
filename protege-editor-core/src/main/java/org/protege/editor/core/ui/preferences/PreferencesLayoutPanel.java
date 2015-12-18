@@ -38,6 +38,20 @@ public class PreferencesLayoutPanel extends JComponent {
         currentRow++;
     }
 
+    public void addVerticalPadding() {
+        backingPanel.add(Box.createVerticalStrut(12),
+                new GridBagConstraints(
+                        0, currentRow,
+                        3, 1,
+                        100, 0,
+                        GridBagConstraints.BASELINE_LEADING,
+                        GridBagConstraints.HORIZONTAL,
+                        INSETS,
+                        0, 0
+                ));
+        currentRow++;
+    }
+
     public void addGroup(String groupLabel) {
         JLabel label = new JLabel(groupLabel);
         label.setFont(label.getFont().deriveFont(Font.BOLD));
@@ -54,6 +68,19 @@ public class PreferencesLayoutPanel extends JComponent {
     }
 
     public void addGroupComponent(JComponent component) {
+        Insets insets;
+        if(currentRow == 0) {
+            insets = INSETS;
+        }
+        else if(component instanceof JRadioButton) {
+            insets = INSETS;
+        }
+        else if(component instanceof JCheckBox) {
+            insets = INSETS;
+        }
+        else {
+            insets = new Insets(4, 0, 4, 0);
+        }
         backingPanel.add(component,
                 new GridBagConstraints(
                         1, currentRow,
@@ -61,7 +88,7 @@ public class PreferencesLayoutPanel extends JComponent {
                         100, 0,
                         GridBagConstraints.BASELINE_LEADING,
                         GridBagConstraints.NONE,
-                        INSETS,
+                        insets,
                         0, 0
                 ));
         if(component instanceof JTextField) {
@@ -79,7 +106,7 @@ public class PreferencesLayoutPanel extends JComponent {
                         100, 0,
                         GridBagConstraints.BASELINE_LEADING,
                         GridBagConstraints.NONE,
-                        new Insets(0, 20, 0, 0),
+                        new Insets(0, 50, 0, 0),
                         0, 0
                 ));
         if(component instanceof JTextField) {

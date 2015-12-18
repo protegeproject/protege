@@ -24,15 +24,24 @@ public class JavaBackedPreferencesImpl implements Preferences {
     public static final String PROTEGE_PREFS_KEY = "PROTEGE_PREFERENCES";
 
     private java.util.prefs.Preferences preferences;
+    
+    private final String setID, prefsID; 
 
     public JavaBackedPreferencesImpl(String setID, String prefsID) {
-        preferences = java.util.prefs.Preferences.userRoot().node(PROTEGE_PREFS_KEY).node(setID).node(prefsID);
+    	this.setID = setID;
+    	this.prefsID = prefsID;
+    	init();
     }
 
+    
+    private void init() {
+    	preferences = java.util.prefs.Preferences.userRoot().node(PROTEGE_PREFS_KEY).node(setID).node(prefsID);
+    }
 
     public void clear() {
-        try {
-            preferences.clear();
+        try {  
+        	preferences.removeNode();;
+            init();
         }
         catch (BackingStoreException e) {
             throw new RuntimeException(e);
