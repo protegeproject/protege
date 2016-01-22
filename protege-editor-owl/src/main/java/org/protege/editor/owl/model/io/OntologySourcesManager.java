@@ -1,8 +1,11 @@
 package org.protege.editor.owl.model.io;
 
 import org.protege.editor.core.Disposable;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -30,11 +33,15 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
     public static final String ID = OntologySourcesManager.class.getName();
 
+    private static final Logger logger = LoggerFactory.getLogger(OntologySourcesManager.class);
+
     private Map<URI, Long> timestamps = new HashMap<URI, Long>();
 
     private Timer timer;
 
     private OWLModelManager mngr;
+
+
 
     private List<OntologySourcesListener> listeners = new ArrayList<OntologySourcesListener>();
 
@@ -77,37 +84,62 @@ public class OntologySourcesManager extends IOListener implements Disposable {
     }
 
 
-    protected Set<OWLOntology> getChangedOntologies() {
-        Set<OWLOntology> changedOntologies = new HashSet<OWLOntology>();
+    private Set<OWLOntology> getChangedOntologies() {
+        logger.debug(LogBanner.start("Ontology Sources Manager"));
+        Set<OWLOntology> changedOntologies = new HashSet<>();
         for (OWLOntology ont : mngr.getOntologies()){
             URI uri = mngr.getOntologyPhysicalURI(ont);
-            final long currentTimestamp = getTimestamp(uri);
-            if (timestamps.get(uri) != null && timestamps.get(uri) < currentTimestamp){
+            logger.debug("Checking to see if ontology document has changed.");
+            logger.debug("    Ontology: {}", ont.getOntologyID());
+            logger.debug("    Document: {}", uri);
+            final Optional<Long> externalTimestamp = getTimestampOfUri(uri);
+            final Optional<Long> internalTimestamp = getInternalTimestamp(uri);
+            logger.debug("    Last modified in Protege: {}", internalTimestamp.orElse(0L));
+            logger.debug("    Last modified externally: {}", externalTimestamp.orElse(0L));
+            if (externalTimestamp.isPresent() && internalTimestamp.isPresent()
+                    && externalTimestamp.get() > internalTimestamp.get()) {
+                logger.debug("    Ontology document has changed externally");
                 changedOntologies.add(ont);
             }
+            else {
+                logger.debug("    Ontology document has not changed externally");
+            }
         }
+        logger.debug(LogBanner.end());
         return changedOntologies;
     }
 
+    private Optional<Long> getInternalTimestamp(URI documentURI) {
+        Long cachedValue = timestamps.get(documentURI);
+        if(cachedValue == null) {
+            // Not modified
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(cachedValue);
+        }
+    }
 
     private void update(URI uri) {
         stopTimer();
-        long timestamp = getTimestamp(uri);
-        if (timestamp >= 0){
-            timestamps.put(uri, timestamp);
+        Optional<Long> timestamp = getTimestampOfUri(uri);
+        if (timestamp.isPresent()){
+            timestamps.put(uri, timestamp.get());
         }
         startTimer();
     }
 
 
-    private long getTimestamp(URI uri){
-        if ("file".equals(uri.getScheme())){
-            File file = new File(uri);
-            if (file.exists()){
-                return file.lastModified();
-            }
+    private Optional<Long> getTimestampOfUri(URI uri){
+        if (!"file".equals(uri.getScheme())) {
+            return Optional.empty();
         }
-        return -1;
+        File file = new File(uri);
+        long value = file.lastModified();
+        if(value == 0) {
+            return Optional.empty();
+        }
+        return Optional.of(value);
     }
 
 
@@ -151,9 +183,9 @@ public class OntologySourcesManager extends IOListener implements Disposable {
         stopTimer();
         for (OWLOntology ont : onts){
             URI uri = mngr.getOntologyPhysicalURI(ont);
-            long timestamp = getTimestamp(uri);
-            if (timestamp >= 0){
-                timestamps.put(uri, timestamp);
+            Optional<Long> timestamp = getTimestampOfUri(uri);
+            if (timestamp.isPresent()){
+                timestamps.put(uri, timestamp.get());
             }
         }
         startTimer();

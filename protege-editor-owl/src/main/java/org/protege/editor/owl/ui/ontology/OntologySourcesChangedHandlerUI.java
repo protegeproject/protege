@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.ontology;
 
 import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLWorkspace;
@@ -9,6 +10,8 @@ import org.protege.editor.owl.model.io.OntologySourcesManager;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -42,6 +45,9 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
     private boolean handlingChange = false;
 
     private OWLOntologySelectorPanel2 ontologiesPanel;
+
+    private static  final Logger logger = LoggerFactory.getLogger(OntologySourcesChangedHandlerUI.class);
+    ;
 
 
     public OntologySourcesChangedHandlerUI(final OWLWorkspace workspace) {
