@@ -15,6 +15,7 @@ public class LogRecordModel extends AbstractListModel<LogRecordElement> {
 
     public void clear() {
         logRecordList.clear();
+        fireContentsChanged(this, 0, 0);
     }
 
     @Override
