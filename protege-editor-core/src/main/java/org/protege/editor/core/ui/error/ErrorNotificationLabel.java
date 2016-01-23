@@ -19,35 +19,17 @@ import java.awt.event.MouseEvent;
  */
 public class ErrorNotificationLabel extends JLabel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1816375999125772505L;
 
-    private final Workspace workspace;
-
-    private final LogView logView;
-
-
-    public ErrorNotificationLabel(Workspace workspace) {
+    public ErrorNotificationLabel() {
         super(Icons.getIcon("error.png"));
-        this.workspace = workspace;
-        logView = new LogViewImpl();
         setToolTipText("Error Log: Click to view errors");
-        setupMouseHandler();
-        setVisible(false);
-
-    }
-
-
-    private void setupMouseHandler() {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 showErrors();
             }
         });
+        setVisible(false);
     }
-
 
     private void showErrors() {
         ProtegeApplication.showLogView();
