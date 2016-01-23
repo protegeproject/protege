@@ -154,7 +154,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         super.initialise();
 
-        errorNotificationLabel = new ErrorNotificationLabel(this);
+        errorNotificationLabel = new ErrorNotificationLabel();
 
         errorLogListener = new ErrorLogListener() {
             @Override
