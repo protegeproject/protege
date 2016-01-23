@@ -18,7 +18,7 @@ public class LogViewImpl implements LogView {
     public LogViewImpl() {
         view = new JPanel(new BorderLayout());
         view.setPreferredSize(new Dimension(800, 600));
-        JList<LogRecord> list = new JList<>(logRecordModel = new LogRecordModel());
+        JList<LogRecordElement> list = new JList<>(logRecordModel = new LogRecordModel());
         view.add(new JScrollPane(list));
 
         list.setFont(new Font("monospaced", Font.PLAIN, 12));
@@ -39,4 +39,5 @@ public class LogViewImpl implements LogView {
     public void append(LogRecord logRecord) {
         SwingUtilities.invokeLater(() -> logRecordModel.append(logRecord));
     }
+
 }

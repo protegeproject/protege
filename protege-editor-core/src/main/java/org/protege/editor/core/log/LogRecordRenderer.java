@@ -12,7 +12,7 @@ import java.util.Optional;
  * Stanford Center for Biomedical Informatics Research
  * 04/11/15
  */
-public class LogRecordRenderer implements ListCellRenderer<LogRecord> {
+public class LogRecordRenderer implements ListCellRenderer<LogRecordElement> {
 
     private final DefaultListCellRenderer defaultRenderer;
 
@@ -23,7 +23,8 @@ public class LogRecordRenderer implements ListCellRenderer<LogRecord> {
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends LogRecord> list, LogRecord record, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends LogRecordElement> list, LogRecordElement element, int index, boolean isSelected, boolean cellHasFocus) {
+        LogRecord record = element.getLogRecord();
         JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, record, index, isSelected, cellHasFocus);
         String formattedText = getFormattedText(record);
         label.setText(formattedText);
