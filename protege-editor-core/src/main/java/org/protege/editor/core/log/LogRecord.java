@@ -85,6 +85,7 @@ public class LogRecord {
                 .addValue(timestamp)
                 .addValue(formattedMessage)
                 .addValue(threadName)
+                .addValue(throwableInfo)
                 .toString();
     }
 }

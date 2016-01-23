@@ -9,9 +9,9 @@ import java.util.List;
  * Stanford Center for Biomedical Informatics Research
  * 04/11/15
  */
-public class LogRecordModel extends AbstractListModel<LogRecord> {
+public class LogRecordModel extends AbstractListModel<LogRecordElement> {
 
-    private final List<LogRecord> logRecordList = new ArrayList<>();
+    private final List<LogRecordElement> logRecordList = new ArrayList<>();
 
     public void clear() {
         logRecordList.clear();
@@ -23,12 +23,12 @@ public class LogRecordModel extends AbstractListModel<LogRecord> {
     }
 
     @Override
-    public LogRecord getElementAt(int index) {
+    public LogRecordElement getElementAt(int index) {
         return logRecordList.get(index);
     }
 
     public void append(LogRecord record) {
-        logRecordList.add(record);
+        logRecordList.add(new LogRecordElement(record));
         int lastIndex = logRecordList.size() - 1;
         fireIntervalAdded(this, lastIndex, lastIndex);
     }
