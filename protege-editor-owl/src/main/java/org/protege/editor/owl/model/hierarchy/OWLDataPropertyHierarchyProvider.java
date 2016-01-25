@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -60,5 +61,28 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
 
     protected OWLDataProperty getRoot() {
         return getManager().getOWLDataFactory().getOWLTopDataProperty();
+    }
+
+    @Override
+    protected Collection<OWLDataProperty> getSuperProperties(OWLDataProperty subProperty, Set<OWLOntology> ontologies) {
+        return EntitySearcher.getSuperProperties(subProperty, ontologies)
+                .stream()
+                .filter(p -> !p.isAnonymous())
+                .map(p -> (OWLDataProperty) p)
+                .collect(toList());
+    }
+
+    @Override
+    protected Collection<OWLDataProperty> getSubProperties(OWLDataProperty superProp, Set<OWLOntology> ontologies) {
+        List<OWLDataProperty> result = new ArrayList<>();
+        for(OWLOntology ont : ontologies) {
+            ont.getDataSubPropertyAxiomsForSuperProperty(superProp)
+                    .stream()
+                    .map(OWLSubPropertyAxiom::getSubProperty)
+                    .filter(p -> !p.isAnonymous())
+                    .map(p -> (OWLDataProperty) p)
+                    .forEach(result::add);
+        }
+        return result;
     }
 }
