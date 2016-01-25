@@ -34,12 +34,6 @@ import java.util.Set;
 public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntity> extends AbstractOWLSelectionViewComponent
  implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities {
 
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5980351290853739210L;
-
     private OWLObjectTree<E> tree;
 
     private TreeSelectionListener listener;
@@ -112,11 +106,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         });
         hierarchyDeleter = new OWLObjectHierarchyDeleter<E>(getOWLEditorKit(),
                                                                    getHierarchyProvider(),
-                                                                   new OWLEntitySetProvider<E>() {
-                                                                       public Set<E> getEntities() {
-                                                                           return new HashSet<E>(tree.getSelectedOWLObjects());
-                                                                       }
-                                                                   },
+                                                                    () -> new HashSet<>(tree.getSelectedOWLObjects()),
                                                                    getCollectiveTypeName());
         setShowDeprecatedEntities(true);
 
@@ -159,14 +149,12 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     private void ensureSelection() {
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-                final E entity = getSelectedEntity();
-                if (entity != null) {
-                    E treeSel = tree.getSelectedOWLObject();
-                    if (treeSel == null || !treeSel.equals(entity)) {
-                        tree.setSelectedOWLObject(entity);
-                    }
+        SwingUtilities.invokeLater(() -> {
+            final E entity = getSelectedEntity();
+            if (entity != null) {
+                E treeSel = tree.getSelectedOWLObject();
+                if (treeSel == null || !treeSel.equals(entity)) {
+                    tree.setSelectedOWLObject(entity);
                 }
             }
         });
@@ -189,11 +177,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         // Hook up a selection listener so that we can transmit our
         // selection to the main selection model
 
-        listener = new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                transmitSelection();
-            }
-        };
+        listener = e -> transmitSelection();
         tree.addTreeSelectionListener(listener);
     }
 
