@@ -20,12 +20,6 @@ import java.util.Set;
 public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLProperty> extends AbstractOWLEntityHierarchyViewComponent<O>
         implements Findable<O>, Deleteable, CreateNewChildTarget, CreateNewSiblingTarget {
 
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 9069497093520748684L;
-    
     protected abstract OWLSubPropertyAxiom getSubPropertyAxiom(O child, O parent);
 
 
@@ -49,7 +43,6 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         addAction(new AbstractOWLTreeAction<O>("Add sub property", 
         									   getSubIcon(),
                                                getTree().getSelectionModel()) {
-			private static final long serialVersionUID = -1108739210585116570L;
 			public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
@@ -62,7 +55,6 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         		                               getSibIcon(),
                                                getTree().getSelectionModel()){
 
-        	private static final long serialVersionUID = 29239289622664679L;
 			public void actionPerformed(ActionEvent event) {
                 createNewSibling();
             }
@@ -75,13 +67,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 		         									getDeleteIcon(),
 		         									getOWLEditorKit(),
 		         									getHierarchyProvider(),
-		         									new OWLEntitySetProvider<O>(){
-        	                                           public Set<O> getEntities() {
-        	                                        	   return getSelectedEntities();
-        	                                           }
-                                                     }) {
-
-        	private static final long serialVersionUID = -2505868423392875972L;
+                                                    () -> getSelectedEntities()) {
 
         	protected String getPluralDescription() {
         		return "properties";
@@ -198,7 +184,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         if (creationSet != null) {
             // Combine the changes that are required to create the OWLAnnotationProperty, with the
             // changes that are required to make it a sibling property.
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLOntology ont = getOWLModelManager().getActiveOntology();
             for (O parentProperty : getHierarchyProvider().getParents(property)) {
