@@ -208,7 +208,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     		}
 
     		final Set<P> result = new HashSet<P>();
-    		for (E subProp : EntitySearcher.getSubProperties(object, ontologies)){
+    		for (E subProp : getSubProperties(object, ontologies)){
     			// Don't add the sub property if it is a parent of
     			// itself - i.e. prevent cycles
     			if (!subProp.isAnonymous() &&
@@ -224,8 +224,10 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     	}
     }
 
+	protected  abstract Collection<P> getSubProperties(P object, Set<OWLOntology> ontologies);
 
-    public Set<P> getEquivalents(P object) {
+
+	public Set<P> getEquivalents(P object) {
 //    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
@@ -264,7 +266,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     		}
 
     		Set<P> result = new HashSet<>();
-    		for (E prop : EntitySearcher.getSuperProperties(object, ontologies)) {
+    		for (E prop : getSuperProperties(object, ontologies)) {
     			if (!prop.isAnonymous()) {
     				result.add((P) prop);
     			}
@@ -280,7 +282,8 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
 //    		getReadLock().unlock();
     	}
     }
-    
+
+	protected abstract Collection<P> getSuperProperties(P subProperty, Set<OWLOntology> ontologies);
     
     private boolean isReferenced(P e) {
     	return e.accept(new IsReferencePropertyExpressionVisitor());
