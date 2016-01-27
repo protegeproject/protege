@@ -227,7 +227,7 @@ public class PluginRegistryImpl implements PluginRegistry {
                         }
                     }
                 } catch (PluginDocumentParseException e) {
-                    logger.info("{}{}", pad(depth + 1), e.getMessage());
+                    logger.info(AUTO_UPDATE, "{}{}", pad(depth + 1), e.getMessage());
                     readRegistry(node, depth + 1);
                 }
             }
