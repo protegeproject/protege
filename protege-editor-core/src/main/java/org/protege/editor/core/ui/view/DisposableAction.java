@@ -14,10 +14,6 @@ import javax.swing.*;
  */
 public abstract class DisposableAction extends AbstractAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2598213860026917513L;
 
 
     protected DisposableAction(String name, Icon icon) {

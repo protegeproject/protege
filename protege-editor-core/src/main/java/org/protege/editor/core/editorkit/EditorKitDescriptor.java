@@ -16,11 +16,6 @@ import java.util.Properties;
  */
 public final class EditorKitDescriptor implements Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3407968599072820006L;
-
     private Properties properties;
 
     public static final String LABEL_KEY = "EDITOR_KIT_LABEL";

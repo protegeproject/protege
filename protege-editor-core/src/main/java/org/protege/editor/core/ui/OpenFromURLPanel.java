@@ -30,10 +30,6 @@ import java.util.TreeSet;
  * Date: 12-May-2007<br><br>
  */
 public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8869065983080068694L;
 
     private JTextField uriField;
 
@@ -70,10 +66,6 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
         bookmarksHolder.setBorder(ComponentFactory.createTitledBorder("Bookmarks"));
         add(bookmarksHolder);
         bookmarksList = new MList() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 6590889767286900162L;
 
 
             protected void handleAdd() {

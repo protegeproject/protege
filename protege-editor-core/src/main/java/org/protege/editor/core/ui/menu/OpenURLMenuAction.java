@@ -21,11 +21,7 @@ import java.net.URL;
  */
 public class OpenURLMenuAction extends ProtegeAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7224073671284579890L;
-    private URL address;
+        private URL address;
 
 
     public OpenURLMenuAction(URL address) {

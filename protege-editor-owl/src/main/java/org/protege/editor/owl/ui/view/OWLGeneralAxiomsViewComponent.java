@@ -16,11 +16,7 @@ import java.awt.*;
  */
 public class OWLGeneralAxiomsViewComponent extends AbstractActiveOntologyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8134326184738945842L;
-    private OWLFrameList<OWLOntology> list;
+        private OWLFrameList<OWLOntology> list;
 
 
     protected void initialiseOntologyView() throws Exception {

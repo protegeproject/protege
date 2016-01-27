@@ -336,10 +336,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Split vertically",
                                                                                    Icons.getIcon(
                                                                                            SPLIT_VERTICALLY_ICON_NAME)) {
-            /**
-                                                                                             * 
-                                                                                             */
-                                                                                            private static final long serialVersionUID = 8586844910392022364L;
 
             public void actionPerformed(ActionEvent e) {
                 splitVertically();
@@ -349,10 +345,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
                                                                                    Icons.getIcon(
                                                                                            SPLIT_HORIZONTALLY_ICON_NAME)) {
 
-            /**
-                                                                                             * 
-                                                                                             */
-                                                                                            private static final long serialVersionUID = 650343120768163122L;
 
             public void actionPerformed(ActionEvent e) {
                 splitHorizontally();
@@ -360,10 +352,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Float",
                                                                                    Icons.getIcon(FLOAT_ICON_NAME)) {
-            /**
-                                                                                     * 
-                                                                                     */
-                                                                                    private static final long serialVersionUID = 680867093090160266L;
 
             public void actionPerformed(ActionEvent e) {
                 copyAndFloatView();
@@ -371,10 +359,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Close",
                                                                                    Icons.getIcon(CLOSE_ICON_NAME)) {
-            /**
-                                                                                     * 
-                                                                                     */
-                                                                                    private static final long serialVersionUID = 7953501606173990976L;
 
             public void actionPerformed(ActionEvent e) {
                 closeView();

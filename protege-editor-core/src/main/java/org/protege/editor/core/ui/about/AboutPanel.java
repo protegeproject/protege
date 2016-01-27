@@ -22,10 +22,6 @@ import java.awt.*;
  */
 public class AboutPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6652956832712711211L;
 
 
     public AboutPanel() {

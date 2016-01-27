@@ -19,10 +19,6 @@ import java.net.URI;
  * Date: Dec 11, 2008<br><br>
  */
 public class ParseErrorPanel<O extends Throwable> extends ErrorPanel<O>{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5370795163855807014L;
 
 
 	public ParseErrorPanel(final ErrorExplainer.ErrorExplanation<O> oErrorExplanation, URI loc) {

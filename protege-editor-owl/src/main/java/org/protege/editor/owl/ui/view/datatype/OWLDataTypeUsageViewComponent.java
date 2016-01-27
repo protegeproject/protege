@@ -14,11 +14,7 @@ import java.awt.*;
  */
 public class OWLDataTypeUsageViewComponent extends AbstractOWLDataTypeViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 902719132500051541L;
-    private UsagePanel usagePanel;
+        private UsagePanel usagePanel;
 
 
     protected OWLDatatype updateView(OWLDatatype property) {

@@ -20,11 +20,7 @@ import java.util.List;
  */
 public class RemovableObjectList<O> extends MList {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 531442360907676404L;
-    private ListCellRenderer rendererDelegate;
+        private ListCellRenderer rendererDelegate;
 
 
     public RemovableObjectList() {
@@ -138,10 +134,6 @@ public class RemovableObjectList<O> extends MList {
     private class MutableObjectListModel extends DefaultListModel {
 
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 1902205916588877553L;
 
 
         public MutableObjectListModel() {

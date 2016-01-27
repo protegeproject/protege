@@ -82,10 +82,6 @@ public class ViewMenuAction extends ProtegeDynamicAction {
 
             for (final ViewComponentPlugin plugin : viewPlugins) {
                 Action action = new AbstractAction(plugin.getLabel()) {
-                    /**
-                     * 
-                     */
-                    private static final long serialVersionUID = 282453625948165209L;
 
                     public void actionPerformed(ActionEvent e) {
             	        WorkspaceViewManager viewManager = workspace.getViewManager();

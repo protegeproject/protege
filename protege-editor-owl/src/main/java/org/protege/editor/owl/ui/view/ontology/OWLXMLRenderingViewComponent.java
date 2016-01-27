@@ -14,10 +14,6 @@ import java.io.Writer;
  */
 public class OWLXMLRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4981062527906093700L;
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         OWLXMLRenderer renderer = new OWLXMLRenderer();

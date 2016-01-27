@@ -17,11 +17,7 @@ import java.awt.*;
  */
 public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7821046818687645046L;
-    private OWLFrameList<OWLAnnotationSubject> list;
+        private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseClassView() throws Exception {

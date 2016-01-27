@@ -22,11 +22,7 @@ import java.awt.*;
  */
 public class OWLDataTypeDescriptionViewComponent extends AbstractOWLDataTypeViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4103047350123901528L;
-    private OWLFrameList<OWLDatatype> list;
+        private OWLFrameList<OWLDatatype> list;
 
 
     public void initialiseView() throws Exception {

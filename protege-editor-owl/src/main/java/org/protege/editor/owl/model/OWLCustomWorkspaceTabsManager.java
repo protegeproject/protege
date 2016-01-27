@@ -44,11 +44,7 @@ public class OWLCustomWorkspaceTabsManager extends CustomWorkspaceTabsManager {
 
     private class CustomOWLTab extends OWLWorkspaceViewsTab {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 8673441963480431647L;
-        private String label;
+                private String label;
 
         public CustomOWLTab(String label) {
             this.label = label;

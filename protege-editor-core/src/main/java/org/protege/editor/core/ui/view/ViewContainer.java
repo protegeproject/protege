@@ -122,10 +122,6 @@ public class ViewContainer extends JComponent implements Disposable {
 
     private static class TabViewContainerSplitPane extends ViewSplitPane {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 2614735582419262419L;
 
         public TabViewContainerSplitPane(int orientation) {
             super(orientation);

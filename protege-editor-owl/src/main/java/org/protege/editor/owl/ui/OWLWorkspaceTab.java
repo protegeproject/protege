@@ -16,10 +16,6 @@ import org.protege.editor.owl.model.OWLModelManager;
  */
 public abstract class OWLWorkspaceTab extends WorkspaceTab {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3774699119141720161L;
 
 
     public OWLEditorKit getOWLEditorKit() {

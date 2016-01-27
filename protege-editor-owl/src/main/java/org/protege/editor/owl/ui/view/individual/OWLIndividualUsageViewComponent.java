@@ -14,11 +14,7 @@ import java.awt.*;
  */
 public class OWLIndividualUsageViewComponent extends AbstractOWLIndividualViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 109616458042037198L;
-    private UsagePanel usagePanel;
+        private UsagePanel usagePanel;
 
 
     public void initialiseIndividualsView() throws Exception {

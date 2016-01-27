@@ -10,10 +10,6 @@ import java.util.List;
 */
 public class CheckTableModel<O> extends DefaultTableModel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 836875586342144500L;
 
 
     CheckTableModel(String name) {

@@ -22,10 +22,6 @@ import java.util.Optional;
  */
 public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClassHierarchyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1125962405110757405L;
 
     private InferredSuperClassHierarchyProvider provider;
 

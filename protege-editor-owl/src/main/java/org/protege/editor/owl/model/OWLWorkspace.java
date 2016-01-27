@@ -448,10 +448,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         windowMenu.addSeparator();
         windowMenu.add(new AbstractAction("Refresh user interface") {
 
-            /**
-             *
-             */
-            private static final long serialVersionUID = 9136219526373256639L;
 
             public void actionPerformed(ActionEvent e) {
                 refreshComponents();
