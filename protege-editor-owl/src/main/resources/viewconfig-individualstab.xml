@@ -5,9 +5,6 @@
             <Component label="Class hierarchy">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
             </Component>
-            <Component label="Class hierarchy (inferred)">
-                <Property id="pluginId" value="org.protege.editor.owl.InferredOWLClassHierarchy"/>
-            </Component>
         </CNode>
         <CNode>
             <Component label="Individuals">
