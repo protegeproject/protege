@@ -1434,6 +1434,12 @@
         <class value="org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel"/>
     </extension>
 
+    <extension id="ui.user.prefs"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="User details"/>
+        <class value="org.protege.editor.owl.ui.preferences.UserPreferencesPanel"/>
+    </extension>
+
     <!-- Move axioms kits -->
 
     <extension id="MoveAxiomsByReference"
