@@ -19,10 +19,6 @@ import java.util.Optional;
  */
 public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6315136229629963526L;
 
 
     protected boolean isOWLDataPropertyView() {

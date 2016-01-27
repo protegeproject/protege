@@ -23,10 +23,6 @@ import java.util.List;
  */
 public class OntologyFormatPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1207904671457290130L;
 
     private JComboBox<OWLDocumentFormat> formatComboBox;
 

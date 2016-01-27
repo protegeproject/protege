@@ -25,10 +25,6 @@ import java.util.Set;
  */
 public class FilePathPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8238154511092480343L;
 
     private String fileChooserText;
 

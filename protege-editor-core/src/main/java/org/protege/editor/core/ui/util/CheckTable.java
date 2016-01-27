@@ -39,10 +39,6 @@ public class CheckTable<O> extends JTable {
     private List<ListSelectionListener> checkSelListeners = new ArrayList<ListSelectionListener>();
 
     private DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 5322154037663255057L;
 
         public Component getTableCellRendererComponent(JTable jTable, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             if (col == 0){
@@ -108,10 +104,6 @@ public class CheckTable<O> extends JTable {
 
         getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "checkSelection");
         getActionMap().put("checkSelection", new AbstractAction(){
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 6324092579357208331L;
 
             public void actionPerformed(ActionEvent event) {
                 checkSelection();

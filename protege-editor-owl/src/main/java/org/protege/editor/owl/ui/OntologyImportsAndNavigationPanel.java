@@ -29,10 +29,6 @@ import java.awt.event.MouseEvent;
  */
 public class OntologyImportsAndNavigationPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7247887353859536512L;
 
     private OWLEditorKit owlEditorKit;
 

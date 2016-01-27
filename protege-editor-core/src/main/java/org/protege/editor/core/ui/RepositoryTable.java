@@ -16,11 +16,6 @@ import java.net.URI;
  */
 public class RepositoryTable extends JTable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 343836249221539974L;
-
     public RepositoryTable(OntologyRepository repository) {
         setModel(new RepositoryTableModel(repository));
         setRowHeight(getRowHeight() + 4);

@@ -17,10 +17,6 @@ import java.awt.event.ActionEvent;
  */
 public class SaveAsAction extends ProtegeAction {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 8969543617298643589L;
 
 
     public void actionPerformed(ActionEvent e) {

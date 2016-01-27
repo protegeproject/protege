@@ -27,10 +27,6 @@ import java.util.List;
  */
 public class GatherOntologiesPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1595484840905361754L;
 
     private OWLEditorKit owlEditorKit;
 
@@ -76,10 +72,6 @@ public class GatherOntologiesPanel extends JPanel {
             String label = OWLOntologyCellRenderer.getOntologyLabelText(ont, owlModelManager);
 
             final JCheckBox cb = new JCheckBox(new AbstractAction(label) {
-                /**
-                 * 
-                 */
-                private static final long serialVersionUID = 2401533090682630308L;
 
                 public void actionPerformed(ActionEvent e) {
                     if (!ontologiesToSave.contains(ont)) {

@@ -26,11 +26,7 @@ import java.awt.event.ContainerListener;
  */
 public class ViewSplitPane extends JSplitPane {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1459313580478275977L;
-    private static final int DEFAULT_DIVIDER_SIZE = 6;
+        private static final int DEFAULT_DIVIDER_SIZE = 6;
 
 
     public ViewSplitPane(int orientation) {

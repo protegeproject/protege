@@ -17,11 +17,7 @@ import java.awt.*;
  */
 public class OWLDataPropertyAnnotationsViewComponent extends AbstractOWLDataPropertyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 5747488981633619150L;
-    private OWLFrameList<OWLAnnotationSubject> list;
+        private OWLFrameList<OWLAnnotationSubject> list;
 
 
     public void initialiseView() throws Exception {

@@ -33,10 +33,6 @@ import java.util.function.Predicate;
  */
 public class OWLEntitySelectorPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1535094473176412285L;
 
     private OWLEditorKit owlEditorKit;
 

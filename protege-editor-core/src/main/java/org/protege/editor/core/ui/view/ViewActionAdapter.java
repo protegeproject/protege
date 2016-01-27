@@ -16,11 +16,7 @@ import java.beans.PropertyChangeListener;
  */
 public class ViewActionAdapter extends ViewAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1409546891527527361L;
-    private DisposableAction action;
+        private DisposableAction action;
 
 
     public ViewActionAdapter(DisposableAction action) {

@@ -20,10 +20,6 @@ import org.semanticweb.owlapi.model.OWLObject;
 public abstract class AbstractOWLDataTypeViewComponent extends AbstractOWLSelectionViewComponent {
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2868427210452429514L;
 
 
     protected boolean isOWLDatatypeView() {

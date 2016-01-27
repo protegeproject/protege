@@ -36,10 +36,6 @@ public class SaveConfirmationPanel extends JPanel {
     public SaveConfirmationPanel(OWLEditorKit editorKit, Set<OWLOntology> ontologies) {
         setLayout(new BorderLayout(12, 12));
         savedOntologiesPanel = new PhysicalLocationPanel(editorKit, ontologies){
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 4961022502290441620L;
 
             public Dimension getPreferredSize() {
                 return new Dimension(600, 200);

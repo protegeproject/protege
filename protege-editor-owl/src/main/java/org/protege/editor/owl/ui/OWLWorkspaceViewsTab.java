@@ -25,10 +25,6 @@ import javax.swing.*;
  */
 public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2800648962536275497L;
 
 
     private OWLEntityDisplayProvider provider = new OWLEntityDisplayProvider() {

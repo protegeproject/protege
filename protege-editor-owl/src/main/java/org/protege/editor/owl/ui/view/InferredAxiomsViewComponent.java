@@ -25,10 +25,6 @@ import java.awt.*;
  */
 public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7129182885438253297L;
 
     private InferredAxiomsFrame frame;
 

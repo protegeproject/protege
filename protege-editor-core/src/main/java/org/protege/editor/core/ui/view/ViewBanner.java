@@ -23,10 +23,6 @@ import java.util.ArrayList;
  */
 public class ViewBanner extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2607019846677273073L;
 
     private JPanel toolBarPanel;
 

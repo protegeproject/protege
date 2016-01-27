@@ -22,10 +22,6 @@ import java.awt.*;
  */
 public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6575290959317277113L;
 
     private OWLFrameList<OWLEntity> list;
 

@@ -21,10 +21,6 @@ import java.awt.event.ActionListener;
 public class UsagePanel extends JPanel {
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6031827085477038591L;
 
     private UsageTree tree;
 

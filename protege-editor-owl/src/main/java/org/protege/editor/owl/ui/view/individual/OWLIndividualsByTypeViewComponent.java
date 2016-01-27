@@ -38,10 +38,6 @@ import java.util.Set;
 public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewComponent
         implements Findable<OWLNamedIndividual>, CreateNewTarget, RefreshableComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1839126141881937525L;
 
     private OWLObjectTree<OWLObject> tree;
 

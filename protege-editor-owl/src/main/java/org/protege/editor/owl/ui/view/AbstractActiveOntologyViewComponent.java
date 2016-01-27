@@ -20,10 +20,6 @@ import java.util.List;
  */
 public abstract class AbstractActiveOntologyViewComponent extends AbstractOWLViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4137940424821355598L;
 
     private OWLModelManagerListener owlModelManagerListener;
 

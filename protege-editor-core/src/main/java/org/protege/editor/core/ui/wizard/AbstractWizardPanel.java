@@ -24,10 +24,6 @@ import java.util.Set;
  */
 public abstract class AbstractWizardPanel extends WizardPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8512811313733522394L;
 
     private JTextArea instructionArea;
 
@@ -179,11 +175,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private class HolderPanel extends JPanel {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 5476717953072456842L;
-        private Color color;
+                private Color color;
 
 
         public HolderPanel() {

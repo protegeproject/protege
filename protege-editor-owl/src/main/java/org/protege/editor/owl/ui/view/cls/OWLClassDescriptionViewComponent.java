@@ -66,10 +66,6 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
 
     private class ConvertSelectionToEquivalentClassAction extends OWLFrameListPopupMenuAction<OWLClass> {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 8523837123917366996L;
 
 
         protected void initialise() throws Exception {
