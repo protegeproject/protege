@@ -2,6 +2,7 @@
 <configuration scan="true" scanPeriod="10 seconds">
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%highlight(%msg) %n</Pattern>
         </encoder>
