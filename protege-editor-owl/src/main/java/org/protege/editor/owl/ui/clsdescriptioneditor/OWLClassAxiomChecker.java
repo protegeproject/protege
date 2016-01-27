@@ -10,8 +10,6 @@ import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
-import javax.inject.Provider;
-
 
 /**
  * Author: Matthew Horridge<br>

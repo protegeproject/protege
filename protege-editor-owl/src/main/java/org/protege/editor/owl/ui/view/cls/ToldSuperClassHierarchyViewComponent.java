@@ -2,6 +2,11 @@ package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.AssertedSuperClassHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
+import org.semanticweb.owlapi.model.OWLClass;
+
+import java.util.Optional;
 
 
 /**
@@ -15,22 +20,14 @@ import org.protege.editor.owl.model.hierarchy.AssertedSuperClassHierarchyProvide
  */
 public class ToldSuperClassHierarchyViewComponent extends AbstractSuperClassHierarchyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8365490104528457966L;
     private AssertedSuperClassHierarchyProvider provider;
 
+    private InferredSuperClassHierarchyProvider inferredProvider;
 
     protected AbstractSuperClassHierarchyProvider getOWLClassHierarchyProvider() {
         if (provider == null) {
-//            try {
             provider = new AssertedSuperClassHierarchyProvider(getOWLModelManager());
-//                provider.setOntologies(getOWLModelManager().getActiveOntologies());
             provider.setRoot(getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass());
-//            } catch (OWLException e) {
-//                e.printStackTrace();
-//            }
         }
         return provider;
     }
@@ -38,5 +35,13 @@ public class ToldSuperClassHierarchyViewComponent extends AbstractSuperClassHier
 
     protected void performExtraInitialisation() throws Exception {
         // do nothing
+    }
+
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLClass>> getInferredHierarchyProvider() {
+        if(inferredProvider == null) {
+            inferredProvider = new InferredSuperClassHierarchyProvider(getOWLModelManager());
+        }
+        return Optional.of(inferredProvider);
     }
 }

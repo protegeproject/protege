@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.inference;
 
-import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
