@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 
 /**

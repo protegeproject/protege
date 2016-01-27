@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Matthew Horridge
@@ -85,5 +86,10 @@ public class OWLPropertyHierarchyViewComponent extends AbstractOWLEntityHierarch
     @Override
     public List<OWLEntity> find(String match) {
         return Collections.emptyList();
+    }
+
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLEntity>> getInferredHierarchyProvider() {
+        return Optional.empty();
     }
 }

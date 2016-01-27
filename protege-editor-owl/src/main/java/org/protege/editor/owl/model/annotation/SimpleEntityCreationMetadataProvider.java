@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.annotation;
 
-import org.protege.editor.owl.model.HasActiveOntology;
 import org.protege.editor.owl.model.user.UserNameProvider;
 import org.protege.editor.owl.model.util.DateFormatter;
 import org.semanticweb.owlapi.model.*;

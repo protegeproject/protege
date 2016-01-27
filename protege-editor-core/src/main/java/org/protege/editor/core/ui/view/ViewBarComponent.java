@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 
 /**
@@ -19,12 +20,7 @@ import java.awt.*;
  */
 public class ViewBarComponent extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6169543001002454514L;
-    private ViewBar viewBar;
-
+    private final ViewBar viewBar;
 
     public ViewBarComponent(String bannerText, Color bannerColor, JComponent component) {
         setLayout(new BorderLayout(3, 3));
@@ -42,5 +38,22 @@ public class ViewBarComponent extends JPanel {
 
     public void addAction(Action action) {
         viewBar.addAction(action);
+    }
+
+    public void addMode(ViewMode viewMode) {
+        viewBar.addMode(viewMode);
+    }
+
+    public Optional<ViewMode> getViewMode() {
+        return viewBar.getViewMode();
+    }
+
+    public void setViewMode(ViewMode mode) {
+        viewBar.setViewMode(mode);
+    }
+
+
+    public void addViewModeChangedHandler(ViewModeChangedHandler handler) {
+        viewBar.addViewModeChangedHandler(handler);
     }
 }

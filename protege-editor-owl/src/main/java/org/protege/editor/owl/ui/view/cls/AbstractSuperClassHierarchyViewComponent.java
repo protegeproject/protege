@@ -39,4 +39,5 @@ public abstract class AbstractSuperClassHierarchyViewComponent extends AbstractO
 
 
     protected abstract AbstractSuperClassHierarchyProvider getOWLClassHierarchyProvider();
+
 }

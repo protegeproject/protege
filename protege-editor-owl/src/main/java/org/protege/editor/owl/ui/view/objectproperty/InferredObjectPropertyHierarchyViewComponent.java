@@ -17,19 +17,12 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
  */
 public class InferredObjectPropertyHierarchyViewComponent extends OWLObjectPropertyHierarchyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -4252383144570422415L;
-    private OWLModelManagerListener l = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED ||
-                event.getType() == EventType.ONTOLOGY_CLASSIFIED ||
-                event.getType() == EventType.REASONER_CHANGED ||
-                event.getType() == EventType.ONTOLOGY_RELOADED){
-                getHierarchyProvider().setOntologies(getOWLModelManager().getActiveOntologies());
-            }
+    private OWLModelManagerListener l = event -> {
+        if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED ||
+            event.getType() == EventType.ONTOLOGY_CLASSIFIED ||
+            event.getType() == EventType.REASONER_CHANGED ||
+            event.getType() == EventType.ONTOLOGY_RELOADED){
+            getHierarchyProvider().setOntologies(getOWLModelManager().getActiveOntologies());
         }
     };
 

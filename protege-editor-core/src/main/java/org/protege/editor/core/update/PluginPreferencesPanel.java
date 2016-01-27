@@ -1,13 +1,10 @@
 package org.protege.editor.core.update;
 
-import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanel;
-import org.protege.editor.core.ui.util.ComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 

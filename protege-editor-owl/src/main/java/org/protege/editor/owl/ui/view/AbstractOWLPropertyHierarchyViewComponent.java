@@ -4,7 +4,6 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -137,7 +136,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
 
     public boolean canCreateNewChild() {
-        return getSelectedEntity() != null;
+        return isInAssertedMode() && getSelectedEntity() != null;
     }
 
 
@@ -168,7 +167,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
 
     public boolean canCreateNewSibling() {
-        return getSelectedEntity() != null && !getSelectedEntity().equals(getTopProperty());
+        return isInAssertedMode() && getSelectedEntity() != null && !getSelectedEntity().equals(getTopProperty());
     }
 
 

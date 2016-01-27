@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -14,11 +15,9 @@ import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -37,21 +36,17 @@ import java.util.Set;
 public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
         implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8712815067223088069L;
+    private static final Icon ADD_SUB_ICON = OWLIcons.getIcon("class.add.sub.png");
 
+    private static final Icon ADD_SIBLING_ICON = OWLIcons.getIcon("class.add.sib.png");
 
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track
         // of these, as this will be done by the view - i.e. we won't
         // need to dispose of these actions.0
 
-        addAction(new AbstractOWLTreeAction<OWLClass>("Add subclass", OWLIcons.getIcon("class.add.sub.png"),
+        addAction(new AbstractOWLTreeAction<OWLClass>("Add subclass", ADD_SUB_ICON,
                                                        getTree().getSelectionModel()){
-        	private static final long serialVersionUID = -4067967212391062364L;
-			
         	public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
@@ -60,11 +55,8 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             }
         }, "A", "A");
 
-        addAction(new AbstractOWLTreeAction<OWLClass>("Add sibling class", OWLIcons.getIcon("class.add.sib.png"),
+        addAction(new AbstractOWLTreeAction<OWLClass>("Add sibling class", ADD_SIBLING_ICON,
                                                  getTree().getSelectionModel()){
-
-        	private static final long serialVersionUID = 9163133195546665441L;
-
         	public void actionPerformed(ActionEvent event) {
                 createNewSibling();
             }
@@ -73,11 +65,8 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             }
         }, "A", "B");
 
-        addAction(new DeleteClassAction(getOWLEditorKit(), new OWLEntitySetProvider<OWLClass>() {
-            public Set<OWLClass> getEntities() {
-                return new HashSet<OWLClass>(getTree().getSelectedOWLObjects());
-            }
-        }), "B", "A");
+        addAction(new DeleteClassAction(getOWLEditorKit(),
+                () -> new HashSet<>(getTree().getSelectedOWLObjects())), "B", "A");
 
         getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
             public boolean canDrop(Object child, Object parent) {
@@ -134,7 +123,11 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         return getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLClass>> getInferredHierarchyProvider() {
+        return Optional.of(getOWLModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider());
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Create new target
     //
@@ -142,18 +135,19 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
 
     public boolean canCreateNew() {
-        return true;
+        return isInAssertedMode();
     }
 
 
     public boolean canCreateNewChild() {
-        return !getSelectedEntities().isEmpty();
+        return isInAssertedMode() &&
+                !getSelectedEntities().isEmpty();
     }
 
-
     public boolean canCreateNewSibling() {
-        return !getSelectedEntities().isEmpty() &&
-               !getSelectedEntity().equals(getOWLModelManager().getOWLDataFactory().getOWLThing());
+        return isInAssertedMode() &&
+                !getSelectedEntities().isEmpty() &&
+                !getSelectedEntity().equals(getOWLModelManager().getOWLDataFactory().getOWLThing());
     }
 
 

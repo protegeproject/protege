@@ -13,10 +13,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -34,15 +31,9 @@ import java.util.Set;
 public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
         implements CreateNewChildTarget, CreateNewSiblingTarget {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -2612515129566092096L;
-
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
                                                                    getTree().getSelectionModel()){
-            private static final long serialVersionUID = 9185342735327230183L;
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
@@ -70,6 +61,10 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         return getOWLModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
     }
 
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLAnnotationProperty>> getInferredHierarchyProvider() {
+        return Optional.empty();
+    }
 
     protected OWLObject updateView() {
         return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());

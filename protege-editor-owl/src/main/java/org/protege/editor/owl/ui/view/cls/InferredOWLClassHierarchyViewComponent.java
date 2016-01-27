@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -36,8 +37,13 @@ public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHie
         return getOWLModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider();
     }
 
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLClass>> getInferredHierarchyProvider() {
+        return Optional.empty();
+    }
+
     public List<OWLClass> find(String match) {
-        return new ArrayList<OWLClass>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLClasses(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLClasses(match));
     }
 
 

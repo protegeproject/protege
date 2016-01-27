@@ -1,10 +1,7 @@
 package org.protege.editor.core.ui.error;
 
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.log.LogView;
-import org.protege.editor.core.log.LogViewImpl;
 import org.protege.editor.core.ui.util.Icons;
-import org.protege.editor.core.ui.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

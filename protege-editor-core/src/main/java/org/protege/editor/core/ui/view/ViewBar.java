@@ -2,6 +2,9 @@ package org.protege.editor.core.ui.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -18,26 +21,32 @@ import java.awt.*;
  */
 public class ViewBar extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8663538018618395433L;
+    private final ViewBanner viewBanner;
 
-    private ViewBanner viewBanner;
+    private final JToolBar toolBar;
 
-    private JToolBar toolBar;
+    private final List<ViewMode> viewModes = new ArrayList<>();
 
+    private final JComboBox<ViewMode> viewModeComboBox;
+
+    private final List<ViewModeChangedHandler> viewModeChangedHandlers = new ArrayList<>();
 
     public ViewBar(String bannerText, Color bannerColor) {
         setLayout(new BorderLayout(2, 2));
         viewBanner = new ViewBanner(bannerText, bannerColor);
         add(viewBanner, BorderLayout.NORTH);
+        JPanel southPanel = new JPanel(new BorderLayout(7, 7));
         toolBar = new JToolBar();
-        add(toolBar, BorderLayout.SOUTH);
+        southPanel.add(toolBar, BorderLayout.WEST);
+        add(southPanel, BorderLayout.SOUTH);
         toolBar.setOpaque(false);
         toolBar.setFloatable(false);
         toolBar.setBorderPainted(false);
         toolBar.setBorder(null);
+        viewModeComboBox = new JComboBox<>();
+        viewModeComboBox.addActionListener(e -> fireViewModeChanged());
+        viewModeComboBox.setVisible(false);
+        southPanel.add(viewModeComboBox, BorderLayout.EAST);
     }
 
 
@@ -60,5 +69,35 @@ public class ViewBar extends JPanel {
 
     public void addSeparator() {
         toolBar.addSeparator(new Dimension(6, 6));
+    }
+
+    public void addMode(ViewMode viewMode) {
+        viewModes.add(viewMode);
+        viewModeComboBox.setModel(new DefaultComboBoxModel<>(viewModes.toArray(new ViewMode [viewModes.size()])));
+        viewModeComboBox.setVisible(!viewModes.isEmpty());
+    }
+
+    public Optional<ViewMode> getViewMode() {
+        if(viewModes.isEmpty()) {
+            return Optional.empty();
+        }
+        int selIndex = viewModeComboBox.getSelectedIndex();
+        if(selIndex == -1) {
+            return Optional.empty();
+        }
+        return Optional.of(viewModeComboBox.getItemAt(selIndex));
+    }
+
+    public void setViewMode(ViewMode viewMode) {
+        viewModeComboBox.setSelectedItem(viewMode);
+    }
+
+    public void addViewModeChangedHandler(ViewModeChangedHandler handler) {
+        viewModeChangedHandlers.add(handler);
+    }
+
+    private void fireViewModeChanged() {
+        viewModeChangedHandlers.stream()
+                .forEach(h -> h.handleViewModeChanged(getViewMode()));
     }
 }

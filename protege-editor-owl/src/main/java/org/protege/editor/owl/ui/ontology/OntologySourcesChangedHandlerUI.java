@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.ontology;
 
 import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLWorkspace;
