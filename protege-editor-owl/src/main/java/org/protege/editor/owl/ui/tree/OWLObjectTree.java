@@ -415,27 +415,29 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public void setSelectedOWLObjects(Set<N> owlObjects, boolean selectAll) {
-        if (!getSelectedOWLObjects().equals(owlObjects)){
-            clearSelection();
-            if (!owlObjects.isEmpty()){
-                final List<TreePath> paths = new ArrayList<TreePath>();
-                for (N obj : owlObjects){
-                    Set<OWLObjectTreeNode<N>> nodes = getNodes(obj);
-                    if (nodes.isEmpty()) {
-                        expandAndSelectPaths(obj, selectAll);
+        List<N> currentSelection = getSelectedOWLObjects();
+        if (currentSelection.containsAll(owlObjects) && owlObjects.containsAll(currentSelection)) {
+            return;
+        }
+        clearSelection();
+        if (!owlObjects.isEmpty()){
+            final List<TreePath> paths = new ArrayList<TreePath>();
+            for (N obj : owlObjects){
+                Set<OWLObjectTreeNode<N>> nodes = getNodes(obj);
+                if (nodes.isEmpty()) {
+                    expandAndSelectPaths(obj, selectAll);
+                }
+                paths.addAll(getPaths(obj, selectAll));
+            }
+            if (!paths.isEmpty()){
+                setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
+                // without this the selection never quite makes it onto the screen
+                // probably because the component has not been sized yet
+                SwingUtilities.invokeLater(new Runnable(){
+                    public void run() {
+                        scrollPathToVisible(paths.get(0));
                     }
-                    paths.addAll(getPaths(obj, selectAll));
-                }
-                if (!paths.isEmpty()){
-                    setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
-                    // without this the selection never quite makes it onto the screen
-                    // probably because the component has not been sized yet
-                    SwingUtilities.invokeLater(new Runnable(){
-                        public void run() {
-                            scrollPathToVisible(paths.get(0));
-                        }
-                    });
-                }
+                });
             }
         }
     }
