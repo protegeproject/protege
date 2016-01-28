@@ -6,8 +6,15 @@ package org.protege.editor.owl.model.entity;
 *
 */
 
+import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.annotation.*;
+import org.protege.editor.owl.model.user.DefaultUserNameProvider;
+import org.protege.editor.owl.model.user.UserNamePreferencesManager;
+import org.protege.editor.owl.model.user.UserPreferences;
+import org.protege.editor.owl.model.util.ISO8601Formatter;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -179,11 +186,35 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
         OWLAxiom ax = df.getOWLDeclarationAxiom(entity);
         changes.add(new AddAxiom(mngr.getActiveOntology(), ax));
 
+        changes.addAll(getEntityCreationMetadataChanges(entity));
         return changes;
     }
 
+    private <T extends OWLEntity> List<OWLOntologyChange> getEntityCreationMetadataChanges(T entity) {
+        EntityCreationMetadataProvider metadataProvider = getEntityCreationMetadataProvider();
+        return metadataProvider.getEntityCreationMetadataChanges(entity, mngr.getActiveOntology(), mngr.getOWLDataFactory());
+    }
 
-	protected IRI createIRI(String fragment, IRI baseIRI) throws URISyntaxException {
+    private EntityCreationMetadataProvider getEntityCreationMetadataProvider() {
+        Preferences metadataPreferences = EntityCreationMetadataPreferences.get();
+        EntityCreationMetadataPreferencesManager metadataPreferencesManager = new EntityCreationMetadataPreferencesManager(metadataPreferences);
+        if(metadataPreferencesManager.isCreationMetadataEnabled()) {
+            Preferences preferences = UserPreferences.get();
+            UserNamePreferencesManager userNamePreferencesManager = new UserNamePreferencesManager(preferences);
+            return new SimpleEntityCreationMetadataProvider(
+                    new DefaultUserNameAnnotationPropertyIriProvider(metadataPreferencesManager),
+                    new DefaultUserNameProvider(userNamePreferencesManager),
+                    new DefaultDateAnnotationPropertyIriProvider(metadataPreferencesManager),
+                    metadataPreferencesManager.getDateFormatter()
+            );
+        }
+        else {
+            return new NullEntityCreationMetadataProvider();
+        }
+    }
+
+
+    protected IRI createIRI(String fragment, IRI baseIRI) throws URISyntaxException {
         fragment = fragment.replace(" ", "_");
         if (baseIRI == null){
             if (useDefaultBaseIRI()){
