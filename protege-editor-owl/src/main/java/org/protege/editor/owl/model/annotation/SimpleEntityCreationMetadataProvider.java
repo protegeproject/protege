@@ -3,8 +3,10 @@ package org.protege.editor.owl.model.annotation;
 import org.protege.editor.owl.model.user.UserNameProvider;
 import org.protege.editor.owl.model.util.DateFormatter;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,13 +21,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SimpleEntityCreationMetadataProvider implements EntityCreationMetadataProvider {
 
+    private final Provider<IRI> userNameAnnotationPropertyIriProvider;
+
     private final UserNameProvider userNameProvider;
+
+    private final Provider<IRI> dateAnnotationPropertyIRIProvider;
 
     private final DateFormatter dateFormatter;
 
-    public SimpleEntityCreationMetadataProvider(UserNameProvider userNameProvider, DateFormatter dateFormatter) {
+    @Inject
+    public SimpleEntityCreationMetadataProvider(
+            Provider<IRI> userNameAnnotationPropertyIriProvider,
+            UserNameProvider userNameProvider,
+            Provider<IRI> dateAnnotationPropertyIRIProvider,
+            DateFormatter dateFormatter) {
         this.userNameProvider = checkNotNull(userNameProvider);
+        this.userNameAnnotationPropertyIriProvider = userNameAnnotationPropertyIriProvider;
         this.dateFormatter = checkNotNull(dateFormatter);
+        this.dateAnnotationPropertyIRIProvider = dateAnnotationPropertyIRIProvider;
     }
 
     @Override
@@ -38,7 +51,7 @@ public class SimpleEntityCreationMetadataProvider implements EntityCreationMetad
                     new AddAxiom(
                             targetOntology,
                             df.getOWLAnnotationAssertionAxiom(
-                                    df.getOWLAnnotationProperty(DublinCoreVocabulary.CREATOR.getIRI()),
+                                    df.getOWLAnnotationProperty(userNameAnnotationPropertyIriProvider.get()),
                                     entity.getIRI(),
                                     df.getOWLLiteral(userName.get())
                             )
@@ -47,7 +60,7 @@ public class SimpleEntityCreationMetadataProvider implements EntityCreationMetad
                     new AddAxiom(
                             targetOntology,
                             df.getOWLAnnotationAssertionAxiom(
-                                    df.getOWLAnnotationProperty(DublinCoreVocabulary.DATE.getIRI()),
+                                    df.getOWLAnnotationProperty(dateAnnotationPropertyIRIProvider.get()),
                                     entity.getIRI(),
                                     df.getOWLLiteral(dateFormatter.formatDate(date))
                             )
