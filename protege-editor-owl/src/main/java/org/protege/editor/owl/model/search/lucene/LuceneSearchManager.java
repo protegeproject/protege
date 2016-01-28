@@ -5,6 +5,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.SearchInterruptionException;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchResult;
@@ -16,6 +17,7 @@ import org.protege.editor.owl.model.search.SearchStringParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationSubject;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -32,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -133,9 +134,9 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            indexer.start();
-            indexer.doIndex(editorKit, progress -> fireIndexingProgressed(progress));
-            indexer.close();
+            indexer.doIndex(editorKit.getOWLModelManager().getActiveOntology(),
+                    new SearchContext(editorKit),
+                    progress -> fireIndexingProgressed(progress));
             long t1 = System.currentTimeMillis();
             logger.info("... built search index in " + (t1 - t0) + " ms");
             indexSearcher = new IndexSearcher(indexer.getIndexReader());
@@ -163,40 +164,39 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
         long t0 = System.currentTimeMillis();
         logger.info("Updating search index...");
+        ChangeSet changeSet = new ChangeSet();
         try {
-            indexer.restart();
             for (OWLOntologyChange change : changes) {
-                OWLAxiom changedAxiom = change.getAxiom();
+                if (!change.isAxiomChange()) continue; // ignore if it is not an axiom change
                 OWLOntology sourceOntology = change.getOntology();
+                OWLAxiom changedAxiom = change.getAxiom();
                 if (change instanceof RemoveAxiom) {
-                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (subject instanceof IRI) {
-                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
-                            if (entity.isPresent()) {
-                                indexer.doDelete(entity.get());
-                            }
-                        }
-                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
+                    if (changedAxiom instanceof OWLDeclarationAxiom) {
                         OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        indexer.doDelete(entity);
+                        changeSet.addRemoveDeclaration(entity);
+                    } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                        OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                        if (annotationSubject instanceof IRI) {
+                            OWLEntity annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst().get();
+                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
+                            changeSet.addRemoveAnnotation(annotationEntitySubject, annotation);
+                        }
                     }
                 } else if (change instanceof AddAxiom) {
-                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (subject instanceof IRI) {
-                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
-                            if (entity.isPresent()) {
-                                indexer.doAdd(editorKit, sourceOntology, entity.get());
-                            }
-                        }
-                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
+                    if (changedAxiom instanceof OWLDeclarationAxiom) {
                         OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        indexer.doAdd(editorKit, sourceOntology, entity);
+                        changeSet.addAddDeclaration(entity);
+                    } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                        OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                        if (annotationSubject instanceof IRI) {
+                            OWLEntity annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst().get();
+                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
+                            changeSet.addAddAnnotation(annotationEntitySubject, annotation);
+                        }
                     }
                 }
             }
-            indexer.close();
+            indexer.doUpdate(changeSet, new SearchContext(editorKit));
             long t1 = System.currentTimeMillis();
             logger.info("... updated search index in " + (t1 - t0) + " ms");
             indexSearcher = new IndexSearcher(indexer.getIndexReader());
