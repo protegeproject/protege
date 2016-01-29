@@ -382,6 +382,12 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     @Override
+    protected void paintIcon(Graphics g, int tabPlacement, int tabIndex, Icon icon, Rectangle iconRect, boolean isSelected) {
+        // No icon
+    }
+    
+
+    @Override
     protected LayoutManager createLayoutManager() {
         return new BasicTabbedPaneUI.TabbedPaneLayout() {
 
