@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.search.lucene;
 
 import org.protege.editor.owl.model.search.SearchContext;
-import org.protege.editor.owl.model.search.SearchIndexPreferences;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -13,8 +12,6 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -26,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Map.Entry;
 
 /**
@@ -41,9 +37,7 @@ public abstract class AbstractLuceneIndexer {
 
     private final Analyzer textAnalyzer;
 
-    private Directory indexDirectory;
-
-    private boolean createNewIndex = false;
+    private IndexDirectory indexDirectory;
 
     public AbstractLuceneIndexer() {
         this(new StandardAnalyzer());
@@ -53,41 +47,14 @@ public abstract class AbstractLuceneIndexer {
         textAnalyzer = analyzer;
     }
 
-    protected void setupIndexDirectory(OWLOntology activeOntology) throws IOException {
-        SearchIndexPreferences preferences = SearchIndexPreferences.getInstance();
-        String ontologyUid = toHexString(activeOntology);
-        if (!preferences.contains(ontologyUid)) {
-            String directoryName = toHexString(activeOntology.getOntologyID().toString());
-            preferences.putIndexDirectory(ontologyUid, directoryName);
-            createNewIndex = true;
-        }
-        String directoryLocation = preferences.getIndexDirectory(ontologyUid).get();
-        
-        logger.info("... storing index files in " + directoryLocation);
-        Directory indexDirectory = FSDirectory.open(Paths.get(directoryLocation));
-        setIndexDirectory(indexDirectory);
-    }
-
-    protected IndexWriter setupIndexWriter(OWLOntology activeOntology, IndexWriterConfig indexWriterConfig) throws IOException {
-        return getIndexWriter(indexWriterConfig);
-    }
-
     protected IndexWriter getIndexWriter(IndexWriterConfig indexWriterConfig) throws IOException {
-        return new IndexWriter(getIndexDirectory(), indexWriterConfig);
+        return new IndexWriter(indexDirectory.getPhysicalDirectory(), indexWriterConfig);
     }
 
-    public Directory getIndexDirectory() {
-        return indexDirectory;
-    }
-
-    public void setIndexDirectory(Directory indexDirectory) {
-        this.indexDirectory = indexDirectory;
-    }
-
-    public void doIndex(final OWLOntology activeOntology, SearchContext context, IndexProgressListener listener) throws IOException {
-        setupIndexDirectory(activeOntology);
-        if (createNewIndex) {
-            final IndexWriter writer = setupIndexWriter(activeOntology, new IndexWriterConfig(textAnalyzer));
+    public void doIndex(IndexDelegator delegator, SearchContext context, IndexProgressListener listener) throws IOException {
+        indexDirectory = delegator.getIndexDirectory();
+        if (!indexDirectory.exists()) {
+            final IndexWriter writer = getIndexWriter(new IndexWriterConfig(textAnalyzer));
             for (OWLOntology ontology : context.getOntologies()) {
                 logger.info("... building index for " + ontology.getOntologyID());
                 
@@ -121,7 +88,6 @@ public abstract class AbstractLuceneIndexer {
             writer.deleteDocuments(new Term(IndexField.ENTITY_IRI, getEntityId(annotationEntry.getKey())),
                     new Term(IndexField.ANNOTATION_IRI, getAnnotationId(annotationEntry.getValue())));
         }
-        
         // ... and then continue process the addition change set.
         for (OWLEntity entity : changeSet.getAddDeclarations()) {
             writer.addDocument(createEntityDocument(entity, context));
@@ -130,10 +96,6 @@ public abstract class AbstractLuceneIndexer {
             writer.addDocument(createAnnotationDocument(annotationEntry.getKey(), annotationEntry.getValue(), context));
         }
         writer.close();
-    }
-
-    private static String toHexString(Object o) {
-        return Integer.toHexString(o.hashCode());
     }
 
     private int percentage(int progress, int total) {
@@ -160,7 +122,7 @@ public abstract class AbstractLuceneIndexer {
 
     public DirectoryReader getIndexReader() {
         try {
-            return DirectoryReader.open(indexDirectory);
+            return DirectoryReader.open(indexDirectory.getPhysicalDirectory());
         }
         catch (IOException e) {
             e.printStackTrace();

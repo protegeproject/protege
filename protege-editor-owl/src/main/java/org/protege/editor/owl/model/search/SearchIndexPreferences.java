@@ -6,6 +6,7 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Optional;
 
 /**
@@ -22,9 +23,13 @@ public class SearchIndexPreferences {
 
     public static final String BASE_DIR = "BASE_DIR";
 
-    public static final String PREFIX_LABEL = "ProtegeIndex-";
+    public static final String PROTEGE_DIR = ".Protege";
+
+    public static final String INDEX_DIR = "lucene";
 
     private static SearchIndexPreferences instance;
+
+    private static String fsSeparator = System.getProperty("file.separator");
 
     private String baseDirectory = "";
 
@@ -50,16 +55,19 @@ public class SearchIndexPreferences {
         return PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_KEY);
     }
 
-    public String getBaseDirectory() {
-        return baseDirectory;
+    public void useTempDirectoryAsBaseDirectory() {
+        String tmpDir = prepare(System.getProperty("java.io.tmpdir"));
+        setBaseDirectory(tmpDir);
     }
 
-    public boolean contains(String ontologyUid) {
-        String value = getPreferences().getString(ontologyUid, "");
-        if (value.isEmpty()) {
-            return false;
-        }
-        return true;
+    public void useHomeDirectoryAsBaseDirectory() {
+        String homeDir = prepare(System.getProperty("user.home"));
+        String indexHomeDir = homeDir + PROTEGE_DIR + fsSeparator + INDEX_DIR + fsSeparator;
+        setBaseDirectory(indexHomeDir);
+    }
+
+    public String getBaseDirectory() {
+        return baseDirectory;
     }
 
     /**
@@ -69,62 +77,48 @@ public class SearchIndexPreferences {
      *          A directory location set by the user.
      */
     public void setBaseDirectory(String baseDirectory) {
-        this.baseDirectory = prepare(baseDirectory);
-        getPreferences().putString(BASE_DIR, this.baseDirectory);
-        logger.info("... base index directory set to {}", getBaseDirectory());
+        this.baseDirectory = baseDirectory;
+        getPreferences().putString(BASE_DIR, baseDirectory);
+        logger.info("... base index directory set to {}", baseDirectory);
     }
 
     /**
-     * Create a map between the ontology and its index directory.
+     * Create a map between the ontology and its index directory location.
      *
-     * @param ontologyUid
+     * @param ontology
      *          A string represents the unique ID of the ontology structure.
-     * @param directoryName
-     *          The directory name where the index files are stored.
+     * @param indexLocation
+     *          The directory location where the index files are stored.
      */
-    public void putIndexDirectory(String ontologyUid, String directoryName) {
-        String indexLocation = getBaseDirectory() + PREFIX_LABEL + directoryName;
-        getPreferences().putString(ontologyUid, indexLocation);
+    public void registerIndexLocation(String ontologyVersion, String indexLocation) {
+        getPreferences().putString(ontologyVersion, indexLocation);
     }
 
     /**
      * Get the index directory location based on the ontology signature. The method
      * will make sure too if the location still uses the same root base directory.
      *
-     * @param ontologyUid
+     * @param ontology
      *          A string represents the unique ID of the ontology structure.
      * @return An optional directory location.
      */
-    public Optional<String> getIndexDirectory(String ontologyUid) {
-        String location = getPreferences().getString(ontologyUid, "");
-        
-        /*
-         * Make sure the index directory location has the same root directory.
-         */
-        if (!location.startsWith(getBaseDirectory())) {
-            location = "";
+    public Optional<String> getIndexLocation(String ontologyVersion) {
+        String location = getPreferences().getString(ontologyVersion, null);
+        if (!location.isEmpty()) {
+            /*
+             * Make sure the index directory is at the current root directory setting.
+             */
+            if (!location.startsWith(getBaseDirectory())) {
+                location = null; // reset if the base directory has changed
+            }
+            /*
+             * Make sure the index directory still exists.
+             */
+            if (!new File(location).exists()) {
+                location = null; // reset if the index directory has been removed.
+            }
         }
-        return Optional.of(location);
-    }
-
-    /**
-     * Update the ontology signature key. This method only update the key while
-     * maintaining the same value of index directory location.
-     *
-     * @param oldOntologyUid
-     *          A string represents the old ontology unique ID.
-     * @param newOntologyUid
-     *          A new unique ID to replace.
-     * @return Returns <code>true</code> if the update succeeds, or <code>false</code>
-     *          otherwise.
-     */
-    public boolean updateIndexDirectory(String oldOntologyUid, String newOntologyUid) {
-        Optional<String> indexDirectory = getIndexDirectory(oldOntologyUid);
-        if (indexDirectory.isPresent()) {
-            putIndexDirectory(newOntologyUid, indexDirectory.get());
-            return true;
-        }
-        return false;
+        return Optional.ofNullable(location);
     }
 
     /**

@@ -65,7 +65,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private ProgressMonitor progressMonitor;
 
     private LuceneIndexer indexer = new LuceneIndexer();
-    
+
     private IndexSearcher indexSearcher;
 
     private Future<?> lastIndexingTask;
@@ -134,7 +134,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            indexer.doIndex(editorKit.getOWLModelManager().getActiveOntology(),
+            OWLOntology activeOntology = editorKit.getOWLModelManager().getActiveOntology();
+            indexer.doIndex(new IndexDelegator(activeOntology),
                     new SearchContext(editorKit),
                     progress -> fireIndexingProgressed(progress));
             long t1 = System.currentTimeMillis();
