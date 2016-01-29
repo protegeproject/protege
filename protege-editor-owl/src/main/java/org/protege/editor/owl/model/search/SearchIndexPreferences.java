@@ -66,6 +66,11 @@ public class SearchIndexPreferences {
         setBaseDirectory(indexHomeDir);
     }
 
+    /**
+     * Get the <code>BASE_DIR</code> value.
+     *
+     * @return The base directory location.
+     */
     public String getBaseDirectory() {
         return baseDirectory;
     }
@@ -83,10 +88,10 @@ public class SearchIndexPreferences {
     }
 
     /**
-     * Create a map between the ontology and its index directory location.
+     * Create a map between the ontology version and its index directory location.
      *
-     * @param ontology
-     *          A string represents the unique ID of the ontology structure.
+     * @param ontologyVersion
+     *          A string represents the unique versioning ID of the ontology.
      * @param indexLocation
      *          The directory location where the index files are stored.
      */
@@ -95,12 +100,13 @@ public class SearchIndexPreferences {
     }
 
     /**
-     * Get the index directory location based on the ontology signature. The method
-     * will make sure too if the location still uses the same root base directory.
+     * Get the index directory location based on the ontology version. The method
+     * will return no location if users recently changed the <code>BASE_DIR</code>
+     * location or the directory was recently removed (i.e., path is invalid)
      *
-     * @param ontology
-     *          A string represents the unique ID of the ontology structure.
-     * @return An optional directory location.
+     * @param ontologyVersion
+     *          A string represents the unique versioning ID of the ontology.
+     * @return The directory location.
      */
     public Optional<String> getIndexLocation(String ontologyVersion) {
         String location = getPreferences().getString(ontologyVersion, null);
