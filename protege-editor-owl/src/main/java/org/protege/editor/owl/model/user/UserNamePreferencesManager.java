@@ -17,6 +17,10 @@ public class UserNamePreferencesManager {
 
     private final Preferences preferences;
 
+    /**
+     * Manages the preferences for a user.
+     * @param preferences The actual preferences object for the user.  Not {@code null}.
+     */
     public UserNamePreferencesManager(Preferences preferences) {
         this.preferences = checkNotNull(preferences);
     }
@@ -27,8 +31,13 @@ public class UserNamePreferencesManager {
         );
     }
 
+    /**
+     * Sets the user name.
+     * @param userName The user name.  Not {@code null}.
+     * @throws java.lang.NullPointerException if the user name is {@code null}.
+     */
     public void setUserName(String userName) {
-        preferences.putString(PREFERENCES_KEY, userName);
+        preferences.putString(PREFERENCES_KEY, checkNotNull(userName));
     }
 
     public void clearUserName() {

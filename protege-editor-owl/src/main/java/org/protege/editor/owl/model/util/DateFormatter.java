@@ -1,5 +1,8 @@
 package org.protege.editor.owl.model.util;
 
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
+
 import java.util.Date;
 
 /**
@@ -9,5 +12,5 @@ import java.util.Date;
  */
 public interface DateFormatter {
 
-    String formatDate(Date date);
+    OWLLiteral formatDate(Date date, OWLDataFactory dataFactory);
 }

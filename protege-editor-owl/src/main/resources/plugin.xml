@@ -1440,6 +1440,12 @@
         <class value="org.protege.editor.owl.ui.preferences.UserPreferencesPanel"/>
     </extension>
 
+    <extension id="ui.entitymetadata.prefs"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="New Entities Metadata"/>
+        <class value="org.protege.editor.owl.ui.annotation.EntityCreationMetadataPreferencesPanel"/>
+    </extension>
+
     <!-- Move axioms kits -->
 
     <extension id="MoveAxiomsByReference"

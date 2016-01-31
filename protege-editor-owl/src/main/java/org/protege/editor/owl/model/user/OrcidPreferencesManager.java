@@ -35,6 +35,9 @@ public class OrcidPreferencesManager implements OrcidProvider {
         if(orcid == null) {
             return Optional.empty();
         }
+        if("".equals(orcid)) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(new Orcid(orcid));
     }
 

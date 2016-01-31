@@ -385,7 +385,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     protected void paintIcon(Graphics g, int tabPlacement, int tabIndex, Icon icon, Rectangle iconRect, boolean isSelected) {
         // No icon
     }
-    
+
 
     @Override
     protected LayoutManager createLayoutManager() {

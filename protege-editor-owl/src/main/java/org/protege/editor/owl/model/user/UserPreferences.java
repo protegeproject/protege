@@ -7,6 +7,8 @@ import org.protege.editor.core.prefs.PreferencesManager;
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 23/11/15
+ *
+ * Preferences for the user.  For example, user name, ORCID etc.
  */
 public class UserPreferences {
 

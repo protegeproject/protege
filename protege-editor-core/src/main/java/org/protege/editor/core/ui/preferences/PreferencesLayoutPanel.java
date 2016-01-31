@@ -1,7 +1,9 @@
 package org.protege.editor.core.ui.preferences;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Matthew Horridge
@@ -15,6 +17,8 @@ public class PreferencesLayoutPanel extends JComponent {
     private final JPanel backingPanel;
 
     private int currentRow = 0;
+
+    private List<JRadioButton> currentButtonRun = new ArrayList<>();
 
     public PreferencesLayoutPanel() {
         setLayout(new BorderLayout());
@@ -68,6 +72,7 @@ public class PreferencesLayoutPanel extends JComponent {
     }
 
     public void addGroupComponent(JComponent component) {
+        handleComponentAdded(component);
         Insets insets;
         if(currentRow == 0) {
             insets = INSETS;
@@ -98,7 +103,19 @@ public class PreferencesLayoutPanel extends JComponent {
         currentRow++;
     }
 
+    public void closeCurrentButtonRun() {
+        if (currentButtonRun.isEmpty()) {
+            return;
+        }
+        ButtonGroup bg = new ButtonGroup();
+        for(JRadioButton button : currentButtonRun) {
+            bg.add(button);
+        }
+        currentButtonRun.clear();
+    }
+
     public void addIndentedGroupComponent(JComponent component) {
+        handleComponentAdded(component);
         backingPanel.add(component,
                 new GridBagConstraints(
                         1, currentRow,
@@ -114,6 +131,12 @@ public class PreferencesLayoutPanel extends JComponent {
             field.setMinimumSize(field.getPreferredSize());
         }
         currentRow++;
+    }
+
+    private void handleComponentAdded(JComponent component) {
+        if(component instanceof JRadioButton) {
+            currentButtonRun.add((JRadioButton) component);
+        }
     }
 
     public void addHelpText(String helpText) {
