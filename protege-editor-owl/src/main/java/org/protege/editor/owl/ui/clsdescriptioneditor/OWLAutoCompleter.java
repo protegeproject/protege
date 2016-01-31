@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.slf4j.Logger;
@@ -241,7 +242,8 @@ public class OWLAutoCompleter {
                                                             e.isOWLObjectPropertyExpected(),
                                                             e.isOWLDataPropertyExpected(),
                                                             e.isOWLIndividualExpected(),
-                                                            e.isDatatypeExpected());
+                                                            e.isDatatypeExpected(),
+                                                            e.isAnnotationPropertyExpected());
                 List kwMatches = new ArrayList(matches.size() + 10);
                 for (String s : e.getExpectedKeyWords()) {
                     if (s.toLowerCase().startsWith(word.toLowerCase())) {
@@ -283,9 +285,13 @@ public class OWLAutoCompleter {
         else if (matches.size() > 1) {
             // Show popup
             lastTextUpdate = textComponent.getText();
-            showPopup();
-            updatePopup(matches);
+            displayAndUpdatePopup(matches);
         }
+    }
+
+    private void displayAndUpdatePopup(List matches) {
+        showPopup();
+        updatePopup(matches);
     }
 
 
