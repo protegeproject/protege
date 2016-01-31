@@ -19,36 +19,74 @@ public class EntityCreationMetadataPreferencesManager {
 
     private final Preferences preferences;
 
-    private static final String METADATA_ENABLED_KEY = "metadata.enabled";
+    private static final String CREATED_BY_ANNOTATION_ENABLED_KEY = "created.by.enabled";
 
-    private static final String USER_NAME_ANNOTATION_PROPERTY_IRI_KEY = "user.name.annotation.iri";
+    private static final String CREATED_BY_ANNOTATION_PROPERTY_IRI_KEY = "created.by.annotation.iri";
+
+    private static final String CREATED_BY_USE_ORCID = "created.by.use.orcid";
+
+
+    private static final String CREATION_DATE_ANNOTATION_ENABLED_KEY = "creation.date.enabled";
 
     private static final String CREATION_DATE_ANNOTATION_PROPERTY_IRI_KEY = "creation.date.annotation.iri";
 
-    private static final String DATE_FORMATTER_CLASS_KEY = "date.formatter";
+    private static final String DATE_FORMATTER_CLASS_KEY = "creation.date.formatter";
 
+    private DateFormatter dateFormatter = null;
 
     public EntityCreationMetadataPreferencesManager(Preferences preferences) {
         this.preferences = preferences;
     }
 
-    public boolean isCreationMetadataEnabled() {
-        return preferences.getBoolean(METADATA_ENABLED_KEY, false);
+    public boolean isCreatedByAnnotationEnabled() {
+        return preferences.getBoolean(CREATED_BY_ANNOTATION_ENABLED_KEY, false);
     }
 
-    public void setCreationMetadataEnabled(boolean enabled) {
-        preferences.putBoolean(METADATA_ENABLED_KEY, enabled);
+    public void setCreatedByAnnotationEnabled(boolean enabled) {
+        preferences.putBoolean(CREATED_BY_ANNOTATION_ENABLED_KEY, enabled);
     }
 
-    public IRI getUserNameAnnotationPropertyIRI() {
-        return getIRI(USER_NAME_ANNOTATION_PROPERTY_IRI_KEY, DublinCoreVocabulary.CREATOR.getIRI());
+    public boolean isCreationDateAnnotationEnabled() {
+        return preferences.getBoolean(CREATION_DATE_ANNOTATION_ENABLED_KEY, false);
     }
+
+    public boolean isCreatedByValueOrcid() {
+        return preferences.getBoolean(CREATED_BY_USE_ORCID, false);
+    }
+
+    public void setCreatedByValueOrcid(boolean b) {
+        preferences.putBoolean(CREATED_BY_USE_ORCID, b);
+    }
+
+    public void setCreationDateAnnotationEnabled(boolean enabled) {
+        preferences.putBoolean(CREATION_DATE_ANNOTATION_ENABLED_KEY, enabled);
+    }
+
+    public IRI getCreatedByAnnotationPropertyIRI() {
+        return getIRI(CREATED_BY_ANNOTATION_PROPERTY_IRI_KEY, DublinCoreVocabulary.CREATOR.getIRI());
+    }
+
+    public void setCreatedByAnnotationPropertyIRI(IRI iri) {
+        preferences.putString(CREATED_BY_ANNOTATION_PROPERTY_IRI_KEY, iri.toString());
+    }
+
 
     public IRI getCreationDateAnnotationPropertyIRI() {
         return getIRI(CREATION_DATE_ANNOTATION_PROPERTY_IRI_KEY, DublinCoreVocabulary.DATE.getIRI());
     }
 
+    public void setCreationDateAnnotationPropertyIRI(IRI iri) {
+        preferences.putString(CREATION_DATE_ANNOTATION_PROPERTY_IRI_KEY, iri.toString());
+    }
+
     public DateFormatter getDateFormatter() {
+        if(dateFormatter == null) {
+            dateFormatter = instantiateDateFormatter();
+        }
+        return dateFormatter;
+    }
+
+    private DateFormatter instantiateDateFormatter() {
         String formatterClass = preferences.getString(DATE_FORMATTER_CLASS_KEY, ISO8601Formatter.class.getName());
         try {
             Class<?> cls = Class.forName(formatterClass);
@@ -60,6 +98,11 @@ public class EntityCreationMetadataPreferencesManager {
         }
     }
 
+    public void setDateFormatter(DateFormatter dateFormatter) {
+        preferences.putString(DATE_FORMATTER_CLASS_KEY, dateFormatter.getClass().getName());
+        this.dateFormatter = dateFormatter;
+    }
+
     private IRI getIRI(String key, IRI defaultIRI) {
         String value = preferences.getString(key, null);
         if(value != null) {
@@ -69,6 +112,7 @@ public class EntityCreationMetadataPreferencesManager {
             return defaultIRI;
         }
     }
+
 
 
 }

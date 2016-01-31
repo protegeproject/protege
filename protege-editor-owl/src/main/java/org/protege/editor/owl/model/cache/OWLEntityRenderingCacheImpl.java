@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.cache;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.*;
@@ -101,6 +102,11 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         // standard annotation properties        
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
             addRendering(factory.getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+        }
+
+        // Dublin Core
+        for(DublinCoreVocabulary vocabulary : DublinCoreVocabulary.values()) {
+            addRendering(factory.getOWLAnnotationProperty(vocabulary.getIRI()), owlAnnotationPropertyMap);
         }
 
         // datatypes

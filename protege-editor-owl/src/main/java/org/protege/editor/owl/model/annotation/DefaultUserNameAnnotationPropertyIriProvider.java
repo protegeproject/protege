@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.annotation;
 
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -22,6 +21,6 @@ public class DefaultUserNameAnnotationPropertyIriProvider implements Provider<IR
 
     @Override
     public IRI get() {
-        return preferencesManager.getUserNameAnnotationPropertyIRI();
+        return preferencesManager.getCreatedByAnnotationPropertyIRI();
     }
 }

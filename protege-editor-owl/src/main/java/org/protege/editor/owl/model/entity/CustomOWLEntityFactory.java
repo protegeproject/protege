@@ -10,11 +10,10 @@ import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.annotation.*;
 import org.protege.editor.owl.model.user.DefaultUserNameProvider;
+import org.protege.editor.owl.model.user.OrcidPreferencesManager;
 import org.protege.editor.owl.model.user.UserNamePreferencesManager;
 import org.protege.editor.owl.model.user.UserPreferences;
-import org.protege.editor.owl.model.util.ISO8601Formatter;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -196,21 +195,12 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
     }
 
     private EntityCreationMetadataProvider getEntityCreationMetadataProvider() {
-        Preferences metadataPreferences = EntityCreationMetadataPreferences.get();
-        EntityCreationMetadataPreferencesManager metadataPreferencesManager = new EntityCreationMetadataPreferencesManager(metadataPreferences);
-        if(metadataPreferencesManager.isCreationMetadataEnabled()) {
-            Preferences preferences = UserPreferences.get();
-            UserNamePreferencesManager userNamePreferencesManager = new UserNamePreferencesManager(preferences);
-            return new SimpleEntityCreationMetadataProvider(
-                    new DefaultUserNameAnnotationPropertyIriProvider(metadataPreferencesManager),
-                    new DefaultUserNameProvider(userNamePreferencesManager),
-                    new DefaultDateAnnotationPropertyIriProvider(metadataPreferencesManager),
-                    metadataPreferencesManager.getDateFormatter()
-            );
-        }
-        else {
-            return new NullEntityCreationMetadataProvider();
-        }
+        PreferencesBasedEntityCreationMetadataProviderFactory factory = new PreferencesBasedEntityCreationMetadataProviderFactory(
+                new UserNamePreferencesManager(UserPreferences.get()),
+                new OrcidPreferencesManager(UserPreferences.get()),
+                new EntityCreationMetadataPreferencesManager(EntityCreationMetadataPreferences.get())
+        );
+        return factory.getProvider();
     }
 
 

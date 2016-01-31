@@ -23,7 +23,7 @@ public class UserPreferencesPanel extends OWLPreferencesPanel {
 
     private final AugmentedJTextField userNameField = new AugmentedJTextField(40, "Enter user name");
 
-    private final AugmentedJTextField orcidField = new AugmentedJTextField(22, "e.g. 0000-0002-4510-0385");
+    private final AugmentedJTextField orcidField = new AugmentedJTextField(22, "e.g. 0000-0002-1825-0097");
 
     private final JRadioButton useLoggedInUserNameButton = new JRadioButton("<html><body>Use system logged in user name (<b>" + System.getProperty("user.name") + "</b>)</body></html>");
 
@@ -101,7 +101,7 @@ public class UserPreferencesPanel extends OWLPreferencesPanel {
 
     private void updateOrcidField() {
             Optional<Orcid> enteredOrcid = getEnteredOrcid();
-            if(enteredOrcid.isPresent()) {
+            if(enteredOrcid.isPresent() || orcidField.getText().isEmpty()) {
                 orcidField.clearErrorMessage();
             }
             else {
