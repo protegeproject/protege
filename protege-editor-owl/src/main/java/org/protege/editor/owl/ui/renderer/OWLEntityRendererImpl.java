@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -33,6 +35,9 @@ public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
         for(OWL2Datatype dt : OWL2Datatype.values()) {
             wellKnownRenderings.put(dt.getIRI(), dt.getPrefixedName());
         }
+        for(DublinCoreVocabulary dublinCoreVocabulary : DublinCoreVocabulary.values()) {
+            wellKnownRenderings.put(dublinCoreVocabulary.getIRI(), dublinCoreVocabulary.getPrefixedName());
+        }
     }
 
     private void addOWLRDFVocabulary(OWLRDFVocabulary vocabulary) {
@@ -56,6 +61,11 @@ public class OWLEntityRendererImpl extends AbstractOWLEntityRenderer {
                 return wellKnownName;
             }
             String iriString = iri.toString();
+            for(Namespaces ns : Namespaces.values()) {
+                if(iriString.startsWith(ns.getPrefixIRI())) {
+                    return ns.getPrefixName() + ":" + iriString.substring(ns.getPrefixIRI().length());
+                }
+            }
             String fragment = getSubstringFromLastCharacter(iriString, '#');
             if(fragment != null) {
                 return fragment;
