@@ -6,10 +6,11 @@ package org.protege.editor.owl.model.entity;
 *
 */
 
-import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.annotation.*;
-import org.protege.editor.owl.model.user.DefaultUserNameProvider;
+import org.protege.editor.owl.model.annotation.EntityCreationMetadataPreferences;
+import org.protege.editor.owl.model.annotation.EntityCreationMetadataPreferencesManager;
+import org.protege.editor.owl.model.annotation.EntityCreationMetadataProvider;
+import org.protege.editor.owl.model.annotation.PreferencesBasedEntityCreationMetadataProviderFactory;
 import org.protege.editor.owl.model.user.OrcidPreferencesManager;
 import org.protege.editor.owl.model.user.UserNamePreferencesManager;
 import org.protege.editor.owl.model.user.UserPreferences;

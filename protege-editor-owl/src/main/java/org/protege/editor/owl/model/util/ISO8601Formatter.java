@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
 

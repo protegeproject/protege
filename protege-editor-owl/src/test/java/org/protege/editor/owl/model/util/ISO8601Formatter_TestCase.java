@@ -8,11 +8,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
