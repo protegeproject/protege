@@ -37,7 +37,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
     private SignatureSelection signatureSelection;
 
-    private OWLObjectList previewList;
+    private OWLObjectList<OWLAxiom> previewList;
 
     private JLabel previewLabel;
 
@@ -61,7 +61,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
         JPanel previewPanel = new JPanel(new BorderLayout(3, 3));
         previewLabel = new JLabel("Axioms: Computing... ");
         previewPanel.add(previewLabel, BorderLayout.NORTH);
-        previewList = new OWLObjectList(getEditorKit());
+        previewList = new OWLObjectList<>(getEditorKit());
         previewPanel.add(new JScrollPane(previewList));
         previewPanel.setBorder(ComponentFactory.createTitledBorder("Preview"));
 
@@ -131,7 +131,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
     private void doPreviewUpdate() {
         previewLabel.setText("Axioms: Computing... ");
         previewLabel.repaint();
-        previewList.setListData(new Object[0]);
+        previewList.setListData(new OWLAxiom[0]);
         final Set<OWLEntity> entities = getCheckedEntities();
 
         final Set<OWLOntology> sourceOntologies = getModel().getSourceOntologies();
@@ -144,7 +144,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
             SwingUtilities.invokeLater(() -> previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " axioms)"));
 
-            SwingUtilities.invokeLater(() -> previewList.setListData(axs.subList(0, upperBound).toArray()));
+            SwingUtilities.invokeLater(() -> previewList.setListData(axs.subList(0, upperBound).toArray(new OWLAxiom[axs.size()])));
         };
         Thread t = new Thread(runnable);
         t.start();
