@@ -41,12 +41,9 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
 
     private OWLModelManager mngr;
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)){
-                rebuildAsNecessary();
-            }
+    private OWLModelManagerListener listener = event -> {
+        if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)){
+            rebuildAsNecessary();
         }
     };
 

@@ -38,19 +38,11 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
 
-    private ChangeListener changeListener = new ChangeListener(){
-        public void stateChanged(ChangeEvent changeEvent) {
-            handleVerifyEditorContents();
-        }
-    };
+    private ChangeListener changeListener = changeEvent -> handleVerifyEditorContents();
 
     private OWLClassExpression expression;
 
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
     
     private Preferences preferences = PreferencesManager.getInstance().getApplicationPreferences(OWLClassDescriptionEditor.class);
 

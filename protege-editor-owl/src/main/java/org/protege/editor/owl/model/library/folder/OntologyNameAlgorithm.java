@@ -16,18 +16,14 @@ public class OntologyNameAlgorithm implements Algorithm {
 		try {
 			final IRI iri = IRI.create(f);
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-			manager.addIRIMapper(new OWLOntologyIRIMapper() {
-				
-				@Override
-				public IRI getDocumentIRI(IRI ontologyIRI) {
-					if (ontologyIRI.equals(iri)) {
-						return IRI.create(f);
-					}
-					else {
-						return IRI.create("http://hopefully.not.a.valid.host.name");
-					}
-				}
-			});
+			manager.addIRIMapper(ontologyIRI -> {
+                if (ontologyIRI.equals(iri)) {
+                    return IRI.create(f);
+                }
+                else {
+                    return IRI.create("http://hopefully.not.a.valid.host.name");
+                }
+            });
 			OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
 			configuration = configuration.setLoadAnnotationAxioms(false);
 			configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);

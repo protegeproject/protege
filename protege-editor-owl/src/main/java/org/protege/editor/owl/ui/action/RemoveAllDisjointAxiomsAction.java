@@ -26,11 +26,9 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
 
     private final Logger logger = LoggerFactory.getLogger(RemoveAllDisjointAxiomsAction.class);
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                updateState();
-            }
+    private OWLModelManagerListener listener = event -> {
+        if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+            updateState();
         }
     };
 

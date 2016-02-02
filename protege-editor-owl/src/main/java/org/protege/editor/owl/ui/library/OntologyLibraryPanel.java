@@ -129,11 +129,9 @@ public class OntologyLibraryPanel extends JPanel {
         };
         vbc.addAction(moveLibraryUpAction);
 
-        tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                updateState();
-            }
-        });        
+        tree.getSelectionModel().addTreeSelectionListener(e -> {
+            updateState();
+        });
         
         tree.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {

@@ -58,11 +58,7 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
         }
     };
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
     private MouseListener mouseListener = new MouseAdapter(){
         public void mouseReleased(MouseEvent e) {

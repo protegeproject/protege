@@ -56,20 +56,13 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         }
     };
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleChanges(changes);
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleChanges(changes);
+    
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
+            reload();
         }
     };
-    
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
-		
-		public void handleChange(OWLModelManagerChangeEvent event) {
-			if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
-				reload();
-			}
-		}
-	};
 
 
     public void initialiseView() throws Exception {

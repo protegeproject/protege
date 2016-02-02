@@ -65,22 +65,20 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
         if(!reasoner.isSatisfiable(getRootObject())) {
             return;
         }
-            getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
-                public void run() {
-                        for (Node<OWLClass> inferredSuperClasses : reasoner.getSuperClasses(getRootObject(), true)) {
-                            for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
-                                if (!added.contains(inferredSuperClass)) {
-                                    addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                                   OWLSubClassAxiomFrameSection.this,
-                                                                                                   null,
-                                                                                                   getRootObject(),
-                                                                                                   getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
-                                                                                                                                                                  inferredSuperClass)));
-                                    added.add(inferredSuperClass);
-                                }
+            getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, () -> {
+                    for (Node<OWLClass> inferredSuperClasses : reasoner.getSuperClasses(getRootObject(), true)) {
+                        for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
+                            if (!added.contains(inferredSuperClass)) {
+                                addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                               OWLSubClassAxiomFrameSection.this,
+                                                                                               null,
+                                                                                               getRootObject(),
+                                                                                               getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
+                                                                                                                                                              inferredSuperClass)));
+                                added.add(inferredSuperClass);
                             }
                         }
-                }
+                    }
             });
 
     }

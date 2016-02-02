@@ -63,27 +63,25 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-                    NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), SHOW_DIRECT_INSTANCES);
-                    if (instances != null) {
-                        for (OWLIndividual ind : instances.getFlattened()) {
-                            if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
-                                addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
-                                                                                   OWLClassAssertionAxiomMembersSection.this,
-                                                                                   null,
-                                                                                   getRootObject(),
-                                                                                   df.getOWLClassAssertionAxiom(getRootObject(), ind)));
-                                added.add(ind.asOWLNamedIndividual());
-                            }
-                        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERED_CLASS_MEMBERS, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            final OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+            NodeSet<OWLNamedIndividual> instances = getOWLModelManager().getReasoner().getInstances(getRootObject(), SHOW_DIRECT_INSTANCES);
+            if (instances != null) {
+                for (OWLIndividual ind : instances.getFlattened()) {
+                    if (!ind.isAnonymous() && !added.contains(ind.asOWLNamedIndividual())) {
+                        addRow(new OWLClassAssertionAxiomMembersSectionRow(getOWLEditorKit(),
+                                                                           OWLClassAssertionAxiomMembersSection.this,
+                                                                           null,
+                                                                           getRootObject(),
+                                                                           df.getOWLClassAssertionAxiom(getRootObject(), ind)));
+                        added.add(ind.asOWLNamedIndividual());
                     }
                 }
-            });
+            }
+        });
     }
 
 
@@ -128,14 +126,11 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 	 *         <code>null</code> if the rows shouldn't be sorted.
 	 */
 	public Comparator<OWLFrameSectionRow<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual>> getRowComparator() {
-		return new Comparator<OWLFrameSectionRow<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual>>() {
-			public int compare(OWLFrameSectionRow<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual> o1,
-					           OWLFrameSectionRow<OWLClassExpression, OWLClassAssertionAxiom, OWLNamedIndividual> o2) {
-                final String s1 = getOWLModelManager().getRendering(o1.getAxiom().getIndividual());
-                final String s2 = getOWLModelManager().getRendering(o2.getAxiom().getIndividual());
-                return s1.compareToIgnoreCase(s2);
-			}
-		};
+		return (o1, o2) -> {
+final String s1 = getOWLModelManager().getRendering(o1.getAxiom().getIndividual());
+final String s2 = getOWLModelManager().getRendering(o2.getAxiom().getIndividual());
+return s1.compareToIgnoreCase(s2);
+        };
 	}
 	
 	@Override

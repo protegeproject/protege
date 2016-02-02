@@ -44,11 +44,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
     private ChangeListenerMediator changeListenerMediator;
 
 
-    private TreeSelectionListener listener = new TreeSelectionListener() {
-        public void valueChanged(TreeSelectionEvent e) {
-            transmitSelection();
-        }
-    };
+    private TreeSelectionListener listener = e -> transmitSelection();
 
 
     public void initialiseView() throws Exception {
@@ -147,11 +143,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
             }
         } , "A", "A");
         addAction(new DeleteIndividualAction(getOWLEditorKit(),
-                                             new OWLEntitySetProvider<OWLNamedIndividual>() {
-                                                 public Set<OWLNamedIndividual> getEntities() {
-                                                     return getSelectedIndividuals();
-                                                 }
-                                             }), "B", "A");
+                () -> getSelectedIndividuals()), "B", "A");
     }
 
 

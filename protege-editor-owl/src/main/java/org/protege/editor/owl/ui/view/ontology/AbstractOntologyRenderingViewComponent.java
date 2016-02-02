@@ -48,32 +48,28 @@ public abstract class AbstractOntologyRenderingViewComponent extends AbstractAct
          *  in a separate thread and display it when necessary.
          *  If rendering was started, but has not completed, interrupt the rendering  thread.
          */
-        HierarchyListener hell = new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    logger.trace("textArea.isShowing() = " + textArea.isShowing());
-                    if (!textArea.isShowing()) {
-                        synchronized (textArea) {
-                            if (renderThread != null) {
-                                renderThread.interrupt();
-                                renderThread = null;
-                            }
-                            clearText();
+        HierarchyListener hell = e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                logger.trace("textArea.isShowing() = " + textArea.isShowing());
+                if (!textArea.isShowing()) {
+                    synchronized (textArea) {
+                        if (renderThread != null) {
+                            renderThread.interrupt();
+                            renderThread = null;
                         }
-                    } else {
-
-                        try {
-                            setText(getOWLModelManager().getActiveOntology());
-                        } catch (Exception e1) {
-                            logger.error("setting text ", e1);
-                        }
-
-
+                        clearText();
                     }
+                } else {
+
+                    try {
+                        setText(getOWLModelManager().getActiveOntology());
+                    } catch (Exception e1) {
+                        logger.error("setting text ", e1);
+                    }
+
+
                 }
             }
-
         };
 
         textArea.addHierarchyListener(hell);
@@ -126,12 +122,9 @@ public abstract class AbstractOntologyRenderingViewComponent extends AbstractAct
                 } finally {
                     synchronized (textArea) {
                         try {
-                            SwingUtilities.invokeAndWait(new Runnable() {
-                                @Override
-                                public void run() {
-                                    textArea.setCursor(oldCursor);
-                                    logger.debug("set text done");
-                                }
+                            SwingUtilities.invokeAndWait(() -> {
+                                textArea.setCursor(oldCursor);
+                                logger.debug("set text done");
                             });
                         } catch (InterruptedException | InvocationTargetException e) {
                             // ignore
@@ -255,12 +248,9 @@ public abstract class AbstractOntologyRenderingViewComponent extends AbstractAct
                 if (content.length() > nextMessageThreshold) {
                     nextMessageThreshold += nextMessageIncrement;
                     final String message = String.format("Rendering: %,9d chars", content.length());
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (jtextArea.getDocument() == originalDocument) {
-                                jtextArea.setText(message);
-                            }
+                    SwingUtilities.invokeLater(() -> {
+                        if (jtextArea.getDocument() == originalDocument) {
+                            jtextArea.setText(message);
                         }
                     });
                 }
@@ -285,12 +275,9 @@ public abstract class AbstractOntologyRenderingViewComponent extends AbstractAct
                 final PlainDocument doc = new CharInsertableDocument(content);
                 logger.trace("built doc");
                 try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            jtextArea.setDocument(doc);
-                            logger.trace("set doc");
-                        }
+                    SwingUtilities.invokeAndWait(() -> {
+                        jtextArea.setDocument(doc);
+                        logger.trace("set doc");
                     });
                 } catch (InterruptedException | InvocationTargetException e) {
                     throw new IOException(e);

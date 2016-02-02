@@ -56,25 +56,23 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     }
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES, 
-                                                                  new Runnable() {
-            public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
-            		return;
-            	}
-                Node<OWLObjectPropertyExpression> equivalentObjectProperties = getReasoner().getEquivalentObjectProperties(getRootObject());
-                if (!equivalentObjectProperties.getEntitiesMinus(getRootObject()).isEmpty()) {
-                    OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivalentObjectProperties.getEntities());
-                    if (!added.contains(ax)) {
-                        addInferredRowIfNontrivial(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                     OWLEquivalentObjectPropertiesAxiomFrameSection.this,
-                                                                                     null,
-                                                                                     getRootObject(),
-                                                                                     ax));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_OBJECT_PROPERTIES,
+                () -> {
+                    if (!getOWLModelManager().getReasoner().isConsistent()) {
+                        return;
                     }
-                }
-            }
-        });
+                    Node<OWLObjectPropertyExpression> equivalentObjectProperties = getReasoner().getEquivalentObjectProperties(getRootObject());
+                    if (!equivalentObjectProperties.getEntitiesMinus(getRootObject()).isEmpty()) {
+                        OWLEquivalentObjectPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(equivalentObjectProperties.getEntities());
+                        if (!added.contains(ax)) {
+                            addInferredRowIfNontrivial(new OWLEquivalentObjectPropertiesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                         OWLEquivalentObjectPropertiesAxiomFrameSection.this,
+                                                                                         null,
+                                                                                         getRootObject(),
+                                                                                         ax));
+                        }
+                    }
+                });
 
     }
 

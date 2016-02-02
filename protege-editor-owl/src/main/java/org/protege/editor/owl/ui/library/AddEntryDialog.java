@@ -65,18 +65,13 @@ public class AddEntryDialog extends JDialog {
         	if (panel != null) {
         		panel.setAlignmentY(CENTER_ALIGNMENT);
         		tabs.addTab(entryManager.getDescription(), panel);
-        		panel.addListener(new Runnable() {
-
-        			public void run() {
-        				updateOkButtonState();
-        			}
-        		});
+        		panel.addListener(() -> {
+                    updateOkButtonState();
+                });
         	}
         }
-        tabs.addChangeListener(new ChangeListener() {
-        	public void stateChanged(ChangeEvent e) {
-        		updateOkButtonState();
-        	}
+        tabs.addChangeListener(e -> {
+            updateOkButtonState();
         });
         return tabs;
     }
@@ -84,22 +79,16 @@ public class AddEntryDialog extends JDialog {
     private JComponent createButtons() {
         JPanel bottom = new JPanel();
         ok = new JButton("OK");
-        ok.addActionListener(new ActionListener() {
-            
-            public void actionPerformed(ActionEvent e) {
-                AddEntryDialog.this.setVisible(false);
-            }
+        ok.addActionListener(e -> {
+            AddEntryDialog.this.setVisible(false);
         });
         ok.setAlignmentX(CENTER_ALIGNMENT);
         updateOkButtonState();
         bottom.add(ok);
         JButton cancel = new JButton("Cancel");
-        cancel.addActionListener(new ActionListener() {
-            
-            public void actionPerformed(ActionEvent e) {
-                AddEntryDialog.this.setVisible(false);
-                cancelled = true;
-            }
+        cancel.addActionListener(e -> {
+            AddEntryDialog.this.setVisible(false);
+            cancelled = true;
         });
         cancel.setAlignmentX(CENTER_ALIGNMENT);
         bottom.add(cancel);

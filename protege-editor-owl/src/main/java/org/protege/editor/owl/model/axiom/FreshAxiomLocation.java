@@ -10,22 +10,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public enum FreshAxiomLocation {
 
-    ACTIVE_ONTOLOGY("ActiveOntology", new FreshAxiomLocationStrategyFactory() {
-        @Override
-        public FreshAxiomLocationStrategy getStrategy(OWLEditorKit editorKit) {
-            return new ActiveOntologyLocationStrategy();
-        }
-    }),
+    ACTIVE_ONTOLOGY("ActiveOntology", editorKit -> new ActiveOntologyLocationStrategy()),
 
-    SUBJECT_DEFINING_ONTOLOGY("SubjectDefiningOntology", new FreshAxiomLocationStrategyFactory() {
-        @Override
-        public FreshAxiomLocationStrategy getStrategy(OWLEditorKit editorKit) {
-            return new SubjectDefinitionLocationStrategy(
-                    new DefaultTopologicallySortedImportsClosureProvider(),
-                    new DefaultAxiomSubjectProvider(),
-                    new DefaultSubjectDefinitionExtractor());
-        }
-    });
+    SUBJECT_DEFINING_ONTOLOGY("SubjectDefiningOntology", editorKit -> new SubjectDefinitionLocationStrategy(
+            new DefaultTopologicallySortedImportsClosureProvider(),
+            new DefaultAxiomSubjectProvider(),
+            new DefaultSubjectDefinitionExtractor()));
 
     private final String locationName;
 

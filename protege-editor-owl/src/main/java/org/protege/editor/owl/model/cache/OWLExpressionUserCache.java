@@ -36,15 +36,12 @@ public class OWLExpressionUserCache implements Disposable {
 
     private OWLModelManager mngr;
 
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
-                event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
-                event.getType().equals(EventType.ENTITY_RENDERING_CHANGED) || 
-                event.getType().equals(EventType.ONTOLOGY_RELOADED)){
-                refresh();
-            }
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
+            event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
+            event.getType().equals(EventType.ENTITY_RENDERING_CHANGED) ||
+            event.getType().equals(EventType.ONTOLOGY_RELOADED)){
+            refresh();
         }
     };
 

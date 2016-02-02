@@ -337,11 +337,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * is fired in the event dispatch thread.
      */
     private void fireReclassified() {
-        Runnable r = new Runnable() {
-            public void run() {
-                owlModelManager.fireEvent(EventType.ONTOLOGY_CLASSIFIED);
-            }
-        };
+        Runnable r = () -> owlModelManager.fireEvent(EventType.ONTOLOGY_CLASSIFIED);
         if (SwingUtilities.isEventDispatchThread()) {
             r.run();
         }
@@ -458,10 +454,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 classificationInProgress = false;
             }
             if (reasonerChanged) {
-                SwingUtilities.invokeLater(new Runnable() {
-                	public void run() {
-                        owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                	}
+                SwingUtilities.invokeLater(() -> {
+owlModelManager.fireEvent(EventType.REASONER_CHANGED);
                 });
             }
             fireReclassified();

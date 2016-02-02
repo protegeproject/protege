@@ -20,11 +20,9 @@ public abstract class AbstractOntologySelectionStrategyAction extends ProtegeOWL
 	
 	private JMenuItem menuItem;
 
-    private OWLModelManagerListener l = new OWLModelManagerListener(){
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType() == EventType.ONTOLOGY_VISIBILITY_CHANGED){
-            	setSelected(isCurrent());                
-            } 
+    private OWLModelManagerListener l = event -> {
+        if (event.getType() == EventType.ONTOLOGY_VISIBILITY_CHANGED){
+            setSelected(isCurrent());
         }
     };
 

@@ -108,10 +108,8 @@ public class ExpressionEditor<O> extends JTextPane
         };
         getDocument().addDocumentListener(docListener);
 
-        timer = new Timer(ExpressionEditorPreferences.getInstance().getCheckDelay(), new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                handleTimer();
-            }
+        timer = new Timer(ExpressionEditorPreferences.getInstance().getCheckDelay(), e -> {
+            handleTimer();
         });
 
         refreshComponent();
@@ -284,41 +282,39 @@ public class ExpressionEditor<O> extends JTextPane
 
 
     private void performHighlighting() {
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    final int lineStartIndex = 0;
-                    final int lineEndIndex = getDocument().getLength();
-                    if (lineEndIndex - lineStartIndex < 0) {
-                        return;
-                    }
-                    StringTokenizer tokenizer = new StringTokenizer(getDocument().getText(lineStartIndex,
-                                                                                          lineEndIndex - lineStartIndex),
-                                                                    " ()[]{},\n\t.'",
-                                                                    true);
-                    int index = lineStartIndex;
-                    boolean inEscapedName = false;
-                    while (tokenizer.hasMoreTokens()) {
-                        String curToken = tokenizer.nextToken();
-                        if (curToken.equals("'")) {
-                            inEscapedName = !inEscapedName;
-                        }
-                        if (!inEscapedName) {
-                            Color color = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
-                            if (color == null) {
-                                color = Color.BLACK;
-                            }
-                            getStyledDocument().setCharacterAttributes(index,
-                                                                       curToken.length(),
-                                                                       getStyledDocument().getStyle(color.toString()),
-                                                                       true);
-                        }
-                        index += curToken.length();
-                    }
+        Thread t = new Thread(() -> {
+            try {
+                final int lineStartIndex = 0;
+                final int lineEndIndex = getDocument().getLength();
+                if (lineEndIndex - lineStartIndex < 0) {
+                    return;
                 }
-                catch (BadLocationException e) {
-                    e.printStackTrace();
+                StringTokenizer tokenizer = new StringTokenizer(getDocument().getText(lineStartIndex,
+                                                                                      lineEndIndex - lineStartIndex),
+                                                                " ()[]{},\n\t.'",
+                                                                true);
+                int index = lineStartIndex;
+                boolean inEscapedName = false;
+                while (tokenizer.hasMoreTokens()) {
+                    String curToken = tokenizer.nextToken();
+                    if (curToken.equals("'")) {
+                        inEscapedName = !inEscapedName;
+                    }
+                    if (!inEscapedName) {
+                        Color color = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
+                        if (color == null) {
+                            color = Color.BLACK;
+                        }
+                        getStyledDocument().setCharacterAttributes(index,
+                                                                   curToken.length(),
+                                                                   getStyledDocument().getStyle(color.toString()),
+                                                                   true);
+                    }
+                    index += curToken.length();
                 }
+            }
+            catch (BadLocationException e) {
+                e.printStackTrace();
             }
         });
         t.start();

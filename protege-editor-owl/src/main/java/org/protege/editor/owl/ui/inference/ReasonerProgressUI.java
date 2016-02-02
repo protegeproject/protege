@@ -80,46 +80,38 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
 	}
     
 	public void setCancelled() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				initWindow();
-				taskLabel
-						.setText("Cancelled.  Waiting for reasoner to terminate...");
-				cancelledAction.setEnabled(false);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            initWindow();
+            taskLabel
+                    .setText("Cancelled.  Waiting for reasoner to terminate...");
+            cancelledAction.setEnabled(false);
+        });
 		owlEditorKit.getOWLModelManager().getOWLReasonerManager()
 				.killCurrentClassification();
 	}
 
 	public void reasonerTaskBusy() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				progressBar.setIndeterminate(true);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            progressBar.setIndeterminate(true);
+        });
 	}
 
 	public void reasonerTaskProgressChanged(final int value, final int max) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				progressBar.setIndeterminate(false);
-				progressBar.setMaximum(max);
-				progressBar.setValue(value);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            progressBar.setIndeterminate(false);
+            progressBar.setMaximum(max);
+            progressBar.setValue(value);
+        });
 	}
 
 	public void reasonerTaskStarted(String taskName) {
 		if (taskIsRunning)
 			return;
 		taskIsRunning = true;
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				progressBar.setIndeterminate(false);
-				progressBar.setValue(0);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            progressBar.setIndeterminate(false);
+            progressBar.setValue(0);
+        });
 		showWindow(taskName);
 	}
 
@@ -128,43 +120,37 @@ public class ReasonerProgressUI implements ReasonerProgressMonitor, Disposable, 
     	if (!taskIsRunning)
     		return;
     	taskIsRunning = false;    	
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (taskIsRunning)
-					return;				
-				initWindow();
-				if (!window.isVisible())
-					return;
-				taskLabel.setText("");
-				window.setVisible(false);
-			}
-		});		
+		SwingUtilities.invokeLater(() -> {
+            if (taskIsRunning)
+                return;
+            initWindow();
+            if (!window.isVisible())
+                return;
+            taskLabel.setText("");
+            window.setVisible(false);
+        });
     }
 
 
     private void showWindow(final String message) {    	
-    	SwingUtilities.invokeLater(new Runnable() {
-    		public void run() {
-    			if (!taskIsRunning)
-    				return;    			
-    			initWindow();    			
-    			taskLabel.setText(message);
-				if (window.isVisible())
-					return;				
-				cancelledAction.setEnabled(true);
-				window.setLocationRelativeTo(window.getOwner());
-				window.setVisible(true);
-    		}
-    	});
+    	SwingUtilities.invokeLater(() -> {
+            if (!taskIsRunning)
+                return;
+            initWindow();
+            taskLabel.setText(message);
+            if (window.isVisible())
+                return;
+            cancelledAction.setEnabled(true);
+            window.setLocationRelativeTo(window.getOwner());
+            window.setVisible(true);
+        });
     }
 
 	public void reset() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				initWindow();
-				window.dispose();
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            initWindow();
+            window.dispose();
+        });
 	}
 
     public void dispose() throws Exception {

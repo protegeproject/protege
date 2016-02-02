@@ -63,11 +63,9 @@ public class ConvertEntityURIsToIdentifierPattern {
 
             changes.addAll(createNewLabelAxioms());
 
-            final OWLEntityURIConverterStrategy converterStrategy = new OWLEntityURIConverterStrategy() {
-                public IRI getConvertedIRI(OWLEntity owlEntity) {
-                    IRI uri = iriMap.get(owlEntity);
-                    return (uri != null) ? uri : owlEntity.getIRI();
-                }
+            final OWLEntityURIConverterStrategy converterStrategy = owlEntity -> {
+                IRI uri = iriMap.get(owlEntity);
+                return (uri != null) ? uri : owlEntity.getIRI();
             };
 
             OWLEntityURIConverter entityURIConverter = new OWLEntityURIConverter(mngr.getOWLOntologyManager(),

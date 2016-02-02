@@ -50,11 +50,9 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     private JList recentLocations;
 
-    private ListSelectionListener listSelectionListener = new ListSelectionListener() {
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                setBaseFromRecentLocationList();
-            }
+    private ListSelectionListener listSelectionListener = e -> {
+        if (!e.getValueIsAdjusting()) {
+            setBaseFromRecentLocationList();
         }
     };
 

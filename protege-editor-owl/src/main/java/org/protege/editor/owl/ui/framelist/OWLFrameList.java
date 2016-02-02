@@ -94,11 +94,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
     private AxiomAnnotationPanel axiomAnnotationPanel;
 
-    private ListSelectionListener selListener = new ListSelectionListener() {
-        public void valueChanged(ListSelectionEvent event) {
-            handleSelectionEvent(event);
-        }
-    };
+    private ListSelectionListener selListener = event -> handleSelectionEvent(event);
 
     private boolean axiomSelectionGlobal = true;
 
@@ -133,16 +129,12 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         createPopupMenu();
 
         inferredRowButtons = new ArrayList<MListButton>();
-        inferredRowButtons.add(new ExplainButton(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                invokeExplanationHandler();
-            }
+        inferredRowButtons.add(new ExplainButton(e -> {
+            invokeExplanationHandler();
         }));
 
-        axiomAnnotationButton = new AxiomAnnotationButton(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                invokeAxiomAnnotationHandler();
-            }
+        axiomAnnotationButton = new AxiomAnnotationButton(event -> {
+            invokeAxiomAnnotationHandler();
         });
 
         changeListenerMediator = new ChangeListenerMediator();
@@ -161,11 +153,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     private void setupFrameListener() {
-        listener = new OWLFrameListener() {
-            public void frameContentChanged() throws Exception {
-                refillRows();
-            }
-        };
+        listener = () -> refillRows();
         frame.addFrameListener(listener);
     }
 
@@ -370,10 +358,8 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                 }
             }
             OWLFrameObject row = (OWLFrameObject) val;
-            showEditorDialog(row, new EditHandler() {
-                public void handleEditFinished(OWLObjectEditor editor) {
-                    editor.getHandler().handleEditingFinished(editor.getEditedObjects());
-                }
+            showEditorDialog(row, editor -> {
+                editor.getHandler().handleEditingFinished(editor.getEditedObjects());
             });
         }
     }
@@ -436,11 +422,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                 // doesn't get the focus.
             }
         };
-        final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
-            public void verifiedStatusChanged(boolean verified) {
-                optionPane.setOKEnabled(verified && frameObject.checkEditorResults(editor));
-            }
-        };
+        final InputVerificationStatusChangedListener verificationListener = verified -> optionPane.setOKEnabled(verified && frameObject.checkEditorResults(editor));
         // if the editor is verifying, will need to prevent the OK button from
         // being available
         if (editor instanceof VerifiedInputEditor) {

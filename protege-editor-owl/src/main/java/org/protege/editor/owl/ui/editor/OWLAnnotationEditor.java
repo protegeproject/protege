@@ -46,11 +46,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     
     private static String lastEditorName = "";
 
-    private ChangeListener changeListener = new ChangeListener(){
-        public void stateChanged(ChangeEvent event) {
-            verify();
-        }
-    };
+    private ChangeListener changeListener = event -> verify();
     
     private InputVerificationStatusChangedListener mergedVerificationListener = new InputVerificationStatusChangedListener() {
 		
@@ -81,10 +77,8 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         loadEditors();
         initialiseLastSelectedProperty();
 
-        annotationPropertySelector.addSelectionListener(new ChangeListener(){
-            public void stateChanged(ChangeEvent event) {
-                verify();
-            }
+        annotationPropertySelector.addSelectionListener(event -> {
+            verify();
         });
 
         tabbedPane.addChangeListener(changeListener);

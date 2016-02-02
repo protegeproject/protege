@@ -43,11 +43,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLObjectEditor<O
 
     private boolean currentStatus = false;
 
-    private ChangeListener changeListener = new ChangeListener(){
-        public void stateChanged(ChangeEvent event) {
-            checkStatus();
-        }
-    };
+    private ChangeListener changeListener = event -> checkStatus();
 
 
     public OWLDataPropertyRelationshipEditor(OWLEditorKit owlEditorKit) {

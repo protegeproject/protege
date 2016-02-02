@@ -31,20 +31,14 @@ public class ActiveOntologyView extends AbstractOWLViewComponent {
 
     private JComboBox ontologiesList;
 
-    private OWLModelManagerListener owlModelManagerListener = new OWLModelManagerListener() {
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                updateList();
-            }
+    private OWLModelManagerListener owlModelManagerListener = event -> {
+        if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+            updateList();
         }
     };
 
 
-    private final OWLOntologyChangeListener ontologyChangedListener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
-            handleOntologyChanges(owlOntologyChanges);
-        }
-    };
+    private final OWLOntologyChangeListener ontologyChangedListener = owlOntologyChanges -> handleOntologyChanges(owlOntologyChanges);
 
     private void updateList() {
         ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());
@@ -62,12 +56,10 @@ public class ActiveOntologyView extends AbstractOWLViewComponent {
     public void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
         ontologiesList = new JComboBox();
-        ontologiesList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
-                if (ont != null) {
-                    getOWLModelManager().setActiveOntology(ont);
-                }
+        ontologiesList.addActionListener(e -> {
+            OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
+            if (ont != null) {
+                getOWLModelManager().setActiveOntology(ont);
             }
         });
         add(ontologiesList);

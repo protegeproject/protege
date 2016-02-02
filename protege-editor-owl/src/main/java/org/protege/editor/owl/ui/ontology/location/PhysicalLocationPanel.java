@@ -308,12 +308,10 @@ public class PhysicalLocationPanel extends JPanel {
 
     private class ReloadMListButton extends MListButton {
         protected ReloadMListButton() {
-            super("Reload", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleReload(item.ont);
-                    }
+            super("Reload", ROLL_OVER_COLOR, event -> {
+                if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                    OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                    handleReload(item.ont);
                 }
             });
         }
@@ -332,12 +330,10 @@ public class PhysicalLocationPanel extends JPanel {
     private class ShowFileMListButton extends MListButton {
 
         protected ShowFileMListButton() {
-            super("Show source file", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleShowFile(item.ont);
-                    }
+            super("Show source file", ROLL_OVER_COLOR, event -> {
+                if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                    OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                    handleShowFile(item.ont);
                 }
             });
         }
@@ -355,12 +351,10 @@ public class PhysicalLocationPanel extends JPanel {
     private class SaveMListButton extends MListButton {
 
         protected SaveMListButton() {
-            super("Save ontology", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleSave(item.ont);
-                    }
+            super("Save ontology", ROLL_OVER_COLOR, event -> {
+                if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                    OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                    handleSave(item.ont);
                 }
             });
         }

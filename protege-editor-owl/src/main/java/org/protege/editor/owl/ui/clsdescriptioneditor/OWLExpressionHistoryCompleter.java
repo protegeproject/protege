@@ -73,13 +73,11 @@ public class OWLExpressionHistoryCompleter {
                     lastSuggestion = suggestContent(currentText.substring(0, caretLocation));
                     if (lastSuggestion != null){
                         suggestingContent = true;
-                        SwingUtilities.invokeLater(new Runnable(){
-                            public void run() {
-                                tc.setText(lastSuggestion);
-                                tc.setSelectionEnd(lastSuggestion.length());
-                                tc.setSelectionStart(caretLocation);
-                                suggestingContent = false;
-                            }
+                        SwingUtilities.invokeLater(() -> {
+                            tc.setText(lastSuggestion);
+                            tc.setSelectionEnd(lastSuggestion.length());
+                            tc.setSelectionStart(caretLocation);
+                            suggestingContent = false;
                         });
                     }
                 }

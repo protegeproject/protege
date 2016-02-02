@@ -30,17 +30,14 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
 
     private OWLFrameList<OWLOntology> frameList;
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
-                if(isSynchronizing()) {
-                    try {
-                            updateView(getOWLModelManager().getActiveOntology());
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+    private OWLModelManagerListener listener = event -> {
+        if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
+            if(isSynchronizing()) {
+                try {
+                        updateView(getOWLModelManager().getActiveOntology());
+                }
+                catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

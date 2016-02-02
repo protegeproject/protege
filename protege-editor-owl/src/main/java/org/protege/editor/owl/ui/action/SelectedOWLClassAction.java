@@ -26,11 +26,7 @@ public abstract class SelectedOWLClassAction extends ProtegeOWLAction {
      * a each plugin must have a zero argument constructor.
      */
     final public void initialise() throws Exception {
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                updateState();
-            }
-        };
+        listener = () -> updateState();
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         updateState();
     }

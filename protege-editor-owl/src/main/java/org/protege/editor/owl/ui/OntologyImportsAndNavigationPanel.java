@@ -42,14 +42,11 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
         setLayout(new BorderLayout());
         tree = new OWLModelManagerTree<OWLOntology>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
         add(new JScrollPane(tree));
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                OWLOntology ont = tree.getSelectedOWLObject();
-                if (ont != null) {
-                    owlEditorKit.getModelManager().setActiveOntology(ont);
-                    owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
-                }
+        tree.addTreeSelectionListener(e -> {
+            OWLOntology ont = tree.getSelectedOWLObject();
+            if (ont != null) {
+                owlEditorKit.getModelManager().setActiveOntology(ont);
+                owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
             }
         });
         tree.addMouseListener(new MouseAdapter() {

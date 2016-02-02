@@ -85,31 +85,25 @@ public class SelectedObjectPanel extends JPanel {
         entityFrame = new OWLEntityFrame(getOWLEditorKit());
         frameList = new OWLFrameList(getOWLEditorKit(), entityFrame);
         cardPanel.add("ENTITIES", new JScrollPane(frameList));
-        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
-
-            public void selectionChanged() throws Exception {
-                OWLObject selObj = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
-                frameList.setRootObject(selObj);
-                if (selObj instanceof OWLEntity) {
-                    layout.show(cardPanel, "ENTITIES");
-                }
-                else if(selObj instanceof OWLOntology) {
-                    ontologyPanel.setOntology((OWLOntology) selObj);
-                    layout.show(cardPanel, "ONTOLOGY");
-                }
-                updateLabel(selObj);
+        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(() -> {
+            OWLObject selObj = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+            frameList.setRootObject(selObj);
+            if (selObj instanceof OWLEntity) {
+                layout.show(cardPanel, "ENTITIES");
             }
+            else if(selObj instanceof OWLOntology) {
+                ontologyPanel.setOntology((OWLOntology) selObj);
+                layout.show(cardPanel, "ONTOLOGY");
+            }
+            updateLabel(selObj);
         });
         frameList.setRootObject(null);
-        getOWLModelManager().addListener(new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    OWLOntology ontology = SelectedObjectPanel.this.getOWLModelManager().getActiveOntology();
-                    ontologyPanel.setOntology(ontology);
-                    layout.show(cardPanel, "ONTOLOGY");
-                    updateLabel(ontology);
-                }
+        getOWLModelManager().addListener(event -> {
+            if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                OWLOntology ontology = SelectedObjectPanel.this.getOWLModelManager().getActiveOntology();
+                ontologyPanel.setOntology(ontology);
+                layout.show(cardPanel, "ONTOLOGY");
+                updateLabel(ontology);
             }
         });
         cardPanel.add("ONTOLOGY", ontologyPanel = new OWLOntologyDisplayPanel(owlEditorKit));

@@ -58,19 +58,13 @@ public class OWLEntitySelectorPanel extends JPanel {
 
         tabbedPaneComponentMap = new IdentityHashMap<JComponent, JComponent>();
         createUI();
-        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
-
-            public void selectionChanged() throws Exception {
-                updateSelectionFromModel();
-            }
+        owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(() -> {
+            updateSelectionFromModel();
         });
-        owlEditorKit.getModelManager().addListener(new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-               if(event.isType(EventType.REASONER_CHANGED)) {
-                   handleReasonerChanged();
-               }
-            }
+        owlEditorKit.getModelManager().addListener(event -> {
+           if(event.isType(EventType.REASONER_CHANGED)) {
+               handleReasonerChanged();
+           }
         });
     }
 
@@ -88,11 +82,8 @@ public class OWLEntitySelectorPanel extends JPanel {
         createObjectPropertyTree();
         createDataPropertyTree();
         createIndividualsList();
-        tabbedPane.addChangeListener(new ChangeListener() {
-
-            public void stateChanged(ChangeEvent e) {
-                handleTabSelectionChange();
-            }
+        tabbedPane.addChangeListener(e -> {
+            handleTabSelectionChange();
         });
     }
 
@@ -120,11 +111,8 @@ public class OWLEntitySelectorPanel extends JPanel {
                 owlEditorKit.getModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider()
         );
         classTree = new OWLModelManagerTree<OWLClass>(owlEditorKit, classHierarchyProvider);
-        classTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                setModelSelection(classTree.getSelectedOWLObject());
-            }
+        classTree.addTreeSelectionListener(e -> {
+            setModelSelection(classTree.getSelectedOWLObject());
         });
         classHierarchySplitPane.setTopComponent(new JScrollPane(classTree));
 //        tabbedPane.add("Classes", createHierarchyHolder(classTree));
@@ -132,34 +120,25 @@ public class OWLEntitySelectorPanel extends JPanel {
 
     private void createObjectPropertyTree() {
         objectPropertyTree = new OWLModelManagerTree<OWLObjectProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider());
-        objectPropertyTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                setModelSelection(objectPropertyTree.getSelectedOWLObject());
-            }
+        objectPropertyTree.addTreeSelectionListener(e -> {
+            setModelSelection(objectPropertyTree.getSelectedOWLObject());
         });
         tabbedPane.add("Object properties", createHierarchyHolder(objectPropertyTree));
     }
 
     private void createDataPropertyTree() {
         dataPropertyTree = new OWLModelManagerTree<OWLDataProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider());
-        dataPropertyTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                setModelSelection(dataPropertyTree.getSelectedOWLObject());
-            }
+        dataPropertyTree.addTreeSelectionListener(e -> {
+            setModelSelection(dataPropertyTree.getSelectedOWLObject());
         });
         tabbedPane.add("Data properties", createHierarchyHolder(dataPropertyTree));
     }
 
     private void createIndividualsList() {
         individualsList = new OWLIndividualListComponent(owlEditorKit);
-        individualsList.getList().addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()) {
-                    setModelSelection(individualsList.getSelectedIndividual());
-                }
+        individualsList.getList().addListSelectionListener(e -> {
+            if(!e.getValueIsAdjusting()) {
+                setModelSelection(individualsList.getSelectedIndividual());
             }
         });
         tabbedPane.add("Individuals", createHierarchyHolder(individualsList));

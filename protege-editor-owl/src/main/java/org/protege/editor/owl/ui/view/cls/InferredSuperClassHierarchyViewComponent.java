@@ -25,12 +25,9 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
 
     private InferredSuperClassHierarchyProvider provider;
 
-    private OWLModelManagerListener l = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType() == EventType.REASONER_CHANGED){
-                getOWLClassHierarchyProvider().setReasoner(getOWLModelManager().getReasoner());
-            }
+    private OWLModelManagerListener l = event -> {
+        if (event.getType() == EventType.REASONER_CHANGED){
+            getOWLClassHierarchyProvider().setReasoner(getOWLModelManager().getReasoner());
         }
     };
 

@@ -49,11 +49,7 @@ public class OntologyImportsList extends MList {
 
     private OntologyImportWizard wizard;
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
     public OntologyImportsList(OWLEditorKit eKit) {
         this.eKit = eKit;

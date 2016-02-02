@@ -117,19 +117,13 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
 
     private void setupListener() {
-        listener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-                    refreshEntityRenderer();
-                }
+        listener = event -> {
+            if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                refreshEntityRenderer();
             }
         };
         getOWLModelManager().addListener(listener);
-        rendererListener = new OWLEntityRendererListener() {
-            public void renderingChanged(OWLEntity entity, OWLModelManagerEntityRenderer renderer) {
-                handleRenderingChanged(entity);
-            }
-        };
+        rendererListener = (entity, renderer) -> handleRenderingChanged(entity);
         refreshEntityRenderer();
     }
 

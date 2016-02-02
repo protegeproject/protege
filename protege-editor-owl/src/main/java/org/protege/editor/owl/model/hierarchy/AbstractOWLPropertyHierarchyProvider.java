@@ -43,17 +43,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
         ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
         ontologySetReadLock = locks.readLock();
         ontologySetWriteLock = locks.writeLock();
-        listener = new OWLOntologyChangeListener() {
-            /**
-             * Called when some changes have been applied to various ontologies.  These
-             * may be an axiom added or an axiom removed changes.
-             * @param changes A list of changes that have occurred.  Each change may be examined
-             *                to determine which ontology it was applied to.
-             */
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                handleChanges(changes);
-            }
-        };
+        listener = this::handleChanges;
         owlOntologyManager.addOntologyChangeListener(listener);
     }
 

@@ -27,18 +27,12 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
 
 
     final public void initialise() throws Exception {
-        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    update();
-                }
-            }
-        });
-        changeListener = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+        FocusManager.getCurrentManager().addPropertyChangeListener(listener = evt -> {
+            if (evt.getPropertyName().equals("focusOwner")) {
                 update();
             }
-        };
+        });
+        changeListener = e -> update();
         targetClass = initialiseAction();
         update();
     }

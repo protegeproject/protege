@@ -57,10 +57,7 @@ public class SearchResultsPanel extends JPanel {
 
     private SearchResultsTableModel model;
 
-    private SearchResultClickedListener searchResultClickedListener = new SearchResultClickedListener() {
-        @Override
-        public void handleSearchResultClicked(SearchResult searchResult, MouseEvent e) {
-        }
+    private SearchResultClickedListener searchResultClickedListener = (searchResult, e) -> {
     };
 
 
@@ -85,10 +82,8 @@ public class SearchResultsPanel extends JPanel {
                 handleMouseReleased(e);
             }
         });
-        scrollPane.getViewport().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                handleScrollpaneViewportChanged();
-            }
+        scrollPane.getViewport().addChangeListener(e -> {
+            handleScrollpaneViewportChanged();
         });
     }
 

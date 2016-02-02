@@ -27,11 +27,9 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
 
     private static final long serialVersionUID = -6015526995379146198L;
 
-    private OWLSelectionModelListener l = new OWLSelectionModelListener() {
-        public void selectionChanged() throws Exception {
-            if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass) {
-                refill();
-            }
+    private OWLSelectionModelListener l = () -> {
+        if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass) {
+            refill();
         }
     };
 

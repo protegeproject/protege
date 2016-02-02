@@ -60,40 +60,32 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
      */
     final public void initialiseOWLView() throws Exception {
         registeredActions = new HashSet<OWLSelectionViewAction>();
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
-                if (owlObject instanceof OWLEntity){
-                    if (canShowEntity((OWLEntity)owlObject)){
-                        updateViewContentAndHeader();
-                    }
-                }
-            }
-        };
-
-        entityRendererListener = new OWLEntityRendererListener() {
-            public void renderingChanged(OWLEntity entity, OWLModelManagerEntityRenderer renderer) {
-                if (lastDisplayedObject != null) {
-                    if (lastDisplayedObject.equals(entity)) {
-                        updateHeader(lastDisplayedObject);
-                    }
-                }
-            }
-        };
-
-        hierarchyListener = new HierarchyListener() {
-            public void hierarchyChanged(HierarchyEvent e) {
-                if (needsRefresh && isShowing()) {
+        listener = () -> {
+            final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+            if (owlObject instanceof OWLEntity){
+                if (canShowEntity((OWLEntity)owlObject)){
                     updateViewContentAndHeader();
                 }
             }
         };
 
-        modelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-                    getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
+        entityRendererListener = (entity, renderer) -> {
+            if (lastDisplayedObject != null) {
+                if (lastDisplayedObject.equals(entity)) {
+                    updateHeader(lastDisplayedObject);
                 }
+            }
+        };
+
+        hierarchyListener = e -> {
+            if (needsRefresh && isShowing()) {
+                updateViewContentAndHeader();
+            }
+        };
+
+        modelManagerListener = event -> {
+            if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
             }
         };
 

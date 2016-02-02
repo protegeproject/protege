@@ -24,12 +24,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     private Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
-
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
 
     public IndividualsByTypeHierarchyProvider(OWLOntologyManager owlOntologyManager) {

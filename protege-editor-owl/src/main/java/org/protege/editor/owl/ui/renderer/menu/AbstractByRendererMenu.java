@@ -26,14 +26,11 @@ public abstract class AbstractByRendererMenu extends ProtegeOWLAction {
 	}
 
 	public void initialise() throws Exception {
-		listener = new OWLModelManagerListener() {
-			
-			public void handleChange(OWLModelManagerChangeEvent event) {
-				if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-					updateCheckedStatus();
-				}
-			}
-		};
+		listener = event -> {
+            if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                updateCheckedStatus();
+            }
+        };
 		getOWLModelManager().addListener(listener);
 	}
 	

@@ -17,12 +17,10 @@ public class ProtegeOrphanFinder  {
         this.ontologies = ontologies;
         root = manager.getOWLDataFactory().getOWLThing();
         parentClassExtractor = new ParentClassExtractor();
-        rootFinder = new TerminalElementFinder<OWLClass>(new Relation<OWLClass>() {
-            public Collection<OWLClass> getR(OWLClass cls) {
-                Collection<OWLClass> parents = getParents(cls);
-                parents.remove(root);
-                return parents;
-            }
+        rootFinder = new TerminalElementFinder<OWLClass>(cls -> {
+            Collection<OWLClass> parents = getParents(cls);
+            parents.remove(root);
+            return parents;
         });
     }
     
@@ -31,15 +29,13 @@ public class ProtegeOrphanFinder  {
     }
     
     public void initializeListener() {
-        manager.addOntologyChangeListener(new OWLOntologyChangeListener() {
-           public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-               for (OWLOntologyChange change : changes) {
-                   if (change.getOntology() != null && ontologies.contains(change.getOntology())) {
-                       updateImplicitRoots(change);
-                   }
-               }
-            } 
-        });
+        manager.addOntologyChangeListener(changes -> {
+            for (OWLOntologyChange change : changes) {
+                if (change.getOntology() != null && ontologies.contains(change.getOntology())) {
+                    updateImplicitRoots(change);
+                }
+            }
+         });
     }
 
     public Set<OWLClass> getParents(OWLClass object) {

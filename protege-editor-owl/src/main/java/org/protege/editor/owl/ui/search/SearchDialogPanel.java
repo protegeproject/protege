@@ -66,12 +66,9 @@ public class SearchDialogPanel extends JPanel {
                 performSearch();
             }
         });
-        searchPanel.setSearchResultClickedListener(new SearchResultClickedListener() {
-            @Override
-            public void handleSearchResultClicked(SearchResult searchResult, MouseEvent e) {
-                if(e.getClickCount() == 2) {
-                    selectEntity();
-                }
+        searchPanel.setSearchResultClickedListener((searchResult, e) -> {
+            if(e.getClickCount() == 2) {
+                selectEntity();
             }
         });
 

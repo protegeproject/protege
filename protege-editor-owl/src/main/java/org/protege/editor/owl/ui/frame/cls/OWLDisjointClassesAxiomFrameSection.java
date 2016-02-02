@@ -70,30 +70,26 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
     
     @Override
     protected void refillInferred() {
-    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, new Runnable() {
-
-			public void run() {
-				OWLReasoner reasoner = getOWLModelManager().getReasoner();
-				if (!reasoner.isConsistent()) {
-					return;
-				}
-				NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
-				for (OWLClass c : disjointFromRoot.getFlattened()) {
-					if (!added.contains(c) && !c.equals(getRootObject())) {
-						addInferredRowIfNontrivial(new OWLDisjointClassesAxiomFrameSectionRow(
-								getOWLEditorKit(),
-								OWLDisjointClassesAxiomFrameSection.this,
-								null,
-								getRootObject(),
-								getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(getRootObject(), c)
-						    )
-						);
-						added.add(c);
-					}
-				}
-			}
-    		
-    	});
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, () -> {
+            OWLReasoner reasoner = getOWLModelManager().getReasoner();
+            if (!reasoner.isConsistent()) {
+                return;
+            }
+            NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
+            for (OWLClass c : disjointFromRoot.getFlattened()) {
+                if (!added.contains(c) && !c.equals(getRootObject())) {
+                    addInferredRowIfNontrivial(new OWLDisjointClassesAxiomFrameSectionRow(
+                            getOWLEditorKit(),
+                            OWLDisjointClassesAxiomFrameSection.this,
+                            null,
+                            getRootObject(),
+                            getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(getRootObject(), c)
+                        )
+                    );
+                    added.add(c);
+                }
+            }
+        });
     }
 
     public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
