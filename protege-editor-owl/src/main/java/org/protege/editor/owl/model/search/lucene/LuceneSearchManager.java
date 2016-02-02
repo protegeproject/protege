@@ -178,15 +178,11 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     private void buildingIndex() {
-        long t0 = System.currentTimeMillis();
-        logger.info("Building search index...");
         fireIndexingStarted();
         try {
             indexer.doIndex(indexDelegator,
                     new SearchContext(editorKit),
                     progress -> fireIndexingProgressed(progress));
-            long t1 = System.currentTimeMillis();
-            logger.info("... built search index in " + (t1 - t0) + " ms");
             reloadIndexSearcher();
         }
         catch (IOException e) {
