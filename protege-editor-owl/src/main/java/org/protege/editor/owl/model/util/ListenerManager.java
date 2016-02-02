@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ListenerManager<L extends Object> {
 
-    private final Map<L, StackTraceElement []> listenerMap = new HashMap<>();;
+    private final Map<L, StackTraceElement []> listenerMap = new HashMap<>();
 
     private static final int TRACE_START = 3;
 

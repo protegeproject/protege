@@ -42,8 +42,7 @@ public class OntologyCatalogManager {
 	    File backup;
 	    int i = 0;
 	    while ((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists()) {
-	        ;
-	    }
+		}
 	    catalogFile.renameTo(backup);
 	}
 	
@@ -192,7 +191,7 @@ public class OntologyCatalogManager {
         return lib;
     }
     
-    public void reloadFolder(File dir) throws MalformedURLException, IOException {
+    public void reloadFolder(File dir) throws IOException {
     	localCatalogs.remove(dir);
     	localCatalogs.put(dir, CatalogUtilities.parseDocument(getCatalogFile(dir).toURI().toURL()));
     	activeCatalog = localCatalogs.get(activeCatalogFolder);

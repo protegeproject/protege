@@ -52,7 +52,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
         private boolean datatypesMightHaveChanged(List<? extends OWLOntologyChange> changes) {
             for (OWLOntologyChange change : changes) {
                 if (change instanceof OWLAxiomChange) {
-                    for (OWLEntity e : ((OWLAxiomChange) change).getAxiom().getSignature()) {
+                    for (OWLEntity e : change.getAxiom().getSignature()) {
                         if (e instanceof OWLDatatype && !e.isBuiltIn()) {
                             return true;
                         }
@@ -62,9 +62,9 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
             return false;
         }
         
-    };
-    
-    
+    }
+
+
     private class ActiveOntologyChangedListener implements OWLModelManagerListener {
         public void handleChange(OWLModelManagerChangeEvent event) {
             switch (event.getType()) {
@@ -73,8 +73,8 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
                 break;
             }
         }
-    };
-    
+    }
+
     private class OWLDatatypeListView extends AbstractOWLViewComponent {
         private static final long serialVersionUID = -2407766608313199261L;
         private OWLOntologyChangeListener ontologyChangeListener = new UpdateDatatypeListListener();
@@ -129,7 +129,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
 
     public OWLDatatype getSelectedObject(){
-        return (OWLDatatype)list.getSelectedValue();
+        return list.getSelectedValue();
     }
 
 

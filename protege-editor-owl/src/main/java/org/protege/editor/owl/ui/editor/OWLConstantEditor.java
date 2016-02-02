@@ -62,7 +62,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         datatypeComboBox = uiHelper.getDatatypeSelector();
         datatypeComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                OWLDatatype owlDatatype = (OWLDatatype) getSelectedDatatype();
+                OWLDatatype owlDatatype = getSelectedDatatype();
                 boolean b = owlDatatype == null;
                 toggleLanguage(b);
             }

@@ -202,7 +202,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                     }
                 }
                 if (!stillReferenced) {
-                    if (individualsInList.remove((OWLNamedIndividual) ent)) {
+                    if (individualsInList.remove(ent)) {
                         mod = true;
                     }
                 }

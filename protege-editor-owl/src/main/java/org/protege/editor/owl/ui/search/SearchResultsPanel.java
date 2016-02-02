@@ -323,7 +323,7 @@ public class SearchResultsPanel extends JPanel {
                     styledStringPanel.setBackground(table.getBackground());
                     styledStringPanel.setForeground(table.getForeground());
                 }
-                Style highlightStyle = ProtegeStyles.getStyles().getHighlightStyle();
+                Style highlightStyle = ProtegeStyles.getHighlightStyle();
                 for (SearchResultMatch match : searchResult.getMatches()) {
                     int from = match.getStart();
                     int to = match.getEnd();

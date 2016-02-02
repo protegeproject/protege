@@ -61,7 +61,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			fireSelectionChanged();
 		}
 		else if (e instanceof OWLIndividual) {
-			individual = (OWLIndividual) individual;
+			individual = individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
 			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies());

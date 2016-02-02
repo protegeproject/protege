@@ -38,8 +38,8 @@ import java.util.Collections;
 public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implements VerifiedInputEditor {
 	
 	public enum EntityCreationMode {
-		PREVIEW, CREATE;
-	}
+		PREVIEW, CREATE
+    }
 
     /**
      *

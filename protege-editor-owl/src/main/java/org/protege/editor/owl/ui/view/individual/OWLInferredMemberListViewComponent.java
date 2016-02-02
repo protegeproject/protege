@@ -30,7 +30,7 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
     
     @Override
     protected void setupActions() {
-    	; // no actions
+        // no actions
     }
     
     @Override

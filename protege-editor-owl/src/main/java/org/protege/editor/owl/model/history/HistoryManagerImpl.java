@@ -23,9 +23,9 @@ import java.util.Stack;
 public class HistoryManagerImpl implements HistoryManager {
     
     private enum ChangeType {
-        UNDOING, REDOING, NORMAL;
-    };
-    
+        UNDOING, REDOING, NORMAL
+    }
+
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
     private Logger logger = LoggerFactory.getLogger(HistoryManager.class);
