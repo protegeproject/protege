@@ -2,15 +2,13 @@ package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewMode;
 
-import java.util.*;
-import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Matthew Horridge

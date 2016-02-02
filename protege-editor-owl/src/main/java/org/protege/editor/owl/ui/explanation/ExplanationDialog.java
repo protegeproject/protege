@@ -39,7 +39,7 @@ public class ExplanationDialog extends JPanel {
 	}
 	
 	private JComboBox createComboBox(Collection<ExplanationService> teachers) {
-		ExplanationService[] teacherArray = teachers.toArray(new ExplanationService[0]);
+		ExplanationService[] teacherArray = teachers.toArray(new ExplanationService[teachers.size()]);
 		final JComboBox selector = new JComboBox(teacherArray);
 		ExplanationService selected = teacherArray[0];
 		String id = getDefaultPluginId();

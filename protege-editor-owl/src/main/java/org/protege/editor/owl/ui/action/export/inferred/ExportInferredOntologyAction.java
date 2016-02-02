@@ -170,7 +170,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 	    		}
 	    	}
 	    	if (!precomputeNow.isEmpty()) {
-	    		reasoner.precomputeInferences(precomputeNow.toArray(new InferenceType[0]));
+	    		reasoner.precomputeInferences(precomputeNow.toArray(new InferenceType[precomputeNow.size()]));
 	    	}
 	    }
 	    
