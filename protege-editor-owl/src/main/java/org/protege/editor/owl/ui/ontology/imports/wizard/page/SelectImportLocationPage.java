@@ -18,7 +18,7 @@ public class SelectImportLocationPage extends AbstractWizardPanel {
 	public static final String ID = "SelectImportLocationPage";
 
 	private Box mainBox;
-    private Collection<ImportLocationOptionsPanel> optionsPanels = new ArrayList<ImportLocationOptionsPanel>();
+    private Collection<ImportLocationOptionsPanel> optionsPanels = new ArrayList<>();
     private Object backPanelDescriptor;
 	
     public SelectImportLocationPage(OWLEditorKit owlEditorKit) {

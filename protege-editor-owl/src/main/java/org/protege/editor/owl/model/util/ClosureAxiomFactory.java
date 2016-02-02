@@ -22,7 +22,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
     private Set<OWLOntology> onts;
 
-    private Set<OWLClass> visitedClasses = new TreeSet<OWLClass>();
+    private Set<OWLClass> visitedClasses = new TreeSet<>();
 
 
     private ClosureAxiomFactory(OWLObjectProperty objectProperty, OWLDataFactory df, Set<OWLOntology> onts) {

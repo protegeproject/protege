@@ -45,7 +45,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
     private java.util.List<OWLClassExpression> initialSelection;
 
-    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
 
     private ChangeListener changeListener = event -> {
         for (InputVerificationStatusChangedListener l : listeners){
@@ -67,7 +67,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
         editorComponent = new JPanel(new BorderLayout());
 
         final OWLExpressionChecker<Set<OWLClassExpression>> checker = owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getOWLClassExpressionSetChecker();
-        expressionEditor = new ExpressionEditor<Set<OWLClassExpression>>(owlEditorKit, checker);
+        expressionEditor = new ExpressionEditor<>(owlEditorKit, checker);
         JPanel holderPanel = new JPanel(new BorderLayout());
         holderPanel.add(expressionEditor);
         holderPanel.setPreferredSize(new Dimension(500, 400));
@@ -113,7 +113,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
 
     private Set<OWLClass> getNamedClassesFromInitialSelection() {
-        Set<OWLClass> clses = new HashSet<OWLClass>();
+        Set<OWLClass> clses = new HashSet<>();
         if (initialSelection != null){
             for (OWLClassExpression descr : initialSelection){
                 if (!descr.isAnonymous()){
@@ -152,7 +152,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
     public Set<OWLClassExpression> getEditedObject() {
         ensureEditorExists();
         if (tabbedPane != null && tabbedPane.getSelectedComponent().equals(classSelectorPanel)) {
-            return new HashSet<OWLClassExpression>(classSelectorPanel.getSelectedObjects());
+            return new HashSet<>(classSelectorPanel.getSelectedObjects());
         }
         else {
             try {
@@ -175,7 +175,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
         ensureEditorExists();
         expressionEditor.setExpressionObject(expressions);
         if (containsOnlyNamedClasses(expressions)){
-            Set<OWLClass> clses = new HashSet<OWLClass>(expressions.size());
+            Set<OWLClass> clses = new HashSet<>(expressions.size());
             for (OWLClassExpression expr : expressions){
                 clses.add(expr.asOWLClass());
             }

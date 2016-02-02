@@ -19,7 +19,7 @@ public class ExplanationManager {
 	private final Logger logger = LoggerFactory.getLogger(ExplanationManager.class);
 
 	private OWLEditorKit editorKit;
-	private Collection<ExplanationService> explainers = new HashSet<ExplanationService>();
+	private Collection<ExplanationService> explainers = new HashSet<>();
 	
 	public ExplanationManager(OWLEditorKit editorKit) {
 		this.editorKit = editorKit;
@@ -55,7 +55,7 @@ public class ExplanationManager {
 	}
 	
 	public Collection<ExplanationService> getTeachers(OWLAxiom axiom) {
-		Set<ExplanationService> smartTeachers = new HashSet<ExplanationService>();
+		Set<ExplanationService> smartTeachers = new HashSet<>();
 		for (ExplanationService teacher : explainers) {
 			if (teacher.hasExplanation(axiom)) {
 				smartTeachers.add(teacher);

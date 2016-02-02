@@ -28,7 +28,7 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
         super(userObject);
         this.tree = tree;
         isLoaded = false;
-        equivalentObjects = new HashSet<N>();
+        equivalentObjects = new HashSet<>();
     }
 
 
@@ -49,7 +49,7 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
 
     public OWLObjectTreeNode(OWLObjectTree tree) {
         this.tree = tree;
-        this.equivalentObjects = new HashSet<N>();
+        this.equivalentObjects = new HashSet<>();
     }
 
 

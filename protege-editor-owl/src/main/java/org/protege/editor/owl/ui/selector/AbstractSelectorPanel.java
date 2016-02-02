@@ -41,7 +41,7 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
 
     private boolean editable;
 
-    private List<InputVerificationStatusChangedListener> validateListeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private List<InputVerificationStatusChangedListener> validateListeners = new ArrayList<>();
 
     public boolean isValid = false;
 

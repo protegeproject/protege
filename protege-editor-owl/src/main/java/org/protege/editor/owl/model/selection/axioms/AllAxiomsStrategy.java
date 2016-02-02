@@ -17,7 +17,7 @@ public class AllAxiomsStrategy extends AbstractAxiomSelectionStrategy {
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ont : ontologies){
             axioms.addAll(ont.getAxioms());
         }

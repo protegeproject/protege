@@ -69,7 +69,7 @@ public class ReasonerPreferences {
     private DisplayedInferencePreferences displayed = new DisplayedInferencePreferences();
     private PrecomputedInferencePreferences precompute = new PrecomputedInferencePreferences();
     private String defaultReasonerId;
-    private List<ReasonerPreferencesListener> listeners = new ArrayList<ReasonerPreferencesListener>();
+    private List<ReasonerPreferencesListener> listeners = new ArrayList<>();
 
 
     public String getDefaultReasonerId() {

@@ -38,7 +38,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     private ProtegeOWLReasonerInfo currentReasonerFactory;
 
-    private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<OWLOntology, OWLReasoner>();
+    private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<>();
     
     private OWLReasoner runningReasoner;
     private boolean classificationInProgress = false;
@@ -46,7 +46,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private ReasonerProgressMonitor reasonerProgressMonitor;
     private OWLReasonerExceptionHandler exceptionHandler;
     
-    private List<ReasonerFilter> reasonerFilters = new ArrayList<ReasonerFilter>();
+    private List<ReasonerFilter> reasonerFilters = new ArrayList<>();
     
     private OWLOntologyChangeListener nonBufferingOntologyChangeListener = new OWLOntologyChangeListener() {
        	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
@@ -94,7 +94,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         this.owlModelManager = owlModelManager;
         preferences = new ReasonerPreferences();
         preferences.load();
-        reasonerFactories = new HashSet<ProtegeOWLReasonerInfo>();
+        reasonerFactories = new HashSet<>();
         reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
         exceptionHandler = new DefaultOWLReasonerExceptionHandler();

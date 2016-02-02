@@ -20,7 +20,7 @@ public class OWLGeneralAxiomsViewComponent extends AbstractActiveOntologyViewCom
 
 
     protected void initialiseOntologyView() throws Exception {
-        list = new OWLFrameList<OWLOntology>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                               new OWLGeneralClassAxiomsFrame(getOWLEditorKit(),
                                                                              getOWLModelManager().getOWLOntologyManager()));
         setLayout(new BorderLayout());

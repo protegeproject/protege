@@ -18,7 +18,7 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
     private final Logger logger = LoggerFactory.getLogger(AmalgamateDisjointClassesAction.class);
 
     public void actionPerformed(ActionEvent actionEvent) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         int axiomsRemoved = 0;
         int axiomsAdded = 0;
         int numberOfDisjoints = 0;
@@ -26,7 +26,7 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
 
             // act on each ontology in turn
-            CliqueFinder<OWLClassExpression> merger = new CliqueFinder<OWLClassExpression>();
+            CliqueFinder<OWLClassExpression> merger = new CliqueFinder<>();
 
             Set<OWLDisjointClassesAxiom> oldAxioms = ont.getAxioms(AxiomType.DISJOINT_CLASSES);
             numberOfDisjoints += oldAxioms.size();
@@ -71,9 +71,9 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
      */
     static class CliqueFinder<O> {
 
-        private Map<O, Set<O>> edgesByVertex = new HashMap<O, Set<O>>();
+        private Map<O, Set<O>> edgesByVertex = new HashMap<>();
 
-        private Set<Set<O>> originalCliques = new HashSet<Set<O>>();
+        private Set<Set<O>> originalCliques = new HashSet<>();
 
         private Set<Set<O>> resultCliques;
 
@@ -81,7 +81,7 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
             resultCliques = null;
             final Set<O> unmodClique = Collections.unmodifiableSet(clique);
             originalCliques.add(unmodClique);
-            List<O> orderedOperands = new ArrayList<O>(clique);
+            List<O> orderedOperands = new ArrayList<>(clique);
             for (int i=0; i<orderedOperands.size(); i++){
                 O a = orderedOperands.get(i);
                 for (int j=i+1; j<orderedOperands.size(); j++){
@@ -100,13 +100,13 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
 
         public Set<Set<O>> getResults() {
             if (resultCliques == null){
-                resultCliques = new HashSet<Set<O>>();
-                Set<Integer> skip = new HashSet<Integer>();
+                resultCliques = new HashSet<>();
+                Set<Integer> skip = new HashSet<>();
 
-                List<Set<O>> workingCliques = new ArrayList<Set<O>>(originalCliques);
+                List<Set<O>> workingCliques = new ArrayList<>(originalCliques);
                 for (int i=0; i<workingCliques.size(); i++){
                     if (!skip.contains(i)){
-                        Set<O> g1 = new HashSet<O>(workingCliques.get(i));
+                        Set<O> g1 = new HashSet<>(workingCliques.get(i));
                         for (int j=i+1; j<workingCliques.size(); j++){
                             if (!skip.contains(j)){
                                 Set<O> g2 = workingCliques.get(j);
@@ -127,7 +127,7 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
         private void addEdge(O d1, O d2){
             Set<O> values = edgesByVertex.get(d1);
             if (values == null){
-                values = new HashSet<O>();
+                values = new HashSet<>();
                 edgesByVertex.put(d1, values);
             }
             values.add(d2);
@@ -157,39 +157,39 @@ public class AmalgamateDisjointClassesAction extends ProtegeOWLAction {
 
 
     public static void main(String[] args) {
-        CliqueFinder<String> finder = new CliqueFinder<String>();
-        finder.add(new HashSet<String>(Arrays.asList("A", "B")));
-        finder.add(new HashSet<String>(Arrays.asList("B", "C")));
-        finder.add(new HashSet<String>(Arrays.asList("C", "D")));
-        finder.add(new HashSet<String>(Arrays.asList("A", "D")));
-        finder.add(new HashSet<String>(Arrays.asList("B", "D")));
+        CliqueFinder<String> finder = new CliqueFinder<>();
+        finder.add(new HashSet<>(Arrays.asList("A", "B")));
+        finder.add(new HashSet<>(Arrays.asList("B", "C")));
+        finder.add(new HashSet<>(Arrays.asList("C", "D")));
+        finder.add(new HashSet<>(Arrays.asList("A", "D")));
+        finder.add(new HashSet<>(Arrays.asList("B", "D")));
 
         Set<Set<String>> results = finder.getResults();
         assert(results.size() == 2);
-        assert(results.contains(new HashSet<String>(Arrays.asList("C", "B", "D"))));
-        assert(results.contains(new HashSet<String>(Arrays.asList("A", "B", "D"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("C", "B", "D"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("A", "B", "D"))));
 
 
         finder.clear();
-        finder.add(new HashSet<String>(Arrays.asList("A", "X")));
-        finder.add(new HashSet<String>(Arrays.asList("B", "X")));
-        finder.add(new HashSet<String>(Arrays.asList("Y", "A")));
-        finder.add(new HashSet<String>(Arrays.asList("B", "D", "A")));
-        finder.add(new HashSet<String>(Arrays.asList("C", "B")));
+        finder.add(new HashSet<>(Arrays.asList("A", "X")));
+        finder.add(new HashSet<>(Arrays.asList("B", "X")));
+        finder.add(new HashSet<>(Arrays.asList("Y", "A")));
+        finder.add(new HashSet<>(Arrays.asList("B", "D", "A")));
+        finder.add(new HashSet<>(Arrays.asList("C", "B")));
 
         results = finder.getResults();
         assert(results.size() == 4);
-        assert(results.contains(new HashSet<String>(Arrays.asList("D", "A", "B"))));
-        assert(results.contains(new HashSet<String>(Arrays.asList("A", "B", "X"))));
-        assert(results.contains(new HashSet<String>(Arrays.asList("A", "Y"))));
-        assert(results.contains(new HashSet<String>(Arrays.asList("C", "B"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("D", "A", "B"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("A", "B", "X"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("A", "Y"))));
+        assert(results.contains(new HashSet<>(Arrays.asList("C", "B"))));
 
 
         finder.clear();
-        finder.add(new HashSet<String>(Arrays.asList("A", "B", "C")));
-        finder.add(new HashSet<String>(Arrays.asList("X", "Y", "Z")));
-        finder.add(new HashSet<String>(Arrays.asList("X", "A")));
-        finder.add(new HashSet<String>(Arrays.asList("X", "C")));
+        finder.add(new HashSet<>(Arrays.asList("A", "B", "C")));
+        finder.add(new HashSet<>(Arrays.asList("X", "Y", "Z")));
+        finder.add(new HashSet<>(Arrays.asList("X", "A")));
+        finder.add(new HashSet<>(Arrays.asList("X", "C")));
 
         for (Set<String> result : finder.getResults()){
             System.out.print("<");

@@ -35,7 +35,7 @@ public class SpecifyFilePathPanel extends AbstractOWLWizardPanel {
     protected void createUI(JComponent parent) {
         parent.setLayout(new BorderLayout());
         setInstructions("Please specify the path to the file containing the ontology");
-        filePathPanel = new FilePathPanel("Specify ontology file", new HashSet<String>());
+        filePathPanel = new FilePathPanel("Specify ontology file", new HashSet<>());
         parent.add(filePathPanel, BorderLayout.NORTH);
         filePathPanel.addChangeListener(e -> {
             updateState();

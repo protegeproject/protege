@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class OWLObjectRenderingCache implements Disposable {
 
-    Map<OWLObject, String> cache = new MyLRUMap<OWLObject, String>(50, 1, 50);
+    Map<OWLObject, String> cache = new MyLRUMap<>(50, 1, 50);
 
     private OWLModelManagerListener l = event -> clear();
 

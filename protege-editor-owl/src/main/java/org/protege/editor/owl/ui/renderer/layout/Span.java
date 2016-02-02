@@ -96,7 +96,7 @@ public class Span {
     }
 
     public List<Span> split(List<Integer> positions) {
-        List<Span> stack = new ArrayList<Span>();
+        List<Span> stack = new ArrayList<>();
         stack.add(0, this);
         for(int position : positions) {
             if(position > startIndex && position < endIndex) {

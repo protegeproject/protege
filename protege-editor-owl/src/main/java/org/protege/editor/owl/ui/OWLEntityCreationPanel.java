@@ -54,7 +54,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     private Class<T> type;
 
-    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
 
     private boolean currentlyValid = true;
 
@@ -227,7 +227,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
                 T owlEntity = CustomOWLEntityFactory.getOWLEntity(factory, type, iri);
                 OWLOntologyChange addDecl = new AddAxiom(ontology, factory.getOWLDeclarationAxiom(owlEntity));
-                return new OWLEntityCreationSet<T>(owlEntity, Collections.singletonList(addDecl));
+                return new OWLEntityCreationSet<>(owlEntity, Collections.singletonList(addDecl));
             }
             else {
             	switch (preview) {
@@ -259,7 +259,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
     public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(OWLEditorKit owlEditorKit, String message, Class<T> type) {
 
-            OWLEntityCreationPanel panel = new OWLEntityCreationPanel<T>(owlEditorKit, message, type);
+            OWLEntityCreationPanel panel = new OWLEntityCreationPanel<>(owlEditorKit, message, type);
             int ret = new UIHelper(owlEditorKit).showValidatingDialog("Create a new " + type.getSimpleName(), panel, panel.userSuppliedNameField);
             if (ret == JOptionPane.OK_OPTION) {
                 return panel.getOWLEntityCreationSet();

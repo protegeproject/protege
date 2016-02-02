@@ -383,7 +383,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @return A list of paragraphs that represents the rendering of the entities.
      */
     private List<Paragraph> renderEntities(Page page, Set<OWLEntity> entities) {
-        List<Paragraph> paragraphs = new ArrayList<Paragraph>();
+        List<Paragraph> paragraphs = new ArrayList<>();
         for (OWLEntity entity : entities) {
             Icon icon = getIcon(entity);
             OWLModelManager modelManager = editorKit.getOWLModelManager();
@@ -415,7 +415,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private List<Paragraph> renderLiteral(Page page, OWLLiteral literal, Color foreground, Color background, boolean isSelected) {
         String rendering = EscapeUtils.unescapeString(literal.getLiteral()).trim();
-        List<Paragraph> result = new ArrayList<Paragraph>();
+        List<Paragraph> result = new ArrayList<>();
         if (rendering.length() > 0) {
             List<LinkSpan> linkSpans = extractLinks(rendering);
             Paragraph literalParagraph = new Paragraph(rendering, linkSpans);
@@ -463,7 +463,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private List<LinkSpan> extractLinks(String s) {
         Matcher matcher = URL_PATTERN.matcher(s);
-        List<LinkSpan> result = new ArrayList<LinkSpan>();
+        List<LinkSpan> result = new ArrayList<>();
         while (matcher.find()) {
             int start = matcher.start();
             int end = matcher.end();

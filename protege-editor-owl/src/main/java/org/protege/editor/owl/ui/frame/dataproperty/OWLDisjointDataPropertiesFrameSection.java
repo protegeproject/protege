@@ -33,7 +33,7 @@ public class OWLDisjointDataPropertiesFrameSection extends AbstractOWLFrameSecti
 
 
     protected OWLDisjointDataPropertiesAxiom createAxiom(Set<OWLDataProperty> object) {
-        Set<OWLDataProperty> disjoints = new HashSet<OWLDataProperty>(object);
+        Set<OWLDataProperty> disjoints = new HashSet<>(object);
         disjoints.add(getRootObject());
         return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(disjoints);
     }

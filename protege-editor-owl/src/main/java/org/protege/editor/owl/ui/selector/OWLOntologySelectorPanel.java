@@ -36,7 +36,7 @@ public class OWLOntologySelectorPanel extends JPanel {
         this.owlEditorKit = owlEditorKit;
         list = new OWLObjectList(owlEditorKit);
         final OWLModelManager mngr = owlEditorKit.getModelManager();
-        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(ontologies);
+        final List<OWLOntology> orderedOntologies = new ArrayList<>(ontologies);
         Collections.sort(orderedOntologies, mngr.getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
         setLayout(new BorderLayout());
@@ -60,7 +60,7 @@ public class OWLOntologySelectorPanel extends JPanel {
 
 
     public Set<OWLOntology> getSelectedOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+        Set<OWLOntology> ontologies = new HashSet<>();
         for (Object o : list.getSelectedValues()) {
             ontologies.add((OWLOntology) o);
         }

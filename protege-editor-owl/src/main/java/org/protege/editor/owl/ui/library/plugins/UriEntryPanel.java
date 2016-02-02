@@ -88,7 +88,7 @@ public class UriEntryPanel extends NewEntryPanel {
         IRI preferred = null;
         URI u = getPhysicalLocation();
         if (u != null) {
-            Set<IRI> locations = new TreeSet<IRI>();
+            Set<IRI> locations = new TreeSet<>();
             if (!"file".equals(u.getScheme())) {
                 preferred = IRI.create(u);
                 locations.add(preferred);

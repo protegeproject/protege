@@ -70,7 +70,7 @@ public abstract class OWLFrameListPopupMenuAction<R extends Object> extends Abst
 
 
     protected List<OWLFrameSectionRow<R, ? extends OWLAxiom, ? extends Object>> getSelectedRows() {
-        List<OWLFrameSectionRow<R, ? extends OWLAxiom, ? extends Object>> rows = new ArrayList<OWLFrameSectionRow<R, ? extends OWLAxiom, ? extends Object>>();
+        List<OWLFrameSectionRow<R, ? extends OWLAxiom, ? extends Object>> rows = new ArrayList<>();
         for (Object selVal : getFrameList().getSelectedValues()) {
             if (selVal instanceof OWLFrameSectionRow) {
                 rows.add((OWLFrameSectionRow<R, ? extends OWLAxiom, ? extends Object>) selVal);

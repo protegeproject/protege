@@ -36,7 +36,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
     private MList list;
 
-    private java.util.List<ChangeListener> listeners = new ArrayList<ChangeListener>();
+    private java.util.List<ChangeListener> listeners = new ArrayList<>();
 
 
     protected void initialiseOntologyView() throws Exception {
@@ -72,7 +72,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
 
     protected void updateView(OWLOntology activeOntology) throws Exception {
-        Set<AnonymousClassItem> clses = new HashSet<AnonymousClassItem>();
+        Set<AnonymousClassItem> clses = new HashSet<>();
         AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
         if (ADCManager != null){
             for (OWLClass cls : activeOntology.getClassesInSignature()){
@@ -105,7 +105,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
 
     public java.util.List<OWLObject> getObjectsToCopy() {
-        List<OWLObject> sel = new ArrayList<OWLObject>();
+        List<OWLObject> sel = new ArrayList<>();
 for (Object clsItem : list.getSelectedValues()){
             sel.add(((AnonymousClassItem)clsItem).getOWLClass());
         }

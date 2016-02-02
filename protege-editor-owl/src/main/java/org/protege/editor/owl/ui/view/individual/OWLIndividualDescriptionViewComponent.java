@@ -25,10 +25,10 @@ public class OWLIndividualDescriptionViewComponent extends AbstractOWLIndividual
 
 
     public void initialiseIndividualsView() throws Exception {
-        list = new OWLFrameList<OWLNamedIndividual>(getOWLEditorKit(), new OWLIndividualFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLIndividualFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLNamedIndividual>());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<>());
     }
 
 

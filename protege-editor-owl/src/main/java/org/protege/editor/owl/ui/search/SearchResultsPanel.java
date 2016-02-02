@@ -184,7 +184,7 @@ public class SearchResultsPanel extends JPanel {
     }
 
     public java.util.List<OWLEntity> getSelectedEntities() {
-        java.util.List<OWLEntity> results = new ArrayList<OWLEntity>();
+        java.util.List<OWLEntity> results = new ArrayList<>();
         for (int selIndex : resultsTable.getSelectedRows()) {
             Optional<OWLEntity> entity = getEntityAtRow(selIndex);
             if (entity.isPresent()) {

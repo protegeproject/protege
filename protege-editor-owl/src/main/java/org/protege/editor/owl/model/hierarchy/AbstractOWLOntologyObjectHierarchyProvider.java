@@ -27,7 +27,7 @@ public abstract class AbstractOWLOntologyObjectHierarchyProvider<N extends OWLOb
 
     protected AbstractOWLOntologyObjectHierarchyProvider(OWLOntologyManager manager) {
         super(manager);
-        ontologies = new HashSet<OWLOntology>();
+        ontologies = new HashSet<>();
         listener = changes -> handleOntologyChanges(changes);
         attachListeners();
     }

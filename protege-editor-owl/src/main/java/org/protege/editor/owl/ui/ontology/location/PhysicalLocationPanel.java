@@ -73,7 +73,7 @@ public class PhysicalLocationPanel extends JPanel {
 
 
     public Set<OWLOntology> getSelectedOntologies(){
-        Set<OWLOntology> onts = new HashSet<OWLOntology>();
+        Set<OWLOntology> onts = new HashSet<>();
         for (Object sel : ontologiesPanel.getSelectedValues()){
             if (sel instanceof OntologyListItem){
                 onts.add(((OntologyListItem)sel).ont);
@@ -98,7 +98,7 @@ public class PhysicalLocationPanel extends JPanel {
 
         ontologiesPanel = new MList(){
             protected List<MListButton> getButtons(Object value) {
-                List<MListButton> buttons  = new ArrayList<MListButton>(super.getButtons(value));
+                List<MListButton> buttons  = new ArrayList<>(super.getButtons(value));
                 buttons.add(reload);
                 OWLOntology ont = ((OntologyListItem)value).ont;
                 URI ontologyPhysicalURI = owlEditorKit.getModelManager().getOntologyPhysicalURI(ont);
@@ -123,10 +123,10 @@ public class PhysicalLocationPanel extends JPanel {
 
     private void load() {
         final OWLModelManager mngr = owlEditorKit.getModelManager();
-        Set<OWLOntology> ts = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
+        Set<OWLOntology> ts = new TreeSet<>(mngr.getOWLObjectComparator());
         ts.addAll(ontologies);
 
-        java.util.List<OntologyListItem> items = new ArrayList<OntologyListItem>();
+        java.util.List<OntologyListItem> items = new ArrayList<>();
         for (OWLOntology ont : ts){
             items.add(new OntologyListItem(ont));
         }

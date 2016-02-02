@@ -22,7 +22,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
     private OWLIndividualSelectorPanel panel;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
     private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 

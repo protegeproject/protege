@@ -29,9 +29,9 @@ public class OWLExpressionUserCache implements Disposable {
     private static final String ID = OWLExpressionUserCache.class.getName();
 
 
-    private Map<OWLClassExpression, String> renderingsCache = new HashMap<OWLClassExpression, String>();
+    private Map<OWLClassExpression, String> renderingsCache = new HashMap<>();
 
-    private List<String> cacheInternalForm = new ArrayList<String>();
+    private List<String> cacheInternalForm = new ArrayList<>();
     private List<String> cacheExternalForm = null;
 
     private OWLModelManager mngr;
@@ -81,7 +81,7 @@ public class OWLExpressionUserCache implements Disposable {
 
     public List<String> getRenderings() {
         if (cacheExternalForm == null){
-            cacheExternalForm = new ArrayList<String>();
+            cacheExternalForm = new ArrayList<>();
             for (String s : cacheInternalForm){
                 final String externalForm = fromInternalForm(s);
                 if (externalForm != null){

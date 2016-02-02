@@ -42,7 +42,7 @@ public class GatherOntologiesPanel extends JPanel {
     public GatherOntologiesPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         this.owlModelManager = owlEditorKit.getModelManager();
-        ontologiesToSave = new HashSet<OWLOntology>();
+        ontologiesToSave = new HashSet<>();
         createUI();
     }
 
@@ -51,7 +51,7 @@ public class GatherOntologiesPanel extends JPanel {
 
         JPanel holderPanel = new JPanel(new BorderLayout());
         JPanel comboBoxLabelPanel = new JPanel(new BorderLayout(7, 7));
-        List<Object> formats = new ArrayList<Object>();
+        List<Object> formats = new ArrayList<>();
         formats.add("Original");
         formats.add(new RDFXMLDocumentFormat());
         formats.add(new OWLXMLDocumentFormat());
@@ -65,7 +65,7 @@ public class GatherOntologiesPanel extends JPanel {
 
         Box box = new Box(BoxLayout.Y_AXIS);
 
-        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(owlModelManager.getOntologies());
+        final List<OWLOntology> orderedOntologies = new ArrayList<>(owlModelManager.getOntologies());
         Collections.sort(orderedOntologies, owlModelManager.getOWLObjectComparator());
         for (final OWLOntology ont : orderedOntologies) {
             ontologiesToSave.add(ont);

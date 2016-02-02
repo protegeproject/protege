@@ -41,7 +41,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<O
     public OWLObjectPropertyChainEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         final OWLExpressionChecker<List<OWLObjectPropertyExpression>> checker = owlEditorKit.getModelManager().getOWLExpressionCheckerFactory().getPropertyChainChecker();
-        editor = new ExpressionEditor<List<OWLObjectPropertyExpression>>(owlEditorKit, checker);        
+        editor = new ExpressionEditor<>(owlEditorKit, checker);
         Dimension prefSize = editor.getPreferredSize();
         editor.setPreferredSize(new Dimension(350, prefSize.height * 3));
         impliesLabel = new JLabel();

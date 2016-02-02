@@ -56,7 +56,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     public OWLEntitySelectorPanel(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
 
-        tabbedPaneComponentMap = new IdentityHashMap<JComponent, JComponent>();
+        tabbedPaneComponentMap = new IdentityHashMap<>();
         createUI();
         owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(() -> {
             updateSelectionFromModel();
@@ -106,11 +106,11 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private void createClassTree() {
-        classHierarchyProvider = new AssertedInferredHierarchyProvider<OWLClass>(
+        classHierarchyProvider = new AssertedInferredHierarchyProvider<>(
                 owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider(),
                 owlEditorKit.getModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider()
         );
-        classTree = new OWLModelManagerTree<OWLClass>(owlEditorKit, classHierarchyProvider);
+        classTree = new OWLModelManagerTree<>(owlEditorKit, classHierarchyProvider);
         classTree.addTreeSelectionListener(e -> {
             setModelSelection(classTree.getSelectedOWLObject());
         });
@@ -119,7 +119,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private void createObjectPropertyTree() {
-        objectPropertyTree = new OWLModelManagerTree<OWLObjectProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider());
+        objectPropertyTree = new OWLModelManagerTree<>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLObjectPropertyHierarchyProvider());
         objectPropertyTree.addTreeSelectionListener(e -> {
             setModelSelection(objectPropertyTree.getSelectedOWLObject());
         });
@@ -127,7 +127,7 @@ public class OWLEntitySelectorPanel extends JPanel {
     }
 
     private void createDataPropertyTree() {
-        dataPropertyTree = new OWLModelManagerTree<OWLDataProperty>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider());
+        dataPropertyTree = new OWLModelManagerTree<>(owlEditorKit, owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider());
         dataPropertyTree.addTreeSelectionListener(e -> {
             setModelSelection(dataPropertyTree.getSelectedOWLObject());
         });
@@ -255,7 +255,7 @@ public class OWLEntitySelectorPanel extends JPanel {
             this.asserted = asserted;
             this.inferred = inferred;
             this.current = asserted;
-            listeners = new ArrayList<OWLObjectHierarchyProviderListener<N>>();
+            listeners = new ArrayList<>();
         }
 
         public void swapToInferred() {

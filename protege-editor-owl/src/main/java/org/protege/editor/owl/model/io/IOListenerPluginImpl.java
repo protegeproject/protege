@@ -39,7 +39,7 @@ public class IOListenerPluginImpl implements IOListenerPlugin {
 
     public IOListenerPluginInstance newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                          InstantiationException {
-        ExtensionInstantiator<IOListenerPluginInstance> instantiator = new ExtensionInstantiator<IOListenerPluginInstance>(iExtension);
+        ExtensionInstantiator<IOListenerPluginInstance> instantiator = new ExtensionInstantiator<>(iExtension);
         IOListenerPluginInstance instance = instantiator.instantiate();
         instance.setup(editorKit);
         return instance;

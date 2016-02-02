@@ -55,7 +55,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     @SuppressWarnings("unchecked")
     public OWLClassDescriptionEditor getOWLClassDescriptionEditor(OWLClassExpression expr, AxiomType type) {
         OWLClassDescriptionEditor editor = new OWLClassDescriptionEditor(eKit, expr);
-        TreeMap<String, OWLClassExpressionEditor> editorMap = new TreeMap<String, OWLClassExpressionEditor>();
+        TreeMap<String, OWLClassExpressionEditor> editorMap = new TreeMap<>();
         for (OWLClassExpressionEditorPlugin plugin : getDescriptionEditorPlugins()) {
             try {
                 if (type == null || plugin.isSuitableFor(type)){
@@ -131,7 +131,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
     private List<OWLClassExpressionEditorPlugin> getDescriptionEditorPlugins() {
         if (descriptionEditorPlugins == null){
             OWLClassExpressionEditorPluginLoader loader = new OWLClassExpressionEditorPluginLoader(eKit);
-            descriptionEditorPlugins = new ArrayList<OWLClassExpressionEditorPlugin>(loader.getPlugins());
+            descriptionEditorPlugins = new ArrayList<>(loader.getPlugins());
             Comparator<OWLClassExpressionEditorPlugin> clsDescrPluginComparator = (p1, p2) -> p1.getIndex().compareTo(p2.getIndex());
             Collections.sort(descriptionEditorPlugins, clsDescrPluginComparator);
         }

@@ -39,7 +39,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLObjectEditor<O
 
     private JPanel componentHolder;
 
-    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
 
     private boolean currentStatus = false;
 

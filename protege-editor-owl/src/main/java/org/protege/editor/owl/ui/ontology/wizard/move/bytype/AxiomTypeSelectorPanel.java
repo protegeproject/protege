@@ -50,7 +50,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
 
         typeSource.setListData(data.toArray());
 
-        typeSelection = new RemovableObjectList<AxiomType>();
+        typeSelection = new RemovableObjectList<>();
         typeSelection.setCellRenderer(new DefaultListCellRenderer(){
             public Component getListCellRendererComponent(JList jList, Object o, int i, boolean b, boolean b1) {
                 if (o instanceof RemovableObjectList.RemovableObjectListItem){
@@ -80,7 +80,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
 
 
     private void addSelectedItems() {
-        Set<AxiomType> selectedTypes = new HashSet<AxiomType>();
+        Set<AxiomType> selectedTypes = new HashSet<>();
         for (Object o : typeSource.getSelectedValues()){
             if (o instanceof TypeItem){
                 final AxiomType axiomType = ((TypeItem) o).getType();
@@ -93,7 +93,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
 
 
     private Set<AxiomType> getSelection(){
-        return new HashSet<AxiomType>(typeSelection.getListItems());
+        return new HashSet<>(typeSelection.getListItems());
     }
 
 
@@ -126,7 +126,7 @@ public class AxiomTypeSelectorPanel extends MoveAxiomsKitConfigurationPanel {
     }
 
     private List createTypesByTypeList() {
-        java.util.List<Object> data = new ArrayList<Object>();
+        java.util.List<Object> data = new ArrayList<>();
         data.add(new MListSectionHeader(){
             public String getName() {
                 return "Class Axioms";

@@ -38,8 +38,8 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
 
     public AbstractOWLPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
-        this.subPropertiesOfRoot = new HashSet<P>();
-        ontologies = new FakeSet<OWLOntology>();
+        this.subPropertiesOfRoot = new HashSet<>();
+        ontologies = new FakeSet<>();
         ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
         ontologySetReadLock = locks.readLock();
         ontologySetWriteLock = locks.writeLock();
@@ -59,7 +59,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
      * manager read or write locks or the ontologies 
      */
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
-        Set<P> properties = new HashSet<P>(getPropertiesReferencedInChange(changes));
+        Set<P> properties = new HashSet<>(getPropertiesReferencedInChange(changes));
         for (P prop : properties) {
             if (isSubPropertyOfRoot(prop)) {
                 subPropertiesOfRoot.add(prop);
@@ -197,7 +197,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     			return Collections.unmodifiableSet(subPropertiesOfRoot);
     		}
 
-    		final Set<P> result = new HashSet<P>();
+    		final Set<P> result = new HashSet<>();
     		for (E subProp : getSubProperties(object, ontologies)){
     			// Don't add the sub property if it is a parent of
     			// itself - i.e. prevent cycles
@@ -221,7 +221,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
 //    	getReadLock().lock();
     	ontologySetReadLock.lock();
     	try {
-    		Set<P> result = new HashSet<P>();
+    		Set<P> result = new HashSet<>();
     		Set<P> ancestors = getAncestors(object);
     		if (ancestors.contains(object)) {
     			for (P anc : ancestors) {
@@ -310,7 +310,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
     
     private class FakeSet<X> extends AbstractSet<X> {
-    	private List<X> elements = new ArrayList<X>();
+    	private List<X> elements = new ArrayList<>();
     	
     	@Override
     	public Iterator<X> iterator() {

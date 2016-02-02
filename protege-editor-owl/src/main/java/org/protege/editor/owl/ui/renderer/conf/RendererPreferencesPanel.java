@@ -26,7 +26,7 @@ import java.util.Map;
 public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private final Logger logger = LoggerFactory.getLogger(RendererPreferencesPanel.class);
-    private Map<JRadioButton, RendererPlugin> buttonToRendererMap = new LinkedHashMap<JRadioButton, RendererPlugin>();
+    private Map<JRadioButton, RendererPlugin> buttonToRendererMap = new LinkedHashMap<>();
 
     private JList annotationPropertiesList;
 

@@ -152,13 +152,13 @@ public class AnnotationRendererPanel extends JPanel {
     protected void applyChanges() {
         if (dirty){
             // @@TODO change this to get annotation properties
-            java.util.List<IRI> iris = new ArrayList<IRI>();
+            java.util.List<IRI> iris = new ArrayList<>();
             for (int i=0; i<model.getRowCount(); i++){
                 IRI iri = (IRI)model.getValueAt(i, 0);
                 iris.add(iri);
             }
             String langsAsString = languageField.getText();
-            java.util.List<String> langs = new ArrayList<String>();
+            java.util.List<String> langs = new ArrayList<>();
             if (langsAsString != null){
                 for (String token : langsAsString.split(",")){
                     token = token.trim();

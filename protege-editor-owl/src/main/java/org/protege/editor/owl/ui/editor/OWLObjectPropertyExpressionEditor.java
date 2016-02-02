@@ -27,7 +27,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     private OWLObjectPropertySelectorPanel namedObjectPropertySelector;
     private JCheckBox inverseCheckBox;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
     private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 

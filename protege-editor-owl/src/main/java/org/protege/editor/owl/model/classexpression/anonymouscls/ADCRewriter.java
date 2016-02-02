@@ -42,7 +42,7 @@ public class ADCRewriter {
 
 
     public List<OWLOntologyChange> rewriteChanges(List<? extends OWLOntologyChange> changes){
-        List<OWLOntologyChange> rewrittenChanges = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> rewrittenChanges = new ArrayList<>();
         for (OWLOntologyChange chg : changes){
             rewrittenChanges.add(rewriteChange(chg));
         }

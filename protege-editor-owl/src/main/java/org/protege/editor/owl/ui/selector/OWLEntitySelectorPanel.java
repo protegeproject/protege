@@ -122,7 +122,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         else{
             setLayout(new EntitySelectorPanelLayoutManager());
             add(tabbedPane);
-            entityList = new RemovableObjectList<OWLEntity>();
+            entityList = new RemovableObjectList<>();
             entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
             entityList.addListSelectionListener(e -> {
@@ -171,10 +171,10 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public Set<OWLEntity> getSelectedObjects() {
         if (isMultiSelect()){
-            return new HashSet<OWLEntity>(entityList.getListItems());
+            return new HashSet<>(entityList.getListItems());
         }
         else{
-            return new HashSet<OWLEntity>(getCurrentSelection());
+            return new HashSet<>(getCurrentSelection());
         }
     }
 

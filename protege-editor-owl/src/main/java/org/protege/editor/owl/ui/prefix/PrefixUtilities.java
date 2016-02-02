@@ -24,12 +24,12 @@ public class PrefixUtilities {
 	public static PrefixManager getPrefixOWLOntologyFormat(OWLModelManager modelManager) {
 		OWLOntologyManager owlManager = modelManager.getOWLOntologyManager();
 		DefaultPrefixManager prefixes = new DefaultPrefixManager();
-		List<OWLOntology> ontologies = new ArrayList<OWLOntology>(modelManager.getOntologies());
+		List<OWLOntology> ontologies = new ArrayList<>(modelManager.getOntologies());
 		Collections.sort(ontologies, new ActiveOntologyComparator());
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Sorted ontologies = " + ontologies);
 		}
-		Set<String> prefixValues = new HashSet<String>();
+		Set<String> prefixValues = new HashSet<>();
 		for (OWLOntology ontology : ontologies) {
 			OWLDocumentFormat format = owlManager.getOntologyFormat(ontology);
 			if (format instanceof PrefixDocumentFormat) {

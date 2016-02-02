@@ -32,8 +32,8 @@ public class TransferableOWLObject implements Transferable {
 
 
     public TransferableOWLObject(final OWLModelManager owlModelManager, List<? extends OWLObject> objects) {
-        owlObjects = new ArrayList<OWLObject>(objects);
-        dataFlavorMap = new HashMap<DataFlavor, TransferHandler>();
+        owlObjects = new ArrayList<>(objects);
+        dataFlavorMap = new HashMap<>();
         dataFlavorMap.put(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR, () -> new ArrayList<OWLObject>(owlObjects));
 
         stringTransferHandler = () -> {

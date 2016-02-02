@@ -20,7 +20,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	private OWLObjectEditorHandler<IRI> handler;
 	private JPanel editor;
 	private JTextField iriTextField;
-	private List<InputVerificationStatusChangedListener> inputVerificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
+	private List<InputVerificationStatusChangedListener> inputVerificationListeners = new ArrayList<>();
 	
 	public IRITextEditor(OWLEditorKit editorKit) {
 		createGui();

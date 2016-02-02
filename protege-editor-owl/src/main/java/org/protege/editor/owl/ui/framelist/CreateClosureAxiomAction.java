@@ -58,7 +58,7 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
 
 
     public void actionPerformed(ActionEvent e) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
 
         final OWLOntology activeOnt = getOWLModelManager().getActiveOntology();
         final Set<OWLOntology> activeOnts = getOWLModelManager().getActiveOntologies();
@@ -82,9 +82,9 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
      */
     class ClosureSourceIdentifier extends OWLObjectVisitorAdapter {
 
-        private final Set<OWLObjectProperty> propertiesToClose = new HashSet<OWLObjectProperty>();
+        private final Set<OWLObjectProperty> propertiesToClose = new HashSet<>();
 
-        private Set<OWLObject> visited = new HashSet<OWLObject>();
+        private Set<OWLObject> visited = new HashSet<>();
 
 
         public Set<OWLObjectProperty> getPropertiesToClose() {

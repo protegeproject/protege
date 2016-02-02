@@ -30,12 +30,12 @@ public class RestrictedPropertyExtractor extends OWLClassExpressionVisitorAdapte
 
 
     public RestrictedPropertyExtractor() {
-        properties = new HashSet<OWLPropertyExpression>();
+        properties = new HashSet<>();
     }
 
 
     public Set<OWLPropertyExpression> getRestrictedProperties() {
-        return new HashSet<OWLPropertyExpression>(properties);
+        return new HashSet<>(properties);
     }
 
 

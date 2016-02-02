@@ -33,7 +33,7 @@ public class NestedIntersectionFlattener implements OWLClassExpressionVisitor {
 
 
     public NestedIntersectionFlattener() {
-        descriptions = new HashSet<OWLClassExpression>();
+        descriptions = new HashSet<>();
     }
 
 

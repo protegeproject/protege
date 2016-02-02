@@ -70,7 +70,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
         changeListenerMediator = new ChangeListenerMediator();
 
-        list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
+        list = new OWLObjectList<>(getOWLEditorKit());
         list.addListSelectionListener(selListener);
 
         reload();
@@ -173,7 +173,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
     private void reload(){
         // Add all known datatypes including built in ones
         final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
+        java.util.List<OWLDatatype> datatypeList = new ArrayList<>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
 
         list.setListData(datatypeList.toArray(new OWLDatatype[datatypeList.size()]));
@@ -185,7 +185,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     public List<OWLDatatype> find(String match) {
-        return new ArrayList<OWLDatatype>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLDatatypes(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLDatatypes(match));
     }
 
 

@@ -40,7 +40,7 @@ public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
     public void initialise() {
         setLayout(new BorderLayout());
 
-        list = new CheckTable<OWLAxiom>("Axioms");
+        list = new CheckTable<>("Axioms");
         final OWLCellRenderer owlCellRenderer = new OWLCellRenderer(getEditorKit());
         owlCellRenderer.setHighlightKeywords(true);
         list.setDefaultRenderer(owlCellRenderer);
@@ -74,7 +74,7 @@ public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
         final Set<OWLAxiom> axiomsFromKit = filterModel.getUnfilteredAxioms(getModel().getSourceOntologies());
         if (unfilteredAxioms == null || !unfilteredAxioms.equals(axiomsFromKit)){
             unfilteredAxioms = axiomsFromKit;
-            list.getModel().setData(new ArrayList<OWLAxiom>(unfilteredAxioms), true);
+            list.getModel().setData(new ArrayList<>(unfilteredAxioms), true);
             list.checkAll(true);
         }
     }
@@ -86,6 +86,6 @@ public class SelectAxiomsPanel extends MoveAxiomsKitConfigurationPanel {
 
 
     private Set<OWLAxiom> getFilteredAxioms() {
-        return new HashSet<OWLAxiom>(list.getFilteredValues());
+        return new HashSet<>(list.getFilteredValues());
     }
 }

@@ -24,7 +24,7 @@ public class OWLSubDataPropertyAxiomSuperPropertyFrameSection extends AbstractOW
 
     public static final String LABEL = "SubProperty Of";
 
-    private Set<OWLSubDataPropertyOfAxiom> added = new HashSet<OWLSubDataPropertyOfAxiom>();
+    private Set<OWLSubDataPropertyOfAxiom> added = new HashSet<>();
 
 
     public OWLSubDataPropertyAxiomSuperPropertyFrameSection(OWLEditorKit editorKit,

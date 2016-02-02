@@ -26,7 +26,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 	private OWLClass inferredOwlClass;
 	private OWLIndividual individual;
 	private boolean inferredOwlClassNeedsRecalculation = true;
-	private List<OWLSelectionModelListener> listeners = new ArrayList<OWLSelectionModelListener>();
+	private List<OWLSelectionModelListener> listeners = new ArrayList<>();
 	
 	private OWLSelectionModelListener mainSelectionListener = () -> mainSelectionChanged();
 	

@@ -46,7 +46,7 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
 
         OWLAnonymousIndividualPropertyAssertionsFrame frame = new OWLAnonymousIndividualPropertyAssertionsFrame(owlEditorKit);
 
-        frameList = new OWLFrameList<OWLAnonymousIndividual>(owlEditorKit, frame);
+        frameList = new OWLFrameList<>(owlEditorKit, frame);
 
         mainComponent = new JPanel(new BorderLayout(7, 7));
         JScrollPane sp = new JScrollPane(frameList);

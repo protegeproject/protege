@@ -46,7 +46,7 @@ public abstract class OWLObjectHierarchyCreator<E extends OWLEntity> {
 
     public void createChildEntity() {
         OWLEntityCreationSet<E> creationSet = createEntity();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(changes);
         changes.addAll(createChild(entitySetProvider.getEntities(), creationSet.getOWLEntity()));
         editorKit.getModelManager().applyChanges(changes);

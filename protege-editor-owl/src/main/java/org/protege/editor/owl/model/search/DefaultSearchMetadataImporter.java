@@ -39,7 +39,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
 
         List<EntityBasedSearchMDImporter> importers = getEntityBasedSearchMetadataImporters(categories);
 
-        Set<OWLEntity> processed = new HashSet<OWLEntity>();
+        Set<OWLEntity> processed = new HashSet<>();
         for (OWLOntology ontology : context.getOntologies()) {
             for (OWLEntity entity : ontology.getSignature()) {
                 if (processed.add(entity)) {
@@ -108,12 +108,12 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private List<EntityBasedSearchMDImporter> getEntityBasedSearchMetadataImporters(Set<SearchCategory> categories) {
-        List<EntityBasedSearchMDImporter> entityBasedSearchMDImporters = new ArrayList<EntityBasedSearchMDImporter>();
+        List<EntityBasedSearchMDImporter> entityBasedSearchMDImporters = new ArrayList<>();
         entityBasedSearchMDImporters.add(new DisplayNameSearchMetadataImporter());
         entityBasedSearchMDImporters.add(new EntityIRISearchMetadataImporter());
         entityBasedSearchMDImporters.add(new EntityAnnotationValueSearchMetadataImporter());
 
-        List<EntityBasedSearchMDImporter> result = new ArrayList<EntityBasedSearchMDImporter>();
+        List<EntityBasedSearchMDImporter> result = new ArrayList<>();
         for (EntityBasedSearchMDImporter importer : entityBasedSearchMDImporters) {
             if (importer.isImporterFor(categories)) {
                 result.add(importer);
@@ -123,11 +123,11 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
     }
 
     private List<AxiomBasedSearchMetadataImporter> getAxiomBasedSearchMetadataImporters(Set<SearchCategory> categories, AxiomType<?> axiomType) {
-        List<AxiomBasedSearchMetadataImporter> axiomBasedSearchMetadataImporters = new ArrayList<AxiomBasedSearchMetadataImporter>();
+        List<AxiomBasedSearchMetadataImporter> axiomBasedSearchMetadataImporters = new ArrayList<>();
         axiomBasedSearchMetadataImporters.add(new AxiomAnnotationSearchMetadataImporter());
         axiomBasedSearchMetadataImporters.add(new LogicalAxiomRenderingSearchMetadataImporter());
 
-        List<AxiomBasedSearchMetadataImporter> result = new ArrayList<AxiomBasedSearchMetadataImporter>();
+        List<AxiomBasedSearchMetadataImporter> result = new ArrayList<>();
         for (AxiomBasedSearchMetadataImporter importer : axiomBasedSearchMetadataImporters) {
             if (importer.isImporterFor(axiomType, categories)) {
                 result.add(importer);
@@ -137,10 +137,10 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
     }
 
     private List<OntologyBasedSearchMDImporter> getOntologyBasedSearchMetadataImporters(Set<SearchCategory> categories) {
-        List<OntologyBasedSearchMDImporter> ontologyBasedSearchMDImporters = new ArrayList<OntologyBasedSearchMDImporter>();
+        List<OntologyBasedSearchMDImporter> ontologyBasedSearchMDImporters = new ArrayList<>();
         ontologyBasedSearchMDImporters.add(new OntologyAnnotationSearchMetadataImporter());
 
-        List<OntologyBasedSearchMDImporter> result = new ArrayList<OntologyBasedSearchMDImporter>();
+        List<OntologyBasedSearchMDImporter> result = new ArrayList<>();
         for (OntologyBasedSearchMDImporter importer : ontologyBasedSearchMDImporters) {
             if (importer.isImporterFor(categories)) {
                 result.add(importer);

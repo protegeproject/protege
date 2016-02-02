@@ -21,7 +21,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
     public static final String LABEL = "Types";
 
-    private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    private Set<OWLClassExpression> added = new HashSet<>();
 
 
     public OWLClassAssertionAxiomTypeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
@@ -93,7 +93,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression classExpression = (OWLClassExpression) obj;

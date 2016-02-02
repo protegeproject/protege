@@ -20,7 +20,7 @@ public class OWLDataPropertyDescriptionViewComponent extends AbstractOWLDataProp
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLDataProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                                   new OWLDataPropertyDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

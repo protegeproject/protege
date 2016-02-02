@@ -24,7 +24,7 @@ public class OWLObjectPropertyDescriptionViewComponent extends AbstractOWLObject
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLObjectProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                                     new OWLObjectPropertyDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

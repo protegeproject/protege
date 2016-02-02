@@ -207,7 +207,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         if (set == null) {
             return;
         }
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(set.getOntologyChanges());
         changes.addAll(dofurtherCreateSteps(set.getOWLEntity()));
         getOWLModelManager().applyChanges(changes);

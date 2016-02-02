@@ -53,7 +53,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(0, 0));
         add(viewModeComponent, BorderLayout.CENTER);
-        assertedTree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider());
+        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider());
 
         // ordering based on default, but putting Nothing at the top
         OWLObjectComparatorAdapter<OWLObject> treeNodeComp = createComparator(getOWLModelManager());
@@ -201,7 +201,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     public Set<E> getSelectedEntities() {
-        return new HashSet<E>(getTree().getSelectedOWLObjects());
+        return new HashSet<>(getTree().getSelectedOWLObjects());
     }
 
 

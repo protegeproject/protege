@@ -38,9 +38,9 @@ public class SearchManager implements Disposable {
 
     private AtomicLong lastSearchId = new AtomicLong(0);
 
-    private Set<SearchCategory> categories = new HashSet<SearchCategory>();
+    private Set<SearchCategory> categories = new HashSet<>();
 
-    private List<SearchMetadata> searchMetadataCache = new ArrayList<SearchMetadata>();
+    private List<SearchMetadata> searchMetadataCache = new ArrayList<>();
 
     private final OWLOntologyChangeListener ontologyChangeListener;
 
@@ -48,7 +48,7 @@ public class SearchManager implements Disposable {
 
     private final SearchMetadataImportManager importManager;
 
-    private final List<ProgressMonitor> progressMonitors = new ArrayList<ProgressMonitor>();
+    private final List<ProgressMonitor> progressMonitors = new ArrayList<>();
 
     public SearchManager(OWLEditorKit editorKit, SearchMetadataImportManager importManager) {
         this.editorKit = editorKit;
@@ -152,7 +152,7 @@ public class SearchManager implements Disposable {
                 }
             }
             logger.info("Starting search {} (pattern: {})", searchId, patternString);
-            List<SearchResult> results = new ArrayList<SearchResult>();
+            List<SearchResult> results = new ArrayList<>();
 
 
             long searchStartTime = System.currentTimeMillis();

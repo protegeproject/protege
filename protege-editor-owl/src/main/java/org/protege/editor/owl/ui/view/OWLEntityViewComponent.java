@@ -30,7 +30,7 @@ public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
         updateFrame();
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         add(new JScrollPane(list));

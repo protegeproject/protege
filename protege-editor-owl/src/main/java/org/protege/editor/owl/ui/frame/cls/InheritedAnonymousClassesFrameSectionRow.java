@@ -33,7 +33,7 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
             return getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(superCls, AxiomType.SUBCLASS_OF);
         }
         else {
-            Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
+            Set<OWLClassExpression> descs = new HashSet<>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
             descs.remove(getRootObject());
             OWLClassExpression desc;
             if (descs.isEmpty()){
@@ -64,7 +64,7 @@ public class InheritedAnonymousClassesFrameSectionRow extends AbstractOWLFrameSe
             return Arrays.asList(((OWLSubClassOfAxiom) getAxiom()).getSuperClass());
         }
         else {
-            Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
+            Set<OWLClassExpression> descs = new HashSet<>(((OWLEquivalentClassesAxiom) getAxiom()).getClassExpressions());
             descs.remove(getRootObject());
             if (descs.isEmpty()){
                 // in the weird case that something is asserted equiv to itself

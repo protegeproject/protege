@@ -21,7 +21,7 @@ public class ImportsClosureClassCountMetric extends AbstractIntegerMetric {
 
 
     protected int getIntMetric() {
-        Set<OWLClass> clses = new HashSet<OWLClass>();
+        Set<OWLClass> clses = new HashSet<>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             clses.addAll(ont.getClassesInSignature());
         }

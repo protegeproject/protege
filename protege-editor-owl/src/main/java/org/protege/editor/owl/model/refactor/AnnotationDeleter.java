@@ -21,6 +21,6 @@ public class AnnotationDeleter {
 
 
     public AnnotationDeleter(Set<OWLOntology> ontologies) {
-        this.ontologies = new HashSet<OWLOntology>();
+        this.ontologies = new HashSet<>();
     }
 }

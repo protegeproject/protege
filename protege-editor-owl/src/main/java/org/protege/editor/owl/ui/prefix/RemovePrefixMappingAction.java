@@ -71,7 +71,7 @@ public class RemovePrefixMappingAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
     	PrefixMapperTable table = tables.getPrefixMapperTable();
         int [] selIndexes = table.getSelectedRows();
-        List<String> prefixesToRemove = new ArrayList<String>();
+        List<String> prefixesToRemove = new ArrayList<>();
         for (int i = 0; i < selIndexes.length; i++) {
             prefixesToRemove.add(table.getModel().getValueAt(selIndexes[i], 0).toString());
         }

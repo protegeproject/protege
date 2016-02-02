@@ -70,7 +70,7 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
     }
     
     public Set<OWLIndividual> getCurrentlyDisplayedSameIndividuals() {
-		Set<OWLIndividual> existingSameIndividuals = new HashSet<OWLIndividual>();
+		Set<OWLIndividual> existingSameIndividuals = new HashSet<>();
 		for (OWLFrameSectionRow<OWLNamedIndividual, OWLSameIndividualAxiom, Set<OWLNamedIndividual>> existingRow : getRows()) {
 			OWLSameIndividualAxiom existingAxiom = existingRow.getAxiom();
 			for (OWLIndividual existingSameIndividual : existingAxiom.getIndividuals()) {

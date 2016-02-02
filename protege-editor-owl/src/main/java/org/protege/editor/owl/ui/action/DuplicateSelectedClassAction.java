@@ -64,11 +64,11 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
                 OWLEntityCreationSet<OWLClass> set = panel.createOWLClass();
                 if (set != null){
-                    Map<IRI, IRI> replacementIRIMap = new HashMap<IRI, IRI>();
+                    Map<IRI, IRI> replacementIRIMap = new HashMap<>();
                     replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
                     OWLModelManager mngr = getOWLModelManager();
                     OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
-                    List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>(set.getOntologyChanges());
+                    List<OWLOntologyChange> changes = new ArrayList<>(set.getOntologyChanges());
 
                     changes.addAll(duplicateClassAxioms(selectedClass, dup));
 
@@ -84,7 +84,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
     }
 
     private List<OWLOntologyChange> duplicateClassAxioms(OWLClass selectedClass, OWLObjectDuplicator dup) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
 
         boolean useActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 
@@ -109,7 +109,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
      * @return a list of changes
      */
     private List<OWLOntologyChange> duplicateAnnotations(OWLClass selectedClass, OWLObjectDuplicator dup) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         OWLModelManagerEntityRenderer ren = getOWLModelManager().getOWLEntityRenderer();
         List<IRI> annotIRIs = null;
         String selectedClassName = null;
@@ -177,7 +177,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         DuplicateClassPreferencesPanel(OWLClass selectedClass) {
             setLayout(new BorderLayout(6, 6));
 
-            entityNamePanel = new OWLEntityCreationPanel<OWLClass>(getOWLEditorKit(), "Class name", OWLClass.class);
+            entityNamePanel = new OWLEntityCreationPanel<>(getOWLEditorKit(), "Class name", OWLClass.class);
             entityNamePanel.setName(getOWLModelManager().getRendering(selectedClass));
 
             final boolean duplicateIntoActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);

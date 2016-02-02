@@ -58,11 +58,11 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         super(editorKit.getModelManager().getOWLOntologyManager());
         this.editorKit = editorKit;
 
-        owlOntologyFrameSections = new ArrayList<OWLFrameSection>();
+        owlOntologyFrameSections = new ArrayList<>();
         owlOntologyFrameSections.add(new InferredAxiomsFrameSection(editorKit, this));
 
 
-        owlClassSections = new ArrayList<OWLFrameSection>();
+        owlClassSections = new ArrayList<>();
 
         owlClassSections.add(new OWLAnnotationFrameSection(editorKit, this));
         owlClassSections.add(new OWLEquivalentClassesAxiomFrameSection(editorKit, this));
@@ -71,7 +71,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlClassSections.add(new OWLDisjointClassesAxiomFrameSection(editorKit, this));
         owlClassSections.add(new OWLDisjointUnionAxiomFrameSection(editorKit, this));
 
-        owlObjectPropertySections = new ArrayList<OWLFrameSection>();
+        owlObjectPropertySections = new ArrayList<>();
 
         owlObjectPropertySections.add(new OWLAnnotationFrameSection(editorKit, this));
         owlObjectPropertySections.add(new OWLObjectPropertyDomainFrameSection(editorKit, this));
@@ -82,7 +82,7 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlObjectPropertySections.add(new OWLPropertyChainAxiomFrameSection(editorKit, this));
 
 
-        owlDataPropertySections = new ArrayList<OWLFrameSection>();
+        owlDataPropertySections = new ArrayList<>();
 
         owlDataPropertySections.add(new OWLAnnotationFrameSection(editorKit, this));
         owlDataPropertySections.add(new OWLDataPropertyDomainFrameSection(editorKit, this));
@@ -92,11 +92,11 @@ public class OWLEntityFrame extends AbstractOWLFrame implements OWLEntityVisitor
         owlDataPropertySections.add(new OWLDisjointDataPropertiesFrameSection(editorKit, this));
 
 
-        owlAnnotationPropertySections = new ArrayList<OWLFrameSection>();
+        owlAnnotationPropertySections = new ArrayList<>();
 
 
 
-        owlIndividualSections = new ArrayList<OWLFrameSection>();
+        owlIndividualSections = new ArrayList<>();
 
         owlIndividualSections.add(new OWLAnnotationFrameSection(editorKit, this));
         owlIndividualSections.add(new OWLClassAssertionAxiomTypeFrameSection(editorKit, this));

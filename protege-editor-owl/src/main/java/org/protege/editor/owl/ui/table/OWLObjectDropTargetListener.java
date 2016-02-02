@@ -79,7 +79,7 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
         else {
             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
             List<OWLObject> objs = getDropObjects(dtde.getTransferable());
-            List<OWLObject> dupObjs = new ArrayList<OWLObject>();
+            List<OWLObject> dupObjs = new ArrayList<>();
             OWLObject dupObj = null;
             for (OWLObject obj : objs) {
                 OWLObjectDuplicator duplicator = new OWLObjectDuplicator(target.getOWLModelManager().getOWLDataFactory());

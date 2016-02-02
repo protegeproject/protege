@@ -133,7 +133,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     };
 
     public OWLSelectionModelImpl() {
-        listeners = new ArrayList<OWLSelectionModelListener>();
+        listeners = new ArrayList<>();
     }
 
 
@@ -185,7 +185,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
 
     private void fireSelectionChanged() {
-        for (OWLSelectionModelListener listener : new ArrayList<OWLSelectionModelListener>(listeners)) {
+        for (OWLSelectionModelListener listener : new ArrayList<>(listeners)) {
             try {
                 listener.selectionChanged();
             }

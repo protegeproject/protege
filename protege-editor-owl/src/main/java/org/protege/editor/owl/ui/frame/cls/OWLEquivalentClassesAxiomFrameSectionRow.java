@@ -33,13 +33,13 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
 
 
     protected List<OWLClassExpression> getObjects() {
-        Set<OWLClassExpression> clses = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
+        Set<OWLClassExpression> clses = new HashSet<>(getAxiom().getClassExpressions());
         clses.remove(getRoot());
-        return new ArrayList<OWLClassExpression>(clses);
+        return new ArrayList<>(clses);
     }
 
     public boolean isEditable() {
-        Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
+        Set<OWLClassExpression> descs = new HashSet<>(getAxiom().getClassExpressions());
         descs.remove(getRoot());
         return descs.size() == 1;
     }
@@ -50,7 +50,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
     }
     
     protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
-        Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
+        Set<OWLClassExpression> descs = new HashSet<>(getAxiom().getClassExpressions());
         descs.remove(getRoot());
         return descs.size() == 1 ? getOWLEditorKit().getWorkspace().getOWLComponentFactory().getOWLClassDescriptionEditor(descs.iterator().next(), AxiomType.EQUIVALENT_CLASSES)
         		: null;
@@ -63,7 +63,7 @@ public class OWLEquivalentClassesAxiomFrameSectionRow extends AbstractOWLFrameSe
     
     @Override
     public void handleEditingFinished(Set<OWLClassExpression> editedObjects) {
-    	editedObjects = new HashSet<OWLClassExpression>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }

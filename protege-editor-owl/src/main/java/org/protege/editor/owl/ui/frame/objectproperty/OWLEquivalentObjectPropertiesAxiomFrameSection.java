@@ -26,7 +26,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
 
     public static final String LABEL = "Equivalent To";
 
-    private Set<OWLEquivalentObjectPropertiesAxiom> added = new HashSet<OWLEquivalentObjectPropertiesAxiom>();
+    private Set<OWLEquivalentObjectPropertiesAxiom> added = new HashSet<>();
 
 
     public OWLEquivalentObjectPropertiesAxiomFrameSection(OWLEditorKit editorKit,
@@ -96,7 +96,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSection extends AbstractOWLF
     
     @Override
     public void handleEditingFinished(Set<OWLObjectPropertyExpression> editedObjects) {
-    	editedObjects = new HashSet<OWLObjectPropertyExpression>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }

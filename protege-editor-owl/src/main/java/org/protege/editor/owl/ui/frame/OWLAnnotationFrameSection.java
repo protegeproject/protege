@@ -87,7 +87,7 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLAnnotation) {
                 OWLAnnotation annot = (OWLAnnotation) obj;

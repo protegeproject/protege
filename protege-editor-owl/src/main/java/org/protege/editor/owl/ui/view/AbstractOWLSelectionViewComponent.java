@@ -59,7 +59,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
      * a each plugin must have a zero argument constructor.
      */
     final public void initialiseOWLView() throws Exception {
-        registeredActions = new HashSet<OWLSelectionViewAction>();
+        registeredActions = new HashSet<>();
         listener = () -> {
             final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
             if (owlObject instanceof OWLEntity){

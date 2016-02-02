@@ -53,7 +53,7 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
     private JComponent getCenterPane() {
         setLayout(new BorderLayout());
         frame = new InferredAxiomsFrame(getOWLEditorKit());
-        frameList = new OWLFrameList<OWLOntology>(getOWLEditorKit(), frame);
+        frameList = new OWLFrameList<>(getOWLEditorKit(), frame);
         frameList.setRootObject(getOWLModelManager().getActiveOntology());
         return new JScrollPane(frameList);
     }

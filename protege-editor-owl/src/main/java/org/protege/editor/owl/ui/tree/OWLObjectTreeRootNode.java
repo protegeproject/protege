@@ -44,7 +44,7 @@ public class OWLObjectTreeRootNode<N extends OWLObject> extends OWLObjectTreeNod
             return;
         }
         setLoaded(true);
-        List<N> sortedRoots = new ArrayList<N>(this.roots);
+        List<N> sortedRoots = new ArrayList<>(this.roots);
         if (tree.getOWLObjectComparator() != null) {
             Collections.sort(sortedRoots, tree.getOWLObjectComparator());
         }

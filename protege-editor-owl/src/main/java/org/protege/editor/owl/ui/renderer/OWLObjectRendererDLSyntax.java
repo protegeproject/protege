@@ -134,7 +134,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
 
 
     private static List<OWLClassExpression> sort(Set<OWLClassExpression> descriptions) {
-        List<OWLClassExpression> sortedDescs = new ArrayList<OWLClassExpression>(descriptions);
+        List<OWLClassExpression> sortedDescs = new ArrayList<>(descriptions);
         Collections.sort(sortedDescs, new Comparator<OWLClassExpression>() {
             public int compare(OWLClassExpression o1, OWLClassExpression o2) {
                 if (o1 instanceof OWLClass) {

@@ -38,7 +38,7 @@ public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndivi
 
     private TreeSelectionListener listener;
 
-    private Set<EventType> updateEvents = new HashSet<EventType>();
+    private Set<EventType> updateEvents = new HashSet<>();
 
     private OWLModelManagerListener managerListener = new OWLModelManagerListener(){
         public void handleChange(OWLModelManagerChangeEvent event) {
@@ -68,8 +68,8 @@ public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndivi
         getOWLModelManager().addListener(managerListener);
 
         provider = new IndividualsByInferredTypeHierarchyProvider(getOWLModelManager().getOWLOntologyManager());
-        tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), provider);
-        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<OWLObject>(getOWLEditorKit(), tree));
+        tree = new OWLModelManagerTree<>(getOWLEditorKit(), provider);
+        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<>(getOWLEditorKit(), tree));
 
         add(new JScrollPane(tree));
 

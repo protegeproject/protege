@@ -29,11 +29,11 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        Set<OWLAnnotationProperty> annotationProperties = new TreeSet<OWLAnnotationProperty>();
+        Set<OWLAnnotationProperty> annotationProperties = new TreeSet<>();
         for (OWLOntology ont : getOWLModelManager().getOntologies()) {
             annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
         }
-        checkBoxURIMap = new HashMap<JCheckBox, URI>();
+        checkBoxURIMap = new HashMap<>();
         for (OWLAnnotationProperty property : annotationProperties) {
             JCheckBox cb = new JCheckBox(getOWLModelManager().getRendering(property),
                                          getOWLEditorKit().getWorkspace().isHiddenAnnotationURI(property.getIRI().toURI()));
@@ -50,7 +50,7 @@ public class AnnotationPreferencesPanel extends OWLPreferencesPanel {
 
 
     public void applyChanges() {
-        Set<URI> hiddenURIs = new HashSet<URI>();
+        Set<URI> hiddenURIs = new HashSet<>();
         for (JCheckBox cb : checkBoxURIMap.keySet()) {
             if (cb.isSelected()) {
                 hiddenURIs.add(checkBoxURIMap.get(cb));

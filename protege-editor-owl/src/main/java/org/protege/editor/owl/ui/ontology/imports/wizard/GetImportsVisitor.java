@@ -12,7 +12,7 @@ import java.util.Collection;
 
 public class GetImportsVisitor implements EntryVisitor {
    
-    private Collection<ImportInfo> imports = new ArrayList<ImportInfo>();
+    private Collection<ImportInfo> imports = new ArrayList<>();
     
     public Collection<ImportInfo> getImports() {
         return imports;

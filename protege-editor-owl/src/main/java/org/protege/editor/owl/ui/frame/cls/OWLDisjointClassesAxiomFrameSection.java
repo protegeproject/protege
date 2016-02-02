@@ -23,7 +23,7 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
     public static final String LABEL = "Disjoint With";
     
-    public Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    public Set<OWLClassExpression> added = new HashSet<>();
 
 
     public OWLDisjointClassesAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
@@ -47,7 +47,7 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
             return ont.getDisjointClassesAxioms(descr.asOWLClass());
         }
         else{
-            Set<OWLDisjointClassesAxiom> axioms = new HashSet<OWLDisjointClassesAxiom>();
+            Set<OWLDisjointClassesAxiom> axioms = new HashSet<>();
             for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)){
                 if (ax.getClassExpressions().contains(descr)){
                     axioms.add(ax);
@@ -109,8 +109,8 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        Set<OWLClassExpression> descriptions = new HashSet<OWLClassExpression>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
+        Set<OWLClassExpression> descriptions = new HashSet<>();
         descriptions.add(getRootObject());
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {

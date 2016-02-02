@@ -30,13 +30,13 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
 
     private JTabbedPane tabbedPane;
 
-    private java.util.List<OWLClassExpressionEditor> activeEditors = new ArrayList<OWLClassExpressionEditor>();
+    private java.util.List<OWLClassExpressionEditor> activeEditors = new ArrayList<>();
 
-    private Set<OWLClassExpressionEditor> editors = new HashSet<OWLClassExpressionEditor>();
+    private Set<OWLClassExpressionEditor> editors = new HashSet<>();
 
     private boolean currentStatus = false;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
 
     private ChangeListener changeListener = changeEvent -> handleVerifyEditorContents();
 

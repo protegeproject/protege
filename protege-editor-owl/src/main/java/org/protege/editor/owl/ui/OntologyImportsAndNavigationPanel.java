@@ -40,7 +40,7 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
     public OntologyImportsAndNavigationPanel(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
         setLayout(new BorderLayout());
-        tree = new OWLModelManagerTree<OWLOntology>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
+        tree = new OWLModelManagerTree<>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
         add(new JScrollPane(tree));
         tree.addTreeSelectionListener(e -> {
             OWLOntology ont = tree.getSelectedOWLObject();

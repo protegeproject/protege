@@ -60,7 +60,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         reflexiveCB = new JCheckBox("Reflexive");
         irreflexiveCB = new JCheckBox("Irreflexive");
 
-        checkBoxes = new ArrayList<JCheckBox>();
+        checkBoxes = new ArrayList<>();
         checkBoxes.add(functionalCB);
         checkBoxes.add(inverseFunctionalCB);
         checkBoxes.add(transitiveCB);
