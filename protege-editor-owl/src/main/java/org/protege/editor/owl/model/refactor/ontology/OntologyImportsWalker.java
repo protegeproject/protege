@@ -43,7 +43,7 @@ public class OntologyImportsWalker {
 
 
     private Set<OWLOntology> getReferencingOntologies(OWLEntity entity) {
-        Set<OWLOntology> referencingOntologies = new HashSet<OWLOntology>();
+        Set<OWLOntology> referencingOntologies = new HashSet<>();
         for (OWLOntology ont : ontologies){
             if (ont.containsEntityInSignature(entity)){
                 referencingOntologies.add(ont);
@@ -61,7 +61,7 @@ public class OntologyImportsWalker {
      * @return the "lowest level" ontologies in the graph
      */
     private Set<OWLOntology> getLeaves(Set<OWLOntology> onts) {
-        Set<OWLOntology> leaves = new HashSet<OWLOntology>(onts);
+        Set<OWLOntology> leaves = new HashSet<>(onts);
         for (OWLOntology ont : onts){
             if (leaves.size() > 1){
                 Set<OWLOntology> ancestors = hp.getAncestors(ont);

@@ -91,7 +91,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         if (child.equals(getOWLModelManager().getOWLDataFactory().getOWLThing())) {
             return;
         }
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
         changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
                                  df.getOWLDeclarationAxiom(child)));
@@ -108,7 +108,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         if (child.equals(df.getOWLThing())) {
             return;
         }
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         // remove before adding in case the user is moving to the same class (or we could check)
         changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
                 					df.getOWLSubClassOfAxiom(child, fromParent)));
@@ -157,7 +157,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         if (set != null){
             OWLClass newClass = set.getOWLEntity();
             OWLClass selectedClass = getSelectedEntity();
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(set.getOntologyChanges());
             final OWLModelManager mngr = getOWLEditorKit().getModelManager();
             final OWLDataFactory df = mngr.getOWLDataFactory();
@@ -200,7 +200,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         	
         	// Combine the changes that are required to create the OWLClass, with the
             // changes that are required to make it a sibling class.
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager mngr = getOWLModelManager();
             OWLDataFactory df = mngr.getOWLDataFactory();

@@ -24,8 +24,8 @@ public class ConvertToDefinedClassAction extends SelectedOWLClassAction {
 
     public void actionPerformed(ActionEvent e) {
         OWLClass selClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        Set<OWLClassExpression> operands = new HashSet<OWLClassExpression>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
+        Set<OWLClassExpression> operands = new HashSet<>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             for (OWLSubClassOfAxiom ax : ont.getSubClassAxiomsForSubClass(selClass)) {
                 changes.add(new RemoveAxiom(ont, ax));

@@ -32,9 +32,9 @@ public class OWLClassHierarchyCreator {
     private OWLOntology ont;
     private boolean siblingsDisjoint;
 
-    private Map<String, OWLClass> nameMap = new HashMap<String, OWLClass>();
-    private List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-    private Map<OWLClass, Set<OWLClass>> parent2ChildMap = new HashMap<OWLClass, Set<OWLClass>>();
+    private Map<String, OWLClass> nameMap = new HashMap<>();
+    private List<OWLOntologyChange> changes = new ArrayList<>();
+    private Map<OWLClass, Set<OWLClass>> parent2ChildMap = new HashMap<>();
 
 
     public OWLClassHierarchyCreator(OWLDataFactory df, OWLEntityFactory fac, OWLClass rootClass, boolean makeSiblingClassesDisjoint, OWLOntology ontology, List<Edge> edges) {
@@ -101,7 +101,7 @@ public class OWLClassHierarchyCreator {
         private void addToMap(OWLClass parent, OWLClass child) {
         Set<OWLClass> children = parent2ChildMap.get(parent);
         if (children == null) {
-            children = new HashSet<OWLClass>();
+            children = new HashSet<>();
             parent2ChildMap.put(parent, children);
         }
         children.add(child);

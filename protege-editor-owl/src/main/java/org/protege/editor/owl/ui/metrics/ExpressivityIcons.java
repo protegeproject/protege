@@ -25,7 +25,7 @@ public class ExpressivityIcons {
 
 
     static {
-        map = new HashMap<DLExpressivityChecker.Construct, Icon>();
+        map = new HashMap<>();
         map.put(AL, loadIcon("AL.png"));
         map.put(C, loadIcon("C.png"));
         map.put(U, loadIcon("U.png"));

@@ -12,7 +12,7 @@ import java.util.List;
 public class SearchMetadataImportManager {
 
     public List<SearchMetadataImporter> getImporters() {
-        List<SearchMetadataImporter> importers = new ArrayList<SearchMetadataImporter>();
+        List<SearchMetadataImporter> importers = new ArrayList<>();
         importers.add(new DefaultSearchMetadataImporter());
         return importers;
     }

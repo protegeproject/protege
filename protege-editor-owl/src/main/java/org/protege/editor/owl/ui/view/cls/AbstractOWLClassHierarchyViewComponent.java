@@ -29,6 +29,6 @@ public abstract class AbstractOWLClassHierarchyViewComponent extends AbstractOWL
     }
 
     public List<OWLClass> find(String match) {
-        return new ArrayList<OWLClass>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLClasses(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLClasses(match));
     }
 }

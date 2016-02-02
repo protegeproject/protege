@@ -17,8 +17,8 @@ public class DisplayedInferencePreferences {
 
     private boolean showInferences;	
     private EnumSet<OptionalInferenceTask>           enabled       = EnumSet.noneOf(OptionalInferenceTask.class);
-    private EnumMap<OptionalInferenceTask, Integer>  clockMap      = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
-    private EnumMap<OptionalInferenceTask, Integer>  countMap      = new EnumMap<OptionalInferenceTask, Integer>(OptionalInferenceTask.class);
+    private EnumMap<OptionalInferenceTask, Integer>  clockMap      = new EnumMap<>(OptionalInferenceTask.class);
+    private EnumMap<OptionalInferenceTask, Integer>  countMap      = new EnumMap<>(OptionalInferenceTask.class);
  
     public void load(ReasonerPreferences p) {
     	Preferences prefs = ReasonerPreferences.getPreferences();

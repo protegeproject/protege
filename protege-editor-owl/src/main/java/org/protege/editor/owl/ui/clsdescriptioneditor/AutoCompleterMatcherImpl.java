@@ -28,7 +28,7 @@ public class AutoCompleterMatcherImpl implements AutoCompleterMatcher {
 
     public Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
     		                         boolean individuals, boolean datatypes, boolean annotationProperties) {
-        TreeSet<OWLObject> set = new TreeSet<OWLObject>(owlModelManager.getOWLObjectComparator());
+        TreeSet<OWLObject> set = new TreeSet<>(owlModelManager.getOWLObjectComparator());
 
         fragment = fragment + "*"; // look for strings that start with the given fragment
 

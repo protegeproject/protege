@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class AxiomTypeStrategy extends AbstractAxiomSelectionStrategy {
 
-    private Set<AxiomType<? extends OWLAxiom>> types = new HashSet<AxiomType<? extends OWLAxiom>>();
+    private Set<AxiomType<? extends OWLAxiom>> types = new HashSet<>();
 
     public static final String CHANGED_AXIOM_TYPE = "change.axiomtype";
 
@@ -28,7 +28,7 @@ public class AxiomTypeStrategy extends AbstractAxiomSelectionStrategy {
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ont : ontologies){
             for (AxiomType<? extends OWLAxiom> type : types){
                 axioms.addAll(ont.getAxioms(type));

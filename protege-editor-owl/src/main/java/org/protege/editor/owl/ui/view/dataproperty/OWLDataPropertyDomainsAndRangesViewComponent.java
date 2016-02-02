@@ -25,11 +25,11 @@ public class OWLDataPropertyDomainsAndRangesViewComponent extends AbstractOWLDat
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLDataProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                                   new OWLDataPropertyDomainsAndRangesFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLDataProperty>());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<>());
     }
 
 

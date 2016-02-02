@@ -34,8 +34,8 @@ public class PhysicalLocationTableModel extends AbstractTableModel {
 
     public PhysicalLocationTableModel(OWLModelManager owlModelManager) {
         this.owlModelManager = owlModelManager;
-        uriMap = new TreeMap<OWLOntologyID, URI>();
-        ontologyIDs = new ArrayList<OWLOntologyID>();
+        uriMap = new TreeMap<>();
+        ontologyIDs = new ArrayList<>();
         refill();
     }
 

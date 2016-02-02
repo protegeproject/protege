@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class NamedClassExtractor extends OWLClassExpressionVisitorAdapter {
 
-    Set<OWLClass> result = new HashSet<OWLClass>();
+    Set<OWLClass> result = new HashSet<>();
 
 
     public void reset() {

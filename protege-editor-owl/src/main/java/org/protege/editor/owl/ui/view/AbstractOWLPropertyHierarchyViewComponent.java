@@ -119,10 +119,10 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
     public java.util.List<O> find(String match) {
         if (isOWLDataPropertyView()){
-            return new ArrayList<O>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLDataProperties(match));
+            return new ArrayList<>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLDataProperties(match));
         }
         else if (isOWLObjectPropertyView()){
-            return new ArrayList<O>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLObjectProperties(match));
+            return new ArrayList<>((Set<O>)getOWLModelManager().getOWLEntityFinder().getMatchingOWLObjectProperties(match));
         }
         return Collections.emptyList();
     }
@@ -147,7 +147,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         }
         OWLEntityCreationSet<O> set = createProperty();
         if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            java.util.List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(set.getOntologyChanges());
             if (shouldAddAsParentOfNewlyCreatedProperty(selectedProperty)) {
             	OWLAxiom ax = getSubPropertyAxiom(set.getOWLEntity(), selectedProperty);

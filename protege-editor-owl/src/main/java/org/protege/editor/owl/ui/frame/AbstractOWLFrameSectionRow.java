@@ -100,7 +100,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         	if (axiomAnnotations != null && !axiomAnnotations.isEmpty()) {
         		newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
         	}
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.add(new RemoveAxiom(getOntology(), oldAxiom));
             changes.add(new AddAxiom(getOntology(), newAxiom));
             getOWLModelManager().applyChanges(changes);

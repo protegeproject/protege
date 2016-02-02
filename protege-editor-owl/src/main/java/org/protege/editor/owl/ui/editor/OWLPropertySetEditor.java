@@ -33,7 +33,7 @@ public class OWLPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLPropert
 
     public OWLPropertySetEditor(OWLEditorKit eKit) {
         OWLExpressionChecker<Set<OWLPropertyExpression>> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getPropertySetChecker();
-        editor = new ExpressionEditor<Set<OWLPropertyExpression>>(eKit, checker);
+        editor = new ExpressionEditor<>(eKit, checker);
         editor.setPreferredSize(new Dimension(300, 200));
     }
 

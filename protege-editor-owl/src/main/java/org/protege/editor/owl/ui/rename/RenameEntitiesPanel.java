@@ -51,7 +51,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private OWLEditorKit eKit;
 
-    private Map<String, Set<OWLEntity>> nsMap = new HashMap<String, Set<OWLEntity>>();
+    private Map<String, Set<OWLEntity>> nsMap = new HashMap<>();
 
     private JComboBox replaceWithCombo;
 
@@ -59,9 +59,9 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
     private CheckTable<OWLEntity> list;
     
-    private Map<OWLEntity, IRI> entity2IRIMap = new HashMap<OWLEntity, IRI>();
+    private Map<OWLEntity, IRI> entity2IRIMap = new HashMap<>();
 
-    private Map<OWLEntity, String> errorMap = new HashMap<OWLEntity, String>();
+    private Map<OWLEntity, String> errorMap = new HashMap<>();
 
 
     private ItemListener findListener = event -> {
@@ -96,7 +96,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         add(subPanel, BorderLayout.NORTH);
 
-        list = new CheckTable<OWLEntity>("Matching entities");
+        list = new CheckTable<>("Matching entities");
         list.checkAll(true);
         list.setDefaultRenderer(new ResultCellRenderer(eKit));
         list.addCheckSelectionListener(listSelListener);
@@ -151,7 +151,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 	    String ns = getBase(entity.getIRI());
 	    Set<OWLEntity> matchingEntities = nsMap.get(ns);
 	    if (matchingEntities == null){
-	        matchingEntities = new HashSet<OWLEntity>();
+	        matchingEntities = new HashSet<>();
 	    }
 	    matchingEntities.add(entity);
 	    nsMap.put(ns, matchingEntities);
@@ -176,7 +176,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     public List<OWLOntologyChange> getChanges() {
 		OWLOntologyManager mngr = eKit.getModelManager().getOWLOntologyManager();
 		OWLEntityRenamer renamer = new OWLEntityRenamer(mngr, getOntologies());
-		Map<OWLEntity, IRI> filteredIRIMap = new HashMap<OWLEntity, IRI>();
+		Map<OWLEntity, IRI> filteredIRIMap = new HashMap<>();
 		for (OWLEntity e : list.getFilteredValues()) {
 			filteredIRIMap.put(e, entity2IRIMap.get(e));
 		}
@@ -185,7 +185,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
 	private void reloadEntityList() {
-        final ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>(getEntities());
+        final ArrayList<OWLEntity> sortedEntities = new ArrayList<>(getEntities());
         Collections.sort(sortedEntities, eKit.getModelManager().getOWLObjectComparator());
         list.getModel().setData(sortedEntities, true);
         updateEntityMap();
@@ -204,8 +204,8 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private Set<OWLEntity> getEntities(){
         Set<OWLEntity> matches = nsMap.get(getFindValue());
         if (matches == null){
-            matches = new HashSet<OWLEntity>();
-            Set<OWLEntity> ents = new HashSet<OWLEntity>();
+            matches = new HashSet<>();
+            Set<OWLEntity> ents = new HashSet<>();
             for (OWLOntology ont : getOntologies()){
                 ents.addAll(ont.getSignature());
             }
@@ -246,7 +246,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     }
     
     private void updateEntityMapUsingRegexp() {
-    	Set<OWLEntity> entities = new HashSet<OWLEntity>();
+    	Set<OWLEntity> entities = new HashSet<>();
     	for (OWLOntology includedOntology : getOntologies()) {
     		entities.addAll(includedOntology.getSignature());
     	}
@@ -301,7 +301,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 /////////////////////// validation
 
-    private List<InputVerificationStatusChangedListener> statusListeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private List<InputVerificationStatusChangedListener> statusListeners = new ArrayList<>();
 
     private boolean currentStatus = false;
 

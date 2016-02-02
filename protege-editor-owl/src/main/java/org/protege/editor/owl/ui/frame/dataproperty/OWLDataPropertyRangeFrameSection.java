@@ -23,7 +23,7 @@ public class OWLDataPropertyRangeFrameSection extends AbstractOWLFrameSection<OW
 
     public static final String LABEL = "Ranges";
 
-    private Set<OWLDataRange> addedRanges = new HashSet<OWLDataRange>();
+    private Set<OWLDataRange> addedRanges = new HashSet<>();
 
 
     public OWLDataPropertyRangeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLDataProperty> frame) {

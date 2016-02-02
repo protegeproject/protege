@@ -18,11 +18,11 @@ import java.util.Set;
  */
 public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLObject> {
 
-    private Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
+    private Set<OWLNamedIndividual> untypedIndividuals = new HashSet<>();
 
-    private Set<OWLClass> classes = new HashSet<OWLClass>();
+    private Set<OWLClass> classes = new HashSet<>();
 
-    private Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    private Set<OWLOntology> ontologies = new HashSet<>();
 
     private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
@@ -44,7 +44,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
         classes.clear();
         untypedIndividuals.clear();
 
-        Set<OWLNamedIndividual> typedIndividuals = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> typedIndividuals = new HashSet<>();
         for (OWLOntology ont : ontologies) {
             for (OWLNamedIndividual ind : ont.getIndividualsInSignature()) {
                 untypedIndividuals.add(ind);
@@ -64,7 +64,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLObject> getRoots() {
-        Set<OWLObject> roots = new HashSet<OWLObject>(classes);
+        Set<OWLObject> roots = new HashSet<>(classes);
         roots.addAll(untypedIndividuals);
         return roots;
     }
@@ -73,7 +73,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     public Set<OWLObject> getUnfilteredChildren(OWLObject object) {
         if (object instanceof OWLClass && classes.contains(object)) {
             OWLClass cls = (OWLClass) object;
-            Set<OWLObject> individuals = new HashSet<OWLObject>();
+            Set<OWLObject> individuals = new HashSet<>();
             for (OWLOntology ont : ontologies) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(cls)) {
                     if (!ax.getIndividual().isAnonymous()){
@@ -92,7 +92,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     public Set<OWLObject> getParents(OWLObject object) {
         if (object instanceof OWLNamedIndividual) {
             OWLIndividual ind = (OWLNamedIndividual) object;
-            Set<OWLObject> clses = new HashSet<OWLObject>();
+            Set<OWLObject> clses = new HashSet<>();
             for (OWLOntology ont : ontologies) {
                 for (OWLClassAssertionAxiom ax : ont.getClassAssertionAxioms(ind)) {
                     if (!ax.getClassExpression().isAnonymous()) {
@@ -124,12 +124,12 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLClass> getRootClasses() {
-        return new HashSet<OWLClass>(classes);
+        return new HashSet<>(classes);
     }
 
 
     public Set<OWLNamedIndividual> getUntypedIndividuals(){
-        return new HashSet<OWLNamedIndividual>(untypedIndividuals);
+        return new HashSet<>(untypedIndividuals);
     }
 
 
@@ -152,9 +152,9 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
      */
     class TypesChangeVisitor extends OWLOntologyChangeVisitorAdapter {
 
-        private Set<OWLObject> changedNodes = new HashSet<OWLObject>();
+        private Set<OWLObject> changedNodes = new HashSet<>();
 
-        Set<OWLNamedIndividual> checkIndividuals = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> checkIndividuals = new HashSet<>();
 
         private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitorAdapter(){
             public void visit(OWLClassAssertionAxiom ax) {

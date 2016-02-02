@@ -40,7 +40,7 @@ public class OWLAxiomTypeFramePanel extends JPanel {
     private void createUI() {
         setLayout(new BorderLayout());
         AxiomListFrame frame = new AxiomListFrame(owlEditorKit);
-        frameList = new OWLFrameList<Set<OWLAxiom>>(owlEditorKit, frame);
+        frameList = new OWLFrameList<>(owlEditorKit, frame);
         add(new JScrollPane(frameList));
     }
 

@@ -30,7 +30,7 @@ public class OWLAnnotationPropertyDescriptionViewComponent extends AbstractOWLAn
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLAnnotationProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                                   new OWLAnnotationPropertyDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

@@ -33,14 +33,14 @@ public class OntologyMerger {
 
 
     public OntologyMerger(OWLOntologyManager owlOntologyManager, Set<OWLOntology> ontologies, OWLOntology targetOntology) {
-        this.ontologies = new HashSet<OWLOntology>(ontologies);
+        this.ontologies = new HashSet<>(ontologies);
         this.owlOntologyManager = owlOntologyManager;
         this.targetOntology = targetOntology;
     }
 
 
     public void mergeOntologies() {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLOntology ont : ontologies) {
             if (!ont.equals(targetOntology)){
 

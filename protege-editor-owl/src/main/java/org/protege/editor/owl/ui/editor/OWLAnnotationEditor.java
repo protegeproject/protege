@@ -40,7 +40,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
     private OWLAnnotationProperty lastSelectedProperty;
 
-    private List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<>();
 
     private boolean status = false;
     
@@ -131,7 +131,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
         textEditor.addStatusChangedListener(mergedVerificationListener);
     	
-    	List<OWLObjectEditor<? extends OWLAnnotationValue>> result = new ArrayList<OWLObjectEditor<? extends OWLAnnotationValue>>();
+    	List<OWLObjectEditor<? extends OWLAnnotationValue>> result = new ArrayList<>();
         result.add(constantEditor);
         result.add(iriEditor);
         result.add(textEditor);

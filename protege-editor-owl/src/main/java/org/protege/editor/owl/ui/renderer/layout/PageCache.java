@@ -28,7 +28,7 @@ public class PageCache {
 
     private int cacheSize = DEFAULT_CACHE_SIZE;
 
-    private Map<PageCacheKey, Page> map = new LinkedHashMap<PageCacheKey, Page>();
+    private Map<PageCacheKey, Page> map = new LinkedHashMap<>();
 
     public PageCache() {
     }

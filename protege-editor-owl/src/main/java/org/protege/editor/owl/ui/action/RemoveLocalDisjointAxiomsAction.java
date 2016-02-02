@@ -32,7 +32,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
                                                  JOptionPane.YES_NO_CANCEL_OPTION,
                                                  JOptionPane.QUESTION_MESSAGE);
 
-            Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+            Set<OWLOntology> ontologies = new HashSet<>();
             if (result == JOptionPane.YES_OPTION) {
                 ontologies.addAll(getOWLModelManager().getActiveOntologies());
             }
@@ -40,7 +40,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
                 ontologies = Collections.singleton(getOWLModelManager().getActiveOntology());
             }
 
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             for (OWLClass desc : getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider().getChildren(getOWLClass())){
                 changes.addAll(removeDisjointsForClass(desc, ontologies));
             }
@@ -55,7 +55,7 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
 
     @SuppressWarnings("unchecked")
     private List<OWLOntologyChange> removeDisjointsForClass(OWLClass owlClass, Set<OWLOntology> ontologies) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLOntology ont : ontologies) {
             for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)) {
                 if (ax.getClassExpressions().contains(owlClass)){

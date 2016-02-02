@@ -40,7 +40,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
     private OWLObjectList<OWLDatatype> list;
     
-    private Map<ChangeListener, ListSelectionListener> selListenerWrappers = new HashMap<ChangeListener, ListSelectionListener>();
+    private Map<ChangeListener, ListSelectionListener> selListenerWrappers = new HashMap<>();
 
     private class UpdateDatatypeListListener implements OWLOntologyChangeListener {
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
@@ -134,7 +134,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
 
     public Set<OWLDatatype> getSelectedObjects() {
-        return new HashSet<OWLDatatype>(list.getSelectedOWLObjects());
+        return new HashSet<>(list.getSelectedOWLObjects());
     }
 
 

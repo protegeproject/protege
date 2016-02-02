@@ -28,7 +28,7 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
 	}
 	
     private List<OWLOntologyChange> getChanges(OWLOntology ontology, OWLOntologyID id) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         OWLOntologyManager owlOntologyManager = ontology.getOWLOntologyManager();
         OWLDataFactory factory = owlOntologyManager.getOWLDataFactory();
         OWLOntologyID oldId = ontology.getOntologyID();

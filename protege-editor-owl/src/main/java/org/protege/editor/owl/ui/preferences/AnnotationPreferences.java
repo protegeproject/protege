@@ -31,8 +31,8 @@ public class AnnotationPreferences {
     public static Set<URI> getHiddenAnnotationURIs() {
         PreferencesManager prefMan = PreferencesManager.getInstance();
         Preferences prefs = prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, HIDDEN_URIS_KEY);
-        Set<URI> uris = new HashSet<URI>();
-        for (String s : prefs.getStringList(HIDDEN_URIS_KEY, new ArrayList<String>())) {
+        Set<URI> uris = new HashSet<>();
+        for (String s : prefs.getStringList(HIDDEN_URIS_KEY, new ArrayList<>())) {
             uris.add(URI.create(s));
         }
         return uris;
@@ -42,7 +42,7 @@ public class AnnotationPreferences {
     public static void setHiddenAnnotationURIs(Set<URI> uris) {
         PreferencesManager prefMan = PreferencesManager.getInstance();
         Preferences prefs = prefMan.getPreferencesForSet(PREFERENCES_SET_KEY, HIDDEN_URIS_KEY);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (URI uri : uris) {
             list.add(uri.toString());
         }

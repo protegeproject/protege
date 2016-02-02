@@ -20,7 +20,7 @@ public class ActionSpan {
 
     private String paragraphText;
 
-    private List<LinkSpan> linkSpans = new ArrayList<LinkSpan>();
+    private List<LinkSpan> linkSpans = new ArrayList<>();
 
     public ActionSpan(List<Action> actions) {
         this.actions = actions;

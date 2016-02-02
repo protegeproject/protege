@@ -22,7 +22,7 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = -8812068573828834020L;
     private Set<InferenceType>             required;
     private Set<InferenceType>             disallowed;
-    private Map<InferenceType, JCheckBox> selectedInferences = new EnumMap<InferenceType, JCheckBox>(InferenceType.class);
+    private Map<InferenceType, JCheckBox> selectedInferences = new EnumMap<>(InferenceType.class);
     //private boolean applied = false;
     
     public void initialise() throws Exception {

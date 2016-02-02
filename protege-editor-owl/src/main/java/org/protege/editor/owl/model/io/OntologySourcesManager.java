@@ -35,7 +35,7 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
     private static final Logger logger = LoggerFactory.getLogger(OntologySourcesManager.class);
 
-    private Map<URI, Long> timestamps = new HashMap<URI, Long>();
+    private Map<URI, Long> timestamps = new HashMap<>();
 
     private Timer timer;
 
@@ -43,7 +43,7 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
 
 
-    private List<OntologySourcesListener> listeners = new ArrayList<OntologySourcesListener>();
+    private List<OntologySourcesListener> listeners = new ArrayList<>();
 
     private ActionListener timerAction = event -> checkSources();
 

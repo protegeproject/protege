@@ -71,7 +71,7 @@ public class OWLObjectList<O extends OWLObject> extends JList<O> {
 
     @SuppressWarnings("unchecked")
     public java.util.List<O> getSelectedOWLObjects(){
-        List<O> sel = new ArrayList<O>();
+        List<O> sel = new ArrayList<>();
         for (Object o : getSelectedValues()){
             sel.add((O) o);
         }

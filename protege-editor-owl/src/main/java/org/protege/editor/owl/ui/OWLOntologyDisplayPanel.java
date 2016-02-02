@@ -54,7 +54,7 @@ public class OWLOntologyDisplayPanel extends JPanel {
         add(ontologyURILabel, BorderLayout.NORTH);
         ontologyFrame = new OWLOntologyFrame(owlEditorKit);
         ontologyFrame.setRootObject(null);
-        frameList = new OWLFrameList<OWLOntology>(owlEditorKit, ontologyFrame);
+        frameList = new OWLFrameList<>(owlEditorKit, ontologyFrame);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setResizeWeight(0.85);
         add(splitPane);

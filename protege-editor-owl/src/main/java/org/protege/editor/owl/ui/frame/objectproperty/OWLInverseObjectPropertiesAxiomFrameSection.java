@@ -24,7 +24,7 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
 
     public static final String LABEL = "Inverse Of";
 
-    private Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
+    private Set<OWLObjectPropertyExpression> added = new HashSet<>();
 
 
     public OWLInverseObjectPropertiesAxiomFrameSection(OWLEditorKit editorKit,

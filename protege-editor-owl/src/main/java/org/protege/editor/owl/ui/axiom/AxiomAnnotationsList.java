@@ -34,10 +34,10 @@ public class AxiomAnnotationsList extends AbstractAnnotationsList<OWLAxiomInstan
 
 
     protected java.util.List<OWLOntologyChange> getAddChanges(OWLAnnotation annot) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         final OWLAxiom oldAxiom = getRoot().getAxiom();
 
-        Set<OWLAnnotation> annotations = new HashSet<OWLAnnotation>(oldAxiom.getAnnotations());
+        Set<OWLAnnotation> annotations = new HashSet<>(oldAxiom.getAnnotations());
         annotations.add(annot);
 
         // because for some reason the merge does not work
@@ -51,10 +51,10 @@ public class AxiomAnnotationsList extends AbstractAnnotationsList<OWLAxiomInstan
 
 
     protected List<OWLOntologyChange> getReplaceChanges(OWLAnnotation oldAnnotation, OWLAnnotation newAnnotation) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         final OWLAxiom ax = getRoot().getAxiom();
         final OWLOntology ont = getRoot().getOntology();
-        Set<OWLAnnotation> annotations = new HashSet<OWLAnnotation>(ax.getAnnotations());
+        Set<OWLAnnotation> annotations = new HashSet<>(ax.getAnnotations());
         annotations.remove(oldAnnotation);
         annotations.add(newAnnotation);
 
@@ -67,11 +67,11 @@ public class AxiomAnnotationsList extends AbstractAnnotationsList<OWLAxiomInstan
 
 
     protected List<OWLOntologyChange> getDeleteChanges(OWLAnnotation oldAnnotation) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         final OWLAxiom ax = getRoot().getAxiom();
         final OWLOntology ont = getRoot().getOntology();
 
-        Set<OWLAnnotation> annotations = new HashSet<OWLAnnotation>(ax.getAnnotations());
+        Set<OWLAnnotation> annotations = new HashSet<>(ax.getAnnotations());
         annotations.remove(oldAnnotation);
 
         newAxiom = ax.getAxiomWithoutAnnotations().getAnnotatedAxiom(annotations);

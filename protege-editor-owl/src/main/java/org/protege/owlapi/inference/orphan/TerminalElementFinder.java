@@ -76,9 +76,9 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
     private static Logger logger = LoggerFactory.getLogger(TerminalElementFinder.class);
 
     private Relation<X> r;
-    private Set<X> terminalElements = new HashSet<X>();
-    private EquivalenceRelation<X> equivalence = new EquivalenceRelation<X>();
-    private Set<X> equivalenceAlreadyCalculated = new HashSet<X>();
+    private Set<X> terminalElements = new HashSet<>();
+    private EquivalenceRelation<X> equivalence = new EquivalenceRelation<>();
+    private Set<X> equivalenceAlreadyCalculated = new HashSet<>();
     
     public TerminalElementFinder(Relation<X> r) {
         this.r = r;
@@ -91,7 +91,7 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
     }
     
     public void clear() {
-        terminalElements = new HashSet<X>();
+        terminalElements = new HashSet<>();
         equivalence.clear();
     }
     
@@ -141,7 +141,7 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
             equivalenceAlreadyCalculated.add(x);
             return;
         }
-        Path<X> newPath  = new Path<X>(p, x);
+        Path<X> newPath  = new Path<>(p, x);
         for  (X y : relatedToX) {
             if (logger.isDebugEnabled()) {
                 logger.debug("calling build equivs at {} with path ", y );
@@ -174,13 +174,13 @@ public class TerminalElementFinder<X extends Comparable<? super X>> {
         if (!terminalElements.contains(x)) {
             return;
         }
-        Set<X> candidates = new HashSet<X>(terminalElements);
+        Set<X> candidates = new HashSet<>(terminalElements);
         candidates.add(y);
         findTerminalElements(candidates);
     }
     
     public void removeRelation(X x, X y) {
-        Set<X> candidates = new HashSet<X>(terminalElements);
+        Set<X> candidates = new HashSet<>(terminalElements);
         candidates.add(x);
         findTerminalElements(candidates);
     }

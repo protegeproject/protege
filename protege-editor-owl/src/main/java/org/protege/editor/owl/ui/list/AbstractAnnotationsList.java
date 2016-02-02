@@ -113,7 +113,7 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
     public void setRootObject(O root){
         this.root = root;
 
-        java.util.List<Object> data = new ArrayList<Object>();
+        java.util.List<Object> data = new ArrayList<>();
 
         data.add(header);
 

@@ -61,7 +61,7 @@ public final class StyledString implements CharSequence, Comparable<StyledString
      */
     public StyledString(String text, List<StyledStringMarkup> markup) {
         this.plainString = text;
-        this.plainStringMarkup = Collections.unmodifiableList(new ArrayList<StyledStringMarkup>(markup));
+        this.plainStringMarkup = Collections.unmodifiableList(new ArrayList<>(markup));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,7 +175,7 @@ public final class StyledString implements CharSequence, Comparable<StyledString
 
         private StringBuilder buffer = new StringBuilder();
 
-        private List<StyledStringMarkup> markup = new ArrayList<StyledStringMarkup>();
+        private List<StyledStringMarkup> markup = new ArrayList<>();
 
         public Builder() {
 
@@ -300,7 +300,7 @@ public final class StyledString implements CharSequence, Comparable<StyledString
             return EMPTY_STYLED_STRING;
         }
         String substring = plainString.substring(start, end);
-        List<StyledStringMarkup> substringMarkup = new ArrayList<StyledStringMarkup>();
+        List<StyledStringMarkup> substringMarkup = new ArrayList<>();
         for (StyledStringMarkup markup : plainStringMarkup) {
             if (start < markup.getEnd() && end > markup.getStart()) {
                 int substringMarkupStart;
@@ -423,7 +423,7 @@ public final class StyledString implements CharSequence, Comparable<StyledString
 
 
     public List<Style> getStylesAt(int index) {
-        List<Style> styles = new ArrayList<Style>();
+        List<Style> styles = new ArrayList<>();
         for (StyledStringMarkup markup : plainStringMarkup) {
             if (markup.getStart() <= index && index < markup.getEnd()) {
                 styles.add(markup.getStyle());
@@ -440,24 +440,24 @@ public final class StyledString implements CharSequence, Comparable<StyledString
         if (styles.size() == 1) {
             return styles.get(0);
         }
-        Map<Class<? extends StyleAttribute>, StyleAttribute> atts = new HashMap<Class<? extends StyleAttribute>, StyleAttribute>();
+        Map<Class<? extends StyleAttribute>, StyleAttribute> atts = new HashMap<>();
         for (Style style : styles) {
             for (StyleAttribute styleAttribute : style.getStyleAttributes()) {
                 atts.put(styleAttribute.getClass(), styleAttribute);
             }
         }
-        return new Style(new ArrayList<StyleAttribute>(atts.values()));
+        return new Style(new ArrayList<>(atts.values()));
     }
 
     private void renderIntoHTML(Writer writer) {
         StringBuilder pw = new StringBuilder();
 
-        List<StyledStringMarkup> sortedMarkups = new ArrayList<StyledStringMarkup>(plainStringMarkup);
+        List<StyledStringMarkup> sortedMarkups = new ArrayList<>(plainStringMarkup);
         Collections.sort(sortedMarkups);
-        Set<Style> currentStyles = new HashSet<Style>();
-        List<Integer> runLimits = new ArrayList<Integer>();
+        Set<Style> currentStyles = new HashSet<>();
+        List<Integer> runLimits = new ArrayList<>();
         for (int i = 0; i < length(); i++) {
-            Set<Style> iStyles = new HashSet<Style>();
+            Set<Style> iStyles = new HashSet<>();
             for (StyledStringMarkup markup : sortedMarkups) {
                 if (markup.getStart() <= i && i < markup.getEnd()) {
                     iStyles.add(markup.getStyle());

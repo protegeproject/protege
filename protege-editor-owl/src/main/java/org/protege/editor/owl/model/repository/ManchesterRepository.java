@@ -37,7 +37,7 @@ public class ManchesterRepository implements OntologyRepository {
     public ManchesterRepository(String repositoryName, URI repositoryLocation) {
         this.repositoryName = repositoryName;
         this.repositoryLocation = repositoryLocation;
-        entries = new ArrayList<RepositoryEntry>();
+        entries = new ArrayList<>();
         iriMapper = new RepositoryIRIMapper();
     }
 
@@ -62,7 +62,7 @@ public class ManchesterRepository implements OntologyRepository {
 
 
     public Collection<OntologyRepositoryEntry> getEntries() {
-        List<OntologyRepositoryEntry> ret = new ArrayList<OntologyRepositoryEntry>();
+        List<OntologyRepositoryEntry> ret = new ArrayList<>();
         ret.addAll(entries);
         return ret;
     }

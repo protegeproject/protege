@@ -34,7 +34,7 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	@Override
 	public void rebuildChildMenuItems(JMenu thisMenuItem) {
 		Set<OWLAnnotationProperty> annotationProperties = getAnnotationProperties();
-		List<OWLAnnotationProperty> annotationPropertiesList = new ArrayList<OWLAnnotationProperty>(annotationProperties);
+		List<OWLAnnotationProperty> annotationPropertiesList = new ArrayList<>(annotationProperties);
 		Collections.sort(annotationPropertiesList, getComparator());		
 		
 		for (OWLAnnotationProperty prop : annotationPropertiesList) {
@@ -45,7 +45,7 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	
 	
 	private Set<OWLAnnotationProperty> getAnnotationProperties() {
-		Set<OWLAnnotationProperty> annotationProperties = new HashSet<OWLAnnotationProperty>();
+		Set<OWLAnnotationProperty> annotationProperties = new HashSet<>();
 		Set<OWLOntology> ontologies = getOWLModelManager().getActiveOntologies();
 		for (OWLOntology ontology : ontologies) {
 			annotationProperties.addAll(ontology.getAnnotationPropertiesInSignature());

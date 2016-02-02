@@ -124,7 +124,7 @@ public class OWLAutoCompleter {
         this.checker = checker;
         this.textComponent = tc;
 
-        wordDelimeters = new HashSet<String>();
+        wordDelimeters = new HashSet<>();
         wordDelimeters.add(" ");
         wordDelimeters.add("\n");
         wordDelimeters.add("[");

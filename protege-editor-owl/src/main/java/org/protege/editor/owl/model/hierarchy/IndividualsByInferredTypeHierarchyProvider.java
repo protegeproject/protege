@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLObject> {
 
-    private Map<OWLObject, Set<OWLObject>> typeNodes = new HashMap<OWLObject, Set<OWLObject>>();
+    private Map<OWLObject, Set<OWLObject>> typeNodes = new HashMap<>();
 
     private OWLReasoner reasoner;
 
@@ -40,7 +40,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
                 for (OWLClass cls : ont.getClassesInSignature()) {
                     final Set<OWLNamedIndividual> inds = reasoner.getInstances(cls, showDirect).getFlattened();
                     if (!inds.isEmpty()){
-                        typeNodes.put(cls, new HashSet<OWLObject>(inds));
+                        typeNodes.put(cls, new HashSet<>(inds));
                     }
                 }
             }
@@ -75,7 +75,7 @@ public class IndividualsByInferredTypeHierarchyProvider extends AbstractOWLObjec
         }
         else {
             OWLNamedIndividual ind = (OWLNamedIndividual) object;
-            Set<OWLObject> clses = new HashSet<OWLObject>();
+            Set<OWLObject> clses = new HashSet<>();
             for (OWLClass cls : reasoner.getTypes(ind, showDirect).getFlattened()) {
                 clses.add(cls);
             }

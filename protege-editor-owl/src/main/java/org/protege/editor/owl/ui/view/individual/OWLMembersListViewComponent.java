@@ -60,7 +60,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
 
     //TODO: do we want to cache this?
     protected Set<OWLNamedIndividual> getUntypedIndividuals() {
-        Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> untypedIndividuals = new HashSet<>();
         OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
         Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
@@ -87,7 +87,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
             OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
             return Collections.singletonList(change);
         }
-        return new ArrayList<OWLOntologyChange>();
+        return new ArrayList<>();
     }
 
 

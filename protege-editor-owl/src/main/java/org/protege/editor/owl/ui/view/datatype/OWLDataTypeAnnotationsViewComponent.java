@@ -27,7 +27,7 @@ public class OWLDataTypeAnnotationsViewComponent extends AbstractOWLDataTypeView
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

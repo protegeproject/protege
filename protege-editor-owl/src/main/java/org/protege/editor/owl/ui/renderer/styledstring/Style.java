@@ -19,7 +19,7 @@ public class Style {
 
     public static final Style BOLD_STYLE = new Style(FontWeightAttribute.getBoldFontWeight());
 
-    private List<StyleAttribute> styleAttributes = new ArrayList<StyleAttribute>(1);
+    private List<StyleAttribute> styleAttributes = new ArrayList<>(1);
 
     public Style(List<StyleAttribute> styleAttributes) {
         this.styleAttributes.addAll(styleAttributes);
@@ -63,7 +63,7 @@ public class Style {
 
     public Style append(Style style) {
         int size = styleAttributes.size() + style.styleAttributes.size();
-        List<StyleAttribute> allAttributes = new ArrayList<StyleAttribute>(size);
+        List<StyleAttribute> allAttributes = new ArrayList<>(size);
         allAttributes.addAll(styleAttributes);
         allAttributes.addAll(style.styleAttributes);
         return new Style(allAttributes);

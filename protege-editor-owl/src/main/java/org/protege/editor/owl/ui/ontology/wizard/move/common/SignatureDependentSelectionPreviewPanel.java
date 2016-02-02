@@ -109,7 +109,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
     public void updateSignature() {
         Set<OWLEntity> sig = signatureSelection.getSignature();
-        Set<OWLEntity> newSig = new HashSet<OWLEntity>(getCheckedEntities());
+        Set<OWLEntity> newSig = new HashSet<>(getCheckedEntities());
         if (!sig.equals(newSig)) {
             signatureSelection.setSignature(newSig);
             updatePreview();
@@ -152,7 +152,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
 
     private Set<OWLEntity> getCheckedEntities() {
-        final Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        final Set<OWLEntity> entities = new HashSet<>();
         for (Object o : list.getCheckedItems()) {
             RemovableObjectList<OWLEntity>.RemovableObjectListItem item = (RemovableObjectList.RemovableObjectListItem) o;
             entities.add(item.getObject());

@@ -23,7 +23,7 @@ public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntity
 
     private OWLModelManager mngr;
 
-    private List<OWLEntityRendererListener> listeners = new ArrayList<OWLEntityRendererListener>();
+    private List<OWLEntityRendererListener> listeners = new ArrayList<>();
 
     private OWLOntologyChangeListener l = owlOntologyChanges -> processChanges(owlOntologyChanges);
 
@@ -62,7 +62,7 @@ public abstract class AbstractOWLEntityRenderer implements OWLModelManagerEntity
 
 
     protected void fireRenderingChanged(OWLEntity entity) {
-        for (OWLEntityRendererListener listener : new ArrayList<OWLEntityRendererListener>(listeners)) {
+        for (OWLEntityRendererListener listener : new ArrayList<>(listeners)) {
             listener.renderingChanged(entity, this);
         }
     }

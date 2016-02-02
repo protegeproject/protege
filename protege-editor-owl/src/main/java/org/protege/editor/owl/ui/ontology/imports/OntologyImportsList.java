@@ -101,7 +101,7 @@ public class OntologyImportsList extends MList {
             OWLOntologyManager manager = eKit.getModelManager().getOWLOntologyManager();
             OntologyCatalogManager catalogManager = eKit.getOWLModelManager().getOntologyCatalogManager();
             OWLOntology activeOntology = eKit.getModelManager().getActiveOntology();
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
 
             for (ImportInfo importParameters : wizard.getImports()) {
                 IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
@@ -163,7 +163,7 @@ public class OntologyImportsList extends MList {
     public void setOntology(OWLOntology ont) {
         this.ont = ont;
 
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
 
         data.add(directImportsHeader);
 

@@ -32,7 +32,7 @@ public class SearchOptionsPanel extends JPanel {
     private final JCheckBox showAllResultsCheckBox;
 
 
-    private final List<SearchOptionsChangedListener> listeners = new ArrayList<SearchOptionsChangedListener>();
+    private final List<SearchOptionsChangedListener> listeners = new ArrayList<>();
 
     private final JCheckBox searchInAnnotationValues;
 
@@ -187,7 +187,7 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     public Collection<SearchCategory> getSearchTypes() {
-        Set<SearchCategory> result = new HashSet<SearchCategory>();
+        Set<SearchCategory> result = new HashSet<>();
         result.add(SearchCategory.DISPLAY_NAME);
         if (searchInIRIs.isSelected()) {
             result.add(SearchCategory.IRI);
@@ -214,13 +214,13 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     private void fireSearchRequestOptionChanged() {
-        for (SearchOptionsChangedListener listener : new ArrayList<SearchOptionsChangedListener>(listeners)) {
+        for (SearchOptionsChangedListener listener : new ArrayList<>(listeners)) {
             listener.searchRequestOptionChanged();
         }
     }
 
     private void fireSearchResultsPresentationOptionChanged() {
-        for (SearchOptionsChangedListener listener : new ArrayList<SearchOptionsChangedListener>(listeners)) {
+        for (SearchOptionsChangedListener listener : new ArrayList<>(listeners)) {
             listener.searchResultsPresentationOptionChanged();
         }
     }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class SearchMetadataDB {
 
-    private List<SearchMetadata> results = new ArrayList<SearchMetadata>();
+    private List<SearchMetadata> results = new ArrayList<>();
 
     public void addResult(SearchMetadata searchMetadata) {
         results.add(searchMetadata);

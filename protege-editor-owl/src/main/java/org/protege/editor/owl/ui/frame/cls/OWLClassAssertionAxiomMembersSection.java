@@ -25,7 +25,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
     public static final boolean SHOW_DIRECT_INSTANCES = true;
 
-    private Set<OWLNamedIndividual> added = new HashSet<OWLNamedIndividual>();
+    private Set<OWLNamedIndividual> added = new HashSet<>();
 
 
     public OWLClassAssertionAxiomMembersSection(OWLEditorKit editorKit, OWLFrame<? extends OWLClass> frame) {
@@ -51,7 +51,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
             return ont.getClassAssertionAxioms(descr.asOWLClass());
         }
         else{
-            Set<OWLClassAssertionAxiom> axioms = new HashSet<OWLClassAssertionAxiom>();
+            Set<OWLClassAssertionAxiom> axioms = new HashSet<>();
             for (OWLClassAssertionAxiom ax : ont.getAxioms(AxiomType.CLASS_ASSERTION)){
                 if (ax.getClassExpression().equals(descr)){
                     axioms.add(ax);
@@ -106,7 +106,7 @@ public class OWLClassAssertionAxiomMembersSection extends AbstractOWLClassAxiomF
 
 
 	public boolean dropObjects(List<OWLObject> objects) {
-		List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+		List<OWLOntologyChange> changes = new ArrayList<>();
 		for (OWLObject obj : objects) {
 			if (obj instanceof OWLIndividual) {
 				OWLIndividual ind = (OWLIndividual) obj;

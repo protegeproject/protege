@@ -18,7 +18,7 @@ public class DataPropertyReferencingAxiomStrategy extends EntityReferencingAxiom
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLDataProperty p : getEntities()){
             for (OWLOntology ont : ontologies){
                 axioms.addAll(ont.getReferencingAxioms(p));

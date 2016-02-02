@@ -22,7 +22,7 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
 
 
     protected Set<OWLDataProperty> getPropertiesReferencedInChange(List<? extends OWLOntologyChange> changes) {
-        Set<OWLDataProperty> result = new HashSet<OWLDataProperty>();
+        Set<OWLDataProperty> result = new HashSet<>();
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 for (OWLEntity entity : change.getSignature()) {

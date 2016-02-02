@@ -37,7 +37,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
 
 
     protected List<RestrictionCreator<OWLObjectProperty, OWLClass>> createTypes() {
-        List<RestrictionCreator<OWLObjectProperty, OWLClass>> types = new ArrayList<RestrictionCreator<OWLObjectProperty, OWLClass>>();
+        List<RestrictionCreator<OWLObjectProperty, OWLClass>> types = new ArrayList<>();
 
         types.add(some = new RestrictionCreator<OWLObjectProperty, OWLClass>("Some (existential)") {
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,

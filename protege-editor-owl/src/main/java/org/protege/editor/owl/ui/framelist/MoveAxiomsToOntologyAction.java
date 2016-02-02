@@ -73,7 +73,7 @@ public class MoveAxiomsToOntologyAction<R> extends OWLFrameListPopupMenuAction<R
 
 
     private void moveAxiomsToOntology(OWLOntology ontology) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLFrameSectionRow row : getSelectedRows()) {
             OWLAxiom ax = row.getAxiom();
             OWLOntology currentOnt = row.getOntology();

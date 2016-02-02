@@ -29,7 +29,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLObjectEditor<OWLClassAxiom
     public OWLGeneralAxiomEditor(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
 
-        editor = new ExpressionEditor<OWLClassAxiom>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getClassAxiomChecker());
+        editor = new ExpressionEditor<>(editorKit, editorKit.getModelManager().getOWLExpressionCheckerFactory().getClassAxiomChecker());
 
         editingComponent = new JPanel(new BorderLayout());
         editingComponent.add(editor);

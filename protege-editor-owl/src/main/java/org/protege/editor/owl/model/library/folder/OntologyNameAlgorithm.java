@@ -28,7 +28,7 @@ public class OntologyNameAlgorithm implements Algorithm {
 			configuration = configuration.setLoadAnnotationAxioms(false);
 			configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
 			OWLOntology ontology = manager.loadOntology(iri);
-			Set<URI> suggestions = new TreeSet<URI>();
+			Set<URI> suggestions = new TreeSet<>();
 			OWLOntologyID id = ontology.getOntologyID();
 			if (id.getOntologyIRI().isPresent()) {
 				suggestions.add(id.getOntologyIRI().get().toURI());

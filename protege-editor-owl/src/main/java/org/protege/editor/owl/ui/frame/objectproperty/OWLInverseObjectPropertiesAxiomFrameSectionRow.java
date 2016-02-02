@@ -57,10 +57,10 @@ public class OWLInverseObjectPropertiesAxiomFrameSectionRow extends AbstractOWLF
      * or navigated to etc.
      */
     public List<OWLObjectPropertyExpression> getManipulatableObjects() {
-        Set<OWLObjectPropertyExpression> props = new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
+        Set<OWLObjectPropertyExpression> props = new HashSet<>(getAxiom().getProperties());
         if(props.size() > 1) {
             props.remove(getRootObject());
         }
-        return new ArrayList<OWLObjectPropertyExpression>(props);
+        return new ArrayList<>(props);
     }
 }

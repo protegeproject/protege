@@ -53,8 +53,8 @@ public class OWLDisjointClassesAxiomFrameSectionRow extends AbstractOWLFrameSect
      * Gets a list of objects contained in this row.
      */
     public List<OWLClassExpression> getManipulatableObjects() {
-        Set<OWLClassExpression> disjointClasses = new HashSet<OWLClassExpression>(getAxiom().getClassExpressions());
+        Set<OWLClassExpression> disjointClasses = new HashSet<>(getAxiom().getClassExpressions());
         disjointClasses.remove(getRootObject());
-        return new ArrayList<OWLClassExpression>(disjointClasses);
+        return new ArrayList<>(disjointClasses);
     }
 }

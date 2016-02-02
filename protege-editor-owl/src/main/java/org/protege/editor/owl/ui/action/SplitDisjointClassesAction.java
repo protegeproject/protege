@@ -22,7 +22,7 @@ public class SplitDisjointClassesAction extends ProtegeOWLAction {
 
     @SuppressWarnings("unchecked")
     public void actionPerformed(ActionEvent actionEvent) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         int axiomsRemoved = 0;
         int axiomsAdded = 0;
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
@@ -44,9 +44,9 @@ public class SplitDisjointClassesAction extends ProtegeOWLAction {
 
 
     public Set<OWLDisjointClassesAxiom> split(OWLDisjointClassesAxiom ax){
-        Set<OWLDisjointClassesAxiom> pairwiseAxioms = new HashSet<OWLDisjointClassesAxiom>();
+        Set<OWLDisjointClassesAxiom> pairwiseAxioms = new HashSet<>();
         if (ax.getClassExpressions().size() > 2){
-            List<OWLClassExpression> orderedOperands = new ArrayList<OWLClassExpression>(ax.getClassExpressions());
+            List<OWLClassExpression> orderedOperands = new ArrayList<>(ax.getClassExpressions());
             for (int i=0; i<orderedOperands.size(); i++){
                 OWLClassExpression a = orderedOperands.get(i);
                 for (int j=i+1; j<orderedOperands.size(); j++){

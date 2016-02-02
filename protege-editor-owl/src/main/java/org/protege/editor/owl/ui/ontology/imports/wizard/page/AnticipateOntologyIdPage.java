@@ -57,7 +57,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
         }
         ImportInfo parameters = imports.iterator().next();
 
-        List<IRI> importOptions = new ArrayList<IRI>();
+        List<IRI> importOptions = new ArrayList<>();
 
         OWLOntologyID id = parameters.getOntologyID();
         if (id != null && !id.isAnonymous()) {

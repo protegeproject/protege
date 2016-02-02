@@ -28,7 +28,7 @@ public abstract class AbstractDeleteEntityAction<E extends OWLEntity> extends OW
                                          OWLEntitySetProvider<E> entitySetProvider) {
         super(name, icon);
         this.entitySetProvider = entitySetProvider;
-        this.deleter = new OWLObjectHierarchyDeleter<E>(owlEditorKit,
+        this.deleter = new OWLObjectHierarchyDeleter<>(owlEditorKit,
                                                         hp,
                                                         entitySetProvider,
                                                         getPluralDescription());

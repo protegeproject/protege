@@ -75,7 +75,7 @@ public class CopyToHMTLAction extends FocusedComponentAction<Copyable> {
 
     private static class HtmlSelection implements Transferable {
 
-        private static ArrayList<DataFlavor> htmlFlavors = new ArrayList<DataFlavor>();
+        private static ArrayList<DataFlavor> htmlFlavors = new ArrayList<>();
 
 
         static {

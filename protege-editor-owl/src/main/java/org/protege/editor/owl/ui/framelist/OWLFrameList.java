@@ -128,7 +128,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
         createPopupMenu();
 
-        inferredRowButtons = new ArrayList<MListButton>();
+        inferredRowButtons = new ArrayList<>();
         inferredRowButtons.add(new ExplainButton(e -> {
             invokeExplanationHandler();
         }));
@@ -184,7 +184,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     protected List<MListButton> getButtons(Object value) {
-        List<MListButton> buttons = new ArrayList<MListButton>(super.getButtons(value));
+        List<MListButton> buttons = new ArrayList<>(super.getButtons(value));
         if (value instanceof OWLFrameSectionRow) {
             OWLFrameSectionRow frameRow = (OWLFrameSectionRow) value;
             buttons.add(axiomAnnotationButton);
@@ -256,11 +256,11 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     private void createPopupMenu() {
-        actions = new ArrayList<OWLFrameListPopupMenuAction<R>>();
+        actions = new ArrayList<>();
         popupMenu = new JPopupMenu();
-        addToPopupMenu(new SwitchToDefiningOntologyAction<R>());
-        addToPopupMenu(new PullIntoActiveOntologyAction<R>());
-        addToPopupMenu(new MoveAxiomsToOntologyAction<R>());
+        addToPopupMenu(new SwitchToDefiningOntologyAction<>());
+        addToPopupMenu(new PullIntoActiveOntologyAction<>());
+        addToPopupMenu(new MoveAxiomsToOntologyAction<>());
     }
 
     public void addToPopupMenu(OWLFrameListPopupMenuAction<R> action) {
@@ -307,7 +307,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     private void refillRows() {
-        List<OWLFrameObject> rows = new ArrayList<OWLFrameObject>();
+        List<OWLFrameObject> rows = new ArrayList<>();
         for (OWLFrameSection<R, ? extends Object, ? extends Object> section : frame.getFrameSections()) {
             rows.add(section);
             for (OWLFrameSectionRow row : section.getRows()) {
@@ -324,7 +324,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
     public void handleDelete() {
         int[] selIndices = getSelectedIndices();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (int selIndex : selIndices) {
             Object val = getModel().getElementAt(selIndex);
             if (val instanceof OWLFrameSectionRow) {
@@ -631,7 +631,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     public List<OWLObject> getObjectsToCopy() {
-        List<OWLObject> manipulatableObjects = new ArrayList<OWLObject>();
+        List<OWLObject> manipulatableObjects = new ArrayList<>();
         for (Object selObject : getSelectedValues()) {
             if (selObject instanceof OWLFrameSectionRow) {
                 OWLFrameSectionRow row = (OWLFrameSectionRow) selObject;
@@ -651,7 +651,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     private List<OWLObject> getCuttableObjects() {
-        List<OWLObject> manipulatableObjects = new ArrayList<OWLObject>();
+        List<OWLObject> manipulatableObjects = new ArrayList<>();
         for (Object selObject : getSelectedValues()) {
             if (selObject instanceof OWLFrameSectionRow) {
                 OWLFrameSectionRow row = (OWLFrameSectionRow) selObject;
@@ -662,8 +662,8 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     public List<OWLObject> cutObjects() {
-        List<OWLObject> manipulatableObjects = new ArrayList<OWLObject>();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLObject> manipulatableObjects = new ArrayList<>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (Object selObject : getSelectedValues()) {
             if (selObject instanceof OWLFrameSectionRow) {
                 OWLFrameSectionRow row = (OWLFrameSectionRow) selObject;

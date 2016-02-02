@@ -44,7 +44,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
     private List<OWLOntology> getOntologies() {
         final OWLModelManager mngr = getOWLModelManager();
 
-        List<OWLOntology> ontologies = new ArrayList<OWLOntology>(mngr.getOntologies());
+        List<OWLOntology> ontologies = new ArrayList<>(mngr.getOntologies());
 
         ontologies.removeAll(mngr.getOWLOntologyManager().getImportsClosure(mngr.getActiveOntology()));
 
@@ -57,7 +57,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
 
 
     private Set<OWLOntology> getOntologiesInSeries(OWLOntology ontology, Collection<OWLOntology> ontologies) {
-        Set<OWLOntology> ontologiesInSeries = new HashSet<OWLOntology>();
+        Set<OWLOntology> ontologiesInSeries = new HashSet<>();
         if (!ontology.getOntologyID().isAnonymous()){
             for (OWLOntology ont : ontologies){
                 if (!ont.getOntologyID().isAnonymous() &&

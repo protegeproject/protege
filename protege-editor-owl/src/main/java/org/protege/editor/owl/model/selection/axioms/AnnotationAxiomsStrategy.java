@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class AnnotationAxiomsStrategy extends AbstractAxiomSelectionStrategy {
 
-    private Set<URI> uris = new HashSet<URI>();
+    private Set<URI> uris = new HashSet<>();
 
     public static final String CHANGED_ANNOTATION_URIS = "change.annotation.uri";
 
@@ -28,7 +28,7 @@ public class AnnotationAxiomsStrategy extends AbstractAxiomSelectionStrategy {
     }
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
 // @@TODO v3 port
 //        for (OWLOntology ont : ontologies){
 //            for (OWLEntityAnnotationAxiom ax : ont.getAxioms(AxiomType.ENTITY_ANNOTATION)){

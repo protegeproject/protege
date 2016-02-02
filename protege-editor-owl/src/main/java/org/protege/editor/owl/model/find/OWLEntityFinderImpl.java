@@ -211,7 +211,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLEntity> getEntities(IRI iri) {
 
-        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        Set<OWLEntity> entities = new HashSet<>();
 
         for (OWLOntology ont : mngr.getActiveOntologies()){
             if (ont.containsClassInSignature(iri)){
@@ -256,7 +256,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     private <T extends OWLEntity> Set<T> doRegExpSearch(String match, Class<T> type, int flags) {
-        Set<T> results = new HashSet<T>();
+        Set<T> results = new HashSet<>();
         try {
             Pattern pattern = Pattern.compile(match, flags);
             for (String rendering : getRenderings(type)) {
@@ -280,7 +280,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
      * (probably right but this should not be implemented separately)
      */
     private <T extends OWLEntity> Set<T> doWildcardSearch(String match, Class<T> type) {
-        Set<T> results = new HashSet<T>();
+        Set<T> results = new HashSet<>();
 
         if (match.equals(WILDCARD)){
             results = getAllEntities(type);
@@ -335,7 +335,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies());
         }
         else{
-            Set<T> entities = new HashSet<T>();
+            Set<T> entities = new HashSet<>();
             for (OWLOntology ont: mngr.getActiveOntologies()){
                 if (type.equals(OWLClass.class)){
                     entities.addAll((Set<T>)ont.getClassesInSignature());

@@ -96,10 +96,10 @@ public class AnonymousDefinedClassManager implements Disposable {
 
         OWLClass anonCls = mngr.getOWLDataFactory().getOWLClass(getNextID());
 
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.add(new AddAxiom(ont, mngr.getOWLDataFactory().getOWLEquivalentClassesAxiom(anonCls, descr)));
 
-        return new OWLEntityCreationSet<OWLClass>(anonCls, changes);
+        return new OWLEntityCreationSet<>(anonCls, changes);
     }
 
 
@@ -156,7 +156,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
         private long nextId = System.nanoTime();
 
-        private Stack<Long> checkpoints = new Stack<Long>();
+        private Stack<Long> checkpoints = new Stack<>();
 
         protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
             long id = nextId;

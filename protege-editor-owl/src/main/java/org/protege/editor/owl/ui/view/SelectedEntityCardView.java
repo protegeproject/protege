@@ -32,7 +32,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private JPanel cardPanel;
 
-    private List<ViewsPane> viewsPanes = new ArrayList<ViewsPane>();
+    private List<ViewsPane> viewsPanes = new ArrayList<>();
 
     private static final String CLASSES_PANEL = "Classes";
 

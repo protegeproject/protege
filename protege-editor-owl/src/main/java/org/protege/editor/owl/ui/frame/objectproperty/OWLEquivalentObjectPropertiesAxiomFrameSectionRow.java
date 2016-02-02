@@ -46,7 +46,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractO
     protected OWLObjectEditor<OWLObjectPropertyExpression> getObjectEditor() {
         final OWLObjectPropertyExpressionEditor editor = new OWLObjectPropertyExpressionEditor(getOWLEditorKit());
         final Set<OWLObjectPropertyExpression> equivs =
-                new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
+                new HashSet<>(getAxiom().getProperties());
         equivs.remove(getRootObject());
         if (equivs.size() == 1){
             final OWLObjectPropertyExpression p = equivs.iterator().next();
@@ -63,7 +63,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractO
     
     @Override
     public void handleEditingFinished(Set<OWLObjectPropertyExpression> editedObjects) {
-    	editedObjects = new HashSet<OWLObjectPropertyExpression>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
@@ -81,7 +81,7 @@ public class OWLEquivalentObjectPropertiesAxiomFrameSectionRow extends AbstractO
      * or navigated to etc.
      */
     public List<OWLObjectPropertyExpression> getManipulatableObjects() {
-        List<OWLObjectPropertyExpression> props = new ArrayList<OWLObjectPropertyExpression>(getAxiom().getProperties());
+        List<OWLObjectPropertyExpression> props = new ArrayList<>(getAxiom().getProperties());
         props.remove(getRoot());
         return props;
     }

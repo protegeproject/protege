@@ -34,14 +34,14 @@ public class OWLOntologyAnnotationList extends AbstractAnnotationsList<OntologyA
 
 
     protected List<OWLOntologyChange> getAddChanges(OWLAnnotation annot) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.add(new AddOntologyAnnotation(getRoot().getOntology(), annot));
         return changes;
     }
 
 
     protected List<OWLOntologyChange> getReplaceChanges(OWLAnnotation oldAnnotation, OWLAnnotation newAnnotation) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.add(new RemoveOntologyAnnotation(getRoot().getOntology(), oldAnnotation));
         changes.add(new AddOntologyAnnotation(getRoot().getOntology(), newAnnotation));
         return changes;
@@ -49,7 +49,7 @@ public class OWLOntologyAnnotationList extends AbstractAnnotationsList<OntologyA
 
 
     protected List<OWLOntologyChange> getDeleteChanges(OWLAnnotation annot) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.add(new RemoveOntologyAnnotation(getRoot().getOntology(), annot));
         return changes;
     }

@@ -50,8 +50,8 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
 
-        tree = new OWLModelManagerTree<OWLObject>(getOWLEditorKit(), getProvider());
-        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<OWLObject>(getOWLEditorKit(), tree));
+        tree = new OWLModelManagerTree<>(getOWLEditorKit(), getProvider());
+        tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<>(getOWLEditorKit(), tree));
 
         add(new JScrollPane(tree));
 
@@ -88,7 +88,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         if (child instanceof OWLNamedIndividual){
             OWLNamedIndividual ind = (OWLNamedIndividual)child;
 
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
 
             if (toParent != null && toParent instanceof OWLClass){
                 OWLClass to = (OWLClass)toParent;
@@ -104,7 +104,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         if (child instanceof OWLNamedIndividual){
             OWLNamedIndividual ind = (OWLNamedIndividual)child;
 
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
 
             if (toParent != null && toParent instanceof OWLClass){
                 OWLClass to = (OWLClass)toParent;
@@ -179,7 +179,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     private Set<OWLNamedIndividual> getSelectedIndividuals(){
         List<OWLObject> sel = tree.getSelectedOWLObjects();
-        Set<OWLNamedIndividual> selIndivs = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> selIndivs = new HashSet<>();
         for (OWLObject obj : sel){
             if (obj instanceof OWLNamedIndividual){
                 selIndivs.add((OWLNamedIndividual)obj);
@@ -215,7 +215,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
     //////// Findable
 
     public List<OWLNamedIndividual> find(String match) {
-        return new ArrayList<OWLNamedIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
     public void show(OWLNamedIndividual owlEntity) {
@@ -245,7 +245,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         if (set == null) {
             return;
         }
-        java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        java.util.List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(set.getOntologyChanges());
         getOWLModelManager().applyChanges(changes);
         OWLNamedIndividual ind = set.getOWLEntity();

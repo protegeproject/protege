@@ -120,7 +120,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.owlEditorKit = owlEditorKit;
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
-        this.equivalentObjects = new HashSet<OWLObject>();
+        this.equivalentObjects = new HashSet<>();
 
         iconLabel = new JLabel("");
         iconLabel.setOpaque(false);
@@ -133,7 +133,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
 
-        entityColorProviders = new ArrayList<OWLEntityColorProvider>();
+        entityColorProviders = new ArrayList<>();
         OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
         for (OWLEntityColorProviderPlugin plugin : loader.getPlugins()) {
             try {
@@ -145,9 +145,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 logger.error("An error occurred whilst trying to load an OWLEntityColorProviderPlugin", e);
             }
         }
-        crossedOutEntities = new HashSet<OWLEntity>();
-        unsatisfiableNames = new HashSet<String>();
-        boxedNames = new HashSet<String>();
+        crossedOutEntities = new HashSet<>();
+        unsatisfiableNames = new HashSet<>();
+        boxedNames = new HashSet<>();
         prepareStyles();
         setupFont();
     }

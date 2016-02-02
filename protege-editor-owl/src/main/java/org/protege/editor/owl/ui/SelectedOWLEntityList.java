@@ -28,7 +28,7 @@ public class SelectedOWLEntityList extends JList implements OWLSelectionModelLis
      */
     public SelectedOWLEntityList(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        selectionList = new ArrayList<OWLEntity>();
+        selectionList = new ArrayList<>();
         owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(this);
     }
 

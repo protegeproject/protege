@@ -170,7 +170,7 @@ public class SearchPanel extends JPanel {
 
     private void copySelectedEntities() {
         Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        List<OWLEntity> objects = new ArrayList<OWLEntity>();
+        List<OWLEntity> objects = new ArrayList<>();
         objects.addAll(searchResultsPanel.getSelectedEntities());
         ViewClipboard clipboard = ViewClipboard.getInstance();
         TransferableOWLObject contents = new TransferableOWLObject(editorKit.getOWLModelManager(), objects);

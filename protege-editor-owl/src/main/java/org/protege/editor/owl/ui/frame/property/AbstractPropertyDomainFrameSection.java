@@ -29,7 +29,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
     public static final String LABEL = "Domains (intersection)";
 
-    Set<OWLClassExpression> addedDomains = new HashSet<OWLClassExpression>();
+    Set<OWLClassExpression> addedDomains = new HashSet<>();
 
 
     public AbstractPropertyDomainFrameSection(OWLEditorKit editorKit, OWLFrame<P> frame) {
@@ -60,7 +60,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
 
 
     public final boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression desc = (OWLClassExpression) obj;

@@ -33,7 +33,7 @@ public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSe
 
 
     protected OWLDisjointDataPropertiesAxiom createAxiom(Set<OWLDataProperty> editedObject) {
-        Set<OWLDataProperty> props = new HashSet<OWLDataProperty>();
+        Set<OWLDataProperty> props = new HashSet<>();
         props.add(getRootObject());
         props.addAll(editedObject);
         return getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(props);
@@ -43,7 +43,7 @@ public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSe
     protected OWLObjectEditor<Set<OWLDataProperty>> getObjectEditor() {
         OWLDataPropertySetEditor editor = new OWLDataPropertySetEditor(getOWLEditorKit());
         final Set<OWLDataPropertyExpression> disjoints = getAxiom().getProperties();
-        final Set<OWLDataProperty> namedDisjoints = new HashSet<OWLDataProperty>();
+        final Set<OWLDataProperty> namedDisjoints = new HashSet<>();
         for (OWLDataPropertyExpression p : disjoints){
             if (!p.isAnonymous()){
                 namedDisjoints.add(p.asOWLDataProperty());
@@ -62,7 +62,7 @@ public class OWLDisjointDataPropertiesFrameSectionRow extends AbstractOWLFrameSe
     }
 
     public List<OWLDataPropertyExpression> getManipulatableObjects() {
-        List<OWLDataPropertyExpression> props = new ArrayList<OWLDataPropertyExpression>(getAxiom().getProperties());
+        List<OWLDataPropertyExpression> props = new ArrayList<>(getAxiom().getProperties());
         props.remove(getRootObject());
         return props;
     }

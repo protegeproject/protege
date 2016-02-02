@@ -55,7 +55,7 @@ public class OWLFrameListRenderer implements ListCellRenderer, RendererWithInset
         highlightUnsatisfiableClasses = true;
         highlightUnsatisfiableProperties = true;
         annotationRendererEnabled = true;
-        crossedOutEntities = new HashSet<OWLEntity>();
+        crossedOutEntities = new HashSet<>();
     }
 
 

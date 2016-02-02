@@ -56,7 +56,7 @@ public class OWLDifferentIndividualAxiomFrameSectionRow extends AbstractOWLFrame
     public List<OWLNamedIndividual> getManipulatableObjects() {
         //@@TODO v3 port - what about anon indivs?
         Set<OWLIndividual> individuals = getAxiom().getIndividuals();
-        List<OWLNamedIndividual> results = new ArrayList<OWLNamedIndividual>();
+        List<OWLNamedIndividual> results = new ArrayList<>();
         for (OWLIndividual ind : individuals){
             if (!ind.isAnonymous() && !ind.equals(getRootObject())){
                 results.add(ind.asOWLNamedIndividual());

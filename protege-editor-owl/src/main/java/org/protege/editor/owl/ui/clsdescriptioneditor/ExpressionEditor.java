@@ -344,7 +344,7 @@ public class ExpressionEditor<O> extends JTextPane
 ///////////////////////// content verification
 
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
 
     private boolean previousValue = true;
 

@@ -24,7 +24,7 @@ public class OWLDisjointUnionAxiomFrameSectionRow extends AbstractOWLFrameSectio
 	}
 
 	public List<OWLClassExpression> getManipulatableObjects() {
-		return new ArrayList<OWLClassExpression>(getAxiom().getClassExpressions());
+		return new ArrayList<>(getAxiom().getClassExpressions());
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
             ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
 
 
-            final Set<OWLOntology> ignoreOnts = new HashSet<OWLOntology>(onts);
+            final Set<OWLOntology> ignoreOnts = new HashSet<>(onts);
 
             if (JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
                                                 TITLE,

@@ -20,7 +20,7 @@ public class PrefixMapperTables extends JPanel {
 	private OWLOntology ontology;
 	private OWLModelManager modelManager;
 	
-	private Set<SelectedOntologyListener> listeners = new HashSet<SelectedOntologyListener>();
+	private Set<SelectedOntologyListener> listeners = new HashSet<>();
 	
 	
 	private TableModelListener editListener = new TableModelListener() {

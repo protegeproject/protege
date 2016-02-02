@@ -35,7 +35,7 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
 
     protected OWLObjectEditor<Set<OWLObjectPropertyExpression>> getObjectEditor() {
         OWLObjectPropertyTabbedSetEditor editor = new OWLObjectPropertyTabbedSetEditor(getOWLEditorKit());
-        final Set<OWLObjectPropertyExpression> disjoints = new HashSet<OWLObjectPropertyExpression>(getAxiom().getProperties());
+        final Set<OWLObjectPropertyExpression> disjoints = new HashSet<>(getAxiom().getProperties());
         disjoints.remove(getRootObject());
         editor.setEditedObject(disjoints);
         return editor;
@@ -43,7 +43,7 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
 
 
     protected OWLDisjointObjectPropertiesAxiom createAxiom(Set<OWLObjectPropertyExpression> editedObject) {
-        Set<OWLObjectPropertyExpression> props = new HashSet<OWLObjectPropertyExpression>();
+        Set<OWLObjectPropertyExpression> props = new HashSet<>();
         props.add(getRootObject());
         props.addAll(editedObject);
         return getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(props);
@@ -61,7 +61,7 @@ public class OWLDisjointObjectPropertiesAxiomFrameSectionRow extends AbstractOWL
      * or navigated to etc.
      */
     public List<OWLObjectPropertyExpression> getManipulatableObjects() {
-        List<OWLObjectPropertyExpression> props = new ArrayList<OWLObjectPropertyExpression>(getAxiom().getProperties());
+        List<OWLObjectPropertyExpression> props = new ArrayList<>(getAxiom().getProperties());
         props.remove(getRoot());
         return props;
     }

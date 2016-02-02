@@ -99,7 +99,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 				inferredOntologyGenerator.fillOntology(outputManager.getOWLDataFactory(), exportedOntology);
 
 				int currentTask = inferredAxiomGenerators.size();
-				List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+				List<OWLOntologyChange> changes = new ArrayList<>();
 
 				adjustProgress("Deleting trivial inferences", ++currentTask);
 				deleteTrivialAxioms(changes);

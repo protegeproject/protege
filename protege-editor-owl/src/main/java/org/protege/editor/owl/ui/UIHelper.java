@@ -34,7 +34,7 @@ public class UIHelper {
 
     public final static Set<String> OWL_EXTENSIONS;
     static {
-    	Set<String> extensions = new HashSet<String>();
+    	Set<String> extensions = new HashSet<>();
         extensions.add("owl");
         extensions.add("ofn");
         extensions.add("omn");
@@ -201,7 +201,7 @@ public class UIHelper {
 
 
     public <E extends OWLEntity> E pickOWLEntity(String message, Set<E> entities, OWLModelManager owlModelManager) {
-        OWLEntityListPanel<E> panel = new OWLEntityListPanel<E>(message, entities, owlEditorKit);
+        OWLEntityListPanel<E> panel = new OWLEntityListPanel<>(message, entities, owlEditorKit);
         if (showDialog("Select an entity", panel) == JOptionPane.OK_OPTION) {
             return panel.getSelectedObject();
         }
@@ -289,7 +289,7 @@ public class UIHelper {
 
     public JComboBox getDatatypeSelector() {
         final OWLModelManager mngr = getOWLModelManager();
-        List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies()));
+        List<OWLDatatype> datatypeList = new ArrayList<>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies()));
 
         Collections.sort(datatypeList, mngr.getOWLObjectComparator());
         datatypeList.add(0, null);

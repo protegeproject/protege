@@ -24,7 +24,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
 
     private static final String LABEL = "SubClass Of (Anonymous Ancestor)";
 
-    private Set<OWLClass> processedClasses = new HashSet<OWLClass>();
+    private Set<OWLClass> processedClasses = new HashSet<>();
 
 
     public InheritedAnonymousClassesFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLClass> frame) {
@@ -91,7 +91,7 @@ public class InheritedAnonymousClassesFrameSection extends AbstractOWLFrameSecti
                         }
                     }
                     for (OWLEquivalentClassesAxiom ax : ontology.getEquivalentClassesAxioms(cls)) {
-                        Set<OWLClassExpression> descs = new HashSet<OWLClassExpression>(ax.getClassExpressions());
+                        Set<OWLClassExpression> descs = new HashSet<>(ax.getClassExpressions());
                         descs.remove(getRootObject());
                         for (OWLClassExpression superCls : descs) {
                         	if (superCls.isAnonymous()) {

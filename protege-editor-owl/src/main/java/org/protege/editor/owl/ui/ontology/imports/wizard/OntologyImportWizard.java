@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class OntologyImportWizard extends Wizard {
 
-    private Set<ImportInfo> imports = new HashSet<ImportInfo>();
+    private Set<ImportInfo> imports = new HashSet<>();
     private boolean customizeImports = false;
     private boolean importsAreFinal = false;
     

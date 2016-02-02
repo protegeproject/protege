@@ -99,7 +99,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     public Set<N> getAncestors(N object) {
 //    	getReadLock().lock();
     	try {
-    		Set<N> results = new HashSet<N>();
+    		Set<N> results = new HashSet<>();
     		getAncestors(results, object);
     		return results;
     	}
@@ -133,7 +133,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     public Set<N> getDescendants(N object) {
 //    	getReadLock().lock();
     	try {
-    		Set<N> results = new HashSet<N>();
+    		Set<N> results = new HashSet<>();
     		getDescendants(results, object);
     		return results;
     	}
@@ -166,7 +166,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
     public Set<List<N>> getPathsToRoot(N obj) {
 //    	getReadLock().lock();
     	try { 	
-    		return setOfPaths(obj, new HashSet<N>());
+    		return setOfPaths(obj, new HashSet<>());
     	}
     	finally {
 //    		getReadLock().unlock();
@@ -178,7 +178,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         if (getRoots().contains(obj)) {
             return getSingleSetOfLists(obj);
         }
-        Set<List<N>> paths = new HashSet<List<N>>();
+        Set<List<N>> paths = new HashSet<>();
         for (N par : getParents(obj)) {
             if (!processed.contains(par)) {
                 processed.add(par);
@@ -190,8 +190,8 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     private Set<List<N>> getSingleSetOfLists(N obj) {
-        Set<List<N>> set = new HashSet<List<N>>();
-        List<N> list = new ArrayList<N>();
+        Set<List<N>> set = new HashSet<>();
+        List<N> list = new ArrayList<>();
         list.add(obj);
         set.add(list);
         return set;
@@ -228,7 +228,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
     private List<OWLObjectHierarchyProviderListener<N>> getListeners() {
     	synchronized (listeners) {
-    		return new ArrayList<OWLObjectHierarchyProviderListener<N>>(listeners);
+    		return new ArrayList<>(listeners);
     	}
     }
 

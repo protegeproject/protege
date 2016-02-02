@@ -25,13 +25,13 @@ public class OWLEntityCreationSet<E extends OWLEntity> {
 
     public OWLEntityCreationSet(E owlEntity, List<? extends OWLOntologyChange> changes) {
         this.owlEntity = owlEntity;
-        this.changes = new ArrayList<OWLOntologyChange>(changes);
+        this.changes = new ArrayList<>(changes);
     }
 
 
     public OWLEntityCreationSet(E owlEntity) {
         this.owlEntity = owlEntity;
-        changes = new ArrayList<OWLOntologyChange>();
+        changes = new ArrayList<>();
     }
 
 

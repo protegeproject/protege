@@ -72,7 +72,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     public List<OWLAnnotationProperty> find(String match) {
-        return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLAnnotationProperties(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLAnnotationProperties(match));
     }
 
 
@@ -88,7 +88,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }
         OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
         if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            java.util.List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(set.getOntologyChanges());
             OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
             OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
@@ -116,7 +116,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         if (creationSet != null) {
             // Combine the changes that are required to create the OWLAnnotationProperty, with the
             // changes that are required to make it a sibling property.
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager mngr = getOWLModelManager();
             OWLDataFactory df = mngr.getOWLDataFactory();
@@ -132,7 +132,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
     private class InternalOWLEntitySetProvider implements OWLEntitySetProvider<OWLAnnotationProperty> {
         public Set<OWLAnnotationProperty> getEntities() {
-            return new HashSet<OWLAnnotationProperty>(getTree().getSelectedOWLObjects());
+            return new HashSet<>(getTree().getSelectedOWLObjects());
         }
     }
     

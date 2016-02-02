@@ -26,7 +26,7 @@ public class LinkManager {
 
     private JComponent component;
 
-    private List<LinkBox> pageLinks = new ArrayList<LinkBox>();
+    private List<LinkBox> pageLinks = new ArrayList<>();
 
     private Page currentPage;
 

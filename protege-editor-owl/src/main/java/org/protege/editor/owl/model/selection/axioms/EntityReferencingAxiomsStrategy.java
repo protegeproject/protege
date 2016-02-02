@@ -12,13 +12,13 @@ import java.util.Set;
  */
 public abstract class EntityReferencingAxiomsStrategy<O extends OWLEntity> extends AbstractAxiomSelectionStrategy {
 
-    private Set<O> entities = new HashSet<O>();
+    private Set<O> entities = new HashSet<>();
 
     public static final String ENTITIES_CHANGED = "change.entities";
 
 
     public void setEntities(Set<O> entities){
-        this.entities = new HashSet<O>(entities);
+        this.entities = new HashSet<>(entities);
         notifyPropertyChange(ENTITIES_CHANGED);
     }
 

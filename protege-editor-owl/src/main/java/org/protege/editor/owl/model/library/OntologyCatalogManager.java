@@ -28,7 +28,7 @@ public class OntologyCatalogManager {
 	
 	public static final String TIMESTAMP        = "Timestamp";
 	    
-    private Map<File, XMLCatalog> localCatalogs = new HashMap<File, XMLCatalog>();
+    private Map<File, XMLCatalog> localCatalogs = new HashMap<>();
     
     private XMLCatalog activeCatalog;
     private File activeCatalogFolder;
@@ -72,7 +72,7 @@ public class OntologyCatalogManager {
 	}
 		
 	public OntologyCatalogManager() {
-    	entryManagers = new ArrayList<CatalogEntryManager>();
+    	entryManagers = new ArrayList<>();
     	CatalogEntryManagerLoader pluginLoader = new CatalogEntryManagerLoader();
     	for (CatalogEntryManagerPlugin plugin : pluginLoader.getPlugins()) {
     		try {
@@ -85,7 +85,7 @@ public class OntologyCatalogManager {
     }
 	
 	public OntologyCatalogManager(List<? extends CatalogEntryManager> entryManagers) {
-		this.entryManagers = new ArrayList<CatalogEntryManager>(entryManagers);
+		this.entryManagers = new ArrayList<>(entryManagers);
 	}
 	
 	public List<CatalogEntryManager>  getCatalogEntryManagers() {
@@ -167,7 +167,7 @@ public class OntologyCatalogManager {
     }
     
     public List<XMLCatalog> getAllCatalogs() {
-    	List<XMLCatalog> catalogs = new ArrayList<XMLCatalog>();
+    	List<XMLCatalog> catalogs = new ArrayList<>();
     	catalogs.addAll(getLocalCatalogs());
     	return catalogs;
     }

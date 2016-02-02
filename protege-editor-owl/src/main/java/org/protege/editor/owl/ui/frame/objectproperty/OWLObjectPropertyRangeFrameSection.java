@@ -21,7 +21,7 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
     public static final String LABEL = "Ranges (intersection)";
 
-    Set<OWLClassExpression> addedRanges = new HashSet<OWLClassExpression>();
+    Set<OWLClassExpression> addedRanges = new HashSet<>();
 
 
     public OWLObjectPropertyRangeFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
@@ -70,7 +70,7 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
 
     private Set<OWLClassExpression> getInferredRanges() {
-        return new HashSet<OWLClassExpression>(getOWLModelManager().getReasoner().getObjectPropertyRanges(getRootObject(), true).getFlattened());
+        return new HashSet<>(getOWLModelManager().getReasoner().getObjectPropertyRanges(getRootObject(), true).getFlattened());
     }
 
 
@@ -95,7 +95,7 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression desc = (OWLClassExpression) obj;

@@ -16,7 +16,7 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 	
 	private OWLEditorKit owlEditorKit;
 	private InconsistentOntologyPlugin lastSelectedPlugin;
-	private List<InconsistentOntologyPluginInstance> explanations = new ArrayList<InconsistentOntologyPluginInstance>();
+	private List<InconsistentOntologyPluginInstance> explanations = new ArrayList<>();
 
 	public static InconsistentOntologyManager get(OWLModelManager modelManager) {
 		return (InconsistentOntologyManager) modelManager.get(InconsistentOntologyManager.class);

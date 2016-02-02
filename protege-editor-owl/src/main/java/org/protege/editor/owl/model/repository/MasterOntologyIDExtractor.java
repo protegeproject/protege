@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     
-    private List<OntologyIdExtractor> extractors = new ArrayList<OntologyIdExtractor>();
+    private List<OntologyIdExtractor> extractors = new ArrayList<>();
     
     // TODO - all the callers of this method have problems which need fixing.
     public MasterOntologyIDExtractor() { 

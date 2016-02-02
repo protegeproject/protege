@@ -27,7 +27,7 @@ public class OWLSubAnnotationPropertyFrameSection extends AbstractOWLFrameSectio
 
     public static final String LABEL = "Superproperties";
 
-    private Set<OWLAnnotationProperty> added = new HashSet<OWLAnnotationProperty>();
+    private Set<OWLAnnotationProperty> added = new HashSet<>();
 
     private OWLAnnotationPropertyEditor editor;
 
@@ -66,7 +66,7 @@ public class OWLSubAnnotationPropertyFrameSection extends AbstractOWLFrameSectio
 
 
     public final boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLAnnotationProperty) {
                 OWLAnnotationProperty property = (OWLAnnotationProperty) obj;

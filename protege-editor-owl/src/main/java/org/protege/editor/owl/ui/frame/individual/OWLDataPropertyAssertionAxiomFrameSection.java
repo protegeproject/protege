@@ -27,7 +27,7 @@ public class OWLDataPropertyAssertionAxiomFrameSection extends AbstractOWLFrameS
 
     private OWLDataPropertyRelationshipEditor editor;
 
-    private Set<OWLDataPropertyAssertionAxiom> added = new HashSet<OWLDataPropertyAssertionAxiom>();
+    private Set<OWLDataPropertyAssertionAxiom> added = new HashSet<>();
 
 
     protected void clear() {

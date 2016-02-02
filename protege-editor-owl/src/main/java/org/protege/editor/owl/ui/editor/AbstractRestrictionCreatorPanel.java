@@ -48,7 +48,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
     private boolean currentStatus = false;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
 
     private ChangeListener selListener = event -> checkStatus();
 
@@ -115,13 +115,13 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
 
     public Set<OWLClassExpression> getClassExpressions(){
-        Set<OWLClassExpression> result = new HashSet<OWLClassExpression>();
+        Set<OWLClassExpression> result = new HashSet<>();
         RestrictionCreator<P, F> creator = (RestrictionCreator<P, F>) typeCombo.getSelectedItem();
         if (creator == null) {
             return Collections.emptySet();
         }
         creator.createRestrictions(propertySelectorPanel.getSelectedObjects(),
-                                   new HashSet<F>(fillerSelectorPanel.getSelectedObjects()),
+                                   new HashSet<>(fillerSelectorPanel.getSelectedObjects()),
                                    result);
         return result;
     }

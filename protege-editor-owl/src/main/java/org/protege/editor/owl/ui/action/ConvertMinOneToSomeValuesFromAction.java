@@ -22,7 +22,7 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
 
     public void actionPerformed(ActionEvent actionEvent) {
         MinCardiOneReplacer replacer = new MinCardiOneReplacer(getOWLModelManager().getOWLDataFactory());
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         int count = 0;
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
             for (OWLAxiom ax : ont.getAxioms()){

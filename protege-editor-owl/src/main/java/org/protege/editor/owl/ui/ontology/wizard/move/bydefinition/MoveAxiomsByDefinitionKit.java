@@ -28,7 +28,7 @@ public class MoveAxiomsByDefinitionKit extends MoveAxiomsKit implements Signatur
 
 
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
-        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
+        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<>();
         panels.add(selectSignaturePanel);
         panels.add(selectPreviewPanel);
         return panels;
@@ -41,7 +41,7 @@ public class MoveAxiomsByDefinitionKit extends MoveAxiomsKit implements Signatur
 
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> ontologies, Set<OWLEntity> entities) {
-        Set<OWLAxiom> result = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> result = new HashSet<>();
         for (OWLEntity e : entities) {
             for(final OWLOntology ont : ontologies) {
                 Set<? extends OWLAxiom> axioms = e.accept(new OWLEntityVisitorEx<Set<? extends OWLAxiom>>() {
@@ -79,7 +79,7 @@ public class MoveAxiomsByDefinitionKit extends MoveAxiomsKit implements Signatur
 
 
     public void initialise() throws Exception {
-        selectedEntities = new HashSet<OWLEntity>();
+        selectedEntities = new HashSet<>();
         selectSignaturePanel = new SelectSignaturePanel(this) {
             @Override
             public String getID() {

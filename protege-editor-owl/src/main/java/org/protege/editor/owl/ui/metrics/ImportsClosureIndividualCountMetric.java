@@ -21,7 +21,7 @@ public class ImportsClosureIndividualCountMetric extends AbstractIntegerMetric {
 
 
     protected int getIntMetric() {
-        Set<OWLIndividual> clses = new HashSet<OWLIndividual>();
+        Set<OWLIndividual> clses = new HashSet<>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             clses.addAll(ont.getIndividualsInSignature());
         }

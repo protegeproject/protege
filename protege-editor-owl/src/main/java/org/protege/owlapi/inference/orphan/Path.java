@@ -35,7 +35,7 @@ public class Path<X> {
     }
     
     public List<X> getLoop(X x) {
-        List<X> result = new ArrayList<X>();
+        List<X> result = new ArrayList<>();
         result.add(x);
         Path<X> point = this;
         do {

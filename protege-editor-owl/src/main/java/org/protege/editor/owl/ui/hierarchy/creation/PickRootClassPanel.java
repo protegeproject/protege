@@ -35,7 +35,7 @@ public class PickRootClassPanel extends AbstractOWLWizardPanel {
     protected void createUI(JComponent parent) {
         parent.setLayout(new BorderLayout());
         setInstructions("Please select the root class");
-        tree = new OWLModelManagerTree<OWLClass>(getOWLEditorKit(),
+        tree = new OWLModelManagerTree<>(getOWLEditorKit(),
                                                  getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider());
         tree.setSelectedOWLObject(getOWLEditorKit().getWorkspace().getOWLSelectionModel().getLastSelectedClass());
         parent.add(ComponentFactory.createScrollPane(tree));

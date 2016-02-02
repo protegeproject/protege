@@ -49,11 +49,11 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
         setTitle("Copy/move/delete axioms");
         this.editorKit = eKit;
 
-        sourceOntologies = new HashSet<OWLOntology>();
-        panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
+        sourceOntologies = new HashSet<>();
+        panels = new ArrayList<>();
         selectedKit = null;
-        kitId2FirstPanelId = new HashMap<String, Object>();
-        kitId2LastPanelId = new HashMap<String, Object>();
+        kitId2FirstPanelId = new HashMap<>();
+        kitId2LastPanelId = new HashMap<>();
         setupKits();
 
 
@@ -143,7 +143,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
 
 
     private void setupKits() {
-        moveAxiomsKits = new ArrayList<MoveAxiomsKit>();
+        moveAxiomsKits = new ArrayList<>();
 
 //        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AnnotationAxiomsStrategy()));
 //        moveAxiomsKits.add(new MoveAxiomKitImpl(editorKit, new AllAxiomsStrategy()));
@@ -223,7 +223,7 @@ public class MoveAxiomsWizard extends Wizard implements MoveAxiomsModel {
             }
         }
 
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
 
         Set<OWLAxiom> axiomsToBeMoved = getAxiomsToBeMoved();
 
