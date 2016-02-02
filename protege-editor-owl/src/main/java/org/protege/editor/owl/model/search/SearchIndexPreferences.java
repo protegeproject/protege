@@ -46,24 +46,28 @@ public class SearchIndexPreferences {
     }
 
     private void restore() {
-        Preferences p = getPreferences();
-        String defaultBaseDirectory = prepare(System.getProperty("java.io.tmpdir"));
-        baseDirectory = p.getString(BASE_DIR, defaultBaseDirectory);
+        String defaultBaseDirectory = getUserHomeDirectory();
+        baseDirectory = getPreferences().getString(BASE_DIR, defaultBaseDirectory);
     }
 
     private Preferences getPreferences() {
         return PreferencesManager.getInstance().getApplicationPreferences(PREFERENCES_KEY);
     }
 
+    /**
+     * Set the base directory to tmp directory following the local setting.
+     */
     public void useTempDirectoryAsBaseDirectory() {
-        String tmpDir = prepare(System.getProperty("java.io.tmpdir"));
+        String tmpDir = getTempDirectory();
         setBaseDirectory(tmpDir);
     }
 
-    public void useHomeDirectoryAsBaseDirectory() {
-        String homeDir = prepare(System.getProperty("user.home"));
-        String indexHomeDir = homeDir + PROTEGE_DIR + fsSeparator + INDEX_DIR + fsSeparator;
-        setBaseDirectory(indexHomeDir);
+    /**
+     * Set the base directory to user home directory following the local setting.
+     */
+    public void useUserHomeDirectoryAsBaseDirectory() {
+        String homeDir = getUserHomeDirectory();
+        setBaseDirectory(homeDir);
     }
 
     /**
@@ -82,9 +86,21 @@ public class SearchIndexPreferences {
      *          A directory location set by the user.
      */
     public void setBaseDirectory(String baseDirectory) {
-        this.baseDirectory = baseDirectory;
+        this.baseDirectory = prepare(baseDirectory);
         getPreferences().putString(BASE_DIR, baseDirectory);
         logger.info("... base index directory set to {}", baseDirectory);
+    }
+
+    /**
+     * Construct a full index path location given the directory name. The base directory
+     * will be concatenated to the index directory name. 
+     *
+     * @param indexDirectoryName
+     *          The index directory name
+     * @return A full path location of the index directory.
+     */
+    public String createIndexLocation(String indexDirectoryName) {
+        return getBaseDirectory() + fsSeparator + indexDirectoryName;
     }
 
     /**
@@ -96,7 +112,17 @@ public class SearchIndexPreferences {
      *          The directory location where the index files are stored.
      */
     public void registerIndexLocation(String ontologyVersion, String indexLocation) {
-        getPreferences().putString(ontologyVersion, indexLocation);
+        getPreferences().putString(ontologyVersion, prepare(indexLocation));
+    }
+
+    /**
+     * Remove index location by its ontology version string.
+     *
+     * @param ontologyVersion
+     *          A string represents the unique versioning ID of the ontology.
+     */
+    public void clearIndexLocation(String ontologyVersion) {
+        getPreferences().putString(ontologyVersion, null);
     }
 
     /**
@@ -109,35 +135,67 @@ public class SearchIndexPreferences {
      * @return The directory location.
      */
     public Optional<String> getIndexLocation(String ontologyVersion) {
-        String location = getPreferences().getString(ontologyVersion, null);
-        if (!location.isEmpty()) {
+        Optional<String> location = getPreferenceValue(ontologyVersion);
+        if (location.isPresent()) {
+            /*
+             * If the location is found in the preference (cached), we must check it
+             * against the file system.
+             */
+            String cachedLocation = location.get();
             /*
              * Make sure the index directory is at the current root directory setting.
              */
-            if (!location.startsWith(getBaseDirectory())) {
-                location = null; // reset if the base directory has changed
+            if (!cachedLocation.startsWith(getBaseDirectory())) {
+                location = Optional.empty(); // reset if the base directory has changed
             }
             /*
              * Make sure the index directory still exists.
              */
-            if (!new File(location).exists()) {
-                location = null; // reset if the index directory has been removed.
+            if (!new File(cachedLocation).exists()) {
+                location = Optional.empty(); // reset if the index directory has been removed.
             }
         }
-        return Optional.ofNullable(location);
+        return location;
     }
 
     /**
-     * Make sure the path directory contains file separator at the end of the string
+     * Clear all ontology versions and the associated index location from the preference.
+     * Note that no physical files or folders are deleted from the file system.
+     */
+    public void clear() {
+        Preferences p = getPreferences();
+        p.clear();
+        p.putString(BASE_DIR, getBaseDirectory());
+    }
+
+    /*
+     * Private utility methods
+     */
+
+    private String getTempDirectory() {
+        return prepare(System.getProperty("java.io.tmpdir"));
+    }
+
+    private String getUserHomeDirectory() {
+        String homeDir = prepare(System.getProperty("user.home"));
+        return homeDir + fsSeparator + PROTEGE_DIR + fsSeparator + INDEX_DIR;
+    }
+
+    private Optional<String> getPreferenceValue(String key) {
+        return Optional.ofNullable(getPreferences().getString(key, null));
+    }
+
+    /**
+     * Make sure the path directory contains no file separator at the end of the string
      *
      * @param directory
      *          input path directory
-     * @return path directory with file separator at the end.
+     * @return clean path directory.
      */
-    private String prepare(String directory) {
+    private static String prepare(String directory) {
         String systemFileSeparator = System.getProperty("file.separator");
-        if (!directory.endsWith(systemFileSeparator)) {
-            directory += systemFileSeparator;
+        if (directory.endsWith(systemFileSeparator)) {
+            directory = directory.substring(0, directory.length()-1);
         }
         return directory;
     }
