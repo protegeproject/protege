@@ -37,6 +37,10 @@ public class SearchContext {
         return editorKit;
     }
 
+    public OWLOntology getActiveOntology() {
+        return editorKit.getOWLModelManager().getActiveOntology();
+    }
+
     public Set<OWLOntology> getOntologies() {
         return editorKit.getOWLModelManager().getActiveOntologies();
     }
