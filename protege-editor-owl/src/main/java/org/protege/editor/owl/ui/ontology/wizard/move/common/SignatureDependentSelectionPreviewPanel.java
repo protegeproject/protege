@@ -72,16 +72,9 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
         previewList.setCellRenderer(cellRenderer);
 
 
-        signatureList = new RemovableObjectList<OWLEntity>();
+        signatureList = new RemovableObjectList<>();
         signatureList.setCellRenderer(cellRenderer);
 
-        signatureList.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                }
-            }
-        });
         signatureList.setPreferredSize(new Dimension(300, 300));
         JPanel signatureListPanel = new JPanel(new BorderLayout());
         list = new CheckList(signatureList);
