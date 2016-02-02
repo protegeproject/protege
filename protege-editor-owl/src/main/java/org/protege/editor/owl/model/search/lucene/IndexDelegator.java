@@ -83,6 +83,9 @@ public class IndexDelegator {
 
     public void doIndex(AbstractLuceneIndexer indexer, SearchContext context, IndexProgressListener listener) throws IOException {
         if (!isIndexReady) {
+            long t0 = System.currentTimeMillis();
+            logger.info("Building search index...");
+            
             final IndexWriter writer = getIndexWriter(indexer.getIndexWriterConfig());
             for (OWLOntology ontology : context.getOntologies()) {
                 logger.info("... building index for " + ontology.getOntologyID());
@@ -104,6 +107,9 @@ public class IndexDelegator {
             }
             writer.close();
             isIndexReady = true;
+
+            long t1 = System.currentTimeMillis();
+            logger.info("... built search index in " + (t1 - t0) + " ms");
         }
     }
 
