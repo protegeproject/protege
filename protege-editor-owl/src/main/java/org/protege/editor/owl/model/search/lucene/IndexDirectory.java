@@ -14,22 +14,10 @@ import java.nio.file.Paths;
  */
 public class IndexDirectory {
 
-    private boolean createNew = false;
-
     private String indexLocation;
 
-    /* No external instantiation */
-    private IndexDirectory(boolean createNew, String indexLocation) {
-        this.createNew = createNew;
+    public IndexDirectory(String indexLocation) {
         this.indexLocation = indexLocation;
-    }
-
-    public static IndexDirectory create(String indexLocation) {
-        return new IndexDirectory(true, indexLocation);
-    }
-
-    public static IndexDirectory load(String indexLocation) {
-        return new IndexDirectory(false, indexLocation);
     }
 
     public Directory getPhysicalDirectory() throws IOException {
@@ -38,9 +26,5 @@ public class IndexDirectory {
 
     public String getLocation() {
         return indexLocation;
-    }
-
-    public boolean exists() {
-        return !createNew;
     }
 }
