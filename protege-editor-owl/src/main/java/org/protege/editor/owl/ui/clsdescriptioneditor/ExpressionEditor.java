@@ -301,12 +301,7 @@ public class ExpressionEditor<O> extends JTextPane
                     while (tokenizer.hasMoreTokens()) {
                         String curToken = tokenizer.nextToken();
                         if (curToken.equals("'")) {
-                            if (inEscapedName) {
-                                inEscapedName = false;
-                            }
-                            else {
-                                inEscapedName = true;
-                            }
+                            inEscapedName = !inEscapedName;
                         }
                         if (!inEscapedName) {
                             Color color = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);

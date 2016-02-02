@@ -38,7 +38,7 @@ public class OntologyVisibilityManagerImpl implements OntologyVisibilityManager 
 
 
     public void setVisible(Set<OWLOntology> ontologies) {
-        if (visibleOntologies.equals(ontologies) == false) {
+        if (!visibleOntologies.equals(ontologies)) {
             visibleOntologies.clear();
             visibleOntologies.addAll(ontologies);
             fireVisibilityChanged();

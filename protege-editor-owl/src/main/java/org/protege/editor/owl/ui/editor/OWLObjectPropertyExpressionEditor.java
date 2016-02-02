@@ -58,7 +58,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     }
 
     public boolean setEditedObject(OWLObjectPropertyExpression p) {
-    	inverseCheckBox.setSelected(p != null ? p.getSimplified().isAnonymous() : false);
+    	inverseCheckBox.setSelected(p != null && p.getSimplified().isAnonymous());
         namedObjectPropertySelector.setSelection(p != null ? p.getNamedProperty() : null);
         return true;
     }
