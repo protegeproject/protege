@@ -35,14 +35,11 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     private OWLModelManager mngr;
 
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if(event.isType(EventType.ONTOLOGY_LOADED) ||
-               event.isType(EventType.ONTOLOGY_RELOADED) ||
-               event.isType(EventType.ONTOLOGY_CREATED)) {
-                rebuild();
-            }
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if(event.isType(EventType.ONTOLOGY_LOADED) ||
+           event.isType(EventType.ONTOLOGY_RELOADED) ||
+           event.isType(EventType.ONTOLOGY_CREATED)) {
+            rebuild();
         }
     };
 

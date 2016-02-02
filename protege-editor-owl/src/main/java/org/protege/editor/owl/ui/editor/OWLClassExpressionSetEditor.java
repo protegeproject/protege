@@ -47,12 +47,9 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
 
     private java.util.List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
 
-    private ChangeListener changeListener = new ChangeListener(){
-
-        public void stateChanged(ChangeEvent event) {
-            for (InputVerificationStatusChangedListener l : listeners){
-                l.verifiedStatusChanged(isValid());
-            }
+    private ChangeListener changeListener = event -> {
+        for (InputVerificationStatusChangedListener l : listeners){
+            l.verifiedStatusChanged(isValid());
         }
     };
 

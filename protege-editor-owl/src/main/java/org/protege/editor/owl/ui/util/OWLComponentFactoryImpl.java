@@ -132,11 +132,7 @@ public class OWLComponentFactoryImpl implements OWLComponentFactory {
         if (descriptionEditorPlugins == null){
             OWLClassExpressionEditorPluginLoader loader = new OWLClassExpressionEditorPluginLoader(eKit);
             descriptionEditorPlugins = new ArrayList<OWLClassExpressionEditorPlugin>(loader.getPlugins());
-            Comparator<OWLClassExpressionEditorPlugin> clsDescrPluginComparator = new Comparator<OWLClassExpressionEditorPlugin>(){
-                public int compare(OWLClassExpressionEditorPlugin p1, OWLClassExpressionEditorPlugin p2) {
-                    return p1.getIndex().compareTo(p2.getIndex());
-                }
-            };
+            Comparator<OWLClassExpressionEditorPlugin> clsDescrPluginComparator = (p1, p2) -> p1.getIndex().compareTo(p2.getIndex());
             Collections.sort(descriptionEditorPlugins, clsDescrPluginComparator);
         }
         return descriptionEditorPlugins;

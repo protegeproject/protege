@@ -40,34 +40,31 @@ public class OWLPropertyHierarchyViewComponent extends AbstractOWLEntityHierarch
 
     @Override
     protected void performExtraInitialisation() throws Exception {
-        getTree().setOWLObjectComparator(new Comparator<OWLObject>() {
-            @Override
-            public int compare(OWLObject o1, OWLObject o2) {
-                if(o1 instanceof OWLObjectProperty) {
-                    if(!(o2 instanceof OWLObjectProperty)) {
-                        return -1;
-                    }
+        getTree().setOWLObjectComparator((o1, o2) -> {
+            if(o1 instanceof OWLObjectProperty) {
+                if(!(o2 instanceof OWLObjectProperty)) {
+                    return -1;
                 }
-                else if(o1 instanceof OWLDataProperty) {
-                    if(o2 instanceof OWLObjectProperty) {
-                        return 1;
-                    }
-                    else {
-                        return -1;
-                    }
+            }
+            else if(o1 instanceof OWLDataProperty) {
+                if(o2 instanceof OWLObjectProperty) {
+                    return 1;
                 }
                 else {
-                    if(o2 instanceof OWLObjectProperty) {
-                        return 1;
-                    }
-                    else if(o2 instanceof OWLDataProperty) {
-                        return 1;
-                    }
+                    return -1;
                 }
-                String s1 = getOWLModelManager().getRendering(o1);
-                String s2 = getOWLModelManager().getRendering(o2);
-                return s1.compareToIgnoreCase(s2);
             }
+            else {
+                if(o2 instanceof OWLObjectProperty) {
+                    return 1;
+                }
+                else if(o2 instanceof OWLDataProperty) {
+                    return 1;
+                }
+            }
+            String s1 = getOWLModelManager().getRendering(o1);
+            String s2 = getOWLModelManager().getRendering(o2);
+            return s1.compareToIgnoreCase(s2);
         });
     }
 

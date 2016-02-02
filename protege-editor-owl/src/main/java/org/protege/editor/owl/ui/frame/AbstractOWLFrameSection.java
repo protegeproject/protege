@@ -49,11 +49,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private boolean cacheEditor = true;
 
-    private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-        	processOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener listener = changes -> processOntologyChanges(changes);
 
 
     protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, String rowLabel, OWLFrame<? extends R> frame) {

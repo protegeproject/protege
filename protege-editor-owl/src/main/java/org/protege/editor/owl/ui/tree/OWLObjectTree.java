@@ -142,10 +142,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             }
         });
 
-        getSelectionModel().addTreeSelectionListener(new TreeSelectionListener(){
-            public void valueChanged(TreeSelectionEvent event) {
-                scrollPathToVisible(event.getNewLeadSelectionPath());
-            }
+        getSelectionModel().addTreeSelectionListener(event -> {
+            scrollPathToVisible(event.getNewLeadSelectionPath());
         });
     }
 
@@ -433,10 +431,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
                 // without this the selection never quite makes it onto the screen
                 // probably because the component has not been sized yet
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
-                        scrollPathToVisible(paths.get(0));
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    scrollPathToVisible(paths.get(0));
                 });
             }
         }
@@ -589,16 +585,14 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return false;
         }
         else{
-            SwingUtilities.invokeLater(new Runnable(){
-                public void run() {
-                    Set<N> nodes = new HashSet<N>();
-                    for (N droppedObject : droppedObjects){
-                        if (getNodes(droppedObject) != null){ // if this node exists in the tree
-                            nodes.add(droppedObject);
-                        }
+            SwingUtilities.invokeLater(() -> {
+                Set<N> nodes = new HashSet<N>();
+                for (N droppedObject : droppedObjects){
+                    if (getNodes(droppedObject) != null){ // if this node exists in the tree
+                        nodes.add(droppedObject);
                     }
-                    setSelectedOWLObjects(nodes);
                 }
+                setSelectedOWLObjects(nodes);
             });
         }
 

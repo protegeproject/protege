@@ -25,12 +25,7 @@ public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
     private OWLFrameList<OWLEntity> list;
 
-    private OWLSelectionModelListener listener = new OWLSelectionModelListener() {
-
-        public void selectionChanged() throws Exception {
-            updateFrame();
-        }
-    };
+    private OWLSelectionModelListener listener = () -> updateFrame();
 
 
     protected void initialiseOWLView() throws Exception {

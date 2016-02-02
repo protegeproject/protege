@@ -59,11 +59,7 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	}
 
 	private Comparator<OWLAnnotationProperty> getComparator() {
-		return new Comparator<OWLAnnotationProperty>() {
-			public int compare(OWLAnnotationProperty p1, OWLAnnotationProperty p2) {
-				return getOWLModelManager().getRendering(p1).compareTo(getOWLModelManager().getRendering(p2));
-			}		
-		};
+		return (p1, p2) -> getOWLModelManager().getRendering(p1).compareTo(getOWLModelManager().getRendering(p2));
 	}	
 
 	public void setMenu(JMenu menu) {
@@ -78,14 +74,11 @@ public class RenderByProperty extends ProtegeDynamicAction {
 	
 
 	public void initialise() throws Exception {
-		listener = new OWLModelManagerListener() {
-			
-			public void handleChange(OWLModelManagerChangeEvent event) {
-				if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-					updateCheckedStatus();
-				}
-			}
-		};
+		listener = event -> {
+            if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                updateCheckedStatus();
+            }
+        };
 		getOWLModelManager().addListener(listener);		
 	}
 	
@@ -161,11 +154,9 @@ public class RenderByProperty extends ProtegeDynamicAction {
 			super(getOWLModelManager().getRendering(prop));
 			property = prop;
 			setToolTipText(property.getIRI().toString());			
-			addActionListener(new ActionListener() {				
-				public void actionPerformed(ActionEvent arg0) {
-					onStateChanged();
-				}
-			});
+			addActionListener(arg0 -> {
+                onStateChanged();
+            });
 			setSelected(isRenderingProperty());
 		}
 		

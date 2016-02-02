@@ -55,15 +55,13 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
         add(list, BorderLayout.CENTER);
 
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                for (ChangeListener l : new ArrayList<ChangeListener>(listeners)) {
-                    l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
-                }
-                Object item = list.getSelectedValue();
-                if (item != null) {
-                    getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem) item).getOWLClass());
-                }
+        list.addListSelectionListener(event -> {
+            for (ChangeListener l : new ArrayList<ChangeListener>(listeners)) {
+                l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
+            }
+            Object item = list.getSelectedValue();
+            if (item != null) {
+                getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem) item).getOWLClass());
             }
         });
     }

@@ -179,11 +179,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
     private ListSelectionListener wrapListener(final ChangeListener listener) {
         ListSelectionListener l = selListenerWrappers.get(listener);
         if (l == null){
-            l = new ListSelectionListener(){
-                public void valueChanged(ListSelectionEvent event) {
-                    listener.stateChanged(new ChangeEvent(list));
-                }
-            };
+            l = event -> listener.stateChanged(new ChangeEvent(list));
             selListenerWrappers.put(listener, l);
         }
         return l;

@@ -35,19 +35,13 @@ public class SelectedObjectViewComponent extends AbstractOWLViewComponent {
         entityFrame = new OWLEntityFrame(getOWLEditorKit());
         frameList = new OWLFrameList(getOWLEditorKit(), entityFrame);
         add(new JScrollPane(frameList));
-        getOWLWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
-
-            public void selectionChanged() throws Exception {
-                frameList.setRootObject(getOWLWorkspace().getOWLSelectionModel().getSelectedObject());
-            }
+        getOWLWorkspace().getOWLSelectionModel().addListener(() -> {
+            frameList.setRootObject(getOWLWorkspace().getOWLSelectionModel().getSelectedObject());
         });
         frameList.setRootObject(null);
-        getOWLModelManager().addListener(new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    frameList.setRootObject(getOWLModelManager().getActiveOntology());
-                }
+        getOWLModelManager().addListener(event -> {
+            if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                frameList.setRootObject(getOWLModelManager().getActiveOntology());
             }
         });
     }

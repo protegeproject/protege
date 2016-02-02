@@ -44,11 +44,7 @@ public class OWLSelectionHistoryManagerImpl implements OWLSelectionHistoryManage
         prevSelections = new Stack<OWLEntity>();
         forwardSelections = new Stack<OWLEntity>();
 
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                handleSelection();
-            }
-        };
+        listener = () -> handleSelection();
         selectionModel.addListener(listener);
     }
 

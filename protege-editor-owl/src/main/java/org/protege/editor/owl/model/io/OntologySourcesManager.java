@@ -45,11 +45,7 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
     private List<OntologySourcesListener> listeners = new ArrayList<OntologySourcesListener>();
 
-    private ActionListener timerAction = new ActionListener(){
-        public void actionPerformed(ActionEvent event) {
-            checkSources();
-        }
-    };
+    private ActionListener timerAction = event -> checkSources();
 
 
     public OntologySourcesManager(OWLModelManager mngr) {

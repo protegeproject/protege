@@ -57,10 +57,8 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         cardPanel.setLayout(cardLayout);
         cardPanel.add(new JPanel(), BLANK_PANEL);
         createViewPanes(false);
-        getOWLWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                processSelection();
-            }
+        getOWLWorkspace().getOWLSelectionModel().addListener(() -> {
+            processSelection();
         });
         getView().setShowViewBar(false);
         processSelection();

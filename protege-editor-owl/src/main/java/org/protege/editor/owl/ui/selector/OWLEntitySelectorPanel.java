@@ -125,12 +125,9 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
             entityList = new RemovableObjectList<OWLEntity>();
             entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
-            entityList.addListSelectionListener(new ListSelectionListener() {
-
-                public void valueChanged(ListSelectionEvent e) {
-                    if(!e.getValueIsAdjusting()) {
-                        transmitSelectionFromList();
-                    }
+            entityList.addListSelectionListener(e -> {
+                if(!e.getValueIsAdjusting()) {
+                    transmitSelectionFromList();
                 }
             });
 

@@ -80,21 +80,14 @@ public class OWLIndividualListComponent extends JPanel {
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
 
-        listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(java.util.List<? extends OWLOntologyChange> changes) {
-                processChanges(changes);
-            }
-        };
+        listener = changes -> processChanges(changes);
         getOWLModelManager().addOntologyChangeListener(listener);
         changeListenerMediator = new ChangeListenerMediator();
         individualsInList = new TreeSet<OWLIndividual>(getOWLModelManager().getOWLObjectComparator());
 
-        modelManagerListener = new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    refill();
-                }
+        modelManagerListener = event -> {
+            if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                refill();
             }
         };
         getOWLModelManager().addListener(modelManagerListener);

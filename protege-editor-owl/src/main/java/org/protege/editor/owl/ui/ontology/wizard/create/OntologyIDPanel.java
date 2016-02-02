@@ -132,11 +132,9 @@ public class OntologyIDPanel extends AbstractWizardPanel {
         });
 
         JButton but = new JButton("Default base...");
-        but.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OntologyPreferencesPanel.showDialog(OntologyIDPanel.this);
-                ontologyIRIField.setText(OntologyPreferences.getInstance().generateURI().toString());
-            }
+        but.addActionListener(e -> {
+            OntologyPreferencesPanel.showDialog(OntologyIDPanel.this);
+            ontologyIRIField.setText(OntologyPreferences.getInstance().generateURI().toString());
         });
 
         JPanel buttonPanel = new JPanel(new BorderLayout());

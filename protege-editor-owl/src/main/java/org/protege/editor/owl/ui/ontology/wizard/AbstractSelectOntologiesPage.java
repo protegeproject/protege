@@ -43,10 +43,8 @@ public class AbstractSelectOntologiesPage extends AbstractOWLWizardPanel {
         parent.add(new JScrollPane(list), BorderLayout.NORTH);
         updateSelectionMode();
 
-        list.addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                handleSelectionChanged();
-            }
+        list.addListSelectionListener(event -> {
+            handleSelectionChanged();
         });
     }
 

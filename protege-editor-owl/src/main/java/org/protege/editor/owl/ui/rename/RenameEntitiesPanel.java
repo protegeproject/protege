@@ -64,28 +64,20 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private Map<OWLEntity, String> errorMap = new HashMap<OWLEntity, String>();
 
 
-    private ItemListener findListener = new ItemListener(){
-        public void itemStateChanged(ItemEvent event) {
-            if (event.getStateChange() == ItemEvent.SELECTED){
-                reloadEntityListThreaded();
-            }
+    private ItemListener findListener = event -> {
+        if (event.getStateChange() == ItemEvent.SELECTED){
+            reloadEntityListThreaded();
         }
     };
 
-    private ItemListener replaceListener = new ItemListener(){
-        public void itemStateChanged(ItemEvent event) {
-            if (event.getStateChange() == ItemEvent.SELECTED){
-                updateEntityMap();
-                handleStateChanged();
-            }
-        }
-    };
-
-    private ListSelectionListener listSelListener = new ListSelectionListener(){
-        public void valueChanged(ListSelectionEvent event) {
+    private ItemListener replaceListener = event -> {
+        if (event.getStateChange() == ItemEvent.SELECTED){
+            updateEntityMap();
             handleStateChanged();
         }
     };
+
+    private ListSelectionListener listSelListener = event -> handleStateChanged();
 
 
     public RenameEntitiesPanel(OWLEditorKit eKit) {
@@ -122,11 +114,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
         final JTextComponent editor = (JTextComponent) combo.getEditor().getEditorComponent();
 
-        final ActionListener actionListener = new ActionListener(){
-            public void actionPerformed(ActionEvent actionEvent) {
-                combo.setSelectedItem(editor.getText());
-            }
-        };
+        final ActionListener actionListener = actionEvent -> combo.setSelectedItem(editor.getText());
 
         final Timer timer = new Timer(SEARCH_PAUSE_MILLIS, actionListener);
 

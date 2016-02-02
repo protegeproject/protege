@@ -39,12 +39,10 @@ public class OWLEntityFinderViewComponent extends AbstractOWLViewComponent {
         final JList list = new JList(entities.toArray());
         list.setCellRenderer(getOWLEditorKit().getWorkspace().createOWLCellRenderer());
         add(ComponentFactory.createScrollPane(list));
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    OWLEntity selEntity = (OWLEntity) list.getSelectedValue();
-                    getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
-                }
+        list.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                OWLEntity selEntity = (OWLEntity) list.getSelectedValue();
+                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(selEntity);
             }
         });
     }

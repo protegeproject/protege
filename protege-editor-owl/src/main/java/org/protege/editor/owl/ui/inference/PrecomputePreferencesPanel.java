@@ -87,12 +87,10 @@ public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
         table.getColumnModel().getColumn(Column.INFERENCE_TYPE.ordinal()).setPreferredWidth((int) preferredWidth);
         table.getColumnModel().getColumn(Column.REQUIRED.ordinal()).setPreferredWidth((int) new JLabel(Column.REQUIRED.getColumnName()).getPreferredSize().getWidth());
         table.getColumnModel().getColumn(Column.DISALLOWED.ordinal()).setPreferredWidth((int) new JLabel(Column.DISALLOWED.getColumnName()).getPreferredSize().getWidth());
-        reset.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		disallowed.clear();
-        		required.clear();
-        		tableModel.fireTableDataChanged();
-        	}
+        reset.addActionListener(e -> {
+            disallowed.clear();
+            required.clear();
+            tableModel.fireTableDataChanged();
         });
         
         center.add(tableContainer);

@@ -94,11 +94,9 @@ public class LoadedOntologyPage extends OntologyImportPage {
         setInstructions("Please select an existing (pre-loaded) ontology that you want to import.");
         ontologyList = new OWLObjectList(getOWLEditorKit());
         ontologyList.setCellRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
-        ontologyList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateState();
-                }
+        ontologyList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateState();
             }
         });
         parent.setLayout(new BorderLayout());

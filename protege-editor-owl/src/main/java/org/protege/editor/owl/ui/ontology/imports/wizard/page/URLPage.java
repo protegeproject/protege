@@ -69,11 +69,9 @@ public class URLPage extends OntologyImportPage {
         urlPanel.requestFocus();
         getWizard().setNextFinishButtonEnabled(urlPanel.isValid());
         if (!displayed){
-        	urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
-        		public void verifiedStatusChanged(boolean newState) {
-        			getWizard().setNextFinishButtonEnabled(newState);
-        		}
-        	});
+        	urlPanel.addStatusChangedListener(newState -> {
+                getWizard().setNextFinishButtonEnabled(newState);
+            });
         }
         displayed = true;
     }

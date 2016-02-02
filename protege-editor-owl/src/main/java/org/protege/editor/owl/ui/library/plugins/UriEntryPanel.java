@@ -52,13 +52,11 @@ public class UriEntryPanel extends NewEntryPanel {
         physicalLocationField.setPreferredSize(new JTextField("/home/tredmond/Shared/ontologies/simple/pizza-good.owl").getPreferredSize());
         physicalLocationPanel.add(physicalLocationField);
         JButton browse = new JButton("Browse");
-        browse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                File f = UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File", UIHelper.OWL_EXTENSIONS);
-                if (f != null) {
-                    physicalLocationField.setText(f.getPath());
-                    regenerateImportSuggestions();
-                }
+        browse.addActionListener(e -> {
+            File f = UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File", UIHelper.OWL_EXTENSIONS);
+            if (f != null) {
+                physicalLocationField.setText(f.getPath());
+                regenerateImportSuggestions();
             }
         });
         physicalLocationPanel.add(browse);

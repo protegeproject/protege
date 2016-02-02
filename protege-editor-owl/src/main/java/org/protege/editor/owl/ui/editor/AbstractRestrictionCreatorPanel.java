@@ -50,11 +50,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
 
-    private ChangeListener selListener = new ChangeListener(){
-        public void stateChanged(ChangeEvent event) {
-            checkStatus();
-        }
-    };
+    private ChangeListener selListener = event -> checkStatus();
 
 
     public void initialise() throws Exception {
@@ -90,10 +86,8 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         typePanel.setBorder(ComponentFactory.createTitledBorder("Restriction type"));
         panel.add(typePanel, BorderLayout.SOUTH);
         typePanel.add(typeCombo);
-        typeCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
-            }
+        typeCombo.addActionListener(e -> {
+            cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
         });
         JPanel spinnerHolder = new JPanel(new BorderLayout(4, 4));
         spinnerHolder.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));

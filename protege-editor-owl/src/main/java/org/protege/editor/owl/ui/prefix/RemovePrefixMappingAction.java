@@ -25,12 +25,7 @@ public class RemovePrefixMappingAction extends AbstractAction {
 	
 	private PrefixMapperTables tables;
 	private PrefixMapperTable table;
-	private ListSelectionListener tableSelectionListener = new ListSelectionListener() {
-		
-		public void valueChanged(ListSelectionEvent e) {
-			updateEnabled();
-		}
-	};
+	private ListSelectionListener tableSelectionListener = e -> updateEnabled();
 	
 	private SelectedOntologyListener ontologySelectionListener = new SelectedOntologyListener() {
 		

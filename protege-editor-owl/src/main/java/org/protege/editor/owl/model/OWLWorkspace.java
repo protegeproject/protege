@@ -189,14 +189,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         final OWLModelManager mngr = getOWLModelManager();
 
-        owlModelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                try {
-                    handleModelManagerEvent(event.getType());
-                }
-                catch (Exception t) {
-                    logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
-                }
+        owlModelManagerListener = event -> {
+            try {
+                handleModelManagerEvent(event.getType());
+            }
+            catch (Exception t) {
+                logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
             }
         };
         mngr.addListener(owlModelManagerListener);
@@ -218,12 +216,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reasonerManagerStarted = true;
         updateReasonerStatus(false);
         displayReasonerResults.setSelected(mngr.getOWLReasonerManager().getReasonerPreferences().isShowInferences());
-        displayReasonerResults.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
-                prefs.setShowInferences(displayReasonerResults.isSelected());
-            }
+        displayReasonerResults.addActionListener(e -> {
+            ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
+            prefs.setShowInferences(displayReasonerResults.isSelected());
         });
 
         new OntologySourcesChangedHandlerUI(this);
@@ -570,10 +565,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
             reasonerMenu.add(item);
             bg.add(item);
-            item.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
-                }
+            item.addActionListener(e -> {
+                mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
             });
         }
     }
@@ -669,12 +662,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 0, 0
         ));
 
-        ontologiesList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
-                if (ont != null) {
-                    mngr.setActiveOntology(ont);
-                }
+        ontologiesList.addActionListener(e -> {
+            OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
+            if (ont != null) {
+                mngr.setActiveOntology(ont);
             }
         });
 

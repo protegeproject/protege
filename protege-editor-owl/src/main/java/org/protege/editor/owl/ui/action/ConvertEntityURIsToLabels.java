@@ -57,19 +57,11 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
 
                 if (askButton.isSelected()){
                     ask = true;
-                    resolver = new OntologyTargetResolver(){
-                        public Set<OWLOntology> resolve(OWLEntity entity, Set<OWLOntology> ontologies) {
-                            return handleResolveTarget(entity, ontologies);
-                        }
-                    };
+                    resolver = (entity, ontologies) -> handleResolveTarget(entity, ontologies);
                 }
                 else{
                     ask = false;
-                    resolver = new OntologyTargetResolver(){
-                        public Set<OWLOntology> resolve(OWLEntity entity, Set<OWLOntology> ontologies) {
-                            return ontologies;
-                        }
-                    };
+                    resolver = (entity, ontologies) -> ontologies;
                 }
 
                 performConversion(resolver);
@@ -93,11 +85,9 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
     private JComponent createConfirmPanel(boolean showOption) {
         JComponent selPanel = new JPanel(new BorderLayout(8, 12));
 
-        JEditorPane label = ComponentFactory.createHTMLPane(new HyperlinkListener(){
-            public void hyperlinkUpdate(HyperlinkEvent event) {
-                if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
-                    showNewEntitiesPrefs();
-                }
+        JEditorPane label = ComponentFactory.createHTMLPane(event -> {
+            if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
+                showNewEntitiesPrefs();
             }
         });
 

@@ -70,10 +70,8 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
             }
         };
         getOWLModelManager().addOntologyChangeListener(listener);
-        checkBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateOntology();
-            }
+        checkBox.addActionListener(e -> {
+            updateOntology();
         });
     }
 

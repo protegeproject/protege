@@ -28,17 +28,7 @@ public abstract class AbstractOWLOntologyObjectHierarchyProvider<N extends OWLOb
     protected AbstractOWLOntologyObjectHierarchyProvider(OWLOntologyManager manager) {
         super(manager);
         ontologies = new HashSet<OWLOntology>();
-        listener = new OWLOntologyChangeListener() {
-            /**
-             * Called when some changes have been applied to various ontologies.  These
-             * may be an axiom added or an axiom removed changes.
-             * @param changes A list of changes that have occurred.  Each change may be examined
-             *                to determine which ontology it was applied to.
-             */
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                handleOntologyChanges(changes);
-            }
-        };
+        listener = changes -> handleOntologyChanges(changes);
         attachListeners();
     }
 

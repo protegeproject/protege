@@ -28,11 +28,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 	private boolean inferredOwlClassNeedsRecalculation = true;
 	private List<OWLSelectionModelListener> listeners = new ArrayList<OWLSelectionModelListener>();
 	
-	private OWLSelectionModelListener mainSelectionListener = new OWLSelectionModelListener() {
-		public void selectionChanged() throws Exception {
-			mainSelectionChanged();
-		}
-	};
+	private OWLSelectionModelListener mainSelectionListener = () -> mainSelectionChanged();
 	
 	public static OWLClassAssertionSelectionModel get(OWLEditorKit editorKit) {
 		OWLClassAssertionSelectionModel selectionModel = (OWLClassAssertionSelectionModel) editorKit.get(OWLClassAssertionSelectionModel.class);

@@ -24,8 +24,6 @@ import java.util.Map;
  */
 public class TransferableOWLObject implements Transferable {
 
-    private OWLModelManager owlModelManager;
-
     private List<OWLObject> owlObjects;
 
     private Map<DataFlavor, TransferHandler> dataFlavorMap;
@@ -34,24 +32,17 @@ public class TransferableOWLObject implements Transferable {
 
 
     public TransferableOWLObject(final OWLModelManager owlModelManager, List<? extends OWLObject> objects) {
-        this.owlModelManager = owlModelManager;
         owlObjects = new ArrayList<OWLObject>(objects);
         dataFlavorMap = new HashMap<DataFlavor, TransferHandler>();
-        dataFlavorMap.put(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR, new TransferHandler() {
-            public Object getTransferData() {
-                return new ArrayList<OWLObject>(owlObjects);
-            }
-        });
+        dataFlavorMap.put(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR, () -> new ArrayList<OWLObject>(owlObjects));
 
-        stringTransferHandler = new TransferHandler() {
-            public Object getTransferData() {
-                StringBuilder builder = new StringBuilder();
-                for (OWLObject obj : owlObjects) {
-                    builder.append(owlModelManager.getRendering(obj));
-                    builder.append("\n");
-                }
-                return builder.toString();
+        stringTransferHandler = () -> {
+            StringBuilder builder = new StringBuilder();
+            for (OWLObject obj : owlObjects) {
+                builder.append(owlModelManager.getRendering(obj));
+                builder.append("\n");
             }
+            return builder.toString();
         };
         dataFlavorMap.put(DataFlavor.stringFlavor, stringTransferHandler);
     }

@@ -65,12 +65,9 @@ public class ImportLocationOptionsPanel extends JPanel {
     	    uriField = new JTextField();
     	    uriField.setAlignmentX(LEFT_ALIGNMENT);
     	    uriField.setEnabled(false);
-    	    userInputButton.addActionListener(new ActionListener() {
-    	       
-    	        public void actionPerformed(ActionEvent e) {
-    	            uriField.setEnabled(userInputButton.isSelected());
-    	        }
-    	    });
+    	    userInputButton.addActionListener(e -> {
+                uriField.setEnabled(userInputButton.isSelected());
+            });
     	    add(uriField);
     	    optionsCount++;
     	}

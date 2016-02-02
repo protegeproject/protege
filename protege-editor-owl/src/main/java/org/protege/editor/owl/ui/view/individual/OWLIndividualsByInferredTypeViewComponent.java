@@ -74,11 +74,7 @@ public class OWLIndividualsByInferredTypeViewComponent extends AbstractOWLIndivi
         add(new JScrollPane(tree));
 
         provider.setReasoner(getOWLModelManager().getReasoner());
-        listener = new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                transmitSelection();
-            }
-        };
+        listener = e -> transmitSelection();
         tree.addTreeSelectionListener(listener);
     }
 

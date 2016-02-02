@@ -59,17 +59,13 @@ public class RenameEntityPanel extends JPanel {
         textField = new JTextField(50);
 
         renamePunsCheckBox = new JCheckBox("Change all entities with this URI", renamePuns);
-        renamePunsCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                renamePuns = renamePunsCheckBox.isSelected();
-            }
+        renamePunsCheckBox.addActionListener(e -> {
+            renamePuns = renamePunsCheckBox.isSelected();
         });
 
         showFullURICheckBox = new JCheckBox("Show full IRI", showFullURI);
-        showFullURICheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateTextField();
-            }
+        showFullURICheckBox.addActionListener(e -> {
+            updateTextField();
         });
 
         JPanel checkBoxHolderPanel = new JPanel(new BorderLayout());

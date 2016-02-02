@@ -62,14 +62,12 @@ public class OWLObjectPropertyDomainFrameSection extends AbstractPropertyDomainF
     @Override
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_DOMAINS,
-                                                                  new Runnable() {
-            public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
-            		return;
-            	}
-                OWLObjectPropertyDomainFrameSection.super.refillInferred();
-            }
-        });
+                () -> {
+                    if (!getOWLModelManager().getReasoner().isConsistent()) {
+                        return;
+                    }
+                    OWLObjectPropertyDomainFrameSection.super.refillInferred();
+                });
     }
     
     @Override

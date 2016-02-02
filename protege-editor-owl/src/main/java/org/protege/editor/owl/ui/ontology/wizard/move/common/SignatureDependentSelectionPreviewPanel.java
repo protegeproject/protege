@@ -100,11 +100,8 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
             }
         });
 
-        previewTimer = new Timer(500, new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                doPreviewUpdate();
-            }
+        previewTimer = new Timer(500, e -> {
+            doPreviewUpdate();
         });
         previewTimer.setRepeats(false);
     }
@@ -139,28 +136,15 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
         final Set<OWLOntology> sourceOntologies = getModel().getSourceOntologies();
 
-        Runnable runnable = new Runnable() {
-            public void run() {
-                final Set<OWLAxiom> axioms = signatureSelection.getAxioms(sourceOntologies, entities);
-                final java.util.List<OWLAxiom> axs = new ArrayList<OWLAxiom>(new TreeSet<OWLAxiom>(axioms));
-                final int upperBound = 500 > axs.size() ? axs.size() : 500;
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " axioms)");
-                    }
-                };
+        Runnable runnable = () -> {
+            final Set<OWLAxiom> axioms = signatureSelection.getAxioms(sourceOntologies, entities);
+            final java.util.List<OWLAxiom> axs = new ArrayList<OWLAxiom>(new TreeSet<OWLAxiom>(axioms));
+            final int upperBound = 500 > axs.size() ? axs.size() : 500;
 
 
-                SwingUtilities.invokeLater(runnable);
+            SwingUtilities.invokeLater(() -> previewLabel.setText("Axioms (showing " + upperBound + " out of " + axioms.size() + " axioms)"));
 
-                Runnable runnable2 = new Runnable() {
-                    public void run() {
-
-                        previewList.setListData(axs.subList(0, upperBound).toArray());
-                    }
-                };
-                SwingUtilities.invokeLater(runnable2);
-            }
+            SwingUtilities.invokeLater(() -> previewList.setListData(axs.subList(0, upperBound).toArray()));
         };
         Thread t = new Thread(runnable);
         t.start();

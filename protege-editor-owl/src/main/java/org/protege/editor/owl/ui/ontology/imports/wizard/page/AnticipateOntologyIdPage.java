@@ -41,11 +41,7 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
 
     public AnticipateOntologyIdPage(OWLEditorKit owlEditorKit) {
         super(ID, "Import verification", owlEditorKit);
-        checker = new Runnable() {
-            public void run() {
-                checkImport();
-            }
-        };
+        checker = () -> checkImport();
     }
 
 
@@ -122,10 +118,8 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
                         .error("An error occurred whilst extracting the Ontology Id from the imported ontology: {}", t);
             }
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                getWizard().setCurrentPanel(getNextPanelDescriptor());
-            }
+        SwingUtilities.invokeLater(() -> {
+            getWizard().setCurrentPanel(getNextPanelDescriptor());
         });
     }
 

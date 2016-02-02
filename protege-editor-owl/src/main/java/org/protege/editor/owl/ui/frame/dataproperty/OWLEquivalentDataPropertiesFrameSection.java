@@ -78,25 +78,23 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
-                    equivs.remove(getRootObject());
-                    if (!equivs.isEmpty()){
-                        OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
-                        if (!added.contains(ax)) {
-                            addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
-                                                                                  OWLEquivalentDataPropertiesFrameSection.this,
-                                                                                  null,
-                                                                                  getRootObject(),
-                                                                                  ax));
-                        }
-                    }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
+            equivs.remove(getRootObject());
+            if (!equivs.isEmpty()){
+                OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
+                if (!added.contains(ax)) {
+                    addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
+                                                                          OWLEquivalentDataPropertiesFrameSection.this,
+                                                                          null,
+                                                                          getRootObject(),
+                                                                          ax));
                 }
-            });
+            }
+        });
     }
 
     @Override

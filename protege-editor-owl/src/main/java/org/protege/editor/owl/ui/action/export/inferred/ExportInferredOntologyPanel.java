@@ -80,12 +80,9 @@ public class ExportInferredOntologyPanel extends JPanel {
         String label = gen.getLabel();
         final JCheckBox box = new JCheckBox(label, selected);
         if(expensive) {
-            box.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(box.isSelected()) {
-                        JOptionPane.showMessageDialog(ExportInferredOntologyPanel.this, "<html><body>Warning: Exporting <b>" + gen.getLabel() + "</b> may take a long time.</body></html>",  "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
+            box.addActionListener(e -> {
+                if(box.isSelected()) {
+                    JOptionPane.showMessageDialog(ExportInferredOntologyPanel.this, "<html><body>Warning: Exporting <b>" + gen.getLabel() + "</b> may take a long time.</body></html>",  "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             });
         }

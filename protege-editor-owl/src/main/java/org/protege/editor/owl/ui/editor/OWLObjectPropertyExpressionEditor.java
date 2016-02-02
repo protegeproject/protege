@@ -29,11 +29,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
 
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 
     public OWLObjectPropertyExpressionEditor(OWLEditorKit owlEditorKit) {
     	editor = new JPanel();
@@ -42,12 +38,9 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
         namedObjectPropertySelector.addStatusChangedListener(inputListener);
         editor.add(namedObjectPropertySelector, BorderLayout.CENTER);
         inverseCheckBox = new JCheckBox("Inverse Property");
-        inverseCheckBox.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				handleVerifyEditorContents();
-			}
-		});
+        inverseCheckBox.addActionListener(e -> {
+            handleVerifyEditorContents();
+        });
         editor.add(inverseCheckBox, BorderLayout.SOUTH);
     }
 

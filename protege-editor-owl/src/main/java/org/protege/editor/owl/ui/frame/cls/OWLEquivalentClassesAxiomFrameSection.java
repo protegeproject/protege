@@ -70,39 +70,36 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
         if (!inferredEquivalentClasses) {
             return;
         }
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES, 
-                                                                  new Runnable() {
-
-            public void run() {
-                final OWLReasoner reasoner = getOWLModelManager().getReasoner();
-                if (!reasoner.isConsistent()) {
-            		return;
-            	}
-                if (!reasoner.isSatisfiable(getRootObject())) {
-                    if (!getRootObject().isOWLNothing()) {
-                        OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
-                        addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                            OWLEquivalentClassesAxiomFrameSection.this,
-                                                                            null,
-                                                                            getRootObject(),
-                                                                            getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                                                                         nothing))));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES,
+                () -> {
+                    final OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                    if (!reasoner.isConsistent()) {
+                        return;
                     }
-                }
-                else{
-                    for (OWLClassExpression cls : reasoner.getEquivalentClasses(getRootObject())) {
-                        if (!added.contains(cls) && !cls.equals(getRootObject())) {
+                    if (!reasoner.isSatisfiable(getRootObject())) {
+                        if (!getRootObject().isOWLNothing()) {
+                            OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
                             addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                 OWLEquivalentClassesAxiomFrameSection.this,
                                                                                 null,
                                                                                 getRootObject(),
                                                                                 getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                                                                             cls))));
+                                                                                                                                                             nothing))));
                         }
                     }
-                }
-            }
-        });
+                    else{
+                        for (OWLClassExpression cls : reasoner.getEquivalentClasses(getRootObject())) {
+                            if (!added.contains(cls) && !cls.equals(getRootObject())) {
+                                addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                    OWLEquivalentClassesAxiomFrameSection.this,
+                                                                                    null,
+                                                                                    getRootObject(),
+                                                                                    getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
+                                                                                                                                                                 cls))));
+                            }
+                        }
+                    }
+                });
 
     }
 

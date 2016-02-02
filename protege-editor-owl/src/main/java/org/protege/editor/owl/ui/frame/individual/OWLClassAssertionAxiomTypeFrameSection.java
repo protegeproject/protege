@@ -51,26 +51,24 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_TYPES, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    if (!getRootObject().isAnonymous()){
-                        for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
-                            if (!added.contains(inferredType)) {
-                                OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
-                                addInferredRowIfNontrivial(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
-                                                                                     OWLClassAssertionAxiomTypeFrameSection.this,
-                                                                                     null,
-                                                                                     getRootObject(),
-                                                                                     ax));
-                                added.add(inferredType);
-                            }
-                        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_TYPES, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            if (!getRootObject().isAnonymous()){
+                for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
+                    if (!added.contains(inferredType)) {
+                        OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
+                        addInferredRowIfNontrivial(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
+                                                                             OWLClassAssertionAxiomTypeFrameSection.this,
+                                                                             null,
+                                                                             getRootObject(),
+                                                                             ax));
+                        added.add(inferredType);
                     }
                 }
-            });
+            }
+        });
     }
 
 

@@ -46,29 +46,27 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
     
     @Override
     protected void refillInferred() {
-    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, new Runnable() {
-    		public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
-            		return;
-            	}
-    			Set<OWLIndividual> existingSameIndividuals = getCurrentlyDisplayedSameIndividuals();
-    			Set<OWLNamedIndividual> newSameIndividuals = new HashSet<OWLNamedIndividual>();
-    			for (OWLNamedIndividual i : getCurrentReasoner().getSameIndividuals(getRootObject()).getEntities()) {
-    				if (!i.equals(getRootObject()) && !existingSameIndividuals.contains(i)) {
-    					newSameIndividuals.add(i);    					
-    				}
-    			}
-    			if (!newSameIndividuals.isEmpty()) {
-    				newSameIndividuals.add(getRootObject());
-    				addRow(new OWLSameIndividualsAxiomFrameSectionRow(getOWLEditorKit(), 
-    						OWLSameIndividualsAxiomFrameSection.this, 
-    						null, 
-    						getRootObject(),
-    						getOWLDataFactory().getOWLSameIndividualAxiom(newSameIndividuals)
-    				));
-    			}
-    		}
-    	});
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            Set<OWLIndividual> existingSameIndividuals = getCurrentlyDisplayedSameIndividuals();
+            Set<OWLNamedIndividual> newSameIndividuals = new HashSet<OWLNamedIndividual>();
+            for (OWLNamedIndividual i : getCurrentReasoner().getSameIndividuals(getRootObject()).getEntities()) {
+                if (!i.equals(getRootObject()) && !existingSameIndividuals.contains(i)) {
+                    newSameIndividuals.add(i);
+                }
+            }
+            if (!newSameIndividuals.isEmpty()) {
+                newSameIndividuals.add(getRootObject());
+                addRow(new OWLSameIndividualsAxiomFrameSectionRow(getOWLEditorKit(),
+                        OWLSameIndividualsAxiomFrameSection.this,
+                        null,
+                        getRootObject(),
+                        getOWLDataFactory().getOWLSameIndividualAxiom(newSameIndividuals)
+                ));
+            }
+        });
     }
     
     public Set<OWLIndividual> getCurrentlyDisplayedSameIndividuals() {

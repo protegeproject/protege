@@ -77,23 +77,16 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                 setGlobalSelection(list.getSelectedValue());
             }
         });
-        listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(
-                    List<? extends OWLOntologyChange> changes) {
-                processChanges(changes);
-            }
-        };
+        listener = changes -> processChanges(changes);
         getOWLModelManager().addOntologyChangeListener(listener);
 
         setupActions();
         changeListenerMediator = new ChangeListenerMediator();
         individualsInList = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
         refill();
-        modelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    refill();
-                }
+        modelManagerListener = event -> {
+            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                refill();
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
@@ -103,11 +96,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     protected void setupActions() {
         addAction(new AddIndividualAction(), "A", "A");
         addAction(new DeleteIndividualAction(getOWLEditorKit(),
-                                             new OWLEntitySetProvider<OWLNamedIndividual>() {
-                                                 public Set<OWLNamedIndividual> getEntities() {
-                                                     return getSelectedIndividuals();
-                                                 }
-                                             }), "B", "A");
+                () -> getSelectedIndividuals()), "B", "A");
     }
 
 

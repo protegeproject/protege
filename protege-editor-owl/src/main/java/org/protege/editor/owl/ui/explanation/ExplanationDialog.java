@@ -52,19 +52,17 @@ public class ExplanationDialog extends JPanel {
 		}
 		selector.setSelectedItem(selected);
 		explanation = selected.explain(axiom);
-		selector.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ExplanationService t = (ExplanationService) selector.getSelectedItem();
-				setDefaultPluginId(t.getPluginId());
-				explanationContainer.removeAll();
-				if (explanation != null) {
-					explanation.dispose();
-				}
-				explanation = t.explain(axiom);
-				explanationContainer.add(explanation);
-                revalidate();
-			}
-		});
+		selector.addActionListener(e -> {
+            ExplanationService t = (ExplanationService) selector.getSelectedItem();
+            setDefaultPluginId(t.getPluginId());
+            explanationContainer.removeAll();
+            if (explanation != null) {
+                explanation.dispose();
+            }
+            explanation = t.explain(axiom);
+            explanationContainer.add(explanation);
+revalidate();
+        });
 		return selector;
 	}
 

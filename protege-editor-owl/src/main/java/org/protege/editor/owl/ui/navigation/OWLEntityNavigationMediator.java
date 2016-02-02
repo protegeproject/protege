@@ -32,11 +32,7 @@ public class OWLEntityNavigationMediator {
         this.owlEditorKit = owlEditorKit;
         this.backAction = backAction;
         this.forwardAction = forwardAction;
-        listener = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                updateActionState();
-            }
-        };
+        listener = e -> updateActionState();
         owlEditorKit.getWorkspace().getOWLSelectionHistoryManager().addChangeListener(listener);
         updateActionState();
     }

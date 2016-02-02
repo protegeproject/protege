@@ -31,34 +31,26 @@ public abstract class AbstractActiveOntologyViewComponent extends AbstractOWLVie
 
 
     final protected void initialiseOWLView() throws Exception {
-        owlModelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                    updateView = true;
-                    markForUpdate();
-                }
+        owlModelManagerListener = event -> {
+            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+                updateView = true;
+                markForUpdate();
             }
         };
         getOWLModelManager().addListener(owlModelManagerListener);
 
-        owlOntologyChangeListener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-                for (OWLOntologyChange chg : changes) {
-                    if (chg.getOntology().equals(getOWLModelManager().getActiveOntology())) {
-                        updateView = true;
-                        markForUpdate();
-                        break;
-                    }
+        owlOntologyChangeListener = changes -> {
+            for (OWLOntologyChange chg : changes) {
+                if (chg.getOntology().equals(getOWLModelManager().getActiveOntology())) {
+                    updateView = true;
+                    markForUpdate();
+                    break;
                 }
             }
         };
         getOWLModelManager().addOntologyChangeListener(owlOntologyChangeListener);
 
-        hierarchyListener = new HierarchyListener() {
-            public void hierarchyChanged(HierarchyEvent e) {
-                markForUpdate();
-            }
-        };
+        hierarchyListener = e -> markForUpdate();
 
         addHierarchyListener(hierarchyListener);
         initialiseOntologyView();

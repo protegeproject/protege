@@ -50,23 +50,18 @@ public class LibraryPage extends OntologyImportPage {
         importList = new JList(importListModel);
         importList.setCellRenderer(new Renderer());
         calculatePossibleImports();
-        importList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateNextButtonEnabled();
-                }
+        importList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateNextButtonEnabled();
             }
         });
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         JButton addRepository = new JButton("Edit Repositories");
-        addRepository.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				handleEditRepositories();
-			}
-		});
+        addRepository.addActionListener(arg0 -> {
+            handleEditRepositories();
+        });
         buttonPanel.add(addRepository);
         
 		parent.add(buttonPanel, BorderLayout.NORTH);
