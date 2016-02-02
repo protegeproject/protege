@@ -21,7 +21,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
     protected OWLDataFactory owlDataFactory;
 
     private Set<OWLOntology> onts;
-    
+
     private Set<OWLClass> visitedClasses = new TreeSet<OWLClass>();
 
 
@@ -32,7 +32,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
     }
 
 
-    public static OWLAxiom getClosureAxiom(OWLClass cls, OWLObjectProperty prop, OWLDataFactory df, Set<OWLOntology> onts){
+    public static OWLAxiom getClosureAxiom(OWLClass cls, OWLObjectProperty prop, OWLDataFactory df, Set<OWLOntology> onts) {
         ClosureAxiomFactory fac = new ClosureAxiomFactory(prop, df, onts);
         cls.accept(fac);
         final OWLObjectAllValuesFrom closure = fac.getClosureRestriction();
@@ -45,10 +45,11 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
      * closes off the existential restrictions that have been visited by this
      * visitor.  For example, if the visitor had visited p some A, p some B, then
      * the restriction p only (A or B) would be returned.
+     *
      * @return A universal restriction that represents a closure axiom for visited
-     *         restrictions, or <code>null</code> if no existential restrictions have been
-     *         visited by this visitor and a universal closure axiom therefore doesn't make
-     *         sense.
+     * restrictions, or <code>null</code> if no existential restrictions have been
+     * visited by this visitor and a universal closure axiom therefore doesn't make
+     * sense.
      */
     public OWLObjectAllValuesFrom getClosureRestriction() {
         Set<OWLClassExpression> descriptions = getFillers();
@@ -61,7 +62,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
             }
             else {
                 return owlDataFactory.getOWLObjectAllValuesFrom(getObjectProperty(),
-                                                                 owlDataFactory.getOWLObjectUnionOf(descriptions));
+                        owlDataFactory.getOWLObjectUnionOf(descriptions));
             }
         }
     }
@@ -69,23 +70,24 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
     /* Get the inherited restrictions also */
     public void visit(OWLClass cls) {
-    	if (visitedClasses.contains(cls)) {
-    		return;
-    	}
-    	else if (onts != null){
-    		visitedClasses.add(cls);
-            for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts)){
-                superCls.accept(this);
-            }
-            for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts)){
-                equiv.accept(this);
-            }
+        if (visitedClasses.contains(cls)) {
+            return;
+        }
+        if (onts == null) {
+            return;
+        }
+        visitedClasses.add(cls);
+        for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts)) {
+            superCls.accept(this);
+        }
+        for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts)) {
+            equiv.accept(this);
         }
     }
 
 
     public void visit(OWLObjectIntersectionOf owlObjectIntersectionOf) {
-        for (OWLClassExpression op : owlObjectIntersectionOf.getOperands()){
+        for (OWLClassExpression op : owlObjectIntersectionOf.getOperands()) {
             op.accept(this);
         }
     }
@@ -103,7 +105,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
 
 
     public void visit(OWLObjectSomeValuesFrom restr) {
-        if (restr.getProperty().equals(getObjectProperty())){
+        if (restr.getProperty().equals(getObjectProperty())) {
             OWLClassExpression filler = restr.getFiller();
             if (!filler.equals(owlDataFactory.getOWLThing())) {
                 fillers.add(filler);
@@ -112,8 +114,8 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
     }
 
 
-    private void handleCardinality(OWLObjectCardinalityRestriction restr){
-        if (restr.getProperty().equals(getObjectProperty()) && restr.getCardinality() > 0){
+    private void handleCardinality(OWLObjectCardinalityRestriction restr) {
+        if (restr.getProperty().equals(getObjectProperty()) && restr.getCardinality() > 0) {
             OWLClassExpression filler = restr.getFiller();
             if (!filler.equals(owlDataFactory.getOWLThing())) {
                 fillers.add(filler);

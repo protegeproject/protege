@@ -85,7 +85,7 @@ public class LocalFilePage extends OntologyImportPage {
     
     private void updateFinishEnabled() {
         File f = filePathPanel.getFile();
-        getWizard().setNextFinishButtonEnabled(f.exists() && f.isDirectory() == false);
+        getWizard().setNextFinishButtonEnabled(f.exists() && !f.isDirectory());
     }
 
     private JList createRecentList() {

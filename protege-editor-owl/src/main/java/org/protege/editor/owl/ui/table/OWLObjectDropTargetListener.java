@@ -73,7 +73,7 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
 
     public void drop(DropTargetDropEvent dtde) {
-        if (isDropAcceptable(dtde) == false) {
+        if (!isDropAcceptable(dtde)) {
             dtde.rejectDrop();
         }
         else {
@@ -103,7 +103,7 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
 
     protected List<OWLObject> getDropObjects(Transferable transferable) {
-        if (isAcceptableTransferable(transferable) == false) {
+        if (!isAcceptableTransferable(transferable)) {
             return null;
         }
         try {

@@ -35,7 +35,7 @@ public class OWLObjectTreeDropTargetListener extends OWLObjectDropTargetListener
             return false;
         }
         Rectangle r = tree.getRowBounds(row);
-        if (r.contains(event.getLocation()) == false) {
+        if (!r.contains(event.getLocation())) {
             tree.setDropRow(-1);
             return false;
         }
