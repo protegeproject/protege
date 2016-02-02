@@ -87,7 +87,7 @@ public class AbstractSelectOntologiesPage extends AbstractOWLWizardPanel {
         if (list.getSelectedValue() == null){
             Set<OWLOntology> defOnts = getDefaultOntologies();
             for (int i=0; i<list.getModel().getSize(); i++){
-                if (defOnts.contains((OWLOntology)list.getModel().getElementAt(i))){
+                if (defOnts.contains(list.getModel().getElementAt(i))){
                     list.addSelectionInterval(i, i);
                 }
             }

@@ -46,7 +46,6 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
     private OWLOntologySelectorPanel2 ontologiesPanel;
 
     private static  final Logger logger = LoggerFactory.getLogger(OntologySourcesChangedHandlerUI.class);
-    ;
 
 
     public OntologySourcesChangedHandlerUI(final OWLWorkspace workspace) {

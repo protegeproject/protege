@@ -9,7 +9,6 @@ import java.util.Set;
 public class OWLUtilities {
 
 	private OWLUtilities() {
-		;
 	}
 	
     public static boolean isDeprecated(OWLModelManager p4Manager, OWLObject o) {

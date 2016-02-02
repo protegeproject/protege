@@ -17,6 +17,5 @@ public class RenderByPrefixedName extends AbstractByRendererMenu {
 	
 	@Override
 	protected void configure(RendererPlugin plugin) {
-		;
 	}
 }

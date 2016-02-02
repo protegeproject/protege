@@ -66,7 +66,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private OWLModelManager modelManager;
 
-    private Set<URI> newPhysicalURIs;
+    private final Set<URI> newPhysicalURIs = new HashSet<>();
 
     private OntologyLoadErrorHandlerUI loadErrorHandler;
 
@@ -86,7 +86,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     protected void initialise() {
 
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
-        this.newPhysicalURIs = new HashSet<>();
         modelManager = new OWLModelManagerImpl();
 
         modelManager.setExplanationManager(new ExplanationManager(this));
@@ -128,7 +127,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ServiceReference sr = ProtegeOWL.getBundleContext().getServiceReference(PackageAdmin.class.getCanonicalName());
         PackageAdmin admin = (PackageAdmin) ProtegeOWL.getBundleContext().getService(sr);
         Bundle customizer = admin.getBundle(modelManager.getClass());
-        String name = (String) customizer.getHeaders().get(Constants.BUNDLE_NAME);
+        String name = customizer.getHeaders().get(Constants.BUNDLE_NAME);
         if (name == null) {
             name = customizer.getSymbolicName();
         }

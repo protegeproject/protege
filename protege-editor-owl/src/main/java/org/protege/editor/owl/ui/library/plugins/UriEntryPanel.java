@@ -148,7 +148,7 @@ public class UriEntryPanel extends NewEntryPanel {
             importDeclarationString = (String) importDeclarationObject;
         }
         else if (importDeclarationObject instanceof IRI) {
-            importDeclarationString = ((IRI) importDeclarationObject).toString();
+            importDeclarationString = importDeclarationObject.toString();
         }
         if (importDeclarationString == null) {
             return null;

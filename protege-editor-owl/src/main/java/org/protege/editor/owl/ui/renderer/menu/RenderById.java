@@ -17,6 +17,5 @@ public class RenderById extends AbstractByRendererMenu {
 	
 	@Override
 	protected void configure(RendererPlugin plugin) {
-		;
 	}
 }

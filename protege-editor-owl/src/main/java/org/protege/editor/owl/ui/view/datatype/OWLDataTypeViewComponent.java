@@ -49,7 +49,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null) {
-                    setGlobalSelection((OWLDatatype)list.getSelectedValue());
+                    setGlobalSelection(list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLDataTypeViewComponent.this);
             }

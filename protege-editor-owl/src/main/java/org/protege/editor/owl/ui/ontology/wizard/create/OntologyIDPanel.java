@@ -195,7 +195,7 @@ public class OntologyIDPanel extends AbstractWizardPanel {
             else {
                 URI versionURI = new URI(ontologyVersionIRIString);
                 IRI versionIRI = IRI.create(versionURI);
-                return new OWLOntologyID(Optional.<IRI>of(ontologyIRI), Optional.of(versionIRI));
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
             }
         } catch (URISyntaxException e) {
             return null;

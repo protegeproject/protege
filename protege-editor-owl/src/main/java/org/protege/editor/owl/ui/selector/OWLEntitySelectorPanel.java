@@ -152,7 +152,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public void transmitSelectionFromList() {
         if (isMultiSelect()){
-            OWLEntity ent = (OWLEntity) entityList.getSelectedObject();
+            OWLEntity ent = entityList.getSelectedObject();
             setTreeSelection(ent);
         }
     }
@@ -160,7 +160,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public OWLEntity getSelectedObject() {
         if (isMultiSelect()){
-            return (OWLEntity) entityList.getSelectedObject();
+            return entityList.getSelectedObject();
         }
         else{
             final Set<? extends OWLEntity> sel = getCurrentSelection();

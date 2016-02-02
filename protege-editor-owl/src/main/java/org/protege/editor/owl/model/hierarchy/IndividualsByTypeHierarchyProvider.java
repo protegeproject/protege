@@ -76,7 +76,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
 
     public Set<OWLObject> getUnfilteredChildren(OWLObject object) {
-        if (object instanceof OWLClass && classes.contains((OWLClass)object)) {
+        if (object instanceof OWLClass && classes.contains(object)) {
             OWLClass cls = (OWLClass) object;
             Set<OWLObject> individuals = new HashSet<OWLObject>();
             for (OWLOntology ont : ontologies) {
@@ -118,7 +118,7 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
 
     public boolean containsReference(OWLObject object) {
         return object instanceof OWLNamedIndividual ||
-               (object instanceof OWLClass && classes.contains((OWLClass)object));
+               (object instanceof OWLClass && classes.contains(object));
     }
 
 

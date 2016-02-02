@@ -35,7 +35,6 @@ public class ReasonerPreferences {
         SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS(true, InferenceType.OBJECT_PROPERTY_ASSERTIONS),
         SHOW_INFERRED_DATA_PROPERTY_ASSERTIONS(false, InferenceType.DATA_PROPERTY_ASSERTIONS),
         SHOW_INFERRED_SAMEAS_INDIVIDUAL_ASSERTIONS(true, InferenceType.SAME_INDIVIDUAL);
-        ;
 
         private boolean enabledByDefault;
         private InferenceType suggestedInferenceType;

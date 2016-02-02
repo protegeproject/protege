@@ -20,7 +20,7 @@ import java.io.File;
  */
 public class LoadIntoCurrentModelAction extends ProtegeOWLAction {
 
-    private Logger logger = LoggerFactory.getLogger(LoadIntoCurrentModelAction.class);;
+    private Logger logger = LoggerFactory.getLogger(LoadIntoCurrentModelAction.class);
 
     public void actionPerformed(ActionEvent e) {
         UIHelper helper = new UIHelper(getOWLEditorKit());

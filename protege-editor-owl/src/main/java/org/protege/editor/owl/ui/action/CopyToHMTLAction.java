@@ -113,7 +113,7 @@ public class CopyToHMTLAction extends FocusedComponentAction<Copyable> {
 
         public DataFlavor[] getTransferDataFlavors() {
 
-            return (DataFlavor[]) htmlFlavors.toArray(new DataFlavor[htmlFlavors.size()]);
+            return htmlFlavors.toArray(new DataFlavor[htmlFlavors.size()]);
 
         }
 
