@@ -11,17 +11,12 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 
 /**
@@ -37,19 +32,6 @@ public class NciThesaurusIndexer extends AbstractLuceneIndexer {
         super(new PerFieldAnalyzerWrapper(new StandardAnalyzer(), new HashMap<String, Analyzer>() {{
             put(IndexField.PHONETIC_NAME, new PhoneticAnalyzer());
         }}));
-    }
-
-    @Override
-    protected Directory setupIndexDirectory() {
-        try {
-            Path path = Files.createTempDirectory("nci-lucene-");
-            logger.info("... storing index files in " + path);
-            return FSDirectory.open(path);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

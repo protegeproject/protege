@@ -5,6 +5,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.SearchInterruptionException;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchResult;
@@ -12,31 +13,24 @@ import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
+import org.protege.editor.owl.model.search.lucene.ChangeSet;
+import org.protege.editor.owl.model.search.lucene.IndexDelegator;
 import org.protege.editor.owl.model.search.lucene.LuceneSearcher;
 import org.protege.editor.owl.model.search.lucene.QueryRunner;
 import org.protege.editor.owl.model.search.lucene.ResultDocumentHandler;
 import org.protege.editor.owl.model.search.lucene.SearchQueries;
 
 import org.apache.lucene.search.IndexSearcher;
-import org.semanticweb.owlapi.model.AddAxiom;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLAnnotationSubject;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -58,6 +52,8 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
 
     private OWLEditorKit editorKit;
 
+    private OWLOntology activeOntology;
+
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
@@ -69,6 +65,8 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     private ProgressMonitor progressMonitor;
 
     private NciThesaurusIndexer indexer = new NciThesaurusIndexer();
+
+    private IndexDelegator indexDelegator;
 
     private IndexSearcher indexSearcher;
 
@@ -93,6 +91,46 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
         };
         editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
         editorKit.getModelManager().addListener(modelManagerListener);
+    }
+
+    private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
+        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
+        if (isCacheMutatingEvent(event)) {
+            boolean success = changeActiveOntology(ontology);
+            if (success) {
+                indexDelegator = new IndexDelegator(activeOntology);
+            }
+            rebuildIndex();
+        }
+        else if (isCacheSavingEvent(event)) {
+            indexDelegator.saveVersion();
+        }
+    }
+
+    private boolean changeActiveOntology(OWLOntology ontology) {
+        if (activeOntology == null) {
+            activeOntology = ontology;
+            return true;
+        }
+        else {
+            if (!activeOntology.equals(ontology)) {
+                activeOntology = ontology;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void rebuildIndex() {
+        lastSearchId.set(0); // rebuild index
+    }
+
+    private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
+    }
+
+    private boolean isCacheSavingEvent(OWLModelManagerChangeEvent event) {
+        return event.isType(EventType.ONTOLOGY_SAVED);
     }
 
     @Override
@@ -124,32 +162,38 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     }
 
     @Override
+    public IndexSearcher getIndexSearcher() {
+        return indexSearcher;
+    }
+
+    @Override
     public SearchSettings getSearchSettings() {
         return settings;
     }
 
     @Override
-    public IndexSearcher getIndexSearcher() {
-        return indexSearcher;
+    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
+        if (lastSearchId.getAndIncrement() == 0) {
+            lastIndexingTask = service.submit(new Runnable() {
+                public void run() {
+                    buildingIndex();
+                }
+            });
+        }
+        UserQueries query = prepareQuery(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), query, searchResultHandler));
     }
 
     private void buildingIndex() {
-        long t0 = System.currentTimeMillis();
-        logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            indexer.start();
-            indexer.doIndex(editorKit, progress -> fireIndexingProgressed(progress));
-            indexer.close();
-            long t1 = System.currentTimeMillis();
-            logger.info("... built search index in " + (t1 - t0) + " ms");
-            indexSearcher = new IndexSearcher(indexer.getIndexReader());
+            indexer.doIndex(indexDelegator,
+                    new SearchContext(editorKit),
+                    progress -> fireIndexingProgressed(progress));
+            reloadIndexSearcher();
         }
         catch (IOException e) {
             logger.error("... build index failed");
-            e.printStackTrace();
-        }
-        catch (Throwable e) {
             e.printStackTrace();
         }
         finally {
@@ -166,76 +210,22 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     }
 
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
-        long t0 = System.currentTimeMillis();
-        logger.info("Updating search index...");
         try {
-            indexer.restart();
-            for (OWLOntologyChange change : changes) {
-                OWLAxiom changedAxiom = change.getAxiom();
-                OWLOntology sourceOntology = change.getOntology();
-                if (change instanceof RemoveAxiom) {
-                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (subject instanceof IRI) {
-                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
-                            if (entity.isPresent()) {
-                                indexer.doDelete(entity.get());
-                            }
-                        }
-                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
-                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        indexer.doDelete(entity);
-                    }
-                } else if (change instanceof AddAxiom) {
-                    if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject subject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (subject instanceof IRI) {
-                            Optional<OWLEntity> entity = sourceOntology.getEntitiesInSignature((IRI) subject).stream().findFirst();
-                            if (entity.isPresent()) {
-                                indexer.doAdd(editorKit, sourceOntology, entity.get());
-                            }
-                        }
-                    } else if (changedAxiom instanceof OWLDeclarationAxiom) {
-                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        indexer.doAdd(editorKit, sourceOntology, entity);
-                    }
-                }
+            boolean success = indexer.doUpdate(indexDelegator,
+                    new ChangeSet(changes),
+                    new SearchContext(editorKit));
+            if (success) {
+                reloadIndexSearcher();
             }
-            indexer.close();
-            long t1 = System.currentTimeMillis();
-            logger.info("... updated search index in " + (t1 - t0) + " ms");
-            indexSearcher = new IndexSearcher(indexer.getIndexReader());
         }
         catch (IOException e) {
             logger.error("... update index failed");
             e.printStackTrace();
         }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
     }
 
-    private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
-        if (isCacheMutatingEvent(event)) {
-            lastSearchId.set(0); // rebuild index
-        }
-    }
-
-    private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
-        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
-    }
-
-    @Override
-    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
-        if (lastSearchId.getAndIncrement() == 0) {
-            lastIndexingTask = service.submit(new Runnable() {
-                public void run() {
-                    buildingIndex();
-                }
-            });
-        }
-        UserQueries query = prepareQuery(searchString);
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), query, searchResultHandler));
+    private void reloadIndexSearcher() {
+        indexSearcher = new IndexSearcher(indexer.getIndexReader(indexDelegator));
     }
 
     private UserQueries prepareQuery(String searchString) {
