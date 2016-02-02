@@ -40,7 +40,10 @@ public class OntologyCatalogManager {
     private static void backup(File folder, File catalogFile) {
 	    File backup;
 	    int i = 0;
-	    while ((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists()) {
+	    while (true) {
+			if (!((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists())) {
+				break;
+			}
 		}
 	    catalogFile.renameTo(backup);
 	}

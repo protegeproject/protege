@@ -79,16 +79,6 @@ public class OWLIndividualListComponent extends JPanel {
         list = new OWLObjectList(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    if (list.getSelectedValue() != null) {
-//                        setSelectedEntity((OWLIndividual) list.getSelectedValue());
-                    }
-//                    changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
-                }
-            }
-        });
 
         listener = new OWLOntologyChangeListener() {
             public void ontologiesChanged(java.util.List<? extends OWLOntologyChange> changes) {

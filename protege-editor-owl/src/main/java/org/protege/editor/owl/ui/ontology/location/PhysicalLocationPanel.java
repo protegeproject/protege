@@ -147,7 +147,7 @@ public class PhysicalLocationPanel extends JPanel {
 
     public static void showDialog(OWLEditorKit owlEditorKit) {
         PhysicalLocationPanel panel = new PhysicalLocationPanel(owlEditorKit);
-        JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION);
+        JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = pane.createDialog(owlEditorKit.getWorkspace(), "Ontology source locations");
         dlg.setResizable(true);
         dlg.setVisible(true);

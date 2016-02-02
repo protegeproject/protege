@@ -127,7 +127,7 @@ public class DLNameKeyPanel extends JPanel {
     public static void main(String[] args) {
         JFrame f = new JFrame();
         f.setContentPane(new DLNameKeyPanel());
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setVisible(true);
     }
 }
